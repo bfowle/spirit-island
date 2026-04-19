@@ -163,6 +163,69 @@ def _strip_html_comments(text: str) -> str:
     return re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
 
 
+def fetch_category_members(category: str, delay: float = DEFAULT_DELAY_SECS) -> list[str]:
+    """List page titles in a MediaWiki category, paginating via cmcontinue.
+
+    `category` is the category name without the `Category:` prefix, e.g.
+    "Minor_Power". Only returns pages in namespace 0 (main content, not talk /
+    template / file pages).
+    """
+    titles: list[str] = []
+    cmcontinue: str | None = None
+    while True:
+        params = {
+            "action": "query",
+            "list": "categorymembers",
+            "cmtitle": f"Category:{category}",
+            "cmlimit": "500",
+            "cmnamespace": "0",
+            "format": "json",
+            "formatversion": "2",
+        }
+        if cmcontinue:
+            params["cmcontinue"] = cmcontinue
+        url = f"{WIKI_API}?{urllib.parse.urlencode(params)}"
+        req = urllib.request.Request(url, headers={"User-Agent": "spirit-island-mastery-guide/0.1"})
+
+        last_err: Exception | None = None
+        for attempt in range(MAX_RETRIES):
+            _throttle(delay)
+            try:
+                with urllib.request.urlopen(req, timeout=30) as resp:
+                    body = resp.read().decode("utf-8")
+                data = json.loads(body)
+                if "error" in data:
+                    raise RuntimeError(f"Wiki API error listing Category:{category}: {data['error']}")
+                members = data.get("query", {}).get("categorymembers", [])
+                for m in members:
+                    titles.append(m["title"])
+                cmcontinue = data.get("continue", {}).get("cmcontinue")
+                last_err = None
+                break
+            except urllib.error.HTTPError as e:
+                last_err = e
+                if e.code in (429, 500, 502, 503, 504):
+                    retry_after = e.headers.get("Retry-After") if e.headers else None
+                    backoff = float(retry_after) if retry_after else BACKOFF_BASE_SECS * (2 ** attempt) + random.uniform(0, 1)
+                    print(f"  [rate-limit] HTTP {e.code} on Category:{category}, waiting {backoff:.1f}s (retry {attempt + 1}/{MAX_RETRIES})", file=sys.stderr)
+                    time.sleep(backoff)
+                    continue
+                raise
+            except urllib.error.URLError as e:
+                last_err = e
+                backoff = BACKOFF_BASE_SECS * (2 ** attempt) + random.uniform(0, 1)
+                print(f"  [network] {e} on Category:{category}, waiting {backoff:.1f}s (retry {attempt + 1}/{MAX_RETRIES})", file=sys.stderr)
+                time.sleep(backoff)
+                continue
+        else:
+            raise RuntimeError(f"Failed listing Category:{category} after {MAX_RETRIES} retries: {last_err}")
+
+        if not cmcontinue:
+            break
+
+    return titles
+
+
 def fetch_wikitext(page: str, delay: float = DEFAULT_DELAY_SECS) -> str:
     """Fetch raw wikitext for a wiki page via the MediaWiki API with rate-limit handling.
 
@@ -635,6 +698,79 @@ def cmd_batch_spirit(args, page_name: str) -> dict:
     return spirit
 
 
+def cmd_deck(args, card_type: str) -> dict:
+    """Walk Category:Power_Card and split into Minor / Major decks.
+
+    The Wiki tags every power card with a single `Category:Power Card`; no
+    per-type categories exist. We walk that single category, parse each page,
+    then split by the PowerCardArticle's `cardtype` field.
+
+    When `card_type == "all"`, writes both {output-dir}/minor.json and major.json
+    (plus unique.json). When `card_type` is "minor" or "major", writes only that
+    deck's JSON.
+
+    Filter: cardstatus == "Active" by default (drops erratum-retired versions).
+    """
+    assert card_type in ("minor", "major", "all"), f"unknown deck type: {card_type}"
+    print("==> listing Category:Power_Card (all power cards)", file=sys.stderr)
+    titles = fetch_category_members("Power_Card", delay=getattr(args, "delay", DEFAULT_DELAY_SECS))
+    print(f"    {len(titles)} page titles found", file=sys.stderr)
+
+    keep_all_statuses = bool(getattr(args, "all_statuses", False))
+    buckets: dict[str, list[dict]] = {"Minor": [], "Major": [], "Unique": [], "Other": []}
+    skipped: list[dict] = []
+
+    for i, title in enumerate(titles, 1):
+        try:
+            data = cmd_card(args, title.replace(" ", "_"))
+        except Exception as e:
+            print(f"  [{i}/{len(titles)}] {title}: error — {e}", file=sys.stderr)
+            skipped.append({"title": title, "reason": f"parse error: {e}"})
+            continue
+        status = (data.get("status") or "").strip()
+        cardtype = (data.get("card_type") or "").strip()
+        if not keep_all_statuses and status != "Active":
+            skipped.append({"title": title, "reason": f"status={status!r} (not Active)"})
+            continue
+        bucket = cardtype if cardtype in buckets else "Other"
+        buckets[bucket].append(data)
+        if i % 25 == 0:
+            print(f"  [{i}/{len(titles)}] … Minor={len(buckets['Minor'])} Major={len(buckets['Major'])} Unique={len(buckets['Unique'])} Other={len(buckets['Other'])}", file=sys.stderr)
+
+    print(
+        f"==> Power cards parsed: Minor={len(buckets['Minor'])}, Major={len(buckets['Major'])}, "
+        f"Unique={len(buckets['Unique'])}, Other={len(buckets['Other'])}, skipped={len(skipped)}",
+        file=sys.stderr,
+    )
+
+    def _bundle(name: str, cards: list[dict]) -> dict:
+        return {
+            "source": "spiritislandwiki.com",
+            "card_type": name,
+            "count": len(cards),
+            "cards": cards,
+        }
+
+    result = {
+        "minor": _bundle("Minor", buckets["Minor"]),
+        "major": _bundle("Major", buckets["Major"]),
+        "unique": _bundle("Unique", buckets["Unique"]),
+        "other": _bundle("Other", buckets["Other"]),
+        "skipped": skipped,
+    }
+
+    if args.output_dir:
+        out_dir = Path(args.output_dir)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        to_write = [card_type] if card_type in ("minor", "major") else ["minor", "major", "unique"]
+        for key in to_write:
+            out_path = out_dir / f"{key}.json"
+            out_path.write_text(json.dumps(result[key], indent=2, ensure_ascii=False) + "\n")
+            print(f"Wrote {out_path} ({result[key]['count']} cards)", file=sys.stderr)
+
+    return result
+
+
 def cmd_batch_all(args) -> dict:
     """Fetch every spirit listed in data/spirits.json. Rate-limit aware; cached."""
     spirits_json = Path(args.spirits_json or "data/spirits.json")
@@ -659,8 +795,9 @@ def cmd_batch_all(args) -> dict:
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("command", choices=["spirit", "card", "aspect", "batch-spirit", "batch-all"])
-    p.add_argument("name", nargs="?", help="Wiki page name (required for spirit/card/batch-spirit)")
+    p.add_argument("command", choices=["spirit", "card", "aspect", "batch-spirit", "batch-all", "deck"])
+    p.add_argument("name", nargs="?", help="Wiki page name (spirit/card/batch-spirit) or deck type 'minor'/'major' for deck command")
+    p.add_argument("--all-statuses", action="store_true", help="deck: keep all cards regardless of status (default keeps only Active)")
     p.add_argument("--output-dir", help="Write parsed output JSON here as {slug}.json")
     p.add_argument("--cache-dir", default=".wiki-cache", help="Cache raw fetches here (default: .wiki-cache)")
     p.add_argument("--no-cache", action="store_true", help="Bypass cache; always fetch fresh")
@@ -671,6 +808,12 @@ def main():
     if args.command == "batch-all":
         data = cmd_batch_all(args)
         print(json.dumps(data, indent=2), file=sys.stderr)
+        return
+
+    if args.command == "deck":
+        if not args.name or args.name not in ("minor", "major", "all"):
+            p.error("'deck' requires name='minor', 'major', or 'all'")
+        cmd_deck(args, args.name)
         return
 
     if not args.name:

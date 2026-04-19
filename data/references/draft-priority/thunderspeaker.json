@@ -1,0 +1,4085 @@
+{
+  "spirit": "thunderspeaker",
+  "spirit_name": "Thunderspeaker",
+  "power_summary": {
+    "offense": "4",
+    "control": "5",
+    "fear": "3",
+    "defense": "2",
+    "utility": "1"
+  },
+  "innate_element_weights": {
+    "air": 7.2,
+    "sun": 2.4,
+    "fire": 1.5,
+    "animal": 0.6
+  },
+  "mid_game_energy_estimate": 3.0,
+  "minors_ranked": [
+    {
+      "name": "Purifying Flame",
+      "score": 12.7,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "fire",
+        "air",
+        "plant"
+      ],
+      "text": "1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blight.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+fire+sun → 11.1",
+        "Slow speed matches innate",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Twilight Fog Brings Madness",
+      "score": 12.6,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "moon",
+        "air",
+        "water"
+      ],
+      "text": "Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+sun → 9.6",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'1 damage' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Birds Cry Warning",
+      "score": 12.2,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "3",
+      "target": "Land with Dahan",
+      "elements": [
+        "sun",
+        "air",
+        "animal"
+      ],
+      "text": "The next time Dahan would be Destroyed in target land, Destroy 2 fewer Dahan. **OR** Push up to 3 Dahan.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+animal+sun → 10.2",
+        "'destroy' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Call to Guard",
+      "score": 12.1,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "air",
+        "earth"
+      ],
+      "text": "Gather up to 1 Dahan. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** After Invaders are added or moved to target land, 1 Damage to each added or moved Invader.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+sun → 9.6",
+        "0-cost (always affordable)",
+        "'1 damage' → offense=4 (+0.6)",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Call to Isolation",
+      "score": 12.1,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Land with Dahan",
+      "elements": [
+        "sun",
+        "air",
+        "animal"
+      ],
+      "text": "Push 1 Explorer/Town per Dahan. **OR** Push 1 Dahan.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+animal+sun → 10.2",
+        "0-cost (always affordable)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Fire in the Sky",
+      "score": 11.9,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "fire",
+        "air"
+      ],
+      "text": "2 Fear. Add 1 Strife.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+fire+sun → 11.1",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Spur on with Words of Fire",
+      "score": 11.6,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "sun",
+        "fire",
+        "air"
+      ],
+      "text": "If you target a Spirit other than yourself, they gain +1 Energy. Target Spirit may immediately play another Power Card by paying its cost. (If it is Slow, it does not resolve until later.)",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+fire+sun → 11.1"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Enticing Splendor",
+      "score": 11.5,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Land with no Blight",
+      "elements": [
+        "sun",
+        "air",
+        "plant"
+      ],
+      "text": "Gather 1 Explorer/Town. **OR** Gather up to 2 Dahan.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+sun → 9.6",
+        "0-cost (always affordable)",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Delusions of Danger",
+      "score": 11.3,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "moon",
+        "air"
+      ],
+      "text": "Push 1 Explorer. **OR** 2 Fear.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+sun → 9.6",
+        "'fear' → fear=3 (+0.3)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Call to Migrate",
+      "score": 11.2,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "fire",
+        "air",
+        "animal"
+      ],
+      "text": "Gather up to 3 Dahan. Push up to 3 Dahan.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+animal+fire → 9.3",
+        "Slow speed matches innate",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Swarming Wasps",
+      "score": 11.2,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Land with no Blight",
+      "elements": [
+        "fire",
+        "air",
+        "animal"
+      ],
+      "text": "Add 1 Beasts. **OR** If target land has Beasts, Push up to 2 Explorers.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+animal+fire → 9.3",
+        "0-cost (always affordable)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Portents of Disaster",
+      "score": 10.9,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Land with 1 or more Invaders",
+      "elements": [
+        "sun",
+        "moon",
+        "air"
+      ],
+      "text": "2 Fear. The next time an Invader is Destroyed in target land this turn, 1 Fear.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+sun → 9.6",
+        "0-cost (always affordable)",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Bats Scout for Raids by Darkness",
+      "score": 10.6,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "air",
+        "animal"
+      ],
+      "text": "For each [[Dahan]], 1 Damage to [[Towns]]/[[Cities]]. **OR** 1 [[Fear]]. [[Gather]] up to 2 [[Dahan]].",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+animal → 7.8",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Dry Wood Explodes in Smoldering Splinters",
+      "score": 10.6,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Not a Wetland",
+      "elements": [
+        "fire",
+        "air",
+        "plant"
+      ],
+      "text": "You may spend 1 Energy to make this Power Fast. 2 Fear. 1 Damage.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+fire → 8.7",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Fleshrot Fever",
+      "score": 10.6,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Jungle or Sands",
+      "elements": [
+        "fire",
+        "air",
+        "water",
+        "animal"
+      ],
+      "text": "1 Fear. Add 1 Disease.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+animal+fire → 9.3",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Lure of the Unknown",
+      "score": 10.6,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Land with No Invaders",
+      "elements": [
+        "moon",
+        "fire",
+        "air",
+        "plant"
+      ],
+      "text": "Gather 1 Explorer/Town.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+fire → 8.7",
+        "0-cost (always affordable)",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Reaching Grasp",
+      "score": 10.6,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "sun",
+        "air",
+        "water"
+      ],
+      "text": "Target Spirit gets +2 Range with all their Powers.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+sun → 9.6",
+        "0-cost (always affordable)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Here There Be Monsters",
+      "score": 10.5,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Inland Land",
+      "elements": [
+        "moon",
+        "air",
+        "animal"
+      ],
+      "text": "You may Push 1 Explorer/Town/Dahan. 2 Fear. If target land has any Beasts, 1 Fear.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+animal → 7.8",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Desiccating Winds",
+      "score": 10.3,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Mountain or Sands",
+      "elements": [
+        "fire",
+        "air",
+        "earth"
+      ],
+      "text": "If target land has Badlands, 1 Damage. Add 1 Badlands.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+fire → 8.7",
+        "Slow speed matches innate",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Sky Stretches to Shore",
+      "score": 10.1,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "sun",
+        "air",
+        "water",
+        "earth"
+      ],
+      "text": "This turn, target Spirit may use 1 Slow Power as if it were Fast, or vice versa. Target Spirit gains +3 Range for measuring Range to Coastal lands.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+sun → 9.6"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Land of Haunts and Embers",
+      "score": 9.9,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "fire",
+        "air"
+      ],
+      "text": "2 Fear. Push up to 2 Explorers/Towns. If Blight is present, 2 Fear and Push up to 2 Explorers/Towns. Add 1 Blight.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+fire → 8.7",
+        "0-cost (always affordable)",
+        "'fear' → fear=3 (+0.3)",
+        "'push' → control=5 (+0.9)",
+        "anti-synergy: adds Blight"
+      ],
+      "anti_synergy": [
+        "adds Blight"
+      ]
+    },
+    {
+      "name": "Steam Vents",
+      "score": 9.8,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "fire",
+        "air",
+        "water",
+        "earth"
+      ],
+      "text": "Destroy 1 Explorer.",
+      "threshold": "3 Earth — 3 Earth: You may instead Destroy 1 Town.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+fire → 8.7",
+        "'destroy' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Veil the Night's Hunt",
+      "score": 9.8,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Land with Dahan",
+      "elements": [
+        "moon",
+        "air",
+        "animal"
+      ],
+      "text": "For each Dahan present, choose a different Invader. 1 Damage to each of those Invaders. **OR** Push up to 3 Dahan.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+animal → 7.8",
+        "'1 damage' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Dire Metamorphosis",
+      "score": 9.7,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "air",
+        "earth",
+        "animal"
+      ],
+      "text": "1 Fear. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]], 1 [[Strife]], 1 [[Wilds]], and 1 [[Blight]].",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+animal → 7.8",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Hazards Spread Across the Island",
+      "score": 9.7,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "2, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "fire",
+        "air",
+        "earth",
+        "plant"
+      ],
+      "text": "Choose a type of token from Badlands/Beasts/Disease/Strife/Wilds that exists in an adjacent land; choosing Disease costs 1 Energy. Add 1 of that type of token to target land.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+fire → 8.7",
+        "0-cost (always affordable)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Flow Downriver, Blow Downwind",
+      "score": 9.6,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "2, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "air",
+        "water",
+        "plant"
+      ],
+      "text": "Push up to 1 Blight/Explorer/Town.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air → 7.2",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Rain of Blood",
+      "score": 9.6,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Land with 1 or more Invaders",
+      "elements": [
+        "air",
+        "water",
+        "animal"
+      ],
+      "text": "2 Fear. If target land has at least 2 Towns/Cities, 1 Fear.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+animal → 7.8",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Set Them on an Ever-Twisting Trail",
+      "score": 9.2,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "air",
+        "plant",
+        "animal"
+      ],
+      "text": "Gather or Push 1 Explorer. Isolate target land.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+animal → 7.8",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Tormenting Rotflies",
+      "score": 9.1,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Sands or Wetland",
+      "elements": [
+        "air",
+        "plant",
+        "animal"
+      ],
+      "text": "Add 1 Disease. **OR** If target land has Invaders, 2 Fear. If Disease is present, +1 Fear. If Blight is present, +1 Fear.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+animal → 7.8",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Terror Turns to Madness",
+      "score": 9.0,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Land with 1 or more Invaders",
+      "elements": [
+        "moon",
+        "air",
+        "water"
+      ],
+      "text": "If the Terror Level is... Terror Level 1: 3 Fear. Terror Level 2: 2 Fear or add 1 Strife. Terror Level 3: Add 1 Strife.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air → 7.2",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Call to Trade",
+      "score": 8.6,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Land with Dahan",
+      "elements": [
+        "air",
+        "water",
+        "earth",
+        "plant"
+      ],
+      "text": "You may Gather 1 Dahan. If the Terror Level is 2 or lower, Gather 1 Town and the first Ravage in target land this turn becomes a Build there instead.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air → 7.2",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Disorienting Landscape",
+      "score": 8.6,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "2, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "air",
+        "plant"
+      ],
+      "text": "Push 1 [[Explorer]]. If target land is a Mountain or Jungle, add 1 [[Wilds]].",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air → 7.2",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Entrancing Apparitions",
+      "score": 8.6,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "air",
+        "water"
+      ],
+      "text": "Defend 2. If no Invaders are present, Gather up to 2 Explorers.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air → 7.2",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Scream Disease Into the Wind",
+      "score": 8.3,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Another Spirit",
+      "elements": [
+        "air",
+        "water",
+        "animal"
+      ],
+      "text": "Target Spirit gets +1 Range with all their Powers. Once this turn, after target Spirit uses a Power targeting a land, they may add 1 Disease to that land. (Hand them a Disease token as a reminder.)",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+animal → 7.8"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Drift Down into Slumber",
+      "score": 8.2,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Any Land",
+      "elements": [
+        "air",
+        "earth",
+        "plant"
+      ],
+      "text": "Defend 1. If target land is a Jungle or Sands, instead Defend 4.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air → 7.2",
+        "0-cost (always affordable)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Haunted by Primal Memories",
+      "score": 8.0,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "2, from your Sacred Site",
+      "target": "Land with 1 or more Invaders",
+      "elements": [
+        "moon",
+        "air",
+        "earth"
+      ],
+      "text": "1 Fear. Defend 3. If Beasts are present, +2 Fear.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air → 7.2",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Scour the Land",
+      "score": 7.8,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "2, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "air",
+        "earth"
+      ],
+      "text": "Destroy 3 Towns and all Explorers. Add 1 Blight.",
+      "threshold": "3 Air — 3 Air: This Power may be Fast.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air → 7.2",
+        "Slow speed matches innate",
+        "'destroy' → offense=4 (+0.6)",
+        "anti-synergy: adds Blight"
+      ],
+      "anti_synergy": [
+        "adds Blight"
+      ]
+    },
+    {
+      "name": "Confounding Mists",
+      "score": 7.7,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "air",
+        "water"
+      ],
+      "text": "Defend 4. **OR** Each Invader added to target land this turn may be immediately Pushed to any adjacent land.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air → 7.2"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Call to Bloodshed",
+      "score": 7.0,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Land with Dahan",
+      "elements": [
+        "sun",
+        "fire",
+        "animal"
+      ],
+      "text": "1 Damage per Dahan. **OR** Gather up to 3 Dahan.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal+fire+sun → 4.5",
+        "Slow speed matches innate",
+        "'1 damage' → offense=4 (+0.6)",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Call to Ferocity",
+      "score": 6.6,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Land with 1 or more Invaders",
+      "elements": [
+        "sun",
+        "fire",
+        "earth"
+      ],
+      "text": "Gather up to 3 Dahan. **OR** If target land has Dahan, 1 Fear and Push 1 Explorer and 1 Town.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements fire+sun → 3.9",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Territorial Strife",
+      "score": 6.6,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Land with at least 1 City",
+      "elements": [
+        "sun",
+        "fire",
+        "animal"
+      ],
+      "text": "3 Damage to Explorers/Towns. **OR** Add 1 Strife.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal+fire+sun → 4.5",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'3 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Sear Anger Into the Wild Lands",
+      "score": 6.3,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "fire",
+        "plant"
+      ],
+      "text": "Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear and 1 Damage.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements fire+sun → 3.9",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Sunset's Fire Flows Across the Land",
+      "score": 5.8,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "moon",
+        "fire",
+        "water"
+      ],
+      "text": "1 Fear. 1 Damage. You may pay 1 Energy to deal 1 Damage in an adjacent land.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements fire+sun → 3.9",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Blood Draws Predators",
+      "score": 5.6,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "fire",
+        "water",
+        "animal"
+      ],
+      "text": "After the next time Invaders are Destroyed in target land: Add 1 Beasts, then 1 Damage per Beasts (count max. 3 Beasts).",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal+fire+sun → 4.5",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Drought",
+      "score": 5.5,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "fire",
+        "earth"
+      ],
+      "text": "Destroy 3 [[Towns]]. 1 Damage to each [[Town]]/[[City]]. Add 1 [[Blight]].",
+      "threshold": "3 Sun — 3 Sun: Destroy 1 City.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements fire+sun → 3.9",
+        "Slow speed matches innate",
+        "'destroy' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Elusive Ambushes",
+      "score": 5.0,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Land with Dahan",
+      "elements": [
+        "sun",
+        "fire",
+        "water"
+      ],
+      "text": "1 Damage. **OR** Defend 4.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements fire+sun → 3.9",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Gift of Living Energy",
+      "score": 4.9,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "sun",
+        "fire",
+        "plant"
+      ],
+      "text": "Target Spirit gains 1 Energy. If you have at least 2 Sacred Sites, target Spirit gains 1 Energy. If you target another Spirit, they gain 1 Energy.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements fire+sun → 3.9",
+        "0-cost (always affordable)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Promises of Protection",
+      "score": 4.9,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "2, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "earth",
+        "animal"
+      ],
+      "text": "Gather up to 2 Dahan. Dahan have +2 Health while in target land.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal+sun → 3.0",
+        "0-cost (always affordable)",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Weep for What is Lost",
+      "score": 4.8,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Land with Blight",
+      "elements": [
+        "fire",
+        "water",
+        "animal"
+      ],
+      "text": "1 Fear per type of Invader present. Push up to 1 Explorer/Town per Blight.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Pact of the Joined Hunt",
+      "score": 4.6,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "sun",
+        "plant",
+        "animal"
+      ],
+      "text": "Target Spirit Gathers 1 Dahan into one of their lands. 1 Damage in that land per Dahan present.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal+sun → 3.0",
+        "Slow speed matches innate",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Gold's Allure",
+      "score": 4.5,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Mountain",
+      "elements": [
+        "fire",
+        "earth",
+        "animal"
+      ],
+      "text": "Gather 1 Explorer and 1 Town. Add 1 Strife.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Savage Mawbeasts",
+      "score": 4.5,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "fire",
+        "animal"
+      ],
+      "text": "If target land is a Jungle or Wetland, 1 Fear and 1 Damage.",
+      "threshold": "3 Animal — 3 Animal: 1 Damage.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Absorb Corruption",
+      "score": 4.3,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "earth",
+        "plant"
+      ],
+      "text": "Gather 1 Blight. **OR** Pay 1 Energy to Remove 1 Blight.",
+      "threshold": "2 Plant — 2 Plant: You may do both.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements sun → 2.4",
+        "Slow speed matches innate",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Like Calls to Like",
+      "score": 4.3,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "water",
+        "plant"
+      ],
+      "text": "If target land has Explorer, Gather up to 1 Explorer. Do likewise for Town, Dahan, Blight, and Beasts.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements sun → 2.4",
+        "Slow speed matches innate",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Song of Sanctity",
+      "score": 4.3,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Mountain or Jungle",
+      "elements": [
+        "sun",
+        "water",
+        "plant"
+      ],
+      "text": "If Explorer(s) are present, Push all Explorers. Otherwise, Remove 1 Blight.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements sun → 2.4",
+        "Slow speed matches innate",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Strong and Constant Currents",
+      "score": 4.3,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Coastal Land",
+      "elements": [
+        "sun",
+        "water",
+        "earth"
+      ],
+      "text": "Push 1 Explorer/Town to an adjacent Coastal land. **OR** Move up to 2 Dahan between target land and one other Coastal land.",
+      "threshold": "2 Water — 2 Water: You may do both.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements sun → 2.4",
+        "0-cost (always affordable)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Shadows of the Burning Forest",
+      "score": 4.2,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Land with 1 or more Invaders",
+      "elements": [
+        "moon",
+        "fire",
+        "plant"
+      ],
+      "text": "2 Fear. If target land is a Mountain or Jungle, Push 1 Explorer and 1 Town.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements fire → 1.5",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Favor of the Sun and Star-lit Dark",
+      "score": 4.1,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "moon",
+        "plant"
+      ],
+      "text": "Defend 4. Push up to 1 Blight.",
+      "threshold": "2 Sun — 2 Sun: 1 Fear.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements sun → 2.4",
+        "'fear' → fear=3 (+0.3)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Prowling Panthers",
+      "score": 4.0,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Mountain or Jungle",
+      "elements": [
+        "moon",
+        "fire",
+        "animal"
+      ],
+      "text": "1 Fear. Add 1 Beasts. **OR** If target land has Beasts, Destroy 1 Explorer/Town.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Rouse the Trees and Stones",
+      "score": 4.0,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Land with no Blight",
+      "elements": [
+        "fire",
+        "earth",
+        "plant"
+      ],
+      "text": "2 Damage. Push 1 Explorer.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements fire → 1.5",
+        "Slow speed matches innate",
+        "'2 damage' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Teeming Rivers",
+      "score": 4.0,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "2, from your Sacred Site",
+      "target": "Mountain or Wetland",
+      "elements": [
+        "sun",
+        "water",
+        "plant",
+        "animal"
+      ],
+      "text": "If target land has no Blight, add 1 Beasts. If target land has exactly 1 Blight, Remove it.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal+sun → 3.0",
+        "Slow speed matches innate"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Animated Wrackroot",
+      "score": 3.9,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "fire",
+        "plant"
+      ],
+      "text": "1 Fear. Destroy 1 Explorer. **OR** Add 1 Wilds.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements fire → 1.5",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Uncanny Melting",
+      "score": 3.7,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "moon",
+        "water"
+      ],
+      "text": "If Invaders are present, 1 Fear. If target land is a Sands or Wetland, Remove 1 Blight.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements sun → 2.4",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Guardian Serpents",
+      "score": 3.5,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "sun",
+        "moon",
+        "earth",
+        "animal"
+      ],
+      "text": "Add 1 Beasts in one of target Spirit's lands. If target Spirit has a Sacred Site in that land: Defend 4 there.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal+sun → 3.0"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Gift of Constancy",
+      "score": 3.4,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "sun",
+        "earth"
+      ],
+      "text": "Target Spirit gains 2 Energy. At end of turn, target Spirit may Reclaim 1 Power Card instead of discarding it. If you target another Spirit, you may also Reclaim 1 Power Card instead of discarding it.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements sun → 2.4",
+        "0-cost (always affordable)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Inflame the Fires of Life",
+      "score": 3.4,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "fire",
+        "plant",
+        "animal"
+      ],
+      "text": "Add 1 Disease. **OR** 1 Fear. Add 1 Strife.",
+      "threshold": "3 Animal — 3 Animal: You may do both.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Treacherous Waterways",
+      "score": 3.4,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Mountain or Wetland",
+      "elements": [
+        "fire",
+        "water",
+        "earth"
+      ],
+      "text": "Add 1 Wilds. **OR** Push 1 Explorer.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements fire → 1.5",
+        "0-cost (always affordable)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Unquenchable Flames",
+      "score": 3.4,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "2, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "fire",
+        "earth"
+      ],
+      "text": "1 Fear. 1 Damage to Towns/Cities. Invaders do not heal Damage at end of turn.",
+      "threshold": "2 Fire — 2 Fire: Add 1 Badlands.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements fire → 1.5",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Quicken the Earth's Struggles",
+      "score": 3.2,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "0, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "fire",
+        "earth",
+        "animal"
+      ],
+      "text": "1 Damage to each Town/City. **OR** Defend 10.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Rites of the Land's Rejection",
+      "score": 3.2,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "2, from your Sacred Site",
+      "target": "Land with Dahan",
+      "elements": [
+        "moon",
+        "fire",
+        "earth"
+      ],
+      "text": "Invaders do not Build in target land this turn. 1 Fear per Town/City or 1 Fear per Dahan, whichever is less. **OR** Push up to 3 Dahan.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements fire → 1.5",
+        "'fear' → fear=3 (+0.3)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Visions of Fiery Doom",
+      "score": 3.2,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "fire"
+      ],
+      "text": "1 Fear. Push 1 Explorer/Town.",
+      "threshold": "2 Fire — 2 Fire: +1 Fear.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements fire → 1.5",
+        "'fear' → fear=3 (+0.3)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Poisoned Dew",
+      "score": 3.1,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "fire",
+        "water",
+        "plant"
+      ],
+      "text": "Destroy 1 Explorer. If target land is a Jungle or a Wetland, Destroy all Explorer.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements fire → 1.5",
+        "Slow speed matches innate",
+        "'destroy' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Gnawing Rootbiters",
+      "score": 3.0,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "earth",
+        "animal"
+      ],
+      "text": "Push up to 2 Towns.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal → 0.6",
+        "0-cost (always affordable)",
+        "Slow speed matches innate",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Cycles of Time and Tide",
+      "score": 2.9,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Coastal Land",
+      "elements": [
+        "sun",
+        "moon",
+        "water"
+      ],
+      "text": "If there are Dahan, add 1 Dahan. If there are no Dahan, Remove 1 Blight.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements sun → 2.4"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Domesticated Animals Go Berserk",
+      "score": 2.9,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Land with 1 or more Towns and/or Cities",
+      "elements": [
+        "moon",
+        "fire",
+        "animal"
+      ],
+      "text": "1 Fear. Defend 5.",
+      "threshold": "3 Moon — 3 Moon: Add 1 Beasts.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Encompassing Ward",
+      "score": 2.9,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "sun",
+        "water",
+        "earth"
+      ],
+      "text": "Target Spirit provides Defend 2 in each of its lands.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements sun → 2.4"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Gift of Twinned Days",
+      "score": 2.9,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Another Spirit",
+      "elements": [
+        "sun",
+        "moon"
+      ],
+      "text": "Once this turn, target Spirit may Repeat the lowest-cost Power Card they have in play by paying it's cost again. You may do likewise.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements sun → 2.4"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Roiling Bog and Snagging Thorn",
+      "score": 2.8,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "fire",
+        "water",
+        "plant"
+      ],
+      "text": "1 Fear. Isolate. Defend 2.</br>1 Dahan does not participate in Ravage.</br>(Check when ravaging; it does not take Damage and does not counterattack.)",
+      "threshold": "No Threshold",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements fire → 1.5",
+        "0-cost (always affordable)",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "The Shore Seethes with Hatred",
+      "score": 2.8,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Coastal Land",
+      "elements": [
+        "fire",
+        "water",
+        "earth",
+        "plant"
+      ],
+      "text": "1 Fear. Add 1 Badlands and 1 Wilds.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements fire → 1.5",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Call of the Dahan Ways",
+      "score": 2.5,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Land with Dahan",
+      "elements": [
+        "moon",
+        "water",
+        "animal"
+      ],
+      "text": "Replace 1 Explorer with 1 Dahan.",
+      "threshold": "2 Moon — 2 Moon: You may instead Replace 1 Town with 1 Dahan.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal → 0.6",
+        "Slow speed matches innate",
+        "'replace' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Call to Tend",
+      "score": 2.5,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Land with Dahan",
+      "elements": [
+        "water",
+        "plant",
+        "animal"
+      ],
+      "text": "Remove 1 Blight. **OR** Push up to 3 Dahan.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal → 0.6",
+        "Slow speed matches innate",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Infested Aquifers",
+      "score": 2.5,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "water",
+        "earth",
+        "animal"
+      ],
+      "text": "If target land has any Disease, 1 Damage to each Invader. **OR** If target land is a Mountain or Wetland, 1 Fear and add 1 Disease.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal → 0.6",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Skies Herald the Season of Return",
+      "score": 2.4,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "moon",
+        "plant",
+        "animal"
+      ],
+      "text": "A Spirit with Presence on target board may add 1 of their Destroyed Presence. Gather up to 2 Dahan. Push 1 Blight.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal+sun → 3.0",
+        "'push' → control=5 (+0.9)",
+        "anti-synergy: destroys Presence"
+      ],
+      "anti_synergy": [
+        "destroys Presence"
+      ]
+    },
+    {
+      "name": "Mesmerized Tranquility",
+      "score": 2.2,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "water",
+        "earth",
+        "animal"
+      ],
+      "text": "Isolate target land. Each Invader does -1 Damage.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal → 0.6",
+        "0-cost (always affordable)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Entrap the Forces of Corruption",
+      "score": 2.0,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "earth",
+        "plant",
+        "animal"
+      ],
+      "text": "Gather up to 1 Blight. Isolate target land. When Blight is added to target land, it doesn't cascade.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal → 0.6",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Devouring Ants",
+      "score": 1.9,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "earth",
+        "animal"
+      ],
+      "text": "1 Fear. 1 Damage. Destroy 1 Dahan. If target land is a Jungle or Sands, +1 Damage.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal+sun → 3.0",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)",
+        "anti-synergy: destroys Dahan"
+      ],
+      "anti_synergy": [
+        "destroys Dahan"
+      ]
+    },
+    {
+      "name": "Pull Beneath the Hungry Earth",
+      "score": 1.9,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "water",
+        "earth"
+      ],
+      "text": "If your Presence is present, 1 Fear and 1 Damage. If target land is a Sands or Wetland, 1 Damage.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Carapaced Land",
+      "score": 1.6,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "earth",
+        "plant",
+        "animal"
+      ],
+      "text": "If targeting a land with Beasts, this Power has +1 Range. Defend 3.",
+      "threshold": "2 Earth — 2 Earth: Defend +3.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal → 0.6",
+        "0-cost (always affordable)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Sap the Strength of Multitudes",
+      "score": 1.6,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "water",
+        "animal"
+      ],
+      "text": "Defend 5.",
+      "threshold": "1 Air — 1 Air: Increase this Power's Range to 1.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal → 0.6",
+        "0-cost (always affordable)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Voracious Growth",
+      "score": 1.6,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Jungle or Wetland",
+      "elements": [
+        "water",
+        "plant"
+      ],
+      "text": "2 Damage. **OR** Remove 1 Blight.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "Slow speed matches innate",
+        "'2 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Gift of Power",
+      "score": 1.5,
+      "cost": 0,
+      "speed": "Slow",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "moon",
+        "water",
+        "earth",
+        "plant"
+      ],
+      "text": "Target Spirit gains a Minor Power Card.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "0-cost (always affordable)",
+        "Slow speed matches innate"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Renewing Boon",
+      "score": 1.4,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "No Range",
+      "target": "Another Spirit",
+      "elements": [
+        "sun",
+        "earth",
+        "plant"
+      ],
+      "text": "Choose a land where you and target Spirit both have Presence. In that land: Remove 1 Blight, and target Spirit may add 1 of their Destroyed Presence.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements sun → 2.4",
+        "Slow speed matches innate",
+        "anti-synergy: destroys Presence"
+      ],
+      "anti_synergy": [
+        "destroys Presence"
+      ]
+    },
+    {
+      "name": "Sucking Ooze",
+      "score": 1.3,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Sands or Wetland",
+      "elements": [
+        "moon",
+        "water",
+        "earth"
+      ],
+      "text": "2 Fear if Invaders are present. Isolate target land.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "0-cost (always affordable)",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Nature's Resilience",
+      "score": 1.1,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "earth",
+        "plant",
+        "animal"
+      ],
+      "text": "Defend 6.",
+      "threshold": "2 Water — 2 Water: You may instead Remove 1 Blight.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal → 0.6"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Razor-Sharp Undergrowth",
+      "score": 1.1,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Land with no Blight",
+      "elements": [
+        "moon",
+        "plant"
+      ],
+      "text": "Destroy 1 Explorer and 1 Dahan. Add 1 Wilds. Defend 2.",
+      "threshold": "No Threshold",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "'destroy' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Gift of Nature's Connection",
+      "score": 1.0,
+      "cost": 0,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [],
+      "text": "Target Spirit gains either 2 Energy or 2 of a single Element (their choice). If you target another Spirit, you gain an Element of your choice.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "0-cost (always affordable)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Renewing Rain",
+      "score": 1.0,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "water",
+        "earth",
+        "plant"
+      ],
+      "text": "If target land is a Jungle or Sands, Remove 1 Blight.",
+      "threshold": "3 Plant — 3 Plant: Add 1 Wilds.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "Slow speed matches innate"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Thriving Chokefungus",
+      "score": 1.0,
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Jungle or Wetland",
+      "elements": [
+        "moon",
+        "water",
+        "plant"
+      ],
+      "text": "Add 1 Disease and 1 Badlands.",
+      "threshold": "No Threshold",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "Slow speed matches innate"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Dark and Tangled Woods",
+      "score": 0.8,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "earth",
+        "plant"
+      ],
+      "text": "2 Fear. If target land is a Mountain or Jungle, Defend 3.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Elemental Boon",
+      "score": 0.5,
+      "cost": 1,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [],
+      "text": "Target Spirit gains 3 different Elements of their choice. If you target another Spirit, you also gain the chosen Elements.",
+      "threshold": "No Threshold",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [],
+      "anti_synergy": null
+    }
+  ],
+  "majors_ranked": [
+    {
+      "name": "Instruments of Their Own Ruin",
+      "score": 11.7,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "fire",
+        "air",
+        "animal"
+      ],
+      "text": "Add 1 Strife. Each Invader with Strife deals Damage to other Invaders in target land.",
+      "threshold": "4 Sun 2 Fire 2 Animal — 4 Sun, 2 Fire, 2 Animal: Instead, if Invaders Ravage in target land, they Damage Invaders in adjacent lands instead of Dahan and the land. Dahan in target land do not fight back.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+animal+fire+sun → 11.7"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Unlock the Gates of Deepest Power",
+      "score": 11.7,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "sun",
+        "moon",
+        "fire",
+        "air",
+        "water",
+        "earth",
+        "plant",
+        "animal"
+      ],
+      "text": "Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget another Power Card.",
+      "threshold": "2 Sun 2 Moon 2 Fire 2 Air 2 Water 2 Earth 2 Plant 2 Animal — 2 Sun, 2 Moon, 2 Fire, 2 Air, 2 Water, 2 Earth, 2 Plant, 2 Animal: Target Spirit may now play the Major Power they keep by paying half its cost (round up) OR by Forgetting it at the end of turn. It gains all elemental thresholds.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+animal+fire+sun → 11.7"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Sweep into the Sea",
+      "score": 11.6,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "air",
+        "water"
+      ],
+      "text": "Push all Explorers and Towns one land towards the nearest Ocean. **OR** If target land is Coastal, Destroy all Explorers and Towns.",
+      "threshold": "3 Sun 2 Water — 3 Sun, 2 Water: Repeat on an adjacent land.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+sun → 9.6",
+        "Slow speed matches innate",
+        "'destroy' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Powerstorm",
+      "score": 11.1,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "sun",
+        "fire",
+        "air"
+      ],
+      "text": "Target Spirit gains 3 Energy. Once this turn, target Spirit may Repeat a Power Card by paying its cost again.",
+      "threshold": "2 Sun 2 Fire 3 Air — 2 Sun, 2 Fire, 3 Air: Target may Repeat up to 2 other Power Cards by paying their costs.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+fire+sun → 11.1"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Voice of Command",
+      "score": 11.1,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Land with Dahan",
+      "elements": [
+        "sun",
+        "air"
+      ],
+      "text": "1 Damage per Dahan/Explorer, to Towns/Cities only. Defend 2. During Ravage Actions, Explorers fight alongside Dahan. (Deal/take Damage at the same time, and to/from the same sources.)",
+      "threshold": "3 Sun 2 Air — 3 Sun, 2 Air: First, Gather up to 2 Explorers/Towns/Dahan.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+sun → 9.6",
+        "'1 damage' → offense=4 (+0.6)",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Wrap in Wings of Sunlight",
+      "score": 11.1,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "air",
+        "animal"
+      ],
+      "text": "Move up to 5 Dahan to any land (including back into target land). If you moved at least 1 Dahan, Defend 5 in that land.",
+      "threshold": "2 Sun 2 Air 2 Animal — 2 Sun, 2 Air, 2 Animal: First, Gather up to 3 Dahan.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+animal+sun → 10.2",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Exaltation of the Incandescent Sky",
+      "score": 11.0,
+      "cost": 7,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Another Spirit",
+      "elements": [
+        "sun",
+        "fire",
+        "air",
+        "water"
+      ],
+      "text": "Target Spirit may play 1 Power Card by paying its cost, make up to 2 of their Powers Fast this turn, and do 3 Damage in one of their lands.</br>You may do likewise.",
+      "threshold": "3 Sun 3 Fire 4 Air 2 Water — 3 Sun, 3 Fire, 4 Air, 2 Water: In any 4 lands on the island, Skip 1 Invader Action. 5 Fear (total).",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements air+fire+sun → 11.1",
+        "cost 7 > mid-game 3.0 (−1.0)",
+        "'fear' → fear=3 (+0.3)",
+        "'3 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Twisted Flowers Murmur Ultimatums",
+      "score": 11.0,
+      "cost": 5,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Land with 1 or more Invaders",
+      "elements": [
+        "sun",
+        "moon",
+        "air",
+        "earth",
+        "plant"
+      ],
+      "text": "4 Fear. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders.",
+      "threshold": "3 Moon 2 Air 3 Plant — 3 Moon, 2 Air, 3 Plant: +3 Fear, before the Terror Level check. 3 Damage.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+sun → 9.6",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'3 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Transform to a Murderous Darkness",
+      "score": 10.5,
+      "cost": 6,
+      "speed": "Slow",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "moon",
+        "fire",
+        "air",
+        "water",
+        "plant"
+      ],
+      "text": "Target Spirit may choose one of their Sacred Site. In that land: Replace all their Presence with Badlands; the replaced Presence leaves the game. Push any number of those Badlands. 3 Fear. 3 Damage per Presence Replaced.",
+      "threshold": "3 Moon 2 Fire 2 Air — 3 Moon, 2 Fire, 2 Air: 1 Damage in an adjacent land. 1 Damage in an adjacent land.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+fire → 8.7",
+        "cost 6 > mid-game 3.0 (−0.5)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'3 damage' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Plague Ships Sail to Distant Ports",
+      "score": 10.2,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Coastal City",
+      "elements": [
+        "fire",
+        "air",
+        "water",
+        "animal"
+      ],
+      "text": "1 Fear. Add 4 Disease among Coastal lands (on any boards) other than target land.",
+      "threshold": "2 Fire 2 Water 2 Animal — 2 Fire, 2 Water, 2 Animal: Instead: 1 Fear. 3 Damage.</br>Spirits may jointly spend 3 Energy per player (aided by removing Disease from the island for 3 Energy each) to remove the top card of the Fear Deck from the game. Add 1 Disease.",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements air+animal+fire → 9.3",
+        "'fear' → fear=3 (+0.3)",
+        "'3 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Storm-Swath",
+      "score": 10.1,
+      "cost": 3,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "fire",
+        "air",
+        "water"
+      ],
+      "text": "2 Fear. In both origin land and target land: 1 Damage to each Invader.",
+      "threshold": "2 Fire 3 Air 2 Water — 2 Fire, 3 Air, 2 Water: +1 Fear. This Power has +1 Range. In a land adjacent to both origin and target, 1 Damage to each Invader. In lands where you did Damage, Destroy 1 Town.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+fire → 8.7",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Irresistible Call",
+      "score": 10.0,
+      "cost": 6,
+      "speed": "Fast",
+      "range": "2, from your Sacred Site",
+      "target": "Inland Land",
+      "elements": [
+        "sun",
+        "air",
+        "plant"
+      ],
+      "text": "Gather 5 Towns, 5 Dahan, 5 Beasts, and 15 Explorers.",
+      "threshold": "2 Sun 3 Air 2 Plant — 2 Sun, 3 Air, 2 Plant: Invaders skip all Actions in target land. Isolate target land.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+sun → 9.6",
+        "cost 6 > mid-game 3.0 (−0.5)",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Weave Together the Fabric of Place",
+      "score": 9.9,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "moon",
+        "air",
+        "water",
+        "earth"
+      ],
+      "text": "Target land and a land adjacent to it become a single land for this turn. (It has the terrain and land # of both lands. When this effect expires, divide pieces as you wish; all of them are considered moved.)",
+      "threshold": "4 Air — 4 Air: Isolate the joined land. If it has Invaders, 2 Fear, and Remove up to 2 Invaders.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+sun → 9.6",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Infestation of Venomous Spiders",
+      "score": 9.6,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "2, from your Sacred Site",
+      "target": "Land with 1 or more Invaders",
+      "elements": [
+        "air",
+        "earth",
+        "plant",
+        "animal"
+      ],
+      "text": "Add 1 Beasts. Gather up to 1 Beasts. For each Beasts, 1 Fear (max. 4) and Invaders skip one Action in target land.",
+      "threshold": "2 Air 2 Earth 3 Animal — 2 Air, 2 Earth, 3 Animal: After this Power causes Invaders to skip an Action, 4 Damage.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+animal → 7.8",
+        "'fear' → fear=3 (+0.3)",
+        "'4 damage' → offense=4 (+0.6)",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Flocking Red-Talons",
+      "score": 9.3,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "3, from a Wetland",
+      "target": "Any Land",
+      "elements": [
+        "air",
+        "water",
+        "plant",
+        "animal"
+      ],
+      "text": "Add 1 Beasts. Move up to 2 Beasts within 3 Range to target land. For each Beasts present, choose a different Invader. 1 Damage to each of those Invaders. Push 1 Explorer/Town per Beasts.",
+      "threshold": "2 Air 2 Plant 3 Animal — 2 Air, 2 Plant, 3 Animal: Repeat this Power on a different land within 3 Range (of target land).",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements air+animal → 7.8",
+        "'1 damage' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Talons of Lightning",
+      "score": 9.1,
+      "cost": 6,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Mountain or Wetland",
+      "elements": [
+        "fire",
+        "air"
+      ],
+      "text": "3 Fear. 5 Damage.",
+      "threshold": "3 Fire 3 Air — 3 Fire, 3 Air: Destroy 1 Town in each adjacent land. Increase this Power's Range to 3.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+fire → 8.7",
+        "cost 6 > mid-game 3.0 (−0.5)",
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Bombard with Boulders and Stinging Seeds",
+      "score": 8.6,
+      "cost": 2,
+      "speed": "Slow",
+      "range": "2, from a Mountain or Jungle",
+      "target": "Any Land",
+      "elements": [
+        "air",
+        "earth",
+        "plant"
+      ],
+      "text": "1 Fear. 2 Damage.</br>Add 1 Badlands.",
+      "threshold": "2 Air 2 Earth 3 Plant — 2 Air, 2 Earth, 3 Plant: 1 Fear. 2 Damage.</br>Add 1 Wilds.",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements air → 7.2",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'2 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Death Falls Gently from Open Blossoms",
+      "score": 8.6,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "3",
+      "target": "Jungle or Sands",
+      "elements": [
+        "moon",
+        "air",
+        "plant"
+      ],
+      "text": "4 Damage. If any Invaders remain, add 1 Disease.",
+      "threshold": "3 Air 3 Plant — 3 Air, 3 Plant: 3 Fear. Add 1 Disease to 2 adjacent lands with Invaders.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air → 7.2",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'4 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Insatiable Hunger of the Swarm",
+      "score": 8.6,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "2, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "air",
+        "plant",
+        "animal"
+      ],
+      "text": "Add 1 Blight. Add 2 Beasts. Gather up to 2 Beasts. Each Beasts deals 1 Fear, 2 Damage to Invaders and 2 Damage to Dahan. Destroy 1 Beasts.",
+      "threshold": "2 Air 4 Animal — 2 Air, 4 Animal: Repeat this Power on an adjacent land.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+animal → 7.8",
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)",
+        "'gather' → control=5 (+0.9)",
+        "anti-synergy: adds Blight"
+      ],
+      "anti_synergy": [
+        "adds Blight"
+      ]
+    },
+    {
+      "name": "Mists of Oblivion",
+      "score": 8.6,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "3",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "air",
+        "water"
+      ],
+      "text": "1 Fear per Town/City this Power Destroys (max. 4 Fear). 1 Damage to each Invader.",
+      "threshold": "2 Moon 3 Air 2 Water — 2 Moon, 3 Air, 2 Water: 3 Damage.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air → 7.2",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Terrifying Nightmares",
+      "score": 8.4,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "air"
+      ],
+      "text": "2 Fear. Push up to 4 Explorers/Towns.",
+      "threshold": "4 Moon — 4 Moon: 4 Fear.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air → 7.2",
+        "'fear' → fear=3 (+0.3)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Pyroclastic Flow",
+      "score": 8.3,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "1, from a Mountain",
+      "target": "Any Land",
+      "elements": [
+        "fire",
+        "air",
+        "earth"
+      ],
+      "text": "2 Damage. Destroy all Explorers. If target land is a Jungle or Wetland, add 1 Blight.",
+      "threshold": "2 Fire 3 Air 2 Earth — 2 Fire, 3 Air, 2 Earth: +4 Damage. Add 1 Wilds.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air+fire → 8.7",
+        "'destroy' → offense=4 (+0.6)",
+        "anti-synergy: adds Blight"
+      ],
+      "anti_synergy": [
+        "adds Blight"
+      ]
+    },
+    {
+      "name": "Bargain of Coursing Paths",
+      "score": 8.1,
+      "cost": 2,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Land with 2 or more Dahan",
+      "elements": [
+        "moon",
+        "air",
+        "water",
+        "earth"
+      ],
+      "text": "Bargain: 1 Presence now and -1 Energy/turn. Now: Mark both target land and another land with 2 or more Dahan. Ongoing: After pieces are added or moved into the marked lands: choose any land, then Move those pieces directly to that land.",
+      "threshold": "3 Air 2 Water 2 Earth — 3 Air, 2 Water, 2 Earth: The Presence comes from your Presence tracks.",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements air → 7.2",
+        "'move' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Flow like Water, Reach like Air",
+      "score": 8.1,
+      "cost": 2,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "air",
+        "water"
+      ],
+      "text": "Target Spirit gets +2 Range with all Powers. Target Spirit may Push 1 of their Presence to an adjacent land, bringing up to 2 Explorers, 2 Towns and 2 Dahan along with it.",
+      "threshold": "2 Air 2 Water — 2 Air, 2 Water: The moved Presence may also bring along up to 2 Cities and up to 2 Blight.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements air → 7.2",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Sleep and Never Waken",
+      "score": 8.1,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "2, from a Sands",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "air",
+        "earth",
+        "animal"
+      ],
+      "text": "Invaders skip all Actions in target land. 1 Fear per 2 Explorers this Power Removes. Remove up to 2 Explorers.",
+      "threshold": "3 Moon 2 Air 2 Animal — 3 Moon, 2 Air, 2 Animal: Remove up to 6 Explorers from among your lands.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air+animal → 7.8",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Thickets Erupt with Every Touch of Breeze",
+      "score": 8.1,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "2, from your Sacred Site",
+      "target": "Inland Land",
+      "elements": [
+        "air",
+        "plant"
+      ],
+      "text": "2 Damage. Then either: Add 3 Wilds. **OR** Remove 1 Blight.",
+      "threshold": "3 Plant — 3 Plant: 1 Fear. +2 Damage.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air → 7.2",
+        "'fear' → fear=3 (+0.3)",
+        "'2 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Winds of Rust and Atrophy",
+      "score": 8.1,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "3, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "air",
+        "water",
+        "animal"
+      ],
+      "text": "1 Fear and Defend 6. Downgrade 1 Town/City.",
+      "threshold": "3 Air 3 Water 2 Animal — 3 Air, 3 Water, 2 Animal: Repeat this Power.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air+animal → 7.8",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Vanish Softly Away, Forgotten by All",
+      "score": 7.7,
+      "cost": 3,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "air"
+      ],
+      "text": "Remove 1 Invader and 1 Explorer/Town. **OR** Remove all Damaged Invaders. Adversary or Scenario rules that prevent or alter Removal do not affect this Power.",
+      "threshold": "3 Moon 3 Air — 3 Moon, 3 Air: In any 2 lands with 4 or more Invaders: Remove 1 Invader.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements air → 7.2",
+        "Slow speed matches innate"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Solidify Echoes of Majesty Past",
+      "score": 7.6,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "sun",
+        "moon",
+        "air",
+        "earth"
+      ],
+      "text": "Choose one of target Spirit's lands. In that land and each adjacent land, Defend 3. They Add 1 Destroyed Presence to each adjacent land. Skip up to 1 Invader Action at each added Destroyed Presence.",
+      "threshold": "2 Sun 2 Moon 2 Earth — 2 Sun, 2 Moon, 2 Earth: Target Spirit either Reclaims1 Power Card or re-gains 1 Unique Power they previously forgot. They may play it by paying its cost.",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements air+sun → 9.6",
+        "anti-synergy: destroys Presence"
+      ],
+      "anti_synergy": [
+        "destroys Presence"
+      ]
+    },
+    {
+      "name": "Paralyzing Fright",
+      "score": 7.5,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "air",
+        "earth"
+      ],
+      "text": "4 Fear. Skip all Invader Actions. (Do not Ravage, Build, or Explore in target land.)",
+      "threshold": "2 Air 3 Earth — 2 Air, 3 Earth: 4 Fear.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements air → 7.2",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Angry Bears",
+      "score": 6.8,
+      "cost": 3,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "fire",
+        "animal"
+      ],
+      "text": "2 Fear. 2 Damage. If no Beasts are present, add 1 Beasts. Otherwise, +2 Damage, and Push up to 1 Beasts.",
+      "threshold": "2 Fire 3 Animal — 2 Fire, 3 Animal: 1 Fear and Destroy 1 Explorer/Town in an adjacent land with Beasts.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal+fire+sun → 4.5",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Forests of Living Obsidian",
+      "score": 5.9,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "fire",
+        "earth",
+        "plant"
+      ],
+      "text": "Add 1 Badlands. Push all Dahan. 1 Damage to each Invader. If the origin land is your Sacred Site, +1 Damage to each Invader.",
+      "threshold": "2 Sun 3 Fire 3 Earth — 2 Sun, 3 Fire, 3 Earth: Repeat this Power.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements fire+sun → 3.9",
+        "Slow speed matches innate",
+        "'1 damage' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Tigers Hunting",
+      "score": 4.8,
+      "cost": 2,
+      "speed": "Fast",
+      "range": "1, from a Jungle",
+      "target": "Land with no Blight",
+      "elements": [
+        "sun",
+        "moon",
+        "animal"
+      ],
+      "text": "2 Fear. Add 1 Beasts. Gather up to 1 Beasts. 1 Damage per Beasts. Push up to 2 Beasts.",
+      "threshold": "2 Sun 2 Moon 3 Animal — 2 Sun, 2 Moon, 3 Animal: 1 Damage in an adjacent land without Blight, and +1 Damage per Beasts there.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal+sun → 3.0",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Focus the Land's Anguish",
+      "score": 4.7,
+      "cost": 5,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "sun"
+      ],
+      "text": "If this Power Destroys any Towns/Cities, 5 Fear. Gather up to 5 Blight. 1 Damage per Blight.",
+      "threshold": "3 Sun — 3 Sun: +1 Damage per Blight.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements sun → 2.4",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Vigor of the Breaking Dawn",
+      "score": 4.5,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Land with Dahan",
+      "elements": [
+        "sun",
+        "animal"
+      ],
+      "text": "2 Damage per Dahan.",
+      "threshold": "3 Sun 2 Animal — 3 Sun, 2 Animal: You may Push up to 2 Dahan. In lands you Pushed Dahan to, 2 Damage per Dahan present.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal+sun → 3.0",
+        "'2 damage' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Inspire the Release of Stolen Lands",
+      "score": 4.4,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Land with no Blight",
+      "elements": [
+        "sun",
+        "water",
+        "plant",
+        "animal"
+      ],
+      "text": "Gather up to 3 Dahan. Remove up to 3 Health worth of Invaders per Dahan.",
+      "threshold": "3 Sun 3 Water 2 Animal — 3 Sun, 3 Water, 2 Animal: This Power can target lands with Blight.</br>If Dahan are present, Remove 1 Blight from target land, then Remove 1 Explorer, 1 Town, and 1 City from a land within 1 Range (of target land).",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements animal+sun → 3.0",
+        "Slow speed matches innate",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "The Wounded Wild Turns on its Assailants",
+      "score": 4.4,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Land with Blight",
+      "elements": [
+        "fire",
+        "plant",
+        "animal"
+      ],
+      "text": "Add 2 Badlands. Gather up to 2 Beasts. 1 Damage per Blight/Beasts/Wilds.",
+      "threshold": "2 Fire 3 Plant 2 Animal — 2 Fire, 3 Plant, 2 Animal: 2 Fear per Invader Destroyed by the Power (max. 8 Fear).",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)",
+        "'gather' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Unrelenting Growth",
+      "score": 4.4,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "sun",
+        "fire",
+        "water",
+        "plant"
+      ],
+      "text": "Target Spirit adds 2 Presence and 1 Wilds to a land at Range 1 of their Presence.",
+      "threshold": "3 Sun 3 Plant — 3 Sun, 3 Plant: In that land, add 1 additional Wilds and Remove 1 Blight. Target Spirit gains a Power Card.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements fire+sun → 3.9",
+        "Slow speed matches innate"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Fire and Flood",
+      "score": 4.0,
+      "cost": 7,
+      "speed": "Slow",
+      "range": "1 and 2, from one of your Sacred Sites",
+      "target": "Any Two Lands",
+      "elements": [
+        "sun",
+        "fire",
+        "water"
+      ],
+      "text": "4 Damage in each target land. (Range must be measured from the same Sacred Site.)",
+      "threshold": "3 Fire — 3 Fire: +4 Damage in either target land. 3 Water — 3 Water: +4 Damage in either target land.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements fire+sun → 3.9",
+        "cost 7 > mid-game 3.0 (−1.0)",
+        "Slow speed matches innate",
+        "'4 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Manifest Incarnation",
+      "score": 3.9,
+      "cost": 6,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Land with at least 1 City",
+      "elements": [
+        "sun",
+        "moon",
+        "earth",
+        "animal"
+      ],
+      "text": "6 Fear. +1 Fear for each Town/City and for each of your Presence in target land. Remove 1 City, 1 Town and 1 Explorer. Then Invaders in target land Ravage.",
+      "threshold": "3 Sun 3 Moon — 3 Sun, 3 Moon: +3 Fear. Invaders do -6 Damage on their Ravage.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal+sun → 3.0",
+        "cost 6 > mid-game 3.0 (−0.5)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'6 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Settle Into Hunting-Grounds",
+      "score": 3.9,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Yourself",
+      "elements": [
+        "moon",
+        "fire",
+        "plant",
+        "animal"
+      ],
+      "text": "Your Presence may count as Badlands and Beasts. (Decide per Presence, per Action.) Your Presence cannot move.",
+      "threshold": "2 Plant 3 Animal — 2 Plant, 3 Animal: 2 Fear and 2 Damage in one of your lands.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "'fear' → fear=3 (+0.3)",
+        "'2 damage' → offense=4 (+0.6)",
+        "'move' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "The Trees and Stones Speak of War",
+      "score": 3.9,
+      "cost": 2,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Land with Dahan",
+      "elements": [
+        "sun",
+        "earth",
+        "plant"
+      ],
+      "text": "For each Dahan, 1 Damage and Defend 2.",
+      "threshold": "2 Sun 2 Earth 2 Plant — 2 Sun, 2 Earth, 2 Plant: You may Push up to 2 Dahan, moving Defend 2 with each of them.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements sun → 2.4",
+        "'1 damage' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Unearth a Beast of Wrathful Stone",
+      "score": 3.9,
+      "cost": 5,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Land with 1 or more Invaders",
+      "elements": [
+        "moon",
+        "fire",
+        "earth",
+        "animal"
+      ],
+      "text": "After the next Invader Phase (on any turn) with no Ravage/Build Actions in target land:</br>3 Fear. 12 Damage. Add 1 Beasts. You may Push that Beasts. 1 Fear and 2 Damage in its land.",
+      "threshold": "2 Moon 3 Earth 3 Animal — 2 Moon, 3 Earth, 3 Animal: Mark it (Marked Beasts). Marked Beasts can't leave the island.</br>Each Slow Phase: You may Push Marked Beasts.</br>1 Fear and 2 Damage at Marked Beasts.",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "'fear' → fear=3 (+0.3)",
+        "'12 damage' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Unleash a Torrent of the Self's Own Essence",
+      "score": 3.9,
+      "cost": 2,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Yourself",
+      "elements": [
+        "sun",
+        "moon",
+        "fire",
+        "water"
+      ],
+      "text": "Gain 4 Energy. You may forget a Power card to gain 4 more Energy. **OR** Pay X Energy (min. 1) to deal X Damage in a land at 0 Range.",
+      "threshold": "2 Sun 3 Fire — 2 Sun, 3 Fire: You may do both.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements fire+sun → 3.9"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Accelerated Rot",
+      "score": 3.8,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Jungle or Wetland",
+      "elements": [
+        "sun",
+        "water",
+        "plant"
+      ],
+      "text": "2 Fear. 4 Damage.",
+      "threshold": "3 Sun 2 Water 3 Plant — 3 Sun, 2 Water, 3 Plant: 5 Damage. Remove 1 Blight.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements sun → 2.4",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'4 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Cleansing Floods",
+      "score": 3.5,
+      "cost": 5,
+      "speed": "Slow",
+      "range": "1, from a Wetland",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "water"
+      ],
+      "text": "4 Damage. Remove 1 Blight.",
+      "threshold": "4 Water — 4 Water: 10 Damage.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements sun → 2.4",
+        "Slow speed matches innate",
+        "'4 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Dissolve the Bonds of Kinship",
+      "score": 3.5,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "fire",
+        "water",
+        "animal"
+      ],
+      "text": "Replace 1 City with 2 Explorers. Replace 1 Town with 1 Explorer. Replace 1 Dahan with 1 Explorer. Push all Explorers from target land to as many different lands as possible.",
+      "threshold": "2 Fire 2 Water 3 Animal — 2 Fire, 2 Water, 3 Animal: Before Pushing, Explorers and Towns/Cities do Damage to each other.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "Slow speed matches innate",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Trees Radiate Celestial Brilliance",
+      "score": 3.3,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Jungle and/or a land with no Blight",
+      "elements": [
+        "sun",
+        "moon",
+        "plant"
+      ],
+      "text": "3 Fear. Defend 6. This turn, Invaders in target land skip the next Build Action.",
+      "threshold": "3 Sun 2 Moon 2 Plant — 3 Sun, 2 Moon, 2 Plant: 1 Damage per Sun you have.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements sun → 2.4",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Bargains of Power and Protection",
+      "score": 3.0,
+      "cost": 2,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Land with Dahan",
+      "elements": [
+        "sun",
+        "water",
+        "earth",
+        "animal"
+      ],
+      "text": "Remove 1 of your Presence on the island from the game, setting it on the Reminder Card. From now on: each Dahan within 1 Range of your Presence provides Defend 1 in its land, and you gain 1 less Energy each turn. (This effect stacks if used multiple times.)",
+      "threshold": "3 Sun 2 Water 2 Earth — 3 Sun, 2 Water, 2 Earth: The Presence instead comes from your Presence track.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal+sun → 3.0"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Pent-Up Calamity",
+      "score": 3.0,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "fire",
+        "earth",
+        "plant",
+        "animal"
+      ],
+      "text": "Add 1 Disease and 1 Strife. **OR** Remove any number of Beasts/Disease/Strife/Wilds. For each token Removed, 1 Fear and 3 Damage.",
+      "threshold": "2 Moon 3 Fire — 2 Moon, 3 Fire: If you have Removed tokens, return up to 2 of them. Otherwise, add 2 Strife.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "'fear' → fear=3 (+0.3)",
+        "'3 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Vengeance of the Dead",
+      "score": 3.0,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "3",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "fire",
+        "animal"
+      ],
+      "text": "3 Fear. After Towns/Cities/Dahan are Destroyed in target land, 1 Damage per Town/City/Dahan Destroyed. (This cannot trigger itself.)",
+      "threshold": "3 Animal — 3 Animal: Damage from this Power may be dealt in adjacent lands.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal+fire → 2.1",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Walls of Rock and Thorn",
+      "score": 3.0,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "2, from your Sacred Site",
+      "target": "Mountain or Jungle",
+      "elements": [
+        "sun",
+        "earth",
+        "plant"
+      ],
+      "text": "2 Damage. Defend 8. Add 1 Wilds. Isolate target land.",
+      "threshold": "2 Earth 2 Plant — 2 Earth, 2 Plant: +2 Damage. +2 Defend. Add 1 Badlands.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements sun → 2.4",
+        "'2 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Grant Hatred a Ravenous Form",
+      "score": 2.9,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "fire"
+      ],
+      "text": "For each Strife/Blight in target land, 1 Fear and 2 Damage. If this Destroys all invaders in target land, add 1 Beasts.",
+      "threshold": "4 Moon 2 Fire — 4 Moon, 2 Fire: Add 1 Strife in up to 3 adjacent lands.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements fire → 1.5",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'2 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Ravaged Undergrowth Slithers Back to Life",
+      "score": 2.9,
+      "cost": 3,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Land with Blight",
+      "elements": [
+        "water",
+        "plant",
+        "animal"
+      ],
+      "text": "Replace 1 Blight with 1 Wilds.</br>1 Fear. 3 Damage.</br>Push that Wilds.",
+      "threshold": "3 Water 2 Plant — 3 Water, 2 Plant: Add 1 Wilds. You may Push it. In each land with Wilds within 1 Range (of target land):</br>Push 1 Explorer and 1 Town to lands without Wilds.",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements animal → 0.6",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'3 damage' → offense=4 (+0.6)",
+        "'push' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Indomitable Claim",
+      "score": 2.7,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "earth"
+      ],
+      "text": "Add 1 Presence in target land even if you normally could not due to land type. Defend 20.",
+      "threshold": "2 Sun 3 Earth — 2 Sun, 3 Earth: 3 Fear if Invaders are present. Skip all Invader Actions. (Do not Ravage, Build, or Explore in target land.)",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements sun → 2.4",
+        "'fear' → fear=3 (+0.3)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Strangling Firevine",
+      "score": 2.6,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "1, from a Sands",
+      "target": "Any Land",
+      "elements": [
+        "fire",
+        "plant"
+      ],
+      "text": "Destroy all Explorers. Add 1 Wilds. Add 1 Wilds in the originating Sands. 1 Damage per Wilds in/adjacent to target land.",
+      "threshold": "2 Fire 3 Plant — 2 Fire, 3 Plant: +1 Damage per Wilds in / adjacent to target land.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements fire → 1.5",
+        "Slow speed matches innate",
+        "'destroy' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "The Land Thrashes in Furious Pain",
+      "score": 2.6,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Land with Dahan",
+      "elements": [
+        "moon",
+        "fire",
+        "earth"
+      ],
+      "text": "2 Damage per Blight. For each Blight in adjacent lands, 1 Damage (in target land).",
+      "threshold": "3 Moon 3 Earth — 3 Moon, 3 Earth: Repeat this Power in an adjacent land (ignoring Range and Target restrictions).",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements fire → 1.5",
+        "Slow speed matches innate",
+        "'2 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Rumbling Earthquakes",
+      "score": 2.4,
+      "cost": 6,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "fire",
+        "earth"
+      ],
+      "text": "This Power ignores Health bonuses.</br>3 Fear. 6 Damage, to Towns/Cities only.</br>6 Damage among adjacent lands, to Towns/Cities only.",
+      "threshold": "4 Earth — 4 Earth: 6 Damage among target/adjacent lands, to Towns/Cities only.",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements fire → 1.5",
+        "cost 6 > mid-game 3.0 (−0.5)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'6 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Savage Transformation",
+      "score": 2.3,
+      "cost": 2,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "animal"
+      ],
+      "text": "2 Fear. Replace 1 Explorer with 1 Beasts.",
+      "threshold": "2 Moon 3 Animal — 2 Moon, 3 Animal: Replace 1 additional Explorer with 1 Beasts in either target or adjacent land.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal → 0.6",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'replace' → control=5 (+0.9)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Spill Bitterness Into the Earth",
+      "score": 2.1,
+      "cost": 5,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "fire",
+        "water",
+        "earth"
+      ],
+      "text": "6 Damage. Add 2 Badlands/Strife and 1 Blight. In up to 3 adjacent lands with Blight, add 1 Badlands/Strife.",
+      "threshold": "3 Fire 3 Water — 3 Fire, 3 Water: In up to 3 adjacent lands, 1 Damage to each Invader.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements fire → 1.5",
+        "'6 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Sea Monsters",
+      "score": 2.0,
+      "cost": 5,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Coastal Land and/or a Wetland",
+      "elements": [
+        "water",
+        "animal"
+      ],
+      "text": "Add 1 Beasts. If Invaders are present, 2 Fear per Beasts (max. 8 Fear). 3 Damage per Beasts. 1 Damage per Blight.",
+      "threshold": "3 Water 3 Animal — 3 Water, 3 Animal: Repeat this Power.",
+      "expansion": "Branch and Claw,Jagged Earth",
+      "reasons": [
+        "elements animal → 0.6",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'3 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Utter a Curse of Dread and Bone",
+      "score": 2.0,
+      "cost": 4,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "animal"
+      ],
+      "text": "For each Blight in/adjacent to target land, add 1 Badlands, 1 Disease, or 1 Strife. (Max. +3 of each.) Then: 2 Fear. 1 Damage.",
+      "threshold": "3 Moon 2 Animal — 3 Moon, 2 Animal: For each type of token you added, add 1 more within 1 Range. 1 Damage in an adjacent land.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal → 0.6",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Fragments of Yesteryear",
+      "score": 1.9,
+      "cost": 7,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "sun",
+        "moon"
+      ],
+      "text": "Remove all pieces, then Add the pieces matching target land's Setup symbols.",
+      "threshold": "3 Sun — 3 Sun: This power may be Fast.</br>3 Moon — 3 Moon:</br>Don't Remove Dahan, any Spirit's Presence, or Spirit Tokens. Don't add Invaders/Blight.",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements sun → 2.4",
+        "cost 7 > mid-game 3.0 (−1.0)",
+        "Slow speed matches innate"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Pillar of Living Flame",
+      "score": 1.9,
+      "cost": 5,
+      "speed": "Slow",
+      "range": "2, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "fire"
+      ],
+      "text": "3 Fear. 5 Damage. If target land is a Jungle or Wetland, add 1 Blight.",
+      "threshold": "4 Fire — 4 Fire: 2 Fear and 5 Damage.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements fire → 1.5",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'5 damage' → offense=4 (+0.6)",
+        "anti-synergy: adds Blight"
+      ],
+      "anti_synergy": [
+        "adds Blight"
+      ]
+    },
+    {
+      "name": "Cast Down Into the Briny Deep",
+      "score": 1.8,
+      "cost": 9,
+      "speed": "Slow",
+      "range": "1, from your Sacred Site",
+      "target": "Coastal Land",
+      "elements": [
+        "sun",
+        "moon",
+        "water",
+        "earth"
+      ],
+      "text": "6 Fear. Destroy all Invaders.",
+      "threshold": "2 Sun 2 Moon 4 Water 4 Earth — 2 Sun, 2 Moon, 4 Water, 4 Earth: Destroy the board containing target land and everything on that board. All Destroyed Blight is Removed from the game instead of being returned to the Blight Card.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements sun → 2.4",
+        "cost 9 > mid-game 3.0 (−2.0)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Bloodwrack Plague",
+      "score": 1.5,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "water",
+        "earth",
+        "animal"
+      ],
+      "text": "Add 2 Disease. For each Disease in target land, Defend 1 in target and all adjacent lands.",
+      "threshold": "2 Earth 4 Animal — 2 Earth, 4 Animal: 2 Fear. For each Disease in target land, do 1 Damage in target or an adjacent land.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements animal → 0.6",
+        "'fear' → fear=3 (+0.3)",
+        "'1 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Transformative Sacrifice",
+      "score": 1.5,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "moon",
+        "fire",
+        "water",
+        "plant"
+      ],
+      "text": "Target Spirit may Remove up to 3 Presence (from anywhere on the island). Then for each removed Presence, they Take a Minor Power and play it (for free).",
+      "threshold": "2 Moon 3 Fire 2 Plant — 2 Moon, 3 Fire, 2 Plant: Before taking cards, they may also Remove 1 Presence from their Presence track to Take a Minor Power and play it.",
+      "expansion": "Nature Incarnate",
+      "reasons": [
+        "elements fire → 1.5"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Smothering Infestation",
+      "score": 1.4,
+      "cost": 3,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [
+        "water",
+        "plant"
+      ],
+      "text": "Add 1 Disease. If target land is a Jungle or Wetland, 2 Fear and 3 Damage.",
+      "threshold": "2 Water 2 Plant — 2 Water, 2 Plant: 1 Damage to each Invader.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'3 damage' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Melt Earth Into Quicksand",
+      "score": 0.9,
+      "cost": 4,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Sands or Wetland",
+      "elements": [
+        "moon",
+        "water",
+        "earth"
+      ],
+      "text": "1 Fear. 2 Damage. Isolate target land. After Invaders/Dahan are Moved into target land, Destroy them.",
+      "threshold": "2 Moon 4 Water 2 Earth — 2 Moon, 4 Water, 2 Earth: +4 Damage. Add 1 Badlands. Add 1 Wilds.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Infinite Vitality",
+      "score": 0.6,
+      "cost": 3,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "earth",
+        "plant",
+        "animal"
+      ],
+      "text": "Dahan have +4 Health (while in target land). Blight cannot be Added. (When it would be added to target land, instead leave it on the Blight space.)",
+      "threshold": "4 Earth — 4 Earth: Dahan cannot be Damaged or Destroyed (in target land). Remove 1 Blight from target or adjacent land.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal → 0.6"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Blazing Renewal",
+      "score": 0.1,
+      "cost": 5,
+      "speed": "fast",
+      "range": "No Range",
+      "target": "Any Spirit",
+      "elements": [
+        "fire",
+        "earth",
+        "plant"
+      ],
+      "text": "In a single land within 2 Range of your Presence: target Spirit Adds 2 of their Destroyed Presence. If any Presence was Added, 2 Damage to each Town/City.",
+      "threshold": "3 Fire 3 Earth 2 Plant — 3 Fire, 3 Earth, 2 Plant: If any Presence was Added, 4 Damage.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements fire → 1.5",
+        "'2 damage' → offense=4 (+0.6)",
+        "anti-synergy: destroys Presence"
+      ],
+      "anti_synergy": [
+        "destroys Presence"
+      ]
+    },
+    {
+      "name": "Dream of the Untouched Land",
+      "score": 0.1,
+      "cost": 6,
+      "speed": "Fast",
+      "range": "1, from your Sacred Site",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "water",
+        "earth",
+        "plant",
+        "animal"
+      ],
+      "text": "Remove up to 3 Blight and up to 3 Health worth of Invaders.",
+      "threshold": "3 Moon 2 Water 3 Earth 2 Plant — 3 Moon, 2 Water, 3 Earth, 2 Plant: (Max. 1x/game) Add a random new Island Board next to target board. Ignore its Setup icons; add 2 Beasts, 2 Wilds, 2 Badlands and up to 2 Presence (from any Spirits) anywhere on it. From now on, Build cards and \"Each board / Each land\" Adversary Actions skip 1 Board.",
+      "expansion": "Jagged Earth",
+      "reasons": [
+        "elements animal → 0.6",
+        "cost 6 > mid-game 3.0 (−0.5)"
+      ],
+      "anti_synergy": null
+    },
+    {
+      "name": "Entwined Power",
+      "score": 0.0,
+      "cost": 2,
+      "speed": "Fast",
+      "range": "No Range",
+      "target": "Another Spirit",
+      "elements": [
+        "moon",
+        "water",
+        "plant"
+      ],
+      "text": "You and target Spirit may use each other's Presence to target Powers (only). Target Spirit gains a Power Card. You gain one of the Power Cards they did not keep.",
+      "threshold": "2 Water 4 Plant — 2 Water, 4 Plant: You and target Spirit each gain 3 Energy and may gift the other 1 Power Card from hand.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [],
+      "anti_synergy": null
+    },
+    {
+      "name": "Draw Towards a Consuming Void",
+      "score": -1.2,
+      "cost": 8,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any Land",
+      "elements": [],
+      "text": "Gather 1 Explorer, 1 Town, 1 City, 1 Dahan, 1 Beasts, and 1 Presence (from any Spirit) from each adjacent land. 4 Fear. 15 Damage. 5 Damage to Dahan. Destroy 1 Presence from each Spirit. Destroy 2 Beasts.",
+      "threshold": "If you have no other Power Cards in play Any number of times: Forget a Minor Power, a Major Power, and a Unique Power to perform the above effects again.",
+      "expansion": "Jagged Earth,Nature Incarnate",
+      "reasons": [
+        "cost 8 > mid-game 3.0 (−1.5)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)",
+        "'gather' → control=5 (+0.9)",
+        "anti-synergy: destroys Presence"
+      ],
+      "anti_synergy": [
+        "destroys Presence"
+      ]
+    },
+    {
+      "name": "The Jungle Hungers",
+      "score": -1.9,
+      "cost": 3,
+      "speed": "Slow",
+      "range": "1, from a Jungle",
+      "target": "Any Land",
+      "elements": [
+        "moon",
+        "plant"
+      ],
+      "text": "Destroy all Explorers and all Towns. Destroy all Dahan.",
+      "threshold": "2 Moon 3 Plant — 2 Moon, 3 Plant: Destroy 1 City. Do not Destroy any Dahan.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "Slow speed matches innate",
+        "'destroy' → offense=4 (+0.6)",
+        "anti-synergy: destroys Dahan"
+      ],
+      "anti_synergy": [
+        "destroys Dahan"
+      ]
+    },
+    {
+      "name": "Poisoned Land",
+      "score": -2.0,
+      "cost": 3,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any Land",
+      "elements": [
+        "earth",
+        "plant",
+        "animal"
+      ],
+      "text": "1 Fear. 7 Damage. Add 1 Blight. Destroy all Dahan.",
+      "threshold": "3 Earth 2 Plant 2 Animal — 3 Earth, 2 Plant, 2 Animal: For each Blight (including the one just added), 1 Fear and 4 Damage.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "elements animal → 0.6",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)",
+        "anti-synergy: destroys Dahan, adds Blight"
+      ],
+      "anti_synergy": [
+        "destroys Dahan",
+        "adds Blight"
+      ]
+    },
+    {
+      "name": "Tsunami",
+      "score": -2.1,
+      "cost": 6,
+      "speed": "Slow",
+      "range": "2, from your Sacred Site",
+      "target": "Coastal Land",
+      "elements": [
+        "water",
+        "earth"
+      ],
+      "text": "2 Fear. 8 Damage. Destroy 2 Dahan.",
+      "threshold": "3 Water 2 Earth — 3 Water, 2 Earth: In each other Coastal land on the same board: 1 Fear, 4 Damage, and Destroy 1 Dahan.",
+      "expansion": "Spirit Island,Horizons of Spirit Island",
+      "reasons": [
+        "cost 6 > mid-game 3.0 (−0.5)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)",
+        "anti-synergy: destroys Dahan"
+      ],
+      "anti_synergy": [
+        "destroys Dahan"
+      ]
+    },
+    {
+      "name": "Volcanic Eruption",
+      "score": -2.6,
+      "cost": 8,
+      "speed": "Slow",
+      "range": "1, from a Mountain",
+      "target": "Any Land",
+      "elements": [
+        "fire",
+        "earth"
+      ],
+      "text": "6 Fear. 20 Damage. Destroy all Dahan and Beasts. Add 1 Blight.",
+      "threshold": "4 Fire 3 Earth — 4 Fire, 3 Earth: Destroy all Invaders. Add 1 Wilds. In each adjacent land: 10 Damage. Destroy all Dahan and Beasts. If there are no Blight, add 1 Blight.",
+      "expansion": "Branch and Claw",
+      "reasons": [
+        "elements fire → 1.5",
+        "cost 8 > mid-game 3.0 (−1.5)",
+        "Slow speed matches innate",
+        "'fear' → fear=3 (+0.3)",
+        "'destroy' → offense=4 (+0.6)",
+        "anti-synergy: destroys Dahan, adds Blight"
+      ],
+      "anti_synergy": [
+        "destroys Dahan",
+        "adds Blight"
+      ]
+    }
+  ],
+  "avoid": [
+    {
+      "name": "Land of Haunts and Embers",
+      "reasons": [
+        "adds Blight"
+      ],
+      "score": 9.9
+    },
+    {
+      "name": "Scour the Land",
+      "reasons": [
+        "adds Blight"
+      ],
+      "score": 7.8
+    },
+    {
+      "name": "Skies Herald the Season of Return",
+      "reasons": [
+        "destroys Presence"
+      ],
+      "score": 2.4
+    },
+    {
+      "name": "Devouring Ants",
+      "reasons": [
+        "destroys Dahan"
+      ],
+      "score": 1.9
+    },
+    {
+      "name": "Renewing Boon",
+      "reasons": [
+        "destroys Presence"
+      ],
+      "score": 1.4
+    },
+    {
+      "name": "Insatiable Hunger of the Swarm",
+      "reasons": [
+        "adds Blight"
+      ],
+      "score": 8.6
+    },
+    {
+      "name": "Pyroclastic Flow",
+      "reasons": [
+        "adds Blight"
+      ],
+      "score": 8.3
+    },
+    {
+      "name": "Solidify Echoes of Majesty Past",
+      "reasons": [
+        "destroys Presence"
+      ],
+      "score": 7.6
+    },
+    {
+      "name": "Pillar of Living Flame",
+      "reasons": [
+        "adds Blight"
+      ],
+      "score": 1.9
+    },
+    {
+      "name": "Blazing Renewal",
+      "reasons": [
+        "destroys Presence"
+      ],
+      "score": 0.1
+    },
+    {
+      "name": "Draw Towards a Consuming Void",
+      "reasons": [
+        "destroys Presence"
+      ],
+      "score": -1.2
+    },
+    {
+      "name": "The Jungle Hungers",
+      "reasons": [
+        "destroys Dahan"
+      ],
+      "score": -1.9
+    },
+    {
+      "name": "Poisoned Land",
+      "reasons": [
+        "destroys Dahan",
+        "adds Blight"
+      ],
+      "score": -2.0
+    },
+    {
+      "name": "Tsunami",
+      "reasons": [
+        "destroys Dahan"
+      ],
+      "score": -2.1
+    },
+    {
+      "name": "Volcanic Eruption",
+      "reasons": [
+        "destroys Dahan",
+        "adds Blight"
+      ],
+      "score": -2.6
+    }
+  ]
+}
