@@ -1,0 +1,10 @@
+{
+  "slug": "the-great-river",
+  "name": "The Great River",
+  "expansion": "jagged-earth",
+  "difficulty_delta": "+1",
+  "setup_modifications": "[VERIFY] River system modifies adjacency.",
+  "win_condition_modifications": "Standard.",
+  "loss_condition_modifications": "Standard.",
+  "notes": "[VERIFY]"
+}

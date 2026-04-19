@@ -1,0 +1,64 @@
+{
+  "slug": "russia",
+  "name": "Russia",
+  "expansion": "jagged-earth",
+  "pressure_shape": "Dahan pressure + fear-card suppression from mid-late",
+  "levels": [
+    {
+      "level": 0,
+      "name": "Base",
+      "escalation": "No escalation.",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 1,
+      "name": "Frontier Warlords",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 3,
+      "name": "Colonization Drive",
+      "escalation": "Fear-card penalties + Dahan under pressure.",
+      "is_cliff": true,
+      "notes": "Fear-rush + Dahan-reliant spirits both compromised at this level"
+    },
+    {
+      "level": 4,
+      "name": "Settler Attacks",
+      "escalation": "Dahan directly targeted.",
+      "is_cliff": true,
+      "notes": "[VERIFY]"
+    },
+    {
+      "level": 6,
+      "name": "Conscription",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 7,
+      "name": "Peasant Levies",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 9,
+      "name": "Grand Army",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 11,
+      "name": "Maximum Pressure",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    }
+  ]
+}

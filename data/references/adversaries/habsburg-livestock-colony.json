@@ -1,0 +1,64 @@
+{
+  "slug": "habsburg-livestock-colony",
+  "name": "Habsburg Livestock Colony",
+  "expansion": "jagged-earth",
+  "pressure_shape": "Livestock tokens, slow-ramp; favorable to most spirits",
+  "levels": [
+    {
+      "level": 0,
+      "name": "Base",
+      "escalation": "No escalation.",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 2,
+      "name": "Cattle Drives",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 3,
+      "name": "Grazing Expansion",
+      "escalation": "Livestock tokens added.",
+      "is_cliff": true,
+      "notes": "[VERIFY]"
+    },
+    {
+      "level": 5,
+      "name": "Large Herds",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 6,
+      "name": "Organized Ranches",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 8,
+      "name": "Grand Haciendas",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 9,
+      "name": "[VERIFY]",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 10,
+      "name": "Maximum",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "slug": "destiny-unfolds",
+  "name": "Destiny Unfolds",
+  "expansion": "nature-incarnate",
+  "difficulty_delta": "+2",
+  "setup_modifications": "[VERIFY] Fate-driven triggers across rounds.",
+  "win_condition_modifications": "Standard.",
+  "loss_condition_modifications": "Standard.",
+  "notes": "[VERIFY]"
+}

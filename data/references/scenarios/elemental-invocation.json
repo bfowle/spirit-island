@@ -1,0 +1,10 @@
+{
+  "slug": "elemental-invocation",
+  "name": "Elemental Invocation",
+  "expansion": "jagged-earth",
+  "difficulty_delta": "+0",
+  "setup_modifications": "[VERIFY] Spirits must manifest elemental shrines.",
+  "win_condition_modifications": "Shrine-count win condition.",
+  "loss_condition_modifications": "Standard.",
+  "notes": "[VERIFY]"
+}

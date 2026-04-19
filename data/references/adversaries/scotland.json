@@ -1,0 +1,64 @@
+{
+  "slug": "scotland",
+  "name": "Scotland",
+  "expansion": "promo-2",
+  "pressure_shape": "mixed; mild Town/City escalation; few hard cliffs",
+  "levels": [
+    {
+      "level": 0,
+      "name": "Base",
+      "escalation": "No escalation.",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 1,
+      "name": "Second Sons",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 3,
+      "name": "Clearances",
+      "escalation": "[VERIFY]",
+      "is_cliff": true,
+      "notes": "Possible Dahan pressure cliff"
+    },
+    {
+      "level": 4,
+      "name": "Defoliation",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 6,
+      "name": "Resources Drained",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 7,
+      "name": "[Verify]",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 8,
+      "name": "[Verify]",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 10,
+      "name": "Total",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    }
+  ]
+}

@@ -6,11 +6,17 @@ import Board from './components/Board.vue'
 import SpiritPanel from './components/SpiritPanel.vue'
 import Pools from './components/Pools.vue'
 import StatsPanel from './components/StatsPanel.vue'
+import SetupWizard from './components/SetupWizard.vue'
 
 const state = ref<GameState | null>(null)
 const error = ref<string | null>(null)
 const saving = ref(false)
+const showWizard = ref(false)
 let saveTimer: number | null = null
+
+function onGameStarted(newState: GameState) {
+  state.value = newState
+}
 
 onMounted(async () => {
   try {
@@ -53,9 +59,12 @@ watch(state, (s) => {
           <option value="timepasses">Time Passes</option>
           <option value="end">End</option>
         </select>
+        <button class="new-game" @click="showWizard = true">New Game</button>
         <span v-if="saving" class="saving">saving…</span>
       </div>
     </header>
+
+    <SetupWizard :show="showWizard" @close="showWizard = false" @game-started="onGameStarted" />
 
     <Pools v-model="state.pools" />
 
@@ -84,6 +93,9 @@ h1 { margin: 0; font-size: 1.4rem; }
 .banner { padding: 1rem; text-align: center; }
 .banner.error { background: #522; color: #fcc; }
 .saving { color: #8a8; font-style: italic; }
+.new-game { background: #3a5a3a; border: 1px solid #5a8a5a; color: #eee; padding: .15rem .6rem; border-radius: 4px; cursor: pointer; font-size: .85rem; }
+.new-game:hover { background: #4a6a4a; }
+.stats-section { margin-top: 1rem; }
 .board-section, .spirit-section { margin-top: 1.5rem; }
 h2 { font-size: 1.1rem; margin: 0 0 .5rem; }
 </style>

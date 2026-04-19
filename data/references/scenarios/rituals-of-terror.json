@@ -1,0 +1,10 @@
+{
+  "slug": "rituals-of-terror",
+  "name": "Rituals of Terror",
+  "expansion": "base",
+  "difficulty_delta": "+3",
+  "setup_modifications": "[VERIFY] Invaders perform ritual actions to reduce your Fear pool.",
+  "win_condition_modifications": "Standard.",
+  "loss_condition_modifications": "Fear-count specific loss condition.",
+  "notes": "[VERIFY physical card]"
+}

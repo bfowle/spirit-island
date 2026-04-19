@@ -1,0 +1,64 @@
+{
+  "slug": "brandenburg-prussia",
+  "name": "Brandenburg-Prussia",
+  "expansion": "base",
+  "pressure_shape": "flat-early, steep-late; Cities on board early; fear-per-kill bonuses",
+  "levels": [
+    {
+      "level": 0,
+      "name": "Base",
+      "escalation": "No escalation.",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 1,
+      "name": "Professional Soldiers",
+      "escalation": "Additional Town in Setup (per adversary panel).",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 2,
+      "name": "Mercenaries",
+      "escalation": "Cities deal +1 Damage during Ravages.",
+      "is_cliff": true,
+      "notes": "Ravage damage ramps faster \u2014 Defend plays become load-bearing"
+    },
+    {
+      "level": 4,
+      "name": "Disciplined Ranks",
+      "escalation": "City defense + more Towns.",
+      "is_cliff": true,
+      "notes": "[VERIFY]"
+    },
+    {
+      "level": 6,
+      "name": "Inexorable Advance",
+      "escalation": "Heavy city/town pressure.",
+      "is_cliff": false,
+      "notes": "[VERIFY]"
+    },
+    {
+      "level": 7,
+      "name": "Total War",
+      "escalation": "Near-constant City pressure on coasts.",
+      "is_cliff": false,
+      "notes": "[VERIFY]"
+    },
+    {
+      "level": 9,
+      "name": "Industrialization",
+      "escalation": "Late-game spike.",
+      "is_cliff": false,
+      "notes": "[VERIFY]"
+    },
+    {
+      "level": 10,
+      "name": "Imperial Ambitions",
+      "escalation": "Maximum pressure.",
+      "is_cliff": false,
+      "notes": "[VERIFY]"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "slug": "england",
+  "name": "England",
+  "expansion": "base",
+  "pressure_shape": "slow builds, long tail; Towns steadily become Cities; L5 HP bump",
+  "levels": [
+    {
+      "level": 0,
+      "name": "Base",
+      "escalation": "No escalation.",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 1,
+      "name": "Contempt",
+      "escalation": "Coastal Lands: additional Town during Setup.",
+      "is_cliff": false,
+      "notes": "[VERIFY Wiki]"
+    },
+    {
+      "level": 2,
+      "name": "Endless Influx",
+      "escalation": "Additional Invader card into deck each turn.",
+      "is_cliff": true,
+      "notes": "Raw Invader pressure jumps \u2014 plan for faster board crawl"
+    },
+    {
+      "level": 3,
+      "name": "Shores of Wealth",
+      "escalation": "Coastal Lands Build every Invader Phase.",
+      "is_cliff": true,
+      "notes": "The classic England T1 cliff \u2014 coastal pressure compounds"
+    },
+    {
+      "level": 4,
+      "name": "Puppet Government",
+      "escalation": "Towns grow into Cities.",
+      "is_cliff": true,
+      "notes": "City density spikes \u2014 damage-only plays fall off"
+    },
+    {
+      "level": 5,
+      "name": "Sustained Immigration",
+      "escalation": "Buildings gain +1 HP (Town = 3, City = 4).",
+      "is_cliff": true,
+      "notes": "Damage-math cliff: 3-damage innates no longer 1-shot 3-HP Towns"
+    },
+    {
+      "level": 6,
+      "name": "Ironclads",
+      "escalation": "Buildings are harder to kill.",
+      "is_cliff": false,
+      "notes": "[VERIFY physical panel]"
+    },
+    {
+      "level": 7,
+      "name": "Steamrolled",
+      "escalation": "Invaders ravage more aggressively.",
+      "is_cliff": false,
+      "notes": "[VERIFY physical panel]"
+    }
+  ]
+}

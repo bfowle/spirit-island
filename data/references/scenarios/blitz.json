@@ -1,0 +1,10 @@
+{
+  "slug": "blitz",
+  "name": "Blitz",
+  "expansion": "base",
+  "difficulty_delta": "+3",
+  "setup_modifications": "Skip turn 1 of the invader deck (card 2 is revealed immediately as the first Explore).",
+  "win_condition_modifications": "Standard \u2014 Terror 2 or higher at end.",
+  "loss_condition_modifications": "Standard.",
+  "notes": "6-round game; Shadows is a strong fit because fear-rush lines up with time pressure."
+}

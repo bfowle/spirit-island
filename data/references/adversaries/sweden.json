@@ -1,0 +1,64 @@
+{
+  "slug": "sweden",
+  "name": "Sweden",
+  "expansion": "base",
+  "pressure_shape": "high-early plateau; fear-card penalties; coastal Build early",
+  "levels": [
+    {
+      "level": 0,
+      "name": "Base",
+      "escalation": "No escalation.",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 1,
+      "name": "Prosperity",
+      "escalation": "Build column shifts earlier.",
+      "is_cliff": false,
+      "notes": "[VERIFY]"
+    },
+    {
+      "level": 2,
+      "name": "Fear-Dampened Colonies",
+      "escalation": "Fear-card effects reduced at this and higher levels.",
+      "is_cliff": true,
+      "notes": "Fear-rush spirits stall \u2014 shift to board-control archetype"
+    },
+    {
+      "level": 3,
+      "name": "Homesteaders",
+      "escalation": "Additional Dahan converted to settlers during Setup.",
+      "is_cliff": true,
+      "notes": "Dahan-reliant spirits downgraded"
+    },
+    {
+      "level": 5,
+      "name": "Wave of Colonists",
+      "escalation": "Heavier coastal Builds.",
+      "is_cliff": false,
+      "notes": "[VERIFY]"
+    },
+    {
+      "level": 6,
+      "name": "Firm Foothold",
+      "escalation": "[VERIFY physical panel]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 7,
+      "name": "Entrenched",
+      "escalation": "[VERIFY physical panel]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 8,
+      "name": "Massive Colonization",
+      "escalation": "Maximum pressure.",
+      "is_cliff": false,
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "slug": "a-diversity-of-spirits",
+  "name": "A Diversity of Spirits",
+  "expansion": "jagged-earth",
+  "difficulty_delta": "+0",
+  "setup_modifications": "Spirits must be from different archetypes \u2014 see scenario card.",
+  "win_condition_modifications": "Standard.",
+  "loss_condition_modifications": "Standard.",
+  "notes": "Spirit-pick constraint matters at draft time."
+}

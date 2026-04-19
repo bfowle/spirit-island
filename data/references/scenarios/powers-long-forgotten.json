@@ -1,0 +1,10 @@
+{
+  "slug": "powers-long-forgotten",
+  "name": "Powers Long Forgotten",
+  "expansion": "branch-and-claw",
+  "difficulty_delta": "+1",
+  "setup_modifications": "[VERIFY] Additional forgotten Power cards enter the deck.",
+  "win_condition_modifications": "Standard.",
+  "loss_condition_modifications": "Standard.",
+  "notes": "[VERIFY]"
+}

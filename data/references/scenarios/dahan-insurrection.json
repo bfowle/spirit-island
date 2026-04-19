@@ -1,0 +1,10 @@
+{
+  "slug": "dahan-insurrection",
+  "name": "Dahan Insurrection",
+  "expansion": "branch-and-claw",
+  "difficulty_delta": "+1",
+  "setup_modifications": "[VERIFY] Dahan revolt as a second faction against Invaders.",
+  "win_condition_modifications": "Dahan-count win condition.",
+  "loss_condition_modifications": "Standard.",
+  "notes": "[VERIFY]"
+}

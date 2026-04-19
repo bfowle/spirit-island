@@ -1,0 +1,10 @@
+{
+  "slug": "guard-the-isles-heart",
+  "name": "Guard the Isle's Heart",
+  "expansion": "base",
+  "difficulty_delta": "+0",
+  "setup_modifications": "Designate one inner land as 'the Heart'; Invaders cannot be in the Heart at game end.",
+  "win_condition_modifications": "The Heart is clear at game end AND standard Terror/Fear conditions.",
+  "loss_condition_modifications": "Standard + Heart breached.",
+  "notes": "[VERIFY exact setup from scenario card]"
+}

@@ -1,0 +1,64 @@
+{
+  "slug": "habsburg-mining-expedition",
+  "name": "Habsburg Mining Expedition",
+  "expansion": "nature-incarnate",
+  "pressure_shape": "scaling Explorer/Town late; aggressive Build counts",
+  "levels": [
+    {
+      "level": 0,
+      "name": "Base",
+      "escalation": "No escalation.",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 1,
+      "name": "Quick Profit",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 3,
+      "name": "Surface Mining",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 5,
+      "name": "Industrial Scaling",
+      "escalation": "Extra Explorers/Towns each turn.",
+      "is_cliff": true,
+      "notes": "Raw Invader accumulation outpaces fear-rush"
+    },
+    {
+      "level": 6,
+      "name": "Heavy Machinery",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 7,
+      "name": "Deep Shaft",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 9,
+      "name": "Exhausting the Land",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 10,
+      "name": "Maximum Pressure",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    }
+  ]
+}

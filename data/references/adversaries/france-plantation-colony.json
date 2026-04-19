@@ -1,0 +1,64 @@
+{
+  "slug": "france-plantation-colony",
+  "name": "France (Plantation Colony)",
+  "expansion": "branch-and-claw",
+  "pressure_shape": "Dahan capture + plantation-tokens; punishes Dahan-reliance",
+  "levels": [
+    {
+      "level": 0,
+      "name": "Base",
+      "escalation": "No escalation.",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 2,
+      "name": "Slavery",
+      "escalation": "Dahan captured \u2192 Settlers/Plantations.",
+      "is_cliff": true,
+      "notes": "Dahan-engine spirits (Shadows-of-Dahan, Thunderspeaker) lose count"
+    },
+    {
+      "level": 3,
+      "name": "Sugar",
+      "escalation": "Plantation tokens added during Ravage.",
+      "is_cliff": true,
+      "notes": "Blight accelerates from plantation density"
+    },
+    {
+      "level": 5,
+      "name": "Entrenched Estates",
+      "escalation": "Plantations harder to remove.",
+      "is_cliff": false,
+      "notes": "[VERIFY]"
+    },
+    {
+      "level": 6,
+      "name": "Coffee",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 8,
+      "name": "Tobacco",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 9,
+      "name": "Indentured Workforce",
+      "escalation": "[VERIFY]",
+      "is_cliff": false,
+      "notes": ""
+    },
+    {
+      "level": 10,
+      "name": "Total Plantation",
+      "escalation": "Maximum pressure.",
+      "is_cliff": false,
+      "notes": ""
+    }
+  ]
+}
