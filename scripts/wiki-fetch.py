@@ -483,6 +483,58 @@ def parse_spirit_page(wikitext: str) -> dict:
     }
 
 
+def parse_aspect_page(wikitext: str) -> dict:
+    """Parse an {{AspectCardArticle|...}} template into a structured dict."""
+    idx = find_first_template(wikitext, "AspectCardArticle")
+    if idx < 0:
+        raise RuntimeError("No {{AspectCardArticle|...}} template found on page")
+    tpl, _ = parse_template(wikitext, idx)
+
+    # Collect all rowXXX fields — these define what the aspect replaces/adds.
+    row_fields = {}
+    for k, v in tpl.items():
+        if k.startswith("row") and not k.startswith("_"):
+            row_fields[k[3:]] = clean_wiki_text(v)
+
+    # Collect "Special Rule N" pairs + the un-numbered "Special Rule Name/Text".
+    special_rules = []
+    # Numbered first (aspects with multiple rules).
+    idx = 1
+    while True:
+        name = row_fields.pop(f"Special Rule {idx} Name", None)
+        text = row_fields.pop(f"Special Rule {idx} Text", None)
+        if not name and not text:
+            break
+        special_rules.append({"name": name, "text": text})
+        idx += 1
+    # Un-numbered single-rule aspects.
+    name_un = row_fields.pop("Special Rule Name", None)
+    text_un = row_fields.pop("Special Rule Text", None)
+    if name_un or text_un:
+        special_rules.append({"name": name_un, "text": text_un})
+
+    # Aspects that replace an innate — capture innate definition.
+    innate_override = {}
+    for key in ("Innate Name", "Speed", "Range", "Target", "Innate Thresholds"):
+        v = row_fields.pop(key, None)
+        if v:
+            innate_override[key.lower().replace(" ", "_")] = v
+
+    return {
+        "source": "spiritislandwiki.com",
+        "type": "aspect",
+        "name": tpl.get("name") or tpl.get("name_en"),
+        "spirit": tpl.get("spirit"),
+        "expansion": tpl.get("set"),
+        "replaces": row_fields.pop("Replaces", None),
+        "complexity_change": row_fields.pop("Complexity", None),
+        "special_rules": special_rules,
+        "innate_override": innate_override or None,
+        "other_row_fields": row_fields,
+        "raw_template": {k: v for k, v in tpl.items() if not k.startswith("_")},
+    }
+
+
 def parse_card_page(wikitext: str) -> dict:
     """Parse a {{PowerCardArticle|...}} template into a structured dict."""
     idx = find_first_template(wikitext, "PowerCardArticle")
@@ -547,6 +599,18 @@ def cmd_card(args, page_name: str) -> dict:
     return data
 
 
+def cmd_aspect(args, page_name: str) -> dict:
+    cache = _cache_path(args, page_name, "aspect")
+    if cache and cache.exists() and not getattr(args, "no_cache", False):
+        return json.loads(cache.read_text())
+    wt = fetch_wikitext(page_name, delay=getattr(args, "delay", DEFAULT_DELAY_SECS))
+    data = parse_aspect_page(wt)
+    if cache:
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+    return data
+
+
 def cmd_batch_spirit(args, page_name: str) -> dict:
     """Fetch spirit + all its Uniques + all its suggested Minor/Major cards.
 
@@ -595,7 +659,7 @@ def cmd_batch_all(args) -> dict:
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("command", choices=["spirit", "card", "batch-spirit", "batch-all"])
+    p.add_argument("command", choices=["spirit", "card", "aspect", "batch-spirit", "batch-all"])
     p.add_argument("name", nargs="?", help="Wiki page name (required for spirit/card/batch-spirit)")
     p.add_argument("--output-dir", help="Write parsed output JSON here as {slug}.json")
     p.add_argument("--cache-dir", default=".wiki-cache", help="Cache raw fetches here (default: .wiki-cache)")
@@ -618,6 +682,8 @@ def main():
         data = cmd_spirit(args, page)
     elif args.command == "card":
         data = cmd_card(args, page)
+    elif args.command == "aspect":
+        data = cmd_aspect(args, page)
     else:
         data = cmd_batch_spirit(args, page)
 

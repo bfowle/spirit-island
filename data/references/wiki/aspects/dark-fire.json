@@ -1,0 +1,43 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "aspect",
+  "name": "Dark Fire",
+  "spirit": "Shadows Flicker Like Flame",
+  "expansion": "Nature Incarnate",
+  "replaces": "Special Rule: Shadows of the Dahan",
+  "complexity_change": "Higher Complexity",
+  "special_rules": [
+    {
+      "name": "Dark and Fire as One",
+      "text": "You may treat each Moon available to you as being Fire, or vice versa. (Choose during each Action for each Moon/Fire you have.) You may discard or Forget Powers that grant Moon to pay for Fire Choice Events, and vice versa."
+    },
+    {
+      "name": "Frightful Shadows Elude Destruction",
+      "text": "The first time each Action would destroy your Presence, you may Push 1 of those Presence instead of destroying it."
+    }
+  ],
+  "other_row_fields": {
+    "Setup": "Gain {{Card|Unquenchable Flames}} (Minor Power)",
+    "Bonus Presence Track Icon": "Fire (or Moon)"
+  },
+  "raw_template": {
+    "name": "Dark Fire",
+    "name_en": "Dark Fire",
+    "language": "en",
+    "image": "File:Dark_Fire_(ni).png",
+    "extraimages": "Unquenchable_Flames_(je).png",
+    "art": "File:Shadows_Flicker_Like_Flame_(Dark_Fire).png",
+    "set": "Nature Incarnate",
+    "spirit": "Shadows Flicker Like Flame",
+    "rowReplaces": "Special Rule: Shadows of the Dahan",
+    "rowSetup": "Gain {{Card|Unquenchable Flames}} ''(Minor Power)''",
+    "rowComplexity": "Higher Complexity",
+    "rowSpecial Rule 1 Name": "Dark and Fire as One",
+    "rowSpecial Rule 1 Text": "You may treat each Moon available to you as being Fire, or vice versa. (Choose during each Action for each Moon/Fire you have.) You may discard or Forget Powers that grant Moon to pay for Fire Choice Events, and vice versa.",
+    "rowSpecial Rule 2 Name": "Frightful Shadows Elude Destruction",
+    "rowSpecial Rule 2 Text": "The first time each Action would destroy your Presence, you may Push 1 of those Presence instead of destroying it.",
+    "rowBonus Presence Track Icon": "Fire ''(or Moon)''",
+    "cardstatus": "Active",
+    "primaryaspectcard": "true"
+  }
+}

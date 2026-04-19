@@ -1,7 +1,9 @@
 # Shadows Flicker Like Flame
 
 ```admonish success title="Mechanics Wiki-verified 2026-04-19"
-Card data, innate text, special rules, growth options, presence track, power-summary ratings, and suggested-draft card text below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py`. Aspects list verified against Brett's physical copy. Only these remain `[VERIFY]`: Play Difficulty (not on Wiki spirit-template; spirit panel only), aspect *mechanics* (aspect-page parser pending), current mindwanderer stats, and board ratings (require play experience).
+Card data, innate text, special rules, growth options, presence track, power-summary ratings, suggested-draft card text, **and aspect mechanics** below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py`. Only these remain `[VERIFY]`: Play Difficulty (not on Wiki spirit-template), current mindwanderer stats, and board ratings (require play experience).
+
+**⚠️ Expansion-source discrepancy**: Brett initially said Amorphous + Foreboding are from B&C; Wiki clearly lists them as **Promo Pack 2 (Feather and Flame)**. Using Wiki. Please confirm.
 ```
 
 ```admonish abstract title="At a Glance"
@@ -14,7 +16,7 @@ Card data, innate text, special rules, growth options, presence track, power-sum
 | Power summary (1–5)   | Offense 4 · Control 3 · **Fear 5** · Defense 1 · Utility 1 |
 | Primary Elements      | Moon (all innate levels) · Fire (L2+) · Air (L3)   |
 | Special Rule          | Shadows of the Dahan — pay 1 Energy to target any Dahan land regardless of Range |
-| Aspects               | **B&C**: Amorphous, Foreboding · **JE**: Madness, Reach · **NI**: Dark Fire |
+| Aspects               | **Promo Pack 2**: Amorphous, Foreboding · **JE**: Madness, Reach · **NI**: Dark Fire `[VERIFY Amorphous/Foreboding expansion — Brett said B&C, Wiki says Promo Pack 2]` |
 | Rei's Guide           | Not covered                                        |
 | latentoctopus         | Not listed                                         |
 ```
@@ -307,7 +309,7 @@ Cliff turn: **T4**. Innate L2 must fire; Fear pool at 4+/8 (solo).
 - **+ Jagged Earth**: Madness + Reach aspects unlock; Minor/Major pool deepens.
 - **+ Nature Incarnate**: Dark Fire aspect unlocks.
 
-Aspect *mechanics* pending `si-wiki-fetch` aspect-page parser extension.
+Aspect mechanics now Wiki-verified (see Aspects section above); parser extended 2026-04-19.
 
 ## Stat Snapshot
 

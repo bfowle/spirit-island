@@ -1,0 +1,32 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "aspect",
+  "name": "Amorphous",
+  "spirit": "Shadows Flicker Like Flame",
+  "expansion": "Promo Pack 2,Feather and Flame",
+  "replaces": "Special Rule: Shadows of the Dahan",
+  "complexity_change": "Higher Complexity",
+  "special_rules": [
+    {
+      "name": "Shadows Partake of Amorphous Space",
+      "text": "During each Fast phase, you may move 1 of your Presence to an adjacent land, or to a land with Dahan anywhere on the island. During each Slow phase, you may move 1 of your Presence to an adjacent land, or to a land with Dahan anywhere on the island."
+    }
+  ],
+  "innate_override": null,
+  "other_row_fields": {},
+  "raw_template": {
+    "name": "Amorphous",
+    "name_en": "Amorphous",
+    "language": "en",
+    "image": "File:Amorphous_(ff).png",
+    "art": "File:Shadows Flicker Like Flame (Amorphous).png",
+    "set": "Promo Pack 2,Feather and Flame",
+    "spirit": "Shadows Flicker Like Flame",
+    "rowReplaces": "Special Rule: Shadows of the Dahan",
+    "rowComplexity": "Higher Complexity",
+    "rowSpecial Rule Name": "Shadows Partake of Amorphous Space",
+    "rowSpecial Rule Text": "During each Fast phase, you may move 1 of your Presence to an adjacent land, or to a land with Dahan anywhere on the island.<br/><br/>During each Slow phase, you may move 1 of your Presence to an adjacent land, or to a land with Dahan anywhere on the island.",
+    "cardstatus": "Active",
+    "primaryaspectcard": "true"
+  }
+}

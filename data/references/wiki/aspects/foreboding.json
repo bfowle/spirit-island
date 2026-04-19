@@ -1,0 +1,36 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "aspect",
+  "name": "Foreboding",
+  "spirit": "Shadows Flicker Like Flame",
+  "expansion": "Promo Pack 2,Feather and Flame",
+  "replaces": "Special Rule: Shadows of the Dahan",
+  "complexity_change": "Higher Complexity",
+  "special_rules": [],
+  "innate_override": {
+    "innate_name": "Stretch Out Coils of Foreboding Dread",
+    "speed": "Fast — Fast",
+    "range": "2",
+    "target": "Any land",
+    "innate_thresholds": "2 Air — 2 Air Your other Powers may ignore Range when targeting the target land. 1 Moon — 1 Moon After an Action generates Fear in target land, including from Destroying Towns/Cities: Push up to 1 Explorer per Fear / 1 Town per 2 Fear. (You may mix-and-match.) 2 Fire — 2 Fire 1 Fear. 2 Moon 4 Air — 2 Moon, 4 Air 2 Fear."
+  },
+  "other_row_fields": {},
+  "raw_template": {
+    "name": "Foreboding",
+    "name_en": "Foreboding",
+    "language": "en",
+    "image": "File:Foreboding_(ff).png",
+    "art": "File:Shadows Flicker Like Flame (Foreboding).png",
+    "set": "Promo Pack 2,Feather and Flame",
+    "spirit": "Shadows Flicker Like Flame",
+    "rowReplaces": "Special Rule: Shadows of the Dahan",
+    "rowComplexity": "Higher Complexity",
+    "rowInnate Name": "Stretch Out Coils of Foreboding Dread",
+    "rowSpeed": "{{fast}} — Fast",
+    "rowRange": "2",
+    "rowTarget": "Any land",
+    "rowInnate Thresholds": "'''2''' {{element|air}} — 2 Air<br/>Your other Powers may ignore Range when targeting the target land.<br/><br/>'''1''' {{element|moon}} — 1 Moon<br/>After an Action generates Fear in target land, including from Destroying Towns/Cities: Push up to 1 Explorer per Fear / 1 Town per 2 Fear. (You may mix-and-match.)<br/><br/>'''2''' {{element|fire}} — 2 Fire<br/>1 Fear.<br/><br/>'''2''' {{element|moon}} '''4''' {{element|air}} — 2 Moon, 4 Air<br/>2 Fear.",
+    "cardstatus": "Active",
+    "primaryaspectcard": "true"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "aspect",
+  "name": "Madness",
+  "spirit": "Shadows Flicker Like Flame",
+  "expansion": "Jagged Earth",
+  "replaces": "Special Rule: Shadows of the Dahan",
+  "complexity_change": "Higher Complexity",
+  "special_rules": [
+    {
+      "name": "Shadows Cast a Subtle Madness",
+      "text": "When you add Presence during Growth, you may also add 1 Strife in that land."
+    },
+    {
+      "name": "Glimpse of the Shadowed Void",
+      "text": "When your Presence is Destroyed, if Invaders are present, 1 Fear per Presence Destroyed there."
+    }
+  ],
+  "other_row_fields": {},
+  "raw_template": {
+    "name": "Madness",
+    "name_en": "Madness",
+    "language": "en",
+    "image": "File:Madness_(je).png",
+    "art": "File:Shadows_Flicker_Like_Flame_(Madness).png",
+    "set": "Jagged Earth",
+    "spirit": "Shadows Flicker Like Flame",
+    "rowReplaces": "Special Rule: Shadows of the Dahan",
+    "rowComplexity": "Higher Complexity",
+    "rowSpecial Rule 1 Name": "Shadows Cast a Subtle Madness",
+    "rowSpecial Rule 1 Text": "When you add Presence during Growth, you may also add 1 Strife in that land.",
+    "rowSpecial Rule 2 Name": "Glimpse of the Shadowed Void",
+    "rowSpecial Rule 2 Text": "When your Presence is Destroyed, if Invaders are present, 1 Fear per Presence Destroyed there.",
+    "cardstatus": "Active",
+    "primaryaspectcard": "true"
+  }
+}

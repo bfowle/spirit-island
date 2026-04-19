@@ -1,0 +1,32 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "aspect",
+  "name": "Reach",
+  "spirit": "Shadows Flicker Like Flame",
+  "expansion": "Jagged Earth",
+  "replaces": "Special Rule: Shadows of the Dahan",
+  "complexity_change": "Lower Complexity",
+  "special_rules": [
+    {
+      "name": "Reach Through Ephemeral Distance",
+      "text": "Once per turn, you may ignore Range. (This can be during Growth or for a Power - anything for which there's a Range arrow or the word \"Range\" is used. It affects a single Action of yours.)"
+    }
+  ],
+  "innate_override": null,
+  "other_row_fields": {},
+  "raw_template": {
+    "name": "Reach",
+    "name_en": "Reach",
+    "language": "en",
+    "image": "File:Reach_(je).png",
+    "art": "File:Shadows_Flicker_Like_Flame_(Reach).png",
+    "set": "Jagged Earth",
+    "spirit": "Shadows Flicker Like Flame",
+    "rowReplaces": "Special Rule: Shadows of the Dahan",
+    "rowComplexity": "Lower Complexity",
+    "rowSpecial Rule Name": "Reach Through Ephemeral Distance",
+    "rowSpecial Rule Text": "Once per turn, you may ignore Range.<br/>''(This can be during Growth or for a Power - anything for which there's a Range arrow or the word \"Range\" is used. It affects a single Action of yours.)''",
+    "cardstatus": "Active",
+    "primaryaspectcard": "true"
+  }
+}
