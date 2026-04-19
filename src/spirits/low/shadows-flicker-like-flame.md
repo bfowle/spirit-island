@@ -65,40 +65,136 @@ Before Slow powers, count fear on the pool: if you're within 2 fear of a Terror 
 
 ## Opening Strategy
 
-Shadows doesn't have a fully-dissected latentoctopus opening yet (as of 2026-04-19). Here's the community-consensus distillation:
+Shadows doesn't have a latentoctopus guide yet (as of 2026-04-19). The two openings below are community-consensus distillations, rehearsed turn-by-turn in the canonical format. Pick one before you start the game — don't improvise T1.
+
+Confidence: 🟥 tentative · 🟨 somewhat tested · 🟩 well-tested
 
 ### Opening A — Hybrid, Minor-heavy 🟨
 
-Canonical opening against Brandenburg-Prussia and England.
+**Source**: community consensus; BGG strategy threads + Cardboard Crew tier commentary.
 
-- **T1**: G3 bottom (gain Minor + place presence) → play Offering of Fear and Flame + any Minor that hits Moon.
-- **T2**: G1 or G2 (energy bias) → play Mantle of Dread if the ravage is bad; else Offering again + a Minor.
-- **T3**: Reclaim → 3 cards in hand; pre-threshold Level 2.
-- **T4**: Level 2 innate active. Play 3 cards/turn. Strife-heavy.
-- **T5+**: Transition to Major consideration. Forget Memory of Fire. Keep the engine running.
+**When to pick this**: default opening for Brandenburg-Prussia, England, and Scotland. Good vs. any adversary that lets you hit Terror 2 by T6. Switch to Opening B if the adversary is Russia, Habsburg Mining, or Sweden at L3+.
 
-**Target milestones**: 2 Moon by T2, 3 Moon + 1 Fire by T4, Level 2 innate firing reliably by T4.
+**Target arc**: 3 CP by T4 · Level 2 innate firing by T4 · Terror 2 flip by T6.
 
-### Opening B — Full bottom, heavier Minor draft 🟨
+#### Turn 1
 
-For matchups where you need to scale into T6+ (e.g., Habsburg Mining, Russia).
+- **Growth**: **G3** (gain a Minor Power + place 1 presence from the right side of the bottom track).
+- **Cards played**: **Offering of Fear and Flame** (fast, 1E) + **Dreams of the Dahan** (or any 0-cost Moon Minor you drafted). Total 1E spent.
+- **Presence placement**: spread — pick a jungle-adjacent land where the T2 ravage is likely. Don't stack.
+- **Elements by end**: 2 Moon (1 from Offering, 1 from your track/Minor depending on draft).
+- **E / CP state**: enter 1E / 2CP → exit 0E / 2CP.
+- **Milestone**: one explorer/town strife-ed; 1 fear generated via innate Level 1.
 
-- **T1–2**: G3 twice (presence + Minors).
-- **T3**: Reclaim + gain Minor.
-- **T4+**: Fire up the engine and scale fear.
+#### Turn 2
 
-Slightly slower than Opening A but more resilient against mid-game adversary spikes.
+- **Growth**: **G2** (gain +1 energy). You need the energy cushion before T3 reclaim.
+- **Cards played**: **Offering of Fear and Flame** (if reclaimed is fast track) + **Mantle of Dread** *only if* a ravage would otherwise destroy dahan or presence; otherwise a second Minor (Moon-bearing). Total 1–2E spent.
+- **Presence placement**: second land — prefer coastal if the adversary is England (Stage III prep). Otherwise inland jungle.
+- **Elements by end**: 2 Moon sustained, +1 Fire from Offering-in-hand.
+- **E / CP state**: enter 1E / 2CP → exit 0E / 2CP.
+- **Milestone**: fear pool at 2–3 of 4 (solo); strife on 2 lands.
+
+#### Turn 3
+
+- **Growth**: **G1** (Reclaim — return all played cards to hand). You now have 3–4 cards in hand.
+- **Cards played**: **Offering + Minor (Moon)** + **Minor (whatever second one threshold-hits Fire)** — 2–3 cards total, targeting 2 lands.
+- **Presence placement**: third land, usually adjacent to your strife-ed invaders so next turn's Level 2 innate lands there.
+- **Elements by end**: 3 Moon, 1 Fire (crossing the Level 2 threshold).
+- **E / CP state**: enter 1E / 2CP → exit 0E / 2CP. (Reclaim didn't give you more CP; it gave you refreshed hand.)
+- **Milestone**: **Level 2 innate available** next turn. If you're not there, you're behind — see pivot advice below.
+
+#### Turn 4 — state audit (not a full plan)
+
+After T3 you should have:
+
+- **Presence on board**: 6–7 of 13 (starting 3 + 3–4 placed), spread across 3–4 lands.
+- **Energy / CP**: 1E / 2CP, sometimes 2E if you banked on T2.
+- **Engine state**: Level 2 innate fires on any land with 2 Moon + 1 Fire available. You're generating ~2 fear/turn from innate alone, plus fear from kills.
+- **Fear pool**: 3–4 of 8 — on track for Terror 2 flip around T5–T6.
+- **Blight**: 0–1. Shadows doesn't prevent ravages directly; some blight is expected but not cascading.
+- **Hand**: 3 cards if you reclaimed on T3, playing 2 of them here + gaining a third Minor. CP will tick up to 3 via next growth.
+
+If you're off by more than one step, pivot:
+
+- **Missing Fire element by T3** → take a Minor on T4 that specifically adds Fire (e.g., Strengthen the Gifts of the Earth). Delay Level 2 activation to T5.
+- **Energy-starved (0E entering T3 with nothing to reclaim)** → skip the non-Offering Minor on T3; play only Offering + whatever's free.
+- **Presence too sparse (still at 3–4 lands covered)** → take G3 (presence) on T4 instead of G1 (CP). You need coverage before scaling.
+- **Adversary spikes early (Sweden L3+ fear penalties active)** → your fear pool is suppressed; accept Terror 1 longer and focus on board kills for fear rather than innate chaining.
+
+### Opening B — Full bottom, slower-scaling 🟨
+
+**Source**: community-consensus distillation for matchups where Opening A's T5 Major is too aggressive.
+
+**When to pick this**: Russia (fear suppression hurts fast Terror races), Habsburg Mining (scaling adversary; you need to survive T6+), Sweden L3+ (fear penalties). Also: multi-handed games where you expect the other spirit to carry board control, freeing Shadows to farm fear at lower tempo risk.
+
+**Target arc**: 3 CP by T5 (one turn later than Opening A) · Level 2 innate firing T4 · Terror 2 flip by T7 · sustainable 4–5 CP late game.
+
+#### Turn 1
+
+- **Growth**: **G3** (Minor gain + presence bottom track).
+- **Cards played**: **Offering of Fear and Flame** (fast) + **Dreams of the Dahan** or any 0-cost Moon Minor. 1E spent.
+- **Presence placement**: first land, inland if possible (Russia-proof).
+- **Elements by end**: 2 Moon.
+- **E / CP state**: 1E / 2CP → 0E / 2CP.
+- **Milestone**: one strife applied; 1 fear.
+
+#### Turn 2
+
+- **Growth**: **G3 again** (second Minor gain + presence) — the "full bottom" move. You're trading energy for a bigger card pool.
+- **Cards played**: **Offering + second Minor you drafted last turn**. 1–2E. If energy is empty, play just Offering.
+- **Presence placement**: second land, adjacent to first where possible for Level 2 positional play later.
+- **Elements by end**: 2 Moon sustained, + whatever element the T1-gained Minor brings.
+- **E / CP state**: 1E / 2CP → 0–1E / 2CP.
+- **Milestone**: 2 Minors in hand, fear pool at 2; strife on 2 lands.
+
+#### Turn 3
+
+- **Growth**: **G1** (Reclaim). Refresh hand to 4–5 cards.
+- **Cards played**: **Offering + the best Fire-bearing card in your refreshed hand**. If T1 or T2 Minor drafts brought you a Fire threshold-hitter, this is where it earns its cost.
+- **Presence placement**: third land. Coastal if late-game coastal pressure is expected; else inland.
+- **Elements by end**: 3 Moon, 1 Fire.
+- **E / CP state**: 1E / 2CP → 0E / 2CP.
+- **Milestone**: **Level 2 innate unlocked**, but you're entering T4 without the 3-CP jump Opening A has.
+
+#### Turn 4 — state audit
+
+After T3 (Opening B) you should have:
+
+- **Presence on board**: 6 of 13, across 3 lands (less spread than Opening A).
+- **Energy / CP**: 1E / 2CP. Scaling is deliberately slower.
+- **Engine state**: Level 2 innate fires; hand has 4–5 cards after reclaim + 2 Minor gains.
+- **Fear pool**: 3 of 8 — Terror 2 flip target is T7 (vs. T6 in Opening A).
+- **Blight**: 0–2.
+- **Hand**: 4–5 cards — the "full bottom" investment paying off now.
+
+Pivot advice is the same as Opening A, with one addition:
+
+- **You've "wasted" the full bottom if by T5 you haven't used the extra card pool** → you should be playing 3 cards/turn from T5 onward, not 2. If you're still at 2 CP with 5 cards in hand, something upstream (no element coverage, or the engine never fired) is wrong.
+
+### Opening C — Early Major 🟥 (experimental)
+
+**Source**: theorycraft; no community consensus yet.
+
+**When to pick this**: you've played Shadows 10+ times and want to experiment. Not recommended for meta-tier play.
+
+**The idea**: forget Memory of Fire Now Forgotten on T2 for a Major (Terrifying Nightmares is the canonical target). This trades away the T3 reclaim structure but gives you a Major threshold-firing by T4.
+
+Not fully rehearsed here yet. Prefer Opening A or B unless you're deliberately stress-testing Shadows's limits.
 
 ### Opening decision
 
 <pre class="mermaid">
 graph TD
   Start[Round 1 — Shadows] --> Adv{Adversary?}
-  Adv -->|Brandenburg-Prussia| A[Opening A - Hybrid]
+  Adv -->|Brandenburg-Prussia| A[Opening A — Hybrid]
   Adv -->|England| A
-  Adv -->|Sweden| A2[Opening A, but prioritize early fear-kills]
-  Adv -->|Russia L3+| B[Opening B - Full bottom]
+  Adv -->|Scotland| A
+  Adv -->|Sweden L0-L2| A2[Opening A, bias early fear-kills]
+  Adv -->|Sweden L3+| B[Opening B — Full bottom]
+  Adv -->|Russia| B
   Adv -->|Habsburg Mining| B
+  Adv -->|Multi-handed with clear board-carry partner| B
   Adv -->|Other| A
 </pre>
 

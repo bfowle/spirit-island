@@ -63,25 +63,79 @@ If a principle has a specific in-game heuristic (e.g., "Keep a fire-plant elemen
 
 ## Opening Strategy
 
-Link to latentoctopus openings first. Summarize the variant(s) in your own words. If Rei has an opening pattern, describe it.
+Each opening variant below is a full T1–T4 rehearsal. Pick the variant that matches your adversary + draft plan, then execute turn-by-turn. These are the reps you'd do if you were prepping for a tournament game — don't improvise T1.
 
-### Opening A — {latentoctopus name + confidence}
-Source: [latentoctopus](URL)
+Every variant carries a confidence badge (🟥 tentative · 🟨 somewhat tested · 🟩 well-tested).
 
-- **T1**: {growth} + {card plays} + {goals}
-- **T2**: ...
-- **T3**: ...
-- **Presence arc**: 10 → 6 by T5 (or spirit-specific)
-- **Target milestones**: 3 CP by T4; unlock {innate threshold} by T5
+### Opening A — {latentoctopus or Rei variant name} {🟥/🟨/🟩}
 
-### Opening B — {variant}
-As above.
+**Source**: [latentoctopus: {variant name}](URL) / Rei BGG thread {URL}
+
+**When to pick this**: {1–2 sentences — which adversaries, which draft plan, which matchups.}
+
+**Target arc**: {3 CP by T4, Level 2 innate active by T3, Terror 2 flip by T6, …}
+
+#### Turn 1
+
+- **Growth**: G{n} — {what this unlocks: presence placement / energy / CP / element / reclaim}
+- **Cards played**: {Unique 1 (fast)}, {Unique or Minor 2 (slow)} — total energy {X}
+- **Presence placement**: {land X} (jungle, coastal — note terrain type if load-bearing)
+- **Elements by end**: {e.g., 2 Moon, 1 Fire}
+- **E / CP state**: enter {1E / 2CP} → exit {0E / 2CP}
+- **Milestone**: {one-sentence check — "one invader in target land strife-ed"}
+
+#### Turn 2
+
+- **Growth**: G{n} — {unlock}
+- **Cards played**: {card list}, fast/slow annotated
+- **Presence placement**: {land Y}, reasoning
+- **Elements by end**: {running total}
+- **E / CP state**: {X / Y} → {X / Y}
+- **Milestone**: {check}
+
+#### Turn 3
+
+- **Growth**: G{n} — typically reclaim or card gain here
+- **Cards played**: {list, including reclaimed hand if applicable}
+- **Presence placement**: {land}
+- **Elements by end**: {total — usually the first level-2 innate threshold hits here}
+- **E / CP state**: {X / Y} → {X / Y}
+- **Milestone**: {"Level 2 innate firing reliably from next turn"}
+
+#### Turn 4 (state audit, not a full plan)
+
+After T3 you should have:
+
+- {Presence count on board}, spread across {N lands}
+- {Energy, CP}
+- Engine state: {"Innate level 2 firing; 3 CP; hand rotation stable"}
+- Fear pool: {range, e.g., "3–4 of 8 — on track for Terror 2 by T6"}
+- Blight pool: {range, e.g., "0–1 — comfortable"}
+
+If you're off by more than one step, you've diverged. Pivot advice:
+
+- **Missing element X by T2** → {pivot plan, often "take a different Minor next gain and delay the innate threshold one turn"}
+- **Energy-starved** → {"Skip a card play this turn; bank 1E for T4"}
+- **Presence too sparse** → {"Shift next growth to G{n} even if you planned G{m}"}
+
+### Opening B — {variant name} {🟥/🟨/🟩}
+
+(Same structure as Opening A.)
+
+**When to pick this**: ...
+
+#### Turn 1 / Turn 2 / Turn 3 / Turn 4 audit
+...
+
+### Opening C (optional) — {e.g., Early Major variant}
+
+If the spirit has 3+ distinct openings documented, include them here. If not, two openings is plenty.
 
 ### Opening decision
 
 <pre class="mermaid">
 graph TD
-  Start[Turn 1] --> Adv{Adversary?}
+  Start[Turn 1 — {Spirit}] --> Adv{Adversary?}
   Adv -->|England| A[Opening A]
   Adv -->|Sweden| B[Opening B]
   Adv -->|Other| A

@@ -41,6 +41,12 @@ Initial publication.
 - M4: Nature Incarnate spirits, full aspects coverage, statistics Part, `si-aspect-explorer` logic.
 - M5+: remaining 20+ spirits filled out, card reference appendix curated, progressive-disclosure index complete.
 
+## v0.1.1 — 2026-04-19 — Opener format upgraded
+
+- Revised `templates/SPIRIT_TEMPLATE.md` Opening Strategy section to require full 3–4 turn rehearsal blocks per variant (growth, cards played, presence, elements, E/CP state, milestone, pivot advice).
+- Updated `spirits/low/shadows-flicker-like-flame.md` Opening A + B to the new format; added experimental Opening C stub.
+- Captured format convention in `memory/feedback_opener_format.md` for future authoring.
+
 ## Process notes
 
 - Each chapter update re-stamps its `Last revised: YYYY-MM-DD` footer.
