@@ -1,0 +1,4686 @@
+{
+  "per_deck_per_expansion": {
+    "minor": {
+      "base": {
+        "pool": 50,
+        "fear_amount": {
+          "n": 50,
+          "mean": 0.58,
+          "stdev": 1.052,
+          "cv": 1.813,
+          "min": 0,
+          "max": 4,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "tokens_touched": {
+          "n": 50,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "spirit_favor": {
+          "n": 50,
+          "mean": 0.68,
+          "stdev": 0.653,
+          "cv": 0.96,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "invader_favor": {
+          "n": 50,
+          "mean": 0.08,
+          "stdev": 0.274,
+          "cv": 3.426,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 50,
+          "mean": 0.6,
+          "stdev": 0.67,
+          "cv": 1.117,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "destroy": {
+          "n": 50,
+          "mean": 0.08,
+          "stdev": 0.274,
+          "cv": 3.426,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "push": {
+          "n": 50,
+          "mean": 0.36,
+          "stdev": 0.598,
+          "cv": 1.661,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "blight_add": {
+          "n": 50,
+          "mean": 0.04,
+          "stdev": 0.198,
+          "cv": 4.949,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 4,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 1,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 2,
+            "blight_add": 1,
+            "name": "Land of Haunts and Embers"
+          },
+          {
+            "fear_amount": 4,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 1,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 2,
+            "blight_add": 1,
+            "name": "Land of Haunts and Embers"
+          },
+          {
+            "fear_amount": 3,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Rain of Blood"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 2,
+            "tokens_touched": 0,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dark and Tangled Woods"
+          },
+          {
+            "fear_amount": 2,
+            "tokens_touched": 0,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Delusions of Danger"
+          },
+          {
+            "fear_amount": 2,
+            "tokens_touched": 0,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Shadows of the Burning Forest"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Call of the Dahan Ways"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Call to Bloodshed"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Call to Migrate"
+          }
+        ]
+      },
+      "bnc": {
+        "pool": 30,
+        "fear_amount": {
+          "n": 30,
+          "mean": 0.667,
+          "stdev": 1.093,
+          "cv": 1.64,
+          "min": 0,
+          "max": 4,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "tokens_touched": {
+          "n": 30,
+          "mean": 0.533,
+          "stdev": 0.571,
+          "cv": 1.071,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "spirit_favor": {
+          "n": 30,
+          "mean": 0.8,
+          "stdev": 0.714,
+          "cv": 0.893,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "invader_favor": {
+          "n": 30,
+          "mean": 0.033,
+          "stdev": 0.183,
+          "cv": 5.477,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 30,
+          "mean": 0.767,
+          "stdev": 0.728,
+          "cv": 0.949,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "destroy": {
+          "n": 30,
+          "mean": 0.233,
+          "stdev": 0.504,
+          "cv": 2.16,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "push": {
+          "n": 30,
+          "mean": 0.233,
+          "stdev": 0.43,
+          "cv": 1.844,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 30,
+          "mean": 0.033,
+          "stdev": 0.183,
+          "cv": 5.477,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 4,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Tormenting Rotflies"
+          },
+          {
+            "fear_amount": 3,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Here There Be Monsters"
+          },
+          {
+            "fear_amount": 3,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Portents of Disaster"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Animated Wrackroot"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 0,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Call to Ferocity"
+          },
+          {
+            "fear_amount": 3,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Here There Be Monsters"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Absorb Corruption"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Call to Trade"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Cycles of Time and Tide"
+          }
+        ]
+      },
+      "je": {
+        "pool": 33,
+        "fear_amount": {
+          "n": 33,
+          "mean": 0.576,
+          "stdev": 1.091,
+          "cv": 1.894,
+          "min": 0,
+          "max": 5,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "tokens_touched": {
+          "n": 33,
+          "mean": 0.879,
+          "stdev": 1.244,
+          "cv": 1.416,
+          "min": 0,
+          "max": 5,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "spirit_favor": {
+          "n": 33,
+          "mean": 0.606,
+          "stdev": 0.609,
+          "cv": 1.005,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "invader_favor": {
+          "n": 33,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 33,
+          "mean": 0.606,
+          "stdev": 0.609,
+          "cv": 1.005,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "destroy": {
+          "n": 33,
+          "mean": 0.152,
+          "stdev": 0.442,
+          "cv": 2.915,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "push": {
+          "n": 33,
+          "mean": 0.242,
+          "stdev": 0.435,
+          "cv": 1.795,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 33,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 5,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Terror Turns to Madness"
+          },
+          {
+            "fear_amount": 3,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Haunted by Primal Memories"
+          },
+          {
+            "fear_amount": 2,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dry Wood Explodes in Smoldering Splinters"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 1,
+            "tokens_touched": 0,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Domesticated Animals Go Berserk"
+          },
+          {
+            "fear_amount": 3,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Haunted by Primal Memories"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Call to Guard"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Bats Scout for Raids by Darkness"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 2,
+            "damage": 0,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Birds Cry Warning"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Blood Draws Predators"
+          }
+        ]
+      },
+      "ni": {
+        "pool": 1,
+        "fear_amount": {
+          "n": 1,
+          "mean": 1.0,
+          "stdev": 0,
+          "cv": 0.0,
+          "min": 1,
+          "max": 1,
+          "q1": 1,
+          "median": 1,
+          "q3": 1
+        },
+        "tokens_touched": {
+          "n": 1,
+          "mean": 1.0,
+          "stdev": 0,
+          "cv": 0.0,
+          "min": 1,
+          "max": 1,
+          "q1": 1,
+          "median": 1,
+          "q3": 1
+        },
+        "spirit_favor": {
+          "n": 1,
+          "mean": 2.0,
+          "stdev": 0,
+          "cv": 0.0,
+          "min": 2,
+          "max": 2,
+          "q1": 2,
+          "median": 2,
+          "q3": 2
+        },
+        "invader_favor": {
+          "n": 1,
+          "mean": 0.0,
+          "stdev": 0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 1,
+          "mean": 2.0,
+          "stdev": 0,
+          "cv": 0.0,
+          "min": 2,
+          "max": 2,
+          "q1": 2,
+          "median": 2,
+          "q3": 2
+        },
+        "destroy": {
+          "n": 1,
+          "mean": 0.0,
+          "stdev": 0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "push": {
+          "n": 1,
+          "mean": 0.0,
+          "stdev": 0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 1,
+          "mean": 0.0,
+          "stdev": 0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Roiling Bog and Snagging Thorn"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Roiling Bog and Snagging Thorn"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Roiling Bog and Snagging Thorn"
+          }
+        ]
+      }
+    },
+    "major": {
+      "base": {
+        "pool": 41,
+        "fear_amount": {
+          "n": 41,
+          "mean": 1.049,
+          "stdev": 1.431,
+          "cv": 1.364,
+          "min": 0,
+          "max": 5,
+          "q1": 0,
+          "median": 0,
+          "q3": 2
+        },
+        "tokens_touched": {
+          "n": 41,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "spirit_favor": {
+          "n": 41,
+          "mean": 0.634,
+          "stdev": 0.581,
+          "cv": 0.917,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "invader_favor": {
+          "n": 41,
+          "mean": 0.146,
+          "stdev": 0.358,
+          "cv": 2.445,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 41,
+          "mean": 0.488,
+          "stdev": 0.637,
+          "cv": 1.306,
+          "min": -1,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "destroy": {
+          "n": 41,
+          "mean": 0.366,
+          "stdev": 0.662,
+          "cv": 1.809,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "push": {
+          "n": 41,
+          "mean": 0.073,
+          "stdev": 0.264,
+          "cv": 3.603,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 41,
+          "mean": 0.098,
+          "stdev": 0.3,
+          "cv": 3.079,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 5,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Mists of Oblivion"
+          },
+          {
+            "fear_amount": 4,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Paralyzing Fright"
+          },
+          {
+            "fear_amount": 4,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Paralyzing Fright"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 1,
+            "tokens_touched": 0,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Winds of Rust and Atrophy"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 0,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Winds of Rust and Atrophy"
+          },
+          {
+            "fear_amount": 2,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Accelerated Rot"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 1,
+            "net_favor": -1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Dissolve the Bonds of Kinship"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Blazing Renewal"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Blazing Renewal"
+          }
+        ]
+      },
+      "bnc": {
+        "pool": 22,
+        "fear_amount": {
+          "n": 22,
+          "mean": 2.0,
+          "stdev": 2.828,
+          "cv": 1.414,
+          "min": 0,
+          "max": 10,
+          "q1": 0,
+          "median": 1,
+          "q3": 2
+        },
+        "tokens_touched": {
+          "n": 22,
+          "mean": 0.864,
+          "stdev": 0.889,
+          "cv": 1.029,
+          "min": 0,
+          "max": 4,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "spirit_favor": {
+          "n": 22,
+          "mean": 0.636,
+          "stdev": 0.492,
+          "cv": 0.774,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "invader_favor": {
+          "n": 22,
+          "mean": 0.136,
+          "stdev": 0.351,
+          "cv": 2.576,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 22,
+          "mean": 0.5,
+          "stdev": 0.598,
+          "cv": 1.195,
+          "min": -1,
+          "max": 1,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "destroy": {
+          "n": 22,
+          "mean": 0.318,
+          "stdev": 0.477,
+          "cv": 1.498,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "push": {
+          "n": 22,
+          "mean": 0.136,
+          "stdev": 0.351,
+          "cv": 2.576,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 22,
+          "mean": 0.136,
+          "stdev": 0.351,
+          "cv": 2.576,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 10,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Sea Monsters"
+          },
+          {
+            "fear_amount": 7,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Manifest Incarnation"
+          },
+          {
+            "fear_amount": 6,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Cast Down Into the Briny Deep"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Bloodwrack Plague"
+          },
+          {
+            "fear_amount": 6,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Cast Down Into the Briny Deep"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Flow like Water, Reach like Air"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 1,
+            "net_favor": -1,
+            "destroy": 1,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 1,
+            "name": "Pyroclastic Flow"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Death Falls Gently from Open Blossoms"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Fire and Flood"
+          }
+        ]
+      },
+      "je": {
+        "pool": 23,
+        "fear_amount": {
+          "n": 23,
+          "mean": 1.043,
+          "stdev": 1.492,
+          "cv": 1.43,
+          "min": 0,
+          "max": 5,
+          "q1": 0,
+          "median": 0,
+          "q3": 2
+        },
+        "tokens_touched": {
+          "n": 23,
+          "mean": 0.87,
+          "stdev": 0.968,
+          "cv": 1.113,
+          "min": 0,
+          "max": 3,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "spirit_favor": {
+          "n": 23,
+          "mean": 0.652,
+          "stdev": 0.573,
+          "cv": 0.878,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "invader_favor": {
+          "n": 23,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 23,
+          "mean": 0.652,
+          "stdev": 0.573,
+          "cv": 0.878,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "destroy": {
+          "n": 23,
+          "mean": 0.174,
+          "stdev": 0.491,
+          "cv": 2.823,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "push": {
+          "n": 23,
+          "mean": 0.13,
+          "stdev": 0.344,
+          "cv": 2.64,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 23,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 5,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Focus the Land's Anguish"
+          },
+          {
+            "fear_amount": 4,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 2,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Draw Towards a Consuming Void"
+          },
+          {
+            "fear_amount": 3,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 1,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Transform to a Murderous Darkness"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 3,
+            "tokens_touched": 0,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Trees Radiate Celestial Brilliance"
+          },
+          {
+            "fear_amount": 2,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 2,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Angry Bears"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Bargains of Power and Protection"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dream of the Untouched Land"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 2,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Forests of Living Obsidian"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Irresistible Call"
+          }
+        ]
+      },
+      "ni": {
+        "pool": 12,
+        "fear_amount": {
+          "n": 12,
+          "mean": 0.833,
+          "stdev": 1.337,
+          "cv": 1.605,
+          "min": 0,
+          "max": 4,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "tokens_touched": {
+          "n": 12,
+          "mean": 0.417,
+          "stdev": 0.515,
+          "cv": 1.236,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "spirit_favor": {
+          "n": 12,
+          "mean": 0.583,
+          "stdev": 0.515,
+          "cv": 0.883,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "invader_favor": {
+          "n": 12,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 12,
+          "mean": 0.583,
+          "stdev": 0.515,
+          "cv": 0.883,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "destroy": {
+          "n": 12,
+          "mean": 0.167,
+          "stdev": 0.577,
+          "cv": 3.464,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "push": {
+          "n": 12,
+          "mean": 0.25,
+          "stdev": 0.452,
+          "cv": 1.809,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 12,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 4,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 2,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Unearth a Beast of Wrathful Stone"
+          },
+          {
+            "fear_amount": 3,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Rumbling Earthquakes"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Bombard with Boulders and Stinging Seeds"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Bombard with Boulders and Stinging Seeds"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 1,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Flocking Red-Talons"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Plague Ships Sail to Distant Ports"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Bargain of Coursing Paths"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Exaltation of the Incandescent Sky"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Fragments of Yesteryear"
+          }
+        ]
+      }
+    },
+    "fear": {
+      "base": {
+        "pool": 15,
+        "fear_amount": {
+          "n": 15,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "tokens_touched": {
+          "n": 15,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "spirit_favor": {
+          "n": 15,
+          "mean": 0.4,
+          "stdev": 0.507,
+          "cv": 1.268,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "invader_favor": {
+          "n": 15,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 15,
+          "mean": 0.4,
+          "stdev": 0.507,
+          "cv": 1.268,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "destroy": {
+          "n": 15,
+          "mean": 0.267,
+          "stdev": 1.033,
+          "cv": 3.873,
+          "min": 0,
+          "max": 4,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "push": {
+          "n": 15,
+          "mean": 0.333,
+          "stdev": 0.816,
+          "cv": 2.449,
+          "min": 0,
+          "max": 3,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 15,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Avoid the Dahan"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Belief Takes Root"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 2,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Dahan Enheartened"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Belief Takes Root"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 2,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Dahan Enheartened"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dahan on their Guard"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Avoid the Dahan"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 3,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dahan Raid"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Emigration Accelerates"
+          }
+        ]
+      },
+      "bnc": {
+        "pool": 15,
+        "fear_amount": {
+          "n": 15,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "tokens_touched": {
+          "n": 15,
+          "mean": 0.867,
+          "stdev": 0.915,
+          "cv": 1.056,
+          "min": 0,
+          "max": 3,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "spirit_favor": {
+          "n": 15,
+          "mean": 0.133,
+          "stdev": 0.352,
+          "cv": 2.639,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "invader_favor": {
+          "n": 15,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 15,
+          "mean": 0.133,
+          "stdev": 0.352,
+          "cv": 2.639,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "destroy": {
+          "n": 15,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "push": {
+          "n": 15,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 15,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dahan Attack"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dahan Threaten"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Demoralized"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Demoralized"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Plan for Departure"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dahan Attack"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dahan Attack"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dahan Threaten"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 2,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Depart the Dangerous Land"
+          }
+        ]
+      },
+      "je": {
+        "pool": 6,
+        "fear_amount": {
+          "n": 6,
+          "mean": 0.167,
+          "stdev": 0.408,
+          "cv": 2.449,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "tokens_touched": {
+          "n": 6,
+          "mean": 1.5,
+          "stdev": 1.871,
+          "cv": 1.247,
+          "min": 0,
+          "max": 5,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "spirit_favor": {
+          "n": 6,
+          "mean": 0.5,
+          "stdev": 0.548,
+          "cv": 1.095,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "invader_favor": {
+          "n": 6,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 6,
+          "mean": 0.5,
+          "stdev": 0.548,
+          "cv": 1.095,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "destroy": {
+          "n": 6,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "push": {
+          "n": 6,
+          "mean": 0.167,
+          "stdev": 0.408,
+          "cv": 2.449,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 6,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Nerves Fray"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 5,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Beset by Many Troubles"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 3,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dahan Reclaim Fishing Grounds"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 5,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Beset by Many Troubles"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 2,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Flee from Dangerous Lands"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Nerves Fray"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 3,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dahan Reclaim Fishing Grounds"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Sense of Dread"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Theological Strife"
+          }
+        ]
+      },
+      "ni": {
+        "pool": 9,
+        "fear_amount": {
+          "n": 9,
+          "mean": 0.333,
+          "stdev": 1.0,
+          "cv": 3.0,
+          "min": 0,
+          "max": 3,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "tokens_touched": {
+          "n": 9,
+          "mean": 0.667,
+          "stdev": 0.707,
+          "cv": 1.061,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "spirit_favor": {
+          "n": 9,
+          "mean": 0.333,
+          "stdev": 0.707,
+          "cv": 2.121,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "invader_favor": {
+          "n": 9,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 9,
+          "mean": 0.333,
+          "stdev": 0.707,
+          "cv": 2.121,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "destroy": {
+          "n": 9,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "push": {
+          "n": 9,
+          "mean": 0.222,
+          "stdev": 0.667,
+          "cv": 3.0,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 9,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 3,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 3,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Daunted by the Dahan"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Civil Unrest"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dahan Gain the Edge"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 3,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 3,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Daunted by the Dahan"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Dahan Gain the Edge"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Civil Unrest"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Civil Unrest"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 5,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Distracted by Local Troubles"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 2,
+            "blight_add": 0,
+            "name": "Restlessness"
+          }
+        ]
+      }
+    },
+    "event": {
+      "base": {
+        "pool": 0
+      },
+      "bnc": {
+        "pool": 23,
+        "fear_amount": {
+          "n": 23,
+          "mean": 0.435,
+          "stdev": 0.59,
+          "cv": 1.356,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "tokens_touched": {
+          "n": 23,
+          "mean": 1.217,
+          "stdev": 0.422,
+          "cv": 0.346,
+          "min": 1,
+          "max": 2,
+          "q1": 1,
+          "median": 1,
+          "q3": 1
+        },
+        "spirit_favor": {
+          "n": 23,
+          "mean": 0.826,
+          "stdev": 0.65,
+          "cv": 0.787,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "invader_favor": {
+          "n": 23,
+          "mean": 0.739,
+          "stdev": 0.541,
+          "cv": 0.732,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "net_favor": {
+          "n": 23,
+          "mean": 0.087,
+          "stdev": 0.949,
+          "cv": 10.917,
+          "min": -2,
+          "max": 2,
+          "q1": -1,
+          "median": 0,
+          "q3": 1
+        },
+        "destroy": {
+          "n": 23,
+          "mean": 0.826,
+          "stdev": 0.717,
+          "cv": 0.868,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "push": {
+          "n": 23,
+          "mean": 0.391,
+          "stdev": 0.783,
+          "cv": 2.0,
+          "min": 0,
+          "max": 3,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 23,
+          "mean": 0.478,
+          "stdev": 0.511,
+          "cv": 1.068,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 2,
+            "tokens_touched": 2,
+            "spirit_favor": 2,
+            "invader_favor": 1,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 1,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Missionaries Arrive"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 3,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Distant Exploration"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 2,
+            "spirit_favor": 1,
+            "invader_favor": 1,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 1,
+            "name": "New Species Spread"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 0,
+            "push": 3,
+            "blight_add": 0,
+            "name": "Seeking the Interior"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 3,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Distant Exploration"
+          },
+          {
+            "fear_amount": 2,
+            "tokens_touched": 2,
+            "spirit_favor": 2,
+            "invader_favor": 1,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 1,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Missionaries Arrive"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 2,
+            "net_favor": -2,
+            "destroy": 0,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 1,
+            "name": "Farmers Seek the Dahan for Aid"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 1,
+            "net_favor": -1,
+            "destroy": 2,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 1,
+            "name": "Cultural Assimilation"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 1,
+            "net_favor": -1,
+            "destroy": 2,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 1,
+            "name": "Heavy Farming"
+          }
+        ]
+      },
+      "je": {
+        "pool": 30,
+        "fear_amount": {
+          "n": 30,
+          "mean": 0.5,
+          "stdev": 0.682,
+          "cv": 1.365,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "tokens_touched": {
+          "n": 30,
+          "mean": 1.633,
+          "stdev": 0.89,
+          "cv": 0.545,
+          "min": 1,
+          "max": 4,
+          "q1": 1,
+          "median": 1,
+          "q3": 2
+        },
+        "spirit_favor": {
+          "n": 30,
+          "mean": 1.267,
+          "stdev": 1.081,
+          "cv": 0.853,
+          "min": 0,
+          "max": 4,
+          "q1": 0,
+          "median": 1,
+          "q3": 2
+        },
+        "invader_favor": {
+          "n": 30,
+          "mean": 0.733,
+          "stdev": 0.521,
+          "cv": 0.71,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "net_favor": {
+          "n": 30,
+          "mean": 0.533,
+          "stdev": 1.167,
+          "cv": 2.187,
+          "min": -1,
+          "max": 3,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "destroy": {
+          "n": 30,
+          "mean": 0.8,
+          "stdev": 0.761,
+          "cv": 0.951,
+          "min": 0,
+          "max": 3,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "push": {
+          "n": 30,
+          "mean": 0.467,
+          "stdev": 0.571,
+          "cv": 1.224,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "blight_add": {
+          "n": 30,
+          "mean": 0.433,
+          "stdev": 0.568,
+          "cv": 1.312,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 2,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 1,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Bureaucrats Adjust Funding"
+          },
+          {
+            "fear_amount": 2,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 1,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 2,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Eager Explorers"
+          },
+          {
+            "fear_amount": 2,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 1,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Overconfidence"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 3,
+            "invader_favor": 0,
+            "net_favor": 3,
+            "destroy": 1,
+            "damage": 0,
+            "push": 1,
+            "blight_add": 0,
+            "name": "Dahan Trade with the Invaders"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 3,
+            "invader_favor": 0,
+            "net_favor": 3,
+            "destroy": 0,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Numinous Crisis"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 4,
+            "invader_favor": 1,
+            "net_favor": 3,
+            "destroy": 2,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 1,
+            "name": "The Struggles of Growth"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 3,
+            "spirit_favor": 0,
+            "invader_favor": 1,
+            "net_favor": -1,
+            "destroy": 1,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 1,
+            "name": "Gradual Corruption"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 2,
+            "spirit_favor": 0,
+            "invader_favor": 1,
+            "net_favor": -1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 2,
+            "name": "Life's Balance Tilts"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 1,
+            "net_favor": -1,
+            "destroy": 1,
+            "damage": 1,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Relentless Optimism"
+          }
+        ]
+      },
+      "ni": {
+        "pool": 9,
+        "fear_amount": {
+          "n": 9,
+          "mean": 1.222,
+          "stdev": 1.202,
+          "cv": 0.983,
+          "min": 0,
+          "max": 4,
+          "q1": 1,
+          "median": 1,
+          "q3": 1
+        },
+        "tokens_touched": {
+          "n": 9,
+          "mean": 1.444,
+          "stdev": 0.527,
+          "cv": 0.365,
+          "min": 1,
+          "max": 2,
+          "q1": 1,
+          "median": 1,
+          "q3": 2
+        },
+        "spirit_favor": {
+          "n": 9,
+          "mean": 1.222,
+          "stdev": 0.667,
+          "cv": 0.545,
+          "min": 0,
+          "max": 2,
+          "q1": 1,
+          "median": 1,
+          "q3": 2
+        },
+        "invader_favor": {
+          "n": 9,
+          "mean": 0.444,
+          "stdev": 0.726,
+          "cv": 1.635,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "net_favor": {
+          "n": 9,
+          "mean": 0.778,
+          "stdev": 0.833,
+          "cv": 1.071,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "destroy": {
+          "n": 9,
+          "mean": 1.444,
+          "stdev": 1.014,
+          "cv": 0.702,
+          "min": 0,
+          "max": 3,
+          "q1": 1,
+          "median": 1,
+          "q3": 2
+        },
+        "push": {
+          "n": 9,
+          "mean": 0.222,
+          "stdev": 0.441,
+          "cv": 1.984,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 9,
+          "mean": 0.333,
+          "stdev": 0.5,
+          "cv": 1.5,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 4,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 2,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 1,
+            "name": "Far-off Wars Touch the Island"
+          },
+          {
+            "fear_amount": 2,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Visions Out of Time"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 2,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Accumulated Devastation"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 4,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 2,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 1,
+            "name": "Far-off Wars Touch the Island"
+          },
+          {
+            "fear_amount": 2,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 0,
+            "net_favor": 2,
+            "destroy": 0,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Visions Out of Time"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 2,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Accumulated Devastation"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 1,
+            "tokens_touched": 2,
+            "spirit_favor": 1,
+            "invader_favor": 1,
+            "net_favor": 0,
+            "destroy": 3,
+            "damage": 2,
+            "push": 0,
+            "blight_add": 1,
+            "name": "An Ominous Dawn"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 1,
+            "invader_favor": 1,
+            "net_favor": 0,
+            "destroy": 3,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Focused Farming"
+          },
+          {
+            "fear_amount": 1,
+            "tokens_touched": 1,
+            "spirit_favor": 2,
+            "invader_favor": 2,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 1,
+            "name": "Influx of Settlers"
+          }
+        ]
+      }
+    },
+    "blight": {
+      "base": {
+        "pool": 2,
+        "fear_amount": {
+          "n": 2,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "tokens_touched": {
+          "n": 2,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "spirit_favor": {
+          "n": 2,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "invader_favor": {
+          "n": 2,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 2,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "destroy": {
+          "n": 2,
+          "mean": 1.0,
+          "stdev": 0.0,
+          "cv": 0.0,
+          "min": 1,
+          "max": 1,
+          "q1": 1,
+          "median": 1,
+          "q3": 1
+        },
+        "push": {
+          "n": 2,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 2,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Downward Spiral"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Memory Fades to Dust"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Downward Spiral"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Memory Fades to Dust"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Downward Spiral"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Memory Fades to Dust"
+          }
+        ]
+      },
+      "bnc": {
+        "pool": 6,
+        "fear_amount": {
+          "n": 6,
+          "mean": 0.333,
+          "stdev": 0.816,
+          "cv": 2.449,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "tokens_touched": {
+          "n": 6,
+          "mean": 0.167,
+          "stdev": 0.408,
+          "cv": 2.449,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "spirit_favor": {
+          "n": 6,
+          "mean": 0.167,
+          "stdev": 0.408,
+          "cv": 2.449,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "invader_favor": {
+          "n": 6,
+          "mean": 0.333,
+          "stdev": 0.516,
+          "cv": 1.549,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 6,
+          "mean": -0.167,
+          "stdev": 0.753,
+          "cv": -4.517,
+          "min": -1,
+          "max": 1,
+          "q1": -1,
+          "median": 0,
+          "q3": 0
+        },
+        "destroy": {
+          "n": 6,
+          "mean": 0.5,
+          "stdev": 0.548,
+          "cv": 1.095,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "push": {
+          "n": 6,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 6,
+          "mean": 0.167,
+          "stdev": 0.408,
+          "cv": 2.449,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 2,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Erosion of Will"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "A Pall Upon the Land"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Aid from Lesser Spirits"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 2,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Erosion of Will"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "A Pall Upon the Land"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Aid from Lesser Spirits"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 1,
+            "net_favor": -1,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 1,
+            "name": "Disintegrating Ecosystem"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 1,
+            "net_favor": -1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Promising Farmlands"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "A Pall Upon the Land"
+          }
+        ]
+      },
+      "je": {
+        "pool": 7,
+        "fear_amount": {
+          "n": 7,
+          "mean": 0.286,
+          "stdev": 0.756,
+          "cv": 2.646,
+          "min": 0,
+          "max": 2,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "tokens_touched": {
+          "n": 7,
+          "mean": 0.143,
+          "stdev": 0.378,
+          "cv": 2.646,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "spirit_favor": {
+          "n": 7,
+          "mean": 0.143,
+          "stdev": 0.378,
+          "cv": 2.646,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "invader_favor": {
+          "n": 7,
+          "mean": 0.143,
+          "stdev": 0.378,
+          "cv": 2.646,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 7,
+          "mean": 0.0,
+          "stdev": 0.577,
+          "cv": 0,
+          "min": -1,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "destroy": {
+          "n": 7,
+          "mean": 0.429,
+          "stdev": 0.535,
+          "cv": 1.247,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 1
+        },
+        "push": {
+          "n": 7,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 7,
+          "mean": 0.286,
+          "stdev": 0.488,
+          "cv": 1.708,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 2,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Invaders Find the Land to Their Liking"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 1,
+            "name": "All Things Weaken"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Power Corrodes the Spirit"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 2,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 0,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Invaders Find the Land to Their Liking"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 1,
+            "name": "All Things Weaken"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Power Corrodes the Spirit"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 1,
+            "net_favor": -1,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 1,
+            "name": "Untended Land Crumbles"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 1,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 1,
+            "name": "All Things Weaken"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Power Corrodes the Spirit"
+          }
+        ]
+      },
+      "ni": {
+        "pool": 8,
+        "fear_amount": {
+          "n": 8,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "tokens_touched": {
+          "n": 8,
+          "mean": 0.375,
+          "stdev": 1.061,
+          "cv": 2.828,
+          "min": 0,
+          "max": 3,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "spirit_favor": {
+          "n": 8,
+          "mean": 0.125,
+          "stdev": 0.354,
+          "cv": 2.828,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "invader_favor": {
+          "n": 8,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "net_favor": {
+          "n": 8,
+          "mean": 0.125,
+          "stdev": 0.354,
+          "cv": 2.828,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "destroy": {
+          "n": 8,
+          "mean": 0.625,
+          "stdev": 0.518,
+          "cv": 0.828,
+          "min": 0,
+          "max": 1,
+          "q1": 0,
+          "median": 1,
+          "q3": 1
+        },
+        "push": {
+          "n": 8,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "blight_add": {
+          "n": 8,
+          "mean": 0.0,
+          "stdev": 0.0,
+          "cv": 0,
+          "min": 0,
+          "max": 0,
+          "q1": 0,
+          "median": 0,
+          "q3": 0
+        },
+        "examples_high_output": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Attenuated Essence"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Blight Corrodes the Spirit"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Burn Brightest Before the End"
+          }
+        ],
+        "examples_high_spirit": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 1,
+            "invader_favor": 0,
+            "net_favor": 1,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "The Border of Life and Death"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Attenuated Essence"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Blight Corrodes the Spirit"
+          }
+        ],
+        "examples_high_invader": [
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Attenuated Essence"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Blight Corrodes the Spirit"
+          },
+          {
+            "fear_amount": 0,
+            "tokens_touched": 0,
+            "spirit_favor": 0,
+            "invader_favor": 0,
+            "net_favor": 0,
+            "destroy": 1,
+            "damage": 0,
+            "push": 0,
+            "blight_add": 0,
+            "name": "Burn Brightest Before the End"
+          }
+        ]
+      }
+    }
+  },
+  "swinginess_cv": {
+    "minor": {
+      "fear_amount": {
+        "base": {
+          "n": 50,
+          "cv": 1.813,
+          "iqr_span": 1,
+          "mean": 0.58,
+          "range": 4
+        },
+        "bnc": {
+          "n": 30,
+          "cv": 1.64,
+          "iqr_span": 1,
+          "mean": 0.667,
+          "range": 4
+        },
+        "je": {
+          "n": 33,
+          "cv": 1.894,
+          "iqr_span": 1,
+          "mean": 0.576,
+          "range": 5
+        },
+        "ni": {
+          "n": 1,
+          "cv": 0.0,
+          "iqr_span": 0,
+          "mean": 1.0,
+          "range": 0
+        }
+      },
+      "net_favor": {
+        "base": {
+          "n": 50,
+          "cv": 1.117,
+          "iqr_span": 1,
+          "mean": 0.6,
+          "range": 2
+        },
+        "bnc": {
+          "n": 30,
+          "cv": 0.949,
+          "iqr_span": 1,
+          "mean": 0.767,
+          "range": 2
+        },
+        "je": {
+          "n": 33,
+          "cv": 1.005,
+          "iqr_span": 1,
+          "mean": 0.606,
+          "range": 2
+        },
+        "ni": {
+          "n": 1,
+          "cv": 0.0,
+          "iqr_span": 0,
+          "mean": 2.0,
+          "range": 0
+        }
+      },
+      "tokens_touched": {
+        "base": {
+          "n": 50,
+          "cv": 0,
+          "iqr_span": 0,
+          "mean": 0.0,
+          "range": 0
+        },
+        "bnc": {
+          "n": 30,
+          "cv": 1.071,
+          "iqr_span": 1,
+          "mean": 0.533,
+          "range": 2
+        },
+        "je": {
+          "n": 33,
+          "cv": 1.416,
+          "iqr_span": 1,
+          "mean": 0.879,
+          "range": 5
+        },
+        "ni": {
+          "n": 1,
+          "cv": 0.0,
+          "iqr_span": 0,
+          "mean": 1.0,
+          "range": 0
+        }
+      }
+    },
+    "major": {
+      "fear_amount": {
+        "base": {
+          "n": 41,
+          "cv": 1.364,
+          "iqr_span": 2,
+          "mean": 1.049,
+          "range": 5
+        },
+        "bnc": {
+          "n": 22,
+          "cv": 1.414,
+          "iqr_span": 2,
+          "mean": 2.0,
+          "range": 10
+        },
+        "je": {
+          "n": 23,
+          "cv": 1.43,
+          "iqr_span": 2,
+          "mean": 1.043,
+          "range": 5
+        },
+        "ni": {
+          "n": 12,
+          "cv": 1.605,
+          "iqr_span": 1,
+          "mean": 0.833,
+          "range": 4
+        }
+      },
+      "net_favor": {
+        "base": {
+          "n": 41,
+          "cv": 1.306,
+          "iqr_span": 1,
+          "mean": 0.488,
+          "range": 3
+        },
+        "bnc": {
+          "n": 22,
+          "cv": 1.195,
+          "iqr_span": 1,
+          "mean": 0.5,
+          "range": 2
+        },
+        "je": {
+          "n": 23,
+          "cv": 0.878,
+          "iqr_span": 1,
+          "mean": 0.652,
+          "range": 2
+        },
+        "ni": {
+          "n": 12,
+          "cv": 0.883,
+          "iqr_span": 1,
+          "mean": 0.583,
+          "range": 1
+        }
+      },
+      "tokens_touched": {
+        "base": {
+          "n": 41,
+          "cv": 0,
+          "iqr_span": 0,
+          "mean": 0.0,
+          "range": 0
+        },
+        "bnc": {
+          "n": 22,
+          "cv": 1.029,
+          "iqr_span": 1,
+          "mean": 0.864,
+          "range": 4
+        },
+        "je": {
+          "n": 23,
+          "cv": 1.113,
+          "iqr_span": 1,
+          "mean": 0.87,
+          "range": 3
+        },
+        "ni": {
+          "n": 12,
+          "cv": 1.236,
+          "iqr_span": 1,
+          "mean": 0.417,
+          "range": 1
+        }
+      }
+    },
+    "fear": {
+      "fear_amount": {
+        "base": {
+          "n": 15,
+          "cv": 0,
+          "iqr_span": 0,
+          "mean": 0.0,
+          "range": 0
+        },
+        "bnc": {
+          "n": 15,
+          "cv": 0,
+          "iqr_span": 0,
+          "mean": 0.0,
+          "range": 0
+        },
+        "je": {
+          "n": 6,
+          "cv": 2.449,
+          "iqr_span": 0,
+          "mean": 0.167,
+          "range": 1
+        },
+        "ni": {
+          "n": 9,
+          "cv": 3.0,
+          "iqr_span": 0,
+          "mean": 0.333,
+          "range": 3
+        }
+      },
+      "net_favor": {
+        "base": {
+          "n": 15,
+          "cv": 1.268,
+          "iqr_span": 1,
+          "mean": 0.4,
+          "range": 1
+        },
+        "bnc": {
+          "n": 15,
+          "cv": 2.639,
+          "iqr_span": 0,
+          "mean": 0.133,
+          "range": 1
+        },
+        "je": {
+          "n": 6,
+          "cv": 1.095,
+          "iqr_span": 1,
+          "mean": 0.5,
+          "range": 1
+        },
+        "ni": {
+          "n": 9,
+          "cv": 2.121,
+          "iqr_span": 0,
+          "mean": 0.333,
+          "range": 2
+        }
+      },
+      "tokens_touched": {
+        "base": {
+          "n": 15,
+          "cv": 0,
+          "iqr_span": 0,
+          "mean": 0.0,
+          "range": 0
+        },
+        "bnc": {
+          "n": 15,
+          "cv": 1.056,
+          "iqr_span": 1,
+          "mean": 0.867,
+          "range": 3
+        },
+        "je": {
+          "n": 6,
+          "cv": 1.247,
+          "iqr_span": 1,
+          "mean": 1.5,
+          "range": 5
+        },
+        "ni": {
+          "n": 9,
+          "cv": 1.061,
+          "iqr_span": 1,
+          "mean": 0.667,
+          "range": 2
+        }
+      }
+    },
+    "event": {
+      "fear_amount": {
+        "bnc": {
+          "n": 23,
+          "cv": 1.356,
+          "iqr_span": 1,
+          "mean": 0.435,
+          "range": 2
+        },
+        "je": {
+          "n": 30,
+          "cv": 1.365,
+          "iqr_span": 1,
+          "mean": 0.5,
+          "range": 2
+        },
+        "ni": {
+          "n": 9,
+          "cv": 0.983,
+          "iqr_span": 0,
+          "mean": 1.222,
+          "range": 4
+        }
+      },
+      "net_favor": {
+        "bnc": {
+          "n": 23,
+          "cv": 10.917,
+          "iqr_span": 2,
+          "mean": 0.087,
+          "range": 4
+        },
+        "je": {
+          "n": 30,
+          "cv": 2.187,
+          "iqr_span": 1,
+          "mean": 0.533,
+          "range": 4
+        },
+        "ni": {
+          "n": 9,
+          "cv": 1.071,
+          "iqr_span": 1,
+          "mean": 0.778,
+          "range": 2
+        }
+      },
+      "tokens_touched": {
+        "bnc": {
+          "n": 23,
+          "cv": 0.346,
+          "iqr_span": 0,
+          "mean": 1.217,
+          "range": 1
+        },
+        "je": {
+          "n": 30,
+          "cv": 0.545,
+          "iqr_span": 1,
+          "mean": 1.633,
+          "range": 3
+        },
+        "ni": {
+          "n": 9,
+          "cv": 0.365,
+          "iqr_span": 1,
+          "mean": 1.444,
+          "range": 1
+        }
+      }
+    },
+    "blight": {
+      "fear_amount": {
+        "base": {
+          "n": 2,
+          "cv": 0,
+          "iqr_span": 0,
+          "mean": 0.0,
+          "range": 0
+        },
+        "bnc": {
+          "n": 6,
+          "cv": 2.449,
+          "iqr_span": 0,
+          "mean": 0.333,
+          "range": 2
+        },
+        "je": {
+          "n": 7,
+          "cv": 2.646,
+          "iqr_span": 0,
+          "mean": 0.286,
+          "range": 2
+        },
+        "ni": {
+          "n": 8,
+          "cv": 0,
+          "iqr_span": 0,
+          "mean": 0.0,
+          "range": 0
+        }
+      },
+      "net_favor": {
+        "base": {
+          "n": 2,
+          "cv": 0,
+          "iqr_span": 0,
+          "mean": 0.0,
+          "range": 0
+        },
+        "bnc": {
+          "n": 6,
+          "cv": -4.517,
+          "iqr_span": 1,
+          "mean": -0.167,
+          "range": 2
+        },
+        "je": {
+          "n": 7,
+          "cv": 0,
+          "iqr_span": 0,
+          "mean": 0.0,
+          "range": 2
+        },
+        "ni": {
+          "n": 8,
+          "cv": 2.828,
+          "iqr_span": 0,
+          "mean": 0.125,
+          "range": 1
+        }
+      },
+      "tokens_touched": {
+        "base": {
+          "n": 2,
+          "cv": 0,
+          "iqr_span": 0,
+          "mean": 0.0,
+          "range": 0
+        },
+        "bnc": {
+          "n": 6,
+          "cv": 2.449,
+          "iqr_span": 0,
+          "mean": 0.167,
+          "range": 1
+        },
+        "je": {
+          "n": 7,
+          "cv": 2.646,
+          "iqr_span": 0,
+          "mean": 0.143,
+          "range": 1
+        },
+        "ni": {
+          "n": 8,
+          "cv": 2.828,
+          "iqr_span": 0,
+          "mean": 0.375,
+          "range": 3
+        }
+      }
+    }
+  },
+  "dilution_shift": {
+    "minor": {
+      "fear_amount": {
+        "base": {
+          "pool_added": 50,
+          "mean_added": 0.58,
+          "cumulative_pool": 50,
+          "cumulative_mean": 0.58,
+          "delta_from_previous": null
+        },
+        "bnc": {
+          "pool_added": 30,
+          "mean_added": 0.667,
+          "cumulative_pool": 80,
+          "cumulative_mean": 0.613,
+          "delta_from_previous": 0.033
+        },
+        "je": {
+          "pool_added": 33,
+          "mean_added": 0.576,
+          "cumulative_pool": 113,
+          "cumulative_mean": 0.602,
+          "delta_from_previous": -0.011
+        },
+        "ni": {
+          "pool_added": 1,
+          "mean_added": 1.0,
+          "cumulative_pool": 114,
+          "cumulative_mean": 0.605,
+          "delta_from_previous": 0.003
+        }
+      },
+      "net_favor": {
+        "base": {
+          "pool_added": 50,
+          "mean_added": 0.6,
+          "cumulative_pool": 50,
+          "cumulative_mean": 0.6,
+          "delta_from_previous": null
+        },
+        "bnc": {
+          "pool_added": 30,
+          "mean_added": 0.767,
+          "cumulative_pool": 80,
+          "cumulative_mean": 0.663,
+          "delta_from_previous": 0.063
+        },
+        "je": {
+          "pool_added": 33,
+          "mean_added": 0.606,
+          "cumulative_pool": 113,
+          "cumulative_mean": 0.646,
+          "delta_from_previous": -0.017
+        },
+        "ni": {
+          "pool_added": 1,
+          "mean_added": 2.0,
+          "cumulative_pool": 114,
+          "cumulative_mean": 0.658,
+          "delta_from_previous": 0.012
+        }
+      },
+      "tokens_touched": {
+        "base": {
+          "pool_added": 50,
+          "mean_added": 0.0,
+          "cumulative_pool": 50,
+          "cumulative_mean": 0.0,
+          "delta_from_previous": null
+        },
+        "bnc": {
+          "pool_added": 30,
+          "mean_added": 0.533,
+          "cumulative_pool": 80,
+          "cumulative_mean": 0.2,
+          "delta_from_previous": 0.2
+        },
+        "je": {
+          "pool_added": 33,
+          "mean_added": 0.879,
+          "cumulative_pool": 113,
+          "cumulative_mean": 0.398,
+          "delta_from_previous": 0.198
+        },
+        "ni": {
+          "pool_added": 1,
+          "mean_added": 1.0,
+          "cumulative_pool": 114,
+          "cumulative_mean": 0.403,
+          "delta_from_previous": 0.005
+        }
+      }
+    },
+    "major": {
+      "fear_amount": {
+        "base": {
+          "pool_added": 41,
+          "mean_added": 1.049,
+          "cumulative_pool": 41,
+          "cumulative_mean": 1.049,
+          "delta_from_previous": null
+        },
+        "bnc": {
+          "pool_added": 22,
+          "mean_added": 2.0,
+          "cumulative_pool": 63,
+          "cumulative_mean": 1.381,
+          "delta_from_previous": 0.332
+        },
+        "je": {
+          "pool_added": 23,
+          "mean_added": 1.043,
+          "cumulative_pool": 86,
+          "cumulative_mean": 1.291,
+          "delta_from_previous": -0.09
+        },
+        "ni": {
+          "pool_added": 12,
+          "mean_added": 0.833,
+          "cumulative_pool": 98,
+          "cumulative_mean": 1.235,
+          "delta_from_previous": -0.056
+        }
+      },
+      "net_favor": {
+        "base": {
+          "pool_added": 41,
+          "mean_added": 0.488,
+          "cumulative_pool": 41,
+          "cumulative_mean": 0.488,
+          "delta_from_previous": null
+        },
+        "bnc": {
+          "pool_added": 22,
+          "mean_added": 0.5,
+          "cumulative_pool": 63,
+          "cumulative_mean": 0.492,
+          "delta_from_previous": 0.004
+        },
+        "je": {
+          "pool_added": 23,
+          "mean_added": 0.652,
+          "cumulative_pool": 86,
+          "cumulative_mean": 0.535,
+          "delta_from_previous": 0.043
+        },
+        "ni": {
+          "pool_added": 12,
+          "mean_added": 0.583,
+          "cumulative_pool": 98,
+          "cumulative_mean": 0.541,
+          "delta_from_previous": 0.006
+        }
+      },
+      "tokens_touched": {
+        "base": {
+          "pool_added": 41,
+          "mean_added": 0.0,
+          "cumulative_pool": 41,
+          "cumulative_mean": 0.0,
+          "delta_from_previous": null
+        },
+        "bnc": {
+          "pool_added": 22,
+          "mean_added": 0.864,
+          "cumulative_pool": 63,
+          "cumulative_mean": 0.302,
+          "delta_from_previous": 0.302
+        },
+        "je": {
+          "pool_added": 23,
+          "mean_added": 0.87,
+          "cumulative_pool": 86,
+          "cumulative_mean": 0.454,
+          "delta_from_previous": 0.152
+        },
+        "ni": {
+          "pool_added": 12,
+          "mean_added": 0.417,
+          "cumulative_pool": 98,
+          "cumulative_mean": 0.449,
+          "delta_from_previous": -0.004
+        }
+      }
+    },
+    "fear": {
+      "fear_amount": {
+        "base": {
+          "pool_added": 15,
+          "mean_added": 0.0,
+          "cumulative_pool": 15,
+          "cumulative_mean": 0.0,
+          "delta_from_previous": null
+        },
+        "bnc": {
+          "pool_added": 15,
+          "mean_added": 0.0,
+          "cumulative_pool": 30,
+          "cumulative_mean": 0.0,
+          "delta_from_previous": 0.0
+        },
+        "je": {
+          "pool_added": 6,
+          "mean_added": 0.167,
+          "cumulative_pool": 36,
+          "cumulative_mean": 0.028,
+          "delta_from_previous": 0.028
+        },
+        "ni": {
+          "pool_added": 9,
+          "mean_added": 0.333,
+          "cumulative_pool": 45,
+          "cumulative_mean": 0.089,
+          "delta_from_previous": 0.061
+        }
+      },
+      "net_favor": {
+        "base": {
+          "pool_added": 15,
+          "mean_added": 0.4,
+          "cumulative_pool": 15,
+          "cumulative_mean": 0.4,
+          "delta_from_previous": null
+        },
+        "bnc": {
+          "pool_added": 15,
+          "mean_added": 0.133,
+          "cumulative_pool": 30,
+          "cumulative_mean": 0.267,
+          "delta_from_previous": -0.134
+        },
+        "je": {
+          "pool_added": 6,
+          "mean_added": 0.5,
+          "cumulative_pool": 36,
+          "cumulative_mean": 0.305,
+          "delta_from_previous": 0.039
+        },
+        "ni": {
+          "pool_added": 9,
+          "mean_added": 0.333,
+          "cumulative_pool": 45,
+          "cumulative_mean": 0.311,
+          "delta_from_previous": 0.006
+        }
+      },
+      "tokens_touched": {
+        "base": {
+          "pool_added": 15,
+          "mean_added": 0.0,
+          "cumulative_pool": 15,
+          "cumulative_mean": 0.0,
+          "delta_from_previous": null
+        },
+        "bnc": {
+          "pool_added": 15,
+          "mean_added": 0.867,
+          "cumulative_pool": 30,
+          "cumulative_mean": 0.433,
+          "delta_from_previous": 0.433
+        },
+        "je": {
+          "pool_added": 6,
+          "mean_added": 1.5,
+          "cumulative_pool": 36,
+          "cumulative_mean": 0.611,
+          "delta_from_previous": 0.178
+        },
+        "ni": {
+          "pool_added": 9,
+          "mean_added": 0.667,
+          "cumulative_pool": 45,
+          "cumulative_mean": 0.622,
+          "delta_from_previous": 0.011
+        }
+      }
+    },
+    "event": {
+      "fear_amount": {
+        "bnc": {
+          "pool_added": 23,
+          "mean_added": 0.435,
+          "cumulative_pool": 23,
+          "cumulative_mean": 0.435,
+          "delta_from_previous": null
+        },
+        "je": {
+          "pool_added": 30,
+          "mean_added": 0.5,
+          "cumulative_pool": 53,
+          "cumulative_mean": 0.472,
+          "delta_from_previous": 0.037
+        },
+        "ni": {
+          "pool_added": 9,
+          "mean_added": 1.222,
+          "cumulative_pool": 62,
+          "cumulative_mean": 0.581,
+          "delta_from_previous": 0.109
+        }
+      },
+      "net_favor": {
+        "bnc": {
+          "pool_added": 23,
+          "mean_added": 0.087,
+          "cumulative_pool": 23,
+          "cumulative_mean": 0.087,
+          "delta_from_previous": null
+        },
+        "je": {
+          "pool_added": 30,
+          "mean_added": 0.533,
+          "cumulative_pool": 53,
+          "cumulative_mean": 0.339,
+          "delta_from_previous": 0.252
+        },
+        "ni": {
+          "pool_added": 9,
+          "mean_added": 0.778,
+          "cumulative_pool": 62,
+          "cumulative_mean": 0.403,
+          "delta_from_previous": 0.064
+        }
+      },
+      "tokens_touched": {
+        "bnc": {
+          "pool_added": 23,
+          "mean_added": 1.217,
+          "cumulative_pool": 23,
+          "cumulative_mean": 1.217,
+          "delta_from_previous": null
+        },
+        "je": {
+          "pool_added": 30,
+          "mean_added": 1.633,
+          "cumulative_pool": 53,
+          "cumulative_mean": 1.452,
+          "delta_from_previous": 0.235
+        },
+        "ni": {
+          "pool_added": 9,
+          "mean_added": 1.444,
+          "cumulative_pool": 62,
+          "cumulative_mean": 1.451,
+          "delta_from_previous": -0.001
+        }
+      }
+    },
+    "blight": {
+      "fear_amount": {
+        "base": {
+          "pool_added": 2,
+          "mean_added": 0.0,
+          "cumulative_pool": 2,
+          "cumulative_mean": 0.0,
+          "delta_from_previous": null
+        },
+        "bnc": {
+          "pool_added": 6,
+          "mean_added": 0.333,
+          "cumulative_pool": 8,
+          "cumulative_mean": 0.25,
+          "delta_from_previous": 0.25
+        },
+        "je": {
+          "pool_added": 7,
+          "mean_added": 0.286,
+          "cumulative_pool": 15,
+          "cumulative_mean": 0.267,
+          "delta_from_previous": 0.017
+        },
+        "ni": {
+          "pool_added": 8,
+          "mean_added": 0.0,
+          "cumulative_pool": 23,
+          "cumulative_mean": 0.174,
+          "delta_from_previous": -0.093
+        }
+      },
+      "net_favor": {
+        "base": {
+          "pool_added": 2,
+          "mean_added": 0.0,
+          "cumulative_pool": 2,
+          "cumulative_mean": 0.0,
+          "delta_from_previous": null
+        },
+        "bnc": {
+          "pool_added": 6,
+          "mean_added": -0.167,
+          "cumulative_pool": 8,
+          "cumulative_mean": -0.125,
+          "delta_from_previous": -0.125
+        },
+        "je": {
+          "pool_added": 7,
+          "mean_added": 0.0,
+          "cumulative_pool": 15,
+          "cumulative_mean": -0.067,
+          "delta_from_previous": 0.058
+        },
+        "ni": {
+          "pool_added": 8,
+          "mean_added": 0.125,
+          "cumulative_pool": 23,
+          "cumulative_mean": -0.0,
+          "delta_from_previous": 0.067
+        }
+      },
+      "tokens_touched": {
+        "base": {
+          "pool_added": 2,
+          "mean_added": 0.0,
+          "cumulative_pool": 2,
+          "cumulative_mean": 0.0,
+          "delta_from_previous": null
+        },
+        "bnc": {
+          "pool_added": 6,
+          "mean_added": 0.167,
+          "cumulative_pool": 8,
+          "cumulative_mean": 0.125,
+          "delta_from_previous": 0.125
+        },
+        "je": {
+          "pool_added": 7,
+          "mean_added": 0.143,
+          "cumulative_pool": 15,
+          "cumulative_mean": 0.134,
+          "delta_from_previous": 0.008
+        },
+        "ni": {
+          "pool_added": 8,
+          "mean_added": 0.375,
+          "cumulative_pool": 23,
+          "cumulative_mean": 0.218,
+          "delta_from_previous": 0.084
+        }
+      }
+    }
+  }
+}
