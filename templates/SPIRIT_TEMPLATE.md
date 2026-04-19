@@ -179,18 +179,36 @@ Letter grades A+ through F for the cards most relevant to this spirit. Unique po
 
 ## Adversary Matchup Matrix
 
-Grades are directional. Letter grade + one-sentence reasoning per cell.
+Grades are directional (L0/L3/L5/L6 columns). **Always annotate per-level strategy cliffs** — specific levels where an adversary rule fundamentally changes this spirit's playstyle.
 
-| Adversary               | L0 | L3 | L5 | L6 | Notes                                        |
-|-------------------------|----|----|----|----|----------------------------------------------|
-| England                 | A  | A- | B+ | B  | Slow; favors gradual setup.                  |
-| Brandenburg-Prussia     | B+ | B  | B- | C+ | Rapid builds punish our slow scaling.        |
-| Sweden                  | A  | A  | A- | B+ | Coastal pressure plays to our strengths.     |
-| France (Plantation)     |    |    |    |    |                                              |
-| Habsburg Mining         |    |    |    |    |                                              |
-| Russia                  |    |    |    |    |                                              |
-| Scotland                |    |    |    |    |                                              |
-| Habsburg Livestock      |    |    |    |    |                                              |
+| Adversary               | L0 | L3 | L5 | L6 | Notes (call out level cliffs)                                           |
+|-------------------------|----|----|----|----|-------------------------------------------------------------------------|
+| England                 | A  | A- | B+ | B  | Slow; favors gradual setup. **L5 cliff**: buildings +1 HP changes kill-math for push/damage spirits. |
+| Brandenburg-Prussia     | B+ | B  | B- | C+ | Rapid builds punish slow scaling. **L4 cliff**: Town-to-City accelerates mid-game. |
+| Sweden                  | A  | A  | A- | B+ | Fear penalties active from L2+; fear-rush spirits collapse here.        |
+| France (Plantation)     |    |    |    |    | **L3 cliff**: Plantation capture active; dahan-centric spirits struggle. |
+| Habsburg Mining         |    |    |    |    |                                                                         |
+| Russia                  |    |    |    |    | **L3 cliff**: fear suppression active; **L5 cliff**: Settler mechanics compound. |
+| Scotland                |    |    |    |    |                                                                         |
+| Habsburg Livestock      |    |    |    |    |                                                                         |
+
+### Strategy cliff callouts
+
+For each adversary with a level where strategy materially changes, add a short footnote:
+
+```admonish info title="Strategy Cliff — {Adversary} L{N}"
+**What changes at L{N}**: {specific rule text}.
+**Impact on {spirit}**: {what tactic stops working / what new approach is needed}.
+**Mitigation**: {how to adapt — draft different cards, open differently, partner with X}.
+```
+
+Example (River vs England L5):
+
+```admonish info title="Strategy Cliff — England L5"
+**What changes at L5**: buildings gain +1 HP.
+**Impact on River**: push-and-1-damage kills now leave 1-HP survivors. Massive Flooding still kills Towns but requires Level 2+ threshold reliability.
+**Mitigation**: draft a 2-damage Minor earlier; bias toward Flood the Hills (2 damage) over Wash Away (1 damage).
+```
 
 ## Board Position Evaluation
 
@@ -258,6 +276,33 @@ Per the stats + the spirit's energy curve:
 - {Rule 3}
 
 Cross-reference: [Major vs. Minor Fundamentals](../../fundamentals/major-vs-minor.md)
+
+## Expansion Sensitivity
+
+Main guide assumes all expansions in play. Call out where advice changes by expansion combination.
+
+### What changes per expansion
+
+- **Base only**: no events, no blight deck, thinner Minor/Major pool. Specific implications for {spirit}: {e.g., "Bringer's fear-card variance is lower without B&C fear cards; strategy shifts to T1 aggression"}.
+- **+ Branch & Claw**: events introduce per-turn variance; blight deck adds blight-management complexity. For {spirit}: {e.g., "Wildfire's blight-positive strategy accelerates; Keeper's blight-removal gains blight-deck-specific targets"}.
+- **+ Jagged Earth**: event deck replaced/expanded; Minor + Major pools deepened; aspects introduced. For {spirit}: {e.g., "fear-rush is harder — more fear cards exist but pool is deeper"}.
+- **+ Feather & Flame / Promo Pack 2**: minor pool additions. For {spirit}: {e.g., "a specific 0-cost Water Minor from Promo 2 changes River's opening"}.
+- **+ Horizons**: low-complexity spirit variants; doesn't affect most established spirits' strategy.
+- **+ Nature Incarnate**: deepest pool impact; Incarna mechanic; new aspects. For {spirit}: {spirit-specific changes}.
+
+### Expansion decision guide
+
+<pre class="mermaid">
+graph TD
+  Start[What expansions are active?] --> Base[Base only]
+  Start --> BC[+ Branch & Claw]
+  Start --> JE[+ Jagged Earth]
+  Start --> All[All expansions]
+  Base --> BaseAdvice[Simpler pool; T1 aggression prioritized]
+  BC --> BCAdvice[Events add variance; account for blight deck]
+  JE --> JEAdvice[Pool depth — fear-rush harder; aspects available]
+  All --> AllAdvice[Guide's default assumption; all advice above applies]
+</pre>
 
 ## Stat Snapshot
 
