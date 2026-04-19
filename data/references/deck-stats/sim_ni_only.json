@@ -1,0 +1,134 @@
+{
+  "combo_name": "ni_only",
+  "expansions_included": [
+    "ni"
+  ],
+  "trials": 5000,
+  "rounds_per_game": 8,
+  "players": 1,
+  "pool_sizes": {
+    "fear": 9,
+    "event": 9,
+    "blight": 8
+  },
+  "per_game": {
+    "fear_cards_drawn": {
+      "mean": 1.998,
+      "ci_lo": 1.997,
+      "ci_hi": 2.0,
+      "stdev": 0.04,
+      "n": 5000
+    },
+    "fear_output_total": {
+      "mean": 9.998,
+      "ci_lo": 9.965,
+      "ci_hi": 10.031,
+      "stdev": 1.2,
+      "n": 5000
+    },
+    "events_drawn": {
+      "mean": 8.0,
+      "ci_lo": 8.0,
+      "ci_hi": 8.0,
+      "stdev": 0.0,
+      "n": 5000
+    },
+    "blight_cards_drawn": {
+      "mean": 1.898,
+      "ci_lo": 1.878,
+      "ci_hi": 1.917,
+      "stdev": 0.699,
+      "n": 5000
+    },
+    "blight_severity_accum": {
+      "mean": 1.672,
+      "ci_lo": 1.645,
+      "ci_hi": 1.699,
+      "stdev": 0.975,
+      "n": 5000
+    },
+    "spirit_favor_hits": {
+      "mean": 10.317,
+      "ci_lo": 10.29,
+      "ci_hi": 10.344,
+      "stdev": 0.96,
+      "n": 5000
+    },
+    "invader_favor_hits": {
+      "mean": 3.56,
+      "ci_lo": 3.541,
+      "ci_hi": 3.579,
+      "stdev": 0.679,
+      "n": 5000
+    },
+    "net_favor": {
+      "mean": 6.757,
+      "ci_lo": 6.727,
+      "ci_hi": 6.787,
+      "stdev": 1.076,
+      "n": 5000
+    }
+  },
+  "terror_level_final_distribution": {
+    "3": 4992,
+    "2": 8
+  },
+  "tokens_per_game": {
+    "badlands": {
+      "mean": 2.666,
+      "ci_lo": 2.653,
+      "ci_hi": 2.679,
+      "stdev": 0.472,
+      "n": 5000
+    },
+    "beasts": {
+      "mean": 6.454,
+      "ci_lo": 6.438,
+      "ci_hi": 6.471,
+      "stdev": 0.599,
+      "n": 5000
+    },
+    "disease": {
+      "mean": 1.777,
+      "ci_lo": 1.765,
+      "ci_hi": 1.788,
+      "stdev": 0.416,
+      "n": 5000
+    },
+    "strife": {
+      "mean": 0.677,
+      "ci_lo": 0.66,
+      "ci_hi": 0.694,
+      "stdev": 0.622,
+      "n": 5000
+    },
+    "wilds": {
+      "mean": 0.0,
+      "ci_lo": 0.0,
+      "ci_hi": 0.0,
+      "stdev": 0.0,
+      "n": 5000
+    },
+    "plantation": {
+      "mean": 0.0,
+      "ci_lo": 0.0,
+      "ci_hi": 0.0,
+      "stdev": 0.0,
+      "n": 5000
+    },
+    "isolate": {
+      "mean": 1.104,
+      "ci_lo": 1.089,
+      "ci_hi": 1.118,
+      "stdev": 0.519,
+      "n": 5000
+    },
+    "fortress": {
+      "mean": 0.0,
+      "ci_lo": 0.0,
+      "ci_hi": 0.0,
+      "stdev": 0.0,
+      "n": 5000
+    }
+  }
+}

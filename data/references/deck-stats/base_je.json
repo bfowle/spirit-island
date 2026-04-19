@@ -1,0 +1,337 @@
+{
+  "combo_name": "base_je",
+  "expansions_included": [
+    "base",
+    "hosi",
+    "je"
+  ],
+  "decks": {
+    "minor": {
+      "pool_size": 69,
+      "element_distribution": {
+        "earth": 27,
+        "animal": 26,
+        "water": 26,
+        "plant": 26,
+        "moon": 25,
+        "air": 25,
+        "sun": 25,
+        "fire": 25
+      },
+      "cost_distribution": {
+        "0": 27,
+        "1": 42
+      },
+      "speed_distribution": {
+        "slow": 32,
+        "fast": 37
+      },
+      "token_cards": {
+        "beasts": 6,
+        "badlands": 6,
+        "disease": 4,
+        "strife": 4,
+        "wilds": 5,
+        "isolate": 4
+      },
+      "effect_cards": {
+        "damage": 21,
+        "gather": 11,
+        "destroy": 7,
+        "push": 19,
+        "replace": 1,
+        "defend": 12,
+        "remove_blight": 6,
+        "reclaim": 1,
+        "add_blight": 1
+      },
+      "fear_amount": {
+        "total_fear_generated_across_pool": 37,
+        "cards_with_fear": 21,
+        "mean_fear_per_fear_card": 1.76
+      }
+    },
+    "major": {
+      "pool_size": 46,
+      "element_distribution": {
+        "sun": 17,
+        "plant": 17,
+        "earth": 17,
+        "water": 16,
+        "animal": 16,
+        "moon": 16,
+        "air": 16,
+        "fire": 15
+      },
+      "cost_distribution": {
+        "2": 4,
+        "3": 16,
+        "4": 14,
+        "5": 6,
+        "6": 5,
+        "8": 1
+      },
+      "speed_distribution": {
+        "slow": 19,
+        "fast": 27
+      },
+      "token_cards": {
+        "beasts": 7,
+        "badlands": 6,
+        "isolate": 2,
+        "strife": 2,
+        "wilds": 3,
+        "disease": 1
+      },
+      "effect_cards": {
+        "damage": 26,
+        "push": 5,
+        "defend": 8,
+        "destroy": 9,
+        "remove_blight": 2,
+        "replace": 2,
+        "gather": 5,
+        "add_blight": 2
+      },
+      "fear_amount": {
+        "total_fear_generated_across_pool": 60,
+        "cards_with_fear": 21,
+        "mean_fear_per_fear_card": 2.86
+      }
+    },
+    "fear": {
+      "pool_size": 21,
+      "by_stage": {
+        "stage_1": 21,
+        "stage_2": 21,
+        "stage_3": 21
+      },
+      "token_cards": {
+        "badlands": 6,
+        "beasts": 3,
+        "disease": 3,
+        "strife": 9,
+        "wilds": 6
+      },
+      "spirit_favoring_by_stage": {
+        "stage_1": 8,
+        "stage_2": 5,
+        "stage_3": 5
+      },
+      "invader_favoring_by_stage": {},
+      "avg_fear_card_output": {
+        "stage_1": 0.0,
+        "stage_2": 0.0,
+        "stage_3": 0.05
+      },
+      "sample_titles": {
+        "stage_1": [
+          "Avoid the Dahan",
+          "Belief Takes Root",
+          "Beset by Many Troubles",
+          "Dahan Enheartened",
+          "Dahan on their Guard"
+        ],
+        "stage_2": [
+          "Avoid the Dahan",
+          "Belief Takes Root",
+          "Beset by Many Troubles",
+          "Dahan Enheartened",
+          "Dahan on their Guard"
+        ],
+        "stage_3": [
+          "Avoid the Dahan",
+          "Belief Takes Root",
+          "Beset by Many Troubles",
+          "Dahan Enheartened",
+          "Dahan on their Guard"
+        ]
+      }
+    },
+    "event": {
+      "pool_size": 30,
+      "stages_distribution": {
+        "2": 3,
+        "3": 3,
+        "4": 24
+      },
+      "token_cards": {
+        "beasts": 21,
+        "disease": 15,
+        "strife": 5,
+        "wilds": 3,
+        "badlands": 4,
+        "isolate": 1
+      },
+      "spirit_favoring_hits_total": 38,
+      "invader_favoring_hits_total": 22,
+      "net_favor_score": 16,
+      "top_5_spirit_favoring": [
+        {
+          "name": "Dahan Trade with the Invaders",
+          "expansion": "Jagged Earth",
+          "spirit_hits": 3,
+          "invader_hits": 0,
+          "net_score": 3
+        },
+        {
+          "name": "Numinous Crisis",
+          "expansion": "Jagged Earth",
+          "spirit_hits": 3,
+          "invader_hits": 0,
+          "net_score": 3
+        },
+        {
+          "name": "The Struggles of Growth",
+          "expansion": "Jagged Earth",
+          "spirit_hits": 4,
+          "invader_hits": 1,
+          "net_score": 3
+        },
+        {
+          "name": "Harvest Bounty, Harvest Dust",
+          "expansion": "Jagged Earth",
+          "spirit_hits": 3,
+          "invader_hits": 1,
+          "net_score": 2
+        },
+        {
+          "name": "Bureaucrats Adjust Funding",
+          "expansion": "Jagged Earth",
+          "spirit_hits": 2,
+          "invader_hits": 1,
+          "net_score": 1
+        }
+      ],
+      "top_5_invader_favoring": [
+        {
+          "name": "Wounded Lands Attract Explorers",
+          "expansion": "Jagged Earth",
+          "spirit_hits": 0,
+          "invader_hits": 1,
+          "net_score": -1
+        },
+        {
+          "name": "Thriving Trade",
+          "expansion": "Jagged Earth",
+          "spirit_hits": 1,
+          "invader_hits": 2,
+          "net_score": -1
+        },
+        {
+          "name": "Resourceful Populace",
+          "expansion": "Jagged Earth",
+          "spirit_hits": 0,
+          "invader_hits": 1,
+          "net_score": -1
+        },
+        {
+          "name": "Relentless Optimism",
+          "expansion": "Jagged Earth",
+          "spirit_hits": 0,
+          "invader_hits": 1,
+          "net_score": -1
+        },
+        {
+          "name": "Life's Balance Tilts",
+          "expansion": "Jagged Earth",
+          "spirit_hits": 0,
+          "invader_hits": 1,
+          "net_score": -1
+        }
+      ]
+    },
+    "blight": {
+      "pool_size": 9,
+      "mean_severity_proxy": 1.0,
+      "top_5_worst": [
+        {
+          "name": "All Things Weaken",
+          "expansion": "Jagged Earth - Plain",
+          "severity_proxy": 4,
+          "blight_per_player": "3"
+        },
+        {
+          "name": "Untended Land Crumbles",
+          "expansion": "Jagged Earth - Plain",
+          "severity_proxy": 2,
+          "blight_per_player": "4"
+        },
+        {
+          "name": "Downward Spiral",
+          "expansion": "Spirit Island",
+          "severity_proxy": 1,
+          "blight_per_player": "5"
+        },
+        {
+          "name": "Memory Fades to Dust",
+          "expansion": "Spirit Island",
+          "severity_proxy": 1,
+          "blight_per_player": "4"
+        },
+        {
+          "name": "Power Corrodes the Spirit",
+          "expansion": "Jagged Earth - Plain",
+          "severity_proxy": 1,
+          "blight_per_player": "4"
+        }
+      ],
+      "all_cards": [
+        {
+          "name": "All Things Weaken",
+          "expansion": "Jagged Earth - Plain",
+          "severity_proxy": 4,
+          "blight_per_player": "3"
+        },
+        {
+          "name": "Untended Land Crumbles",
+          "expansion": "Jagged Earth - Plain",
+          "severity_proxy": 2,
+          "blight_per_player": "4"
+        },
+        {
+          "name": "Downward Spiral",
+          "expansion": "Spirit Island",
+          "severity_proxy": 1,
+          "blight_per_player": "5"
+        },
+        {
+          "name": "Memory Fades to Dust",
+          "expansion": "Spirit Island",
+          "severity_proxy": 1,
+          "blight_per_player": "4"
+        },
+        {
+          "name": "Power Corrodes the Spirit",
+          "expansion": "Jagged Earth - Plain",
+          "severity_proxy": 1,
+          "blight_per_player": "4"
+        },
+        {
+          "name": "Invaders Find the Land to Their Liking",
+          "expansion": "Jagged Earth - Smoke",
+          "severity_proxy": 0,
+          "blight_per_player": "2"
+        },
+        {
+          "name": "Strong Earth Shatters Slowly",
+          "expansion": "Jagged Earth - Smoke",
+          "severity_proxy": 0,
+          "blight_per_player": "2"
+        },
+        {
+          "name": "Thriving Communities",
+          "expansion": "Jagged Earth - Active",
+          "severity_proxy": 0,
+          "blight_per_player": "4"
+        },
+        {
+          "name": "Unnatural Proliferation",
+          "expansion": "Jagged Earth - Active",
+          "severity_proxy": 0,
+          "blight_per_player": "3"
+        }
+      ]
+    }
+  }
+}

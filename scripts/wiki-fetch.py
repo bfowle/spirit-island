@@ -598,6 +598,73 @@ def parse_aspect_page(wikitext: str) -> dict:
     }
 
 
+def parse_fear_card_page(wikitext: str) -> dict:
+    """Parse a {{FearCardArticle|...}} template — has 3 stages (TL1/2, TL2/3, TL3)."""
+    idx = find_first_template(wikitext, "FearCardArticle")
+    if idx < 0:
+        raise RuntimeError("No {{FearCardArticle|...}} template found")
+    tpl, _ = parse_template(wikitext, idx)
+    return {
+        "source": "spiritislandwiki.com",
+        "type": "fear_card",
+        "name": tpl.get("name") or tpl.get("name_en"),
+        "expansion": tpl.get("set"),
+        "text_stage_1": clean_wiki_text(tpl.get("text_en1") or tpl.get("text1")),
+        "text_stage_2": clean_wiki_text(tpl.get("text_en2") or tpl.get("text2")),
+        "text_stage_3": clean_wiki_text(tpl.get("text_en3") or tpl.get("text3")),
+        "status": tpl.get("cardstatus") or "Active",
+        "raw_template": {k: v for k, v in tpl.items() if not k.startswith("_")},
+    }
+
+
+def parse_event_card_page(wikitext: str) -> dict:
+    """Parse an {{EventCardArticle|...}} template — may have up to 5 event sections."""
+    idx = find_first_template(wikitext, "EventCardArticle")
+    if idx < 0:
+        raise RuntimeError("No {{EventCardArticle|...}} template found")
+    tpl, _ = parse_template(wikitext, idx)
+    events = []
+    for i in range(1, 8):
+        ev_type = tpl.get(f"eventType{i}")
+        ev_name = tpl.get(f"eventName{i}")
+        text = tpl.get(f"text_en{i}") or tpl.get(f"text{i}")
+        if not (ev_type or ev_name or text):
+            continue
+        events.append({
+            "event_type": ev_type,
+            "event_name": ev_name,
+            "text": clean_wiki_text(text),
+        })
+    return {
+        "source": "spiritislandwiki.com",
+        "type": "event_card",
+        "name": tpl.get("name") or tpl.get("name_en"),
+        "expansion": tpl.get("set"),
+        "stages": events,
+        "status": tpl.get("cardstatus") or "Active",
+        "raw_template": {k: v for k, v in tpl.items() if not k.startswith("_")},
+    }
+
+
+def parse_blight_card_page(wikitext: str) -> dict:
+    """Parse a {{BlightCardArticle|...}} template."""
+    idx = find_first_template(wikitext, "BlightCardArticle")
+    if idx < 0:
+        raise RuntimeError("No {{BlightCardArticle|...}} template found")
+    tpl, _ = parse_template(wikitext, idx)
+    return {
+        "source": "spiritislandwiki.com",
+        "type": "blight_card",
+        "name": tpl.get("name") or tpl.get("name_en"),
+        "expansion": tpl.get("set"),
+        "cardtype": tpl.get("cardtype"),
+        "blight_per_player": tpl.get("blightperplayer"),
+        "text": clean_wiki_text(tpl.get("text_en") or tpl.get("text")),
+        "status": tpl.get("cardstatus") or "Active",
+        "raw_template": {k: v for k, v in tpl.items() if not k.startswith("_")},
+    }
+
+
 def parse_card_page(wikitext: str) -> dict:
     """Parse a {{PowerCardArticle|...}} template into a structured dict."""
     idx = find_first_template(wikitext, "PowerCardArticle")
@@ -698,6 +765,68 @@ def cmd_batch_spirit(args, page_name: str) -> dict:
     return spirit
 
 
+def cmd_fear_event_blight_deck(args, kind: str) -> dict:
+    """Walk Category:{Fear,Event,Blight}_Card and parse each page.
+
+    `kind` is "fear" | "event" | "blight". Writes
+    {output-dir}/{kind}.json with all cards.
+    """
+    assert kind in ("fear", "event", "blight"), f"unknown deck kind: {kind}"
+    category = {"fear": "Fear_Card", "event": "Event_Card", "blight": "Blight_Card"}[kind]
+    parser_fn = {
+        "fear": parse_fear_card_page,
+        "event": parse_event_card_page,
+        "blight": parse_blight_card_page,
+    }[kind]
+    print(f"==> listing Category:{category}", file=sys.stderr)
+    titles = fetch_category_members(category, delay=getattr(args, "delay", DEFAULT_DELAY_SECS))
+    print(f"    {len(titles)} page titles found", file=sys.stderr)
+
+    keep_all_statuses = bool(getattr(args, "all_statuses", False))
+    cards: list[dict] = []
+    skipped: list[dict] = []
+    for i, title in enumerate(titles, 1):
+        page = title.replace(" ", "_")
+        cache = _cache_path(args, page, kind)
+        try:
+            if cache and cache.exists() and not getattr(args, "no_cache", False):
+                data = json.loads(cache.read_text())
+            else:
+                wt = fetch_wikitext(page, delay=getattr(args, "delay", DEFAULT_DELAY_SECS))
+                data = parser_fn(wt)
+                if cache:
+                    cache.parent.mkdir(parents=True, exist_ok=True)
+                    cache.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+        except Exception as e:
+            print(f"  [{i}/{len(titles)}] {title}: error — {e}", file=sys.stderr)
+            skipped.append({"title": title, "reason": f"parse error: {e}"})
+            continue
+        status = (data.get("status") or "").strip()
+        if not keep_all_statuses and status != "Active":
+            skipped.append({"title": title, "reason": f"status={status!r}"})
+            continue
+        cards.append(data)
+        if i % 10 == 0:
+            print(f"  [{i}/{len(titles)}] … {len(cards)} kept", file=sys.stderr)
+
+    print(f"==> {kind}: kept {len(cards)}, skipped {len(skipped)}", file=sys.stderr)
+
+    result = {
+        "source": "spiritislandwiki.com",
+        "category": category,
+        "kind": kind,
+        "count": len(cards),
+        "cards": cards,
+        "skipped": skipped,
+    }
+    if args.output_dir:
+        out = Path(args.output_dir) / f"{kind}.json"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
+        print(f"Wrote {out} ({len(cards)} cards)", file=sys.stderr)
+    return result
+
+
 def cmd_deck(args, card_type: str) -> dict:
     """Walk Category:Power_Card and split into Minor / Major decks.
 
@@ -795,7 +924,7 @@ def cmd_batch_all(args) -> dict:
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("command", choices=["spirit", "card", "aspect", "batch-spirit", "batch-all", "deck"])
+    p.add_argument("command", choices=["spirit", "card", "aspect", "batch-spirit", "batch-all", "deck", "feb-deck"])
     p.add_argument("name", nargs="?", help="Wiki page name (spirit/card/batch-spirit) or deck type 'minor'/'major' for deck command")
     p.add_argument("--all-statuses", action="store_true", help="deck: keep all cards regardless of status (default keeps only Active)")
     p.add_argument("--output-dir", help="Write parsed output JSON here as {slug}.json")
@@ -814,6 +943,12 @@ def main():
         if not args.name or args.name not in ("minor", "major", "all"):
             p.error("'deck' requires name='minor', 'major', or 'all'")
         cmd_deck(args, args.name)
+        return
+
+    if args.command == "feb-deck":
+        if not args.name or args.name not in ("fear", "event", "blight"):
+            p.error("'feb-deck' requires name='fear', 'event', or 'blight'")
+        cmd_fear_event_blight_deck(args, args.name)
         return
 
     if not args.name:

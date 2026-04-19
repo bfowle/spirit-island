@@ -29,8 +29,8 @@
       "energy": 0,
       "card_plays": 1,
       "presence_on_board": {
-        "A.6": 2,
-        "A.5": 1
+        "A.5": 1,
+        "A.6": 2
       },
       "presence_on_track_energy": [
         "energy0",
@@ -64,6 +64,46 @@
   "board_state": {
     "A": {
       "lands": {
+        "1": {
+          "terrain": "wetland",
+          "coastal": false,
+          "explorers": 1,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 1,
+          "blight": 0,
+          "tokens": []
+        },
+        "3": {
+          "terrain": "jungle",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 1,
+          "dahan": 1,
+          "blight": 0,
+          "tokens": []
+        },
+        "4": {
+          "terrain": "sands",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "6": {
+          "terrain": "jungle",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 1,
+          "blight": 0,
+          "tokens": []
+        },
         "8": {
           "terrain": "mountain",
           "coastal": true,
@@ -74,19 +114,9 @@
           "blight": 0,
           "tokens": []
         },
-        "7": {
-          "terrain": "sands",
-          "coastal": true,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
-        "4": {
-          "terrain": "sands",
-          "coastal": true,
+        "5": {
+          "terrain": "wetland",
+          "coastal": false,
           "explorers": 0,
           "towns": 0,
           "cities": 0,
@@ -104,43 +134,13 @@
           "blight": 0,
           "tokens": []
         },
-        "6": {
-          "terrain": "jungle",
-          "coastal": false,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 1,
-          "blight": 0,
-          "tokens": []
-        },
-        "1": {
-          "terrain": "wetland",
-          "coastal": false,
-          "explorers": 1,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 1,
-          "blight": 0,
-          "tokens": []
-        },
-        "5": {
-          "terrain": "wetland",
-          "coastal": false,
+        "7": {
+          "terrain": "sands",
+          "coastal": true,
           "explorers": 0,
           "towns": 0,
           "cities": 0,
           "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
-        "3": {
-          "terrain": "jungle",
-          "coastal": true,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 1,
-          "dahan": 1,
           "blight": 0,
           "tokens": []
         }

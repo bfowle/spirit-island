@@ -1,0 +1,3957 @@
+{
+  "source": "spiritislandwiki.com",
+  "category": "Event_Card",
+  "kind": "event",
+  "count": 62,
+  "cards": [
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Accumulated Devastation",
+      "expansion": "Nature Incarnate",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On Each Board: During the first successful Ravage Action (in one land) this Invader Phase, increase the total Damage ravaging Invaders deal to each land (but not to Dahan) by the current Invader Stage. Do this for at most one Ravage Action per board (for one Ravage Action in one land)."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "The World's Vibrance Fades",
+          "text": "Remove 1 Blight per player from the Blight Card, returning it to the box. Each Spirit may prevent 1 Blight from being removed by destroying 2 of their Presence."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Territorial Beasts",
+          "text": "On Each Board: Isolate a land with Beasts. 1 Fear if Invaders are present."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Years of Health and Harmony",
+          "text": "On Each Board with 5 or more Dahan: Add 1 Dahan to the land with the most Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Accumulated Devastation",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Accumulated_Devastation_(ni).png",
+        "set": "Nature Incarnate",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On Each Board:''' During the first successful Ravage Action ''(in one land)'' this Invader Phase, increase the total Damage ravaging Invaders deal to each land ''(but not to Dahan)'' by the current Invader Stage. Do this for at most one Ravage Action per board ''(for one Ravage Action in one land).''",
+        "eventType2": "Blighted Island",
+        "eventName2": "The World's Vibrance Fades",
+        "text_en2": "Remove 1 Blight per player from the Blight Card, returning it to the box.<br/><br/>Each Spirit may prevent 1 Blight from being removed by destroying 2 of their Presence.",
+        "eventType3": "Beasts",
+        "eventName3": "Territorial Beasts",
+        "text_en3": "'''On Each Board:''' Isolate a land with Beasts. 1 Fear if Invaders are present.",
+        "eventType4": "Dahan",
+        "eventName4": "Years of Health and Harmony",
+        "text_en4": "'''On Each Board with 5 or more Dahan:''' Add 1 Dahan to the land with the most Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "An Ominous Dawn",
+      "expansion": "Nature Incarnate",
+      "stages": [
+        {
+          "event_type": "Terror Level 1",
+          "event_name": null,
+          "text": "1 Fear per Power Card in play that generates Fear. (In its instructions, not by destroying Towns/Cities. Count thresholds even if you don't have the Elements. Generated Fear can't cause Wavering Resolve.)"
+        },
+        {
+          "event_type": "Terror Levels 2 & 3",
+          "event_name": "Wavering Resolve",
+          "text": "Remove 1 Health worth of Invaders per Power Card in play that generates Fear. (In its instructions, not by destroying Towns/Cities. Count thresholds even if you don't have the Elements.)"
+        },
+        {
+          "event_type": "Badlands and Beasts",
+          "event_name": "Dangerous Lands",
+          "text": "On Each Board: 1 Damage in a land with Badlands/Beasts. 1 Damage to Dahan in a land with Badlands/Beasts and Dahan."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Waning Support",
+          "text": "On Each Board with Towns/Cities ...and 5 or fewer Dahan: Destroy 1 Presence. ...and 3 or fewer Dahan: Also Add 1 Blight to a land with Towns/Cities."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "An Ominous Dawn",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:An_Ominous_Dawn_(ni).png",
+        "set": "Nature Incarnate",
+        "eventType1": "Terror Level 1",
+        "text_en1": "1 Fear per Power Card in play that generates Fear. ''(In its instructions, not by destroying Towns/Cities. Count thresholds even if you don't have the Elements. Generated Fear can't cause Wavering Resolve.)''",
+        "eventType2": "Terror Levels 2 & 3",
+        "eventName2": "Wavering Resolve",
+        "text_en2": "Remove 1 Health worth of Invaders per Power Card in play that generates Fear. ''(In its instructions, not by destroying Towns/Cities. Count thresholds even if you don't have the Elements.)''",
+        "eventType3": "Badlands and Beasts",
+        "eventName3": "Dangerous Lands",
+        "text_en3": "'''On Each Board:''' 1 Damage in a land with Badlands/Beasts. 1 Damage to Dahan in a land with Badlands/Beasts and Dahan.",
+        "eventType4": "Dahan",
+        "eventName4": "Waning Support",
+        "text_en4": "'''On Each Board with Towns/Cities'''<br/>'''...and 5 or fewer Dahan:''' Destroy 1 Presence.<br/>'''...and 3 or fewer Dahan:''' Also Add 1 Blight to a land with Towns/Cities.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Bureaucrats Adjust Funding",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Terror Levels 1 & 2",
+          "event_name": null,
+          "text": "On Each Board with 9 or more Towns/Cities: Build Cards skip the highest-numbered matching land. On Each Board with 3 or fewer Towns/Cities: Build Cards cause 1 extra Build Action in the highest-numbered matching land. (This can Build in a land without Invaders.)"
+        },
+        {
+          "event_type": "Terror Level 3",
+          "event_name": "Ransack and Run",
+          "text": "After the Ravage Step, On Each Board: In the land with the most Cities (minimum 1), Ravage, then Remove 1 City."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Terrifying Beasts",
+          "text": "2 Fear per board with 2 or more Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Coordinated Defense",
+          "text": "When Invaders Ravage, if the land has both Dahan and Presence, Defend 5."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Bureaucrats Adjust Funding",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Bureaucrats_Adjust_Funding_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Terror Levels 1 & 2",
+        "text_en1": "'''On Each Board with 9 or more Towns/Cities:''' Build Cards skip the highest-numbered matching land.<br/>'''On Each Board with 3 or fewer Towns/Cities:''' Build Cards cause 1 extra Build Action in the highest-numbered matching land. ''(This can Build in a land without Invaders.)''",
+        "eventType2": "Terror Level 3",
+        "eventName2": "Ransack and Run",
+        "text_en2": "After the Ravage Step, '''On Each Board:''' In the land with the most Cities (minimum 1), Ravage, then Remove 1 City.",
+        "eventType3": "Beasts",
+        "eventName3": "Terrifying Beasts",
+        "text_en3": "2 Fear per board with 2 or more Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Coordinated Defense",
+        "text_en4": "When Invaders Ravage, if the land has both Dahan and Presence, Defend 5.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Cities Rise",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On Each Board: In the land with the most Town, Replace 2 Towns with 2 Cities. (If there is only 1 Town, instead Replace it with 1 City.)"
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Depleted Soil",
+          "text": "In lands with Towns/Cities, it only takes 1 Damage to add Blight."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Chase Off Homesteaders",
+          "text": "On Each Board: Push up to 2 Explorers or 1 Town from a land with Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Careful Defense",
+          "text": "When Invaders Ravage, if the land has Dahan, Defend 2."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Cities Rise",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Cities_Rise_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On Each Board:''' In the land with the most Town, Replace 2 Towns with 2 Cities. ''(If there is only 1 Town, instead Replace it with 1 City.)''",
+        "eventType2": "Blighted Island",
+        "eventName2": "Depleted Soil",
+        "text_en2": "In lands with Towns/Cities, it only takes 1 Damage to add Blight.",
+        "eventType3": "Beasts",
+        "eventName3": "Beasts Chase Off Homesteaders",
+        "text_en3": "'''On Each Board:''' Push up to 2 Explorers or 1 Town from a land with Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Careful Defense",
+        "text_en4": "When Invaders Ravage, if the land has Dahan, Defend 2.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Civic Engagement",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On Each Board: Remove 1 Strife. If you can't, Invaders do +1 Damage (per land) when Ravaging in lands with Towns/Cities."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Life's Web Torn Asunder",
+          "text": "On Each Board with 6 or more Blight: Add 1 Blight to a land adjacent to Blight."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Casualties of Fang and Sting",
+          "text": "On Each Board: Destroy 1 Explorer/Town in a land with Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Keep Far From the Lands of Plague",
+          "text": "On Each Board: Push 3 Dahan from lands with Disease to lands without Disease."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Civic Engagement",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Civic_Engagement_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On Each Board:''' Remove 1 Strife. If you can't, Invaders do +1 Damage ''(per land)'' when Ravaging in lands with Towns/Cities.",
+        "eventType2": "Blighted Island",
+        "eventName2": "Life's Web Torn Asunder",
+        "text_en2": "'''On Each Board with 6 or more Blight:''' Add 1 Blight to a land adjacent to Blight.",
+        "eventType3": "Beasts",
+        "eventName3": "Casualties of Fang and Sting",
+        "text_en3": "'''On Each Board:''' Destroy 1 Explorer/Town in a land with Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Keep Far From the Lands of Plague",
+        "text_en4": "'''On Each Board:''' Push 3 Dahan from lands with Disease to lands without Disease.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Coastal Towns Multiply",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On Each Board: Add 1 Town to a Coastal land adjacent to a Coastal Town."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Cooperation Among Towns",
+          "text": "Invaders do +1 Damage (per land) when Ravaging in lands with Towns/Cities and no Strife."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Explorers Blunder",
+          "text": "On Each Board: Destroy 2 Explorers among lands with Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Coming of Age",
+          "text": "On Each Board: Add 1 Dahan to a land with Dahan and no Blight/Disease."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Coastal Towns Multiply",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Coastal_Towns_Multiply_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On Each Board:''' Add 1 Town to a Coastal land adjacent to a Coastal Town.",
+        "eventType2": "Blighted Island",
+        "eventName2": "Cooperation Among Towns",
+        "text_en2": "Invaders do +1 Damage ''(per land)'' when Ravaging in lands with Towns/Cities and no Strife.",
+        "eventType3": "Beasts",
+        "eventName3": "Explorers Blunder",
+        "text_en3": "'''On Each Board:''' Destroy 2 Explorers among lands with Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Coming of Age",
+        "text_en4": "'''On Each Board:''' Add 1 Dahan to a land with Dahan and no Blight/Disease.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Cultural Assimilation",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Terror Levels 1 & 2",
+          "event_name": null,
+          "text": "On Each Board: In a land with exactly 1 Dahan that has or is adjacent to a City, replace that Dahan with 1 Town."
+        },
+        {
+          "event_type": "Terror Level 3",
+          "event_name": "Reprisal Against the Dahan",
+          "text": "On Each Board: Choose a land with Dahan and Town/City. Invaders do 3 Damage to Dahan there, ignoring Defend Powers."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Attack",
+          "text": "Each Beasts deals 2 Damage. Remove any token that destroys Town/City."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Reckless Offensive",
+          "text": "On Each Board: Choose a land with at least 2 Dahan and at least 2 Town/City. Each Dahan destroys 1 Town/City. Add 1 Blight."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Cultural Assimilation",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Cultural_Assimilation_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Terror Levels 1 & 2",
+        "text_en1": "On Each Board: In a land with exactly 1 Dahan that has or is adjacent to a City, replace that Dahan with 1 Town.",
+        "eventType2": "Terror Level 3",
+        "eventName2": "Reprisal Against the Dahan",
+        "text_en2": "On Each Board: Choose a land with Dahan and Town/City. Invaders do 3 Damage to Dahan there, ignoring Defend Powers.",
+        "eventType3": "Beasts",
+        "eventName3": "Beasts Attack",
+        "text_en3": "Each Beasts deals 2 Damage. Remove any token that destroys Town/City.",
+        "eventType4": "Dahan",
+        "eventName4": "Reckless Offensive",
+        "text_en4": "On Each Board: Choose a land with at least 2 Dahan and at least 2 Town/City. Each Dahan destroys 1 Town/City. Add 1 Blight.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Dahan Trade with the Invaders",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "Some seek knowledge, others are interested in tools and trade goods, still others simply curious. All hope to avoid violence, and the Invaders seem amenable - at least for now. You may: IGNORE THEIR INTEREST • Dahan do not participate in Ravages this turn. DISPLAY YOUR WRATH AT THIS BETRAYAL Cost: 2 Energy per player, aided by Fire. • Each Spirit with Dahan in their lands Destroys 1 of them and generates 1 Fear. CHANGE AND HELP THEM LEARN FROM THE ENEMY Cost: 6 Energy per player, aided by Air. • Dahan do not participate in Ravages this turn. • Each Spirit Forgets a Power Card. • From next turn on, each Dahan provides Defend 1 in its land. (There is a Reminder Card for this.)"
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Outbreaks Shift",
+          "text": "On Each Board: Push 1 Disease to the adjacent land with the most Invaders (min. 1)."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Dahan Trade with the Invaders",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Dahan_Trade_with_the_Invaders_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Group Choice",
+        "text_en1": "Some seek knowledge, others are interested in tools and trade goods, still others simply curious. All hope to avoid violence, and the Invaders seem amenable - at least for now. You may:<br/><br/>'''IGNORE THEIR INTEREST'''<br/>• Dahan do not participate in Ravages this turn.<br/><br/>'''DISPLAY YOUR WRATH AT THIS BETRAYAL'''<br/>'''Cost: 2 Energy per player, aided by Fire.'''<br/>• Each Spirit with Dahan in their lands Destroys 1 of them and generates 1 Fear.<br/><br/>'''CHANGE AND HELP THEM LEARN FROM THE ENEMY'''<br/>'''Cost: 6 Energy per player, aided by Air.'''<br/>• Dahan do not participate in Ravages this turn.<br/>• Each Spirit Forgets a Power Card.<br/>• From next turn on, each Dahan provides Defend 1 in its land. ''(There is a Reminder Card for this.)''",
+        "eventType2": "Disease",
+        "eventName2": "Outbreaks Shift",
+        "text_en2": "'''On Each Board:''' Push 1 Disease to the adjacent land with the most Invaders (min. 1).",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Distant Exploration",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Terror Level 1",
+          "event_name": null,
+          "text": "During the Explore step, Invaders Explore at +1 distance. (So a land 2 away from a Town/City/Ocean will be Explored into.)"
+        },
+        {
+          "event_type": "Terror Levels 2 & 3",
+          "event_name": "Fearful Mobs",
+          "text": "When Ravaging, Invaders do +3 Damage (per land) in lands with 3 or more Invaders."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Grim Toll",
+          "text": "On Each Board: Choose a land with Disease. In that land, do 2 Damage to Invaders and 2 Damage to Dahan."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Fierce Mein",
+          "text": "1 Fear per land with Invaders where Dahan outnumber Towns/Cities."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Distant Exploration",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Distant_Exploration_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Terror Level 1",
+        "text_en1": "During the Explore step, Invaders Explore at +1 distance.<br/>''(So a land 2 away from a Town/City/Ocean will be Explored into.)''",
+        "eventType2": "Terror Levels 2 & 3",
+        "eventName2": "Fearful Mobs",
+        "text_en2": "When Ravaging, Invaders do +3 Damage ''(per land)'' in lands with 3 or more Invaders.",
+        "eventType3": "Disease",
+        "eventName3": "Grim Toll",
+        "text_en3": "On Each Board: Choose a land with Disease. In that land, do 2 Damage to Invaders and 2 Damage to Dahan.",
+        "eventType4": "Dahan",
+        "eventName4": "Fierce Mein",
+        "text_en4": "1 Fear per land with Invaders where Dahan outnumber Towns/Cities.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Eager Explorers",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Terror Level 1",
+          "event_name": null,
+          "text": "On Each Board: After the first successful Build Action, add 1 Explorer to an adjacent land without Invaders."
+        },
+        {
+          "event_type": "Terror Levels 2 & 3",
+          "event_name": "Xenophobia",
+          "text": "When Ravaging in lands with Dahan, each individual Invader does -1 Damage to the land and +1 Damage to Dahan."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Chase Off Homesteaders",
+          "text": "On Each Board: Push up to 2 Explorers or 1 Town from a land with Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "At Their Gates Demanding Redress",
+          "text": "2 Fear per land with Dahan and City."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Eager Explorers",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Eager_Explorers_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Terror Level 1",
+        "text_en1": "'''On Each Board:''' After the first successful Build Action, add 1 Explorer to an adjacent land without Invaders.",
+        "eventType2": "Terror Levels 2 & 3",
+        "eventName2": "Xenophobia",
+        "text_en2": "When Ravaging in lands with Dahan, each individual Invader does -1 Damage to the land and +1 Damage to Dahan.",
+        "eventType3": "Beasts",
+        "eventName3": "Beasts Chase Off Homesteaders",
+        "text_en3": "'''On Each Board:''' Push up to 2 Explorers or 1 Town from a land with Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "At Their Gates Demanding Redress",
+        "text_en4": "2 Fear per land with Dahan and City.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Ethereal Conjunction",
+      "expansion": "Nature Incarnate",
+      "stages": [
+        {
+          "event_type": "Individual Choice",
+          "event_name": null,
+          "text": "A confluence of spiritual forces gathers into an unformed maelstrom. Each Spirit chooses: ENDURE ITS FORCES AS BEST YOU CAN <div> * Destroy 1 Presence and lose 1 Energy.</div> SEEK TO CONTROL IT, THOUGH IT EXHAUSTS YOU <div> * Choose any non-Major Power Card of yours (in hand, play, or discard). Put it into play (without paying its cost); use it immediately (even if already used this turn); and then Forget it. * Discard all Power Cards (from hand).</div>"
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Irregular Outbreaks",
+          "text": "Disease doesn't prevent Builds this Invader Phase. 1 Fear per board with Disease."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Tend to the Living Earth",
+          "text": "On Each Board with 5 or more Dahan: Remove 1 Blight in a land with Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Ethereal Conjunction",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Ethereal_Conjunction_(ni).png",
+        "set": "Nature Incarnate",
+        "eventType1": "Individual Choice",
+        "text_en1": "A confluence of spiritual forces gathers into an unformed maelstrom. Each Spirit chooses:<br/><br/>ENDURE ITS FORCES AS BEST YOU CAN<br/>\n<div>\n* Destroy 1 Presence and lose 1 Energy.</div><br/>SEEK TO CONTROL IT, THOUGH IT EXHAUSTS YOU<br/>\n<div>\n* Choose any non-Major Power Card of yours ''(in hand, play, or discard)''. Put it into play ''(without paying its cost);'' use it immediately ''(even if already used this turn);'' and then Forget it.<br/>\n* Discard all Power Cards ''(from hand)''.</div>",
+        "eventType2": "Disease",
+        "eventName2": "Irregular Outbreaks",
+        "text_en2": "Disease doesn't prevent Builds this Invader Phase. 1 Fear per board with Disease.",
+        "eventType3": "Dahan",
+        "eventName3": "Tend to the Living Earth",
+        "text_en3": "'''On Each Board with 5 or more Dahan:''' Remove 1 Blight in a land with Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Far-off Wars Touch the Island",
+      "expansion": "Nature Incarnate",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "Invaders from a different, distant land launch an assault upon the island while the Invaders here rally together in a wave of nationalism. Defending the island with them might come at too high a price. <div> * Add a Fear Card to the top of the Fear Deck. * On Each Board, in the land with the most Towns/Cities, choose (for that board) either:</div> ENCOURAGE THE DESTRUCTION <div> * 4 Fear. Destroy half of Towns (round up) and half of Cities (round up). Add 2 Blight without cascading.</div> BLUNT THE OFFENSIVE <div> * Destroy 1 Town but do not gain Fear.</div>"
+        },
+        {
+          "event_type": "Badlands",
+          "event_name": "Ecosystem Damage",
+          "text": "On Each Board: Add 1 Badlands to a land with Blight."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Return to Old Pillars",
+          "text": "On Each Board: Gather 1 or 2 Dahan into a land with Dahan Setup symbols."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Far-off Wars Touch the Island",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Far-off_Wars_Touch_the_Island_(ni).png",
+        "set": "Nature Incarnate",
+        "eventType1": "Group Choice",
+        "text_en1": "Invaders from a different, distant land launch an assault upon the island while the Invaders here rally together in a wave of nationalism. Defending the island with them might come at too high a price.<br/>\n<div>\n* Add a Fear Card to the top of the Fear Deck.\n* '''On Each Board,''' in the land with the most Towns/Cities, choose ''(for that board)'' either:</div><br/>ENCOURAGE THE DESTRUCTION\n<div>\n* 4 Fear. Destroy half of Towns (round up) and half of Cities (round up). Add 2 Blight without cascading.</div><br/>BLUNT THE OFFENSIVE\n<div>\n* Destroy 1 Town but do not gain Fear.</div>",
+        "eventType2": "Badlands",
+        "eventName2": "Ecosystem Damage",
+        "text_en2": "'''On Each Board:''' Add 1 Badlands to a land with Blight.",
+        "eventType3": "Dahan",
+        "eventName3": "Return to Old Pillars",
+        "text_en3": "'''On Each Board:''' Gather 1 or 2 Dahan into a land with Dahan Setup symbols.",
+        "eventType4": "",
+        "eventName4": "",
+        "text_en4": "",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Farmers Seek the Dahan for Aid",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "The Dahan are uncertain whether to teach the Invaders farming techniques more in tune with the island's life. You recommend they: SPURN THE INVADERS • On Each Board: 2 Damage to Dahan in a land with Town/City. • On Each Board: Add 1 Blight to a land with at least 2 Town/City. • Town/City have -1 Health (min. 1) until the end of the turn. TEACH THE INVADERS • On Each Board: Add 1 Town to a land with Dahan. • The next normal Ravage becomes a Build. (This could be on a future turn.)"
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "New Diseases",
+          "text": "On half of the boards (rounding up), add 1 Disease to a land with both Dahan and Invaders. Do 2 Damage to Dahan there."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Farmers Seek the Dahan for Aid",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Farmers_Seek_the_Dahan_for_Aid_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Group Choice",
+        "text_en1": "The Dahan are uncertain whether to teach the Invaders farming techniques more in tune with the island's life. You recommend they:<br/><br/>'''SPURN THE INVADERS'''<br/>• On Each Board: 2 Damage to Dahan in a land with Town/City.<br/>• On Each Board: Add 1 Blight to a land with at least 2 Town/City.<br/>• Town/City have -1 Health ''(min. 1)'' until the end of the turn.<br/><br>'''TEACH THE INVADERS'''<br/>• On Each Board: Add 1 Town to a land with Dahan.<br/>• The next normal Ravage becomes a Build. ''(This could be on a future turn.)''",
+        "eventType2": "Disease",
+        "eventName2": "New Diseases",
+        "text_en2": "On half of the boards (rounding up), add 1 Disease to a land with both Dahan and Invaders. Do 2 Damage to Dahan there.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Focused Farming",
+      "expansion": "Nature Incarnate",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On Each Board: Add 1 Explorer and 1 Town to a land with Towns/Blight."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Essence Disperses",
+          "text": "Each Spirit chooses independently to: Forget 1 Power Card. **OR** Lose 2 Energy (to min.0) and Destroy 1 Presence. In the land where you destroyed Presence, return 1 Blight to the box (if possible)."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Explorers Blunder",
+          "text": "On Each Board: Destroy 2 Explorers among lands with Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Offerings of Story and Season",
+          "text": "Each Spirit with at least 3 Dahan among its lands gains 1 Energy and may Reclaim 1 Card."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Focused Farming",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Focused_Farming_(ni).png",
+        "set": "Nature Incarnate",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On Each Board:''' Add 1 Explorer and 1 Town to a land with Towns/Blight.",
+        "eventType2": "Blighted Island",
+        "eventName2": "Essence Disperses",
+        "text_en2": "Each Spirit chooses independently to:<br/>Forget 1 Power Card.<br/>{{or}}Lose 2 Energy ''(to min.0)'' and Destroy 1 Presence. In the land where you destroyed Presence, return 1 Blight to the box ''(if possible).''",
+        "eventType3": "Beasts",
+        "eventName3": "Explorers Blunder",
+        "text_en3": "'''On Each Board:''' Destroy 2 Explorers among lands with Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Offerings of Story and Season",
+        "text_en4": "Each Spirit with at least 3 Dahan among its lands gains 1 Energy and may Reclaim 1 Card.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Fortune-Seekers",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "The next Explore Card matches all lands without Towns/Cities instead of the printed land type. Ignore any Escalation on it."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "The Land's Bounty Exhausted",
+          "text": "In lands without Presence, it only takes 1 Damage to add Blight."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Grim Toll",
+          "text": "On Each Board: Choose a land with Disease. In that land, 2 Damage to Invaders and 2 Damage to Dahan."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Tell the Old Stories",
+          "text": "Each Spirit with at least 2 Dahan among its lands either Reclaims 1 Power Card or re-gains a Unique Power it previously Forgot."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Fortune-Seekers",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Fortune-Seekers_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Healthy Island",
+        "text_en1": "The next Explore Card matches '''all''' lands without Towns/Cities instead of the printed land type. Ignore any Escalation on it.",
+        "eventType2": "Blighted Island",
+        "eventName2": "The Land's Bounty Exhausted",
+        "text_en2": "In lands without Presence, it only takes 1 Damage to add Blight.",
+        "eventType3": "Disease",
+        "eventName3": "Grim Toll",
+        "text_en3": "'''On Each Board:''' Choose a land with Disease. In that land, 2 Damage to Invaders and 2 Damage to Dahan.",
+        "eventType4": "Dahan",
+        "eventName4": "Tell the Old Stories",
+        "text_en4": "Each Spirit with at least 2 Dahan among its lands either Reclaims 1 Power Card or re-gains a Unique Power it previously Forgot.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Gradual Corruption",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On Each Board: Add 1 Blight to a land with Towns/Cities. Spirits may prevent this on any/all boards by paying X Energy per board to protect, where X is the number of cards in the Invader discard. (This may be 0.)"
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Ravaged Wilderness",
+          "text": "On Each Board: Remove 1 Beasts from a land with Blight. Remove 1 Wilds from a land with Blight."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Fatalities Rise",
+          "text": "In each land with Disease, 1 Damage to each Invader and 1 Damage to each Dahan. Remove 1 Disease from each land where this Destroys any Towns/Cities."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Blessings of Bounty and Health",
+          "text": "Each Spirit may add 1 Dahan to one of its lands with Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Gradual Corruption",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Gradual_Corruption_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On Each Board:''' Add 1 Blight to a land with Towns/Cities.<br/><br/>Spirits may prevent this on any/all boards by paying X Energy per board to protect, where X is the number of cards in the Invader discard. ''(This may be 0.)''",
+        "eventType2": "Blighted Island",
+        "eventName2": "Ravaged Wilderness",
+        "text_en2": "'''On Each Board:''' Remove 1 Beasts from a land with Blight. Remove 1 Wilds from a land with Blight.",
+        "eventType3": "Disease",
+        "eventName3": "Fatalities Rise",
+        "text_en3": "In each land with Disease, 1 Damage to each Invader and 1 Damage to each Dahan. Remove 1 Disease from each land where this Destroys any Towns/Cities.",
+        "eventType4": "Dahan",
+        "eventName4": "Blessings of Bounty and Health",
+        "text_en4": "Each Spirit may add 1 Dahan to one of its lands with Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Hard-Working Settlers",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "The latest round of settlers are regrettably diligent, focused, and curious. You may: ACT CAUTIOUSLY IN THE BACKGROUND On Each Board: • Push up to 2 Dahan. • Add 1 Town to a land without Towns. • Immediately Ravage in the land with the most Invaders that matches a Ravage Card. CREATE UNNERVING DISTRACTIONS ...at the cost of piquing their interest. • Ravage Cards skip up to one matching land on each board. (Players choose which.) • 1 Fear per player. • Remove the bottommost Stage II and Stage III Cards in the Invader Deck from the game."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Prey on the Injured",
+          "text": "This turn, Beasts also count as Badlands. On Each Board: Destroy a Damaged Invader in a land with Beasts."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Hard-Working Settlers",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Hard-Working_Settlers_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Group Choice",
+        "text_en1": "The latest round of settlers are regrettably diligent, focused, and curious. You may:<br/><br/>'''ACT CAUTIOUSLY IN THE BACKGROUND'''<br/>'''On Each Board:'''<br/>• Push up to 2 Dahan.<br/>• Add 1 Town to a land without Towns.<br/>• Immediately Ravage in the land with the most Invaders that matches a Ravage Card.<br/><br/>'''CREATE UNNERVING DISTRACTIONS'''<br/>...at the cost of piquing their interest.<br/>• Ravage Cards skip up to one matching land on each board. ''(Players choose which.)''<br/>• 1 Fear per player.<br/>• Remove the bottommost Stage II and Stage III Cards in the Invader Deck from the game.",
+        "eventType2": "Beasts",
+        "eventName2": "Beasts Prey on the Injured",
+        "text_en2": "This turn, Beasts also count as Badlands. '''On Each Board:''' Destroy a Damaged Invader in a land with Beasts.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Harvest Bounty, Harvest Dust",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Stages 1 & 2",
+          "event_name": null,
+          "text": "If the island is Healthy, On Each Board: Choose a land with Towns/Cities. Ravage there. If the island is Blighted, On Each Board: Push 1 Town from a land with 2 or more Towns/Cities to a land without Towns/Cities."
+        },
+        {
+          "event_type": "Stage 3",
+          "event_name": "Widespread Clearcutting",
+          "text": "On Each Board: Choose a land with Towns/Cities. Add 1 Blight there, without cascading. Players may Destroy 2 Presence/Dahan in that land to prevent adding Blight."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Explorers Blunder",
+          "text": "On Each Board: Destroy 2 Explorers among lands with Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Coordinated Strikes",
+          "text": "In each land with 3 or more Dahan, 2 Damage and Defend 2."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Harvest Bounty, Harvest Dust",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Harvest_Bounty,_Harvest_Dust_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Stages 1 & 2",
+        "text_en1": "If the island is Healthy, '''On Each Board:''' Choose a land with Towns/Cities. Ravage there.<br/><br/>If the island is Blighted, '''On Each Board:''' Push 1 Town from a land with 2 or more Towns/Cities to a land without Towns/Cities.",
+        "eventType2": "Stage 3",
+        "eventName2": "Widespread Clearcutting",
+        "text_en2": "'''On Each Board:''' Choose a land with Towns/Cities. Add 1 Blight there, without cascading.<br/><br/>Players may Destroy 2 Presence/Dahan in that land to prevent adding Blight.",
+        "eventType3": "Beasts",
+        "eventName3": "Explorers Blunder",
+        "text_en3": "'''On Each Board:''' Destroy 2 Explorers among lands with Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Coordinated Strikes",
+        "text_en4": "In each land with 3 or more Dahan, 2 Damage and Defend 2.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Heavy Farming",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "During the next normal Ravage, each Town does +1 Damage. (If there is no Ravage this Phase, leave this card by the Ravage Space until one happens.)"
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Overcrowded Cities",
+          "text": "On Each Board with City: Add 1 Blight to a land with City. Spirits may prevent this on any/all boards by destroying 2 Presence from each board to be protected."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Prey on the Unwary",
+          "text": "Each Beasts destroys 1 Explorer. Add 1 Beasts on a board without one."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Coming of Age",
+          "text": "On Each Board: Add 1 Dahan to a Jungle or Wetland with Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Heavy Farming",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Heavy_Farming_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Healthy Island",
+        "text_en1": "During the next normal Ravage, each Town does +1 Damage. ''(If there is no Ravage this Phase, leave this card by the Ravage Space until one happens.)''",
+        "eventType2": "Blighted Island",
+        "eventName2": "Overcrowded Cities",
+        "text_en2": "On Each Board with City: Add 1 Blight to a land with City.<br/><br/>Spirits may prevent this on any/all boards by destroying 2 Presence from each board to be protected.",
+        "eventType3": "Beasts",
+        "eventName3": "Prey on the Unwary",
+        "text_en3": "Each Beasts destroys 1 Explorer. Add 1 Beasts on a board without one.",
+        "eventType4": "Dahan",
+        "eventName4": "Coming of Age",
+        "text_en4": "On Each Board: Add 1 Dahan to a Jungle or Wetland with Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Influx of Settlers",
+      "expansion": "Nature Incarnate",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On the single board with the most Towns/Cities: Add 1 Town per player, split between as many different lands as possible. (This will usually be 1 Town per chosen land.)"
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Lethargy and Degeneration",
+          "text": "On Each Board: Skip the first Ravage Action (in one land). Add 1 Blight to a land with Towns/Cities. Spirits may prevent either/both effects on any/all boards (choose per board) by Destroying 2 Presence from each board to be protected."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Sand Stalkers",
+          "text": "On Each Board: Add 1 Beasts to the Sands with the most Invaders. 1 Fear if Invaders are present there."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Network of Support and Trade",
+          "text": "When Invaders Ravage, if the land has Dahan, Defend 1 + Defend 1 per adjacent Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Influx of Settlers",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Influx_of_Settlers_(ni).png",
+        "set": "Nature Incarnate",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On the single board with the most Towns/Cities:''' Add 1 Town per player, split between as many different lands as possible. ''(This will usually be 1 Town per chosen land.)''",
+        "eventType2": "Blighted Island",
+        "eventName2": "Lethargy and Degeneration",
+        "text_en2": "'''On Each Board:''' Skip the first Ravage Action ''(in one land).'' Add 1 Blight to a land with Towns/Cities.<br/><br/>Spirits may prevent either/both effects on any/all boards ''(choose per board)'' by Destroying 2 Presence from each board to be protected.",
+        "eventType3": "Beasts",
+        "eventName3": "Sand Stalkers",
+        "text_en3": "'''On Each Board:''' Add 1 Beasts to the Sands with the most Invaders. 1 Fear if Invaders are present there.",
+        "eventType4": "Dahan",
+        "eventName4": "Network of Support and Trade",
+        "text_en4": "When Invaders Ravage, if the land has Dahan, Defend 1 + Defend 1 per adjacent Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Interesting Discoveries",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Stage 1",
+          "event_name": null,
+          "text": "On Each Board: Choose a Sacredsite. Gather 1 Explorer into its land, and add 1 additional Explorer."
+        },
+        {
+          "event_type": "Stages 2 & 3",
+          "event_name": "Increasing Aggression",
+          "text": "Invaders do +1 Damage (per land) when Ravaging."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Wheezelung Outbreak",
+          "text": "On Each Board: Add 1 Disease to the Jungle/Wetland with the most Town/City (minimum 1)."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Tend the Land",
+          "text": "On Each Board: Remove 1 Blight from a land with at least 2 Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Interesting Discoveries",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Interesting_Discoveries_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Stage 1",
+        "text_en1": "On Each Board: Choose a Sacredsite. Gather 1 Explorer into its land, and add 1 additional Explorer.",
+        "eventType2": "Stages 2 & 3",
+        "eventName2": "Increasing Aggression",
+        "text_en2": "Invaders do +1 Damage ''(per land)'' when Ravaging.",
+        "eventType3": "Disease",
+        "eventName3": "Wheezelung Outbreak",
+        "text_en3": "On Each Board: Add 1 Disease to the Jungle/Wetland with the most Town/City ''(minimum 1)''.",
+        "eventType4": "Dahan",
+        "eventName4": "Tend the Land",
+        "text_en4": "On Each Board: Remove 1 Blight from a land with at least 2 Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Invaders Surge Inland",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On a Coastal land on Each Board: Move 1 Town one or two lands Inland."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Widening Destruction",
+          "text": "On Each Board: Add 1 Blight to a land adjacent to a land with/adjacent to Towns/Cities. Spirits may prevent this on any/all boards by destroying 2 Presence from each board to be protected."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Grim Toll",
+          "text": "On Each Board: Choose a land with Disease. In that land, do 2 Damage to Invaders and 2 Damage to Dahan."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Canny Defense",
+          "text": "During Ravage, in every land, Defend 1 per Dahan in the land."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Invaders Surge Inland",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Invaders_Surge_Inland_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Healthy Island",
+        "text_en1": "On a Coastal land on Each Board: Move 1 Town one or two lands Inland.",
+        "eventType2": "Blighted Island",
+        "eventName2": "Widening Destruction",
+        "text_en2": "On Each Board: Add 1 Blight to a land adjacent to a land with/adjacent to Towns/Cities.<br/><br/>Spirits may prevent this on any/all boards by destroying 2 Presence from each board to be protected.",
+        "eventType3": "Disease",
+        "eventName3": "Grim Toll",
+        "text_en3": "On Each Board: Choose a land with Disease. In that land, do 2 Damage to Invaders and 2 Damage to Dahan.",
+        "eventType4": "Dahan",
+        "eventName4": "Canny Defense",
+        "text_en4": "During Ravage, in every land, Defend 1 per Dahan in the land.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Invested Aristocracy",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Stages 1 & 2",
+          "event_name": null,
+          "text": "After the Ravage Step, On Each Board: If no Blight was added to this board, add 1 Town to the highest-numbered land with no Invaders."
+        },
+        {
+          "event_type": "Stage 3",
+          "event_name": "Foreign Dignitaries Visit",
+          "text": "If the island is Healthy, Ravages do +2 Damage (total) in the lowest-numbered matching land on each board. If the island is Blighted, add 1 Fear Card to the top of the Fear Deck."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Prey on the Heedless",
+          "text": "In each land with Beasts, 1 Damage per Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Coming of Age",
+          "text": "On Each Board: Add 1 Dahan to a land with 2 or more Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Invested Aristocracy",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Invested_Aristocracy_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Stages 1 & 2",
+        "text_en1": "After the Ravage Step, '''On Each Board:''' If no Blight was added to this board, add 1 Town to the highest-numbered land with no Invaders.",
+        "eventType2": "Stage 3",
+        "eventName2": "Foreign Dignitaries Visit",
+        "text_en2": "If the island is Healthy, Ravages do +2 Damage (total) in the lowest-numbered matching land on each board.<br/><br/>If the island is Blighted, add 1 Fear Card to the top of the Fear Deck.",
+        "eventType3": "Beasts",
+        "eventName3": "Prey on the Heedless",
+        "text_en3": "In each land with Beasts, 1 Damage per Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Coming of Age",
+        "text_en4": "'''On Each Board:''' Add 1 Dahan to a land with 2 or more Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Investigation of Dangers",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Terror Level 1",
+          "event_name": null,
+          "text": "On Each Board: Add 1 Explorer to a land without Invaders or Dahan."
+        },
+        {
+          "event_type": "Terror Levels 2 & 3",
+          "event_name": "Destroy the Unnatural!",
+          "text": "Invaders do +3 Damage (per land) when Ravaging in lands with Presence."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Prey on the Unwary",
+          "text": "Each Beasts destroys 1 Explorer. Add 1 Beasts on a board without one."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Rouse the Spirits",
+          "text": "Each Spirit with at least 3 Dahan among all its lands may use a Slow Power now (instead of later)."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Investigation of Dangers",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Investigation_of_Dangers_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Terror Level 1",
+        "text_en1": "On Each Board: Add 1 Explorer to a land without Invaders or Dahan.",
+        "eventType2": "Terror Levels 2 & 3",
+        "eventName2": "Destroy the Unnatural!",
+        "text_en2": "Invaders do +3 Damage ''(per land)'' when Ravaging in lands with Presence.",
+        "eventType3": "Beasts",
+        "eventName3": "Prey on the Unwary",
+        "text_en3": "Each Beasts destroys 1 Explorer. Add 1 Beasts on a board without one.",
+        "eventType4": "Dahan",
+        "eventName4": "Rouse the Spirits",
+        "text_en4": "Each Spirit with at least 3 Dahan among all its lands may use a Slow Power now ''(instead of later'').",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Lesser Spirits Imperiled",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "The Invaders' spread is threatening many of the island's smaller Spirits. You may: TEND TO YOUR OWN STRENGTH • Each Spirit gains 1 Energy. • Discard 1 Minor Power per player from the deck. For each with Plant, Remove 1 Blight from the Blight Card, returning it to the box. For each with Animal, Destroy 1 Dahan in a land with Blight. FORGE A WEB OF MUTUAL SUPPORT Cost: 4 Energy per player, aided by Plant. • Each Spirit Destroys 1 of their Presence. • Each Spirit gains 1 permanent Element for the rest of the game. (Choose separately, now.)"
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Quit the Farmed Lands",
+          "text": "On Each Board: Push 1 Beasts to a land without Town/City. 1 Fear if Explorer are present there."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Return to Old Pillars",
+          "text": "On Each Board: Gather 1 or 2 Dahan into a land with Dahan Setup symbols."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Lesser Spirits Imperiled",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Lesser_Spirits_Imperiled_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Group Choice",
+        "text_en1": "The Invaders' spread is threatening many of the island's smaller Spirits. You may:<br/><br/>'''TEND TO YOUR OWN STRENGTH'''<br/>• Each Spirit gains 1 Energy.<br/>• Discard 1 Minor Power per player from the deck. For each with Plant, Remove 1 Blight from the Blight Card, returning it to the box. For each with Animal, Destroy 1 Dahan in a land with Blight.<br/><br/>'''FORGE A WEB OF MUTUAL SUPPORT'''<br/>'''Cost: 4 Energy per player, aided by Plant.'''<br/>• Each Spirit Destroys 1 of their Presence.<br/>• Each Spirit gains 1 permanent Element for the rest of the game. ''(Choose separately, now.)''",
+        "eventType2": "Beasts",
+        "eventName2": "Quit the Farmed Lands",
+        "text_en2": "'''On Each Board''': Push 1 Beasts to a land without Town/City. 1 Fear if Explorer are present there.",
+        "eventType3": "Dahan",
+        "eventName3": "Return to Old Pillars",
+        "text_en3": "'''On Each Board:''' Gather 1 or 2 Dahan into a land with Dahan Setup symbols.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Life's Balance Tilts",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "The energies of life shift towards destruction, bringing wasting and disease to the animals of the island. Death is a part of life, but does this go too far? You may: LET DESTRUCTION HAVE ITS DAY • On Each Board: Remove 1 Beasts. Add 1 Disease. • For Each Board: Discard the top Minor Power. If it is Fast, add 1 Blight. • Invaders and Dahan have -1 Health (min. 1) this turn. FORTIFY THE RESILIENCE OF LIFE Cost: 4 Energy per player, aided by Animal. • On Each Board: Add 1 Beasts. Remove 1 Disease. • For Each Board: Discard the top Minor Power. If it is Slow, Remove 1 Blight. • Invaders and Dahan have +1 Health this turn."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "A Thousand Small Struggles",
+          "text": "On Each Board with 4 or more Towns/Cities and 4 or fewer Dahan: Add 1 Blight to a land without Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Life's Balance Tilts",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Life's_Balance_Tilts_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Group Choice",
+        "text_en1": "The energies of life shift towards destruction, bringing wasting and disease to the animals of the island. Death is a part of life, but does this go too far? You may:<br/><br/>'''LET DESTRUCTION HAVE ITS DAY'''<br/>• '''On Each Board:''' Remove 1 Beasts. Add 1 Disease.<br/>• '''For Each Board:''' Discard the top Minor Power. If it is Fast, add 1 Blight.<br/>• Invaders and Dahan have -1 Health (min. 1) this turn.<br/><br/>'''FORTIFY THE RESILIENCE OF LIFE'''<br/>'''Cost: 4 Energy per player, aided by Animal.'''<br/>• '''On Each Board:''' Add 1 Beasts. Remove 1 Disease.<br/>• '''For Each Board:''' Discard the top Minor Power. If it is Slow, Remove 1 Blight.<br/>• Invaders and Dahan have +1 Health this turn.",
+        "eventType2": "Dahan",
+        "eventName2": "A Thousand Small Struggles",
+        "text_en2": "'''On Each Board with 4 or more Towns/Cities and 4 or fewer Dahan:''' Add 1 Blight to a land without Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Mapmakers Chart the Wild",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Stages 1 & 2",
+          "event_name": null,
+          "text": "Ignore Wilds during the Explore Step. On Each Board without Wilds: Explore Actions add +1 Explorer (in each land successfully Explored)."
+        },
+        {
+          "event_type": "Stage 3",
+          "event_name": "Increasing Aggression",
+          "text": "Invaders do +1 Damage (per land) when Ravaging."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Prey on the Heedless",
+          "text": "In each land with Beasts, 1 Damage per Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Coming of Age",
+          "text": "On Each Board: Add 1 Dahan to a land with Dahan and no Badlands/Beasts/Disease/Wilds."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Mapmakers Chart the Wild",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Mapmakers_Chart_the_Wild_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Stages 1 & 2",
+        "text_en1": "Ignore Wilds during the Explore Step. '''On Each Board without Wilds:''' Explore Actions add +1 Explorer ''(in each land successfully Explored)''.",
+        "eventType2": "Stage 3",
+        "eventName2": "Increasing Aggression",
+        "text_en2": "Invaders do +1 Damage ''(per land)'' when Ravaging.",
+        "eventType3": "Beasts",
+        "eventName3": "Prey on the Heedless",
+        "text_en3": "In each land with Beasts, 1 Damage per Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Coming of Age",
+        "text_en4": "'''On Each Board:''' Add 1 Dahan to a land with Dahan and no Badlands/Beasts/Disease/Wilds.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Missionaries Arrive",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "They teach and spread lessons of a foreign god. You may: IGNORE THEIR CONTACT WITH THE DAHAN • For each board, discard the top Minor Power. If it has Sun, Push 1 Explorer from a land with Dahan. Otherwise, replace 1 Dahan with 1 Town. • After resolving this card, return it to the Event Deck under the top 2 cards. CURSE THE TONGUES OF THE FOREIGNERS Cost: 4 Energy per player. Aided by Sun. • Each Spirit: Add 1 Disease to a land with City. • 2 Fear per player. • During the next normal Ravage, City do +3 Damage."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Prey on the Unwary",
+          "text": "Each Beasts destroys 1 Explorer. Add 1 Beasts to a board without one."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Missionaries Arrive",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Missionaries_Arrive_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Group Choice",
+        "text_en1": "They teach and spread lessons of a foreign god. You may:<br/><br/>'''IGNORE THEIR CONTACT WITH THE DAHAN'''<br/>• For each board, discard the top Minor Power. If it has Sun, Push 1 Explorer from a land with Dahan. Otherwise, replace 1 Dahan with 1 Town.<br/>• After resolving this card, return it to the Event Deck under the top 2 cards.<br/><br/>'''CURSE THE TONGUES OF THE FOREIGNERS'''<br/>'''Cost: 4 Energy per player. Aided by Sun.'''<br/>• Each Spirit: Add 1 Disease to a land with City.<br/>• 2 Fear per player.<br/>• During the next normal Ravage, City do +3 Damage.",
+        "eventType2": "Beasts",
+        "eventName2": "Prey on the Unwary",
+        "text_en2": "Each Beasts destroys 1 Explorer. Add 1 Beasts to a board without one.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "New Species Spread",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "New plants and animals brought by the Invaders Damage the local ecology. You may: LET THE INVASIVE SPECIES BLOOM • For each board, discard the top Minor Power. If it is Fast, add 1 Blight to a land with Town/City. • After resolving this card, return it to the Event Deck under the top 2 cards. TRANSMUTE THE WORST OF THE SPECIES Cost: 4 Energy per player. Aided by Moon. • 1 Fear per player. On Each Board: Add 1 Beasts to a land with Town/City."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "New Diseases",
+          "text": "On half of the boards (rounding up), add 1 Disease to a land with both Dahan and Invaders. Do 2 Damage to Dahan there."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Offerings of Pattern and Dance",
+          "text": "Each Spirit with at least 2 Dahan among all its lands gains 1 Energy."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "New Species Spread",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:New_Species_Spread_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Group Choice",
+        "text_en1": "New plants and animals brought by the Invaders Damage the local ecology. You may:<br/><br/>'''LET THE INVASIVE SPECIES BLOOM'''<br/>• For each board, discard the top Minor Power. If it is Fast, add 1 Blight to a land with Town/City.<br/>• After resolving this card, return it to the Event Deck under the top 2 cards.<br/><br/>'''TRANSMUTE THE WORST OF THE SPECIES'''<br/>'''Cost: 4 Energy per player. Aided by Moon.'''<br/>• 1 Fear per player. On Each Board: Add 1 Beasts to a land with Town/City.",
+        "eventType2": "Disease",
+        "eventName2": "New Diseases",
+        "text_en2": "On half of the boards (rounding up), add 1 Disease to a land with both Dahan and Invaders. Do 2 Damage to Dahan there.",
+        "eventType3": "Dahan",
+        "eventName3": "Offerings of Pattern and Dance",
+        "text_en3": "Each Spirit with at least 2 Dahan among all its lands gains 1 Energy.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "No Bravery Without Numbers",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Stages 1 & 2",
+          "event_name": null,
+          "text": "Invaders do not Ravage in lands unless there are more Invaders than the current Terror Level."
+        },
+        {
+          "event_type": "Stage 3",
+          "event_name": "Courage of the Crowd",
+          "text": "Invaders do not Ravage in lands unless there are more Invaders than the current Terror Level. Ravage actions do +2 Damage (per land)."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Prey on the Heedless",
+          "text": "In each land with Beasts, 1 Damage per Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Leave the Hostile Land",
+          "text": "In each land, Push 1 Dahan per Badlands/Disease to lands without Badlands/Disease."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "No Bravery Without Numbers",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:No_Bravery_Without_Numbers_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Stages 1 & 2",
+        "text_en1": "Invaders do not Ravage in lands unless there are more Invaders than the current Terror Level.",
+        "eventType2": "Stage 3",
+        "eventName2": "Courage of the Crowd",
+        "text_en2": "Invaders do not Ravage in lands unless there are more Invaders than the current Terror Level.<br/><br/>Ravage actions do +2 Damage ''(per land)''.",
+        "eventType3": "Beasts",
+        "eventName3": "Prey on the Heedless",
+        "text_en3": "In each land with Beasts, 1 Damage per Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Leave the Hostile Land",
+        "text_en4": "In each land, Push 1 Dahan per Badlands/Disease to lands without Badlands/Disease.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Numinous Crisis",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "The spiritual energy of the island weakens as life's connections grow ever more tattered. You may: DRAW STRENGTH FROM IT WHILE YOU CAN • Remove 1 Blight per player from the Blight Card. Then, if the Blight Card has not flipped, keep Removing Blight until it flips. Gain 3 Energy per Blight Removed, divided as evenly as possible among all Spirits. POUR YOUR STRENGTH INTO THE ISLAND • Each Spirit either pays 3 Energy, Forgets 2 Power Cards, or returns 1 Presence to their Presence tracks."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Plagues Bring Fear and Death",
+          "text": "1 Fear per board with Disease. On Each Board: 2 Damage to Dahan in a land with Disease."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Careful Defense",
+          "text": "When Invaders Ravage, if the land has Dahan, Defend 2."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Numinous Crisis",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Numinous_Crisis_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Group Choice",
+        "text_en1": "The spiritual energy of the island weakens as life's connections grow ever more tattered. You may:<br/><br/>'''DRAW STRENGTH FROM IT WHILE YOU CAN'''<br/>• Remove 1 Blight per player from the Blight Card. Then, if the Blight Card has not flipped, keep Removing Blight until it flips. Gain 3 Energy per Blight Removed, divided as evenly as possible among all Spirits.<br/><br/>'''POUR YOUR STRENGTH INTO THE ISLAND'''<br/>• Each Spirit either pays 3 Energy, Forgets 2 Power Cards, or returns 1 Presence to their Presence tracks.",
+        "eventType2": "Disease",
+        "eventName2": "Plagues Bring Fear and Death",
+        "text_en2": "1 Fear per board with Disease. '''On Each Board:''' 2 Damage to Dahan in a land with Disease.",
+        "eventType3": "Dahan",
+        "eventName3": "Careful Defense",
+        "text_en3": "When Invaders Ravage, if the land has Dahan, Defend 2.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Overconfidence",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Terror Level 1",
+          "event_name": null,
+          "text": "If you have any Earned Fear Cards, discard 2 of them now (so you don't get their text benefits). Otherwise, move 2 Earned Fear Markers per player to the top of the Fear pool."
+        },
+        {
+          "event_type": "Terror Levels 2 & 3",
+          "event_name": "Terror Breeds Aggression",
+          "text": "For every 2 Fear Cards currently in the Earned Fear Cards pile, Invaders do +1 Damage (per land) when Ravaging."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Multiply",
+          "text": "On Each Board: Add 1 Beasts to a land adjacent to Beasts, then Destroy 1 Dahan in a land with Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Coordinated Defense",
+          "text": "When Invaders Ravage, if the land has both Dahan and Presence, Defend 5."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Overconfidence",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Overconfidence_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Terror Level 1",
+        "text_en1": "If you have any Earned Fear Cards, discard 2 of them now ''(so you don't get their text benefits)''.<br/><br/>Otherwise, move 2 Earned Fear Markers per player to the top of the Fear pool.",
+        "eventType2": "Terror Levels 2 & 3",
+        "eventName2": "Terror Breeds Aggression",
+        "text_en2": "For every 2 Fear Cards currently in the Earned Fear Cards pile, Invaders do +1 Damage ''(per land)'' when Ravaging.",
+        "eventType3": "Beasts",
+        "eventName3": "Beasts Multiply",
+        "text_en3": "'''On Each Board:''' Add 1 Beasts to a land adjacent to Beasts, then Destroy 1 Dahan in a land with Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Coordinated Defense",
+        "text_en4": "When Invaders Ravage, if the land has both Dahan and Presence, Defend 5.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Population Rises",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On Each Board: Add 1 Town to a land with Explorers/Towns."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Power Fades",
+          "text": "Each Spirit chooses independently to: Destroy 2 of their Presence **OR** Forget 2 of their Powers **OR** Take 1 Blight from the Blight Card and remove it from the game."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Sandfever Outbreak",
+          "text": "On Each Board: Add 1 Disease to the Sands or Mountains with the most Towns/Cities (minimum 1)."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Offerings of Pattern and Dance",
+          "text": "Each Spirit with at least 2 Dahan among all its lands gains 1 Energy."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Population Rises",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Population_Rises_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Healthy Island",
+        "text_en1": "On Each Board: Add 1 Town to a land with Explorers/Towns.",
+        "eventType2": "Blighted Island",
+        "eventName2": "Power Fades",
+        "text_en2": "Each Spirit chooses independently to:<br/>Destroy 2 of their Presence<br/>{{or}}Forget 2 of their Powers<br/>{{or}}Take 1 Blight from the Blight Card and remove it from the game.",
+        "eventType3": "Disease",
+        "eventName3": "Sandfever Outbreak",
+        "text_en3": "On Each Board: Add 1 Disease to the Sands or Mountains with the most Towns/Cities ''(minimum 1)''.",
+        "eventType4": "Dahan",
+        "eventName4": "Offerings of Pattern and Dance",
+        "text_en4": "Each Spirit with at least 2 Dahan among all its lands gains 1 Energy.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Promising Farmland",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "When Exploring, once per board, place 1 Town instead of 1 Explorer."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "New Cash Crops Take Hold",
+          "text": "Invaders immediately Ravage in 1 terrain type not showing under any Invader Action. Spirits may prevent this on any/all boards by destroying 2 Presence from each board to be protected."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Provoked",
+          "text": "On Each Board: Add 1 Beasts to a land without Blight that has Town."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Canny Defense",
+          "text": "During Ravage, in every land, Defend 1 per Dahan in the land."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Promising Farmland",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Promising_Farmland_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Healthy Island",
+        "text_en1": "When Exploring, once per board, place 1 Town instead of 1 Explorer.",
+        "eventType2": "Blighted Island",
+        "eventName2": "New Cash Crops Take Hold",
+        "text_en2": "Invaders immediately Ravage in 1 terrain type not showing under any Invader Action.<br/><br/>Spirits may prevent this on any/all boards by destroying 2 Presence from each board to be protected.",
+        "eventType3": "Beasts",
+        "eventName3": "Beasts Provoked",
+        "text_en3": "'''On Each Board:''' Add 1 Beasts to a land without Blight that has Town.",
+        "eventName4": "Canny Defense",
+        "eventType4": "Dahan",
+        "text_en4": "During Ravage, in every land, Defend 1 per Dahan in the land.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Provincial Seat",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On Each Board: Choose a land with at least 1 City. Build there."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Lands Hollow of Promise",
+          "text": "On Each Board: Add 1 Blight to a land without Presence. Spirits may prevent this on any/all boards by Destroying 2 Presence from each board to be protected."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Chase Off Homesteaders",
+          "text": "On Each Board: Push up to 2 Explorers or 1 Town from a land with Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Rally to the Defense of Distant Kin",
+          "text": "On Each Board: Gather 1 Dahan into a land with Dahan. In that land, Defend 1 per Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Provincial Seat",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Provincial_Seat_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On Each Board:''' Choose a land with at least 1 City. Build there.",
+        "eventType2": "Blighted Island",
+        "eventName2": "Lands Hollow of Promise",
+        "text_en2": "'''On Each Board:''' Add 1 Blight to a land without Presence.<br/><br/>Spirits may prevent this on any/all boards by Destroying 2 Presence from each board to be protected.",
+        "eventType3": "Beasts",
+        "eventName3": "Beasts Chase Off Homesteaders",
+        "text_en3": "'''On Each Board:''' Push up to 2 Explorers or 1 Town from a land with Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Rally to the Defense of Distant Kin",
+        "text_en4": "'''On Each Board:''' Gather 1 Dahan into a land with Dahan. In that land, Defend 1 per Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Pull Together in Adversity",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Terror Levels 1 & 2",
+          "event_name": null,
+          "text": "For the rest of this turn, ignore 1 Strife on each Invader. (This includes not removing that Strife.)"
+        },
+        {
+          "event_type": "Terror Level 3",
+          "event_name": "Purge the Land with Salt and Fire",
+          "text": "On Each Board in a land with 2 or more Towns: Add 1 Blight without cascading. Add 2 Badlands. Remove all Towns."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Explorers Blunder",
+          "text": "On Each Board: Destroy 2 Explorers among lands with Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Careful Defense",
+          "text": "When Invaders Ravage, if the land has Dahan, Defend 2."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Pull Together in Adversity",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Pull_Together_in_Adversity_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Terror Levels 1 & 2",
+        "text_en1": "For the rest of this turn, ignore 1 Strife on each Invader. ''(This includes not removing that Strife.)''",
+        "eventType2": "Terror Level 3",
+        "eventName2": "Purge the Land with Salt and Fire",
+        "text_en2": "'''On Each Board in a land with 2 or more Towns:''' Add 1 Blight without cascading. Add 2 Badlands. Remove all Towns.",
+        "eventType3": "Beasts",
+        "eventName3": "Explorers Blunder",
+        "text_en3": "'''On Each Board:''' Destroy 2 Explorers among lands with Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Careful Defense",
+        "text_en4": "When Invaders Ravage, if the land has Dahan, Defend 2.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Putting Down Roots",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On an Inland land on Each Board: Replace 1 Explorer with 1 Town."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "The Center Crumbles",
+          "text": "On Each Board with Invaders: Add 1 Blight to an Inland land. Spirits may prevent this on any/all boards by destroying 3 Presence from each board to be protected."
+        },
+        {
+          "event_type": "Disease and Strife",
+          "event_name": "Stricken",
+          "text": "In lands with Disease/Strife, Invaders skip Ravage Actions."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Drive Off the Interlopers",
+          "text": "Each player may Push 1 Explorer/Town from a land with Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Putting Down Roots",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Putting_Down_Roots_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On an Inland land on Each Board:''' Replace 1 Explorer with 1 Town.",
+        "eventType2": "Blighted Island",
+        "eventName2": "The Center Crumbles",
+        "text_en2": "'''On Each Board with Invaders:''' Add 1 Blight to an Inland land.<br/><br/>Spirits may prevent this on any/all boards by destroying 3 Presence from each board to be protected.",
+        "eventType3": "Disease and Strife",
+        "eventName3": "Stricken",
+        "text_en3": "In lands with Disease/Strife, Invaders skip Ravage Actions.",
+        "eventType4": "Dahan",
+        "eventName4": "Drive Off the Interlopers",
+        "text_en4": "Each player may Push 1 Explorer/Town from a land with Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Relentless Optimism",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Terror Level 1",
+          "event_name": null,
+          "text": "For the rest of this turn, don't generate Fear for Destroying Towns/Cities."
+        },
+        {
+          "event_type": "Terror Levels 2 & 3",
+          "event_name": "Cultures Mix and Clash",
+          "text": "On Each Board: If Dahan outnumber Towns/Cities by 2 or more, Replace 1 Town with 1 Dahan. If Towns/Cities outnumber Dahan by 2 or more, Replace 1 Dahan with 1 Town."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Foreign Diseases",
+          "text": "On Each Board, in the land with the mnost combined Invaders + Dahan (min. 1 of each): Add 1 Disease. 2 Damage to Dahan."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Offerings of Pattern and Dance",
+          "text": "Each Spirit with at least 2 Dahan among all its lands gains 1 Energy."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Relentless Optimism",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Relentless_Optimism_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Terror Level 1",
+        "text_en1": "For the rest of this turn, don't generate Fear for Destroying Towns/Cities.",
+        "eventType2": "Terror Levels 2 & 3",
+        "eventName2": "Cultures Mix and Clash",
+        "text_en2": "'''On Each Board:'''<br/>If Dahan outnumber Towns/Cities by 2 or more, Replace 1 Town with 1 Dahan.<br/><br/>If Towns/Cities outnumber Dahan by 2 or more, Replace 1 Dahan with 1 Town.",
+        "eventType3": "Disease",
+        "eventName3": "Foreign Diseases",
+        "text_en3": "'''On Each Board,''' in the land with the mnost combined Invaders + Dahan (min. 1 of each): Add 1 Disease. 2 Damage to Dahan.",
+        "eventType4": "Dahan",
+        "eventName4": "Offerings of Pattern and Dance",
+        "text_en4": "Each Spirit with at least 2 Dahan among all its lands gains 1 Energy.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Remnants of a Spirit's Heart",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "A group of Dahan find a stony ridge with lingering blessings from an ancient mountain-Spirit. You may: LEAVE ITS STRENGTH WITH THE DAHAN • Dahan have +10 Health this turn. • In lands with Dahan, Invaders have +1 Health this turn. WITH PATIENT FOCUS CRAFT A GREAT WARDING Cost: 4 Energy per player, aided by Earth. • Defend from Spirits is 4 lower per land this turn (min. 0) • During one future Spirit Phase, players may jointly decide to grant Defend 4 to all lands that turn. (There is a Reminder Card for this.)"
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Hunting Parties",
+          "text": "For each land with Beasts and Cities: 1 Fear and Destroy 1 Beasts there."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "A Thousand Small Struggles",
+          "text": "On Each Board with 4 or more Towns/Cities and 4 or fewer Dahan: Add 1 Blight to a land without Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Remnants of a Spirit's Heart",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Remnants_of_a_Spirit's_Heart_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Group Choice",
+        "text_en1": "A group of Dahan find a stony ridge with lingering blessings from an ancient mountain-Spirit. You may:<br/><br/>'''LEAVE ITS STRENGTH WITH THE DAHAN'''<br/>• Dahan have +10 Health this turn.<br/>• In lands with Dahan, Invaders have +1 Health this turn.<br/><br/>'''WITH PATIENT FOCUS CRAFT A GREAT WARDING'''<br/>'''Cost: 4 Energy per player, aided by Earth.'''<br/>• Defend from Spirits is 4 lower per land this turn (min. 0)<br/>• During one future Spirit Phase, players may jointly decide to grant Defend 4 to all lands that turn. ''(There is a Reminder Card for this.)''",
+        "eventType2": "Beasts",
+        "eventName2": "Hunting Parties",
+        "text_en2": "For each land with Beasts and Cities: 1 Fear and Destroy 1 Beasts there.",
+        "eventType3": "Dahan",
+        "eventName3": "A Thousand Small Struggles",
+        "text_en3": "'''On Each Board with 4 or more Towns/Cities and 4 or fewer Dahan:''' Add 1 Blight to a land without Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Resourceful Populace",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Terror Level 1",
+          "event_name": null,
+          "text": "For the rest of this turn, after an Action Destroys 1 or more Towns/Cities, add 1 Town to an adjacent land. (If there are no adjacent lands - e.g., due to Isolate - don't add anything.)"
+        },
+        {
+          "event_type": "Terror Levels 2 & 3",
+          "event_name": "Strip the Land Bare",
+          "text": "Towns each do +1 Damage when Ravaging. After a Ravage Action adds Blight, Remove 1 Explorer and 1 Town from the Ravaged land."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Virulence Among Close-Packed Homes",
+          "text": "On Each Board: Add 1 Disease to the Inland land with the most Towns/Cities (min. 1)."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Offerings of Story and Season",
+          "text": "Each Spirit with at least 3 Dahan among all its lands gains 1 Energy and may Reclaim 1 Card."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Resourceful Populace",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Resourceful_Populace_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Terror Level 1",
+        "text_en1": "For the rest of this turn, after an Action Destroys 1 or more Towns/Cities, add 1 Town to an adjacent land. ''(If there are no adjacent lands - e.g., due to Isolate - don't add anything.)''",
+        "eventType2": "Terror Levels 2 & 3",
+        "eventName2": "Strip the Land Bare",
+        "text_en2": "Towns each do +1 Damage when Ravaging. After a Ravage Action adds Blight, Remove 1 Explorer and 1 Town from the Ravaged land.",
+        "eventType3": "Disease",
+        "eventName3": "Virulence Among Close-Packed Homes",
+        "text_en3": "'''On Each Board:''' Add 1 Disease to the Inland land with the most Towns/Cities (min. 1).",
+        "eventType4": "Dahan",
+        "eventName4": "Offerings of Story and Season",
+        "text_en4": "Each Spirit with at least 3 Dahan among all its lands gains 1 Energy and may Reclaim 1 Card.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Rising Interest in the Island",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "Your island is unlike any the Invaders have seen. Their leaders begin to take interest in tales of strangeness. You may: IGNORE THEIR CURIOSITY • Return the top card of the Invader Deck to the box. (Skip cards specifically placed during Setup.) • On Each Board: Add 1 Town to a land without one. WEAVE LIES IN THE MINDS OF THEIR OBSERVERS Cost: 4 Energy per player. Aided by Air. • Return the top Fear Card to the box. • During the next normal Ravage, each Town/City deals +1 Damage."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts of the Jungle",
+          "text": "On Each Board: Add 1 Beasts to a Jungle without Blight. 1 Fear if Invaders are Present."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Traps and Snares",
+          "text": "On Each Board: Add 1 Wilds to a land with Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Rising Interest in the Island",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Rising_Interest_in_the_Island_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Group Choice",
+        "text_en1": "Your island is unlike any the Invaders have seen. Their leaders begin to take interest in tales of strangeness. You may:<br/><br/>'''IGNORE THEIR CURIOSITY'''<br/>• Return the top card of the Invader Deck to the box. ''(Skip cards specifically placed during Setup.)''<br/>• On Each Board: Add 1 Town to a land without one.<br/><br/>'''WEAVE LIES IN THE MINDS OF THEIR OBSERVERS'''<br/>'''Cost: 4 Energy per player. Aided by Air.'''<br/>• Return the top Fear Card to the box.<br/>• During the next normal Ravage, each Town/City deals +1 Damage.",
+        "eventType2": "Beasts",
+        "eventName2": "Beasts of the Jungle",
+        "text_en2": "'''On Each Board:''' Add 1 Beasts to a Jungle without Blight. 1 Fear if Invaders are Present.",
+        "eventType3": "Dahan",
+        "eventName3": "Traps and Snares",
+        "text_en3": "'''On Each Board:''' Add 1 Wilds to a land with Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Sacred Sites Under Threat",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "Invaders have begun to find hidden places of natural power. You may: LET THE ISLAND'S STRENGTH REPULSE THEM • Each Sacred Site Pushes 1 Explorer/Town to an adjacent land. • Remove 1 Blight per player from the Blight Card, returning it to the box. GUARD THEM YOURSELF, FOR WELL OR ILL Cost: 3 Energy per land where you do Damage. Aided by Fire. In each land with Sacred Site and Invaders: Either do 2 Damage **OR** Destroy 1 Presence from each Spirit."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Prowl",
+          "text": "Each Beasts generates 1 Fear if Invaders are Present, and moves to an adjacent land if not."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Spirit Speakers Solve Riddles of Power",
+          "text": "Each Spirit with at least 4 Dahan among its lands gains a Minor Power."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Sacred Sites Under Threat",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Sacred_Sites_Under_Threat_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Group Choice",
+        "text_en1": "Invaders have begun to find hidden places of natural power. You may:<br/><br/>'''LET THE ISLAND'S STRENGTH REPULSE THEM'''<br/>• Each Sacred Site Pushes 1 Explorer/Town to an adjacent land.<br/>• Remove 1 Blight per player from the Blight Card, returning it to the box.<br/><br/>'''GUARD THEM YOURSELF, FOR WELL OR ILL'''<br/>'''Cost: 3 Energy per land where you do Damage. Aided by Fire.'''<br/>'''In each land with Sacred Site and Invaders:'''<br/>Either do 2 Damage<br/>{{or}}Destroy 1 Presence from each Spirit.",
+        "eventType2": "Beasts",
+        "eventName2": "Beasts Prowl",
+        "text_en2": "Each Beasts generates 1 Fear if Invaders are Present, and moves to an adjacent land if not.",
+        "eventType3": "Dahan",
+        "eventName3": "Spirit Speakers Solve Riddles of Power",
+        "text_en3": "Each Spirit with at least 4 Dahan among its lands gains a Minor Power.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Search for New Lands",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "In Each land with at least 2 Explorers: Push 1 Explorer to an adjacent land without Invaders."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Devastated Shores",
+          "text": "On Each Board with Invaders: Add 1 Blight to a Coastal land. Spirits may prevent this on any/all boards by destroying 2 Presence from each board to be protected."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Distant Hunt",
+          "text": "On Each Board: Push 1 Beasts to an adjacent land with no Blight. It deals 1 Damage there."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Canny Defense",
+          "text": "During Ravage, in every land, Defend 1 per Dahan in the land."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Search for New Lands",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Search_for_New_Lands_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Healthy Island",
+        "text_en1": "In Each land with at least 2 Explorers: Push 1 Explorer to an adjacent land without Invaders.",
+        "eventType2": "Blighted Island",
+        "eventName2": "Devastated Shores",
+        "text_en2": "'''On Each Board with Invaders:''' Add 1 Blight to a Coastal land.<br/><br/>Spirits may prevent this on any/all boards by destroying 2 Presence from each board to be protected.",
+        "eventType3": "Beasts",
+        "eventName3": "Distant Hunt",
+        "text_en3": "'''On Each Board:''' Push 1 Beasts to an adjacent land with no Blight. It deals 1 Damage there.",
+        "eventType4": "Dahan",
+        "eventName4": "Canny Defense",
+        "text_en4": "During Ravage, in every land, Defend 1 per Dahan in the land.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Search for Unclaimed Land",
+      "expansion": "Nature Incarnate",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On Each Board: Explore in the land with the fewest total Invaders/Dahan (no source required)."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Widespread Hunting",
+          "text": "When Towns/Cities Ravage in a land:<div> * If no Beasts are present, Invaders do +2 Damage (total). * Otherwise, Destroy 1 Beasts.</div>Do this at most once per board (for one Ravage Action in one land)."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Plagues in Populous Lands",
+          "text": "On Each Board: Add 1 Disease to a land with 3 or more Invaders"
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Spreading Conflict Prompts Caution",
+          "text": "On Each Board: Push up to 3 Dahan from a land matching a Ravage card to a land not matching a Ravage card."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Search for Unclaimed Land",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Search_for_Unclaimed_Land_(ni).png",
+        "set": "Nature Incarnate",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On Each Board:''' Explore in the land with the fewest total Invaders/Dahan ''(no source required).''",
+        "eventType2": "Blighted Island",
+        "eventName2": "Widespread Hunting",
+        "text_en2": "When Towns/Cities Ravage in a land:<div>\n* If no Beasts are present, Invaders do +2 Damage ''(total).''\n* Otherwise, Destroy 1 Beasts.</div>Do this at most once per board ''(for one Ravage Action in one land).''",
+        "eventType3": "Disease",
+        "eventName3": "Plagues in Populous Lands",
+        "text_en3": "'''On Each Board:''' Add 1 Disease to a land with 3 or more Invaders",
+        "eventType4": "Dahan",
+        "eventName4": "Spreading Conflict Prompts Caution",
+        "text_en4": "'''On Each Board:''' Push up to 3 Dahan from a land matching a Ravage card to a land not matching a Ravage card.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Seek New Farmland",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "In each land with 2 or more Towns, Push 1 Town to a land without Towns."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Voracious Consumption",
+          "text": "On Each Board: After the Ravage Step, add 1 Blight to a land with a City and no Blight. Spirits may prevent this on any/all boards by Destroying 2 Presence from each board to be protected."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Plagues Bring Fear and Death",
+          "text": "1 Fear per board with Disease. On Each Board: 2 Damage to Dahan in a land with Disease."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Engage on Their Own Terms",
+          "text": "During Ravage, Dahan only do 1 Damage each, but deal Damage before Invaders."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Seek New Farmland",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Seek_New_Farmland_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Healthy Island",
+        "text_en1": "In each land with 2 or more Towns, Push 1 Town to a land without Towns.",
+        "eventType2": "Blighted Island",
+        "eventName2": "Voracious Consumption",
+        "text_en2": "'''On Each Board:''' After the Ravage Step, add 1 Blight to a land with a City and no Blight.<br/><br/>Spirits may prevent this on any/all boards by Destroying 2 Presence from each board to be protected.",
+        "eventType3": "Disease",
+        "eventName3": "Plagues Bring Fear and Death",
+        "text_en3": "1 Fear per board with Disease. '''On Each Board:''' 2 Damage to Dahan in a land with Disease.",
+        "eventType4": "Dahan",
+        "eventName4": "Engage on Their Own Terms",
+        "text_en4": "During Ravage, Dahan only do 1 Damage each, but deal Damage before Invaders.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Seeking the Interior",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Stage 1",
+          "event_name": null,
+          "text": "In each Coastal land, Push 1 Explorer one land Inland."
+        },
+        {
+          "event_type": "Stages 2 & 3",
+          "event_name": "Local Diaspora",
+          "text": "In the single land with the most Invaders, Push 1 Explorer/Town to each adjacent land."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Prowl",
+          "text": "Each Beasts generates 1 Fear if Invaders are present, and moves to an adjacent land if not."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Forsake the Barren Land",
+          "text": "On Each Board: Push 2 Dahan from a land with Blight to a land without Blight."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Seeking the Interior",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Seeking_the_Interior_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Stage 1",
+        "text_en1": "In each Coastal land, Push 1 Explorer one land Inland.",
+        "eventType2": "Stages 2 & 3",
+        "eventName2": "Local Diaspora",
+        "text_en2": "In the single land with the most Invaders, Push 1 Explorer/Town to each adjacent land.",
+        "eventType3": "Beasts",
+        "eventName3": "Beasts Prowl",
+        "text_en3": "Each Beasts generates 1 Fear if Invaders are present, and moves to an adjacent land if not.",
+        "eventType4": "Dahan",
+        "eventName4": "Forsake the Barren Land",
+        "text_en4": "On Each Board: Push 2 Dahan from a land with Blight to a land without Blight.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Slave Rebellion",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Adversary Event",
+          "event_name": null,
+          "text": "(Adversary Event - include only if specified) Discard and redraw if not playing against Kingdom of France."
+        },
+        {
+          "event_type": "Stages 1 & 2",
+          "event_name": "Small Uprising",
+          "text": "On Each Board: Add Strife to 1 Town. After finishing the Event Card, draw another one, then return this card to the Event Deck as per Setup."
+        },
+        {
+          "event_type": "Stage 3",
+          "event_name": "Rebellion",
+          "text": "On Each Board: Destroy 1 Town. Add Strife to any 2 Towns/Cities. Then, every Invader takes 1 Damage per Strife it has. After finishing this Event Card, draw another one. This card is discarded."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Aid the Uprising",
+          "text": "Invaders with Strife take 1 Damage per Dahan present. Add 1 Dahan per Town/City this destroys."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Slave Rebellion",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Slave_Rebellion_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Adversary Event",
+        "text_en1": "'''(Adversary Event - include only if specified)'''<br/>Discard and redraw if not playing against Kingdom of France.",
+        "eventType2": "Stages 1 & 2",
+        "eventName2": "Small Uprising",
+        "text_en2": "'''On Each Board:''' Add Strife to 1 Town. After finishing the Event Card, draw another one, then return this card to the Event Deck as per Setup.",
+        "eventType3": "Stage 3",
+        "eventName3": "Rebellion",
+        "text_en3": "'''On Each Board:''' Destroy 1 Town. Add Strife to any 2 Towns/Cities. Then, every Invader takes 1 Damage per Strife it has. After finishing this Event Card, draw another one. This card is discarded.",
+        "eventType4": "Dahan",
+        "eventName4": "Aid the Uprising",
+        "text_en4": "Invaders with Strife take 1 Damage per Dahan present. Add 1 Dahan per Town/City this destroys.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Smaller Ports Spring Up",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Stages 1 & 2",
+          "event_name": null,
+          "text": "On Each Board with exactly 1 Coastal City: Add 1 Town to a Coastal land without Cities."
+        },
+        {
+          "event_type": "Stage 3",
+          "event_name": "Extensive Building",
+          "text": "On Each Board: Build in a land with Invaders not matching a Build Card."
+        },
+        {
+          "event_type": "Disease and Strife",
+          "event_name": "Stricken",
+          "text": "In lands with Disease/Strife, Invaders skip Ravage Actions."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Settlers Encroach Too Far",
+          "text": "On Each Board: Choose a land with Towns and Dahan. Push 1 Town per 2 Dahan there."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Smaller Ports Spring Up",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Smaller_Ports_Spring_Up_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Stages 1 & 2",
+        "text_en1": "'''On Each Board with exactly 1 Coastal City:''' Add 1 Town to a Coastal land without Cities.",
+        "eventType2": "Stage 3",
+        "eventName2": "Extensive Building",
+        "text_en2": "'''On Each Board:''' Build in a land with Invaders not matching a Build Card.",
+        "eventType3": "Disease and Strife",
+        "eventName3": "Stricken",
+        "text_en3": "In lands with Disease/Strife, Invaders skip Ravage Actions.",
+        "eventType4": "Dahan",
+        "eventName4": "Settlers Encroach Too Far",
+        "text_en4": "'''On Each Board:''' Choose a land with Towns and Dahan. Push 1 Town per 2 Dahan there.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Sprawl Contained by the Wilds",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On Each Board: Add 1 Wilds to a land without Invaders. Build in the land with the most Towns/Cities (min. 1)."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Dissolution Threatens",
+          "text": "Spirits are losing awareness and control of pieces of themselves. Each Spirit chooses: ACCEPT THIS FRAGMENTATION Destroy 2 Presence, adding 1 Wilds in place of each. FOCUS YOUR WILL TOWARDS WHOLENESS Add 1 of your Destroyed Presence to one of your lands. Next turn, all your Powers are Slow and cannot be Fast."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Explorers Blunder",
+          "text": "On Each Board: Destroy 2 Explorers among lands with Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Lay Ambushes",
+          "text": "During Ravage, Dahan deal Damage at the same time as Invaders."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Sprawl Contained by the Wilds",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Sprawl_Contained_by_the_Wilds_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On Each Board:''' Add 1 Wilds to a land without Invaders. Build in the land with the most Towns/Cities (min. 1).",
+        "eventType2": "Blighted Island",
+        "eventName2": "Dissolution Threatens",
+        "text_en2": "Spirits are losing awareness and control of pieces of themselves. Each Spirit chooses:<br/><br/>'''ACCEPT THIS FRAGMENTATION'''<br/>Destroy 2 Presence, adding 1 Wilds in place of each.<br/><br/>'''FOCUS YOUR WILL TOWARDS WHOLENESS'''<br/>Add 1 of your Destroyed Presence to one of your lands. Next turn, all your Powers are Slow and cannot be Fast.",
+        "eventType3": "Beasts",
+        "eventName3": "Explorers Blunder",
+        "text_en3": "'''On Each Board:''' Destroy 2 Explorers among lands with Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Lay Ambushes",
+        "text_en4": "During Ravage, Dahan deal Damage at the same time as Invaders.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Strange Tales Attract Explorers",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Stage 1",
+          "event_name": null,
+          "text": "Now: 1 Fear per Spirit that has at least 1 Sacred Site. After advancing Invader Cards: Add 1 Explorer to each land with a Sacred Site."
+        },
+        {
+          "event_type": "Stages 2 & 3",
+          "event_name": "Fortification",
+          "text": "After advancing Invader Cards: Invaders Build in one terrain not shown under any Invader Action. (If there's no such terrain, nothing happens.)"
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Attack",
+          "text": "Each Beasts deals 2 Damage. Remove any token that destroys any Towns/Cities."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Coming of Age",
+          "text": "On Each Board: Add 1 Dahan to a Mountain or Sands with Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Strange Tales Attract Explorers",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Strange_Tales_Attract_Explorers_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Stage 1",
+        "text_en1": "'''Now:''' 1 Fear per Spirit that has at least 1 Sacred Site. After advancing Invader Cards: Add 1 Explorer to each land with a Sacred Site.",
+        "eventType2": "Stages 2 & 3",
+        "eventName2": "Fortification",
+        "text_en2": "'''After advancing Invader Cards:''' Invaders Build in one terrain not shown under any Invader Action. ''(If there's no such terrain, nothing happens.)''",
+        "eventType3": "Beasts",
+        "eventName3": "Beasts Attack",
+        "text_en3": "Each Beasts deals 2 Damage. Remove any token that destroys any Towns/Cities.",
+        "eventType4": "Dahan",
+        "eventName4": "Coming of Age",
+        "text_en4": "'''On Each Board:''' Add 1 Dahan to a Mountain or Sands with Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Temporary Truce",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Terror Level 1",
+          "event_name": null,
+          "text": "In lands with Dahan: 1 Dahan and 1 Town/City do not participate in Ravages. (They neither take nor deal Damage.)"
+        },
+        {
+          "event_type": "Terror Levels 2 & 3",
+          "event_name": "Temporary Caution",
+          "text": "During the Ravage Step, On Each Board: Skip 1 Ravage Action in a land where Dahan outnumber Towns/Cities."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Prey on the Heedless",
+          "text": "In each land with Beasts, 1 Damage per Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Speak of the Spirits' Anger",
+          "text": "For each board, 1 Fear if any Dahan are in lands with Towns/Cities."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Temporary Truce",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Temporary_Truce_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Terror Level 1",
+        "text_en1": "'''In lands with Dahan:''' 1 Dahan and 1 Town/City do not participate in Ravages. ''(They neither take nor deal Damage.)''",
+        "eventType2": "Terror Levels 2 & 3",
+        "eventName2": "Temporary Caution",
+        "text_en2": "During the Ravage Step, '''On Each Board:''' Skip 1 Ravage Action in a land where Dahan outnumber Towns/Cities.",
+        "eventType3": "Beasts",
+        "eventName3": "Prey on the Heedless",
+        "text_en3": "In each land with Beasts, 1 Damage per Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Speak of the Spirits' Anger",
+        "text_en4": "For each board, 1 Fear if any Dahan are in lands with Towns/Cities.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Terror Spikes Upwards",
+      "expansion": "Nature Incarnate",
+      "stages": [
+        {
+          "event_type": "Terror Levels 1 & 2",
+          "event_name": null,
+          "text": "If you have any Earned Fear Cards, resolve the first one now as if the Terror Level were 1 higher (then discard it). Otherwise, 1 Fear per player. (Generated Fear can't cause Final Harvest.)"
+        },
+        {
+          "event_type": "Terror Level 3",
+          "event_name": "Final Harvest",
+          "text": "Each City does +3 Damage during Ravage Actions. After each Ravage Action, Remove 1 Town/City from that land."
+        },
+        {
+          "event_type": "Badlands and Beasts",
+          "event_name": "Secure Settled Territory",
+          "text": "On Each Board: In a land with Badlands/Beasts and Towns/Cities: Destroy 1 Badlands/Beasts. 1 Damage to Dahan. 1 Damage."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "War Among the Dahan",
+          "text": "On Each Board: In the land with the most Dahan (min. 2), Push half the Dahan (round down)."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Terror Spikes Upwards",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Terror_Spikes_Upwards_(ni).png",
+        "set": "Nature Incarnate",
+        "eventType1": "Terror Levels 1 & 2",
+        "text_en1": "If you have any Earned Fear Cards, resolve the first one now as if the Terror Level were 1 higher (then discard it).<br/><br/>Otherwise, 1 Fear per player. ''(Generated Fear can't cause Final Harvest.)''",
+        "eventType2": "Terror Level 3",
+        "eventName2": "Final Harvest",
+        "text_en2": "Each City does +3 Damage during Ravage Actions.<br/><br/>After each Ravage Action, Remove 1 Town/City from that land.",
+        "eventType3": "Badlands and Beasts",
+        "eventName3": "Secure Settled Territory",
+        "text_en3": "'''On Each Board:''' In a land with Badlands/Beasts and Towns/Cities: Destroy 1 Badlands/Beasts. 1 Damage to Dahan. 1 Damage.",
+        "eventType4": "Dahan",
+        "eventName4": "War Among the Dahan",
+        "text_en4": "'''On Each Board:''' In the land with the most Dahan (min. 2), Push half the Dahan (round down).",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "The Frontier Calls",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "Explore Actions add +1 Explorer to lands without Towns/Cities."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Self-Sacrifice Buys Time",
+          "text": "Destroy 1 Presence from each Spirit. The next X Blight added to the island this turn come from the box instead of the Blight Card, where X is the number of Spirits. (Place this card on the Blight Card as reminder.)"
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Lair in Untamed Lands",
+          "text": "On Each Board: Add 1 Beasts to a land without Towns/Cities/Blight."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Seek Out New Grounds",
+          "text": "On Each Board: Gather 1 or 2 Dahan into a land without Dahan Setup symbols."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "The Frontier Calls",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:The_Frontier_Calls_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Healthy Island",
+        "text_en1": "Explore Actions add +1 Explorer to lands without Towns/Cities.",
+        "eventType2": "Blighted Island",
+        "eventName2": "Self-Sacrifice Buys Time",
+        "text_en2": "Destroy 1 Presence from each Spirit.<br/><br/>The next X Blight added to the island this turn come from the box instead of the Blight Card, where X is the number of Spirits. ''(Place this card on the Blight Card as reminder.)''",
+        "eventType3": "Beasts",
+        "eventName3": "Lair in Untamed Lands",
+        "text_en3": "'''On Each Board:''' Add 1 Beasts to a land without Towns/Cities/Blight.",
+        "eventType4": "Dahan",
+        "eventName4": "Seek Out New Grounds",
+        "text_en4": "'''On Each Board:''' Gather 1 or 2 Dahan into a land without Dahan Setup symbols.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "The Struggles of Growth",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "A painful crux-point. Each Spirit chooses: TRADE REACH FOR DEEPER NATURE Destroy 2 of your Presence. Gain a Power Card. LEAVE BEHIND THAT WHICH RESTRAINS YOU Forget a Power Card. Gain 2 Energy. Move up to 2 of your Presence up to Range"
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Blight Deepens",
+          "text": "On Each Board: Add 1 Blight to a land with Blight, but do not cascade. Spirits may prevent this on any/all boards by Destroying 1 Presence from each board to be protected."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Irregular Outbreaks",
+          "text": "Ignore Disease during Builds this Invader Phase. 1 Fear per board with Disease."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Careful Defense",
+          "text": "When Invaders Ravage, if the land has Dahan, Defend 2."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "The Struggles of Growth",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:The_Struggles_of_Growth_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Healthy Island",
+        "text_en1": "A painful crux-point. Each Spirit chooses:<br/><br/>'''TRADE REACH FOR DEEPER NATURE'''<br/>Destroy 2 of your Presence. Gain a Power Card.<br/><br/>'''LEAVE BEHIND THAT WHICH RESTRAINS YOU'''<br/>Forget a Power Card. Gain 2 Energy. Move up to 2 of your Presence up to Range",
+        "eventType2": "Blighted Island",
+        "eventName2": "Blight Deepens",
+        "text_en2": "'''On Each Board:''' Add 1 Blight to a land with Blight, but do not cascade.<br/><br/>Spirits may prevent this on any/all boards by Destroying 1 Presence from each board to be protected.",
+        "eventType3": "Disease",
+        "eventName3": "Irregular Outbreaks",
+        "text_en3": "Ignore Disease during Builds this Invader Phase. 1 Fear per board with Disease.",
+        "eventType4": "Dahan",
+        "eventName4": "Careful Defense",
+        "text_en4": "When Invaders Ravage, if the land has Dahan, Defend 2.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Thriving Trade",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On Each Board: Add 1 City to a Coastal land with City."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Partitioned Wilderness",
+          "text": "On Each Board: If there are 4 or more lands with Town, add 1 Blight to a land with or adjacent to Town. Spirits may prevent this on any/all boards by Destroying 3 Presence from each board to be protected."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Pestilence Arrives on Canvas Sails",
+          "text": "On Each Board: Add 1 Disease to the Coastal land with the most Town/City (min. 1). In that land, 3 Damage to Dahan."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Clever Cooperation",
+          "text": "Each Spirit may Push 1 of their Presence from a land with Dahan. 2 Damage in the land Pushed to."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Thriving Trade",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Thriving_Trade_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On Each Board:''' Add 1 City to a Coastal land with City.",
+        "eventType2": "Blighted Island",
+        "eventName2": "Partitioned Wilderness",
+        "text_en2": "'''On Each Board:''' If there are 4 or more lands with Town, add 1 Blight to a land with or adjacent to Town.<br/><br/>Spirits may prevent this on any/all boards by Destroying 3 Presence from each board to be protected.",
+        "eventType3": "Disease",
+        "eventName3": "Pestilence Arrives on Canvas Sails",
+        "text_en3": "'''On Each Board:''' Add 1 Disease to the Coastal land with the most Town/City (min. 1). In that land, 3 Damage to Dahan.",
+        "eventType4": "Dahan",
+        "eventName4": "Clever Cooperation",
+        "text_en4": "Each Spirit may Push 1 of their Presence from a land with Dahan. 2 Damage in the land Pushed to.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Tight-Knit Communities",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "For the rest of the turn, Towns/Cities have +1 Health."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Blight Spreads",
+          "text": "On Each Board: Add 1 Blight to a land adjacent to a land with Blight. Spirits may prevent this on any/all boards by destroying 2 Presence from each board to be protected."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Prey on the Unwary",
+          "text": "Each Beasts destroys 1 Explorer. Add 1 Beasts on a board without one."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Coming of Age",
+          "text": "On Each Board: Add 1 Dahan to a Coastal land with Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Tight-Knit Communities",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Tight-Knit_Communities_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Healthy Island",
+        "text_en1": "For the rest of the turn, Towns/Cities have +1 Health.",
+        "eventType2": "Blighted Island",
+        "eventName2": "Blight Spreads",
+        "text_en2": "'''On Each Board:''' Add 1 Blight to a land adjacent to a land with Blight.<br/><br/>Spirits may prevent this on any/all boards by destroying 2 Presence from each board to be protected.",
+        "eventType3": "Beasts",
+        "eventName3": "Prey on the Unwary",
+        "text_en3": "Each Beasts destroys 1 Explorer. Add 1 Beasts on a board without one.",
+        "eventType4": "Dahan",
+        "eventName4": "Coming of Age",
+        "text_en4": "'''On Each Board:''' Add 1 Dahan to a Coastal land with Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Urban Development",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "During the next normal Ravage, each City deals +2 Damage. (If there is no Ravage this Phase, leave this card by the Ravage Space until one happens.)"
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Festering Pits of Blight",
+          "text": "On Each Board with Invaders: Add 1 Blight to a land with at least 2 Blight, but do not cascade."
+        },
+        {
+          "event_type": "Disease",
+          "event_name": "Lingering Plagues",
+          "text": "On Each Board: Add 1 Disease. Ignore Disease during Builds this Invader Phase."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Fierce Mein",
+          "text": "1 Fear per land with Invaders where Dahan outnumber Towns/Cities."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Urban Development",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Urban_Development_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Healthy Island",
+        "text_en1": "During the next normal Ravage, each City deals +2 Damage. ''(If there is no Ravage this Phase, leave this card by the Ravage Space until one happens.)''",
+        "eventType2": "Blighted Island",
+        "eventName2": "Festering Pits of Blight",
+        "text_en2": "'''On Each Board with Invaders:''' Add 1 Blight to a land with at least 2 Blight, but do not cascade.",
+        "eventType3": "Disease",
+        "eventName3": "Lingering Plagues",
+        "text_en3": "'''On Each Board:''' Add 1 Disease. Ignore Disease during Builds this Invader Phase.",
+        "eventType4": "Dahan",
+        "eventName4": "Fierce Mein",
+        "text_en4": "1 Fear per land with Invaders where Dahan outnumber Towns/Cities.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Visions Out of Time",
+      "expansion": "Nature Incarnate",
+      "stages": [
+        {
+          "event_type": "Individual Choice",
+          "event_name": null,
+          "text": "A Spirit more loosely time-moored than most warns of catastrophe's subtle seeds. Each Spirit chooses: LET THE WARNING WAFT INTO DAYS PAST Lose 1 Energy and replace your most expensive non-Unique Power Card in hand or discard pile (combined) with one of the same type: Reveal the top 4 cards of the deck, Take 1, put it where your card is, then put your card in that deck's discard. HEAD OFF THE PROBLEMS YOURSELF Add 1 Omen token (Scenario Marker) to the land without Omens that has the most Invaders (min. 1). After the Ravage Step next turn, at each Omen: 2 Fear. Invaders Ravage. Remove 1 Omen."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Prey on the Heedless",
+          "text": "In each land with Beasts: 1 Damage per Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Strength from Trade",
+          "text": "Lands with Dahan have Defend 2. In lands with Towns/Cities and no Dahan, Ravage Actions do +1 Damage."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Visions Out of Time",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Visions_Out_of_Time_(ni).png",
+        "set": "Nature Incarnate",
+        "eventType1": "Individual Choice",
+        "text_en1": "A Spirit more loosely time-moored than most warns of catastrophe's subtle seeds. Each Spirit chooses:<br/><br/>'''LET THE WARNING WAFT INTO DAYS PAST'''<br/>Lose 1 Energy and replace your most expensive non-Unique Power Card in hand or discard pile (combined) with one of the same type: Reveal the top 4 cards of the deck, Take 1, put it where your card is, then put your card in that deck's discard.<br/><br/>'''HEAD OFF THE PROBLEMS YOURSELF'''<br/>Add 1 Omen token ''(Scenario Marker)'' to the land without Omens that has the most Invaders (min. 1). '''After the Ravage Step next turn,''' at each Omen: 2 Fear. Invaders Ravage. Remove 1 Omen.",
+        "eventType2": "Beasts",
+        "eventName2": "Prey on the Heedless",
+        "text_en2": "'''In each land with Beasts:''' 1 Damage per Beasts.",
+        "eventType3": "Dahan",
+        "eventName3": "Strength from Trade",
+        "text_en3": "Lands with Dahan have Defend 2. In lands with Towns/Cities and no Dahan, Ravage Actions do +1 Damage.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Wave of Reconnaissance",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Stage 1",
+          "event_name": null,
+          "text": "When Exploring: Add 1 additional Explorer to each land Explored."
+        },
+        {
+          "event_type": "Stages 2 & 3",
+          "event_name": "Urbanization",
+          "text": "In each land with at least 2 Towns, replace half the Towns (rounding up) with Cities."
+        },
+        {
+          "event_type": "Disease and Strife",
+          "event_name": "Stricken",
+          "text": "Invaders do not Ravage in lands with Disease/Strife."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Retreat",
+          "text": "On Each Board: Push 2 Dahan from a land with Cities to a land without Cities."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Wave of Reconnaissance",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Wave_of_Reconnaissance_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Stage 1",
+        "text_en1": "When Exploring: Add 1 additional Explorer to each land Explored.",
+        "eventType2": "Stages 2 & 3",
+        "eventName2": "Urbanization",
+        "text_en2": "In each land with at least 2 Towns, replace half the Towns ''(rounding up)'' with Cities.",
+        "eventType3": "Disease and Strife",
+        "eventName3": "Stricken",
+        "text_en3": "Invaders do not Ravage in lands with Disease/Strife.",
+        "eventType4": "Dahan",
+        "eventName4": "Retreat",
+        "text_en4": "'''On Each Board:''' Push 2 Dahan from a land with Cities to a land without Cities.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Well-Prepared Explorers",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "For the rest of the turn, Explorers have +1 Health."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "Blight Spreads",
+          "text": "On Each Board: Add 1 Blight to a land adjacent to a land with Blight. Spirits may prevent this on any/all boards by destroying 2 Presence from each board to be protected."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Prowl",
+          "text": "Each Beasts generates 1 Fear if Invaders are present, and moves to an adjacent land if not."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Coming of Age",
+          "text": "On Each Board: Add 1 Dahan to an Inland land with Dahan."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Well-Prepared Explorers",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Well-Prepared_Explorers_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Healthy Island",
+        "text_en1": "For the rest of the turn, Explorers have +1 Health.",
+        "eventType2": "Blighted Island",
+        "eventName2": "Blight Spreads",
+        "text_en2": "'''On Each Board:''' Add 1 Blight to a land adjacent to a land with Blight.<br/><br/>Spirits may prevent this on any/all boards by destroying 2 Presence from each board to be protected.",
+        "eventType3": "Beasts",
+        "eventName3": "Beasts Prowl",
+        "text_en3": "Each Beasts generates 1 Fear if Invaders are present, and moves to an adjacent land if not.",
+        "eventType4": "Dahan",
+        "eventName4": "Coming of Age",
+        "text_en4": "'''On Each Board:''' Add 1 Dahan to an Inland land with Dahan.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Wounded Lands Attract Explorers",
+      "expansion": "Jagged Earth",
+      "stages": [
+        {
+          "event_type": "Healthy Island",
+          "event_name": null,
+          "text": "On Each Board: Add 1 Explorer to a land with Blight."
+        },
+        {
+          "event_type": "Blighted Island",
+          "event_name": "The World's Vibrance Fades",
+          "text": "Remove 1 Blight per player from the Blight Card, returning it to the box. Each Spirit may prevent 1 Blight from being Removed by Destroying 2 of their Presence."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Chase Off Homesteaders",
+          "text": "On Each Board: Push up to 2 Explorer or 1 Town from a land with Beasts."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Raiding and Retaliation",
+          "text": "In each land with Town/City: 1 Damage per Dahan, then each surviving Town/City deals 1 Damage to Dahan. (Defend/Strife apply normally.)"
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Wounded Lands Attract Explorers",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Wounded_Lands_Attract_Explorers_(je).png",
+        "set": "Jagged Earth",
+        "eventType1": "Healthy Island",
+        "text_en1": "'''On Each Board:''' Add 1 Explorer to a land with Blight.",
+        "eventType2": "Blighted Island",
+        "eventName2": "The World's Vibrance Fades",
+        "text_en2": "Remove 1 Blight per player from the Blight Card, returning it to the box.<br/><br/>Each Spirit may prevent 1 Blight from being Removed by Destroying 2 of their Presence.",
+        "eventType3": "Beasts",
+        "eventName3": "Beasts Chase Off Homesteaders",
+        "text_en3": "'''On Each Board:''' Push up to 2 Explorer or 1 Town from a land with Beasts.",
+        "eventType4": "Dahan",
+        "eventName4": "Raiding and Retaliation",
+        "text_en4": "'''In each land with Town/City:''' 1 Damage per Dahan, then each surviving Town/City deals 1 Damage to Dahan. ''(Defend/Strife apply normally.)''",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    },
+    {
+      "source": "spiritislandwiki.com",
+      "type": "event_card",
+      "name": "Years of Little Rain",
+      "expansion": "Branch and Claw",
+      "stages": [
+        {
+          "event_type": "Group Choice",
+          "event_name": null,
+          "text": "A terrible drought parches the island. You may: LET THE PLANTS DIE AND THE LAND WITHER • For each board, discard the top Minor Power. If it lacks Water, add 1 Blight to a Sands. • Towns, Cities, and Dahan have -1 Health (minimum 1) until the end of the turn. ACT TO EASE THE DROUGHT Cost: 4 Energy per player. Aided by Water. • Each Spirit may add 1 Presence to one of their lands with Dahan."
+        },
+        {
+          "event_type": "Beasts",
+          "event_name": "Beasts Attack",
+          "text": "Each Beasts deals 2 Damage. Remove any token that destroys any Towns/Cities."
+        },
+        {
+          "event_type": "Dahan",
+          "event_name": "Canny Defense",
+          "text": "During Ravage, in every land, Defend 1 per Dahan in the land."
+        }
+      ],
+      "status": "Active",
+      "raw_template": {
+        "name_en": "Years of Little Rain",
+        "name_de": "",
+        "name_fr": "",
+        "name_ru": "",
+        "name_es": "",
+        "name_pt": "",
+        "name_pl": "",
+        "name_hu": "",
+        "name_it": "",
+        "name_ko": "",
+        "name_zh": "",
+        "image": "File:Years_of_Little_Rain_(bc).png",
+        "set": "Branch and Claw",
+        "eventType1": "Group Choice",
+        "text_en1": "A terrible drought parches the island. You may:<br/><br/>'''LET THE PLANTS DIE AND THE LAND WITHER'''<br/>• For each board, discard the top Minor Power. If it lacks Water, add 1 Blight to a Sands.<br/>• Towns, Cities, and Dahan have -1 Health (minimum 1) until the end of the turn.<br/><br/>'''ACT TO EASE THE DROUGHT'''<br/>'''Cost: 4 Energy per player. Aided by Water.'''<br/>• Each Spirit may add 1 Presence to one of their lands with Dahan.",
+        "eventType2": "Beasts",
+        "eventName2": "Beasts Attack",
+        "text_en2": "Each Beasts deals 2 Damage. Remove any token that destroys any Towns/Cities.",
+        "eventType3": "Dahan",
+        "eventName3": "Canny Defense",
+        "text_en3": "During Ravage, in every land, Defend 1 per Dahan in the land.",
+        "text_de": "",
+        "text_fr": "",
+        "text_ru": "",
+        "text_es": "",
+        "text_pt": "",
+        "text_pl": "",
+        "text_hu": "",
+        "text_it": "",
+        "text_ko": "",
+        "text_zh": "",
+        "cardstatus": "Active"
+      }
+    }
+  ],
+  "skipped": [
+    {
+      "title": "A Strange Madness Among the Beasts",
+      "reason": "status='Retired'"
+    },
+    {
+      "title": "Outpaced",
+      "reason": "status='Retired'"
+    },
+    {
+      "title": "War Touches the Island's Shores",
+      "reason": "status='Replaced'"
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "combo_name": "base",
+  "expansions_included": [
+    "base",
+    "hosi"
+  ],
+  "decks": {
+    "minor": {
+      "pool_size": 36,
+      "element_distribution": {
+        "moon": 13,
+        "water": 13,
+        "animal": 13,
+        "sun": 13,
+        "fire": 13,
+        "air": 13,
+        "plant": 13,
+        "earth": 13
+      },
+      "cost_distribution": {
+        "0": 14,
+        "1": 22
+      },
+      "speed_distribution": {
+        "slow": 17,
+        "fast": 19
+      },
+      "token_cards": {},
+      "effect_cards": {
+        "replace": 1,
+        "damage": 10,
+        "gather": 5,
+        "push": 11,
+        "remove_blight": 5,
+        "defend": 7,
+        "destroy": 3,
+        "reclaim": 1,
+        "add_blight": 1
+      },
+      "fear_amount": {
+        "total_fear_generated_across_pool": 18,
+        "cards_with_fear": 10,
+        "mean_fear_per_fear_card": 1.8
+      }
+    },
+    "major": {
+      "pool_size": 22,
+      "element_distribution": {
+        "earth": 8,
+        "sun": 7,
+        "water": 7,
+        "plant": 7,
+        "fire": 7,
+        "animal": 7,
+        "air": 7,
+        "moon": 6
+      },
+      "cost_distribution": {
+        "2": 2,
+        "3": 8,
+        "4": 7,
+        "5": 3,
+        "6": 2
+      },
+      "speed_distribution": {
+        "slow": 9,
+        "fast": 13
+      },
+      "token_cards": {},
+      "effect_cards": {
+        "damage": 12,
+        "destroy": 6,
+        "remove_blight": 1,
+        "push": 2,
+        "replace": 1,
+        "defend": 4,
+        "add_blight": 2
+      },
+      "fear_amount": {
+        "total_fear_generated_across_pool": 26,
+        "cards_with_fear": 10,
+        "mean_fear_per_fear_card": 2.6
+      }
+    },
+    "fear": {
+      "pool_size": 15,
+      "by_stage": {
+        "stage_1": 15,
+        "stage_2": 15,
+        "stage_3": 15
+      },
+      "token_cards": {},
+      "spirit_favoring_by_stage": {
+        "stage_1": 6,
+        "stage_2": 4,
+        "stage_3": 3
+      },
+      "invader_favoring_by_stage": {},
+      "avg_fear_card_output": {
+        "stage_1": 0.0,
+        "stage_2": 0.0,
+        "stage_3": 0.0
+      },
+      "sample_titles": {
+        "stage_1": [
+          "Avoid the Dahan",
+          "Belief Takes Root",
+          "Dahan Enheartened",
+          "Dahan on their Guard",
+          "Dahan Raid"
+        ],
+        "stage_2": [
+          "Avoid the Dahan",
+          "Belief Takes Root",
+          "Dahan Enheartened",
+          "Dahan on their Guard",
+          "Dahan Raid"
+        ],
+        "stage_3": [
+          "Avoid the Dahan",
+          "Belief Takes Root",
+          "Dahan Enheartened",
+          "Dahan on their Guard",
+          "Dahan Raid"
+        ]
+      }
+    },
+    "event": {
+      "pool_size": 0,
+      "stages_distribution": {},
+      "token_cards": {},
+      "spirit_favoring_hits_total": 0,
+      "invader_favoring_hits_total": 0,
+      "net_favor_score": 0,
+      "top_5_spirit_favoring": [],
+      "top_5_invader_favoring": []
+    },
+    "blight": {
+      "pool_size": 2,
+      "mean_severity_proxy": 1.0,
+      "top_5_worst": [
+        {
+          "name": "Downward Spiral",
+          "expansion": "Spirit Island",
+          "severity_proxy": 1,
+          "blight_per_player": "5"
+        },
+        {
+          "name": "Memory Fades to Dust",
+          "expansion": "Spirit Island",
+          "severity_proxy": 1,
+          "blight_per_player": "4"
+        }
+      ],
+      "all_cards": [
+        {
+          "name": "Downward Spiral",
+          "expansion": "Spirit Island",
+          "severity_proxy": 1,
+          "blight_per_player": "5"
+        },
+        {
+          "name": "Memory Fades to Dust",
+          "expansion": "Spirit Island",
+          "severity_proxy": 1,
+          "blight_per_player": "4"
+        }
+      ]
+    }
+  }
+}

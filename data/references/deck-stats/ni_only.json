@@ -1,0 +1,302 @@
+{
+  "combo_name": "ni_only",
+  "expansions_included": [
+    "ni"
+  ],
+  "decks": {
+    "minor": {
+      "pool_size": 1,
+      "element_distribution": {
+        "moon": 1,
+        "fire": 1,
+        "water": 1,
+        "plant": 1
+      },
+      "cost_distribution": {
+        "0": 1
+      },
+      "speed_distribution": {
+        "fast": 1
+      },
+      "token_cards": {
+        "isolate": 1
+      },
+      "effect_cards": {
+        "defend": 1
+      },
+      "fear_amount": {
+        "total_fear_generated_across_pool": 1,
+        "cards_with_fear": 1,
+        "mean_fear_per_fear_card": 1.0
+      }
+    },
+    "major": {
+      "pool_size": 13,
+      "element_distribution": {
+        "water": 7,
+        "air": 6,
+        "moon": 5,
+        "earth": 5,
+        "plant": 5,
+        "fire": 5,
+        "animal": 5,
+        "sun": 4
+      },
+      "cost_distribution": {
+        "2": 2,
+        "3": 3,
+        "4": 3,
+        "5": 1,
+        "6": 1,
+        "7": 2,
+        "8": 1
+      },
+      "speed_distribution": {
+        "fast": 7,
+        "slow": 6
+      },
+      "token_cards": {
+        "badlands": 1,
+        "beasts": 3,
+        "disease": 1,
+        "wilds": 1
+      },
+      "effect_cards": {
+        "damage": 7,
+        "destroy": 2,
+        "gather": 2,
+        "push": 3,
+        "replace": 1,
+        "defend": 1
+      },
+      "fear_amount": {
+        "total_fear_generated_across_pool": 14,
+        "cards_with_fear": 6,
+        "mean_fear_per_fear_card": 2.33
+      }
+    },
+    "fear": {
+      "pool_size": 9,
+      "by_stage": {
+        "stage_1": 9,
+        "stage_2": 9,
+        "stage_3": 9
+      },
+      "token_cards": {
+        "strife": 9,
+        "isolate": 4,
+        "beasts": 3
+      },
+      "spirit_favoring_by_stage": {
+        "stage_1": 2,
+        "stage_2": 2,
+        "stage_3": 2
+      },
+      "invader_favoring_by_stage": {},
+      "avg_fear_card_output": {
+        "stage_1": 0.11,
+        "stage_2": 0.11,
+        "stage_3": 0.11
+      },
+      "sample_titles": {
+        "stage_1": [
+          "Civil Unrest",
+          "Dahan Gain the Edge",
+          "Daunted by the Dahan",
+          "Distracted by Local Troubles",
+          "Restlessness"
+        ],
+        "stage_2": [
+          "Civil Unrest",
+          "Dahan Gain the Edge",
+          "Daunted by the Dahan",
+          "Distracted by Local Troubles",
+          "Restlessness"
+        ],
+        "stage_3": [
+          "Civil Unrest",
+          "Dahan Gain the Edge",
+          "Daunted by the Dahan",
+          "Distracted by Local Troubles",
+          "Restlessness"
+        ]
+      }
+    },
+    "event": {
+      "pool_size": 9,
+      "stages_distribution": {
+        "3": 3,
+        "4": 6
+      },
+      "token_cards": {
+        "beasts": 7,
+        "isolate": 1,
+        "badlands": 3,
+        "disease": 2
+      },
+      "spirit_favoring_hits_total": 11,
+      "invader_favoring_hits_total": 4,
+      "net_favor_score": 7,
+      "top_5_spirit_favoring": [
+        {
+          "name": "Far-off Wars Touch the Island",
+          "expansion": "Nature Incarnate",
+          "spirit_hits": 2,
+          "invader_hits": 0,
+          "net_score": 2
+        },
+        {
+          "name": "Visions Out of Time",
+          "expansion": "Nature Incarnate",
+          "spirit_hits": 2,
+          "invader_hits": 0,
+          "net_score": 2
+        },
+        {
+          "name": "Accumulated Devastation",
+          "expansion": "Nature Incarnate",
+          "spirit_hits": 1,
+          "invader_hits": 0,
+          "net_score": 1
+        },
+        {
+          "name": "Ethereal Conjunction",
+          "expansion": "Nature Incarnate",
+          "spirit_hits": 1,
+          "invader_hits": 0,
+          "net_score": 1
+        },
+        {
+          "name": "Terror Spikes Upwards",
+          "expansion": "Nature Incarnate",
+          "spirit_hits": 1,
+          "invader_hits": 0,
+          "net_score": 1
+        }
+      ],
+      "top_5_invader_favoring": [
+        {
+          "name": "Search for Unclaimed Land",
+          "expansion": "Nature Incarnate",
+          "spirit_hits": 0,
+          "invader_hits": 0,
+          "net_score": 0
+        },
+        {
+          "name": "Influx of Settlers",
+          "expansion": "Nature Incarnate",
+          "spirit_hits": 2,
+          "invader_hits": 2,
+          "net_score": 0
+        },
+        {
+          "name": "Focused Farming",
+          "expansion": "Nature Incarnate",
+          "spirit_hits": 1,
+          "invader_hits": 1,
+          "net_score": 0
+        },
+        {
+          "name": "An Ominous Dawn",
+          "expansion": "Nature Incarnate",
+          "spirit_hits": 1,
+          "invader_hits": 1,
+          "net_score": 0
+        },
+        {
+          "name": "Terror Spikes Upwards",
+          "expansion": "Nature Incarnate",
+          "spirit_hits": 1,
+          "invader_hits": 0,
+          "net_score": 1
+        }
+      ]
+    },
+    "blight": {
+      "pool_size": 8,
+      "mean_severity_proxy": 0.88,
+      "top_5_worst": [
+        {
+          "name": "Intensifying Exploitation",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 2,
+          "blight_per_player": "5"
+        },
+        {
+          "name": "Attenuated Essence",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 1,
+          "blight_per_player": "4"
+        },
+        {
+          "name": "Blight Corrodes the Spirit",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 1,
+          "blight_per_player": "4"
+        },
+        {
+          "name": "Burn Brightest Before the End",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 1,
+          "blight_per_player": "2"
+        },
+        {
+          "name": "Slow Dissolution of Will",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 1,
+          "blight_per_player": "3"
+        }
+      ],
+      "all_cards": [
+        {
+          "name": "Intensifying Exploitation",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 2,
+          "blight_per_player": "5"
+        },
+        {
+          "name": "Attenuated Essence",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 1,
+          "blight_per_player": "4"
+        },
+        {
+          "name": "Blight Corrodes the Spirit",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 1,
+          "blight_per_player": "4"
+        },
+        {
+          "name": "Burn Brightest Before the End",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 1,
+          "blight_per_player": "2"
+        },
+        {
+          "name": "Slow Dissolution of Will",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 1,
+          "blight_per_player": "3"
+        },
+        {
+          "name": "The Border of Life and Death",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 1,
+          "blight_per_player": "1"
+        },
+        {
+          "name": "Shattered Fragments of Power",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 0,
+          "blight_per_player": "2"
+        },
+        {
+          "name": "Thriving Crops",
+          "expansion": "Nature Incarnate",
+          "severity_proxy": 0,
+          "blight_per_player": "2"
+        }
+      ]
+    }
+  }
+}

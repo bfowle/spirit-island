@@ -1,0 +1,325 @@
+{
+  "combo_name": "base_bnc",
+  "expansions_included": [
+    "base",
+    "hosi",
+    "bnc"
+  ],
+  "decks": {
+    "minor": {
+      "pool_size": 66,
+      "element_distribution": {
+        "sun": 26,
+        "air": 26,
+        "moon": 25,
+        "fire": 25,
+        "animal": 25,
+        "earth": 24,
+        "plant": 24,
+        "water": 24
+      },
+      "cost_distribution": {
+        "0": 22,
+        "1": 44
+      },
+      "speed_distribution": {
+        "slow": 33,
+        "fast": 33
+      },
+      "token_cards": {
+        "wilds": 3,
+        "strife": 4,
+        "disease": 4,
+        "beasts": 5
+      },
+      "effect_cards": {
+        "gather": 11,
+        "remove_blight": 8,
+        "destroy": 9,
+        "replace": 1,
+        "damage": 14,
+        "push": 18,
+        "defend": 11,
+        "reclaim": 1,
+        "add_blight": 2
+      },
+      "fear_amount": {
+        "total_fear_generated_across_pool": 38,
+        "cards_with_fear": 21,
+        "mean_fear_per_fear_card": 1.81
+      }
+    },
+    "major": {
+      "pool_size": 43,
+      "element_distribution": {
+        "sun": 16,
+        "water": 16,
+        "fire": 16,
+        "earth": 16,
+        "animal": 16,
+        "plant": 15,
+        "moon": 15,
+        "air": 15
+      },
+      "cost_distribution": {
+        "2": 5,
+        "3": 11,
+        "4": 16,
+        "5": 5,
+        "6": 3,
+        "7": 1,
+        "8": 1,
+        "9": 1
+      },
+      "speed_distribution": {
+        "slow": 22,
+        "fast": 21
+      },
+      "token_cards": {
+        "disease": 4,
+        "beasts": 7,
+        "strife": 4,
+        "wilds": 3
+      },
+      "effect_cards": {
+        "damage": 23,
+        "destroy": 13,
+        "defend": 5,
+        "remove_blight": 1,
+        "push": 5,
+        "replace": 2,
+        "gather": 2,
+        "add_blight": 5
+      },
+      "fear_amount": {
+        "total_fear_generated_across_pool": 68,
+        "cards_with_fear": 21,
+        "mean_fear_per_fear_card": 3.24
+      }
+    },
+    "fear": {
+      "pool_size": 30,
+      "by_stage": {
+        "stage_1": 30,
+        "stage_2": 30,
+        "stage_3": 30
+      },
+      "token_cards": {
+        "strife": 15,
+        "beasts": 11,
+        "disease": 10
+      },
+      "spirit_favoring_by_stage": {
+        "stage_1": 7,
+        "stage_2": 6,
+        "stage_3": 5
+      },
+      "invader_favoring_by_stage": {},
+      "avg_fear_card_output": {
+        "stage_1": 0.0,
+        "stage_2": 0.0,
+        "stage_3": 0.0
+      },
+      "sample_titles": {
+        "stage_1": [
+          "Avoid the Dahan",
+          "Belief Takes Root",
+          "Dahan Attack",
+          "Dahan Enheartened",
+          "Dahan on their Guard"
+        ],
+        "stage_2": [
+          "Avoid the Dahan",
+          "Belief Takes Root",
+          "Dahan Attack",
+          "Dahan Enheartened",
+          "Dahan on their Guard"
+        ],
+        "stage_3": [
+          "Avoid the Dahan",
+          "Belief Takes Root",
+          "Dahan Attack",
+          "Dahan Enheartened",
+          "Dahan on their Guard"
+        ]
+      }
+    },
+    "event": {
+      "pool_size": 23,
+      "stages_distribution": {
+        "2": 2,
+        "3": 4,
+        "4": 17
+      },
+      "token_cards": {
+        "beasts": 14,
+        "disease": 10,
+        "strife": 3,
+        "wilds": 1
+      },
+      "spirit_favoring_hits_total": 19,
+      "invader_favoring_hits_total": 17,
+      "net_favor_score": 2,
+      "top_5_spirit_favoring": [
+        {
+          "name": "Seeking the Interior",
+          "expansion": "Branch and Claw",
+          "spirit_hits": 2,
+          "invader_hits": 0,
+          "net_score": 2
+        },
+        {
+          "name": "Distant Exploration",
+          "expansion": "Branch and Claw",
+          "spirit_hits": 1,
+          "invader_hits": 0,
+          "net_score": 1
+        },
+        {
+          "name": "Missionaries Arrive",
+          "expansion": "Branch and Claw",
+          "spirit_hits": 2,
+          "invader_hits": 1,
+          "net_score": 1
+        },
+        {
+          "name": "Promising Farmland",
+          "expansion": "Branch and Claw",
+          "spirit_hits": 1,
+          "invader_hits": 0,
+          "net_score": 1
+        },
+        {
+          "name": "Sacred Sites Under Threat",
+          "expansion": "Branch and Claw",
+          "spirit_hits": 1,
+          "invader_hits": 0,
+          "net_score": 1
+        }
+      ],
+      "top_5_invader_favoring": [
+        {
+          "name": "Farmers Seek the Dahan for Aid",
+          "expansion": "Branch and Claw",
+          "spirit_hits": 0,
+          "invader_hits": 2,
+          "net_score": -2
+        },
+        {
+          "name": "Tight-Knit Communities",
+          "expansion": "Branch and Claw",
+          "spirit_hits": 0,
+          "invader_hits": 1,
+          "net_score": -1
+        },
+        {
+          "name": "Population Rises",
+          "expansion": "Branch and Claw",
+          "spirit_hits": 0,
+          "invader_hits": 1,
+          "net_score": -1
+        },
+        {
+          "name": "Investigation of Dangers",
+          "expansion": "Branch and Claw",
+          "spirit_hits": 0,
+          "invader_hits": 1,
+          "net_score": -1
+        },
+        {
+          "name": "Heavy Farming",
+          "expansion": "Branch and Claw",
+          "spirit_hits": 0,
+          "invader_hits": 1,
+          "net_score": -1
+        }
+      ]
+    },
+    "blight": {
+      "pool_size": 8,
+      "mean_severity_proxy": 0.75,
+      "top_5_worst": [
+        {
+          "name": "Disintegrating Ecosystem",
+          "expansion": "Branch and Claw",
+          "severity_proxy": 2,
+          "blight_per_player": "5"
+        },
+        {
+          "name": "A Pall Upon the Land",
+          "expansion": "Branch and Claw",
+          "severity_proxy": 1,
+          "blight_per_player": "3"
+        },
+        {
+          "name": "Downward Spiral",
+          "expansion": "Spirit Island",
+          "severity_proxy": 1,
+          "blight_per_player": "5"
+        },
+        {
+          "name": "Erosion of Will",
+          "expansion": "Branch and Claw",
+          "severity_proxy": 1,
+          "blight_per_player": "3"
+        },
+        {
+          "name": "Memory Fades to Dust",
+          "expansion": "Spirit Island",
+          "severity_proxy": 1,
+          "blight_per_player": "4"
+        }
+      ],
+      "all_cards": [
+        {
+          "name": "Disintegrating Ecosystem",
+          "expansion": "Branch and Claw",
+          "severity_proxy": 2,
+          "blight_per_player": "5"
+        },
+        {
+          "name": "A Pall Upon the Land",
+          "expansion": "Branch and Claw",
+          "severity_proxy": 1,
+          "blight_per_player": "3"
+        },
+        {
+          "name": "Downward Spiral",
+          "expansion": "Spirit Island",
+          "severity_proxy": 1,
+          "blight_per_player": "5"
+        },
+        {
+          "name": "Erosion of Will",
+          "expansion": "Branch and Claw",
+          "severity_proxy": 1,
+          "blight_per_player": "3"
+        },
+        {
+          "name": "Memory Fades to Dust",
+          "expansion": "Spirit Island",
+          "severity_proxy": 1,
+          "blight_per_player": "4"
+        },
+        {
+          "name": "Aid from Lesser Spirits",
+          "expansion": "Branch and Claw",
+          "severity_proxy": 0,
+          "blight_per_player": "2"
+        },
+        {
+          "name": "Back Against the Wall",
+          "expansion": "Branch and Claw",
+          "severity_proxy": 0,
+          "blight_per_player": "2"
+        },
+        {
+          "name": "Promising Farmlands",
+          "expansion": "Branch and Claw",
+          "severity_proxy": 0,
+          "blight_per_player": "4"
+        }
+      ]
+    }
+  }
+}
