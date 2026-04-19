@@ -41,6 +41,57 @@ Initial publication.
 - M4: Nature Incarnate spirits, full aspects coverage, statistics Part, `si-aspect-explorer` logic.
 - M5+: remaining 20+ spirits filled out, card reference appendix curated, progressive-disclosure index complete.
 
+## v0.2.0 — 2026-04-19 — M2 complete
+
+Full authoring of 24 chapters; Brett priority-1 + teach-anchor + B&C/promo priority spirits + base adversaries + base scenarios + cleanup + aspects.
+
+**Spirit chapters added (12)**:
+
+Base priority-1:
+- `spirits/low/thunderspeaker.md` (Dahan-Rush canonical; 3 latentoctopus openings)
+- `spirits/low/ocean-hungry-grasp.md` (Coastal drowning + territorial partner needs)
+- `spirits/low/a-spread-of-rampant-green.md` (Major-shopping + Terrain Control)
+- `spirits/low/bringer-of-dreams-and-nightmares.md` (Fear-only win path)
+
+Base teach-anchors:
+- `spirits/low/lightning-swift-strike.md` (Direct Damage, Fast-Energy)
+- `spirits/low/river-surges-in-sunlight.md` (Terrain Control; Bounty-loop)
+- `spirits/low/vital-strength-of-the-earth.md` (Defend & Outlast canonical)
+
+B&C + promo priority:
+- `spirits/moderate/sharp-fangs-behind-the-leaves.md` (4 latentoctopus openings)
+- `spirits/moderate/keeper-of-the-forbidden-wilds.md` (Major Power Shopping)
+- `spirits/moderate/serpent-slumbering-beneath-the-island.md` (Late-Game Juggernaut)
+- `spirits/moderate/finder-of-paths-unseen.md` (Mobility + Terrain Control)
+- `spirits/moderate/downpour-drenches-the-world.md` (Energy Denial via complementarity)
+
+**Adversary chapters added (3)**:
+- `adversaries/index.md` (landing page + comparison matrix)
+- `adversaries/brandenburg-prussia.md` (late-explosion adversary)
+- `adversaries/sweden.md` (fear-suppression adversary)
+
+**Scenario chapters added (5)**:
+- `scenarios/index.md` (landing page + scenario-adversary compatibility)
+- `scenarios/blitz.md` (time compression)
+- `scenarios/guard-the-isles-heart.md` (inland objective)
+- `scenarios/rituals-of-terror.md` (fear race)
+- `scenarios/dahan-insurrection.md` (dahan scoring)
+
+**Cleanup (4)**:
+- `foundations/reading-a-card.md` (card anatomy + reading order)
+- `reader-self-assessment.md` (progressive-disclosure self-routing)
+- `appendices/if-youve-only-played.md` (gap-based reading paths)
+- `spirits/aspects.md` (31 aspects + when-to-suggest-in-a-group per Brett)
+
+**Table audit + backfill (5 fundamentals chapters)**:
+- Expanded per-spirit tables to all 39 spirits in `major-vs-minor`, `energy-curves`, `dahan`, `blight-track`, `terrain`.
+
+**Pronoun fix**: all spirits now use they/them per game canon.
+
+**Memory added**: `feedback_all_spirits_in_tables.md`, `feedback_spirit_pronouns.md`.
+
+Remaining stubs: 25 (down from 37).
+
 ## v0.1.3 — 2026-04-19 — Fundamentals + social chapters complete
 
 All remaining stub chapters in Part II (Fundamentals) and Part VII (Playing with Others) fully authored.
