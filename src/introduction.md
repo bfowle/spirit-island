@@ -24,7 +24,7 @@ It is **not** an introductory rules teach. The Wiki, the Querki FAQ, and the off
 
 Most Spirit Island strategy content is one of two shapes:
 
-1. **Vibes**: "Thunderspeaker is great vs. England, try her." True, but undertrained.
+1. **Vibes**: "Thunderspeaker is great vs. England, try them." True, but undertrained.
 2. **Rabbit holes**: a 15,000-word Rei deep-dive on a single spirit. Excellent, but slow to consume.
 
 This book is designed for the middle ground: every spirit, adversary, and scenario has a structured chapter with a predictable spine — so you can read one, skim the rest, and build pattern-recognition across 42 spirits without re-learning each one from scratch.

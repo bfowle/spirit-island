@@ -74,15 +74,66 @@ Hardest — often requires multiple turns to heal multiple lands. Fangs, Green, 
 
 ## Blight by spirit
 
+All 39 spirits below, grouped by their interaction with blight.
+
+### Blight-removing (actively heals blight)
+
 | Spirit                          | Blight interaction                                                   |
 |---------------------------------|----------------------------------------------------------------------|
 | Keeper of the Forbidden Wilds   | Heavy blight removal via Unique cards                                |
 | A Spread of Rampant Green       | Blight removal + prevention via Plant mechanics                      |
 | Sharp Fangs Behind the Leaves   | Blight removal via Beast-themed cards                                |
-| Heart of the Wildfire           | Blight-positive (scales with blight); intentionally adds blight     |
-| Vengeance as a Burning Plague   | Blight-positive (island blight fuels damage multipliers)             |
+| Towering Roots of the Jungle    | Blight removal via jungle-defend mechanics                            |
+| Fathomless Mud of the Swamp     | Blight prevention via wetland-defend                                  |
+| Wounded Waters Bleeding         | Water-Incarna interacts with blight removal *TBD*                     |
+
+### Blight-preventing (prevents ravage damage before it becomes blight)
+
+| Spirit                          | Blight interaction                                                   |
+|---------------------------------|----------------------------------------------------------------------|
+| Vital Strength of the Earth     | Heavy defend stack; rarely blights                                    |
+| Stone's Unyielding Defiance     | Sacred-site defend coverage; rarely blights                           |
+| Hearth-Vigil                    | Defends dahan, indirect blight prevention                              |
+| Downpour Drenches the World     | Isolation + defend; blocks ravage cascades                             |
 | Ocean's Hungry Grasp            | Drowning removes invaders before they ravage; indirect prevention    |
-| Most other spirits              | Neutral; depend on defend + dahan                                    |
+| River Surges in Sunlight        | Push removes invaders from ravage targets                             |
+| Lure of the Deep Wilderness     | Pulls invaders out of build/ravage lands                              |
+
+### Blight-positive (intentionally adds blight; scales with it)
+
+| Spirit                          | Blight interaction                                                   |
+|---------------------------------|----------------------------------------------------------------------|
+| Heart of the Wildfire           | Blight-positive (scales with blight); intentionally adds blight      |
+| Vengeance as a Burning Plague   | Blight-positive (island blight fuels damage multipliers)             |
+| Volcano Looming High            | Destruction creates blight; scaling late game                         |
+
+### Blight-neutral (depend on defend + dahan; no special interaction)
+
+| Spirit                          | Blight interaction                                                   |
+|---------------------------------|----------------------------------------------------------------------|
+| Lightning's Swift Strike        | Fast damage prevents ravages; no removal                              |
+| Shadows Flicker Like Flame      | Strife reduces ravage damage; no removal                              |
+| Thunderspeaker                  | Dahan retaliation prevents ravages; no removal                        |
+| Bringer of Dreams and Nightmares | Fear-focused; blight-neutral                                         |
+| Finder of Paths Unseen          | Mobility-focused; blight-neutral                                      |
+| Serpent Slumbering Beneath the Island | Late-spike damage; blight-neutral                              |
+| Devouring Teeth Lurk Underfoot  | Simple damage; blight-neutral                                         |
+| Eyes Watch from the Trees       | Support; blight-neutral                                               |
+| Rising Heat of Stone and Sand   | Direct damage; blight-neutral                                         |
+| Sun-Bright Whirlwind            | Mobility; blight-neutral                                              |
+| Shifting Memory of Ages         | Card-focused; blight-neutral                                          |
+| Grinning Trickster Stirs Up Trouble | Disruption; blight-neutral                                        |
+| Many Minds Move as One          | Beast-fear focus; blight-neutral                                      |
+| Shroud of Silent Mist           | Damaged-invader focus; blight-neutral                                 |
+| Fractured Days Split the Sky    | Time-skip focus; blight-neutral                                       |
+| Starlight Seeks Its Form        | Form-dependent; mostly blight-neutral                                 |
+| Ember-Eyed Behemoth             | Badlands-positive (blight as badlands for damage); interacts         |
+| Breath of Darkness Down Your Spine | Fear-focused; blight-neutral                                       |
+| Relentless Gaze of the Sun      | Sun-Incarna; blight-neutral                                           |
+| Wandering Voice Keens Delirium  | Strife-fear; blight-neutral                                           |
+| Dances Up Earthquakes           | Earth-Incarna damage; blight-neutral                                  |
+| Covets Gleaming Shards of Earth | Major-hoarding; blight-neutral                                        |
+| Ferocious Warrior of the Lost Lands | Dahan-warrior focus; blight-neutral                               |
 
 ## Blight-positive spirits
 

@@ -30,7 +30,7 @@ For: someone who has 5 minutes at a game night, not 2 hours. You're selling the 
 1. *(30 sec)* "This is Spirit Island. You play native spirits defending an island from colonial invaders. It's cooperative — we win or lose together."
 2. *(60 sec)* Point to the board. "The invaders are coming from the sea, spreading across the island. They damage the land — that's blight. Too much blight and we lose."
 3. *(90 sec)* Point to the spirit board. "Each player plays a spirit. They have unique powers, they play cards, they get more powerful each turn. You're not like a Dungeons-&-Dragons character — you're more like a force of nature."
-4. *(60 sec)* Pick a spirit panel at random. "Look at this one — Lightning's Swift Strike. She deals direct damage to invaders. Over here — River Surges in Sunlight — she moves invaders around, slows them down."
+4. *(60 sec)* Pick a spirit panel at random. "Look at this one — Lightning's Swift Strike. They deal direct damage to invaders. Over here — River Surges in Sunlight — they move invaders around, slow them down."
 5. *(60 sec)* "The winning move is scaring them so badly they leave. That's the fear track. We generate fear by killing invaders, playing fear cards, and flipping the fear deck — each flip makes winning easier."
 6. *(30 sec)* Close: "Want to play a quick game sometime? Takes 60–90 minutes."
 

@@ -74,13 +74,60 @@ Dahan are shared across all spirits. Neither you nor your teammate "owns" them. 
 
 France and Russia flag dahan-centric spirits (Thunderspeaker, Dahan-Insurrection-scenario builds) as risky.
 
-## Dahan by spirit bias
+## Dahan by spirit bias — all 39 spirits
+
+Grouped by interaction intensity. Default for unlisted nuance: dahan are preserved as damage sinks, not multiplied.
+
+### Dahan-positive (dahan are the engine or a primary resource)
 
 - **Thunderspeaker**: dahan as power multiplier. Grows dahan density; defends them aggressively; wins via dahan-fear-cards.
-- **Fangs**: dahan-adjacent; Ranging Hunt uses dahan+beasts.
-- **Bringer**: cares about dahan count for some fear card effects.
-- **Wildfire**: doesn't care; will ravage them away.
-- **Vengeance**: dahan are secondary; disease concentration is primary.
+- **Hearth-Vigil**: Incarna protects dahan directly; dahan preservation = spirit engine.
+- **Ferocious Warrior of the Lost Lands**: dahan as warrior units; positional + directly empowered.
+- **Sharp Fangs Behind the Leaves**: dahan-adjacent — Ranging Hunt uses dahan + beasts together.
+
+### Dahan-interactive (cards or innates reference dahan)
+
+- **Bringer of Dreams and Nightmares**: fear cards scale with dahan count in target land.
+- **Vital Strength of the Earth**: some defend cards preserve dahan; dahan density supports late-game kills.
+- **A Spread of Rampant Green**: dahan-friendly by ecology; some cards reference dahan population.
+- **Keeper of the Forbidden Wilds**: sacred-site cards sometimes interact with dahan; generally dahan-preserving.
+- **River Surges in Sunlight**: push/gather moves dahan as well as invaders.
+- **Lure of the Deep Wilderness**: can pull dahan into wilderness lands for specific effects.
+- **Breath of Darkness Down Your Spine**: fear cards scaling with dahan similar to Bringer.
+
+### Dahan-neutral (dahan are useful where present, not central)
+
+- **Lightning's Swift Strike**: dahan useful for retaliation damage; no specific scaling.
+- **Shadows Flicker Like Flame**: dahan useful as fear-trigger; not multiplied.
+- **Ocean's Hungry Grasp**: dahan are fine but the drowning-coast engine is primary.
+- **Finder of Paths Unseen**: mobility includes dahan; no specific scaling.
+- **Stone's Unyielding Defiance**: dahan defended via sacred-site coverage; not multiplied.
+- **Shifting Memory of Ages**: dahan present at start; card effects vary.
+- **Shroud of Silent Mist**: dahan useful but damaged-invader engine is primary.
+- **Many Minds Move as One**: beasts are the focus; dahan present but secondary.
+- **Starlight Seeks Its Form**: form-dependent; some forms care about dahan.
+- **Fractured Days Split the Sky**: time-skip engine is primary; dahan incidental.
+- **Serpent Slumbering Beneath the Island**: late-game focus; dahan neutral.
+- **Downpour Drenches the World**: isolation engine; dahan neutral.
+- **Devouring Teeth Lurk Underfoot**: simple damage; dahan neutral.
+- **Eyes Watch from the Trees**: support; dahan neutral.
+- **Fathomless Mud of the Swamp**: defend; dahan preserved.
+- **Rising Heat of Stone and Sand**: direct damage; dahan incidental.
+- **Sun-Bright Whirlwind**: mobility; dahan incidental.
+- **Ember-Eyed Behemoth**: Incarna-damage-focused; dahan incidental.
+- **Towering Roots of the Jungle**: defend-focused; dahan preserved.
+- **Relentless Gaze of the Sun**: Sun-Incarna focus; dahan incidental.
+- **Wandering Voice Keens Delirium**: strife-fear focus; dahan incidental.
+- **Wounded Waters Bleeding**: water-Incarna; dahan incidental.
+- **Dances Up Earthquakes**: earth-Incarna; dahan incidental.
+- **Covets Gleaming Shards of Earth**: Major-hoarding; dahan neutral.
+
+### Dahan-negative (ignore or sacrifice dahan)
+
+- **Heart of the Wildfire**: doesn't care; will ravage them away as part of blight-positive play.
+- **Vengeance as a Burning Plague**: dahan are secondary; disease concentration is primary; late-game ok sacrificing.
+- **Volcano Looming High**: destruction is thematic; dahan in eruption lands die.
+- **Grinning Trickster**: chaotic; dahan movement is incidental, sometimes harmful to them.
 
 The spirit chapter's At-a-Glance should flag "dahan-sensitive" as an archetype when it applies.
 

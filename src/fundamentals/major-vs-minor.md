@@ -133,24 +133,81 @@ Drafting Vigor / Terrifying Nightmares / Sea Monsters / Fiery Power on a spirit 
 
 From the priority spirits (see per-chapter pages for the full stat-backed recommendations):
 
-| Spirit             | Draft Bias     | Opening card rule                                        |
-|--------------------|----------------|----------------------------------------------------------|
-| Shadows            | Mixed          | Minors T1–T2, Major T3–T5 if Moon/Fire majors offered    |
-| Thunderspeaker     | Mixed          | Minors T1–T3, pivot Major late; dahan-synergy majors OP  |
-| Ocean              | Mixed          | 2 Minors early, Major T5+ once drowning is reliable      |
-| Green              | Major-heavy    | Major T2–T3 if Plant majors offered; 0–1 Minor total     |
-| Bringer            | Mixed          | Minors first; Terrifying Nightmares late as finisher     |
-| Fangs              | Minor-heavy    | 3 Minors before a Major; see Fangs chapter for variants  |
-| Keeper             | Major-heavy    | Major T2–T3; the spirit's energy supports it             |
-| Serpent            | Mixed          | Minor-heavy early; Major when element profile fits       |
-| Finder             | Mixed          | Minors for mobility; 1 Major to close                    |
-| Downpour           | Minor-heavy    | Minors complementing existing toolkit (per latentoctopus)|
-| Fractured Days     | Mixed          | Majors once time-skip engine is online; early Minors     |
-| Many Minds         | Minor-heavy    | 0-cost Minors per Rei/latentoctopus; Major only late    |
-| Shifting Memory    | Mixed          | Card-focused spirit; see chapter                         |
-| Shroud             | Minor-heavy    | 0-cost Minors; Major only once energy pipeline mature   |
-| Stone              | Major-heavy    | The paradigm Major-heavy spirit; Major T2–T4             |
-| Vengeance          | Mixed          | Disease/Blight Majors shine; Fetid Breath is A-tier      |
+All 39 spirits below. Biases marked *TBD* will be refined as each spirit's chapter is authored. Directional hints are community-consensus best-guesses where a chapter doesn't yet exist.
+
+**Base (8)**:
+
+| Spirit                        | Draft Bias     | Opening card rule                                            |
+|-------------------------------|----------------|--------------------------------------------------------------|
+| River Surges in Sunlight      | Mixed          | Minors T1–T3 to fuel River's Bounty; Major T6+ if reliable   |
+| Lightning's Swift Strike      | Minor-heavy    | Cheap Minors compounding 2-CP plays; Majors optional         |
+| Shadows Flicker Like Flame    | Mixed          | Minors T1–T2, Major T3–T5 if Moon/Fire majors offered        |
+| Vital Strength of the Earth   | Major-heavy    | Major T2–T4; forget Draw of Fresh Waters as standard         |
+| Ocean's Hungry Grasp          | Mixed          | 2 Minors early, Major T5+ once drowning is reliable          |
+| A Spread of Rampant Green     | Major-heavy    | Major T2–T3 if Plant majors offered; 0–1 Minor total         |
+| Thunderspeaker                | Mixed          | Minors T1–T3, pivot Major late; dahan-synergy majors OP      |
+| Bringer of Dreams and Nightmares | Mixed       | Minors first; Terrifying Nightmares late as finisher         |
+
+**Branch & Claw (2)**:
+
+| Spirit                        | Draft Bias     | Opening card rule                                            |
+|-------------------------------|----------------|--------------------------------------------------------------|
+| Sharp Fangs Behind the Leaves | Minor-heavy    | 3 Minors before a Major; see chapter for 4 opening variants  |
+| Keeper of the Forbidden Wilds | Major-heavy    | Major T2–T3; the spirit's energy supports it                 |
+
+**Promo — Feather & Flame (2)**:
+
+| Spirit                        | Draft Bias     | Opening card rule                                            |
+|-------------------------------|----------------|--------------------------------------------------------------|
+| Heart of the Wildfire         | Flexible       | Minor-heavy vs Sweden; Early Major vs England                |
+| Serpent Slumbering Beneath the Island | Mixed  | Minor-heavy early; Major when element profile fits (late)    |
+
+**Promo Pack 2 (2)**:
+
+| Spirit                        | Draft Bias     | Opening card rule                                            |
+|-------------------------------|----------------|--------------------------------------------------------------|
+| Downpour Drenches the World   | Minor-heavy    | Minors complementing toolkit gaps (per latentoctopus)        |
+| Finder of Paths Unseen        | Mixed          | Minors for mobility; 1 Major to close                        |
+
+**Horizons (5)**:
+
+| Spirit                        | Draft Bias     | Opening card rule                                            |
+|-------------------------------|----------------|--------------------------------------------------------------|
+| Devouring Teeth Lurk Underfoot | Mixed         | Simple spirit; Minors T1–3, Major T5 optional *TBD*          |
+| Eyes Watch from the Trees     | Mixed          | Support-oriented; Minors for flexibility *TBD*               |
+| Fathomless Mud of the Swamp   | Mixed          | Defend-focused; Minors early, Major if energy ramps *TBD*    |
+| Rising Heat of Stone and Sand | Mixed          | Damage-focused; Minors or Major depending on elements *TBD*  |
+| Sun-Bright Whirlwind          | Mixed          | Mobility spirit; Minors to cycle, Major optional *TBD*       |
+
+**Jagged Earth (10)**:
+
+| Spirit                        | Draft Bias     | Opening card rule                                            |
+|-------------------------------|----------------|--------------------------------------------------------------|
+| Shifting Memory of Ages       | Mixed          | Card-focused spirit; see chapter when authored *TBD*         |
+| Grinning Trickster Stirs Up Trouble | Minor-heavy | 0-cost Moon/Air Minors per latentoctopus; Major hybrid variant exists |
+| Many Minds Move as One        | Minor-heavy    | 0-cost Minors per Rei/latentoctopus; Major only late         |
+| Shroud of Silent Mist         | Minor-heavy    | 0-cost Minors; Major only once energy pipeline mature        |
+| Vengeance as a Burning Plague | Mixed          | Disease/Blight Majors shine; Fetid Breath is A-tier          |
+| Volcano Looming High          | Mixed          | Fire/Earth-element Minors; Major when thresholds align *TBD* |
+| Stone's Unyielding Defiance   | Major-heavy    | The paradigm Major-heavy JE spirit; Major T2–T4              |
+| Lure of the Deep Wilderness   | Mixed          | Hybrid opening with Early Major variant; per latentoctopus   |
+| Fractured Days Split the Sky  | Mixed          | Majors once time-skip engine online; early Minors            |
+| Starlight Seeks Its Form      | Flexible       | Form-dependent; shifts between Major and Minor bias mid-game |
+
+**Nature Incarnate (10)**:
+
+| Spirit                        | Draft Bias     | Opening card rule                                            |
+|-------------------------------|----------------|--------------------------------------------------------------|
+| Ember-Eyed Behemoth           | Flexible       | Early Major variant vs tough adversaries (per latentoctopus) |
+| Hearth-Vigil                  | Mixed          | Dahan-preservation focus; Minors early, Major mid-game *TBD* |
+| Towering Roots of the Jungle  | Slow-ramp (Majors) | Defend + Major engine; similar to Stone *TBD*           |
+| Breath of Darkness Down Your Spine | Mixed     | Fear-heavy; see chapter when authored *TBD*                  |
+| Relentless Gaze of the Sun    | Mixed          | Sun-element Incarna spirit; Minors or Major depending *TBD*  |
+| Wandering Voice Keens Delirium | Mixed         | Strife-fear specialist; see chapter when authored *TBD*      |
+| Wounded Waters Bleeding       | Mixed          | Water-element Incarna; see chapter when authored *TBD*       |
+| Dances Up Earthquakes         | Mixed          | Earth-element Incarna; see chapter when authored *TBD*       |
+| Covets Gleaming Shards of Earth | Major-heavy  | The extreme Major-shopper; scales with Majors held           |
+| Ferocious Warrior of the Lost Lands | Mixed    | Dahan-warrior; see chapter when authored *TBD*               |
 
 ## Cross-references
 

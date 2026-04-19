@@ -21,7 +21,7 @@ Shadows is the game's clearest "fear-rush with board avoidance" archetype. You h
 
 **One-line fantasy**: you're the unseen thing at the edge of the firelight — invaders feel dread before they even see a town burn down.
 
-**The honest complexity signal**: Shadows *looks* Low-complexity because the cards read simply, but optimizing her is Moderate. The decision depth is in *when to hold back* (keep invaders alive to fear-harvest) versus *when to strike* (kill an invader to cross a fear threshold). New players play her too aggressively and fail to leverage fear generation. You're about to make that mistake if you don't know it's a mistake.
+**The honest complexity signal**: Shadows *looks* Low-complexity because the cards read simply, but optimizing them is Moderate. The decision depth is in *when to hold back* (keep invaders alive to fear-harvest) versus *when to strike* (kill an invader to cross a fear threshold). New players play Shadows too aggressively and fail to leverage fear generation. You're about to make that mistake if you don't know it's a mistake.
 
 ## Core Mechanics & Special Rules
 

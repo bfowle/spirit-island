@@ -55,18 +55,81 @@ When drafting, check whether the offered card's terrain restriction matches wher
 
 Not every spirit cares, but many do:
 
-| Spirit                            | Preferred terrain                    | Why                                     |
-|-----------------------------------|--------------------------------------|-----------------------------------------|
-| A Spread of Rampant Green         | Jungle + Wetland                     | Plant-heavy innates                     |
-| Ocean's Hungry Grasp              | Coastal (all types)                  | Drowning mechanic                        |
-| Heart of the Wildfire             | Any terrain — scales with blight     | Destruction-agnostic                     |
-| Keeper of the Forbidden Wilds     | Jungle + Mountain                    | Sacred-site scaling                      |
-| Lure of the Deep Wilderness       | Jungle (pulls toward wilds)          | Thematic + mechanical                    |
-| Sharp Fangs Behind the Leaves     | Jungle + Mountain                    | Beast deployment                         |
-| Stone's Unyielding Defiance       | Mountain (sacred-site density)       | Defend via mountain anchors              |
-| Volcano Looming High              | Mountain                             | Innate eruption mechanic                 |
-| River Surges in Sunlight          | Wetland + jungle                     | Water-flow theme                         |
-| Thunderspeaker                    | Any (dahan-dependent, not terrain)   | Dahan lives anywhere with dahan token   |
+All 39 spirits below. "Any" = terrain-agnostic; the spirit cares about adjacency/density/dahan/coasts more than terrain type.
+
+**Base (8)**:
+
+| Spirit                          | Preferred terrain                    | Why                                     |
+|---------------------------------|--------------------------------------|-----------------------------------------|
+| River Surges in Sunlight        | Wetland + jungle                     | Water-flow theme                         |
+| Lightning's Swift Strike        | Any                                  | Range-based targeting; terrain-agnostic  |
+| Shadows Flicker Like Flame      | Any (spread-oriented)                | Range + spread matter more than terrain |
+| Vital Strength of the Earth     | Mountain + jungle (sacred sites)     | Defend + sacred-site density             |
+| Ocean's Hungry Grasp            | Coastal (all types)                  | Drowning mechanic                        |
+| A Spread of Rampant Green       | Jungle + Wetland                     | Plant-heavy innates                      |
+| Thunderspeaker                  | Any (dahan-dependent, not terrain)   | Dahan lives anywhere with dahan token   |
+| Bringer of Dreams and Nightmares | Any (spread-oriented)               | Fear cards not terrain-gated             |
+
+**Branch & Claw (2)**:
+
+| Spirit                          | Preferred terrain                    | Why                                     |
+|---------------------------------|--------------------------------------|-----------------------------------------|
+| Sharp Fangs Behind the Leaves   | Jungle + Mountain                    | Beast deployment                         |
+| Keeper of the Forbidden Wilds   | Jungle + Mountain                    | Sacred-site scaling                      |
+
+**Promo — Feather & Flame (2)**:
+
+| Spirit                          | Preferred terrain                    | Why                                     |
+|---------------------------------|--------------------------------------|-----------------------------------------|
+| Heart of the Wildfire           | Any terrain — scales with blight     | Destruction-agnostic                     |
+| Serpent Slumbering Beneath the Island | Mountain + coastal             | Scale-oriented; Incarna placement       |
+
+**Promo Pack 2 (2)**:
+
+| Spirit                          | Preferred terrain                    | Why                                     |
+|---------------------------------|--------------------------------------|-----------------------------------------|
+| Downpour Drenches the World     | Any (coastal + inland)               | Isolation works across terrain          |
+| Finder of Paths Unseen          | Any                                  | Vision + mobility terrain-agnostic      |
+
+**Horizons (5)**:
+
+| Spirit                          | Preferred terrain                    | Why                                     |
+|---------------------------------|--------------------------------------|-----------------------------------------|
+| Devouring Teeth Lurk Underfoot  | Mountain + jungle                    | Earth-Plant element focus                |
+| Eyes Watch from the Trees       | Jungle                               | Plant-Air support themed                 |
+| Fathomless Mud of the Swamp     | Wetland                              | Wetland-defend scaling                   |
+| Rising Heat of Stone and Sand   | Sand + mountain                      | Fire-Earth direct-damage focus           |
+| Sun-Bright Whirlwind            | Any                                  | Mobility terrain-agnostic                |
+
+**Jagged Earth (10)**:
+
+| Spirit                          | Preferred terrain                    | Why                                     |
+|---------------------------------|--------------------------------------|-----------------------------------------|
+| Shifting Memory of Ages         | Any                                  | Card-focused; terrain-incidental         |
+| Grinning Trickster Stirs Up Trouble | Any                              | Disruption works anywhere               |
+| Many Minds Move as One          | Any (dahan/beast-adjacent)           | Beasts move 2 lands; not terrain-gated  |
+| Shroud of Silent Mist           | Any                                  | Mists Shift and Flow covers all terrain |
+| Vengeance as a Burning Plague   | Any (blight-dense)                   | Scales with blight not terrain          |
+| Volcano Looming High            | Mountain                             | Innate eruption mechanic                 |
+| Stone's Unyielding Defiance     | Mountain (sacred-site density)       | Defend via mountain anchors              |
+| Lure of the Deep Wilderness     | Jungle (pulls toward wilds)          | Thematic + mechanical                    |
+| Fractured Days Split the Sky    | Any                                  | Time-skip terrain-agnostic               |
+| Starlight Seeks Its Form        | Form-dependent                       | Varies with form selected                |
+
+**Nature Incarnate (10)**:
+
+| Spirit                          | Preferred terrain                    | Why                                     |
+|---------------------------------|--------------------------------------|-----------------------------------------|
+| Ember-Eyed Behemoth             | Any (Incarna-mobile)                 | Fire-Plant elements; Incarna relocates  |
+| Hearth-Vigil                    | Any (dahan-land)                     | Protects dahan wherever they are        |
+| Towering Roots of the Jungle    | Jungle                               | Name + Plant-Earth identity              |
+| Breath of Darkness Down Your Spine | Any (spread-oriented)             | Fear-scaling terrain-agnostic           |
+| Relentless Gaze of the Sun      | Sand + mountain                      | Sun element + high-visibility terrain   |
+| Wandering Voice Keens Delirium  | Any                                  | Strife-fear anywhere                     |
+| Wounded Waters Bleeding         | Wetland + coastal                    | Water-Incarna identity                   |
+| Dances Up Earthquakes           | Mountain                             | Earth-Incarna identity                   |
+| Covets Gleaming Shards of Earth | Mountain                             | Earth + mineral-hoard theme              |
+| Ferocious Warrior of the Lost Lands | Any (dahan-land)                 | Dahan-warrior terrain-agnostic          |
 
 ## Terrain and innates
 

@@ -81,24 +81,81 @@ Late-spike lives for T7–T8. Early turns are weak by design; late turns are gam
 
 ## Per-spirit energy targets (Brett-priority)
 
-| Spirit                     | Curve          | T3 target E income | T5 target E income |
-|----------------------------|----------------|---------------------|---------------------|
-| Shadows Flicker Like Flame | Flat-cheap     | 1E                  | 2E                  |
-| Thunderspeaker             | Fast-energy    | 2E                  | 3E                  |
-| Ocean's Hungry Grasp       | Mid            | 2E                  | 3E                  |
-| A Spread of Rampant Green  | Slow-ramp-ish  | 1–2E                | 3E                  |
-| Bringer of Dreams/Nightmares | Flat-cheap   | 1E                  | 2E                  |
-| Sharp Fangs                | Flat-cheap     | 1E                  | 2E                  |
-| Keeper                     | Slow-ramp      | 2E                  | 3–4E                |
-| Serpent                    | Late-spike     | 1E                  | 2E (spike T6+)      |
-| Finder                     | Mid            | 2E                  | 3E                  |
-| Downpour                   | Flat-cheap     | 1–2E                | 2–3E                |
-| Fractured Days             | Mid-high       | 2–3E                | 3–4E                |
-| Many Minds                 | Flat-cheap     | 1E                  | 2E                  |
-| Shifting Memory            | Mid            | 2E                  | 3E                  |
-| Shroud                     | Flat-cheap     | 1E                  | 2E                  |
-| Stone                      | Slow-ramp      | 2E                  | 3–4E                |
-| Vengeance                  | Late-spike     | 1E                  | 2E (spike T7+)      |
+All 39 spirits below. Targets are directional; revisions per spirit land as each chapter is authored.
+
+**Base (8)**:
+
+| Spirit                        | Curve          | T3 target E income | T5 target E income |
+|-------------------------------|----------------|---------------------|---------------------|
+| River Surges in Sunlight      | Mid            | 2E                  | 3E                  |
+| Lightning's Swift Strike      | Fast-energy    | 2–3E                | 3E                  |
+| Shadows Flicker Like Flame    | Flat-cheap     | 1E                  | 2E                  |
+| Vital Strength of the Earth   | Slow-ramp      | 2E                  | 3–4E                |
+| Ocean's Hungry Grasp          | Mid            | 2E                  | 3E                  |
+| A Spread of Rampant Green     | Slow-ramp-ish  | 1–2E                | 3E                  |
+| Thunderspeaker                | Fast-energy    | 2E                  | 3E                  |
+| Bringer of Dreams and Nightmares | Flat-cheap  | 1E                  | 2E                  |
+
+**Branch & Claw (2)**:
+
+| Spirit                        | Curve          | T3 target E income | T5 target E income |
+|-------------------------------|----------------|---------------------|---------------------|
+| Sharp Fangs Behind the Leaves | Flat-cheap     | 1E                  | 2E                  |
+| Keeper of the Forbidden Wilds | Slow-ramp      | 2E                  | 3–4E                |
+
+**Promo — Feather & Flame (2)**:
+
+| Spirit                        | Curve          | T3 target E income | T5 target E income |
+|-------------------------------|----------------|---------------------|---------------------|
+| Heart of the Wildfire         | Flat-cheap (tight) | 1E              | 2E                  |
+| Serpent Slumbering Beneath the Island | Late-spike | 1E              | 2E (spike T6+)      |
+
+**Promo Pack 2 (2)**:
+
+| Spirit                        | Curve          | T3 target E income | T5 target E income |
+|-------------------------------|----------------|---------------------|---------------------|
+| Downpour Drenches the World   | Flat-cheap     | 1–2E                | 2–3E                |
+| Finder of Paths Unseen        | Mid            | 2E                  | 3E                  |
+
+**Horizons (5)**:
+
+| Spirit                        | Curve          | T3 target E income | T5 target E income |
+|-------------------------------|----------------|---------------------|---------------------|
+| Devouring Teeth Lurk Underfoot | Mid           | 2E                  | 2–3E                |
+| Eyes Watch from the Trees     | Mid            | 2E                  | 2–3E                |
+| Fathomless Mud of the Swamp   | Mid            | 2E                  | 2–3E                |
+| Rising Heat of Stone and Sand | Mid            | 2E                  | 3E                  |
+| Sun-Bright Whirlwind          | Mid            | 2E                  | 3E                  |
+
+**Jagged Earth (10)**:
+
+| Spirit                        | Curve          | T3 target E income | T5 target E income |
+|-------------------------------|----------------|---------------------|---------------------|
+| Shifting Memory of Ages       | Mid            | 2E                  | 3E                  |
+| Grinning Trickster Stirs Up Trouble | Mid (via innate) | 1–2E          | 2–3E                |
+| Many Minds Move as One        | Flat-cheap     | 1E                  | 2E                  |
+| Shroud of Silent Mist         | Flat-cheap     | 1E                  | 2E                  |
+| Vengeance as a Burning Plague | Late-spike     | 1E                  | 2E (spike T7+)      |
+| Volcano Looming High          | Mid            | 2E                  | 3E                  |
+| Stone's Unyielding Defiance   | Slow-ramp      | 2E                  | 3–4E                |
+| Lure of the Deep Wilderness   | Mid            | 2E                  | 3E                  |
+| Fractured Days Split the Sky  | Mid-high       | 2–3E                | 3–4E                |
+| Starlight Seeks Its Form      | Flexible       | form-dependent      | form-dependent      |
+
+**Nature Incarnate (10)**:
+
+| Spirit                        | Curve          | T3 target E income | T5 target E income |
+|-------------------------------|----------------|---------------------|---------------------|
+| Ember-Eyed Behemoth           | Mid-high       | 2–3E                | 3–4E                |
+| Hearth-Vigil                  | Mid            | 2E                  | 3E                  |
+| Towering Roots of the Jungle  | Slow-ramp      | 2E                  | 3E                  |
+| Breath of Darkness Down Your Spine | Mid       | 2E                  | 3E                  |
+| Relentless Gaze of the Sun    | Mid            | 2E                  | 3E                  |
+| Wandering Voice Keens Delirium | Mid           | 2E                  | 3E                  |
+| Wounded Waters Bleeding       | Mid            | 2E                  | 3E                  |
+| Dances Up Earthquakes         | Mid            | 2E                  | 3E                  |
+| Covets Gleaming Shards of Earth | Slow-ramp    | 2E                  | 3–4E                |
+| Ferocious Warrior of the Lost Lands | Mid      | 2E                  | 3E                  |
 
 ## Deviation cost
 
