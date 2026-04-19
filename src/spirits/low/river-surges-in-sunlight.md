@@ -70,29 +70,80 @@ RIVER'S DOMAIN Your Presence in Wetlands counts as Sacred Site.
 
 ## Unique Cards (all, Wiki-verified)
 
+## Card Priority Ratings
 
+```admonish abstract title="Full-pool draft analysis"
+Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by River Surges in Sunlight's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/river-surges-in-sunlight.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/river-surges-in-sunlight.json) for full scoring + reasons.
 
-## Suggested Draft Cards (Wiki-recommended)
+- **Primary elements (innate-weighted)**: **Water** (wt 4.8), **Sun** (wt 3.0), **Earth** (wt 0.3)
+- **Mid-game energy estimate (T3–T5 avg)**: 3.0E
+- **Power summary**: Offense 4 · Control 5 · Fear 1 · Defense 1 · Utility 4
+```
 
-### Minor Powers
+### Uniques
 
-| Card | Cost | Speed | Range | Target | Elements | Effect |
-|------|------|-------|-------|--------|----------|--------|
-| **Uncanny Melting** | 1 | Slow | 1, from your Sacred Site | Any Land | Sun, Moon, Water | If Invaders are present, 1 Fear. If target land is a Sands or Wetland, Remove 1 Blight. |
-| **Pull Beneath the Hungry Earth** | 1 | Slow | 1 | Any Land | Moon, Water, Earth | If your Presence is present, 1 Fear and 1 Damage. If target land is a Sands or Wetland, 1 Damage. |
-| **Song of Sanctity** | 1 | Slow | 1 | Mountain or Jungle | Sun, Water, Plant | If Explorer(s) are present, Push all Explorers. Otherwise, Remove 1 Blight. |
-| **Encompassing Ward** | 1 | Fast | No Range | Any Spirit | Sun, Water, Earth | Target Spirit provides Defend 2 in each of its lands. |
+*No Unique cards listed.*
 
-### Major Powers
+### Top 10 Minor Draft Picks (from full pool)
 
-| Card | Cost | Speed | Range | Target | Elements | Effect |
-|------|------|-------|-------|--------|----------|--------|
-| **Accelerated Rot** | 4 | Slow | 2 | Jungle or Wetland | Sun, Water, Plant | 2 Fear. 4 Damage. |
-| **Tsunami** | 6 | Slow | 2, from your Sacred Site | Coastal Land | Water, Earth | 2 Fear. 8 Damage. Destroy 2 Dahan. |
+| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
+|---|------|------|-------|----------|--------------------|---------------|
+| 1 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage. | elements sun+water → 7.8 |
+| 2 | **Strong and Constant Currents** | 0 | Fast | Sun, Water, Earth | Push 1 Explorer/Town to an adjacent Coastal land. **OR** Move up to 2 Dahan between targe… | elements earth+sun+water → 8.1 |
+| 3 | **Like Calls to Like** | 1 | Slow | Sun, Water, Plant | If target land has Explorer, Gather up to 1 Explorer. Do likewise for Town, Dahan, Blight… | elements sun+water → 7.8 |
+| 4 | **Song of Sanctity** | 1 | Slow | Sun, Water, Plant | If Explorer(s) are present, Push all Explorers. Otherwise, Remove 1 Blight. | elements sun+water → 7.8 |
+| 5 | **Sunset's Fire Flows Across the Land** | 1 | Slow | Sun, Moon, Fire, Water | 1 Fear. 1 Damage. You may pay 1 Energy to deal 1 Damage in an adjacent land. | elements sun+water → 7.8 |
+| 6 | **Blood Draws Predators** | 1 | Fast | Sun, Fire, Water, Animal | After the next time Invaders are Destroyed in target land: Add 1 Beasts, then 1 Damage pe… | elements sun+water → 7.8 |
+| 7 | **Elusive Ambushes** | 1 | Fast | Sun, Fire, Water | 1 Damage. **OR** Defend 4. | elements sun+water → 7.8 |
+| 8 | **Reaching Grasp** | 0 | Fast | Sun, Air, Water | Target Spirit gets +2 Range with all their Powers. | elements sun+water → 7.8 |
+| 9 | **Teeming Rivers** | 1 | Slow | Sun, Water, Plant, Animal | If target land has no Blight, add 1 Beasts. If target land has exactly 1 Blight, Remove i… | elements sun+water → 7.8 |
+| 10 | **Uncanny Melting** | 1 | Slow | Sun, Moon, Water | If Invaders are present, 1 Fear. If target land is a Sands or Wetland, Remove 1 Blight. | elements sun+water → 7.8 |
 
-### Other (error or unclassified)\n\n| Card | Cost | Speed | Range | Target | Elements | Effect |
-|------|------|-------|-------|--------|----------|--------|
-| Nature\'s Resilience | — | — | — | — | — | _Wiki error_ |
+### Top 5 Major Draft Picks (from full pool)
+
+| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
+|---|------|------|-------|----------|--------------------|---------------|
+| 1 | **Sweep into the Sea** | 4 | Slow | Sun, Air, Water | Push all Explorers and Towns one land towards the nearest Ocean. **OR** If target land is… | elements sun+water → 7.8 |
+| 2 | **Inspire the Release of Stolen Lands** | 4 | Slow | Sun, Water, Plant, Animal | Gather up to 3 Dahan. Remove up to 3 Health worth of Invaders per Dahan. | elements sun+water → 7.8 |
+| 3 | **Accelerated Rot** | 4 | Slow | Sun, Water, Plant | 2 Fear. 4 Damage. | elements sun+water → 7.8 |
+| 4 | **Cleansing Floods** | 5 | Slow | Sun, Water | 4 Damage. Remove 1 Blight. | elements sun+water → 7.8 |
+| 5 | **Unrelenting Growth** | 4 | Slow | Sun, Fire, Water, Plant | Target Spirit adds 2 Presence and 1 Wilds to a land at Range 1 of their Presence. | elements sun+water → 7.8 |
+
+### HoSI Beginner Deck Bundle — for reference only
+
+```admonish note title="Not a draft-priority list"
+These are the cards shipped with River Surges in Sunlight in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
+```
+
+| Card | Type | Cost | Speed | Elements | Effect (truncated) |
+|------|------|------|-------|----------|--------------------|
+| **Uncanny Melting** | Minor | 1 | Slow | Sun, Moon, Water | If Invaders are present, 1 Fear. If target land is a Sands or Wetland, Remove 1 Blight. |
+| Nature\'s Resilience | — | — | — | — | (fetch error: Wiki API error for 'Nature\'s_Resilience': {'code': 'missingtitle', 'info': "The page you specified doesn't exist.", 'docref': 'See https://spiritislandwiki.com/api.php for API usage. Subscribe to the mediawiki-api-announce mailing list at &lt;https://lists.wikimedia.org/mailman/listinfo/mediawiki-api-announce&gt; for notice of API deprecations and breaking changes.'}) |
+| **Pull Beneath the Hungry Earth** | Minor | 1 | Slow | Moon, Water, Earth | If your Presence is present, 1 Fear and 1 Damage. If target land is a Sands or Wetland, 1… |
+| **Accelerated Rot** | Major | 4 | Slow | Sun, Water, Plant | 2 Fear. 4 Damage. |
+| **Song of Sanctity** | Minor | 1 | Slow | Sun, Water, Plant | If Explorer(s) are present, Push all Explorers. Otherwise, Remove 1 Blight. |
+| **Tsunami** | Major | 6 | Slow | Water, Earth | 2 Fear. 8 Damage. Destroy 2 Dahan. |
+| **Encompassing Ward** | Minor | 1 | Fast | Sun, Water, Earth | Target Spirit provides Defend 2 in each of its lands. |
+
+### Cards to Avoid (anti-synergy flagged)
+
+| Card | Reason(s) |
+|------|-----------|
+| **Skies Herald the Season of Return** | destroys Presence |
+| **Renewing Boon** | destroys Presence |
+| **Devouring Ants** | destroys Dahan |
+| **Land of Haunts and Embers** | adds Blight |
+| **Scour the Land** | adds Blight |
+| **Tsunami** | destroys Dahan |
+| **Solidify Echoes of Majesty Past** | destroys Presence |
+| **Insatiable Hunger of the Swarm** | adds Blight |
+| **Pillar of Living Flame** | adds Blight |
+| **Pyroclastic Flow** | adds Blight |
+| **Blazing Renewal** | destroys Presence |
+| **Draw Towards a Consuming Void** | destroys Presence |
+| **The Jungle Hungers** | destroys Dahan |
+| **Poisoned Land** | destroys Dahan, adds Blight |
+| **Volcanic Eruption** | destroys Dahan, adds Blight |
 
 ## Key Strategic Principles
 
@@ -105,14 +156,6 @@ RIVER'S DOMAIN Your Presence in Wetlands counts as Sacred Site.
 ## Opening Strategy
 
 `[VERIFY: needs play data]` — opening variants should be rehearsed turn-by-turn per the [SPIRIT_TEMPLATE.md](../../../templates/SPIRIT_TEMPLATE.md) opener format.
-
-## Card Priority Ratings
-
-**Uniques**: see above, all 4 cards are starting-deck and usually all grade A-tier for the spirit's intended playstyle.
-
-**Suggested Minors + Majors**: see tables above. Wiki's suggestions reflect community-recommended drafts.
-
-`[VERIFY: ratings per matchup pending]`.
 
 ## Adversary Matchup Matrix
 
