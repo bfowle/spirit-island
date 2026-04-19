@@ -1,76 +1,70 @@
 # Shadows Flicker Like Flame
 
-```admonish warning title="⚠️ Accuracy Audit — chapter under revision"
-**Known errors** (flagged 2026-04-19; corrections in progress):
+```admonish warning title="Accuracy status — partial revision 2026-04-19"
+Mechanical sections below have been corrected against [Spirit Island Wiki authoritative data](../../../data/references/spirit-mechanics.md). **Strategic framing preserved where it doesn't depend on specific card text**. Items marked `[VERIFY]` need Brett's physical-copy check before publication.
 
-- The section below labels **"Dark and Tangled Wood"** as Shadows's innate. It is **not** — that is a card from Horizons of Spirit Island, not base Shadows.
-- The section labels **"Favors Called Due"** as an innate. It is a **Unique card**, not an innate.
-- The chapter frames Shadows around **strife** mechanics. **Base Shadows has no strife**. Strife appears on other spirits and certain aspects (Madness Shadows may interact with strife-related minors via aspect-specific changes).
-- **Actual base Shadows**:
-  - **Innate**: Darkness Swallows the Unwary.
-  - **Unique cards**: Concealing Shadows, Favors Called Due, Crops Wither and Fade, Mantle of Dread.
-
-The full chapter is being rewritten against Spirit Island Wiki authoritative data. Do not trust the mechanical details below until this banner is removed.
+**Previous errors removed**: "Dark and Tangled Wood" (it's a Horizons card, not a Shadows innate); "strife" mechanic (not on base Shadows); "Favors Called Due" and "Memory of Fire Now Forgotten" mis-labeled as innates; invented tempo details that depended on wrong cards.
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Base                                               |
-| Complexity            | Low (official) / deceptively Moderate once optimizing |
+| Complexity            | Low (official)                                     |
 | Play Difficulty       | 1                                                  |
-| Archetypes            | Fear-farm · Terror-3 closer · Stealth / dodge      |
-| Primary Elements      | Moon, Fire, Air                                    |
+| Archetypes            | Fear-Rush (primary) · Dahan-adjacent               |
+| Primary Elements      | Moon, Fire (Air at Level 3 of innate)              |
 | Typical Opening       | Hybrid or Full bottom, Minor-heavy                 |
 | Typical Draft Bias    | Mixed (Minors early; 1 Major late T5–T7 as closer) |
-| Rei's Guide           | Not covered by Rei specifically; see latentoctopus |
-| latentoctopus         | Not currently listed; use Shadows's community threads |
-| Aspects               | Madness, Reach, Amorphous, Foreboding              |
+| Rei's Guide           | Not covered by Rei                                 |
+| latentoctopus         | Not currently listed                               |
+| Aspects               | Madness, Reach, Amorphous, Foreboding `[VERIFY]`   |
 ```
 
 ## Spirit Overview — Framing
 
-Shadows is the game's clearest "fear-rush with board avoidance" archetype. You hide in terrain, accumulate moonlight in your presence tracks, and chain innate fear + strife until Terror 3 flips the win condition wide open.
+Shadows is the game's clearest "fear-rush through Dahan lands" archetype. The spirit's innate gathers and destroys Explorers from afar; the Unique cards concentrate around Dahan-adjacent control and direct kills via Fire. Shadows wins by generating fear fast enough to flip Terror 3 while Explorer-level pressure stays contained.
 
-**One-line fantasy**: you're the unseen thing at the edge of the firelight — invaders feel dread before they even see a town burn down.
+**One-line fantasy**: the unseen thing at the edge of the firelight — invaders feel dread when they stray into the wilderness, and their scouts vanish before ever reaching the towns they were meant to seed.
 
-**The honest complexity signal**: Shadows *looks* Low-complexity because the cards read simply, but optimizing them is Moderate. The decision depth is in *when to hold back* (keep invaders alive to fear-harvest) versus *when to strike* (kill an invader to cross a fear threshold). New players play Shadows too aggressively and fail to leverage fear generation. You're about to make that mistake if you don't know it's a mistake.
+**The honest complexity signal**: Shadows is printed Low-complexity, and mechanically is straightforward. The *strategic* depth is the patience to let Explorers become fear-fodder rather than killing them at the earliest opportunity. New players Explorer-rush; correct Shadows play is often to gather/destroy at Level 2+ timing when each kill pays 1 fear.
 
 ## Core Mechanics & Special Rules
 
-### Innate: Dark and Tangled Wood
+### Special Rule: Shadows of the Dahan
 
-Generates fear + strife when thresholds hit. The central engine.
+Whenever you use a Power, you may pay 1 Energy to target a land with Dahan regardless of the Power's Range. This is Shadows's core *spatial* advantage — any power's reach extends to any Dahan-occupied land for a 1 Energy tax.
 
-- **Level 1 (1 Moon)**: 1 fear. Almost free; usually active T1–T2.
-- **Level 2 (2 Moon, 1 Fire)**: 2 fear + strife. The bread-and-butter state by T3–T4.
-- **Level 3 (3 Moon, 2 Fire, 2 Air)**: 3 fear + more strife. Requires element loading; a T5+ payoff most games.
+**Strategic implication**: Shadows doesn't need sacred-site concentration or long-range Majors to cover the board. A Dahan somewhere + 1 Energy = your power lands there.
 
-### Innate: Favors Called Due
+### Innate: Darkness Swallows the Unwary
 
-Targets strife-ed invaders; damage-via-fear-conversion. The finisher.
+Fast · 1 Range from Sacred Site.
 
-### Offering of Fear and Flame
+- **Level 1** (2 Moon, 1 Fire): Gather 1 Explorer.
+- **Level 2** (3 Moon, 2 Fire): Destroy up to 2 Explorers; 1 Fear per destroyed.
+- **Level 3** (4 Moon, 3 Fire, 2 Air): 3 Damage; 1 Fear per destroyed Invader.
 
-Your signature Unique: generates fear on-demand. Keep it in rotation.
+**Strategic implication**: the engine is Moon+Fire threshold. Level 2 converts Explorer-removal into fear income. Level 3 expands into damage + multi-invader fear.
 
-### Mantle of Dread
+### Unique Cards
 
-Fast defend + fear. Use sparingly — Mantle is card economy pressure.
+All four starting Uniques below. `[VERIFY]` markers are fields the Wiki scrape didn't fully surface; confirm against your physical copy.
 
-### Memory of Fire Now Forgotten
-
-Targeting flexibility; often forgotten for a Major late-game.
+- **Concealing Shadows** — 0 Energy, `[VERIFY: speed]`, target Land with Dahan, 1 Moon. Hides Dahan, preventing Ravage damage in that land. Core defensive play when you can't kill/push in time.
+- **Crops Wither and Fade** — 0 Energy, `[VERIFY: speed]`, target Any, 1 Fire. Destroys 1 City or 2 Explorers `[VERIFY: exact wording — Wiki scrape said "Colonists" which is likely mis-read of "Explorers"]`. Powerful direct-kill Unique.
+- **Favors Called Due** — 1 Energy, `[VERIFY: speed]`, target Land with Dahan, 2 Moon + 1 Fire. Gather up to 3 Dahan; generate Fear.
+- **Mantle of Dread** — 1 Energy, Slow, target Land, 1 Moon. Gather 1 Explorer or remove Town.
 
 ## Key Strategic Principles
 
-1. **Fear first, kills second.** Shadows wins by Terror 3 flipping the win condition, not by board-clearing. Kill rate is secondary — accept that invaders survive longer than with Lightning.
-2. **Moon is your primary element.** Getting to 3 Moon by T4 is the floor; 3 Moon + 2 Fire + 2 Air unlocks the full innate. Draft element-rich Minors.
-3. **Strife is a soft-kill.** A strife-ed invader deals half damage next ravage. Use strife to defuse ravages you can't prevent, not (just) to set up the innate.
-4. **Avoid sacred-site density.** Shadows doesn't use sacred-site triggers — spread presence instead. 2 presence per land = wasted placement.
-5. **Hold cards for reclaim cycles.** Shadows has 2CP openings. If you blow the hand on T1–T2, T3 is terrible. Plan your reclaim cycle.
-6. **The "Memory of Fire" forget.** When a Major comes that fits (Moon/Fire/Air-biased), forget Memory of Fire Now Forgotten. It's your weakest Unique by late game.
-7. **Avoid the "over-kill" temptation.** You'll sometimes be able to destroy a Town that you could instead leave alive for 2 more turns of fear generation. Count fear math: leaving a Town alive for 2 turns of level-2 innate = +4 fear; killing it = +1 fear. Leave it alive if fear is on the edge.
+1. **Fear over kills.** Shadows's win path is Terror 3 flipping win conditions, not board-clearing. Generate fear aggressively; accept some invader survival.
+2. **Moon + Fire is the load-bearing pair.** Level 2 Darkness Swallows the Unwary requires 3 Moon + 2 Fire. Draft Minors that deliver both elements.
+3. **Dahan presence is leverage.** "Shadows of the Dahan" special rule + Favors Called Due both care about Dahan-occupied lands. Don't push Dahan out of your target areas; keep them as targeting anchors.
+4. **Crops Wither and Fade is City-kill.** This is Shadows's direct-damage card for Cities. Save for when a City would otherwise build a new one or contribute to a Ravage.
+5. **Don't over-invest in sacred sites.** The innate ranges from Sacred Site, but Shadows's extended targeting via Dahan means 1 sacred site is usually enough; spread rather than stack.
+6. **Energy sustain matters.** "Shadows of the Dahan" costs 1 Energy per extended-range use — budget for 1E of float each turn for spatial flexibility.
+7. **Patience on Explorer kills.** Level 2 Darkness Swallows lets you destroy 2 Explorers for 2 fear. If you kill Explorers with Crops Wither and Fade before Level 2 fires, you've overpaid.
 
 ```admonish tip title="Pro Tip"
 Before Slow powers, count fear on the pool: if you're within 2 fear of a Terror flip, bias every decision toward generating that fear, even at cost of board control. Once you flip, the next several rounds' win conditions loosen dramatically.
@@ -78,320 +72,298 @@ Before Slow powers, count fear on the pool: if you're within 2 fear of a Terror 
 
 ## Opening Strategy
 
-Shadows doesn't have a latentoctopus guide yet (as of 2026-04-19). The two openings below are community-consensus distillations, rehearsed turn-by-turn in the canonical format. Pick one before you start the game — don't improvise T1.
+Shadows doesn't have a latentoctopus guide (as of 2026-04-19). The openings below are **strategic frames** — turn-by-turn specifics depend on which Minor Powers are offered and which adversary you face. `[VERIFY]`: once Brett plays through these, the specifics should be refined against actual card-draw patterns.
 
 Confidence: 🟥 tentative · 🟨 somewhat tested · 🟩 well-tested
 
-### Opening A — Hybrid, Minor-heavy 🟨
+### Opening A — Hybrid, Minor-heavy 🟥 (needs playtest)
 
-**Source**: community consensus; BGG strategy threads + Cardboard Crew tier commentary.
+**When to pick this**: default vs. Brandenburg-Prussia, England, Scotland, Sweden L0–L2. Adversaries that let you hit Terror 2 by T6.
 
-**When to pick this**: default opening for Brandenburg-Prussia, England, and Scotland. Good vs. any adversary that lets you hit Terror 2 by T6. Switch to Opening B if the adversary is Russia, Habsburg Mining, or Sweden at L3+.
-
-**Target arc**: 3 CP by T4 · Level 2 innate firing by T4 · Terror 2 flip by T6.
+**Target arc**: Level 1 Darkness Swallows firing T1–T2 · Level 2 firing T4 · Terror 2 flip by T6.
 
 #### Turn 1
 
-- **Growth**: **G3** (gain a Minor Power + place 1 presence from the right side of the bottom track).
-- **Cards played**: **Offering of Fear and Flame** (fast, 1E) + **Dreams of the Dahan** (or any 0-cost Moon Minor you drafted). Total 1E spent.
-- **Presence placement**: spread — pick a jungle-adjacent land where the T2 ravage is likely. Don't stack.
-- **Elements by end**: 2 Moon (1 from Offering, 1 from your track/Minor depending on draft).
-- **E / CP state**: enter 1E / 2CP → exit 0E / 2CP.
-- **Milestone**: one explorer/town strife-ed; 1 fear generated via innate Level 1.
+- **Growth**: **G3 bottom** (Minor gain + presence placement from bottom track).
+- **Cards played**: one Unique that fits the terrain — Crops Wither and Fade if a City is adjacent; Mantle of Dread if a Ravage threatens Dahan; Favors Called Due to position Dahan. Plus any 0-cost Moon Minor drafted.
+- **Presence placement**: inland land with Dahan already present (leverages Shadows of the Dahan rule).
+- **Elements by end**: 2 Moon, 1 Fire (from the Unique played).
+- **E / CP state**: 1E / 2CP → 0E / 2CP.
+- **Milestone**: Level 1 Darkness Swallows firing — 1 Explorer gathered.
 
 #### Turn 2
 
-- **Growth**: **G2** (gain +1 energy). You need the energy cushion before T3 reclaim.
-- **Cards played**: **Offering of Fear and Flame** (if reclaimed is fast track) + **Mantle of Dread** *only if* a ravage would otherwise destroy dahan or presence; otherwise a second Minor (Moon-bearing). Total 1–2E spent.
-- **Presence placement**: second land — prefer coastal if the adversary is England (Stage III prep). Otherwise inland jungle.
-- **Elements by end**: 2 Moon sustained, +1 Fire from Offering-in-hand.
-- **E / CP state**: enter 1E / 2CP → exit 0E / 2CP.
-- **Milestone**: fear pool at 2–3 of 4 (solo); strife on 2 lands.
+- **Growth**: **G2 top or G3 bottom** depending on card need (top for energy if T3 reclaim depends on it; bottom for another Minor).
+- **Cards played**: reclaim-refresh a Unique + play a Moon Minor. Keep Crops Wither and Fade available for a City turn.
+- **Presence placement**: second land; prefer adjacency to T1 land for innate targeting.
+- **Elements by end**: 2 Moon sustained, 1–2 Fire.
+- **E / CP state**: 1E / 2CP → 0E / 2CP.
+- **Milestone**: fear pool 2–3 of 4 (solo); 1 Explorer removed.
 
 #### Turn 3
 
-- **Growth**: **G1** (Reclaim — return all played cards to hand). You now have 3–4 cards in hand.
-- **Cards played**: **Offering + Minor (Moon)** + **Minor (whatever second one threshold-hits Fire)** — 2–3 cards total, targeting 2 lands.
-- **Presence placement**: third land, usually adjacent to your strife-ed invaders so next turn's Level 2 innate lands there.
-- **Elements by end**: 3 Moon, 1 Fire (crossing the Level 2 threshold).
-- **E / CP state**: enter 1E / 2CP → exit 0E / 2CP. (Reclaim didn't give you more CP; it gave you refreshed hand.)
-- **Milestone**: **Level 2 innate available** next turn. If you're not there, you're behind — see pivot advice below.
-
-#### Turn 4 — state audit (not a full plan)
-
-After T3 you should have:
-
-- **Presence on board**: 6–7 of 13 (starting 3 + 3–4 placed), spread across 3–4 lands.
-- **Energy / CP**: 1E / 2CP, sometimes 2E if you banked on T2.
-- **Engine state**: Level 2 innate fires on any land with 2 Moon + 1 Fire available. You're generating ~2 fear/turn from innate alone, plus fear from kills.
-- **Fear pool**: 3–4 of 8 — on track for Terror 2 flip around T5–T6.
-- **Blight**: 0–1. Shadows doesn't prevent ravages directly; some blight is expected but not cascading.
-- **Hand**: 3 cards if you reclaimed on T3, playing 2 of them here + gaining a third Minor. CP will tick up to 3 via next growth.
-
-If you're off by more than one step, pivot:
-
-- **Missing Fire element by T3** → take a Minor on T4 that specifically adds Fire (e.g., Strengthen the Gifts of the Earth). Delay Level 2 activation to T5.
-- **Energy-starved (0E entering T3 with nothing to reclaim)** → skip the non-Offering Minor on T3; play only Offering + whatever's free.
-- **Presence too sparse (still at 3–4 lands covered)** → take G3 (presence) on T4 instead of G1 (CP). You need coverage before scaling.
-- **Adversary spikes early (Sweden L3+ fear penalties active)** → your fear pool is suppressed; accept Terror 1 longer and focus on board kills for fear rather than innate chaining.
-
-### Opening B — Full bottom, slower-scaling 🟨
-
-**Source**: community-consensus distillation for matchups where Opening A's T5 Major is too aggressive.
-
-**When to pick this**: Russia (fear suppression hurts fast Terror races), Habsburg Mining (scaling adversary; you need to survive T6+), Sweden L3+ (fear penalties). Also: multi-handed games where you expect the other spirit to carry board control, freeing Shadows to farm fear at lower tempo risk.
-
-**Target arc**: 3 CP by T5 (one turn later than Opening A) · Level 2 innate firing T4 · Terror 2 flip by T7 · sustainable 4–5 CP late game.
-
-#### Turn 1
-
-- **Growth**: **G3** (Minor gain + presence bottom track).
-- **Cards played**: **Offering of Fear and Flame** (fast) + **Dreams of the Dahan** or any 0-cost Moon Minor. 1E spent.
-- **Presence placement**: first land, inland if possible (Russia-proof).
-- **Elements by end**: 2 Moon.
+- **Growth**: **G1 Reclaim** — return all played cards to hand.
+- **Cards played**: 2–3 cards. Aim for 3 Moon + 2 Fire element total this turn to unlock Level 2 Darkness Swallows.
+- **Presence placement**: third land — spread for broader targeting.
+- **Elements by end**: 3 Moon, 2 Fire (Level 2 threshold).
 - **E / CP state**: 1E / 2CP → 0E / 2CP.
-- **Milestone**: one strife applied; 1 fear.
-
-#### Turn 2
-
-- **Growth**: **G3 again** (second Minor gain + presence) — the "full bottom" move. You're trading energy for a bigger card pool.
-- **Cards played**: **Offering + second Minor you drafted last turn**. 1–2E. If energy is empty, play just Offering.
-- **Presence placement**: second land, adjacent to first where possible for Level 2 positional play later.
-- **Elements by end**: 2 Moon sustained, + whatever element the T1-gained Minor brings.
-- **E / CP state**: 1E / 2CP → 0–1E / 2CP.
-- **Milestone**: 2 Minors in hand, fear pool at 2; strife on 2 lands.
-
-#### Turn 3
-
-- **Growth**: **G1** (Reclaim). Refresh hand to 4–5 cards.
-- **Cards played**: **Offering + the best Fire-bearing card in your refreshed hand**. If T1 or T2 Minor drafts brought you a Fire threshold-hitter, this is where it earns its cost.
-- **Presence placement**: third land. Coastal if late-game coastal pressure is expected; else inland.
-- **Elements by end**: 3 Moon, 1 Fire.
-- **E / CP state**: 1E / 2CP → 0E / 2CP.
-- **Milestone**: **Level 2 innate unlocked**, but you're entering T4 without the 3-CP jump Opening A has.
+- **Milestone**: Level 2 Darkness Swallows available next turn; 2 Explorer removals queued.
 
 #### Turn 4 — state audit
 
-After T3 (Opening B) you should have:
+After T3:
 
-- **Presence on board**: 6 of 13, across 3 lands (less spread than Opening A).
-- **Energy / CP**: 1E / 2CP. Scaling is deliberately slower.
-- **Engine state**: Level 2 innate fires; hand has 4–5 cards after reclaim + 2 Minor gains.
-- **Fear pool**: 3 of 8 — Terror 2 flip target is T7 (vs. T6 in Opening A).
-- **Blight**: 0–2.
-- **Hand**: 4–5 cards — the "full bottom" investment paying off now.
+- **Presence**: 6–7 of 13, spread across 3–4 lands (multiple containing Dahan).
+- **Energy / CP**: 1E / 2–3CP (next growth ticks CP).
+- **Engine**: Level 2 Darkness Swallows fires — 2 Explorers destroyed per turn, 2 fear.
+- **Fear pool**: 3–4 of 8 — on track for Terror 2 by T6.
+- **Blight**: 0–1 (Shadows absorbs rather than prevents ravages via Concealing Shadows on Dahan lands).
 
-Pivot advice is the same as Opening A, with one addition:
+Pivot advice:
 
-- **You've "wasted" the full bottom if by T5 you haven't used the extra card pool** → you should be playing 3 cards/turn from T5 onward, not 2. If you're still at 2 CP with 5 cards in hand, something upstream (no element coverage, or the engine never fired) is wrong.
+- **Missing Fire by T2** → draft Fire-bearing Minor on T4; delay Level 2 one turn.
+- **No Dahan lands covered** → Concealing Shadows + Favors Called Due become hard to land. Reposition presence or draft Call of the Dahan / Dreams of the Dahan.
+- **Energy-starved** → skip optional Shadows-of-the-Dahan rule extensions; stay at standard range.
+- **Sweden L3+ fear penalties** → Terror 2 may slip to T7; bias Crops Wither and Fade for direct City-kill instead.
 
-### Opening C — Early Major 🟥 (experimental)
+### Opening B — Full bottom, slower-scaling 🟥
 
-**Source**: theorycraft; no community consensus yet.
+**When to pick this**: Russia, Habsburg Mining, Sweden L3+ — adversaries where Opening A's T5–T7 fear-rush doesn't survive.
 
-**When to pick this**: you've played Shadows 10+ times and want to experiment. Not recommended for meta-tier play.
+Structurally: take G3 bottom on T1 and T2 (rather than T1 G3 + T2 G2), reclaim T3. Trades T2 energy for deeper Minor pool. Level 2 still fires T4 but the 4th turn onward has a richer Minor hand rather than 2E float.
 
-**The idea**: forget Memory of Fire Now Forgotten on T2 for a Major (Terrifying Nightmares is the canonical target). This trades away the T3 reclaim structure but gives you a Major threshold-firing by T4.
+Turn-by-turn specifics will follow once Brett has playtested this variant and can verify the actual card sequences against the spirit's 4 Uniques.
 
-Not fully rehearsed here yet. Prefer Opening A or B unless you're deliberately stress-testing Shadows's limits.
+### Opening C — Early Major (experimental) 🟥
+
+**Source**: theorycraft; not playtested.
+
+**The idea**: forget Mantle of Dread on T2–T3 for a Major (Terrifying Nightmares target). This trades Shadows's Slow-phase defensive removal for a cost-heavy fear-spike card.
+
+**When to attempt**: after Brett has played Shadows 10+ games via Openings A and B, and specifically wants to test Major-shopping on this spirit.
 
 ### Opening decision
 
 <pre class="mermaid">
 graph TD
   Start[Round 1 — Shadows] --> Adv{Adversary?}
-  Adv -->|Brandenburg-Prussia| A[Opening A — Hybrid]
+  Adv -->|Brandenburg-Prussia| A[Opening A - Hybrid]
   Adv -->|England| A
   Adv -->|Scotland| A
-  Adv -->|Sweden L0-L2| A2[Opening A, bias early fear-kills]
-  Adv -->|Sweden L3+| B[Opening B — Full bottom]
+  Adv -->|Sweden L0-L2| A
+  Adv -->|Sweden L3+| B[Opening B - Full bottom]
   Adv -->|Russia| B
   Adv -->|Habsburg Mining| B
-  Adv -->|Multi-handed with clear board-carry partner| B
+  Adv -->|Multi-handed with board-carry partner| B
+  Adv -->|Experienced Shadows player wants spice| C[Opening C - Early Major]
   Adv -->|Other| A
 </pre>
 
 ## Element & Aspect Preferences
 
-**Preferred elements**: Moon (primary), Fire (secondary), Air (tertiary). Secondary — Plant and Animal are mostly flavor on Shadows; don't draft for them.
+**Preferred elements**: Moon (primary — all innate levels), Fire (secondary — Level 2+), Air (Level 3 only).
 
-**Aspects**:
+**Aspects** `[VERIFY aspect names against your copy]`:
 
-- **Madness** (Jagged Earth) — converts spirit mechanics toward fear-heavy play. Strong on Shadows; arguably the best aspect. Leans deeper into strife + fear generation.
-- **Reach** (Jagged Earth) — extends range on powers. Useful vs. terrain-sparse layouts; less essential than Madness.
-- **Amorphous** (Promo Pack 2) — unusual mobility; experimental but niche.
-- **Foreboding** (Promo Pack 2) — additional fear mechanics. Good, but Madness usually preferred.
+- **Madness** (Jagged Earth) — shifts mechanics toward additional fear + potentially adds strife/chaos elements `[VERIFY]`. Often cited as a top Shadows aspect pick by the community.
+- **Reach** (Jagged Earth) — extends range on powers `[VERIFY]`. Useful on boards with sparse Dahan coverage.
+- **Amorphous** (Promo Pack 2) — unusual mobility `[VERIFY]`. Niche.
+- **Foreboding** (Promo Pack 2) — additional fear mechanics `[VERIFY]`.
 
-**Pick default**: Madness on any matchup you want more fear generation. Base Shadows otherwise.
+**Pick default**: base Shadows for new Shadows players; aspect choice warrants rereading the aspect panel carefully first.
 
 ## Card Priority Ratings
 
-Shadows is Mixed draft-bias — Minors-heavy early, 1 Major late.
+Shadows is **Mixed** draft-bias — Minors-heavy early, 1 Major T5+ as closer.
 
 ### Unique (Signature) Powers
 
 | Card                            | Grade | Notes                                                   |
 |---------------------------------|-------|---------------------------------------------------------|
-| Offering of Fear and Flame      | A+    | Core engine card. Play most turns.                      |
-| Mantle of Dread                 | B+    | Cost-heavy; use when ravage is unavoidable.             |
-| Dark and Tangled Wood (innate)  | A     | Your engine; track thresholds each turn.                |
-| Memory of Fire Now Forgotten    | B     | Weakest Unique; usually forget T5+.                     |
-| Favors Called Due (innate)      | A-    | Closer; requires strife setup.                          |
+| Concealing Shadows              | A     | Hide-Dahan defensive play; play when Ravage threatens.  |
+| Crops Wither and Fade           | A     | Direct City-kill. Save for City turns.                  |
+| Favors Called Due               | A     | Dahan-gather + fear; Moon+Fire threshold helper.        |
+| Mantle of Dread                 | A-    | Slow Explorer-gather or Town removal; standard Forget candidate for Major shopping. |
 
 ### Minors to Target
 
 | Card                            | Grade | Why with Shadows                                        |
 |---------------------------------|-------|---------------------------------------------------------|
-| Strengthen the Gifts of the Earth | A   | Moon-heavy; threshold-fit.                              |
-| Song of Sanctity                | A-    | Fear generation + range.                                |
-| Dreams of the Dahan             | A-    | Low-cost Moon source.                                   |
-| Call of the Dahan               | B+    | Opportunistic; helps when dahan are thin.               |
-| Any 0-cost Moon card            | A     | Auto-take.                                              |
+| Any 0-cost Moon Minor           | A+    | Threshold essential.                                    |
+| Moon+Fire dual-element Minor    | A+    | Level 2 innate enabler.                                 |
+| Dahan-interactive Minors        | A     | Leverages Shadows of the Dahan rule.                    |
+
+`[VERIFY]`: specific named Minors were previously called out (Dreams of the Dahan, Strengthen the Gifts of the Earth, Song of Sanctity, Call of the Dahan) but their element/effect alignment with Shadows specifically should be re-checked against the physical card text before the ratings are promoted.
 
 ### Majors that Over-perform on Shadows
 
 | Card                            | Grade | Why                                                     |
 |---------------------------------|-------|---------------------------------------------------------|
-| Terrifying Nightmares           | A+    | Fear finisher; Moon-fit.                                |
-| Voice of Command                | A     | Generates fear + strife combined.                       |
+| Terrifying Nightmares           | A+    | Fear finisher; Moon-element alignment.                  |
+| Voice of Command `[VERIFY elements + effect]` | A | Fear generation align with Shadows's engine.   |
 | Paralyzing Fright               | A     | 3-cost; fits Shadows's energy by T5.                    |
-| Pent-Up Calamity                | A-    | Conditional but explodes with strife pre-staged.        |
-| Call of the Dahan's Blood       | B+    | Situational; lower-tier.                                |
+
+`[VERIFY]`: "Pent-Up Calamity" and "Call of the Dahan's Blood" were in the previous chapter; those card names and effects need physical-copy check before ratings ship.
 
 ### Cards to AVOID drafting
 
-- **Strong-damage Earth/Stone Majors** — no element synergy; Shadows can't reliably threshold them.
-- **Moon+Plant only cards** — wasted if Plant is never a useful element for you.
+- **Majors with thresholds Shadows can't hit** (Earth/Plant-heavy Majors). No element synergy.
+- **Range-0-only powers that need presence in the target** — Shadows of the Dahan rule lets you *extend* range, but some cards are strictly Range 0 from your own presence; those waste Shadows's spatial advantage.
 
 ## Adversary Matchup Matrix
 
 | Adversary            | L0 | L3 | L5 | L6 | Notes                                                      |
 |----------------------|----|----|----|----|-----------------------------------------------------------|
-| England              | A  | A- | B+ | B  | Slow builds; fear-rush works. Stage III bites coast-heavy. |
+| England              | A  | A- | B+ | B  | Slow builds; fear-rush works. `[VERIFY]` Stage III coastal pressure: Shadows's spatial rule lets you cover coasts via coastal Dahan. **L5 cliff**: buildings gain +1 HP — Crops Wither and Fade still destroys Cities (per Wiki effect: destroys 1 City or 2 Explorers), but damage-based Minors shift utility. |
 | Brandenburg-Prussia  | A  | A- | B+ | B  | Cities add fear-per-kill. Favorable.                       |
-| Sweden               | A- | B+ | B  | B- | Fear penalties reduce the engine's output; play carefully. |
-| France (Plantation)  | B+ | B  | B  | C+ | Dahan pressure hurts fear conversion. Avoid.               |
-| Habsburg Mining      | A  | B+ | B  | C+ | Scaling issue late.                                        |
-| Russia               | B+ | B  | B- | C  | Fear-suppression mid-late cripples Shadows.                |
+| Sweden               | A- | B+ | B  | B- | Fear penalties reduce engine output at L2+.                |
+| France (Plantation)  | B+ | B  | B  | C+ | Dahan capture threatens "Shadows of the Dahan" rule — fewer Dahan = smaller targeting pool. |
+| Habsburg Mining      | A  | B+ | B  | C+ | Scaling outpaces fear-rush late game.                      |
+| Russia               | B+ | B  | B- | C  | Fear-suppression mid-late.                                 |
 | Scotland             | A  | B+ | B+ | B  | Generally favorable.                                       |
-| Habsburg Livestock   | A  | A- | B  | B  | Favorable; decent matchup.                                  |
+| Habsburg Livestock   | A  | A- | B  | B  | Favorable.                                                 |
 
-*Grades are directional; see per-adversary chapter rows for reasoning.*
+### Strategy Cliff — England L5
+
+```admonish info title="Strategy Cliff — England L5"
+**What changes**: buildings gain +1 HP.
+
+**Impact on Shadows**: the innate's Level 3 (3 damage) remains sufficient for Towns but becomes insufficient for now-4-HP Cities without additional damage. Crops Wither and Fade still works (it destroys Cities directly, not via HP damage).
+
+**Mitigation**: bias toward Crops Wither and Fade for City-kill; avoid relying on Level 3 innate chip-damage to finish Cities.
+```
+
+### Strategy Cliff — Sweden L2+
+
+```admonish info title="Strategy Cliff — Sweden L2+"
+**What changes**: fear-card penalties active.
+
+**Impact on Shadows**: Terror 2 flip harder; each fear card produces reduced effect.
+
+**Mitigation**: shift from fear-rush to kill-rush. Crops Wither and Fade becomes the primary close-game card; forgo Major Power shopping unless a Moon-heavy Major lands T4.
+```
 
 ## Board Position Evaluation
 
-- **Favorable**: Boards A, D, F. Jungle-mountain density favors Moon-fed innate.
-- **Neutral**: Boards B, C, E.
-- **Unfavorable**: Boards with very sparse terrain layouts reduce fear-harvest opportunities.
+- **Favorable**: boards with dense Dahan-inland clusters (Board A and D typical). Shadows of the Dahan targeting works best with 3+ Dahan lands.
+- **Neutral**: standard base boards.
+- **Unfavorable**: sparse-Dahan boards or layouts where Dahan get captured quickly (France matchup compounds).
 
 ## Game-Phase Strategy
 
 ### Early (T1–3)
 
-- Place presence on 3–4 lands (spread, not stacked).
-- Play Offering + 1 Minor per turn.
-- Hit 2 Moon + 1 Fire by T3.
-- **Don't** kill invaders you could leave for fear farming.
+- Spread presence across 3–4 Dahan-adjacent lands.
+- Draft Moon + Fire Minors.
+- Play one Unique per turn; target Level 1 innate firing.
+- Don't rush to kill via Crops Wither and Fade — let Explorers accumulate for Level 2 harvest.
 
 ### Mid (T4–6)
 
-- Level 2 innate firing every turn.
-- 3 CP, 2E.
-- Transition: forget Memory of Fire for a Major around T4–5.
-- Strife accumulates across 4–6 lands.
+- Level 2 Darkness Swallows firing; 2 Explorer destroyed + 2 fear per turn.
+- Crops Wither and Fade fires on City turns.
+- Reclaim maintained; hand of 3–4 cards sustainable.
 
 ### Late (T7+)
 
-- Terror 2 is the goal by T6; Terror 3 by T8.
-- Closer cards (Terrifying Nightmares, Voice of Command) fire here.
-- Don't over-extend presence — ravages are harder, and you want to finish fear, not outlast blight.
+- Terror 2 flip; Terror 3 push via Major (if gained).
+- Concealing Shadows + Favors Called Due handle late Dahan-protection.
+- Mantle of Dread is the forget candidate if Major offered.
 
 ## Synergy Partners (Multiplayer)
 
 ```admonish tip title="Best Partners"
-- **Bringer of Dreams and Nightmares** — double fear-engine. Bringer draws the fear card at Time Passes, then Shadows triggers innate fear for the next turn.
-- **Thunderspeaker** — Thunderspeaker handles board pressure while Shadows fear-rushes. Clean territory split.
-- **Ocean's Hungry Grasp** — Ocean drowns coasts, Shadows fear-feeds off Inland Cities. Both win independently.
+- **Bringer of Dreams and Nightmares** — double fear-engine; Bringer's "To Dream a Thousand Deaths" rule converts damage to fear directly, compounding Shadows's fear output.
+- **Thunderspeaker** — Thunderspeaker grows Dahan density, which feeds Shadows of the Dahan + Favors Called Due.
+- **Ocean's Hungry Grasp** — Ocean drowns coasts; Shadows handles inland Dahan lands.
 ```
 
-```admonish warning title="Anti-Synergy"
-- **Wildfire** — territory conflict (both want Moon/Fire and invader-alive-for-scaling in overlapping ways). Works but crowds the board.
-- **Vengeance** — both fear-heavy; you'll step on each other's generation. Not bad but suboptimal.
+```admonish warning title="Anti-Synergy / Territory Conflicts"
+- **Wildfire / Vengeance** — both destroy Dahan via blight or self-damage mechanics; Shadows's targeting pool shrinks.
+- **Volcano Looming High** — destruction kills Dahan unconditionally.
 ```
 
 ## Common Mistakes
 
-```admonish failure title="Common Mistake — Over-killing"
-Killing a Town on T2 that would have given you 4 more fear over T3–T4 if left alive. Track fear math deliberately.
+```admonish failure title="Common Mistake — Killing Explorers too early"
+Crops Wither and Fade kills 2 Explorers for 1 Fire. Level 2 Darkness Swallows destroys 2 Explorers for *2 fear*. If both are available, Level 2 innate is better fear output per action.
 ```
 
-```admonish failure title="Common Mistake — Sacred-site hoarding"
-Stacking 2 presence in a land hoping for synergy. Shadows has no sacred-site triggers. Spread presence across 5+ lands instead.
+```admonish failure title="Common Mistake — Ignoring the 1E range tax"
+"Shadows of the Dahan" costs 1 Energy per range extension. If you're at 0E, you can't extend. Budget energy explicitly for spatial flexibility.
 ```
 
-```admonish failure title="Common Mistake — Missing Moon element"
-Drafting a no-Moon Minor because it has "cool fear effect." Without Moon, your Level 2 innate doesn't fire, and you lose ~3 fear/turn.
+```admonish failure title="Common Mistake — Drafting non-Moon Minors"
+Moon is the only universal threshold for Shadows. Non-Moon Minors stall Level 1–2 innate firing.
 ```
 
-```admonish failure title="Common Mistake — Mantle of Dread on T1"
-Mantle is a 2-energy card. On T1, you can't afford it. Save it for T3+ when a ravage would hurt.
+```admonish failure title="Common Mistake — Sacred-site density"
+Shadows's range extension comes from Dahan, not sacred sites. Stacking 2 presence per land wastes placement; spread instead.
 ```
 
-```admonish failure title="Common Mistake — Trying to board-clear"
-Shadows isn't a clear-all-invaders spirit. If you're trying to out-damage Fangs or Lightning, you're playing the wrong spirit.
+```admonish failure title="Common Mistake — Forgetting Concealing Shadows"
+Concealing Shadows prevents Ravage damage in Dahan lands. It's your emergency valve for preserving Dahan — don't Forget it for a Major unless your board has very few Dahan anyway.
 ```
 
 ## Tempo Profile
 
-Target round-by-round state (varies with opening variant):
+| Round | Energy | CP | Presence | Moon | Fire | Key Play                                |
+|-------|--------|----|----------|------|------|-----------------------------------------|
+| 1     | 1E     | 2  | 4 (of 13)| 2    | 1    | Unique + 0-cost Minor                   |
+| 2     | 1E     | 2  | 5        | 2    | 1–2  | Reclaim-candidate + Minor               |
+| 3     | 1E     | 2  | 6        | 3    | 2    | Reclaim; 3 cards + Level 2 prep         |
+| 4     | 1–2E   | 3  | 7        | 3    | 2+   | Level 2 innate firing; 2 Explorer kills |
+| 5     | 2E     | 3  | 7        | 3+   | 2+   | Major gain or continue Minor drafting   |
+| 6     | 2–3E   | 3  | 7        | 3+   | 3    | Fear pool → Terror 2 flip               |
+| 7     | 3E     | 3  | 6        | 3+   | 3    | Major closer (if gained) or innate chain|
+| 8     | 3E     | 3  | 5        | 3+   | 3    | Terror 3 push                            |
 
-| Round | Energy | CP | Presence on Board | Key Play / Milestone                      |
-|-------|--------|----|--------------------|-------------------------------------------|
-| 1     | 1E     | 2  | 4 (of 13)          | Offering + Minor; place 1 presence        |
-| 2     | 1E     | 2  | 5                  | Offering + Minor; hit 2 Moon              |
-| 3     | 2E     | 2  | 6                  | Reclaim + Minor; Level 2 innate available |
-| 4     | 2E     | 3  | 7                  | Engine ON: 3 cards, Level 2 firing         |
-| 5     | 2E     | 3  | 7                  | Gain Major; forget Memory of Fire          |
-| 6     | 3E     | 3  | 6                  | Fear-rush push; Terror 2 flip              |
-| 7     | 3E     | 3  | 6                  | Closer Major lands                         |
-| 8     | 3E     | 3  | 5                  | Terror 3 → game                            |
-
-Cliff turn: **T4**. If Level 2 isn't firing by T4, you're behind and the late-game won't recover.
+Cliff turn: **T4**. Level 2 Darkness Swallows must fire. If it doesn't, the fear-per-turn halves and Terror 2 slips to T7.
 
 ## Major vs. Minor — Shadows Specifically
 
-**Draft bias**: Mixed (Minors-heavy early, 1 Major T5 as closer).
+**Draft bias**: Mixed (Minors-heavy early; 1 Major T5 as closer).
 
-- **T1–3**: Minors only. 0-cost Moon-bearing Minors are auto-take.
-- **T4–5**: First Major consideration. Forget Memory of Fire. Prefer Terrifying Nightmares, Voice of Command, Paralyzing Fright.
-- **T6+**: Second Major optional. Usually more Minors if the curve supports it.
+- T1–T3: Minors only. 0-cost Moon auto-take.
+- T4–T5: first Major consideration. Forget Mantle of Dread if Moon-Major lands (Terrifying Nightmares preferred).
+- T6+: second Major optional; usually more Minors if the curve supports.
 
 See [Major vs. Minor Fundamentals](../../fundamentals/major-vs-minor.md).
+
+## Expansion Sensitivity
+
+Main guide assumes all expansions in play. Where advice shifts:
+
+- **Base only**: no events, no blight deck. Shadows's T1–T4 is simpler — no event-card variance threatens Dahan lands unexpectedly.
+- **+ Branch & Claw**: events + blight deck active. Dahan-hostile events can hit Shadows's targeting pool; draft defensively.
+- **+ Jagged Earth**: deeper Minor/Major pool reduces fear-card variance; Shadows's fear-rush becomes slightly less consistent but Minor-pool depth compensates.
+- **+ Promo Pack 2 + Horizons + Nature Incarnate**: pool deepens further; no spirit-specific shift.
+
+`[VERIFY]` — specific event cards that hit Dahan lands should be called out in `statistics/event-deck-risk-profiles.md` (stub, M3 authoring) with Shadows-specific advice.
 
 ## Stat Snapshot
 
 ```admonish note title="Stat Insight"
-Per [mindwanderer](https://mindwanderer.net/si/stats.html) (digital data, 2026-Q1 estimates):
+Per [mindwanderer](https://mindwanderer.net/si/stats.html) `[VERIFY actual win-rate figures; previously-cited numbers were plausible but not independently verified]`:
 
-- Solo win rate at L6: approximately 52% (95% CI wide; sample ~400)
-- Best adversary: Brandenburg-Prussia L6 at ~62%
-- Worst adversary: Russia L6 at ~38%
-- Strong 2-handed combo: Shadows + Bringer wins at ~70% at L6
+- Solo win rate at L6: approximately 50–55%.
+- Best adversary: Brandenburg-Prussia L6 (fear-dense, favorable).
+- Worst adversary: Russia L6 (fear suppression).
+- Strong 2-handed: Shadows + Bringer often cited as top fear-rush pair.
 
-**Caveats**: digital-only data; Madness aspect not always filtered distinctly. Expect tabletop variance.
+**Caveats**: digital-only data; aspect variants not always filtered; actual percentages should be fetched live from mindwanderer's current stats page before publishing.
 ```
 
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- latentoctopus glossary (notation): https://latentoctopus.github.io/glossary/
-- Cardboard Crew tier list: https://thecardboardcrew.com/spirit-island-spirits/
-- mindwanderer stats: https://mindwanderer.net/si/stats.html
-- BGG Spirit Island general strategy forum: https://boardgamegeek.com/forum/1543090/spirit-island/strategy
-- Spirit Island Wiki — Shadows page: https://spiritislandwiki.com/
-- Spirited Discussion podcast: https://spiriteddiscussion.substack.com/
+- Authoritative mechanics: [data/references/spirit-mechanics.md](../../../data/references/spirit-mechanics.md) — fetched from Spirit Island Wiki 2026-04-19.
+- Spirit Island Wiki — Shadows page.
+- [Cardboard Crew tier list](https://thecardboardcrew.com/spirit-island-spirits/).
+- [mindwanderer stats](https://mindwanderer.net/si/stats.html).
+- Cross-reference: [Dahan fundamentals](../../fundamentals/dahan.md), [Fear Rush archetype](../../combos/fear-rush.md).
 ```
 
 ---
 
-*Last revised: 2026-04-19 — v0.1 (MVP authored, to be play-tested and revised)*
+*Last revised: 2026-04-19 — v0.2.1 (surgical correction; `[VERIFY]` markers pending physical-copy check)*
