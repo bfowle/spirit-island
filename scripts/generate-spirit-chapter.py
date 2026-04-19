@@ -330,8 +330,8 @@ Per-expansion specifics `[VERIFY]`.
 
 ## Stat Snapshot
 
-```admonish note title="Stat Insight `[VERIFY from mindwanderer]`"
-Pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
+```admonish note title="Stat Insight"
+`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
 ```
 
 ## Source Notes
