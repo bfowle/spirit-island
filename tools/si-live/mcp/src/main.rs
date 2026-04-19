@@ -66,20 +66,44 @@ async fn main() -> Result<()> {
             }
         };
         if req.jsonrpc != "2.0" {
-            send_error(&mut stdout, req.id, -32600, "jsonrpc must be 2.0".into()).await?;
+            if req.id.is_some() {
+                send_error(&mut stdout, req.id, -32600, "jsonrpc must be 2.0".into()).await?;
+            }
             continue;
         }
+
+        // Per MCP / JSON-RPC spec: notifications (id absent/null) must not receive a response.
+        let is_notification = req.id.is_none();
+        if is_notification {
+            // Accept common MCP notifications silently: "notifications/initialized", etc.
+            continue;
+        }
+
         let response = match req.method.as_str() {
-            "initialize" => Response {
+            "initialize" => {
+                let requested_proto = req
+                    .params
+                    .get("protocolVersion")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("2025-03-26");
+                Response {
+                    jsonrpc: "2.0",
+                    id: req.id,
+                    result: Some(serde_json::json!({
+                        "protocolVersion": requested_proto,
+                        "serverInfo": {"name": "si-mcp", "version": env!("CARGO_PKG_VERSION")},
+                        "capabilities": {
+                            "tools": { "listChanged": false },
+                            "resources": { "listChanged": false, "subscribe": false },
+                        },
+                    })),
+                    error: None,
+                }
+            }
+            "ping" => Response {
                 jsonrpc: "2.0",
                 id: req.id,
-                result: Some(serde_json::json!({
-                    "serverInfo": {"name": "si-mcp", "version": env!("CARGO_PKG_VERSION")},
-                    "capabilities": {
-                        "tools": {},
-                        "resources": {},
-                    },
-                })),
+                result: Some(serde_json::json!({})),
                 error: None,
             },
             "tools/list" => Response {
@@ -89,11 +113,17 @@ async fn main() -> Result<()> {
                     "tools": [
                         {
                             "name": "get_game_state",
-                            "description": "Return the current Spirit Island game state",
+                            "description": "Return the current Spirit Island game state (data/current-game.json) as JSON.",
                             "inputSchema": {"type": "object", "properties": {}, "required": []},
                         }
                     ]
                 })),
+                error: None,
+            },
+            "resources/list" => Response {
+                jsonrpc: "2.0",
+                id: req.id,
+                result: Some(serde_json::json!({ "resources": [] })),
                 error: None,
             },
             "tools/call" => {
