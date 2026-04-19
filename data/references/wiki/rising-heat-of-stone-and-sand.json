@@ -42,6 +42,60 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "energy1"
+    },
+    {
+      "index": 2,
+      "first": "addpresence3ms",
+      "second": "addpresence3ms",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence1",
+      "third": "energy2"
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "earth",
+    "energy2",
+    "energy3",
+    "fire",
+    "energy4",
+    "energy5"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "card2",
+    "card3",
+    "card4",
+    "card5fire"
+  ],
+  "power_summary": {
+    "offense": "5",
+    "control": "3",
+    "fear": "1",
+    "defense": "2",
+    "utility": "3"
+  },
+  "suggested_cards": [
+    "Visions of Fiery Doom",
+    "Drought",
+    "Purifying Flame",
+    "Indomitable Claim",
+    "Encompassing Ward",
+    "Talons of Lightning",
+    "Land of Haunts and Embers"
+  ],
   "raw_template": {
     "name": "Rising Heat of Stone and Sand",
     "gamebox": "Horizons of Spirit Island",

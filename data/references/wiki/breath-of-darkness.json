@@ -67,6 +67,52 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "movebreathincarna"
+    },
+    {
+      "index": 2,
+      "first": "gain1p",
+      "second": "addpresence3",
+      "third": "darknessescape2"
+    },
+    {
+      "index": 3,
+      "first": "addpresence1",
+      "second": "addmovebreathincarna",
+      "third": "darknessescape1"
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "energy2",
+    "moon",
+    "energy3",
+    "empowerincarna",
+    "energy4animal",
+    "energy5air"
+  ],
+  "presence_cardplay_track": [
+    "card2",
+    "movepres",
+    "card3",
+    "moonX",
+    "reclaim1",
+    "card4air"
+  ],
+  "power_summary": {
+    "offense": "2",
+    "control": "4",
+    "fear": "5",
+    "defense": "1",
+    "utility": "2"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Breath of Darkness Down Your Spine",
     "gamebox": "Nature Incarnate",

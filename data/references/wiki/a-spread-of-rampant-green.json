@@ -65,6 +65,58 @@
     "Overgrow in a Night",
     "Stem the Flow of Fresh Water"
   ],
+  "growth_type": "always",
+  "growths": [
+    {
+      "index": 1,
+      "first": "Spread",
+      "second": null,
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "addpresence1",
+      "second": "old+1cardplay",
+      "third": null
+    },
+    {
+      "index": 4,
+      "first": "gain1p",
+      "second": "energy3",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy0",
+    "energy1",
+    "plant",
+    "energy2",
+    "energy2",
+    "plant",
+    "energy3"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card1",
+    "card2",
+    "card2",
+    "card3",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "4",
+    "control": "3",
+    "fear": "2",
+    "defense": "5",
+    "utility": "4"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "A Spread of Rampant Green",
     "gamebox": "Base Game",

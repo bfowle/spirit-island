@@ -42,6 +42,60 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "energy1"
+    },
+    {
+      "index": 2,
+      "first": "addpresence2",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "addpresence1",
+      "second": "energy3",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "energy1",
+    "energy2",
+    "energy2",
+    "energy3",
+    "energy4",
+    "energy4",
+    "energy5"
+  ],
+  "presence_cardplay_track": [
+    "card2",
+    "card3",
+    "card4",
+    "card5",
+    "card6"
+  ],
+  "power_summary": {
+    "offense": "5",
+    "control": "2",
+    "fear": "3",
+    "defense": "1",
+    "utility": "2"
+  },
+  "suggested_cards": [
+    "Delusions of Danger",
+    "Call to Bloodshed",
+    "Powerstorm",
+    "Purifying Flame",
+    "Pillar of Living Flame",
+    "Entrancing Apparitions",
+    "Call to Isolation"
+  ],
   "raw_template": {
     "name": "Lightning's Swift Strike",
     "gamebox": "Base Game",

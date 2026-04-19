@@ -67,6 +67,51 @@
     "Flash-Fires",
     "Threatening Flames"
   ],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "energy1"
+    },
+    {
+      "index": 2,
+      "first": "gain1p",
+      "second": "addpresence3",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "addpresence1",
+      "second": "energy2",
+      "third": "Wildfire"
+    }
+  ],
+  "presence_energy_track": [
+    "energy0",
+    "fire",
+    "energy1",
+    "energy2",
+    "fireplant",
+    "energy3"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "fireX",
+    "card2",
+    "card3",
+    "fireX",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "5",
+    "control": "3",
+    "fear": "4",
+    "defense": "1",
+    "utility": "2"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Heart of the Wildfire",
     "gamebox": "Promotional Pack 1",

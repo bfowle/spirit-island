@@ -19,6 +19,58 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "addpresence3junglepresence",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence1",
+      "third": "energy3"
+    },
+    {
+      "index": 4,
+      "first": "reclaimallfire",
+      "second": "empowerbehemoth",
+      "third": "moveincarnabehemoth"
+    }
+  ],
+  "presence_energy_track": [
+    "energy0",
+    "energy1",
+    "energy2fire",
+    "energy3",
+    "earth",
+    "energy4plant",
+    "energy5fire"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "card2",
+    "card3",
+    "fireX",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "5",
+    "control": "1",
+    "fear": "1",
+    "defense": "1",
+    "utility": "2"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Ember-Eyed Behemoth",
     "gamebox": "Nature Incarnate",

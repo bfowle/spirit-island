@@ -68,6 +68,52 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "addpresence0",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence3mw",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy0",
+    "energy1",
+    "water",
+    "energy2",
+    "air"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "movepres",
+    "moonX",
+    "card3",
+    "card4",
+    "reclaim1",
+    "card5"
+  ],
+  "power_summary": {
+    "offense": "4",
+    "control": "4",
+    "fear": "5",
+    "defense": "2",
+    "utility": "1"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Shroud of Silent Mist",
     "gamebox": "Jagged Earth",

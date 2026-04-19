@@ -92,6 +92,55 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "three",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim1",
+      "second": null,
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "addpresence0",
+      "second": null,
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "energy1",
+      "second": null,
+      "third": null
+    },
+    {
+      "index": 4,
+      "first": "movepresence3",
+      "second": null,
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "empty",
+    "growthreclaimhalf",
+    "growthdivider",
+    "growthgainpowercard",
+    "growthmovepresence1"
+  ],
+  "presence_cardplay_track": [
+    "empty",
+    "growth3energy",
+    "growthdivider",
+    "growthplusonecardplay",
+    "growthmovepresence2"
+  ],
+  "power_summary": {
+    "offense": "1",
+    "control": "1",
+    "fear": "1",
+    "defense": "2",
+    "utility": "2"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Starlight Seeks Its Form",
     "gamebox": "Jagged Earth",

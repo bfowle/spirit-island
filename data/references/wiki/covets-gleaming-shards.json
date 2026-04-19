@@ -57,6 +57,52 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "addpresencecovetslair",
+      "second": "addpresencecovetsincarna",
+      "third": "energy1"
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence1",
+      "third": "energy2"
+    }
+  ],
+  "presence_energy_track": [
+    "energy0",
+    "energy1",
+    "fire",
+    "energy2animal",
+    "energy3earth",
+    "copyoneelement",
+    "energy5pushcovetsincarna"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "sunX",
+    "card2",
+    "airX",
+    "animalX",
+    "card3"
+  ],
+  "power_summary": {
+    "offense": "5",
+    "control": "4",
+    "fear": "5",
+    "defense": "1",
+    "utility": "3"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "gamebox": "Apocrypha",
     "setup": "Place {{Incarna|covets}}, your Hoard marker ({{Hoard_(marker)}}), and 1 {{Presence}} on your starting board in your choice of a Mountain or a land with {{blight}}. Take another 13 presence discs and put them on the bottom of your Hoard as Treasure markers. Set aside metal tokens ({{Metal}}) near your Hoard. You start with your 4 Unique Power Cards and 0 Energy.",

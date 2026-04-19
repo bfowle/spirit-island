@@ -42,6 +42,60 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "energy1"
+    },
+    {
+      "index": 2,
+      "first": "addpresence2",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence3",
+      "third": "energy1"
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "energy1",
+    "energy2",
+    "plant",
+    "energy3",
+    "moon",
+    "energy4"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "airX",
+    "card3",
+    "plantX",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "2",
+    "control": "3",
+    "fear": "4",
+    "defense": "5",
+    "utility": "1"
+  },
+  "suggested_cards": [
+    "Lure of the Unknown",
+    "Drift Down Into Slumber",
+    "Delusions of Danger",
+    "Terrifying Nightmares",
+    "Dark and Tangled Woods",
+    "The Jungle Hungers",
+    "Veil the Night\\'s Hunt"
+  ],
   "raw_template": {
     "name": "Eyes Watch from the Trees",
     "gamebox": "Horizons of Spirit Island",

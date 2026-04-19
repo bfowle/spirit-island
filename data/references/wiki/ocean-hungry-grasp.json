@@ -67,6 +67,52 @@
     "Swallow the Land-Dwellers",
     "Tidal Boon"
   ],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "OceanG"
+    },
+    {
+      "index": 2,
+      "first": "OceanA",
+      "second": "OceanA",
+      "third": "energy1"
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "Ocean",
+      "third": "OceanP"
+    }
+  ],
+  "presence_energy_track": [
+    "energy0",
+    "moon",
+    "water",
+    "energy1",
+    "earth",
+    "water",
+    "energy2"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "card2",
+    "card3",
+    "card4",
+    "card5"
+  ],
+  "power_summary": {
+    "offense": "5",
+    "control": "4",
+    "fear": "4",
+    "defense": "3",
+    "utility": "2"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Ocean's Hungry Grasp",
     "gamebox": "Base Game",

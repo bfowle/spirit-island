@@ -56,6 +56,52 @@
     "Voice of Thunder",
     "Words of Warning"
   ],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "gain1p"
+    },
+    {
+      "index": 2,
+      "first": "Thunder2",
+      "second": "Thunder1",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "addpresence1",
+      "second": "energy4",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "air",
+    "energy2",
+    "fire",
+    "sun",
+    "energy3"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "card2",
+    "card3",
+    "reclaim1",
+    "card3",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "4",
+    "control": "5",
+    "fear": "3",
+    "defense": "2",
+    "utility": "1"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Thunderspeaker",
     "gamebox": "Base Game",

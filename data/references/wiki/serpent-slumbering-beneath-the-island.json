@@ -64,6 +64,60 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "two",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "movepresence1",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "gain1p",
+      "second": "energy1",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "energy4",
+      "second": null,
+      "third": null
+    },
+    {
+      "index": 4,
+      "first": "noblight",
+      "second": null,
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "fire",
+    "any",
+    "reclaim1E",
+    "earth",
+    "energy6",
+    "any",
+    "energy12"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "moonX",
+    "card2",
+    "waterX",
+    "serpent",
+    "card4",
+    "card5reclaim1"
+  ],
+  "power_summary": {
+    "offense": "2",
+    "control": "2",
+    "fear": "2",
+    "defense": "4",
+    "utility": "5"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Serpent Slumbering Beneath the Island",
     "gamebox": "Promotional Pack 1",

@@ -65,6 +65,46 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "gain1p",
+      "second": "addpresence3dahan",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "addpresence2",
+      "second": "energy3",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "gather1dahan1land"
+  ],
+  "presence_cardplay_track": [
+    "energy0",
+    "energy1sun",
+    "energy2",
+    "energy3animal",
+    "energy4",
+    "energy5sun"
+  ],
+  "power_summary": {
+    "offense": "3",
+    "control": "1",
+    "fear": "2",
+    "defense": "4",
+    "utility": "4"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Hearth-Vigil",
     "gamebox": "Nature Incarnate",

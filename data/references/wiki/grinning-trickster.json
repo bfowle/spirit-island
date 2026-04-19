@@ -63,6 +63,58 @@
     "Overenthusiastic Arson",
     "Unexpected Tigers"
   ],
+  "growth_type": "two",
+  "growths": [
+    {
+      "index": 1,
+      "first": "Sharp1",
+      "second": "movepresence1",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "addpresence2",
+      "second": null,
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": null,
+      "third": null
+    },
+    {
+      "index": 4,
+      "first": "energycardplays",
+      "second": null,
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "moon",
+    "energy2",
+    "any",
+    "fire",
+    "energy3"
+  ],
+  "presence_cardplay_track": [
+    "card2",
+    "pushdahan",
+    "card3",
+    "card3",
+    "card4",
+    "airX",
+    "card5"
+  ],
+  "power_summary": {
+    "offense": "4",
+    "control": "3",
+    "fear": "2",
+    "defense": "5",
+    "utility": "4"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Grinning Trickster Stirs Up Trouble",
     "gamebox": "Jagged Earth",

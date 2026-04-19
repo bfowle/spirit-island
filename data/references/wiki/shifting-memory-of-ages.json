@@ -53,6 +53,58 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "gain1p",
+      "second": "addpresence2",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "addpresence1",
+      "second": "energy2",
+      "third": null
+    },
+    {
+      "index": 4,
+      "first": "energy9",
+      "second": null,
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy0",
+    "energy1",
+    "energy2",
+    "energy3marker",
+    "energy4",
+    "reclaim1E",
+    "energy5",
+    "energy6marker"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "card2",
+    "markersforplay",
+    "card3"
+  ],
+  "power_summary": {
+    "offense": "1",
+    "control": "2",
+    "fear": "2",
+    "defense": "4",
+    "utility": "5"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Shifting Memory of Ages",
     "gamebox": "Jagged Earth",

@@ -40,6 +40,59 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "energy1"
+    },
+    {
+      "index": 2,
+      "first": "addpresence1",
+      "second": "energy4",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence4",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "energy2",
+    "sun",
+    "energy3",
+    "energy4air",
+    "energy6"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "card3",
+    "airX",
+    "card4",
+    "card5sun"
+  ],
+  "power_summary": {
+    "offense": "3",
+    "control": "5",
+    "fear": "1",
+    "defense": "1",
+    "utility": "3"
+  },
+  "suggested_cards": [
+    "Gift of Living Energy",
+    "Elemental Boon",
+    "Reaching Grasp",
+    "Powerstorm",
+    "Enticing Splendor",
+    "Wrap in Wings of Sunlight",
+    "Call to Isolation"
+  ],
   "raw_template": {
     "name": "Sun-Bright Whirlwind",
     "gamebox": "Horizons of Spirit Island",

@@ -41,6 +41,52 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain2earth",
+      "third": "Stone"
+    },
+    {
+      "index": 2,
+      "first": "addpresence2",
+      "second": "energy3",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence1",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy2",
+    "energy3",
+    "card+1stone",
+    "energy4",
+    "card+1stone",
+    "energy6",
+    "card+1stone"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "earthX",
+    "earthX",
+    "earthreclaimX",
+    "earthanyX",
+    "card2earth"
+  ],
+  "power_summary": {
+    "offense": "4",
+    "control": "2",
+    "fear": "1",
+    "defense": "5",
+    "utility": "2"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Stone's Unyielding Defiance",
     "gamebox": "Jagged Earth",

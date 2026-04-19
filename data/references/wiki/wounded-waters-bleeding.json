@@ -59,6 +59,50 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "energy1"
+    },
+    {
+      "index": 2,
+      "first": "gain1p",
+      "second": "addpresence2",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "addpresence3",
+      "second": "energy3",
+      "third": "adddestroyedpresence1"
+    }
+  ],
+  "presence_energy_track": [
+    "blank",
+    "blank",
+    "blank",
+    "blank",
+    "energy3",
+    "energy4fireorplant",
+    "energy5any"
+  ],
+  "presence_cardplay_track": [
+    "energy0card1",
+    "wateroranimal",
+    "gatherblight",
+    "energy1card2"
+  ],
+  "power_summary": {
+    "offense": "4",
+    "control": "5",
+    "fear": "2",
+    "defense": "1",
+    "utility": "1"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Wounded Waters Bleeding",
     "gamebox": "Nature Incarnate",

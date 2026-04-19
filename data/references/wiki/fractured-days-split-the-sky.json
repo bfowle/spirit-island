@@ -40,6 +40,51 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "gainair",
+      "second": "reclaim",
+      "third": "gain2time"
+    },
+    {
+      "index": 2,
+      "first": "gainmoon",
+      "second": "gain1p",
+      "third": "addpresence2"
+    },
+    {
+      "index": 3,
+      "first": "gainsun",
+      "second": "movepresence4",
+      "third": "daysthatneverwerecard"
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "energy1",
+    "energy2",
+    "energy2",
+    "energy2",
+    "energy3"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card1",
+    "card1",
+    "card2",
+    "card2",
+    "card3"
+  ],
+  "power_summary": {
+    "offense": "1",
+    "control": "2",
+    "fear": "1",
+    "defense": "3",
+    "utility": "5"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Fractured Days Split the Sky",
     "gamebox": "Jagged Earth",

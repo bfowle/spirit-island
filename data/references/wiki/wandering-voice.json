@@ -44,6 +44,52 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "addmovevoiceincarna",
+      "third": "energy1"
+    },
+    {
+      "index": 2,
+      "first": "addpresence3",
+      "second": "addpresence1",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence2",
+      "third": "energy1"
+    }
+  ],
+  "presence_energy_track": [
+    "energy0",
+    "energy1",
+    "sunormoon",
+    "energy2",
+    "air",
+    "energy4",
+    "pushvoiceincarna"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "card2",
+    "card3",
+    "reclaim1",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "2",
+    "control": "5",
+    "fear": "3",
+    "defense": "1",
+    "utility": "2"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Wandering Voice Keens Delirium",
     "gamebox": "Nature Incarnate",

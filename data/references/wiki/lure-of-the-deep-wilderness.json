@@ -32,6 +32,57 @@
     "Softly Beckon Ever Inward",
     "Swallowed by the Wilderness"
   ],
+  "growth_type": "oneandone",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "energy1",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "addpresence4inland",
+      "second": null,
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "moonairplant",
+      "second": "energy2",
+      "third": null
+    },
+    {
+      "index": 4,
+      "first": "gain1p",
+      "second": null,
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "energy2",
+    "moon",
+    "energy3plant",
+    "energy4air",
+    "energy5reclaim"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "animalX",
+    "card3",
+    "card4",
+    "card5reclaim1"
+  ],
+  "power_summary": {
+    "offense": "4",
+    "control": "4",
+    "fear": "4",
+    "defense": "2",
+    "utility": "1"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Lure of the Deep Wilderness",
     "gamebox": "Jagged Earth",

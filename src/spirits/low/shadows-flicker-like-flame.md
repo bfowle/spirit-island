@@ -1,9 +1,7 @@
 # Shadows Flicker Like Flame
 
-```admonish success title="Mechanics verified 2026-04-19"
-Card data, innate text, and special rules below were parsed deterministically from the Spirit Island Wiki using `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template-field extraction). No LLM summarization in that pipeline. Strategic prose is opinion.
-
-Aspects verified against physical copy per Brett 2026-04-19: Amorphous + Foreboding (B&C), Madness + Reach (JE), Dark Fire (NI).
+```admonish success title="Mechanics Wiki-verified 2026-04-19"
+Card data, innate text, special rules, growth options, presence track, power-summary ratings, and suggested-draft card text below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py`. Aspects list verified against Brett's physical copy. Only these remain `[VERIFY]`: Play Difficulty (not on Wiki spirit-template; spirit panel only), aspect *mechanics* (aspect-page parser pending), current mindwanderer stats, and board ratings (require play experience).
 ```
 
 ```admonish abstract title="At a Glance"
@@ -11,27 +9,50 @@ Aspects verified against physical copy per Brett 2026-04-19: Amorphous + Forebod
 |-----------------------|----------------------------------------------------|
 | Expansion             | Base Game                                          |
 | Complexity            | Low                                                |
-| Play Difficulty       | 1 `[VERIFY]`                                       |
-| Archetypes            | Fear generation · Explorer control · Dahan-leverage |
-| Primary Elements      | Moon (primary), Fire, Air (Animal/Plant on 2 Uniques) |
-| Special Rule          | Shadows of the Dahan (1 Energy extends any Power's Range to Dahan lands) |
+| Play Difficulty       | 1 `[VERIFY physical spirit panel]`                 |
+| Growth type           | "one" — pick **one** growth option per turn        |
+| Power summary (1–5)   | Offense 4 · Control 3 · **Fear 5** · Defense 1 · Utility 1 |
+| Primary Elements      | Moon (all innate levels) · Fire (L2+) · Air (L3)   |
+| Special Rule          | Shadows of the Dahan — pay 1 Energy to target any Dahan land regardless of Range |
 | Aspects               | **B&C**: Amorphous, Foreboding · **JE**: Madness, Reach · **NI**: Dark Fire |
-| Rei's Guide           | Not covered by Rei                                 |
-| latentoctopus         | Not currently listed                               |
+| Rei's Guide           | Not covered                                        |
+| latentoctopus         | Not listed                                         |
 ```
 
 ## Spirit Overview — Framing
 
-Shadows is the **fear-generating Explorer controller**. Three of four Uniques generate Fear directly (1, 2, 2 respectively + a conditional 3), and the innate chains Explorer-gathering into Explorer-destruction into multi-Invader damage as element thresholds rise. The Shadows-of-the-Dahan special rule effectively removes range as a constraint — 1 Energy lets any Power hit any land with Dahan.
+Shadows is a **base-game Fear-5 spirit with low Defense** (per the Wiki's own power-summary ratings). The design-space is: generate maximum Fear per turn, control Explorer movement via Gather/Push, leverage Dahan adjacency for spatial flexibility — and accept that board-clearing damage is someone else's job.
 
-**One-line fantasy**: the unseen hand. Where Dahan walk, Shadows walks alongside them; where invaders step, shadows gather and fear rises.
+**Wiki-printed playstyle note** (verbatim for accuracy):
 
-**The honest complexity signal**: Low is correct. Shadows has a small toolkit and a clear archetype. Strategic depth comes from **when to trigger which level of the innate**:
-- Level 1 is positional (gather an Explorer — reposition without killing).
-- Level 2 is lethal (destroy up to 2 Explorers + fear).
-- Level 3 is multi-target (3 damage across any invaders).
+> Good at causing Fear and picking off lone Explorers and Towns, containing the Invaders. Not so good at massive damage — may need to rely on allies to handle thoroughly colonized lands. The ability to boost Range gives more flexibility to Range 0 Powers, and can be important in larger games.
 
-Patience on Level 2+ pays: gathering Explorers first, then destroying 2 at a time, is higher fear output than picking off Explorers one-by-one.
+**The honest complexity signal**: Low is correct. 4 Uniques, 1 Innate, 1 Special Rule, 3 single-choice growth options. Strategic depth is in *when* to trigger Innate Level 1 (Gather) vs. Level 2 (Destroy) + which Unique to play per turn.
+
+## Starting Setup
+
+> Put 3 Presence on your starting board: **2 in the highest-numbered Jungle and 1 in land #5**.
+
+## Growth Options (growthtype: "one" — pick one per turn)
+
+Each growth option has a "first" and "second" effect, both resolved together when chosen:
+
+| Growth | Effects                                    | Best when                                          |
+|--------|--------------------------------------------|----------------------------------------------------|
+| **G1** | Reclaim + Gain 1 Power Card                | Hand is depleted; drafting a Minor this turn       |
+| **G2** | Gain 1 Power Card + Add 1 Presence (Range 1) | Want a card *and* placement on nearby land        |
+| **G3** | Add 1 Presence (Range 3) + +3 Energy       | Need spatial reach + energy bank                   |
+
+**Note**: Shadows picks *one* of these per turn — unlike multi-growth spirits that pick multiple. This is a tight constraint. Most turns: G2 early (card-heavy); G1 when hand needs refresh; G3 for energy spikes.
+
+## Presence Tracks
+
+As presence leaves each track, these values are revealed (cumulative per-turn gain):
+
+- **Energy track** (6 slots): **0 → 1 → 3 → 4 → 5 → 6 Energy** per turn as track fills.
+- **Card-play track** (6 slots): **1 → 2 → 3 → 3 → 4 → 5** cards per turn.
+
+Starting: 1 Energy, 1 CP (implied from track-0 values). Opening the track quickly unlocks 3 Energy (significant for the 1E-per-turn Shadows-of-the-Dahan rule).
 
 ## Core Mechanics & Special Rules
 
@@ -39,211 +60,145 @@ Patience on Level 2+ pays: gathering Explorers first, then destroying 2 at a tim
 
 > Whenever you use a Power, you may pay 1 Energy to target a land with Dahan regardless of the Power's Range. *(Power Cards or your Innate Powers.)*
 
-**Strategic implication**: the most flexible targeting special rule of any base spirit. Every Power — card or innate — can reach any Dahan-occupied land for 1 Energy. This means:
-
-- Range 0 Power Cards effectively get unlimited range to Dahan lands.
-- The Innate's "Range 1 from Sacred Site" constraint is bypassed entirely for Dahan lands.
-- Dahan preservation across the board directly expands Shadows's reach.
-
-**Budget 1 Energy per turn** for this rule's use. Running at 0 Energy eliminates your spatial flexibility.
+**Strategic implication**: the most flexible targeting rule of any base spirit. Budget 1 Energy/turn for this; Dahan preservation directly expands Shadows's reach.
 
 ### Innate: Darkness Swallows the Unwary
 
-- **Speed**: Fast
-- **Range**: 1, optionally from a Sacred Site
-- **Target**: Any land
+- **Speed**: Fast · **Range**: 1 (optionally from a Sacred Site) · **Target**: Any land
 
-| Level | Thresholds         | Effect                                                         |
-|-------|--------------------|----------------------------------------------------------------|
-| 1     | 2 Moon + 1 Fire    | Gather 1 Explorer.                                             |
-| 2     | 3 Moon + 2 Fire    | Destroy up to 2 Explorer. 1 Fear per Explorer destroyed.       |
-| 3     | 4 Moon + 3 Fire + 2 Air | 3 Damage. 1 Fear per Invader destroyed by this Damage.    |
+| Level | Thresholds               | Effect                                                      |
+|-------|--------------------------|-------------------------------------------------------------|
+| 1     | 2 Moon + 1 Fire          | Gather 1 Explorer.                                          |
+| 2     | 3 Moon + 2 Fire          | Destroy up to 2 Explorer. 1 Fear per Explorer destroyed.    |
+| 3     | 4 Moon + 3 Fire + 2 Air  | 3 Damage. 1 Fear per Invader destroyed by this Damage.      |
 
-**Strategic implication**: Level 1 *repositions* an Explorer (gather into the target); Level 2+ destroys. The Level 1 "gather" alone can prevent a Build by moving an Explorer out of the target land, without burning a Unique. Level 2 is the fear engine — destroy 2 Explorers = 2 Fear per turn, sustained.
+Key decision: Level 1 *gathers* (repositions) an Explorer without killing — useful to move Explorers out of upcoming Build lands. Level 2+ destroys for fear. Don't over-rush Level 2 if Level 1 solves the land.
 
-### Unique Cards
+## Unique Cards (all 4, Wiki-verified)
 
 #### Concealing Shadows
 
-- **Cost**: 0 Energy
-- **Speed**: Fast
-- **Range**: 0 · **Target**: Any Land
-- **Elements**: Moon, Air
-- **Effect**: *1 Fear. Dahan take no Damage from Ravaging Invaders this turn.*
+- **0 Energy · Fast · Range 0 · Any Land · Moon, Air**
+- *1 Fear. Dahan take no Damage from Ravaging Invaders this turn.*
 
-**Strategic use**: defensive + fear. Dahan-protection on a Ravage land prevents Dahan loss entirely for that turn. Pairs well with Favors Called Due (which wants Dahan-outnumber-Invaders).
+Free-to-play defensive + 1 Fear every turn. Pairs with Favors Called Due (preserves Dahan to outnumber Invaders).
 
 #### Crops Wither and Fade
 
-- **Cost**: 1 Energy
-- **Speed**: Slow
-- **Range**: 0 · **Target**: Any Land
-- **Elements**: Moon, Fire, Plant
-- **Effect**: *2 Fear. Replace 1 Town with 1 Explorer. **OR** Replace 1 City with 1 Town.*
+- **1 Energy · Slow · Range 0 · Any Land · Moon, Fire, Plant**
+- *2 Fear. Replace 1 Town with 1 Explorer. **OR** Replace 1 City with 1 Town.*
 
-**Strategic use**: this is a **downgrade**, not a destroy. A City becomes a Town (still present but less threatening); a Town becomes an Explorer. The replaced invader remains in the land — land pressure stays the same, but Ravage damage drops and future Build behavior softens. Plus 2 Fear.
-
-Combined with the innate: replace a City → Town (Crops Wither), then gather/destroy the Explorers that were also in that land next turn.
+**Downgrade**, not destroy. Softens Ravages + 2 Fear per play. A City → Town reduces that land's Ravage damage by 1 and removes a Build upgrade path.
 
 #### Favors Called Due
 
-- **Cost**: 1 Energy
-- **Speed**: Slow
-- **Range**: 1 · **Target**: Any Land
-- **Elements**: Moon, Air, Animal
-- **Effect**: *Gather up to 4 Dahan. If Invaders are present and Dahan now outnumber them, 3 Fear.*
+- **1 Energy · Slow · Range 1 · Any Land · Moon, Air, Animal**
+- *Gather up to 4 Dahan. If Invaders are present and Dahan now outnumber them, 3 Fear.*
 
-**Strategic use**: Dahan reinforcement into a land where Invaders are present. Outnumbering triggers 3 Fear — a massive fear spike. Requires 4+ Dahan in the gather-radius and an Invader-present target with fewer Invaders than the gathered Dahan count.
+Massive conditional fear spike (3 Fear). Needs gatherable Dahan + Invader-present target + post-gather Dahan > Invader count.
 
 #### Mantle of Dread
 
-- **Cost**: 1 Energy
-- **Speed**: Slow
-- **Range**: N/A · **Target**: Any Spirit
-- **Elements**: Moon, Fire, Air
-- **Effect**: *2 Fear. Target Spirit may Push 1 Explorer and 1 Town from a land where it has Presence.*
+- **1 Energy · Slow · No Range · Any Spirit · Moon, Fire, Air**
+- *2 Fear. Target Spirit may Push 1 Explorer and 1 Town from a land where it has Presence.*
 
-**Strategic use**: **partner-support card**. Target another Spirit (or self); that Spirit pushes 1 Explorer + 1 Town out of one of their Presence lands. In multiplayer, this is Shadows helping a partner defuse a threatening land. In solo, Shadows targets self.
+**Partner-support** (target Any Spirit). In multiplayer, hands a partner a free push on one of their lands. In solo, self-target.
 
 ## Key Strategic Principles
 
-1. **Fear output per turn can be huge.** Full engine: 1 (Concealing) + 2 (Crops) + 3 (Favors, conditional) + 2 (Mantle) + 1–2 (innate L2) = up to 10+ Fear in a single turn. Shadows is *the* fear spirit of the base game in raw output.
-2. **Shadows of the Dahan is the spatial engine.** Budget 1 Energy per turn for range-extension. Don't let Energy hit 0.
-3. **Crops Wither is downgrade, not destroy.** Use to soften Ravages, not to kill. City→Town cuts Ravage damage by 1 and removes a future Build threat.
-4. **Favors Called Due wants Dahan clusters.** 4+ Dahan in the radius + Invader-present target = 3 Fear. Preserve Dahan (Concealing Shadows) so Favors fires.
-5. **Innate Level 1 is positional, not lethal.** Gather an Explorer out of a Build target = no Town next turn. You don't always need Level 2 to solve a land.
-6. **Moon is primary; Fire is secondary.** Every innate level wants Moon + Fire. Air opens at Level 3 and on Mantle. Animal only appears on Favors.
-7. **Mantle of Dread is a partner-help tool.** In solo, still useful (target self). In multiplayer, unique utility.
+1. **Fear output is huge.** Concealing (1) + Crops (2) + Favors (3 conditional) + Mantle (2) + Innate L2 (up to 2) = **up to 10 Fear in one turn** at the peak. Shadows has the base game's strongest per-turn fear ceiling by raw card output.
+2. **Shadows of the Dahan = spatial superpower.** Budget 1E/turn for range extension. Dahan density across the board directly expands Shadows's reach.
+3. **Crops Wither is downgrade-not-destroy.** Use to soften Ravages + bank Fear, not to kill. The "replaced" Invader remains in the land.
+4. **Innate Level 1 is positional.** Gather an Explorer out of a Build target → no Town next turn. A single growth option can solve a land via innate L1 without spending cards.
+5. **Moon + Fire is load-bearing.** L1 = 2M+1F, L2 = 3M+2F. Draft Moon + Fire Minors aggressively.
+6. **Favors Called Due wants Dahan density.** Preserve Dahan (Concealing) so gather + outnumber triggers.
+7. **Mantle of Dread targets a Spirit.** In multiplayer, always a partner-help card if their turn is tight.
 
-```admonish tip title="Pro Tip"
-Before Slow powers, count: is a Favors Called Due 3-Fear trigger possible? If Dahan count (including gatherable) would exceed Invader count in a land with Invaders, Favors is live. This is the single biggest fear-rush turn Shadows has.
+```admonish tip title="Pro Tip — Favors Called Due math"
+Before Slow powers, count: can Favors gather ≥ 4 Dahan into a target land with ≤ 3 Invaders? If yes, that 3 Fear is triggerable and is Shadows's biggest single-card fear spike.
 ```
 
-## Opening Strategy
+## Suggested Draft Cards (Wiki-recommended, verified)
 
-### Opening A — Hybrid, Minor-heavy 🟥 (needs playtest)
+The Wiki's `suggestedcard` field lists 7 community-recommended draft picks for Shadows — all full text parsed:
 
-**When to pick this**: default vs. most base/B&C adversaries.
+### Minor Powers (5)
 
-**Target arc**: Level 1 innate T1 · Level 2 innate T3–T4 · Terror 2 flip by T6.
+| Card                        | Cost | Speed | Range | Target              | Elements            | Effect                                                                 |
+|-----------------------------|------|-------|-------|---------------------|---------------------|------------------------------------------------------------------------|
+| **Dark and Tangled Woods**  | 1    | Fast  | 1     | Any Land            | Moon, Earth, Plant  | 2 Fear. If target land is a Mountain or Jungle, Defend 3.              |
+| **Shadows of the Burning Forest** | 0 | Slow | 0    | Land with 1+ Invaders | Moon, Fire, Plant | 2 Fear. If Mountain or Jungle, Push 1 Explorer and 1 Town.             |
+| **Land of Haunts and Embers** | 0  | Fast  | 2     | Any Land            | Moon, Fire, Air     | 2 Fear. Push up to 2 Explorers/Towns. If Blight is present, 2 Fear and Push up to 2 Explorers/Towns. Add 1 Blight. |
+| **Call of the Dahan Ways**  | 1    | Slow  | 1     | Land with Dahan     | Moon, Water, Animal | Replace 1 Explorer with 1 Dahan.                                       |
+| **Visions of Fiery Doom**   | 1    | Fast  | 0     | Any Land            | Moon, Fire          | 1 Fear. Push 1 Explorer/Town.                                          |
 
-#### Turn 1
+**Historical note**: "Dark and Tangled Woods" is a Minor Power card — an earlier revision of this chapter mistakenly labeled a corrupted version of this name as a Shadows innate. Resolved.
 
-- **Growth**: 1 of the 3 growth options (see [VERIFY growth options against spirit panel]).
-- **Cards played**: depends on opener; typically Concealing Shadows (0 Energy — free fear + dahan protection) + 1 more Unique or drafted Minor.
-- **Presence placement**: Dahan-adjacent inland land.
-- **Elements by end**: 2 Moon + 1 Fire (Level 1 innate threshold).
-- **Milestone**: Innate L1 gathers an Explorer; 1 Fear via Concealing.
+### Major Powers (2)
 
-#### Turn 2
+| Card                      | Cost | Speed | Range        | Target   | Elements    | Effect                                                                 |
+|---------------------------|------|-------|--------------|----------|-------------|------------------------------------------------------------------------|
+| **The Jungle Hungers**    | 3    | Slow  | 1 (Jungle)   | Any Land | Moon, Plant | Destroy all Explorers and all Towns. Destroy all Dahan.                |
+| **Terrifying Nightmares** | 4    | Fast  | 2            | Any Land | Moon, Air   | 2 Fear. Push up to 4 Explorers/Towns.                                  |
 
-- **Growth**: gain energy or card as curve demands.
-- **Cards played**: Crops Wither and Fade (if a Town/City is placed) or another Unique.
-- **Elements by end**: 3 Moon + 2 Fire (Level 2 innate threshold).
-- **Milestone**: 2 Explorers destroyed via innate L2; 2 Fear from innate + 2 Fear from Crops.
+**⚠️ Jungle Hungers caveat**: *Destroys all Dahan* in the target land. Anti-synergy with dahan-dependent partners (Thunderspeaker, Hearth-Vigil) and with Shadows's own Favors Called Due / Shadows of the Dahan reliance. Draft carefully in multiplayer.
 
-#### Turn 3
-
-- **Growth**: Reclaim if available.
-- **Cards played**: 2–3 cards.
-- **Milestone**: fear pool accumulating toward Terror 2.
-
-#### Turn 4 — state audit
-
-After T3:
-- Presence 5–6 (total placed; Shadows's presence track limits exact count — `[VERIFY presence cap from track]`).
-- Fear pool: 5–7 of 8 (solo).
-- Innate firing Level 2+ reliably.
-
-### Opening decision
-
-<pre class="mermaid">
-graph TD
-  Start[Round 1 — Shadows] --> Adv{Adversary?}
-  Adv -->|Brandenburg-Prussia| A[Opening A - Hybrid]
-  Adv -->|England| A
-  Adv -->|Scotland| A
-  Adv -->|Sweden L0-L2| A
-  Adv -->|Sweden L3+| B[Opening variant - slower-scaling]
-  Adv -->|Russia| B
-  Adv -->|Other| A
-</pre>
-
-## Element & Aspect Preferences
-
-**Preferred elements**: Moon (primary — all innate levels), Fire (secondary — Level 2+), Air (Level 3 + Concealing + Mantle), Animal (Favors only), Plant (Crops only).
-
-**Aspects** (verified per Brett 2026-04-19):
-
-- **Amorphous** (Branch & Claw) — `[VERIFY aspect mechanics]`.
-- **Foreboding** (Branch & Claw) — `[VERIFY aspect mechanics]`.
-- **Madness** (Jagged Earth) — `[VERIFY aspect mechanics]`.
-- **Reach** (Jagged Earth) — `[VERIFY aspect mechanics]`.
-- **Dark Fire** (Nature Incarnate) — `[VERIFY aspect mechanics]`.
-
-Aspect mechanics will be scraped in a follow-up pass once the parser supports aspect-page templates.
+**Terrifying Nightmares** is the Shadows Major of choice — fast, 2 Fear + 4 pushes, Moon+Air alignment.
 
 ## Card Priority Ratings
 
-Shadows is **Mixed** draft-bias — Minor-heavy early, 1 Major late.
+Shadows is **Mixed** draft-bias — Minor-heavy T1–T3, 1 Major T5+ as closer.
 
-### Unique Cards
+### Uniques (all A-tier)
 
-All 4 Uniques grade in-game:
+| Card                   | Grade | Notes                                                   |
+|------------------------|-------|---------------------------------------------------------|
+| Concealing Shadows     | A+    | 0 Energy; plays every turn.                             |
+| Crops Wither and Fade  | A     | Downgrade + 2 Fear; City/Town-dense targets.            |
+| Favors Called Due      | A     | Conditional 3 Fear; needs Dahan-dense targets.          |
+| Mantle of Dread        | A- (solo) / A+ (MP) | Partner-support utility.                  |
 
-| Card                  | Grade | Notes                                                   |
-|-----------------------|-------|---------------------------------------------------------|
-| Concealing Shadows    | A+    | 0 Energy; plays every turn; defensive + fear.           |
-| Crops Wither and Fade | A     | Downgrade + 2 Fear; City/Town-dense targets.            |
-| Favors Called Due     | A     | Conditional 3 Fear; needs Dahan-dense lands + Invaders. |
-| Mantle of Dread       | A- (solo) / A+ (multiplayer) | Partner-support utility.             |
+### Minors to Target (Wiki-suggested + general drafts)
 
-### Minors to Target
+Top priority: the 5 Minors listed above. Beyond those:
 
-| Card type                             | Grade | Why                                                |
-|---------------------------------------|-------|----------------------------------------------------|
-| 0-cost Moon Minor                     | A+    | Every threshold wants Moon.                        |
-| Moon + Fire dual Minor                | A+    | Innate Level 2 unlock.                             |
-| Animal-bearing Minor                  | A     | Favors Called Due synergy.                         |
-| Dahan-preserving / Dahan-gathering Minor | A  | Feeds Favors + Shadows of the Dahan targeting.    |
+- Any 0-cost Moon Minor (threshold essential).
+- Any Moon+Fire dual-element Minor (Innate L2 unlock).
+- Dahan-preserving or Dahan-summoning Minors (Call of the Dahan Ways is the archetype).
 
-Specific Minor card names `[VERIFY against your Minor deck]` — the parser doesn't yet list Minor cards per-draft.
+### Majors (Wiki-suggested)
 
-### Majors that Over-perform on Shadows
-
-| Card                    | Grade | Why                                                 |
-|-------------------------|-------|-----------------------------------------------------|
-| Terrifying Nightmares   | A+    | Fear finisher; Moon-element alignment. `[VERIFY]`   |
-| Paralyzing Fright       | A     | 3-cost closer. `[VERIFY]`                           |
-
-`[VERIFY Major card text against your Major deck]` — existing ratings are inherited from the pre-audit chapter and should be cross-checked.
+- **Terrifying Nightmares** (A+) — Shadows's premier Major.
+- **The Jungle Hungers** (A, with caveat) — board wipe; only in solo or when dahan loss is acceptable.
 
 ### Cards to AVOID drafting
 
-- Majors that require Earth or Plant thresholds Shadows can't hit.
-- Pure-damage Majors — Shadows generates damage via innate L3 without extra Majors.
+- Majors requiring Earth/Plant-only thresholds (Shadows has no reliable Earth or Plant without specific Minor drafts).
+- Pure-damage Majors that don't pay fear (Shadows has innate L3 damage already).
 
 ## Adversary Matchup Matrix
 
-| Adversary            | L0 | L3 | L5 | L6 | Notes                                                      |
-|----------------------|----|----|----|----|-----------------------------------------------------------|
-| England              | A  | A- | B+ | B  | Slow builds; fear-rush works. **L5 cliff**: buildings +1 HP — innate Level 3 (3 damage) insufficient for 4-HP Cities without Crops Wither's City→Town downgrade first. |
-| Brandenburg-Prussia  | A  | A- | B+ | B  | Cities = 5 fear per kill (high fear-per-kill). Favorable. |
-| Sweden               | A- | B+ | B  | B- | Fear penalties reduce engine output at L2+.                |
-| France (Plantation)  | B+ | B  | B  | C+ | Dahan capture threatens the Shadows of the Dahan targeting pool. |
-| Habsburg Mining      | A  | B+ | B  | C+ | Scaling outpaces fear-rush late.                           |
-| Russia               | B+ | B  | B- | C  | Fear-suppression mid-late.                                 |
-| Scotland             | A  | B+ | B+ | B  | Favorable.                                                 |
-| Habsburg Livestock   | A  | A- | B  | B  | Favorable.                                                 |
+| Adversary            | L0 | L3 | L5 | L6 | Notes                                                                        |
+|----------------------|----|----|----|----|------------------------------------------------------------------------------|
+| England              | A  | A- | B+ | B  | Slow builds; fear-rush works. **L5 cliff**: buildings +1 HP — Innate L3 (3 damage) insufficient for 4-HP Cities without Crops Wither's City→Town downgrade first. |
+| Brandenburg-Prussia  | A  | A- | B+ | B  | Cities add fear-per-kill; favorable.                                         |
+| Sweden               | A- | B+ | B  | B- | Fear penalties reduce engine output at L2+.                                  |
+| France (Plantation)  | B+ | B  | B  | C+ | Dahan capture threatens Shadows of the Dahan targeting pool.                 |
+| Habsburg Mining      | A  | B+ | B  | C+ | Scaling outpaces fear-rush late.                                             |
+| Russia               | B+ | B  | B- | C  | Fear-suppression mid-late.                                                   |
+| Scotland             | A  | B+ | B+ | B  | Favorable.                                                                   |
+| Habsburg Livestock   | A  | A- | B  | B  | Favorable.                                                                   |
+
+Grades directional `[VERIFY]` — individual cell confirmations pending playtest.
 
 ### Strategy Cliff — England L5
 
 ```admonish info title="Strategy Cliff — England L5"
-**What changes at L5**: buildings gain +1 HP (Town = 3 HP, City = 4 HP).
+**What changes**: buildings gain +1 HP (Town = 3 HP, City = 4 HP).
 
-**Impact on Shadows**: innate Level 3 does 3 Damage — kills a 3-HP Town outright, but not a 4-HP City. Crops Wither and Fade's City→Town replacement becomes the way to pre-soften Cities for innate kill.
+**Impact on Shadows**: Innate Level 3 (3 Damage) kills 3-HP Towns but not 4-HP Cities. Crops Wither and Fade's City → Town replacement becomes the pre-softener; Terrifying Nightmares (Major) pushes rather than kills — still valuable but doesn't solve the HP-math alone.
 
-**Mitigation**: sequence Crops Wither (turn N) → innate L2/L3 or Major (turn N+1) for City clears. Build fear pool for Terror 2 flip before T6.
+**Mitigation sequence**: (turn N) Crops Wither downgrades City → Town; (turn N+1) Innate L3 or Major finishes.
 ```
 
 ### Strategy Cliff — Sweden L2+ / Russia L3+
@@ -251,141 +206,132 @@ Specific Minor card names `[VERIFY against your Minor deck]` — the parser does
 ```admonish info title="Strategy Cliff — Fear-suppression adversaries"
 **What changes**: Sweden L2+ and Russia L3+ have fear-suppression rules.
 
-**Impact on Shadows**: Terror flips slower. Fear-rush timing slips by 1–2 rounds.
+**Impact on Shadows**: Terror flips slower; fear-card effects reduced.
 
-**Mitigation**: shift to Crops Wither as board-pressure tool rather than fear-spike. Innate L3 + Major-closer becomes the kill path.
+**Mitigation**: shift toward Crops Wither + Innate L2 Explorer-destruction as board-pressure tools; accept later Terror timeline.
 ```
 
 ## Board / Map Configuration
 
-`[VERIFY all ratings]` — ratings below are directional placeholders until Brett can play + rate; community data on Shadows board preferences is not strongly sourced.
+`[VERIFY via play — pending]` — no community-consensus board ratings for Shadows surfaced from the Wiki spirit-template. Directional hypotheses:
 
-### Base game boards (A–D)
+- **Likely favorable**: jungle-dense boards (starting setup puts presence in jungle; innate L3 Moon+Fire+Air threshold matches Shadows's element profile without requiring specific terrain).
+- **Likely favorable**: boards with dense starting Dahan clusters (Shadows of the Dahan targeting benefits).
+- **Likely neutral**: coastal-heavy boards (Shadows is terrain-flexible but coast-agnostic).
+- **Likely unfavorable**: sparse-Dahan layouts.
 
-- **Likely favorable**: boards with high Dahan starting count and multiple Dahan-adjacent lands (leverages Shadows of the Dahan).
-- **Likely neutral**: most base boards.
-- **Likely unfavorable**: sparse-Dahan boards.
-
-Specific A/B/C/D ratings `[VERIFY during play]`.
-
-### Jagged Earth boards (E–H)
-
-`[VERIFY]` — ratings to come.
-
-### Thematic map
-
-Shadows works on thematic but the spatial range-extension benefit diminishes on the tighter thematic connectivity.
-
-### Scenario-forced maps
-
-- **Dahan Insurrection**: strongly favorable for Shadows (extra Dahan + scenario rewards fear-heavy spirits).
-- **Blitz**: moderate — Shadows's T1 output is fine, but Crops Wither's long-term engine needs T4–T6.
-- **Rituals of Terror**: very favorable — fear-race + Shadows's native fear-rush.
+Ratings per board letter (A–H) deferred to physical-play data.
 
 ## Game-Phase Strategy
 
 ### Early (T1–3)
-- Place presence in Dahan-adjacent lands.
-- Innate L1 to reposition Explorers away from Build targets.
-- Concealing Shadows every turn (0 Energy is free value).
+- Grow with G2 or G3 to extend card pool and energy.
+- Play Concealing Shadows every turn (0 Energy is free value).
+- Use Innate L1 (Gather) to reposition Explorers away from Build targets.
 - Draft Moon + Fire Minors.
 
 ### Mid (T4–6)
-- Innate L2 firing — destroy 2 Explorers per turn.
-- Crops Wither on City-present lands.
-- Favors Called Due with conditional 3 Fear triggering.
+- Innate L2 firing (destroy 2 Explorers + 2 Fear per turn).
+- Crops Wither softens City turns.
+- Favors Called Due's 3-Fear trigger becomes available.
+- Fear pool heading toward Terror 2 flip.
 
 ### Late (T7+)
 - Terror 2 → Terror 3 transition.
-- Mantle of Dread for partner support if multiplayer.
-- Major closer if gained.
+- Gain Terrifying Nightmares Major if offered; forget Mantle of Dread (weakest in solo) or the weakest-matchup Unique.
+- Innate L3 available if 4 Moon + 3 Fire + 2 Air reliably on track.
 
 ## Synergy Partners (Multiplayer)
 
 ```admonish tip title="Best Partners"
-- **Bringer of Dreams and Nightmares** — double fear-engine; Bringer's To Dream a Thousand Deaths converts damage to fear; compounding.
-- **Thunderspeaker** — Thunderspeaker grows Dahan density, feeding both Favors Called Due and Shadows of the Dahan targeting.
+- **Bringer of Dreams and Nightmares** — double fear engine; damage → Fear conversion on both sides.
+- **Thunderspeaker** — Thunderspeaker grows Dahan density, feeding Favors Called Due + Shadows of the Dahan targeting.
 - **Ocean's Hungry Grasp** — Ocean drowns coasts; Shadows handles inland Dahan lands.
-- **Any partner** — Mantle of Dread's partner-target push is useful on almost any ally's turn.
+- **Any partner** — Mantle of Dread's partner-target push is universally useful.
 ```
 
 ```admonish warning title="Anti-Synergy"
-- **Heart of the Wildfire** — destroys Dahan via blight; shrinks Shadows's Dahan-targeting pool.
-- **Vengeance as a Burning Plague** — blight-heavy; Dahan attrition.
+- **Heart of the Wildfire** — destroys Dahan via blight.
+- **Vengeance as a Burning Plague** — blight-heavy.
 - **Volcano Looming High** — destruction kills Dahan unconditionally.
+- **The Jungle Hungers** (your own Major!) — destroys all Dahan in target. Don't draft in a dahan-reliant multiplayer table.
 ```
 
 ## Common Mistakes
 
 ```admonish failure title="Common Mistake — Running at 0 Energy"
-Shadows of the Dahan costs 1 Energy per range extension. If you're at 0 Energy, you can't target Dahan lands beyond base range. Budget 1E float every turn.
+Shadows of the Dahan costs 1 Energy per range extension. Budget 1E/turn or you lose spatial flexibility.
 ```
 
 ```admonish failure title="Common Mistake — Using Crops Wither as a kill card"
-Crops Wither *replaces*, not destroys. A replaced City becomes a Town (still present, still Ravages next turn). Plan around the downgrade, not the kill.
-```
-
-```admonish failure title="Common Mistake — Drafting non-Moon Minors"
-Every innate level wants Moon. Non-Moon Minors stall Level 1–2 innate firing.
+Crops Wither *replaces*, not destroys. A replaced City is a Town in the same land, still Ravages next turn.
 ```
 
 ```admonish failure title="Common Mistake — Missing Favors Called Due conditions"
-3 Fear only triggers if Invaders are present AND Dahan (after gather) outnumber them. Counting is required before committing the play.
+3 Fear only triggers if Invaders are present AND Dahan (after gather) outnumber them. Count before committing.
 ```
 
-```admonish failure title="Common Mistake — Sacred-site hoarding"
-Innate targets 'optionally from a Sacred Site.' Shadows's power is spread + Dahan-extension, not sacred-site density. Don't stack 2 presence in one land when 2 adjacent lands with Dahan are both reachable.
+```admonish failure title="Common Mistake — Drafting Jungle Hungers in multiplayer"
+Destroys all Dahan in target. Kills Thunderspeaker's engine. Draft only in solo or with dahan-agnostic partners.
 ```
 
-## Tempo Profile `[VERIFY against physical play]`
+```admonish failure title="Common Mistake — Drafting non-Moon Minors"
+Every innate level wants Moon. Non-Moon Minors stall the engine.
+```
 
-| Round | Energy | CP | Presence | Moon | Fire | Fear Contribution Per Turn | Key Play                                |
-|-------|--------|----|----------|------|------|----------------------------|-----------------------------------------|
-| 1     | 1E     | 2  | 4        | 2    | 1    | 1–2 (Concealing + innate L1)| Concealing + 0-cost Minor              |
-| 2     | 1E     | 2  | 5        | 2–3  | 1–2  | 2–3 (Concealing reclaimed + Minor)| Reclaim + Minor                   |
-| 3     | 1E     | 2  | 6        | 3    | 2    | 3–5 (Crops Wither + innate L2) | 3-card turn: Concealing + Crops + Minor |
-| 4     | 1–2E   | 3  | 7        | 3+   | 2+   | 4–6 (innate L2 sustained + Favors conditional) | Favors Called Due if Dahan ready |
-| 5     | 2E     | 3  | 7        | 3+   | 2+   | 4–6                        | Major gain prep                         |
-| 6     | 2E     | 3  | 7        | 3+   | 3    | 5–7                        | Terror 2 flip                           |
-| 7     | 2–3E   | 3  | 6        | 3+   | 3    | 6–8                        | Major fires (if gained)                 |
-| 8     | 3E     | 3  | 5        | 4+   | 3    | 7–10 with L3 innate        | Terror 3 close                          |
+## Tempo Profile
 
-Cliff turn: **T3**. Innate Level 2 must fire, and Crops Wither must land on a meaningful target.
+Round-by-round targets, with per-turn Fear contribution `[VERIFY against typical play]`:
+
+| Round | Energy | CP | Presence Placed | Moon | Fire | Per-Turn Fear | Key Play                                |
+|-------|--------|----|------------------|------|------|---------------|-----------------------------------------|
+| 1     | 1E     | 2  | 4 (of 13)        | 1–2  | 1    | 1–2           | Concealing + Unique/Minor               |
+| 2     | 1E     | 2  | 5                | 2    | 1–2  | 2–3           | Concealing + Crops or Favors            |
+| 3     | 1E–2E  | 2  | 6                | 2–3  | 2    | 3–5           | Reclaim (G1) or draft (G2); L2 prep     |
+| 4     | 2E     | 3  | 7 (track opens)  | 3+   | 2+   | 4–6           | Innate L2 firing; Favors conditional    |
+| 5     | 2E–3E  | 3  | 7                | 3+   | 2+   | 4–6           | Major gain (Terrifying Nightmares)      |
+| 6     | 3E     | 3  | 7                | 3+   | 3    | 5–7           | Terror 2 flip                           |
+| 7     | 3E     | 3  | 6                | 4+   | 3    | 6–8           | Major fires; possible L3 innate prep    |
+| 8     | 3E–4E  | 3  | 5                | 4+   | 3+   | 7–10          | Terror 3 close                          |
+
+Cliff turn: **T4**. Innate L2 must fire; Fear pool at 4+/8 (solo).
 
 ## Major vs. Minor
 
-**Draft bias**: Mixed (Minor-heavy T1–T3; 1 Major T5+ as closer).
+**Draft bias**: Mixed (Minor-heavy T1–T3; 1 Major T5+).
 
 ## Expansion Sensitivity
 
-- **Base only**: fully functional; 4 Uniques + innate engine.
-- **+ Branch & Claw**: Amorphous + Foreboding aspects unlock; events + blight deck add variance.
-- **+ Jagged Earth**: Madness + Reach aspects unlock; deeper Minor/Major pool.
+- **Base only**: fully functional — 4 Uniques + Innate engine + 1 Special Rule.
+- **+ Branch & Claw**: Amorphous + Foreboding aspects unlock; event + blight decks add turn-by-turn variance.
+- **+ Jagged Earth**: Madness + Reach aspects unlock; Minor/Major pool deepens.
 - **+ Nature Incarnate**: Dark Fire aspect unlocks.
 
-Aspect-specific strategic notes pending aspect-page scraping.
+Aspect *mechanics* pending `si-wiki-fetch` aspect-page parser extension.
 
 ## Stat Snapshot
 
-```admonish note title="Stat Insight"
-Per mindwanderer `[VERIFY current numbers]`:
-- Solo L6 win rate: approximately 50–55% (rough directional).
-- Best adversary: Brandenburg-Prussia L6 (fear-dense, favorable).
-- Worst adversary: Russia L6 (fear suppression).
-- 2-handed: Shadows + Bringer commonly cited as top fear-rush pair.
+```admonish note title="Stat Insight `[VERIFY current numbers from mindwanderer]`"
+Directional figures from community tier lists + older mindwanderer snapshots:
+- Solo L6 win rate: approximately 50–55%.
+- Best adversary: Brandenburg-Prussia L6 (fear-dense; favorable).
+- Worst adversary: Russia L6 (fear-suppression).
+- 2-handed: Shadows + Bringer often cited as top fear-rush pair.
+
+Live stats require re-scraping mindwanderer's current page.
 ```
 
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/shadows-flicker-like-flame.json` — parsed deterministically from Spirit Island Wiki 2026-04-19 via `scripts/wiki-fetch.py`.
+- **Authoritative mechanics** (this chapter): `data/references/wiki/shadows-flicker-like-flame.json` — parsed deterministically via `scripts/wiki-fetch.py` 2026-04-19.
 - **Aspect list**: Brett physical-copy verification 2026-04-19.
-- Spirit Island Wiki — [Shadows page](https://spiritislandwiki.com/index.php?title=Shadows_Flicker_Like_Flame).
+- Spirit Island Wiki — [Shadows](https://spiritislandwiki.com/index.php?title=Shadows_Flicker_Like_Flame), [Concealing Shadows](https://spiritislandwiki.com/index.php?title=Concealing_Shadows), [Crops Wither and Fade](https://spiritislandwiki.com/index.php?title=Crops_Wither_and_Fade), [Favors Called Due](https://spiritislandwiki.com/index.php?title=Favors_Called_Due), [Mantle of Dread](https://spiritislandwiki.com/index.php?title=Mantle_of_Dread).
 - Cross-reference: [Dahan fundamentals](../../fundamentals/dahan.md), [Fear Rush archetype](../../combos/fear-rush.md), [si-wiki-fetch skill](../../../skills/si-wiki-fetch/SKILL.md).
 ```
 
 ---
 
-*Physical-copy verified: partial (Uniques, innate, aspects 2026-04-19). Board ratings, draft-specific card names, Major card text still pending verification.*
+*Physical-copy verified: Uniques, innate thresholds, aspects (2026-04-19). Remaining `[VERIFY]`: Play Difficulty (spirit panel), aspect mechanics (pending parser extension), board ratings (physical play), live mindwanderer stats.*
 
-*Last revised: 2026-04-19 — v0.2.3 (scripted-parser rewrite)*
+*Last revised: 2026-04-19 — v0.2.4 (full Wiki-scripted rewrite with suggested-cards, growth, presence tracks, power summary)*

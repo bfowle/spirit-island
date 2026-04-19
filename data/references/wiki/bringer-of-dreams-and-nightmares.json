@@ -60,6 +60,58 @@
     "Dreams of the Dahan",
     "Predatory Nightmares"
   ],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "reclaim1",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence1",
+      "third": null
+    },
+    {
+      "index": 4,
+      "first": "Night",
+      "second": "energy2",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy2",
+    "air",
+    "energy3",
+    "moon",
+    "energy4",
+    "any",
+    "energy5"
+  ],
+  "presence_cardplay_track": [
+    "card2",
+    "card2",
+    "card2",
+    "card3",
+    "card3",
+    "any"
+  ],
+  "power_summary": {
+    "offense": "1",
+    "control": "2",
+    "fear": "5",
+    "defense": "2",
+    "utility": "2"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Bringer of Dreams and Nightmares",
     "gamebox": "Base Game",

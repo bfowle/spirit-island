@@ -71,6 +71,53 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "energy3"
+    },
+    {
+      "index": 2,
+      "first": "addpresence0",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence4",
+      "third": "new+1cardplay"
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "energy2",
+    "earth",
+    "energy3",
+    "energy4",
+    "energy5"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "fireX",
+    "earthX",
+    "card2",
+    "airX",
+    "card3",
+    "fireX",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "5",
+    "control": "1",
+    "fear": "2",
+    "defense": "1",
+    "utility": "3"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Volcano Looming High",
     "gamebox": "Jagged Earth",

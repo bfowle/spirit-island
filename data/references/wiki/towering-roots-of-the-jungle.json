@@ -70,6 +70,51 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "gain1p",
+      "second": "addpresence1",
+      "third": "addvitalityrootsincarna"
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence3",
+      "third": "replacepresencerootsincarna"
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "energy2",
+    "earth",
+    "energy4",
+    "plant",
+    "energy6"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "sunX",
+    "card3",
+    "plantX",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "1",
+    "control": "3",
+    "fear": "2",
+    "defense": "5",
+    "utility": "2"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Towering Roots of the Jungle",
     "gamebox": "Nature Incarnate",

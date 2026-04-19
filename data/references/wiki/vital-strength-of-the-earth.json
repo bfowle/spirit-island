@@ -43,6 +43,59 @@
     "Guard the Healing Land",
     "Rituals of Destruction"
   ],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "addpresence2",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "gain1p",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "addpresence1",
+      "second": "energy2",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy2",
+    "energy3",
+    "energy4",
+    "energy6",
+    "energy7",
+    "energy8"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card1",
+    "card2",
+    "card2",
+    "card3",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "2",
+    "control": "3",
+    "fear": "1",
+    "defense": "5",
+    "utility": "3"
+  },
+  "suggested_cards": [
+    "Rouse the Trees and Stones",
+    "Call to Migrate",
+    "Poisoned Land",
+    "Devouring Ants",
+    "Vigor of the Breaking Dawn",
+    "Voracious Growth",
+    "Savage Mawbeasts"
+  ],
   "raw_template": {
     "name": "Vital Strength of the Earth",
     "gamebox": "Base Game",

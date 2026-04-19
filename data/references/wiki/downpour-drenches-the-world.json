@@ -62,6 +62,53 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "movepresence2"
+    },
+    {
+      "index": 2,
+      "first": "addpresence2",
+      "second": "addpresence2",
+      "third": "gain2water"
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence3",
+      "third": "energy1"
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "water",
+    "plant",
+    "water",
+    "energy2air",
+    "water",
+    "earth",
+    "doublewater"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "movepres",
+    "waterX",
+    "card2",
+    "movepres",
+    "card3"
+  ],
+  "power_summary": {
+    "offense": "2",
+    "control": "3",
+    "fear": "1",
+    "defense": "5",
+    "utility": "3"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Downpour Drenches the World",
     "gamebox": "Promotional Pack 2",

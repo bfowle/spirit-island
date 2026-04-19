@@ -71,6 +71,59 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "always",
+  "growths": [
+    {
+      "index": 1,
+      "first": "Gaze",
+      "second": null,
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "reclaim",
+      "second": "add3destroyedpresencetogether",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": null,
+      "third": null
+    },
+    {
+      "index": 4,
+      "first": "gaindoubleenergy",
+      "second": "move3presencetogether",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "energy2sun",
+    "energy3fire",
+    "sun",
+    "energy4any",
+    "energy5",
+    ""
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card1",
+    "card2",
+    "sunX",
+    "card3",
+    "reclaim1",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "5",
+    "control": "1",
+    "fear": "3",
+    "defense": "2",
+    "utility": "3"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Relentless Gaze of the Sun",
     "gamebox": "Nature Incarnate",

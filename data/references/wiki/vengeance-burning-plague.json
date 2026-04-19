@@ -48,6 +48,51 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "energy1"
+    },
+    {
+      "index": 2,
+      "first": "Vengeance",
+      "second": "Vengeance",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresencedisease1",
+      "third": "energy1"
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "energy2",
+    "animal",
+    "energy3",
+    "energy4"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "fireX",
+    "card2",
+    "card3",
+    "card3",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "5",
+    "control": "2",
+    "fear": "3",
+    "defense": "1",
+    "utility": "1"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Vengeance as a Burning Plague",
     "gamebox": "Jagged Earth",

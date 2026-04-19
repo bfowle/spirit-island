@@ -43,6 +43,60 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "addpresence1",
+      "second": "addpresence1",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence2",
+      "third": "energy2"
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "plant",
+    "energy2",
+    "energy3",
+    "water",
+    "energy4",
+    "energy5"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "earthX",
+    "card3",
+    "moonX",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "3",
+    "control": "2",
+    "fear": "3",
+    "defense": "3",
+    "utility": "2"
+  },
+  "suggested_cards": [
+    "Steam Vents",
+    "Entrancing Apparitions",
+    "Uncanny Melting",
+    "Cleansing Floods",
+    "Pull Beneath the Hungry Earth",
+    "The Land Thrashes in Furious Pain",
+    "Gift of Power"
+  ],
   "raw_template": {
     "name": "Fathomless Mud of the Swamp",
     "gamebox": "Horizons of Spirit Island",

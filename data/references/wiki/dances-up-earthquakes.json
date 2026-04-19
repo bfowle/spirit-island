@@ -47,6 +47,53 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "addpresence2orgainmajorwoforgetting",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "gain1p",
+      "second": "addpresence1",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "addpresence3",
+      "second": "energyimpend",
+      "third": "reclaim1"
+    }
+  ],
+  "presence_energy_track": [
+    "energy1impendenergy1",
+    "movepresence1energytrack",
+    "energy2",
+    "impend1",
+    "energy3",
+    "impendenergy2",
+    "energy4any"
+  ],
+  "presence_cardplay_track": [
+    "card2",
+    "gather1dahan1land",
+    "moonfire",
+    "impend1",
+    "earthX",
+    "card3",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "5",
+    "control": "2",
+    "fear": "2",
+    "defense": "3",
+    "utility": "4"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Dances Up Earthquakes",
     "gamebox": "Nature Incarnate",

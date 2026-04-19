@@ -59,6 +59,58 @@
     "Terrifying Chase",
     "Too Near the Jungle"
   ],
+  "growth_type": "two",
+  "growths": [
+    {
+      "index": 1,
+      "first": "Sharp1",
+      "second": "gain1p",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "Sharp",
+      "second": null,
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "energy1",
+      "third": null
+    },
+    {
+      "index": 4,
+      "first": "energy3",
+      "second": null,
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "animal",
+    "plant",
+    "energy2",
+    "animal",
+    "energy3",
+    "energy4"
+  ],
+  "presence_cardplay_track": [
+    "card2",
+    "card2",
+    "card3",
+    "reclaim1",
+    "card4",
+    "card5reclaim1"
+  ],
+  "power_summary": {
+    "offense": "3",
+    "control": "3",
+    "fear": "4",
+    "defense": "2",
+    "utility": "1"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Sharp Fangs Behind the Leaves",
     "gamebox": "Branch and Claw",

@@ -44,6 +44,52 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "ignorerange"
+    },
+    {
+      "index": 2,
+      "first": "addpresence1",
+      "second": "new+1cardplay",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence2",
+      "third": null
+    },
+    {
+      "index": 4,
+      "first": "addpresence",
+      "second": "energy2",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [],
+  "presence_cardplay_track": [
+    "blank",
+    "blank",
+    "energy1moon",
+    "blank",
+    "movepresair",
+    "blank",
+    "energy+1range+1",
+    "energy+1range+1text"
+  ],
+  "power_summary": {
+    "offense": "-1",
+    "control": "5",
+    "fear": "1",
+    "defense": "2",
+    "utility": "2"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Finder of Paths Unseen",
     "gamebox": "Promotional Pack 2",

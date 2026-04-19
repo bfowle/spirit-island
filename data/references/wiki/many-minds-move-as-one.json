@@ -73,6 +73,53 @@
     "Guide the Way on Feathered Wings",
     "Pursue with Scratches$ Pecks$ and Stings"
   ],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "addpresence1",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "addpresence3beast",
+      "second": "energy1",
+      "third": "gatherbeast2"
+    }
+  ],
+  "presence_energy_track": [
+    "energy0",
+    "energy1",
+    "air",
+    "energy2",
+    "animal",
+    "energy3",
+    "energy4"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "pay2pcard",
+    "card3",
+    "card3",
+    "card4",
+    "card5"
+  ],
+  "power_summary": {
+    "offense": "1",
+    "control": "5",
+    "fear": "5",
+    "defense": "5",
+    "utility": "1"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Many Minds Move as One",
     "gamebox": "Jagged Earth",

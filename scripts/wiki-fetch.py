@@ -353,6 +353,56 @@ def parse_spirit_page(wikitext: str) -> dict:
             if "effect" in thr:
                 thr["effect"] = clean_wiki_text(thr["effect"])
 
+    # Parse growth options — each growth is a {{growth|first=X|second=Y|...}} template.
+    growths = []
+    for idx in (1, 2, 3, 4, 5):
+        raw = tpl.get(f"growth{idx}")
+        if not raw:
+            continue
+        inner = extract_nested_templates(raw)
+        if not inner:
+            growths.append({"index": idx, "raw": raw})
+            continue
+        g = inner[0]
+        growths.append(
+            {
+                "index": idx,
+                "first": g.get("first"),
+                "second": g.get("second"),
+                "third": g.get("third"),
+            }
+        )
+
+    # Parse presence tracks — each {{PresenceT|slot1|slot2|...}}
+    def _parse_presence_track(raw: str | None) -> list[str]:
+        if not raw:
+            return []
+        inner = extract_nested_templates(raw)
+        if not inner:
+            return []
+        return [p.strip() for p in inner[0].get("_positional", [])]
+
+    presence_energy = _parse_presence_track(tpl.get("presence1"))
+    presence_cardplay = _parse_presence_track(tpl.get("presence2"))
+
+    # Parse power summary — {{Powersummary|offense=4|control=3|...}}
+    psummary: dict = {}
+    ps_raw = tpl.get("psummary")
+    if ps_raw:
+        inner = extract_nested_templates(ps_raw)
+        if inner:
+            p = inner[0]
+            for stat in ("offense", "control", "fear", "defense", "utility"):
+                if p.get(stat):
+                    psummary[stat] = p[stat]
+
+    # Suggested cards (draft recommendations)
+    suggested_cards = []
+    for idx in range(1, 20):
+        c = tpl.get(f"suggestedcard{idx}")
+        if c:
+            suggested_cards.append(c.strip())
+
     return {
         "source": "spiritislandwiki.com",
         "type": "spirit",
@@ -365,6 +415,12 @@ def parse_spirit_page(wikitext: str) -> dict:
         "special_rules_raw": tpl.get("special"),
         "innates": innates,
         "unique_cards": uniques,
+        "growth_type": tpl.get("growthtype"),
+        "growths": growths,
+        "presence_energy_track": presence_energy,
+        "presence_cardplay_track": presence_cardplay,
+        "power_summary": psummary,
+        "suggested_cards": suggested_cards,
         "raw_template": {k: v for k, v in tpl.items() if not k.startswith("_") and k not in {"innates"}},
     }
 
@@ -434,7 +490,10 @@ def cmd_card(args, page_name: str) -> dict:
 
 
 def cmd_batch_spirit(args, page_name: str) -> dict:
-    """Fetch spirit + all its uniques. Rate-limit aware; caches individual pages."""
+    """Fetch spirit + all its Uniques + all its suggested Minor/Major cards.
+
+    Rate-limit aware; caches individual pages.
+    """
     spirit = cmd_spirit(args, page_name)
     cards = []
     for unique_name in spirit["unique_cards"]:
@@ -443,6 +502,14 @@ def cmd_batch_spirit(args, page_name: str) -> dict:
         except Exception as e:
             cards.append({"name": unique_name, "error": str(e)})
     spirit["unique_card_details"] = cards
+
+    suggested = []
+    for card_name in spirit.get("suggested_cards", []):
+        try:
+            suggested.append(cmd_card(args, card_name.replace(" ", "_")))
+        except Exception as e:
+            suggested.append({"name": card_name, "error": str(e)})
+    spirit["suggested_card_details"] = suggested
     return spirit
 
 

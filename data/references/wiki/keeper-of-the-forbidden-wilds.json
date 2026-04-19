@@ -66,6 +66,59 @@
     "Sacrosanct Wilderness",
     "Towering Wrath"
   ],
+  "growth_type": "two",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "energy1",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "gain1p",
+      "second": null,
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "Keeper",
+      "second": "energy1",
+      "third": null
+    },
+    {
+      "index": 4,
+      "first": "Keeper3",
+      "second": "noblight",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy2",
+    "sun",
+    "energy4",
+    "energy5",
+    "plant",
+    "energy7",
+    "energy8",
+    "energy9"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "card2",
+    "card3",
+    "card4",
+    "card5reclaim1"
+  ],
+  "power_summary": {
+    "offense": "5",
+    "control": "2",
+    "fear": "1",
+    "defense": "4",
+    "utility": "3"
+  },
+  "suggested_cards": [],
   "raw_template": {
     "name": "Keeper of the Forbidden Wilds",
     "gamebox": "Branch and Claw",

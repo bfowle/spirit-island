@@ -43,6 +43,61 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "addpresence0",
+      "third": null
+    },
+    {
+      "index": 2,
+      "first": "gain1p",
+      "second": "addpresence1",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "addpresence2",
+      "second": "energy3",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy2",
+    "fire",
+    "energy3",
+    "energy4",
+    "animal",
+    "energy6",
+    "energy7"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "animalX",
+    "fireX",
+    "card3",
+    "earthX",
+    "card4"
+  ],
+  "power_summary": {
+    "offense": "5",
+    "control": "2",
+    "fear": "2",
+    "defense": "1",
+    "utility": "1"
+  },
+  "suggested_cards": [
+    "Devouring Ants",
+    "Gnawing Rootbiters",
+    "Quicken the Earth\\'s Struggles",
+    "Pillar of Living Flame",
+    "Rouse the Trees and Stones",
+    "Poisoned Land",
+    "Savage Mawbeasts"
+  ],
   "raw_template": {
     "name": "Devouring Teeth Lurk Underfoot",
     "gamebox": "Horizons of Spirit Island",

@@ -36,6 +36,61 @@
     }
   ],
   "unique_cards": [],
+  "growth_type": "one",
+  "growths": [
+    {
+      "index": 1,
+      "first": "reclaim",
+      "second": "gain1p",
+      "third": "energy1"
+    },
+    {
+      "index": 2,
+      "first": "addpresence1",
+      "second": "addpresence1",
+      "third": null
+    },
+    {
+      "index": 3,
+      "first": "gain1p",
+      "second": "addpresence2",
+      "third": null
+    }
+  ],
+  "presence_energy_track": [
+    "energy1",
+    "energy2",
+    "energy2",
+    "energy3",
+    "energy4",
+    "energy4",
+    "energy5"
+  ],
+  "presence_cardplay_track": [
+    "card1",
+    "card2",
+    "card2",
+    "card3",
+    "reclaim1",
+    "card4",
+    "card5"
+  ],
+  "power_summary": {
+    "offense": "4",
+    "control": "5",
+    "fear": "1",
+    "defense": "1",
+    "utility": "4"
+  },
+  "suggested_cards": [
+    "Uncanny Melting",
+    "Nature\\'s Resilience",
+    "Pull Beneath the Hungry Earth",
+    "Accelerated Rot",
+    "Song of Sanctity",
+    "Tsunami",
+    "Encompassing Ward"
+  ],
   "raw_template": {
     "name": "River Surges in Sunlight",
     "gamebox": "Base Game",
