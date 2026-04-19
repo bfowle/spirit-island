@@ -7,3 +7,4 @@ target/
 .vscode/
 node_modules/
 .wiki-cache/
+__pycache__/
