@@ -41,6 +41,28 @@ Initial publication.
 - M4: Nature Incarnate spirits, full aspects coverage, statistics Part, `si-aspect-explorer` logic.
 - M5+: remaining 20+ spirits filled out, card reference appendix curated, progressive-disclosure index complete.
 
+## v0.1.3 — 2026-04-19 — Fundamentals + social chapters complete
+
+All remaining stub chapters in Part II (Fundamentals) and Part VII (Playing with Others) fully authored.
+
+**Fundamentals added (5)**:
+- `fundamentals/terrain.md` — four terrains + coastal/inland + terrain-gated powers + spirits by preferred terrain.
+- `fundamentals/adjacency-and-range.md` — adjacency rules, Range-N, edge cases (Shroud Mists, Finder vision), common misreads.
+- `fundamentals/energy-curves.md` — per-spirit target income/spend tables, four curve archetypes, deviation cost.
+- `fundamentals/card-draft-theory.md` — 4-offer evaluation, spirit-fit axes, multiplayer pooling, forget math.
+- `fundamentals/blight-track.md` — cascade mechanics, pool management, blight-positive spirits, mitigation toolkit.
+
+**Social added (7)**:
+- `social/two-player.md` — sweet-spot coordination, pairing patterns, territory splits, disagreement handling.
+- `social/three-and-four-player.md` — role assignments, 4-heroes problem, table-talk scaling.
+- `social/mixed-skill-tables.md` — asymmetric spirit assignment (the reverse-intuition move), handicapping.
+- `social/convention-and-meetup-norms.md` — venue-specific etiquette, honest time estimates, rules clarification protocols.
+- `social/playing-with-strangers.md` — three archetypes (Rules-Focused, Vibes, Competitive), signal-reading, norm-setting.
+- `social/post-game-debrief.md` — three-sentence debrief format, never-do list, debrief by audience.
+- `social/teaching-anti-patterns.md` — 27 explicit don'ts with failure-mode rationale.
+
+Both parts now fully authored. Part II and Part VII are complete.
+
 ## v0.1.2 — 2026-04-19 — Part VI fleshed out
 
 Full authoring of all 7 Combos & Archetypes chapters:
