@@ -1,5 +1,18 @@
 # Shadows Flicker Like Flame
 
+```admonish warning title="⚠️ Accuracy Audit — chapter under revision"
+**Known errors** (flagged 2026-04-19; corrections in progress):
+
+- The section below labels **"Dark and Tangled Wood"** as Shadows's innate. It is **not** — that is a card from Horizons of Spirit Island, not base Shadows.
+- The section labels **"Favors Called Due"** as an innate. It is a **Unique card**, not an innate.
+- The chapter frames Shadows around **strife** mechanics. **Base Shadows has no strife**. Strife appears on other spirits and certain aspects (Madness Shadows may interact with strife-related minors via aspect-specific changes).
+- **Actual base Shadows**:
+  - **Innate**: Darkness Swallows the Unwary.
+  - **Unique cards**: Concealing Shadows, Favors Called Due, Crops Wither and Fade, Mantle of Dread.
+
+The full chapter is being rewritten against Spirit Island Wiki authoritative data. Do not trust the mechanical details below until this banner is removed.
+```
+
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|

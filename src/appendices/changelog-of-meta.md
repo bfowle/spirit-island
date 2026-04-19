@@ -41,6 +41,24 @@ Initial publication.
 - M4: Nature Incarnate spirits, full aspects coverage, statistics Part, `si-aspect-explorer` logic.
 - M5+: remaining 20+ spirits filled out, card reference appendix curated, progressive-disclosure index complete.
 
+## v0.2.1 — 2026-04-19 — Accuracy audit initiated (M2 chapters under revision)
+
+**Critical correctness issue identified**: Shadows chapter (and likely others) contain mechanical hallucinations — innates/cards/mechanics mis-attributed. Examples from Shadows:
+- "Dark and Tangled Wood" labeled as innate (it's a Horizons card).
+- "Favors Called Due" labeled as innate (it's a Unique card).
+- Framed around "strife" (not a base-Shadows mechanic).
+
+**Remediation in progress**:
+- Research agent fetching authoritative spirit mechanics from Spirit Island Wiki for all 13 authored spirit chapters.
+- Each chapter audited against Wiki data; inaccurate sections rewritten.
+- Going forward: `feedback_never_hallucinate_mechanics.md` rule — no mechanics written from memory; Wiki-verify before authoring.
+
+**New structural rules (from Brett, 2026-04-19)**:
+- `feedback_expansion_split_strategy.md` — main guide assumes all expansions; per-spirit/per-adversary-level chapters flag expansion-sensitive advice and specific adversary-level strategy cliffs (e.g., "River plays well vs England until ENG5 when buildings get +1 HP").
+- Mermaid diagrams for expansion-dependency and strategy-cliff decisions.
+
+Re-issues of v0.2.x will follow as chapters are corrected. v0.2.0's "24 chapters authored" count is accurate, but the *content* of those chapters needs correctness review before use.
+
 ## v0.2.0 — 2026-04-19 — M2 complete
 
 Full authoring of 24 chapters; Brett priority-1 + teach-anchor + B&C/promo priority spirits + base adversaries + base scenarios + cleanup + aspects.
