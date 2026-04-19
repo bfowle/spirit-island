@@ -16,6 +16,7 @@ SKILLS=(
   "si-post-game"
   "si-at-the-table"
   "si-wiki-fetch"
+  "si-rules-check"
 )
 
 uninstall=0

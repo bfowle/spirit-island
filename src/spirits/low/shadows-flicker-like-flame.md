@@ -126,145 +126,173 @@ Three Rei-format opening variants. Each is a turn-by-turn rehearsal for the firs
 
 Confidence scale: 🟥 tentative · 🟨 somewhat tested · 🟩 well-tested.
 
-**Starting state** (all openings share this):
+**Starting state** (all openings share this — verified per `si-rules-check`):
 
 - 3 Presence on board: 2 in highest-numbered Jungle, 1 in land #5.
-- 4 Uniques in hand: Concealing Shadows (0E Fast), Crops Wither and Fade (1E Slow), Favors Called Due (1E Slow), Mantle of Dread (1E Slow).
-- Starting income: 1 Energy, 2 Card Plays (standard); exact value depends on starting presence placement on the track `[VERIFY first-uncovered-slot values]`.
-- Growth type: **pick one** of G1/G2/G3 per turn.
+- 4 Uniques in hand: Concealing Shadows (0E Fast, Moon+Air), Crops Wither and Fade (1E Slow, Moon+Fire+Plant), Favors Called Due (1E Slow, Moon+Air+Animal), Mantle of Dread (1E Slow, Moon+Fire+Air).
+- **Starting income: 0 Energy, 1 Card Play** (first-uncovered Energy track slot `energy0`, first-uncovered CP track slot `card1`).
+- Growth type: **pick one** of G1/G2/G3 per turn. Presence placement reveals **one** track slot; it doesn't reveal both.
 
-### Opening A — Standard Fear Opener 🟨 (Rei-inspired default)
+**Growth reference**:
 
-**When to pick this**: default against **Brandenburg-Prussia, England, Scotland, Habsburg Livestock** — adversaries where Fear-Rush is viable. Use whenever you want the quickest Terror 2 flip.
+| Growth | Effects | Post-growth T1 state (from 0E/1CP) |
+|--------|---------|------------------------------------|
+| **G1** | Reclaim + Gain 1 Minor (no presence placed) | 0E / 1CP (unchanged); 1 Minor gained |
+| **G2, reveal CP track (card2)** | Gain 1 Minor + Place 1 Presence Range 1 | 0E / **2CP**; 1 Minor gained |
+| **G2, reveal Energy track (energy1)** | Gain 1 Minor + Place 1 Presence Range 1 | **1E** / 1CP; 1 Minor gained |
+| **G3, reveal CP track (card2)** | Place 1 Presence Range 3 + "+3 Energy" growth effect | **3E / 2CP** |
+| **G3, reveal Energy track (energy1)** | Place 1 Presence Range 3 + "+3 Energy" growth effect | **4E** / 1CP (1 from slot + 3 from growth effect) |
 
-**Target arc**: Innate L1 firing T1 · Innate L2 firing T3–T4 · Fear pool filling toward Terror 2 by T5–T6.
+**T1 legal play enumeration**: given T1 starting 0E/1CP, only G3-via-CP (3E/2CP) supports playing both a 0E card and a 1E card. G2 branches give either 2-card-but-0-energy or 1-energy-but-1-card. G1 is 0E/1CP.
+
+### Opening A — Fear Opener via G3 🟨 (default)
+
+**When to pick this**: default against **Brandenburg-Prussia, England, Scotland, Habsburg Livestock** — fear-friendly adversaries. The G3-via-CP-track T1 is the *only* growth choice that affords a 0E+1E two-card T1 from 0E start, making this the tightest path to Innate L1 firing T1.
+
+**Target arc**: Innate L1 fires T1 · Innate L2 reachable T3 after Reclaim · Terror 2 flip T5–T6.
 
 #### Turn 1
 
-- **Growth**: **G2** — gain 1 Minor + place 1 Presence (Range 1). Place the presence in a Dahan-adjacent land where a Build is threatening.
-- **Cards played**: **Concealing Shadows** (0E Fast, self-target or Dahan-dense land) + **Mantle of Dread** (1E Slow, target self). Total 1E spent.
+- **Growth**: **G3, revealing CP track** (uncover `card2`). Post-growth state: **3E / 2CP** (1 Presence placed Range 3; "+3 Energy" growth effect).
+- **Cards played**: **Concealing Shadows** (0E Fast, Moon+Air) + **Mantle of Dread** (1E Slow, target self, Moon+Fire+Air). Total **1E spent**, both Fast+Slow phases used.
   - Concealing Shadows: 1 Fear + Dahan in target land take 0 Damage from Ravaging this turn.
-  - Mantle of Dread: 2 Fear + (you, the target Spirit) may Push 1 Explorer and 1 Town from one of your Presence lands.
-- **Elements assembled end-of-turn**: 2 Moon + 1 Fire + 1 Air.
-- **Innate trigger**: **Darkness Swallows the Unwary L1** (2M+1F) fires → Gather 1 Explorer into the innate target land.
-- **E/CP state**: enter 1E / 2CP → exit 0E / 2CP.
-- **Fear contribution**: 3 Fear (1 from Concealing, 2 from Mantle). No kills yet.
-- **Milestone**: 1 Explorer gathered out of a threatening land (Build prevention); Dahan in Concealing's target land protected against T1 Ravage if any.
+  - Mantle of Dread (self-target): 2 Fear + you may Push 1 Explorer and 1 Town from one of your Presence lands.
+- **Elements played this turn**: 2 Moon + 1 Fire + 2 Air.
+- **Innate trigger**: **Darkness Swallows the Unwary L1** (2M+1F) fires → **Gather 1 Explorer** into the innate's target land (Fast, Range 1 from a Sacred Site if you want the optional range-boost; else Range 1 from your presence).
+- **E/CP state**: 0E / 1CP entering → G3 makes it 3E / 2CP → spend 1E (Mantle) → end T1 with **2E banked / 0 CP remaining**.
+- **Presence placement**: 1 Presence placed Range 3 (from CP track — reveals card2 so from T2 on you have 2 CP sustained).
+- **Fear contribution**: 3 Fear (1 Concealing + 2 Mantle).
+- **Milestone**: 1 Explorer gathered (positional); 1 Explorer pushed via Mantle; 1 Town pushed via Mantle; Dahan in Concealing's land protected; 2E banked carries to T2.
 
 #### Turn 2
 
-- **Growth**: **G3** — place 1 Presence (Range 3) + **+3 Energy**. The range-3 placement lets you reach far lands; the energy spike gets you to 3E for T2–T3.
-- **Cards played**: **Crops Wither and Fade** (1E Slow, Range 0, Any Land) on a City-present land (*replace* City → Town) + **Concealing Shadows** (reclaimed last turn is not available yet — actually at T2 you cannot reclaim unless you take G1; so *not* reclaimed but still in hand from T1? No — Concealing Shadows was played T1 so it's in discard unless G1 reclaim). Substitute: **Favors Called Due** (1E Slow, Range 1, Any Land with Dahan) targeting a Dahan-dense Invader land for the conditional 3 Fear.
-  - Crops Wither: 2 Fear + replace target City → Town or Town → Explorer.
-  - Favors Called Due: Gather up to 4 Dahan into target; **if Invaders present and Dahan outnumber them, 3 Fear**.
-- **Elements end of turn**: 2 Moon + 2 Fire + 1 Plant + 1 Air + 1 Animal (cumulative with T1's elements for innate).
-- **Innate trigger**: **L1 again** if a new target land has presence at Range 1 + you have 2M + 1F available this turn. Level 2 (3M+2F) requires 3 Moon, still one short.
-- **E/CP state**: enter (1E from start + 3E from G3) 4E / 2CP → exit 2E / 2CP.
-- **Fear contribution**: 2 (Crops) + 3 (Favors conditional) = 5 Fear this turn, cumulatively 8 pool.
-- **Milestone**: one City downgraded (or Town removed effectively) + a Dahan-outnumber fear spike.
+- **Growth**: **G2, revealing Energy track** (uncover `energy1`). Post-growth state: **2E banked + 1E income = 3E / 2CP** (CP track already at card2 from T1; Energy track now at energy1; +1 Minor drafted).
+- **Cards played**: **Crops Wither and Fade** (1E Slow, Range 0, Moon+Fire+Plant) on a City-present land (replace City→Town) + **Favors Called Due** (1E Slow, Range 1, Moon+Air+Animal) on a Dahan-dense Invader-present land. Total **2E spent**.
+  - Crops Wither: 2 Fear + City→Town downgrade (or Town→Explorer).
+  - Favors Called Due: Gather up to 4 Dahan; if Invaders present and Dahan outnumber them, **3 Fear**.
+- **Elements played this turn**: 2 Moon + 1 Fire + 1 Plant + 1 Air + 1 Animal.
+- **Innate trigger**: L1 fires again (2M+1F) → gather another Explorer. L2 (3M+2F) **not** reached this turn (only 1 Fire).
+- **E/CP state**: 3E entering → 1E after (2E spent) → end T2 with **1E banked / 0 CP remaining**.
+- **Fear contribution**: 2 (Crops) + 3 (Favors conditional if triggered; 0 if not) = 2–5 Fear.
+- **Milestone**: 1 City softened; Dahan-outnumber fear spike (conditional).
 
 #### Turn 3
 
-- **Growth**: **G1** — **Reclaim all played cards + gain 1 Minor**. You now have 4 Uniques + 1 Minor from T1 growth + 1 Minor from T3 growth = **6 cards in hand**.
-- **Cards played**: 3 cards (assuming 3 CP unlocked; else 2). Recommended: **Crops Wither** (reclaimed) + **Favors Called Due** (reclaimed) + **Mantle of Dread or a Minor**. Total 2–3E.
-- **Elements end of turn**: 3 Moon + 2 Fire (or more) + 2 Air → **Innate L2 threshold met (3M+2F)** → Destroy up to 2 Explorers + 1 Fear per Explorer destroyed.
-- **E/CP state**: enter 2E (+1E bank if growth gave energy) / 2–3 CP → exit 0E / 2–3 CP.
-- **Fear contribution**: 2 (Crops) + 3 (Favors) + 2 (Mantle) + 2 (Innate L2 destructions) = **up to 9 Fear this turn**.
-- **Milestone**: **Terror 2 threshold likely crossed** (solo: 8 fear pool). Innate L2 killing Explorers; Crops softening Cities.
+- **Growth**: **G1** — Reclaim all played + Gain 1 Minor. Hand now has all 4 Uniques + 2 Minors = 6 cards. No presence placed. State: **1E banked + 1E income (energy1 slot) = 2E / 2CP**.
+- **Cards played**: 2 cards (2 CP available). Target innate L2 threshold. Play **Crops Wither + Mantle of Dread** — elements 2M+2F+1P+1A. Still 1 Moon short of L2 (need 3M+2F).
+  - Alternative: play a Moon-heavy Minor if drafted (e.g., Land of Haunts and Embers brings M+F+Air; adds M). With 2 Moon-heavy cards you can hit 3M.
+- **Innate trigger**: L1 fires; L2 conditional on Minor elements.
+- **E/CP state**: 2E → 0E after 2 cards played (Crops+Mantle = 2E) → end T3 at 0E.
+- **Fear contribution**: 2 (Crops) + 2 (Mantle) = 4 Fear.
+- **Milestone**: Fresh full hand for T4+; T4 can play 2 cards aimed directly at L2 threshold once a Fire-heavy Minor is in play.
 
 #### Turn 4 — state audit
 
 After T3, you should have:
 
-- **Presence**: 4–5 on board (3 starting + 1 from T1 G2 + 1 from T2 G3 = 5 if no destruction; possibly 4 if one destroyed).
-- **Energy / CP**: 0–1E / 2–3CP.
-- **Engine state**: Innate L2 firing reliably; all 4 Uniques reclaimed + 2 Minors in hand.
-- **Fear pool**: **Terror 2 flipped** or imminent (solo target: 8 fear by T3–T4).
-- **Blight**: 0–1 on the board (Concealing's Dahan-protection prevented ravage damage in its target land).
+- **Presence**: 5 on board (3 starting + 1 from T1 G3 + 1 from T2 G2).
+- **Energy / CP**: 1E income (from energy1 slot) + 0E banked = 1E / 2CP.
+- **Engine**: All 4 Uniques reclaimed + 2 Minors drafted. Innate L1 firing reliably; L2 (3M+2F) reachable when Minor draft supports.
+- **Fear pool**: 9–12 of ~8 (solo — Terror 2 should have flipped by end T3 or early T4).
+- **Blight**: 0–1 (Concealing + Favors-gather prevented most ravage damage).
 
-Pivot advice:
+Pivot advice (via `si-rules-check`):
 
-- **Missing Fire by T2** → the M+F+P Crops Wither + M+F+A Mantle combo should provide enough; if the first Minor draft was no-Fire, Innate L2 slips to T4.
-- **No Invaders near starting Presence** → play more Concealing for Dahan protection + fear; gather cards instead of kill cards.
-- **Fear pool stalling** → the conditional 3-Fear on Favors is load-bearing; if Dahan are too sparse to outnumber Invaders, that fear doesn't fire.
+- **Missing Moon+Fire T1** — if starting hand somehow lacks Concealing or Mantle, fallback: G2 via Energy track → 1E/1CP, play Concealing alone; defer L1 firing to T2 Reclaim + Mantle play.
+- **Cannot afford double-card T1** — check legal-play enumeration above; G3-via-CP is the enabler.
+- **Fear pool stalling** — Favors's 3-Fear conditional needs Dahan-outnumber state; verify Dahan count exceeds Invader count post-gather.
+- **No Invaders in Range 1 from starting presence** — Concealing Shadows targets Any Land (0 Range), so it's restricted to lands where you have presence; Mantle targets Any Spirit. The innate needs a land at Range 1 of presence or Sacred Site — if no such land has Invaders, L1 gathers from the nearest legal target.
 
-### Opening B — Slow Adversary / Major-Shop 🟥
+### Opening B — Card Depth (Minor-heavy draft) 🟥
 
-**When to pick this**: **Habsburg Mining L5+, Russia L5+**, or any game where you need a Major Power closer (Terrifying Nightmares is the standout). Trades early-fear output for mid-game card density.
+**When to pick this**: **Habsburg Mining L5+, Russia L5+**, or any long-game matchup where Minor draft density pays off via Fear-card Events or matchup-specific Minors. Trades T1 innate-firing for a larger T3+ hand.
 
-**Target arc**: Gain 2 Minors by T2 + Reclaim T3 · Major Power gained T4–T5 via a third Minor-gain turn · Terrifying Nightmares or The Jungle Hungers as closer T5–T7.
-
-#### Turn 1
-
-- **Growth**: **G2** — gain 1 Minor + place 1 Presence. Place adjacent to the nearest Dahan cluster.
-- **Cards played**: **Concealing Shadows** + **Mantle of Dread**. Same as Opening A.
-- **Elements / Innate**: L1 fires (2M+1F+1A).
-- **E/CP**: 1E / 2CP → 0E / 2CP.
-- **Milestone**: 1 Minor drafted (look for Moon+Fire dual).
-
-#### Turn 2
-
-- **Growth**: **G2 again** — second Minor gain + second Presence. You now have 5 Uniques in hand + 2 Minors in your deck.
-- **Cards played**: **Crops Wither** (1E) + a Minor (0-cost if drafted). Aim for 2M+1F via Minors (Visions of Fiery Doom is a 1E Fast Moon+Fire Minor that delivers this plus a push).
-- **Innate**: L1 fires again.
-- **E/CP**: 1E / 2CP → 0E / 2CP.
-- **Milestone**: 2 Minors drafted; starting to build toward Major-shop.
-
-#### Turn 3
-
-- **Growth**: **G1** — Reclaim + third Minor. Now 3 Minors + 4 Uniques = 7 cards.
-- **Cards played**: 3 cards (2–3E spent). Favors Called Due + a Minor + reclaimed Unique.
-- **Innate**: L2 fires if element mix supports.
-- **E/CP**: 1E / 2CP → 0E / 2CP.
-- **Milestone**: card-pool density at 7; next growth turn can be a Major shop.
-
-#### Turn 4 — state audit
-
-Pivot to G4-equivalent (if Shadows's growth supports it — base Shadows has only G1/G2/G3, no Major-gain growth directly). Major-shopping with Shadows requires a specific Minor that allows Major acquisition (e.g., **Call on Midnight's Dream** which is a Bringer Unique, not a Shadows suggested card). `[VERIFY]` — the most direct Major-acquisition for Shadows is via fear threshold triggers that force Major-gain, OR via the Jagged Earth "Gain Major Power" event cards.
-
-**Practical alternative**: if no Major-gain path opens, fall back to Opening A's fear-rush closer.
-
-### Opening C — Sweden / Fear-Suppression Resistant 🟥
-
-**When to pick this**: **Sweden L3+, Russia L3+** — where fear-card penalties (Sweden) or fear-suppression (Russia) hurt the direct fear-rush. Shift output toward Innate L2+ Explorer destruction and Crops Wither's ravage-softening.
-
-**Target arc**: Innate L2 firing T3 for sustained Explorer-destruction · Crops Wither to reduce Ravage damage without depending on fear-card pool progression.
+**Target arc**: 2 Minors drafted by T2 · Reclaim T3 → 6+ cards in hand · innate firings cap at L1 until Minor-draft supplies Fire for L2.
 
 #### Turn 1
 
-- **Growth**: **G3** — place 1 Presence (Range 3) + **+3 Energy**. Energy bank for T2 multi-card plays.
-- **Cards played**: **Concealing Shadows** + **Mantle of Dread** (same T1 play as Opening A).
-- **Elements / Innate**: L1 fires.
-- **E/CP**: 1E / 2CP → **3E bank / 2CP**.
-- **Milestone**: energy bank unusually deep for T2.
+- **Growth**: **G2, revealing CP track** (uncover `card2`). Post-growth: **0E / 2CP**, 1 Minor drafted.
+- **Cards played**: **Concealing Shadows** (0E Fast). If a 0-cost Minor was also drafted (e.g., Land of Haunts and Embers which is 0E Fast M+F+Air, or Shadows of the Burning Forest which is 0E Slow M+F+P), play that as the second card.
+  - If no 0-cost Minor offered: play Concealing alone; banked 2nd card-play slot unused.
+- **Elements (Concealing alone)**: 1 Moon + 1 Air. Innate L1 **does not fire** (needs 2M+1F).
+- **Elements (Concealing + Moon+Fire 0-cost Minor)**: 2 Moon + 1 Fire + additional → **innate L1 fires**, conditional on Minor draft.
+- **E/CP state**: 0E / 1CP entering → G2 makes it 0E / 2CP → 0E / remaining CP depending on plays.
+- **Fear contribution**: 1 (Concealing) + 0–2 (from Minor if fear-bearing) = 1–3 Fear.
+- **Milestone**: 1 Minor drafted (prioritize Moon+Fire dual-element to enable innate); broad hand for T3 reclaim value.
 
 #### Turn 2
 
-- **Growth**: **G3 again** — place Presence + another +3 Energy. Now at ~6E banked entering T2. (Gained zero Minors — card pool stays at 4 Uniques.)
-- **Cards played**: 2 cards (2E each = 4E spent from bank). **Crops Wither + Favors Called Due** — double-Slow turn.
-- **Elements / Innate**: L1 fires again (element re-budget from last turn's Mantle not recoverable since Mantle was played + discarded, so L1 threshold met only if this turn's cards bring 2M+1F; Crops brings 1M+1F+1P, Favors brings 1M+1A+1An, together 2M+1F+1P+1A+1An → L1 fires).
-- **E/CP**: 3E / 2CP → 2E / 2CP.
-- **Milestone**: 2 Explorers worked out of Invader lands (innate + Crops downgrade).
+- **Growth**: **G2, revealing Energy track** (uncover `energy1`). Post-growth: **1E income / 2CP** (CP already at card2), 1 Minor drafted.
+- **Cards played**: up to 2 cards at cost ≤ 1E total. Options:
+  - **Crops Wither** (1E) alone — elements M+F+P.
+  - **Mantle of Dread** (1E) alone — elements M+F+Air.
+  - **Favors Called Due** (1E) alone — elements M+Air+Animal (no Fire).
+  - **Concealing Shadows** (reclaimed... wait, not reclaimed, in discard) unless drafted Minor is 0-cost: a 0E Minor + 1E Unique.
+- **Innate trigger**: L1 fires if elements sum to 2M+1F.
+- **E/CP state**: 1E income + 0E banked = 1E → spend 1E → 0E.
+- **Fear contribution**: 2 (Crops or Mantle) + optional from Minor.
+- **Milestone**: 2 Minors total drafted; hand pool at 5 Uniques (4 original - 2 played + reclaim doesn't help yet) — wait actually only 2 Uniques played (T1 Concealing + T2 one Unique), so hand = 4 - 2 = 2 Uniques + 2 Minors = 4 cards.
 
 #### Turn 3
 
-- **Growth**: **G1** — Reclaim + gain Minor. 5 cards.
-- **Cards played**: 3 cards. Prioritize 3M+2F element mix for L2 innate (need Minor-draft of Fire-heavy card).
-- **Innate**: L2 if element threshold met — 2 Explorers destroyed.
-- **E/CP**: 2E / 2CP → 0E / 2CP.
-- **Milestone**: 2 Explorer destructions through innate; Crops Wither queued for T4.
+- **Growth**: **G1** — Reclaim + Gain 1 Minor. Reclaim brings back Concealing + T2's played Unique. State: **1E / 2CP**, hand = 4 Uniques + 3 Minors = 7 cards.
+- **Cards played**: 2 cards (CP limit), cost ≤ 1E. Aim for element mix 3M+2F for L2 innate. Example: Concealing (0E, 1M+1A) + Crops Wither (1E, 1M+1F+1P) = 2M+1F+1A+1P. Still 1 Moon short of L2.
+- **Innate**: L1 fires (2M+1F reached).
+- **Milestone**: card depth ready for T4–T5 push toward L2.
 
 #### Turn 4 — state audit
 
 After T3:
 
-- **Presence**: 5 on board.
-- **Energy / CP**: 0–1E / 2–3CP.
-- **Engine**: L2 innate firing; Explorer-destruction becomes the fear source (bypassing fear-card penalties via direct kill-fear generation).
-- **Fear pool**: 4–6 of 8 (slower than Opening A because Sweden/Russia fear suppression reduces fear-card impact).
-- **Blight**: 0–2.
+- **Presence**: 5 on board (3 starting + 1 T1 G2 + 1 T2 G2).
+- **Energy/CP**: 1E / 2CP sustained.
+- **Engine**: L1 firing reliably; L2 conditional on Minor draft containing Fire.
+- **Fear pool**: 6–9 (slower than Opening A).
+- **Milestone**: `[VERIFY mid-game]` — Major-acquisition path for Shadows is via fear-card Events (e.g., "Gain a Major Power") rather than a direct growth option; Brett should play-test to see how reliably Major-shop materializes.
 
-This opening accepts slower Terror progression and scales kills via innate L2/L3.
+`[VERIFY]` — this opening is tentative. Fewer T1 fear, but deeper hand. Better for games that go long.
+
+### Opening C — Heavy Energy Bank (Fear-suppression matchups) 🟥
+
+**When to pick this**: **Sweden L3+, Russia L3+** — where fear-card penalties make direct fear-rush weaker. Energy-bank strategy leans on Mantle's partner-push + Innate L2 Explorer-destroy (not fear) as the late-game output.
+
+**Target arc**: Deep energy bank T1–T2 · Innate L2 firing T3 via Reclaim-reconstructed hand · Explorer-destroy as the alt-fear-source.
+
+#### Turn 1
+
+- **Growth**: **G3, revealing Energy track** (uncover `energy1`). Post-growth: **1E income + 3E growth-effect = 4E / 1CP** (CP track unrevealed, still at card1).
+- **Cards played**: 1 card only (1CP limit). **Mantle of Dread** (1E Slow, Moon+Fire+Air) — best single-card T1 output (2 Fear + self-push).
+  - Alternative: Crops Wither (1E) if a City/Town is in range 0 of your presence for the replace effect.
+  - Concealing Shadows (0E) is OK too but lower fear ceiling; Mantle is the higher-fear pick here.
+- **Elements played**: 1 Moon + 1 Fire + 1 Air (Mantle only). Innate L1 (2M+1F) **does not fire** — only 1 Moon.
+- **E/CP state**: 0E / 1CP entering → G3 makes it 4E / 1CP → spend 1E → **3E banked / 0CP**.
+- **Fear contribution**: 2 (Mantle).
+- **Milestone**: 1 Explorer + 1 Town pushed (via Mantle self-target); 3E banked for T2.
+
+#### Turn 2
+
+- **Growth**: **G3, revealing CP track** (uncover `card2`). Post-growth: **3E banked + 1E income + 3E growth-effect = 7E / 2CP**.
+- **Cards played**: 2 cards. Crops Wither (1E) + Favors Called Due (1E) = 2E spent. Elements 2M+1F+1P+1A+1An → L1 fires; L2 (3M+2F) still short.
+- **E/CP state**: 7E → 5E after 2 cards → **5E banked entering T3** (massive).
+- **Fear contribution**: 2 (Crops) + 3 (Favors conditional) = 2–5 Fear.
+- **Milestone**: 5E bank carries into T3 — enables heavy T3–T4 plays including multiple 1E cards or draft-shopping.
+
+#### Turn 3
+
+- **Growth**: **G1** — Reclaim + Gain 1 Minor. State: **5E banked + 1E income = 6E / 2CP**. Hand = 4 Uniques + 2 Minors.
+- **Cards played**: 2 cards, up to 6E budget. Play the two cards that best fit the L2 threshold (3M+2F): e.g., Crops Wither + Mantle of Dread = 2M+2F+1A+1P. Still need 1 Moon more for L2.
+  - If a Moon-bearing Minor is in hand, play it instead of Mantle: Crops + Minor (M-heavy) could clear L2.
+- **Innate**: L1 fires; L2 conditional.
+- **E/CP state**: 6E → 4E after 2 cards → 4E banked entering T4.
+- **Milestone**: deep energy bank sustains; even on fear-suppressed adversaries, Mantle's pushes + L2 destroys keep board pressure manageable.
+
+#### Turn 4 — state audit
+
+- **Presence**: 5 on board.
+- **Energy/CP**: ~4E banked + 1E income = 5E / 2CP.
+- **Engine**: L1 reliable, L2 element-draft-dependent.
+- **Fear pool**: lower than Opening A due to fewer Fear-generating cards per turn + adversary fear suppression. Target: 5–7 by T4.
+- **Strategy**: accept slow Terror progression; rely on Mantle pushes + innate L2 destroys for damage/control.
 
 ### Opening Decision
 
