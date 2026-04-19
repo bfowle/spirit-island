@@ -5,6 +5,7 @@ import { fetchState, saveState } from './api'
 import Board from './components/Board.vue'
 import SpiritPanel from './components/SpiritPanel.vue'
 import Pools from './components/Pools.vue'
+import StatsPanel from './components/StatsPanel.vue'
 
 const state = ref<GameState | null>(null)
 const error = ref<string | null>(null)
@@ -57,6 +58,11 @@ watch(state, (s) => {
     </header>
 
     <Pools v-model="state.pools" />
+
+    <section class="stats-section">
+      <h2>Stats</h2>
+      <StatsPanel :state="state" />
+    </section>
 
     <section v-for="bid in Object.keys(state.board_state)" :key="bid" class="board-section">
       <h2>Board {{ bid }}</h2>

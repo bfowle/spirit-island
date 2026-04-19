@@ -8,7 +8,9 @@
 
 pub mod elements;
 pub mod growth;
+pub mod probability;
 pub mod schema;
+pub mod stats;
 
 pub use elements::Element;
 pub use schema::{Card, GameState, Phase, Spirit};
