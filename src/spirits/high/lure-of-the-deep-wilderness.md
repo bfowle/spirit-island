@@ -94,18 +94,79 @@ _(no thresholds listed in Wiki)_
 - **1 Energy · Fast · Range 0 · Inland Land · Fire, Air, Plant, Animal**
 - *2 Fear. 1 Damage per Beasts/Disease/Wilds/Badlands. (Count max. 5 tokens.)*
 
+## Card Priority Ratings
 
-## Suggested Draft Cards (Wiki-recommended)
+```admonish abstract title="Full-pool draft analysis"
+Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Lure of the Deep Wilderness's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/lure-of-the-deep-wilderness.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/lure-of-the-deep-wilderness.json) for full scoring + reasons.
 
-### Minor Powers
+- **Primary elements (innate-weighted)**: —
+- **Mid-game energy estimate (T3–T5 avg)**: 4.0E
+- **Power summary**: Offense 4 · Control 4 · Fear 4 · Defense 2 · Utility 1
+```
 
-_(none in Wiki's suggested list)_
+### Uniques
 
-### Major Powers
+The spirit's own 4 Unique Power cards (always in hand; always A-tier by default — see Uniques section above for full text):
 
-_(none in Wiki's suggested list)_
+- **Gift of the Untamed Wild**
+- **Perils of the Deepest Island**
+- **Softly Beckon Ever Inward**
+- **Swallowed by the Wilderness**
+
+### Top 10 Minor Draft Picks (from full pool)
+
+| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
+|---|------|------|-------|----------|--------------------|---------------|
+| 1 | **Bats Scout for Raids by Darkness** | 1 | Slow | Moon, Air, Animal | For each [[Dahan]], 1 Damage to [[Towns]]/[[Cities]]. **OR** 1 [[Fear]]. [[Gather]] up to… | Slow speed matches innate |
+| 2 | **Animated Wrackroot** | 0 | Slow | Moon, Fire, Plant | 1 Fear. Destroy 1 Explorer. **OR** Add 1 Wilds. | 0-cost (always affordable) |
+| 3 | **Call to Ferocity** | 0 | Slow | Sun, Fire, Earth | Gather up to 3 Dahan. **OR** If target land has Dahan, 1 Fear and Push 1 Explorer and 1 T… | 0-cost (always affordable) |
+| 4 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer/Town/Dahan. 2 Fear. If target land has any Beasts, 1 Fear. | 0-cost (always affordable) |
+| 5 | **Savage Mawbeasts** | 0 | Slow | Fire, Animal | If target land is a Jungle or Wetland, 1 Fear and 1 Damage. | 0-cost (always affordable) |
+| 6 | **Sear Anger Into the Wild Lands** | 0 | Slow | Sun, Fire, Plant | Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear and 1 Damage. | 0-cost (always affordable) |
+| 7 | **Shadows of the Burning Forest** | 0 | Slow | Moon, Fire, Plant | 2 Fear. If target land is a Mountain or Jungle, Push 1 Explorer and 1 Town. | 0-cost (always affordable) |
+| 8 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage. | 0-cost (always affordable) |
+| 9 | **Weep for What is Lost** | 0 | Slow | Fire, Water, Animal | 1 Fear per type of Invader present. Push up to 1 Explorer/Town per Blight. | 0-cost (always affordable) |
+| 10 | **Call to Bloodshed** | 1 | Slow | Sun, Fire, Animal | 1 Damage per Dahan. **OR** Gather up to 3 Dahan. | Slow speed matches innate |
+
+### Top 5 Major Draft Picks (from full pool)
+
+| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
+|---|------|------|-------|----------|--------------------|---------------|
+| 1 | **Angry Bears** | 3 | Slow | Sun, Fire, Animal | 2 Fear. 2 Damage. If no Beasts are present, add 1 Beasts. Otherwise, +2 Damage, and Push … | Slow speed matches innate |
+| 2 | **Focus the Land's Anguish** | 5 | Slow | Sun | If this Power Destroys any Towns/Cities, 5 Fear. Gather up to 5 Blight. 1 Damage per Blig… | Slow speed matches innate |
+| 3 | **Ravaged Undergrowth Slithers Back to Life** | 3 | Slow | Water, Plant, Animal | Replace 1 Blight with 1 Wilds.</br>1 Fear. 3 Damage.</br>Push that Wilds. | Slow speed matches innate |
+| 4 | **The Wounded Wild Turns on its Assailants** | 4 | Slow | Fire, Plant, Animal | Add 2 Badlands. Gather up to 2 Beasts. 1 Damage per Blight/Beasts/Wilds. | Slow speed matches innate |
+| 5 | **Transform to a Murderous Darkness** | 6 | Slow | Moon, Fire, Air, Water, Plant | Target Spirit may choose one of their Sacred Site. In that land: Replace all their Presen… | Slow speed matches innate |
+
+### HoSI Beginner Deck Bundle — for reference only
+
+```admonish note title="Not a draft-priority list"
+These are the cards shipped with Lure of the Deep Wilderness in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
+```
 
 
+*No HoSI beginner-deck bundle for this spirit.*
+
+
+### Cards to Avoid (anti-synergy flagged)
+
+| Card | Reason(s) |
+|------|-----------|
+| **Land of Haunts and Embers** | adds Blight |
+| **Scour the Land** | adds Blight |
+| **Devouring Ants** | destroys Dahan |
+| **Skies Herald the Season of Return** | destroys Presence |
+| **Renewing Boon** | destroys Presence |
+| **Insatiable Hunger of the Swarm** | adds Blight |
+| **Pillar of Living Flame** | adds Blight |
+| **Pyroclastic Flow** | adds Blight |
+| **Draw Towards a Consuming Void** | destroys Presence |
+| **Tsunami** | destroys Dahan |
+| **Blazing Renewal** | destroys Presence |
+| **The Jungle Hungers** | destroys Dahan |
+| **Solidify Echoes of Majesty Past** | destroys Presence |
+| **Poisoned Land** | destroys Dahan, adds Blight |
+| **Volcanic Eruption** | destroys Dahan, adds Blight |
 
 ## Key Strategic Principles
 
@@ -118,14 +179,6 @@ _(none in Wiki's suggested list)_
 ## Opening Strategy
 
 `[VERIFY: needs play data]` — opening variants should be rehearsed turn-by-turn per the [SPIRIT_TEMPLATE.md](../../../templates/SPIRIT_TEMPLATE.md) opener format.
-
-## Card Priority Ratings
-
-**Uniques**: see above, all 4 cards are starting-deck and usually all grade A-tier for the spirit's intended playstyle.
-
-**Suggested Minors + Majors**: see tables above. Wiki's suggestions reflect community-recommended drafts.
-
-`[VERIFY: ratings per matchup pending]`.
 
 ## Adversary Matchup Matrix
 
@@ -141,6 +194,55 @@ _(none in Wiki's suggested list)_
 | Russia               | ?  | ?  | ?  | ?  |                      |
 | Scotland             | ?  | ?  | ?  | ?  |                      |
 | Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
+
+
+### Strategy Cliffs — per-adversary-level shifts that change Lure of the Deep Wilderness's math
+
+```admonish warning title="Cliffs to watch"
+Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Lure of the Deep Wilderness's profile (Fear 4, Offense 4, Control 4, Defense 2, Utility 1).
+```
+
+#### England L5 — Buildings +1 HP
+
+**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
+
+**Mitigation for Lure of the Deep Wilderness**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
+
+#### England L3 — Coastal Lands build faster
+
+**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
+
+**Mitigation for Lure of the Deep Wilderness**: Front-load coastal defense or disruption before T3's first Ravage.
+
+#### Sweden L2+ — Fear-card effects reduced
+
+**What changes**: Sweden's escalation reduces the impact of Fear cards. **Spirits that win by riding Fear cards to Terror-level flips are meaningfully slower.**
+
+**Mitigation for Lure of the Deep Wilderness**: Shift from fear-rush to board-control: favor Damage/Push Majors over more Fear; accept Terror 2 flip ~2 rounds later.
+
+#### Russia L3+ — Dahan under pressure + fear suppression
+
+**What changes**: Russia's L3 escalation targets Dahan directly and suppresses Fear. **Spirits reliant on Dahan density (Shadows of the Dahan, Favors Called Due, Thunderspeaker synergies) lose a key engine.**
+
+**Mitigation for Lure of the Deep Wilderness**: Pre-empt Dahan loss with Defend-heavy Minors (Dahan/Village-fortify cards); lean on Push/Gather Majors to offset Fear deficit.
+
+#### Habsburg Mining L5+ — Explorer/Town scaling
+
+**What changes**: Habsburg Mining L5+ adds extra Explorers and faster builds. **Aggressive fear-rush openers can get outpaced by raw Invader accumulation.**
+
+**Mitigation for Lure of the Deep Wilderness**: Favor Major Powers with mass destruction (Jungle Hungers, Cleansing Floods, etc.) over Minor-heavy drafts.
+
+#### France (Plantation) — Dahan capture threatens your Dahan engine
+
+**What changes**: France's plantation rules convert Dahan to colonists, and Invaders occupy lands with Dahan. **Spirits whose innate/card math counts on Dahan density (Shadows-of-the-Dahan, Favors, Thunderspeaker) are downgraded.**
+
+**Mitigation for Lure of the Deep Wilderness**: Play Defend Powers on Dahan lands; accept loss of range-extension budget.
+
+#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
+
+**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
+
+**Mitigation for Lure of the Deep Wilderness**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
 
 ## Board / Map Configuration
 

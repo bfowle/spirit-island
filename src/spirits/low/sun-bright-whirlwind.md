@@ -71,28 +71,80 @@ A STIFF WIND AT THEIR BACKS After you Add Presence during Growth, Push up to 1 E
 
 ## Unique Cards (all, Wiki-verified)
 
+## Card Priority Ratings
 
+```admonish abstract title="Full-pool draft analysis"
+Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Sun-Bright Whirlwind's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/sun-bright-whirlwind.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/sun-bright-whirlwind.json) for full scoring + reasons.
 
-## Suggested Draft Cards (Wiki-recommended)
+- **Primary elements (innate-weighted)**: **Air** (wt 6.3), **Sun** (wt 3.6)
+- **Mid-game energy estimate (T3–T5 avg)**: 4.33E
+- **Power summary**: Offense 3 · Control 5 · Fear 1 · Defense 1 · Utility 3
+```
 
-### Minor Powers
+### Uniques
 
-| Card | Cost | Speed | Range | Target | Elements | Effect |
-|------|------|-------|-------|--------|----------|--------|
-| **Gift of Living Energy** | 0 | Fast | No Range | Any Spirit | Sun, Fire, Plant | Target Spirit gains 1 Energy. If you have at least 2 Sacred Sites, target Spirit gains 1 Energy. If you target another Spirit, they gain 1 Energy. |
-| **Elemental Boon** | 1 | Fast | No Range | Any Spirit | — | Target Spirit gains 3 different Elements of their choice. If you target another Spirit, you also gain the chosen Elements. |
-| **Reaching Grasp** | 0 | Fast | No Range | Any Spirit | Sun, Air, Water | Target Spirit gets +2 Range with all their Powers. |
-| **Enticing Splendor** | 0 | Fast | 0 | Land with no Blight | Sun, Air, Plant | Gather 1 Explorer/Town. **OR** Gather up to 2 Dahan. |
-| **Call to Isolation** | 0 | Fast | 1 | Land with Dahan | Sun, Air, Animal | Push 1 Explorer/Town per Dahan. **OR** Push 1 Dahan. |
+*No Unique cards listed.*
 
-### Major Powers
+### Top 10 Minor Draft Picks (from full pool)
 
-| Card | Cost | Speed | Range | Target | Elements | Effect |
-|------|------|-------|-------|--------|----------|--------|
-| **Powerstorm** | 3 | Fast | No Range | Any Spirit | Sun, Fire, Air | Target Spirit gains 3 Energy. Once this turn, target Spirit may Repeat a Power Card by paying its cost again. |
-| **Wrap in Wings of Sunlight** | 3 | Fast | 0 | Any Land | Sun, Air, Animal | Move up to 5 Dahan to any land (including back into target land). If you moved at least 1 Dahan, Defend 5 in that land. |
+| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
+|---|------|------|-------|----------|--------------------|---------------|
+| 1 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage. | elements air+sun → 9.9 |
+| 2 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+sun → 9.9 |
+| 3 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer/Town per Dahan. **OR** Push 1 Dahan. | elements air+sun → 9.9 |
+| 4 | **Enticing Splendor** | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer/Town. **OR** Gather up to 2 Dahan. | elements air+sun → 9.9 |
+| 5 | **Birds Cry Warning** | 1 | Fast | Sun, Air, Animal | The next time Dahan would be Destroyed in target land, Destroy 2 fewer Dahan. **OR** Push… | elements air+sun → 9.9 |
+| 6 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer. **OR** 2 Fear. | elements air+sun → 9.9 |
+| 7 | **Purifying Flame** | 1 | Slow | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blig… | elements air+sun → 9.9 |
+| 8 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear. The next time an Invader is Destroyed in target land this turn, 1 Fear. | elements air+sun → 9.9 |
+| 9 | **Reaching Grasp** | 0 | Fast | Sun, Air, Water | Target Spirit gets +2 Range with all their Powers. | elements air+sun → 9.9 |
+| 10 | **Spur on with Words of Fire** | 1 | Fast | Sun, Fire, Air | If you target a Spirit other than yourself, they gain +1 Energy. Target Spirit may immedi… | elements air+sun → 9.9 |
 
+### Top 5 Major Draft Picks (from full pool)
 
+| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
+|---|------|------|-------|----------|--------------------|---------------|
+| 1 | **Sweep into the Sea** | 4 | Slow | Sun, Air, Water | Push all Explorers and Towns one land towards the nearest Ocean. **OR** If target land is… | elements air+sun → 9.9 |
+| 2 | **Voice of Command** | 3 | Fast | Sun, Air | 1 Damage per Dahan/Explorer, to Towns/Cities only. Defend 2. During Ravage Actions, Explo… | elements air+sun → 9.9 |
+| 3 | **Irresistible Call** | 6 | Fast | Sun, Air, Plant | Gather 5 Towns, 5 Dahan, 5 Beasts, and 15 Explorers. | elements air+sun → 9.9 |
+| 4 | **Wrap in Wings of Sunlight** | 3 | Fast | Sun, Air, Animal | Move up to 5 Dahan to any land (including back into target land). If you moved at least 1… | elements air+sun → 9.9 |
+| 5 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+sun → 9.9 |
+
+### HoSI Beginner Deck Bundle — for reference only
+
+```admonish note title="Not a draft-priority list"
+These are the cards shipped with Sun-Bright Whirlwind in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
+```
+
+| Card | Type | Cost | Speed | Elements | Effect (truncated) |
+|------|------|------|-------|----------|--------------------|
+| **Gift of Living Energy** | Minor | 0 | Fast | Sun, Fire, Plant | Target Spirit gains 1 Energy. If you have at least 2 Sacred Sites, target Spirit gains 1 … |
+| **Elemental Boon** | Minor | 1 | Fast |  | Target Spirit gains 3 different Elements of their choice. If you target another Spirit, y… |
+| **Reaching Grasp** | Minor | 0 | Fast | Sun, Air, Water | Target Spirit gets +2 Range with all their Powers. |
+| **Powerstorm** | Major | 3 | Fast | Sun, Fire, Air | Target Spirit gains 3 Energy. Once this turn, target Spirit may Repeat a Power Card by pa… |
+| **Enticing Splendor** | Minor | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer/Town. **OR** Gather up to 2 Dahan. |
+| **Wrap in Wings of Sunlight** | Major | 3 | Fast | Sun, Air, Animal | Move up to 5 Dahan to any land (including back into target land). If you moved at least 1… |
+| **Call to Isolation** | Minor | 0 | Fast | Sun, Air, Animal | Push 1 Explorer/Town per Dahan. **OR** Push 1 Dahan. |
+
+### Cards to Avoid (anti-synergy flagged)
+
+| Card | Reason(s) |
+|------|-----------|
+| **Land of Haunts and Embers** | adds Blight |
+| **Scour the Land** | adds Blight |
+| **Skies Herald the Season of Return** | destroys Presence |
+| **Renewing Boon** | destroys Presence |
+| **Devouring Ants** | destroys Dahan |
+| **Solidify Echoes of Majesty Past** | destroys Presence |
+| **Insatiable Hunger of the Swarm** | adds Blight |
+| **Pyroclastic Flow** | adds Blight |
+| **Pillar of Living Flame** | adds Blight |
+| **Draw Towards a Consuming Void** | destroys Presence |
+| **Blazing Renewal** | destroys Presence |
+| **The Jungle Hungers** | destroys Dahan |
+| **Tsunami** | destroys Dahan |
+| **Poisoned Land** | destroys Dahan, adds Blight |
+| **Volcanic Eruption** | destroys Dahan, adds Blight |
 
 ## Key Strategic Principles
 
@@ -105,14 +157,6 @@ A STIFF WIND AT THEIR BACKS After you Add Presence during Growth, Push up to 1 E
 ## Opening Strategy
 
 `[VERIFY: needs play data]` — opening variants should be rehearsed turn-by-turn per the [SPIRIT_TEMPLATE.md](../../../templates/SPIRIT_TEMPLATE.md) opener format.
-
-## Card Priority Ratings
-
-**Uniques**: see above, all 4 cards are starting-deck and usually all grade A-tier for the spirit's intended playstyle.
-
-**Suggested Minors + Majors**: see tables above. Wiki's suggestions reflect community-recommended drafts.
-
-`[VERIFY: ratings per matchup pending]`.
 
 ## Adversary Matchup Matrix
 
@@ -128,6 +172,37 @@ A STIFF WIND AT THEIR BACKS After you Add Presence during Growth, Push up to 1 E
 | Russia               | ?  | ?  | ?  | ?  |                      |
 | Scotland             | ?  | ?  | ?  | ?  |                      |
 | Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
+
+
+### Strategy Cliffs — per-adversary-level shifts that change Sun-Bright Whirlwind's math
+
+```admonish warning title="Cliffs to watch"
+Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Sun-Bright Whirlwind's profile (Fear 1, Offense 3, Control 5, Defense 1, Utility 3).
+```
+
+#### England L5 — Buildings +1 HP
+
+**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
+
+**Mitigation for Sun-Bright Whirlwind**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
+
+#### England L3 — Coastal Lands build faster
+
+**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
+
+**Mitigation for Sun-Bright Whirlwind**: Front-load coastal defense or disruption before T3's first Ravage.
+
+#### France (Plantation) — Dahan capture threatens your Dahan engine
+
+**What changes**: France's plantation rules convert Dahan to colonists, and Invaders occupy lands with Dahan. **Spirits whose innate/card math counts on Dahan density (Shadows-of-the-Dahan, Favors, Thunderspeaker) are downgraded.**
+
+**Mitigation for Sun-Bright Whirlwind**: Play Defend Powers on Dahan lands; accept loss of range-extension budget.
+
+#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
+
+**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
+
+**Mitigation for Sun-Bright Whirlwind**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
 
 ## Board / Map Configuration
 

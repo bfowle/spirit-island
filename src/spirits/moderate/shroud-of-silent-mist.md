@@ -82,19 +82,74 @@ GATHER POWER FROM THE COOL AND DARK Once a turn, when you Gain a Power Card with
 
 ## Unique Cards (all, Wiki-verified)
 
+## Card Priority Ratings
+
+```admonish abstract title="Full-pool draft analysis"
+Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Shroud of Silent Mist's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/shroud-of-silent-mist.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/shroud-of-silent-mist.json) for full scoring + reasons.
+
+- **Primary elements (innate-weighted)**: **Air** (wt 9.6), **Water** (wt 9.0), **Moon** (wt 4.8)
+- **Mid-game energy estimate (T3–T5 avg)**: 2.0E
+- **Power summary**: Offense 4 · Control 4 · Fear 5 · Defense 2 · Utility 1
+```
+
+### Uniques
+
+*No Unique cards listed.*
+
+### Top 10 Minor Draft Picks (from full pool)
+
+| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
+|---|------|------|-------|----------|--------------------|---------------|
+| 1 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage. | elements air+moon+water → 23.4 |
+| 2 | **Terror Turns to Madness** | 0 | Slow | Moon, Air, Water | If the Terror Level is... Terror Level 1: 3 Fear. Terror Level 2: 2 Fear or add 1 Strife.… | elements air+moon+water → 23.4 |
+| 3 | **Entrancing Apparitions** | 1 | Fast | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers. | elements air+moon+water → 23.4 |
+| 4 | **Rain of Blood** | 0 | Slow | Air, Water, Animal | 2 Fear. If target land has at least 2 Towns/Cities, 1 Fear. | elements air+water → 18.6 |
+| 5 | **Flow Downriver, Blow Downwind** | 0 | Slow | Air, Water, Plant | Push up to 1 Blight/Explorer/Town. | elements air+water → 18.6 |
+| 6 | **Fleshrot Fever** | 1 | Slow | Fire, Air, Water, Animal | 1 Fear. Add 1 Disease. | elements air+water → 18.6 |
+| 7 | **Call to Trade** | 1 | Fast | Air, Water, Earth, Plant | You may Gather 1 Dahan. If the Terror Level is 2 or lower, Gather 1 Town and the first Ra… | elements air+water → 18.6 |
+| 8 | **Steam Vents** | 1 | Fast | Fire, Air, Water, Earth | Destroy 1 Explorer. | elements air+water → 18.6 |
+| 9 | **Reaching Grasp** | 0 | Fast | Sun, Air, Water | Target Spirit gets +2 Range with all their Powers. | elements air+water → 18.6 |
+| 10 | **Confounding Mists** | 1 | Fast | Air, Water | Defend 4. **OR** Each Invader added to target land this turn may be immediately Pushed to… | elements air+water → 18.6 |
+
+### Top 5 Major Draft Picks (from full pool)
+
+| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
+|---|------|------|-------|----------|--------------------|---------------|
+| 1 | **Mists of Oblivion** | 4 | Slow | Moon, Air, Water | 1 Fear per Town/City this Power Destroys (max. 4 Fear). 1 Damage to each Invader. | elements air+moon+water → 23.4 |
+| 2 | **Transform to a Murderous Darkness** | 6 | Slow | Moon, Fire, Air, Water, Plant | Target Spirit may choose one of their Sacred Site. In that land: Replace all their Presen… | elements air+moon+water → 23.4 |
+| 3 | **Weave Together the Fabric of Place** | 4 | Fast | Sun, Moon, Air, Water, Earth | Target land and a land adjacent to it become a single land for this turn. (It has the ter… | elements air+moon+water → 23.4 |
+| 4 | **Bargain of Coursing Paths** | 2 | Fast | Moon, Air, Water, Earth | Bargain: 1 Presence now and -1 Energy/turn. Now: Mark both target land and another land w… | elements air+moon+water → 23.4 |
+| 5 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+moon+water → 23.4 |
+
+### HoSI Beginner Deck Bundle — for reference only
+
+```admonish note title="Not a draft-priority list"
+These are the cards shipped with Shroud of Silent Mist in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
+```
 
 
-## Suggested Draft Cards (Wiki-recommended)
-
-### Minor Powers
-
-_(none in Wiki's suggested list)_
-
-### Major Powers
-
-_(none in Wiki's suggested list)_
+*No HoSI beginner-deck bundle for this spirit.*
 
 
+### Cards to Avoid (anti-synergy flagged)
+
+| Card | Reason(s) |
+|------|-----------|
+| **Land of Haunts and Embers** | adds Blight |
+| **Scour the Land** | adds Blight |
+| **Skies Herald the Season of Return** | destroys Presence |
+| **Devouring Ants** | destroys Dahan |
+| **Renewing Boon** | destroys Presence |
+| **Solidify Echoes of Majesty Past** | destroys Presence |
+| **Insatiable Hunger of the Swarm** | adds Blight |
+| **Pyroclastic Flow** | adds Blight |
+| **Tsunami** | destroys Dahan |
+| **The Jungle Hungers** | destroys Dahan |
+| **Pillar of Living Flame** | adds Blight |
+| **Draw Towards a Consuming Void** | destroys Presence |
+| **Blazing Renewal** | destroys Presence |
+| **Poisoned Land** | destroys Dahan, adds Blight |
+| **Volcanic Eruption** | destroys Dahan, adds Blight |
 
 ## Key Strategic Principles
 
@@ -107,14 +162,6 @@ _(none in Wiki's suggested list)_
 ## Opening Strategy
 
 `[VERIFY: needs play data]` — opening variants should be rehearsed turn-by-turn per the [SPIRIT_TEMPLATE.md](../../../templates/SPIRIT_TEMPLATE.md) opener format.
-
-## Card Priority Ratings
-
-**Uniques**: see above, all 4 cards are starting-deck and usually all grade A-tier for the spirit's intended playstyle.
-
-**Suggested Minors + Majors**: see tables above. Wiki's suggestions reflect community-recommended drafts.
-
-`[VERIFY: ratings per matchup pending]`.
 
 ## Adversary Matchup Matrix
 
@@ -130,6 +177,55 @@ _(none in Wiki's suggested list)_
 | Russia               | ?  | ?  | ?  | ?  |                      |
 | Scotland             | ?  | ?  | ?  | ?  |                      |
 | Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
+
+
+### Strategy Cliffs — per-adversary-level shifts that change Shroud of Silent Mist's math
+
+```admonish warning title="Cliffs to watch"
+Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Shroud of Silent Mist's profile (Fear 5, Offense 4, Control 4, Defense 2, Utility 1).
+```
+
+#### England L5 — Buildings +1 HP
+
+**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
+
+**Mitigation for Shroud of Silent Mist**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
+
+#### England L3 — Coastal Lands build faster
+
+**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
+
+**Mitigation for Shroud of Silent Mist**: Front-load coastal defense or disruption before T3's first Ravage.
+
+#### Sweden L2+ — Fear-card effects reduced
+
+**What changes**: Sweden's escalation reduces the impact of Fear cards. **Spirits that win by riding Fear cards to Terror-level flips are meaningfully slower.**
+
+**Mitigation for Shroud of Silent Mist**: Shift from fear-rush to board-control: favor Damage/Push Majors over more Fear; accept Terror 2 flip ~2 rounds later.
+
+#### Russia L3+ — Dahan under pressure + fear suppression
+
+**What changes**: Russia's L3 escalation targets Dahan directly and suppresses Fear. **Spirits reliant on Dahan density (Shadows of the Dahan, Favors Called Due, Thunderspeaker synergies) lose a key engine.**
+
+**Mitigation for Shroud of Silent Mist**: Pre-empt Dahan loss with Defend-heavy Minors (Dahan/Village-fortify cards); lean on Push/Gather Majors to offset Fear deficit.
+
+#### Habsburg Mining L5+ — Explorer/Town scaling
+
+**What changes**: Habsburg Mining L5+ adds extra Explorers and faster builds. **Aggressive fear-rush openers can get outpaced by raw Invader accumulation.**
+
+**Mitigation for Shroud of Silent Mist**: Favor Major Powers with mass destruction (Jungle Hungers, Cleansing Floods, etc.) over Minor-heavy drafts.
+
+#### France (Plantation) — Dahan capture threatens your Dahan engine
+
+**What changes**: France's plantation rules convert Dahan to colonists, and Invaders occupy lands with Dahan. **Spirits whose innate/card math counts on Dahan density (Shadows-of-the-Dahan, Favors, Thunderspeaker) are downgraded.**
+
+**Mitigation for Shroud of Silent Mist**: Play Defend Powers on Dahan lands; accept loss of range-extension budget.
+
+#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
+
+**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
+
+**Mitigation for Shroud of Silent Mist**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
 
 ## Board / Map Configuration
 
