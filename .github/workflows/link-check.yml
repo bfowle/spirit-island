@@ -1,0 +1,36 @@
+name: Weekly link check
+
+on:
+  schedule:
+    - cron: '0 7 * * 1'   # Every Monday at 07:00 UTC
+  workflow_dispatch:
+
+jobs:
+  linkcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run lychee on src/
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --exclude-path node_modules
+            --exclude 'boardgamegeek\.com'
+            --exclude 'discord\.com'
+            --exclude 'steamcommunity\.com'
+            --max-retries 2
+            './src/**/*.md'
+            './README.md'
+            './CONTRIBUTING.md'
+          fail: false
+
+      - name: Open issue on failure
+        if: failure()
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "Weekly link-check found broken links"
+          content-filepath: ./lychee/out.md
+          labels: docs, linkcheck

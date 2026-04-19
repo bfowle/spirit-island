@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1",
+  "last_updated": "2026-04-19",
+  "adversaries": [
+    {"slug": "england", "name": "England", "expansion": "base", "difficulty_levels": [1, 3, 4, 6, 7, 9, 10], "pressure_shape": "board+time", "chapter_path": "adversaries/england.md", "chapter_status": "stub"},
+    {"slug": "brandenburg-prussia", "name": "Brandenburg-Prussia", "expansion": "base", "difficulty_levels": [1, 2, 4, 6, 7, 9, 10], "pressure_shape": "city-heavy-late", "chapter_path": "adversaries/brandenburg-prussia.md", "chapter_status": "stub"},
+    {"slug": "sweden", "name": "Sweden", "expansion": "base", "difficulty_levels": [1, 2, 3, 5, 6, 7, 8], "pressure_shape": "fear-suppression+coastal", "chapter_path": "adversaries/sweden.md", "chapter_status": "stub"},
+    {"slug": "france-plantation-colony", "name": "France (Plantation Colony)", "expansion": "branch-and-claw", "difficulty_levels": [2, 3, 5, 6, 8, 9, 10], "pressure_shape": "dahan+plantation", "chapter_path": "adversaries/france-plantation-colony.md", "chapter_status": "stub"},
+    {"slug": "habsburg-mining-expedition", "name": "Habsburg Mining Expedition", "expansion": "nature-incarnate", "difficulty_levels": [1, 3, 5, 6, 7, 9, 10], "pressure_shape": "scaling", "chapter_path": "adversaries/habsburg-mining-expedition.md", "chapter_status": "stub"},
+    {"slug": "russia", "name": "Russia", "expansion": "jagged-earth", "difficulty_levels": [1, 3, 4, 6, 7, 9, 11], "pressure_shape": "settler+fear-suppression", "chapter_path": "adversaries/russia.md", "chapter_status": "stub"},
+    {"slug": "scotland", "name": "Scotland", "expansion": "promo-2", "difficulty_levels": [1, 3, 4, 6, 7, 8, 10], "pressure_shape": "mixed", "chapter_path": "adversaries/scotland.md", "chapter_status": "stub"},
+    {"slug": "habsburg-livestock-colony", "name": "Habsburg Livestock Colony", "expansion": "jagged-earth", "difficulty_levels": [2, 3, 5, 6, 8, 9, 10], "pressure_shape": "livestock+slow", "chapter_path": "adversaries/habsburg-livestock-colony.md", "chapter_status": "stub"}
+  ]
+}

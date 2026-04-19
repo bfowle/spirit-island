@@ -1,0 +1,31 @@
+Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+
+Copyright (c) 2026 Brett Fowle
+
+This license applies to: all prose content in src/ (the mdbook mastery guide),
+including strategy analysis, chapter text, and commentary.
+
+You are free to:
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material for any purpose,
+  even commercially
+
+Under the following terms:
+- Attribution — You must give appropriate credit, provide a link to the
+  license, and indicate if changes were made.
+- ShareAlike — If you remix, transform, or build upon the material, you
+  must distribute your contributions under the same license.
+
+Full license text: https://creativecommons.org/licenses/by-sa/4.0/legalcode
+
+---
+
+Attribution of synthesized sources:
+
+This work synthesizes strategy content from multiple community authorities.
+See src/appendices/sources.md for the full citation list. All pattern claims
+are attributed inline or in Source Note admonitions. No verbatim paragraphs
+are copied from external sources; all summaries are original prose.
+
+Spirit Island is © Greater Than Games / R. Eric Reuss. This book is not
+affiliated with or endorsed by Greater Than Games.

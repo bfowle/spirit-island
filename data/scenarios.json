@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1",
+  "last_updated": "2026-04-19",
+  "scenarios": [
+    {"slug": "blitz", "name": "Blitz", "expansion": "base", "difficulty_mod": 0, "pressure_shape": "time-compression", "chapter_path": "scenarios/blitz.md"},
+    {"slug": "guard-the-isles-heart", "name": "Guard the Isle's Heart", "expansion": "base", "difficulty_mod": 0, "pressure_shape": "objective", "chapter_path": "scenarios/guard-the-isles-heart.md"},
+    {"slug": "rituals-of-terror", "name": "Rituals of Terror", "expansion": "base", "difficulty_mod": 3, "pressure_shape": "fear-race", "chapter_path": "scenarios/rituals-of-terror.md"},
+    {"slug": "dahan-insurrection", "name": "Dahan Insurrection", "expansion": "base", "difficulty_mod": 4, "pressure_shape": "dahan-scoring", "chapter_path": "scenarios/dahan-insurrection.md"},
+    {"slug": "second-wave", "name": "Second Wave", "expansion": "branch-and-claw", "difficulty_mod": 1, "pressure_shape": "invader-return", "chapter_path": "scenarios/second-wave.md"},
+    {"slug": "powers-long-forgotten", "name": "Powers Long Forgotten", "expansion": "branch-and-claw", "difficulty_mod": 1, "pressure_shape": "card-restriction", "chapter_path": "scenarios/powers-long-forgotten.md"},
+    {"slug": "ward-the-shores", "name": "Ward the Shores", "expansion": "branch-and-claw", "difficulty_mod": 2, "pressure_shape": "coastal-defense", "chapter_path": "scenarios/ward-the-shores.md"},
+    {"slug": "rituals-of-destroying-flame", "name": "Rituals of the Destroying Flame", "expansion": "branch-and-claw", "difficulty_mod": 3, "pressure_shape": "blight-race", "chapter_path": "scenarios/rituals-of-destroying-flame.md"},
+    {"slug": "despicable-theft", "name": "Despicable Theft", "expansion": "jagged-earth", "difficulty_mod": 2, "pressure_shape": "artifact-rescue", "chapter_path": "scenarios/despicable-theft.md"},
+    {"slug": "elemental-invocation", "name": "Elemental Invocation", "expansion": "jagged-earth", "difficulty_mod": 1, "pressure_shape": "element-gating", "chapter_path": "scenarios/elemental-invocation.md"},
+    {"slug": "a-diversity-of-spirits", "name": "A Diversity of Spirits", "expansion": "promo-2", "difficulty_mod": 0, "pressure_shape": "varied-spirits", "chapter_path": "scenarios/a-diversity-of-spirits.md"},
+    {"slug": "the-great-river", "name": "The Great River", "expansion": "jagged-earth", "difficulty_mod": 1, "pressure_shape": "river-presence", "chapter_path": "scenarios/the-great-river.md"},
+    {"slug": "varied-terrains", "name": "Varied Terrains", "expansion": "promo-2", "difficulty_mod": 0, "pressure_shape": "terrain-variance", "chapter_path": "scenarios/varied-terrains.md"},
+    {"slug": "destiny-unfolds", "name": "Destiny Unfolds", "expansion": "nature-incarnate", "difficulty_mod": 2, "pressure_shape": "scaling-narrative", "chapter_path": "scenarios/destiny-unfolds.md"}
+  ]
+}
