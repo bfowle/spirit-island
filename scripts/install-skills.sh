@@ -17,6 +17,7 @@ SKILLS=(
   "si-at-the-table"
   "si-wiki-fetch"
   "si-rules-check"
+  "si-live"
 )
 
 uninstall=0

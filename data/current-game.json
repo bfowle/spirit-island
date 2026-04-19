@@ -1,0 +1,151 @@
+{
+  "version": "1.0",
+  "round": 1,
+  "phase": "growth",
+  "setup": {
+    "adversary": "england",
+    "level": 3,
+    "scenario": null,
+    "spirits": [
+      "shadows-flicker-like-flame"
+    ],
+    "boards": [
+      "A"
+    ],
+    "expansions_active": [
+      "base"
+    ]
+  },
+  "pools": {
+    "fear_current": 0,
+    "fear_threshold": 4,
+    "terror_level": 1,
+    "blight_current": 0,
+    "blight_cap": 3,
+    "island_blighted": false
+  },
+  "spirits": {
+    "shadows-flicker-like-flame": {
+      "energy": 0,
+      "card_plays": 1,
+      "presence_on_board": {
+        "A.6": 2,
+        "A.5": 1
+      },
+      "presence_on_track_energy": [
+        "energy0",
+        "energy1",
+        "energy3",
+        "energy4",
+        "energy5",
+        "energy6"
+      ],
+      "presence_on_track_cardplay": [
+        "card1",
+        "card2",
+        "card3",
+        "card3",
+        "card4",
+        "card5"
+      ],
+      "elements_this_turn": {},
+      "hand": [
+        "Concealing Shadows",
+        "Crops Wither and Fade",
+        "Favors Called Due",
+        "Mantle of Dread"
+      ],
+      "discard": [],
+      "forgotten": [],
+      "played_this_turn": [],
+      "growth_options": []
+    }
+  },
+  "board_state": {
+    "A": {
+      "lands": {
+        "8": {
+          "terrain": "mountain",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "7": {
+          "terrain": "sands",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "4": {
+          "terrain": "sands",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "2": {
+          "terrain": "mountain",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 1,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "6": {
+          "terrain": "jungle",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 1,
+          "blight": 0,
+          "tokens": []
+        },
+        "1": {
+          "terrain": "wetland",
+          "coastal": false,
+          "explorers": 1,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 1,
+          "blight": 0,
+          "tokens": []
+        },
+        "5": {
+          "terrain": "wetland",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "3": {
+          "terrain": "jungle",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 1,
+          "dahan": 1,
+          "blight": 0,
+          "tokens": []
+        }
+      }
+    }
+  },
+  "log": []
+}
