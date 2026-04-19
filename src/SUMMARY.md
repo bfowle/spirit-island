@@ -129,6 +129,7 @@
 - [Fear Card Expected Value](statistics/fear-card-expected-value.md)
 - [Event Deck Risk Profiles](statistics/event-deck-risk-profiles.md)
 - [Deck Expansion Impact](statistics/deck-expansion-impact.md)
+- [Expansion Dilution Claims](statistics/expansion-dilution-claims.md)
 - [Blight Deck Severity](statistics/blight-deck-severity.md)
 - [Token-Effect Dilution](statistics/token-dilution.md)
 - [Aspect Power Deltas](statistics/aspect-power-deltas.md)
