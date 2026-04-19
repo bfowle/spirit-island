@@ -147,6 +147,68 @@ The Wiki's `suggestedcard` field lists 7 community-recommended draft picks for S
 
 **Terrifying Nightmares** is the Shadows Major of choice — fast, 2 Fear + 4 pushes, Moon+Air alignment.
 
+## Aspects (all 5, Wiki-verified mechanics)
+
+All 5 Shadows aspects **replace** the Shadows of the Dahan special rule. Four raise complexity; one lowers it.
+
+### Amorphous (Promo Pack 2 — Feather and Flame) — Higher Complexity
+
+**Replaces**: Shadows of the Dahan.
+
+> **Shadows Partake of Amorphous Space**: During each Fast phase, you may move 1 of your Presence to an adjacent land, or to a land with Dahan anywhere on the island. During each Slow phase, you may move 1 of your Presence to an adjacent land, or to a land with Dahan anywhere on the island.
+
+**Strategic shift**: converts the 1-Energy-per-range-extension tax into 2 *free* presence-moves per turn. Plays as a mobility-specialist variant — physical presence motion instead of virtual range-extension.
+
+### Foreboding (Promo Pack 2 — Feather and Flame) — Higher Complexity
+
+**Replaces**: Shadows of the Dahan with a **new Innate**, *Stretch Out Coils of Foreboding Dread* (Fast · Range 2 · Any Land):
+
+- **2 Air**: Your other Powers may ignore Range when targeting the target land.
+- **1 Moon**: After an Action generates Fear in target land (incl. Town/City destruction): Push up to 1 Explorer per Fear / 1 Town per 2 Fear.
+- **2 Fire**: 1 Fear.
+- **2 Moon + 4 Air**: 2 Fear.
+
+**Strategic shift**: swaps a per-Power spatial rule for a land-targeted innate. Range-ignoring is gated to one targeted land (rather than all Dahan lands). Converts fear-on-destruction into pushes for control value.
+
+### Madness (Jagged Earth) — Higher Complexity
+
+**Replaces**: Shadows of the Dahan. Adds 2 new rules:
+
+> **Shadows Cast a Subtle Madness**: When you add Presence during Growth, you may also add 1 Strife in that land.
+
+> **Glimpse of the Shadowed Void**: When your Presence is Destroyed, if Invaders are present, 1 Fear per Presence Destroyed there.
+
+**Strategic shift**: this is where **strife enters Shadows** (previous chapter revisions wrongly put strife on base Shadows). Madness monetizes presence-destruction into fear, incentivizing aggressive presence deployment + Choke-style self-sacrifice plays.
+
+### Reach (Jagged Earth) — **Lower** Complexity
+
+**Replaces**: Shadows of the Dahan with a simpler, single rule:
+
+> **Reach Through Ephemeral Distance**: Once per turn, you may ignore Range. (Anything for which there's a Range arrow or the word "Range" is used. Affects a single Action.)
+
+**Strategic shift**: energy-free range ignore, capped at once per turn. The beginner-friendly aspect — arguably the first aspect to try on Shadows for newer players.
+
+### Dark Fire (Nature Incarnate) — Higher Complexity
+
+**Replaces**: Shadows of the Dahan. Adds 2 new rules:
+
+> **Dark and Fire as One**: You may treat each Moon available to you as being Fire, or vice versa. (Choose during each Action for each Moon/Fire you have.) You may discard or Forget Powers that grant Moon to pay for Fire Choice Events, and vice versa.
+
+> **Frightful Shadows Elude Destruction**: The first time each Action would destroy your Presence, you may Push 1 of those Presence instead of destroying it.
+
+**Strategic shift**: Moon↔Fire interchangeability is exceptional on a spirit whose innate requires *both* elements heavily. Plus presence-push-instead-of-destroy offers a Madness-style defensive safety net. Arguably the most powerful Shadows aspect.
+
+### Aspect selection heuristic
+
+```admonish tip title="Which aspect when?"
+- **First few Shadows games** → base (no aspect).
+- **Want simpler** → **Reach** (lower complexity; one free range ignore/turn).
+- **Want more fear output** → **Madness** (strife + fear-from-presence-destroy).
+- **Want mobility specialist** → **Amorphous** (2 free presence-moves/turn).
+- **Want element flexibility** → **Dark Fire** (Moon↔Fire swap is huge here).
+- **Want experimental** → **Foreboding** (new innate replaces the special rule).
+```
+
 ## Card Priority Ratings
 
 Shadows is **Mixed** draft-bias — Minor-heavy T1–T3, 1 Major T5+ as closer.
