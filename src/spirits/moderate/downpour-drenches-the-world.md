@@ -1,236 +1,236 @@
 # Downpour Drenches the World
 
+```admonish warning title="Accuracy status — partial revision 2026-04-19"
+Mechanical sections corrected against [Spirit Island Wiki](../../../data/references/spirit-mechanics.md). **Previous errors**: "Pour Down" labeled as Unique card (it's an innate); 3 of 4 Unique names were wrong; missed the Drench the Landscape special rule and the 3-innate structure.
+```
+
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Promo Pack 2                                       |
-| Complexity            | Moderate                                           |
+| Expansion             | Promo Pack 2 `[VERIFY expansion]`                  |
+| Complexity            | High                                               |
 | Play Difficulty       | 2                                                  |
-| Archetypes            | Energy Denial (primary) · Building Damage          |
-| Primary Elements      | Water, Plant                                       |
-| Typical Opening       | Full bottom, Minor-heavy, complementarity drafting |
-| Typical Draft Bias    | Minor-heavy                                        |
+| Archetypes            | Defend · Blight removal · Energy sustain           |
+| Primary Elements      | Water (primary, heavy), Air, Earth, Plant          |
+| Typical Opening       | Water-element accumulation; defend-build           |
+| Typical Draft Bias    | Minor-heavy (complementarity drafting)             |
 | Rei's Guide           | Not covered by Rei                                 |
 | latentoctopus         | [Downpour concepts + opening 1](https://latentoctopus.github.io/guide/downpour-concepts/) |
-| Aspects               | None currently                                     |
+| Aspects               | `[VERIFY]`                                         |
 ```
 
 ## Spirit Overview — Framing
 
-Downpour is the **denial-via-isolation spirit**. Pour Down isolates lands from future explores + damages buildings directly. Downpour doesn't kill many invaders; Downpour makes invader turns produce zero output.
+Downpour is the **triple-innate Water spirit**. Three innates (Pour Down, Rain and Mud Suppress Conflict, Water Nourishes Life's Growth) plus a special rule (Drench the Landscape) mean the spirit has lots of simultaneous scaling — Water thresholds unlock multiple effects per turn.
 
-**One-line fantasy**: rain so constant it drowns the invaders' plans before they act. The paths disappear under floods.
+**One-line fantasy**: rain so constant it drowns the invaders' plans before they act. Every land becomes wetland; every Ravage becomes muted.
 
-**The honest complexity signal**: Moderate. Downpour's drafting principle — "strategic complementarity" — is the hard part. You must identify the spirit's *gaps* (Explorer removal, defend effects) and draft Minors to fill them, rather than duplicating existing strengths.
+**The honest complexity signal**: High per Wiki. Three innates to track; multi-effect scaling based on Water element count. Players learning Downpour often under-leverage the simultaneous firing.
 
-## Core Mechanics & Special Rules (from latentoctopus)
+## Core Mechanics & Special Rules
 
-Per latentoctopus concept guide: Downpour possesses diverse core capabilities (Explorer control, Isolation, stalling, damage to buildings, blight removal, Energy support). **Opening principle**: strategic complementarity — draft Minors that fill gaps, not duplicate strengths.
+### Special Rule: Drench the Landscape
 
-### Two primary gap areas
+Spirit Actions and Special Rules treat your Sacred Site as Wetlands in addition to the printed terrain.
 
-1. **Explorer removal** — important vs. Russia faction.
-2. **Defend effects** that don't suppress counterattacks.
+**Strategic implication**: Sacred Site lands count as Wetlands for targeting purposes. This matters for terrain-gated cards — "target Wetland" Minors/Majors can always hit Downpour's Sacred Sites.
 
-### Innate: Pour Down
+### Innate: Pour Down Power Across the Island
 
-Repeatable isolation + building damage. Core engine.
+For each 2 Water you have: gain 1 Energy OR repeat a land-targeting Power Card by paying its cost again (max 5 times per turn).
 
-### Key Uniques
+**Strategic implication**: Water scales into energy OR power-card repetition. A card-repeat innate is extremely powerful — effectively doubles or triples the output of a single card in one turn.
 
-- **Pour Down** — signature isolation.
-- **Gift of Abundance** — scaling support.
-- **Drench the Lands** — damage spread.
-- **Mirage of Hidden Bounty** — misdirection.
+### Innate: Rain and Mud Suppress Conflict
+
+- **L1** (1 Air, 3 Water): Each Presence grants Defend 1; lowers Dahan counterattack damage by 1.
+- **L2** (5 Water, 1 Earth): Each Presence grants Defend 1; lowers Dahan counterattack damage by 1.
+- **L3** (3 Air, 9 Water, 2 Earth): 2 Fear; Invaders and Dahan have -1 Health (min 1) in your lands.
+
+### Innate: Water Nourishes Life's Growth
+
+- **L1** (3 Water, 2 Plant): Gain 1 Energy; remove 1 Blight by removing one Presence.
+- **L2** (5 Water, 1 Earth, 2 Plant): Gain 1 Energy; gather up to 1 Dahan.
+- **L3** (7 Water, 2 Earth, 3 Plant): Prevent Blight addition to target land.
+
+### Unique Cards
+
+Per Wiki; costs/speeds/elements `[VERIFY]`:
+
+- **Dark Skies Loose a Stinging Rain**
+- **Foundations Sink into Mud**
+- **Gift of Abundance**
+- **Unbearable Deluge**
 
 ## Key Strategic Principles
 
-1. **Pour Down every turn possible.** Core engine; plays most turns.
-2. **Draft for gaps, not duplicates.** Minors should cover what Downpour lacks.
-3. **Water element primary.** Level 2+ innate.
-4. **Coastal + inland both viable** — Downpour is terrain-agnostic.
-5. **Isolation compounds.** An isolated land today = no Build tomorrow = no City next-next-turn.
-6. **2 CP + innates is usually enough.** Per latentoctopus: "2 CP coupled with your Innates are usually enough to deal with a variety of issues."
-7. **Minors over Majors.** Downpour's archetype is Minor-heavy.
+1. **Water threshold-stacking is the engine.** Pour Down at 2 Water = 1 Energy OR repeat; at 4 Water = 2 Energy OR 2 repeats. Water-heavy drafts compound.
+2. **Three innates fire in parallel.** A single turn can trigger Pour Down + Rain and Mud + Water Nourishes if Water threshold is high enough.
+3. **Card repetition via Pour Down is the killer app.** A 1-cost Minor that repeats 3 times is effectively 3 plays for 3 energy.
+4. **Defend engine scales with Presence count.** Rain and Mud L1+ gives Defend 1 per Presence — a 7-presence spirit defends 7 per turn via innate alone.
+5. **Level 3 Water Nourishes prevents blight.** Late-game insurance.
+6. **Plant is secondary.** Water Nourishes requires Plant for scaling.
+7. **Minor-heavy draft.** Cost-1 repeatable Minors are Downpour's ideal draft.
 
 ## Opening Strategy
 
-### Opening A — Full Bottom, Minor-Complementarity 🟩
+### Opening A — Water accumulation 🟥
 
-**Source**: [latentoctopus — Downpour Opening 1](https://latentoctopus.github.io/guide/downpour-opening1/)
+**When to pick this**: default.
 
-**Target arc**: Pour Down repeat T1–T3 · Minor draft fills gaps · Level 2 innate T4+.
+**Target arc**: 4 Water by T3 · Pour Down repeating by T3 · Level 1 of all three innates firing T4.
 
 #### Turn 1
 
-- **Growth**: **G3 bottom** (presence + Minor gain).
-- **Cards played**: **Pour Down on coastal land with invaders**. Gift of Abundance if available.
-- **Presence placement**: coastal land near invader hub.
+- **Growth**: **G3 bottom** (Minor gain + presence).
+- **Cards played**: Unique + 0-cost Water Minor.
+- **Presence placement**: coastal/wetland.
 - **Elements by end**: 2 Water.
 - **E / CP state**: 1E / 2CP → 0E / 2CP.
-- **Milestone**: 1 land isolated; 1 building damaged.
+- **Milestone**: Pour Down L1 firing (2 Water = 1 Energy or 1 repeat).
 
 #### Turn 2
 
-- **Growth**: **G2 bottom** (card play + presence).
-- **Cards played**: **Pour Down on inland hub + new Minor (Explorer-removal-focused)**.
-- **Presence placement**: inland hub adjacent to T1 land.
-- **Elements by end**: 2 Water, 1 Plant.
+- **Growth**: **G2 bottom**.
+- **Cards played**: Unique + Minor.
+- **Presence placement**: adjacent to T1.
+- **Elements by end**: 3 Water, 1 Plant.
 - **E / CP state**: 1E / 2CP → 0E / 2CP.
-- **Milestone**: 2 lands isolated; build-chain disrupted.
+- **Milestone**: Water Nourishes L1 threshold (3 Water + 2 Plant).
 
 #### Turn 3
 
 - **Growth**: **G1 Reclaim + G3 Minor**.
-- **Cards played**: **Pour Down reclaimed + 2 Minors**.
-- **Presence placement**: third land.
-- **Elements by end**: 3 Water, 1 Plant.
+- **Cards played**: 3 cards.
+- **Elements by end**: 4 Water, 1 Air, 2 Plant.
 - **E / CP state**: 1E / 2CP → 0E / 2CP.
-- **Milestone**: Level 2 innate threshold; isolation chain established.
+- **Milestone**: Pour Down 2-repeat capability; Rain and Mud L1 threshold (1 Air + 3 Water).
 
 #### Turn 4 — state audit
 
-After T3:
-- **Presence**: 6 on board; coastal + inland mix.
-- **Energy / CP**: 1E / 2–3CP.
-- **Engine**: Pour Down repeat + Level 2 innate.
-- **Fear pool**: 2–3 of 8 (fear-slow because no kills).
-- **Blight**: 0 (isolation prevents ravages).
-
-Pivot advice:
-- **Missing Explorer-removal Minor** → top-priority draft T4.
-- **Russia adversary active** → urgency on Explorer-removal gap.
+- **Presence**: 6 of 13.
+- **Energy / CP**: 1–2E / 2–3CP.
+- **Engine**: Pour Down producing 2 energy or 2 card-repeats; Rain and Mud firing; Water Nourishes firing.
 
 ### Opening decision
 
 <pre class="mermaid">
 graph TD
   Start[Round 1 — Downpour] --> Adv{Adversary?}
-  Adv -->|Default| A[Opening A - Full Bottom]
-  Adv -->|Russia| A2[Opening A + urgent Explorer-removal Minor]
+  Adv -->|Default| A[Opening A - Water accumulation]
   Adv -->|Other| A
 </pre>
 
 ## Element & Aspect Preferences
 
-**Preferred elements**: Water (primary), Plant (secondary).
+**Preferred elements**: Water (heavy), Plant, Air, Earth.
+
+**Aspects**: `[VERIFY]`.
 
 ## Card Priority Ratings
 
 Downpour is **Minor-heavy**.
 
 ### Uniques
+
 | Card | Grade | Notes |
 |---|---|---|
-| Pour Down | A+ | Core isolation |
-| Gift of Abundance | A | Scaling |
-| Drench the Lands | A- | Damage spread |
-| Mirage of Hidden Bounty | B+ | Situational |
+| Dark Skies Loose a Stinging Rain | `[VERIFY]` | Wiki didn't surface effect; check copy. |
+| Foundations Sink into Mud | `[VERIFY]` | Same. |
+| Gift of Abundance | `[VERIFY]` | Scaling card; per latentoctopus concepts "recommended for scaling improvement." |
+| Unbearable Deluge | `[VERIFY]` | Same. |
 
-### Minors (priority complementarity)
+### Minors (complementarity-drafting per latentoctopus)
+
 | Card | Grade | Why |
 |---|---|---|
-| Explorer-removal Minors | A+ | Fills core gap |
-| Defend-without-suppression Minors | A+ | Fills core gap |
-| Water-bearing Minors | A | Threshold |
-| 0-cost Minors | A | Cheap repeat plays |
+| Water-bearing 1-cost Minors | A+ | Pour Down repeatable fuel. |
+| 0-cost Water Minors | A+ | Threshold + free. |
+| Explorer-removal Minors | A+ | Fills gap per latentoctopus. |
+| Defend-without-suppression Minors | A | Fills gap. |
 
-### Majors (rare for Downpour)
-| Card | Grade | Why |
-|---|---|---|
-| Sea Monsters | A- | Water Major |
-| Vigor of the Breaking Dawn | B+ | Multi-threshold |
+### Majors
+
+Rare for Downpour (Minor-heavy archetype). Water-heavy Majors if any.
 
 ## Adversary Matchup Matrix
 
 | Adversary | L0 | L3 | L5 | L6 | Notes |
 |---|---|---|---|---|---|
-| England | A | A- | B+ | B | Slow build + isolation chains |
-| Brandenburg-Prussia | A- | B+ | B | B- | Fast cities bypass isolation late |
-| Sweden | A | A- | B+ | B | Fear-penalties don't hit Downpour |
-| France | A+ | A | A- | B+ | Dahan-capture isolation prevents |
-| Habsburg Mining | A- | B+ | B | B- | Mining scales past isolation |
-| Russia | A | A- | B+ | B | Explorer-removal Minor essential |
-| Scotland | A- | B+ | B | B- | Decent |
-| Habsburg Livestock | A | A- | B+ | B | Terrain + isolation suits |
-
-## Board Position Evaluation
-
-- **Favorable**: Most boards; Downpour is terrain-agnostic.
-- **Neutral**: All boards.
-- **Unfavorable**: Very fragmented layouts where isolation has limited reach.
-
-## Game-Phase Strategy
-
-- **Early (T1–3)**: Pour Down repeat; draft gap-filling Minors.
-- **Mid (T4–6)**: Level 2 innate; isolation chain established.
-- **Late (T7+)**: Maintain isolation; fear-rush via partner if possible.
+| England | A | A- | B+ | B | Slow build matches. |
+| Brandenburg-Prussia | A- | B+ | B | B- | Fast cities. |
+| Sweden | A | A- | B+ | B | Fear-agnostic. |
+| France | A+ | A | A- | B+ | Dahan-capture; Downpour's Dahan-protect helps. |
+| Habsburg Mining | A- | B+ | B | B- | Scaling. |
+| Russia | A | A- | B+ | B | Explorer-removal Minor essential. |
+| Scotland | A- | B+ | B | B- | Decent. |
+| Habsburg Livestock | A | A- | B+ | B | Terrain focus. |
 
 ## Synergy Partners
 
 ```admonish tip title="Best Partners"
-- **Thunderspeaker** — denial buys time; dahan-fear closes.
-- **Earth** — Downpour holds the board; Earth's Majors close.
-- **Shadows** — denial + fear-rush.
-- **Fangs** — Downpour denies builds; Fangs kills.
+- **Thunderspeaker** — Downpour defends; Thunderspeaker's dahan-fear closes.
+- **Earth** — Downpour buys time; Earth's Majors close.
+- **Shadows** — denial + fear-rush pairing.
+- **Fangs** — Downpour defends; Fangs damages.
 ```
 
 ```admonish warning title="Anti-Synergy"
-- **Another denial spirit** — games never close.
-- **Vengeance** — blight-positive vs. blight-removal; conflict.
+- **Vengeance** — blight-positive vs. Downpour's blight-removal.
+- **Wildfire** — same blight-conflict.
 ```
 
 ## Common Mistakes
 
 ```admonish failure title="Common Mistake"
-Drafting Minors that duplicate Downpour's existing strengths. Draft for gaps, not comfort.
+Drafting Minors that duplicate Downpour's existing strengths. Draft for gaps (Explorer-removal, Defend-without-suppression) per latentoctopus complementarity.
 ```
 
 ```admonish failure title="Common Mistake"
-Ignoring the Russia matchup prep. Without Explorer-removal, Russia overwhelms isolation.
+Not chaining Pour Down repeats. A 1-cost Minor + 4 Water = 2 repeats (3 total plays). Under-using this wastes Downpour's core mechanic.
 ```
 
 ```admonish failure title="Common Mistake"
-Chasing Majors. Downpour's engine is Minor-heavy; Majors over-extend the energy curve.
+Chasing Majors. Downpour's engine is Minor-heavy; Majors over-extend.
 ```
 
 ## Tempo Profile
 
-| Round | Energy | CP | Presence | Lands Isolated | Key Play |
+| Round | Energy | CP | Presence | Water | Key Play |
 |---|---|---|---|---|---|
-| 1 | 1E | 2 | 4 | 1 | Pour Down + Minor |
-| 2 | 1E | 2 | 5 | 2 | Pour Down + Minor |
-| 3 | 1–2E | 2 | 6 | 2–3 | Reclaim + 3 cards |
-| 4 | 2E | 3 | 7 | 3 | Level 2 innate active |
-| 5 | 2E | 3 | 7 | 3 | Sustained isolation |
-| 6 | 2–3E | 3 | 7 | 3+ | Terror 2 approaches |
-| 7 | 3E | 3 | 6 | 3+ | Partner closes or Terror 3 |
-| 8 | 3E | 3 | 6 | 3+ | Game closes |
+| 1 | 1E | 2 | 4 | 2 | Unique + Minor |
+| 2 | 1E | 2 | 5 | 3 | Unique + Minor |
+| 3 | 1–2E | 2 | 6 | 4 | Reclaim + 3 cards |
+| 4 | 2E | 3 | 7 | 4–5 | All 3 innates active |
+| 5 | 2E | 3 | 7 | 5 | Sustained |
+| 6 | 2–3E | 3 | 7 | 5–6 | Terror 2 approaches |
+| 7 | 3E | 3 | 6 | 6+ | Partner closes. |
+| 8 | 3E | 3 | 6 | 7+ | Level 3 innate possible. |
 
-## Major vs. Minor — Downpour Specifically
+## Expansion Sensitivity
 
-**Draft bias**: Minor-heavy. 4-5 Minors over game; maybe 1 Major late.
+- **Promo Pack 2 minimum** (Downpour from this pack).
+- **+ Jagged Earth / Nature Incarnate**: deeper Minor pool; complementarity-drafting has more gap-fillers.
 
 ## Stat Snapshot
 
 ```admonish note title="Stat Insight"
-Per mindwanderer:
+Per mindwanderer `[VERIFY]`:
 - Solo L6: ~48%.
-- Best vs. France L6 at ~65%.
-- Worst vs. Brandenburg-Prussia L6 at ~40%.
+- Best vs. France L6 (~65%).
 - Small sample (promo spirit).
 ```
 
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- [latentoctopus — Downpour concepts](https://latentoctopus.github.io/guide/downpour-concepts/)
-- [latentoctopus — Downpour Opening 1](https://latentoctopus.github.io/guide/downpour-opening1/)
-- [Cardboard Crew tier](https://thecardboardcrew.com/spirit-island-spirits/)
-- [Spirit Island Wiki — Downpour](https://spiritislandwiki.com/)
-- Cross-reference: [Energy Denial archetype](../../combos/energy-denial.md)
+- Authoritative mechanics: [data/references/spirit-mechanics.md](../../../data/references/spirit-mechanics.md).
+- [latentoctopus — Downpour concepts](https://latentoctopus.github.io/guide/downpour-concepts/).
+- [latentoctopus — Downpour Opening 1](https://latentoctopus.github.io/guide/downpour-opening1/).
+- Spirit Island Wiki — Downpour page.
+- Cross-reference: [Energy Denial archetype](../../combos/energy-denial.md).
 ```
 
 ---
 
-*Last revised: 2026-04-19*
+*Last revised: 2026-04-19 — v0.2.1 (surgical correction; `[VERIFY]` markers pending physical-copy check)*

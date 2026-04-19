@@ -1,246 +1,183 @@
 # Serpent Slumbering Beneath the Island
 
+```admonish warning title="Accuracy status — partial revision 2026-04-19"
+Mechanical sections corrected against [Spirit Island Wiki](../../../data/references/spirit-mechanics.md). **Previous errors**: all 4 Unique card names were wrong; "Slumber" mechanism mis-described (actual: 5-Presence limit that raises via Absorb Essence — not a "sleep" state but a presence-cap progression).
+```
+
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Promo — Feather & Flame                            |
-| Complexity            | Moderate                                           |
+| Complexity            | High                                               |
 | Play Difficulty       | 3                                                  |
-| Archetypes            | Late-Game Juggernaut · Major Power Shopping       |
-| Primary Elements      | Fire, Earth, Water, Animal                         |
-| Typical Opening       | Slow bottom-track; build sleep-energy              |
-| Typical Draft Bias    | Mixed (Minor-heavy early; big Majors late)        |
+| Archetypes            | Late-Game Juggernaut · Support via absorbed Presence |
+| Primary Elements      | Fire, Water, Earth, Plant, Moon                    |
+| Typical Opening       | Slow Absorb-Essence ramp                           |
+| Typical Draft Bias    | Mixed                                              |
 | Rei's Guide           | Not covered by Rei                                 |
 | latentoctopus         | Not currently listed                               |
-| Aspects               | Locus                                              |
+| Aspects               | `[VERIFY — Locus may exist]`                       |
 ```
 
 ## Spirit Overview — Framing
 
-Serpent is the **late-game juggernaut**. Early turns: asleep. The spirit accumulates energy via Slumber; the board looks like nothing's happening. Mid-game: wake up. High-cost Majors land; the spirit's energy pool rivals any spirit in the game. Late game: Serpent erupts — 6+ energy plays, multiple Majors per turn, board-wiping damage.
+Serpent is the **late-game presence-absorber**. Starts with a **5-Presence-on-island limit**; uses Absorb Essence to take Presence from partners and expand the cap (5→7→8→10→11→12→13). The absorbed partners become tied to Serpent's plays — Serpent's innates trigger effects across all Spirits with absorbed Presence.
 
-**One-line fantasy**: the land is a body; the body dreams; the dreamer wakes.
+**One-line fantasy**: the land is a body; the body dreams; the dreamer wakes when enough essence is gathered.
 
-**The honest complexity signal**: Play Difficulty 3 is accurate. Serpent's complexity lives in the **patience required**. Every turn through T4–T5 will feel wrong — you're not stopping ravages, not killing invaders, not generating fear. You're accumulating. Players who can't stomach this phase misplay. Those who can unlock the best late-game in Spirit Island.
+**The honest complexity signal**: High per Wiki. Serpent is multiplayer-native — Absorb Essence literally requires absorbing from another Spirit. Solo Serpent is possible but plays differently. Decision depth: when to absorb, how to balance partner's tempo hit vs. Serpent's long-term scaling.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule: Slumber
+### Special Rule: Deep Slumber
 
-Serpent's presence starts in "Slumber" state. Slumber produces energy accumulation per turn without active play. Awakening is a deliberate choice that trades future Slumber-energy for present action.
+Spirit starts limited to **5 Presence on island**. "Absorb Essence" raises the limit via progression: **5 → 7 → 8 → 10 → 11 → 12 → 13**.
 
-### Innate: Waiting Coils of Destruction
+**Strategic implication**: Serpent cannot expand normally. Every Absorb Essence play is a presence-cap raise + presence relocation from another spirit. Multiplayer-essential for full scaling.
 
-Multi-element scaling damage that requires post-awakening play.
+### Innate: The Serpent Wakes in Power — Slow, 0 Range, Self
 
-### Key Uniques
+- **L1** (2 Fire, 1 Water, 1 Plant): Gain 1 Energy; other Spirits with absorbed Presence gain 1 Energy.
+- **L2** (2 Water, 3 Earth, 2 Plant): Add 1 Presence to 1 Range; others with 2+ absorbed Presence may do likewise.
+- **L3** (3 Fire, 3 Water, 3 Earth, 3 Plant): Gain a Major Power without Forgetting; others with 3+ absorbed Presence may do likewise.
 
-- **Burned Lands, Boiling Seas** — Fire + Water damage.
-- **Pent-Up Calamity** — discharge saved energy.
-- **Shadows of the Dreamer** — fear-generation support.
-- **Awaken the Watcher** — trigger awakening.
+### Innate: The Serpent Rouses in Anger — Slow, 0 Range, Any target land
+
+- **L1** (1 Fire, 1 Earth): 1 Damage per Fire/Earth pair to Towns/Cities.
+- **L2** (2 Moon, 2 Earth): 2 Fear per Moon/Earth pair; may Push 1 Town from target land.
+- **L3** (5 Moon, 6 Fire, 6 Earth): X Damage across all lands (X = Presence in/adjacent to each land).
+
+### Unique Cards
+
+All four starting Uniques per Wiki:
+
+- **Absorb Essence** — 2 Energy, Fast, Self-target, 2 Earth + 3 Water + 3 Fire. Removes another Spirit's Presence; they gain Energy + elements; benefits Wakes in Power innate.
+- **Elemental Aegis** — Slow, Self-target, 3 Earth + 3 Water + 3 Fire. Defends multiple lands; strength scales with absorbed Presence.
+- **Gift of Flowing Power** — `[VERIFY cost/speed/elements]`. Affects other Spirits; provides Power Card play opportunity.
+- **Gift of the Primordial Deeps** — `[VERIFY cost/speed/elements]`. Affects other Spirits; provides elemental/play benefits.
 
 ## Key Strategic Principles
 
-1. **Wait.** Turns 1–3 are accumulation. Don't feel you must play every card; banked turns compound.
-2. **Awaken at the right turn.** Usually T4–T5; sometimes T3 if the board demands.
-3. **Fire + Water + Earth threshold spread.** Multi-element draft.
-4. **Mountain + coastal placement** — Serpent's reach spans both.
-5. **Majors are the payoff.** Serpent's energy pool affords 6–8 cost Majors easily once awakened.
-6. **Partner coordination in multiplayer.** Partner carries T1–T3; Serpent closes T5+.
-7. **Don't Awaken prematurely.** Early awakening sacrifices late-game potential; only awaken if the board is about to collapse.
-
-```admonish tip title="Pro Tip"
-Serpent's weakness — no early impact — is partially mitigated by partner choice. Pair Serpent with a fast partner (Lightning, Fangs) who handles T1–T3; Serpent handles T5+. Solo Serpent is high-variance.
-```
+1. **Absorb Essence is the engine.** Without Absorb, Serpent can't scale past 5 Presence. Multiplayer only (or self-targeted in solo? `[VERIFY solo rules]`).
+2. **Wakes in Power cascades.** Triggers effects on all Spirits with absorbed Presence. Multiplayer compounding.
+3. **Rouses in Anger is damage.** Level 3 is X damage across all lands — a board wipe at high-threshold.
+4. **Multi-element thresholds.** Fire, Water, Earth, Plant, Moon are all required at various levels. Broad drafting.
+5. **Elemental Aegis scales with absorbed Presence.** More absorbed = more defense.
+6. **Solo Serpent underperforms.** The spirit is multiplayer-native by design.
 
 ## Opening Strategy
 
-### Opening A — Classic Slumber 🟨
+### Opening A — Multiplayer Slumber 🟥
 
-**Target arc**: Sleep T1–T4 · Awaken T5 · 2+ Majors played T6–T8.
+**When to pick this**: 2+ player; partner agrees to Absorb Essence coordination.
 
-#### Turn 1
+- **T1**: Slow ramp; low activity. Establish 1–2 presence from starting allocation.
+- **T2**: Coordinate with partner — where will Serpent absorb?
+- **T3**: First Absorb Essence (presence limit 5→7).
+- **T4**: Second Absorb (7→8); Wakes in Power L1 firing.
 
-- **Growth**: **G1 bottom** (energy accumulation + presence).
-- **Cards played**: none or 1 Minor.
-- **Presence placement**: mountain land; sleeping presence.
-- **Elements by end**: 1 Fire, 1 Earth (from Unique element hand).
-- **E / CP state**: 1E / 2CP → 1E / 2CP (Slumber energy bank).
-- **Milestone**: 2E banked; presence accumulating.
+### Opening B — Solo 🟥 (discouraged)
 
-#### Turn 2
+**When to pick this**: solo practice or partner unavailability.
 
-- **Growth**: **G3 bottom** (gain Minor + presence).
-- **Cards played**: **1 cheap Minor** if available.
-- **Presence placement**: second mountain or coastal.
-- **Elements by end**: 2 Fire, 1 Earth.
-- **E / CP state**: 2E / 2CP → 2E / 2CP.
-- **Milestone**: 4E banked; 1 Minor drafted.
-
-#### Turn 3
-
-- **Growth**: **G4 Major gain** (anticipate T5 awakening).
-- **Cards played**: **1 Minor or Uniques** prep.
-- **Presence placement**: third land.
-- **Elements by end**: 2 Fire, 2 Water, 1 Earth.
-- **E / CP state**: 3E / 2CP → 3E / 2CP.
-- **Milestone**: Major in hand; 6E banked.
-
-#### Turn 4 — state audit
-
-After T3:
-- **Presence**: 4 on board; 9 in supply.
-- **Energy / CP**: 4E / 2CP (massive bank).
-- **Engine**: asleep; Major in hand.
-- **Fear pool**: 0–1 of 8 (Serpent doesn't fear-generate while asleep).
-- **Blight**: partner-dependent.
-
-Pivot advice:
-- **Partner collapsing T3** → Awaken T3 with Pent-Up Calamity; sacrifice late-game.
-- **Major offered doesn't fit element profile** → reroll T4 gain.
-
-### Opening B — Active opening 🟥
-
-**When**: solo games where Slumber is too slow.
-
-- T1: G3 bottom + Minor + 1 active play.
-- T2–T3: active play each turn; Awaken T3.
-- Trades late-game peak for mid-game presence.
+- Serpent without Absorb Essence is severely limited. Plays as a mid-tier Major-shopper with a 5-Presence hard cap.
 
 ### Opening decision
 
 <pre class="mermaid">
 graph TD
-  Start[Round 1 — Serpent] --> Adv{Adversary?}
-  Adv -->|Multiplayer with fast partner| A[Opening A - Classic Slumber]
-  Adv -->|Solo + fast adversary| B[Opening B - Active]
-  Adv -->|Default| A
+  Start[Round 1 — Serpent] --> MP{Multiplayer?}
+  MP -->|Yes, partner coordinating| A[Opening A - Slumber]
+  MP -->|No, solo| B[Opening B - discouraged]
 </pre>
 
 ## Element & Aspect Preferences
 
-**Preferred elements**: Fire, Water, Earth, Animal (multi-element by design).
+**Preferred elements**: multi (Fire, Water, Earth, Plant, Moon).
 
-**Aspects**: Locus — shifts presence-placement mechanics; more experimental.
+**Aspects**: `[VERIFY — Locus may exist]`.
 
 ## Card Priority Ratings
 
-Serpent is **Mixed** (Minor-heavy early; big Majors late).
+Serpent is **Mixed**; absorbed-Presence-dependent.
 
 ### Uniques
+
 | Card | Grade | Notes |
 |---|---|---|
-| Burned Lands, Boiling Seas | A+ | Core late-game damage |
-| Pent-Up Calamity | A | Discharge pre-awakening bank |
-| Shadows of the Dreamer | A- | Fear support |
-| Awaken the Watcher | A | Awakening trigger |
-
-### Minors
-| Card | Grade | Why |
-|---|---|---|
-| 0-cost multi-element Minors | A | Cheap threshold support |
-| Fire-bearing Minors | A- | Primary element |
+| Absorb Essence | A+ | Core scaling; multiplayer engine. |
+| Elemental Aegis | A | Defend + absorbed-Presence scaling. |
+| Gift of Flowing Power | A (multiplayer) | Partner support. |
+| Gift of the Primordial Deeps | A (multiplayer) | Partner support. |
 
 ### Majors
-| Card | Grade | Why |
-|---|---|---|
-| Sea Monsters | A+ | Water-heavy late closer |
-| Fire and Flood | A+ | Multi-element fit |
-| Vigor of the Breaking Dawn | A | Earth-Sun threshold |
-| Tigers Hunting | A- | Animal threshold |
-| Cast Down Into the Briny Deep | A | Ocean-coastal sweep |
+
+Late-game high-cost Majors fit (Sea Monsters, Fire and Flood, Vigor of the Breaking Dawn).
 
 ## Adversary Matchup Matrix
 
 | Adversary | L0 | L3 | L5 | L6 | Notes |
 |---|---|---|---|---|---|
-| England | B+ | B | B- | C+ | Fast cities outpace sleep |
-| Brandenburg-Prussia | B+ | B | B- | C+ | Same |
-| Sweden | A | A- | B+ | B | Slow-ish; Serpent scales in time |
-| France | B+ | B | B- | C+ | Complex matchup |
-| Habsburg Mining | A | A- | B+ | B | Serpent's best matchup |
-| Russia | A- | B+ | B | B- | Long-game adversary; Serpent matches |
-| Scotland | B+ | B | B- | C | Faster than ideal |
-| Habsburg Livestock | A | A- | B+ | B | Slow pace; fine |
-
-## Board Position Evaluation
-
-- **Favorable**: Mountain-heavy boards with coastal edges.
-- **Neutral**: Most boards.
-- **Unfavorable**: Fast-explore layouts that need T1–T3 response.
-
-## Game-Phase Strategy
-
-- **Early (T1–3)**: Sleep; accumulate energy; draft late-game Majors.
-- **Mid (T4–6)**: Awaken; first Major fires; energy pool 5E+.
-- **Late (T7+)**: 2+ Majors per turn; board-wipe damage.
+| England | B+ | B | B- | C+ | Fast cities outpace slumber. |
+| Brandenburg-Prussia | B+ | B | B- | C+ | Same. |
+| Sweden | A | A- | B+ | B | Slow-ish; matches scaling. |
+| France | B+ | B | B- | C+ | Complex. |
+| Habsburg Mining | A | A- | B+ | B | Best matchup. |
+| Russia | A- | B+ | B | B- | Long game. |
+| Scotland | B+ | B | B- | C | Faster than ideal. |
+| Habsburg Livestock | A | A- | B+ | B | Slow pace fine. |
 
 ## Synergy Partners
 
 ```admonish tip title="Best Partners"
-- **Lightning** — Lightning handles T1–T3 kills; Serpent closes T5+.
-- **Fangs** — similar; damage partner for early.
-- **Thunderspeaker** — dahan early; Serpent late.
-- **Bringer** — Bringer fear-rushes; Serpent follows with Major damage.
+- **Any Major-shopper partner** — Wakes in Power L3 gives both Serpent and partners with 3+ absorbed Presence a free Major. Compounds.
+- **Thunderspeaker** — Gift of Flowing Power + Absorb Essence supports Thunderspeaker's expensive Major turns.
+- **Lightning** — Lightning handles early; Serpent closes.
 ```
 
 ```admonish warning title="Anti-Synergy"
-- **Another slow spirit (Earth, Keeper)** — both want late-game; neither handles T1–T3.
-- **Vengeance** — both late-game juggernauts; redundancy.
+- **Another slow spirit** — both scale late; neither handles T1–T3.
+- **Solo play** — Serpent is not designed for solo.
 ```
 
 ## Common Mistakes
 
 ```admonish failure title="Common Mistake"
-Awakening too early. T3 awakening sacrifices the 6E+ late-game peak; only do it if board truly collapses.
+Absorbing presence that the partner critically needs. Coordinate before absorbing.
 ```
 
 ```admonish failure title="Common Mistake"
-Solo Serpent at high difficulty. Without a fast partner, T1–T3 sleep burns the game.
+Ignoring Serpent's 5-Presence limit. It's not just a flavor rule; it's a scaling cap.
 ```
 
 ```admonish failure title="Common Mistake"
-Drafting single-element Majors. Serpent's element-spread rewards multi-element Majors.
+Drafting single-element Majors. Serpent wants multi-element to hit multiple innate thresholds.
 ```
 
 ## Tempo Profile
 
-| Round | Energy | CP | Presence | Awake? | Key Play |
-|---|---|---|---|---|---|
-| 1 | 1E | 2 | 4 | No | None or Minor |
-| 2 | 2E | 2 | 5 | No | 1 Minor |
-| 3 | 3E | 2 | 6 | No | Gain Major |
-| 4 | 4E | 2 | 6 | No | Prep awaken |
-| 5 | 2E (spike T6) | 3 | 6 | YES | Awaken + Major |
-| 6 | 5E | 3 | 6 | Yes | 2 Majors |
-| 7 | 6E | 3 | 5 | Yes | Multi-Major turn |
-| 8 | 8E+ | 3 | 5 | Yes | Game closes |
+Multiplayer-dependent; solo profile is degraded.
 
-Cliff turn: **T5**. Awakening must produce results.
+## Expansion Sensitivity
 
-## Major vs. Minor — Serpent Specifically
-
-**Draft bias**: Mixed. Minors T1–T3 for element support; Majors T4+ for late-game closing.
+- **+ Feather & Flame Promo**: spirit itself is an expansion addition.
+- **+ other expansions**: deeper Major pool helps Wakes in Power L3.
 
 ## Stat Snapshot
 
 ```admonish note title="Stat Insight"
-Per mindwanderer:
-- Solo L6: ~40% (variance-heavy due to partner requirements).
-- 2-handed Serpent + Lightning: ~65%.
-- Best vs. Habsburg Mining L6 at ~60%.
+Per mindwanderer `[VERIFY]`:
+- Solo L6: ~40% (variance-heavy).
+- 2-handed with Lightning partner: ~65%.
 ```
 
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- Community BGG Serpent strategy threads
-- [Cardboard Crew tier](https://thecardboardcrew.com/spirit-island-spirits/)
-- [Spirit Island Wiki — Serpent](https://spiritislandwiki.com/)
-- Cross-reference: [Defend & Outlast](../../combos/defend-and-outlast.md), [Major Power Shopping](../../combos/major-power-shopping.md)
+- Authoritative mechanics: [data/references/spirit-mechanics.md](../../../data/references/spirit-mechanics.md).
+- Spirit Island Wiki — Serpent page.
 ```
 
 ---
 
-*Last revised: 2026-04-19*
+*Last revised: 2026-04-19 — v0.2.1 (surgical correction; `[VERIFY]` markers pending physical-copy check)*
