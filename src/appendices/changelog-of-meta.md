@@ -41,6 +41,20 @@ Initial publication.
 - M4: Nature Incarnate spirits, full aspects coverage, statistics Part, `si-aspect-explorer` logic.
 - M5+: remaining 20+ spirits filled out, card reference appendix curated, progressive-disclosure index complete.
 
+## v0.1.2 — 2026-04-19 — Part VI fleshed out
+
+Full authoring of all 7 Combos & Archetypes chapters:
+
+- `combos/archetype-index.md` — landing page + archetype-to-spirit mapping + adversary fit + multiplayer coverage guidance.
+- `combos/energy-denial.md` — deny invader actions via isolation/push/card-disruption; primary: Downpour, Trickster, Shroud.
+- `combos/dahan-rush.md` — scale dahan into triple-duty (offense/defense/fear); primary: Thunderspeaker, Hearth-Vigil, Ferocious Warrior.
+- `combos/fear-rush.md` — race to Terror 3 via innate + card fear; primary: Shadows, Bringer, Many Minds, Shroud.
+- `combos/terrain-control.md` — move invaders to kill-zones or isolate lands; primary: Green, Lure, River, Finder.
+- `combos/defend-and-outlast.md` — absorb early pressure for late Major engine; primary: Earth, Keeper, Stone.
+- `combos/major-power-shopping.md` — aggressive Major drafting, Forget-heavy; primary: Earth, Keeper, Stone, Covets.
+
+Each chapter follows the archetype-chapter spine defined in the index: Identity, Core Mechanics, Spirits That Embody It (primary + secondary), Execution Pattern (worked example), Strong/Weak Adversary Matchups, Multiplayer Synergies, Common Mistakes, Source Notes.
+
 ## v0.1.1 — 2026-04-19 — Opener format upgraded
 
 - Revised `templates/SPIRIT_TEMPLATE.md` Opening Strategy section to require full 3–4 turn rehearsal blocks per variant (growth, cards played, presence, elements, E/CP state, milestone, pivot advice).
