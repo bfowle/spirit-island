@@ -41,6 +41,24 @@ Initial publication.
 - M4: Nature Incarnate spirits, full aspects coverage, statistics Part, `si-aspect-explorer` logic.
 - M5+: remaining 20+ spirits filled out, card reference appendix curated, progressive-disclosure index complete.
 
+## v0.2.2 — 2026-04-19 — Accuracy audit completed (all 13 spirits corrected)
+
+**All 13 authored spirit chapters surgically corrected** against Wiki-verified mechanics data (saved to `data/references/spirit-mechanics.md`):
+
+- Shadows, Green, Bringer, Earth (severe) — innate + unique + special-rule rewrites.
+- Keeper, Serpent, Finder, Downpour (severe) — all Unique card names were wrong; rewrites substantial.
+- Thunderspeaker, Ocean, Lightning, River, Fangs (moderate-to-severe) — missing innates/special rules added; wrong Unique names replaced.
+
+Every chapter now:
+- References `data/references/spirit-mechanics.md` as its authoritative source.
+- Carries `[VERIFY]` markers on fields the Wiki scrape didn't fully surface (card costs/speeds/elements, exact effect wording, aspect confirmation).
+- Includes an Expansion Sensitivity section (template addition).
+- Has per-level strategy-cliff callouts where rules change strategy fundamentally (e.g., England L5 +1 HP buildings).
+
+**Verification punch-list** saved to `data/references/verification-punchlist.md` — Brett can work through with physical copy + expansions to resolve `[VERIFY]` items.
+
+**Process going forward**: `feedback_never_hallucinate_mechanics.md` rule in effect; no new spirit chapters written without Wiki-verified data first.
+
 ## v0.2.1 — 2026-04-19 — Accuracy audit initiated (M2 chapters under revision)
 
 **Critical correctness issue identified**: Shadows chapter (and likely others) contain mechanical hallucinations — innates/cards/mechanics mis-attributed. Examples from Shadows:
