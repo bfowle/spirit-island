@@ -1,0 +1,88 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Hearth-Vigil",
+  "expansion": "Nature Incarnate",
+  "complexity": "moderate",
+  "setup": "Put 3 Presence on your starting board: 1 in the highest-numbered land with Dahan and 2 in the lowest-numbered land with at least 2 Dahan. Add 1 Dahan in each of those lands (additional survivors of the Invaders' diseases). You start with your 4 Unique Power Cards and 1 Energy.",
+  "playstyle": "Very good at protecting Dahan in its lands, not so great at stopping Blight. In keeping with its nature, largely brings Dahan to its Presence (or vice versa); getting Dahan elsewhere may require a bit of forethought with Keep Watch for New Incursions. Very reactive, with reliable ways to deal with Invaders as they Ravage and Build, but has trouble handling established City that aren't Ravaging.",
+  "special_rules": "ROOTED IN THE COMMUNITY Blight added in your lands does not Destroy your Presence if Dahan are present. (Ravage Actions Destroy Dahan before added Blight destroys Presence and cascades.) FORTIFY HEART AND HEARTH Dahan have +4 Health (each) while in your lands. Event and Blight Card Actions don't damage, destroy, or replace Dahan in your lands. (Ravages are not Event Actions even if caused by Events.) LOYAL GUARDIAN When all Dahan leave one of your lands, your Presence may Move with those Dahan. (Each Dahan can Bring any number of Presence.)",
+  "special_rules_raw": "'''''ROOTED IN THE COMMUNITY'''''<br/>{{blight}} added in your lands does not Destroy your {{presence}} if {{dahan}} are present. ''(Ravage Actions Destroy {{dahan}} before added {{blight}} destroys {{presence}} and cascades.)''\n\n'''''FORTIFY HEART AND HEARTH'''''<br/>{{dahan}} have +4 Health (each) while in your lands. Event and Blight Card Actions don't damage, destroy, or replace {{dahan}} in your lands. ''(Ravages are not Event Actions even if caused by Events.)''\n\n'''''LOYAL GUARDIAN'''''<br/>When all {{dahan}} leave one of your lands, your {{presence}} may Move with those {{dahan}}. ''(Each {{dahan}} can Bring any number of {{presence}}.)''",
+  "innates": [
+    {
+      "name": "WARN OF IMPENDING CONFLICT",
+      "speed": "fast",
+      "range": "",
+      "target": "yourself",
+      "option": null,
+      "thresholds": [
+        {
+          "sun": "2",
+          "earth": "1",
+          "effect": "In one of your lands, 1 Dahan deals Damage before Invaders during Ravages. (Choose a land when Invaders Ravage there.)"
+        },
+        {
+          "sun": "3",
+          "earth": "1",
+          "effect": "In that land, another Dahan deals Damage before Invaders during Ravages."
+        },
+        {
+          "sun": "4",
+          "earth": "2",
+          "effect": "In that land, all Dahan deal Damage before Invaders during Ravages."
+        },
+        {
+          "sun": "5",
+          "earth": "3",
+          "effect": "Instead, all Dahan in all of your lands deal Damage before Invaders during Ravages."
+        }
+      ]
+    },
+    {
+      "name": "KEEP WATCH FOR NEW INCURSIONS",
+      "speed": "fast",
+      "range": "1",
+      "target": "any",
+      "option": "sacredsitedahan",
+      "thresholds": [
+        {
+          "animal": "1",
+          "effect": "Gather up to 2 Dahan, from your lands only."
+        },
+        {
+          "sun": "1",
+          "air": "2",
+          "animal": "3",
+          "effect": "Once this turn after Invaders are added or moved into target land, 1 Damage per Dahan in target land, to those added/moved Invaders only."
+        },
+        {
+          "sun": "2",
+          "air": "3",
+          "animal": "4",
+          "effect": "Repeat this Power."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Hearth-Vigil",
+    "gamebox": "Nature Incarnate",
+    "setup": "Put 3 {{presence}} on your starting board: 1 in the highest-numbered land with {{dahan}} and 2 in the lowest-numbered land with at least 2 {{dahan}}. Add 1 {{dahan}} in each of those lands (additional survivors of the Invaders' diseases).\n\nYou start with your 4 Unique Power Cards and 1 '''Energy'''.",
+    "playstyle": "Very good at protecting {{dahan}} in its lands, not so great at stopping {{blight}}. In keeping with its nature, largely brings {{dahan}} to its {{presence}} (or vice versa); getting {{dahan}} elsewhere may require a bit of forethought with Keep Watch for New Incursions.\n\nVery reactive, with reliable ways to deal with Invaders as they Ravage and Build, but has trouble handling established {{invader|city}} that aren't Ravaging.",
+    "complexity": "moderate",
+    "special": "'''''ROOTED IN THE COMMUNITY'''''<br/>{{blight}} added in your lands does not Destroy your {{presence}} if {{dahan}} are present. ''(Ravage Actions Destroy {{dahan}} before added {{blight}} destroys {{presence}} and cascades.)''\n\n'''''FORTIFY HEART AND HEARTH'''''<br/>{{dahan}} have +4 Health (each) while in your lands. Event and Blight Card Actions don't damage, destroy, or replace {{dahan}} in your lands. ''(Ravages are not Event Actions even if caused by Events.)''\n\n'''''LOYAL GUARDIAN'''''<br/>When all {{dahan}} leave one of your lands, your {{presence}} may Move with those {{dahan}}. ''(Each {{dahan}} can Bring any number of {{presence}}.)''",
+    "growthtype": "one",
+    "growth1": "{{Growth|first=reclaim|second=addpresence0}}",
+    "growth2": "{{Growth|first=gain1p|second=addpresence3dahan}}",
+    "growth3": "{{Growth|first=addpresence2|second=energy3}}",
+    "presence1": "{{PresenceT|gather1dahan1land}}",
+    "presence2": "{{PresenceT|energy0|energy1sun|energy2|energy3animal|energy4|energy5sun}}",
+    "presence3": "{{PresenceT|card1|card2|airX|card3|animalX|card4}}",
+    "psummary": "{{Powersummary|offense=3|control=1|fear=2|defense=4|utility=4}}",
+    "loresection": "hearth-vigil",
+    "strategy": "==General Strategy==\n\n==Links to Guides==",
+    "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Hearth-Vigil' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n<gallery>File:Hearth-Vigil Home.png"
+  },
+  "unique_card_details": []
+}

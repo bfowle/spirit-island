@@ -1,0 +1,71 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Dances Up Earthquakes",
+  "expansion": "Nature Incarnate",
+  "complexity": "veryhigh",
+  "setup": "Put 1 Presence on your starting board in the highest-numbered land with Dahan. You start with your 6 Unique Power Cards and 0 Energy. Set the Quake Tokens ({{quake}}) nearby.",
+  "playstyle": "Very much about tempo and timing: Can play high-cost Powers extremely easily, but they won't take effect until later in the game. Faces a constant tension between solving problems now and carefully planning ahead for big turns in the future - neglecting either one can be disastrous. Despite starting with 6 Unique Powers, benefits greatly from gaining more.",
+  "special_rules": "BEGIN A DANCE OF DECADES</br>Whenever you would play a Power Card, you may instead pay any amount of Energy onto the card to make it an impending card ({{impendingcard}}), setting it aside out of play for use on a future turn. (It doesn't provide Elements. It's still your Power Card, so it can be forgotten while it's impending.) RHYTHMIC POWER BUILDS TO A CATACLYSMIC CRESCENDO</br>When you gain Energy from your Presence Track, also gain {{impendingenergyblank}} Energy onto each Power Card made {{impendingcard}} on a previous turn. If any {{impendingcard}} now have Energy on them at least equal to their cost, discard that Energy and play them. (This costs no card plays.)",
+  "special_rules_raw": "'''''BEGIN A DANCE OF DECADES'''''</br>Whenever you would play a Power Card, you may instead pay any amount of Energy onto the card to make it an '''impending card''' ({{impendingcard}}), setting it aside out of play for use on a ''future'' turn. ''(It doesn't provide Elements. It's still your Power Card, so it can be forgotten while it's impending.)''\n\n'''''RHYTHMIC POWER BUILDS TO A CATACLYSMIC CRESCENDO'''''</br>When you gain Energy from your Presence Track, also gain {{impendingenergyblank}} Energy onto each Power Card made {{impendingcard}} on a previous turn. If any {{impendingcard}} now have Energy on them at least equal to their cost, discard that Energy and play them. ''(This costs no card plays.)''",
+  "innates": [
+    {
+      "name": "LAND CREAKS WITH TENSION",
+      "speed": "fast",
+      "range": null,
+      "target": "you",
+      "option": null,
+      "thresholds": [
+        {
+          "earth": "1",
+          "effect": "If you have at least 1 {{impendingcard}}, Add 1 {{quake}} in one of your lands."
+        },
+        {
+          "moon": "1",
+          "earth": "1",
+          "effect": "In one of your lands, Defend 1 per {{impendingcard}} (max. 3)."
+        },
+        {
+          "moon": "1",
+          "earth": "2",
+          "effect": "If you have at least 3 {{impendingcard}}, Add 1 {{quake}} in one of your lands."
+        },
+        {
+          "moon": "2",
+          "earth": "3",
+          "effect": "In one of your lands, Defend 1 per {{impendingcard}} (max. 3)."
+        }
+      ]
+    },
+    {
+      "name": "EARTH SHUDDERS, BUILDINGS FALL",
+      "speed": "slow",
+      "range": "0",
+      "target": "quake",
+      "option": null,
+      "thresholds": []
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Dances Up Earthquakes",
+    "gamebox": "Nature Incarnate",
+    "setup": "Put 1 {{presence}} on your starting board in the highest-numbered land with {{dahan}}.\n\nYou start with your '''6 Unique Power Cards''' and 0 Energy. Set the Quake Tokens ({{quake}}) nearby.",
+    "playstyle": "Very much about tempo and timing: Can play high-cost Powers extremely easily, but they won't take effect until later in the game. Faces a constant tension between solving problems now and carefully planning ahead for big turns in the future - neglecting either one can be disastrous.\n\nDespite starting with 6 Unique Powers, benefits greatly from gaining more.",
+    "complexity": "veryhigh",
+    "special": "'''''BEGIN A DANCE OF DECADES'''''</br>Whenever you would play a Power Card, you may instead pay any amount of Energy onto the card to make it an '''impending card''' ({{impendingcard}}), setting it aside out of play for use on a ''future'' turn. ''(It doesn't provide Elements. It's still your Power Card, so it can be forgotten while it's impending.)''\n\n'''''RHYTHMIC POWER BUILDS TO A CATACLYSMIC CRESCENDO'''''</br>When you gain Energy from your Presence Track, also gain {{impendingenergyblank}} Energy onto each Power Card made {{impendingcard}} on a previous turn. If any {{impendingcard}} now have Energy on them at least equal to their cost, discard that Energy and play them. ''(This costs no card plays.)''",
+    "growthtype": "one",
+    "growthrows": "one",
+    "growth1": "{{Growth|first=reclaim|second=addpresence2orgainmajorwoforgetting}}",
+    "growth2": "{{Growth|first=gain1p|second=addpresence1}}",
+    "growth3": "{{Growth|first=addpresence3|second=energyimpend|third=reclaim1}}",
+    "presence1": "{{PresenceT|energy1impendenergy1|movepresence1energytrack|energy2|impend1|energy3|impendenergy2|energy4any}}",
+    "presence2": "{{PresenceT|card2|gather1dahan1land|moonfire|impend1|earthX|card3|card4}}",
+    "psummary": "{{Powersummary|offense=5|control=2|fear=2|defense=3|utility=4}}",
+    "loresection": "dancer",
+    "strategy": "",
+    "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Dances Up Earthquakes' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n<gallery>File:Dances Up Earthquakes Home.png",
+    "Rulings": "==Begin a Dance of Decades (Special Rule)==\n* When choosing an amount of Energy to pay to make a Power Card an impending card, you may pay 0 Energy.\n==Notes==\n{{Reflist}}"
+  },
+  "unique_card_details": []
+}

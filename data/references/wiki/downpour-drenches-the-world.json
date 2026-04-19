@@ -1,0 +1,85 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Downpour Drenches the World",
+  "expansion": "Promotional Pack 2",
+  "complexity": "high",
+  "setup": "Put 1 Presence on your starting board in the lowest-numbered Wetlands.",
+  "playstyle": "Cares about the question \"How useful is this Power in the current context?\" even more than most Spirits; it rarely plays all its Power Cards in any given Reclaim cycle (some get discarded to Growth), and for those it does play, it often has the option of using them multiple times. Benefits even more than most Spirits from having lots of Presence on the board, both for Rain and Mud Suppress Conflict and to facilitate its Unique Powers (by making more lands Wetlands).",
+  "special_rules": "DRENCH THE LANDSCAPE Spirit Actions and Special Rules treat your {{sacredsite}} as Wetlands in addition to the printed terrain. POUR DOWN POWER ACROSS THE ISLAND For each 2 {{element|simplewater}} you have, during the {{speed|fast}}/{{speed|slow}} phase you may either: * Gain 1 Energy; or * Repeat a land-targeting Power Card by paying its cost again. (It need not target the same land.) Use scenario markers or spare game pieces to track uses of this rule. (Max 5 times per turn, no matter how much {{element|simplewater}} you have.)",
+  "special_rules_raw": "'''''DRENCH THE LANDSCAPE'''''\n\nSpirit Actions and Special Rules treat your {{sacredsite}} as Wetlands in addition to the printed terrain.\n\n'''''POUR DOWN POWER ACROSS THE ISLAND'''''\n\nFor each '''2''' {{element|simplewater}} you have, during the {{speed|fast}}/{{speed|slow}} phase you may either:\n\n* Gain 1 Energy; or\n\n* Repeat a '''land-targeting''' Power Card by paying its cost again. ''(It need not target the same land.)''\n\nUse scenario markers or spare game pieces to track uses of this rule. (Max 5 times per turn, no matter how much {{element|simplewater}} you have.)",
+  "innates": [
+    {
+      "name": "RAIN AND MUD SUPPRESS CONFLICT",
+      "speed": "fast",
+      "range": null,
+      "target": "you",
+      "option": null,
+      "thresholds": [
+        {
+          "air": "1",
+          "water": "3",
+          "effect": "Each of your Presence grants Defend 1 and lowers Dahan counterattack damage by 1. (Total, in its land.)"
+        },
+        {
+          "water": "5",
+          "earth": "1",
+          "effect": "Each of your Presence grants Defend 1 and lowers Dahan counterattack damage by 1."
+        },
+        {
+          "air": "3",
+          "water": "9",
+          "earth": "2",
+          "effect": "2 Fear. In your lands, Invaders and Dahan have -1 Health (min 1)."
+        }
+      ]
+    },
+    {
+      "name": "WATER NOURISHES LIFE'S GROWTH",
+      "speed": "fast",
+      "range": "0",
+      "target": "any",
+      "option": null,
+      "thresholds": [
+        {
+          "water": "3",
+          "plant": "2",
+          "effect": "Gain 1 Energy. You may remove 1 Blight by removing one of your Presence (From target land)."
+        },
+        {
+          "water": "5",
+          "earth": "1",
+          "plant": "2",
+          "effect": "Gain +1 Energy. Gather up to 1 Dahan."
+        },
+        {
+          "water": "7",
+          "earth": "2",
+          "plant": "3",
+          "effect": "When Blight would be added to target land, instead leave it on the card."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Downpour Drenches the World",
+    "gamebox": "Promotional Pack 2",
+    "setup": "Put 1 {{presence}} on your starting board in the lowest-numbered Wetlands.",
+    "playstyle": "Cares about the question \"How useful is this Power in the current context?\" even more than most Spirits; it rarely plays all its Power Cards in any given Reclaim cycle (some get discarded to Growth), and for those it does play, it often has the option of using them multiple times.\n\nBenefits even more than most Spirits from having lots of Presence on the board, both for Rain and Mud Suppress Conflict and to facilitate its Unique Powers (by making more lands Wetlands).",
+    "complexity": "high",
+    "special": "'''''DRENCH THE LANDSCAPE'''''\n\nSpirit Actions and Special Rules treat your {{sacredsite}} as Wetlands in addition to the printed terrain.\n\n'''''POUR DOWN POWER ACROSS THE ISLAND'''''\n\nFor each '''2''' {{element|simplewater}} you have, during the {{speed|fast}}/{{speed|slow}} phase you may either:\n\n* Gain 1 Energy; or\n\n* Repeat a '''land-targeting''' Power Card by paying its cost again. ''(It need not target the same land.)''\n\nUse scenario markers or spare game pieces to track uses of this rule. (Max 5 times per turn, no matter how much {{element|simplewater}} you have.)",
+    "growthtype": "one",
+    "growthrows": "two",
+    "growth1": "{{Growth|first=reclaim|second=gain1p|third=movepresence2}}",
+    "growth2": "{{Growth|first=addpresence2|second=addpresence2|third=gain2water|fourth=discard2cards}}",
+    "growth3": "{{Growth|first=gain1p|second=addpresence3|third=energy1}}",
+    "presence1": "{{PresenceT|energy1|water|plant|water|energy2air|water|earth|doublewater}}",
+    "presence2": "{{PresenceT|card1|movepres|waterX|card2|movepres|card3}}",
+    "psummary": "{{powersummary|offense=2|control=3|fear=1|defense=5|utility=3}}",
+    "loresection": "downpour",
+    "strategy": "==Spirit Spotlight==\n\n<youtube>JjBBNYXQb2I</youtube>\n\n==Links to Guides==\n\n{{sacredsite}} [https://boardgamegeek.com/thread/2496834/openings-dowpour-drenches-world Openings: Downpour Drenches the World - Written by jyonker13]",
+    "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Downpour Drenches the World' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

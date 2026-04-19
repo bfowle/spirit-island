@@ -1,0 +1,44 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Ember-Eyed Behemoth",
+  "expansion": "Nature Incarnate",
+  "complexity": "moderate",
+  "setup": "Put 2 Presence and {{incarna|behemoth}}, Unempowered ({{incarna|unempowered}}) side up, in the highest-numbered Wetland on your starting board that is adjacent to any Jungle. You start with your 4 Unique Power Cards and 0 Energy.",
+  "playstyle": "Slowly but consistently stomps its Incarna around the island, smashing Invaders. (Dahan can keep clear, unless it really gets going.) Benefits from spread-out {{sacredsite}}, both for targeting Powers and for moving its Incarna long distances. Adding Presence at its Incarna (which can count as Presence) can make it easier to get Presence into new lands, particularly non-Jungles.",
+  "special_rules": "THE BEHEMOTH RISES You have an Incarna ({{incarna|behemoth}}). Once per turn, during the Spirit, {{speed|fast|20}}, or {{speed|slow|20}} phase, you may either: * Push {{incarna|behemoth}}; or * Add or Move {{incarna|behemoth}} to any of your {{sacredsite}} on the island. UNRELENTING STRIDES On any turn that you don't use Innate Powers, you may use The Behemoth Rises an additional time. (When you use an Innate Power, cover this Special Rule with a Reminder Marker; when you use this Special Rule, cover your Innate Power.)",
+  "special_rules_raw": "'''''THE BEHEMOTH RISES'''''<br/>You have an Incarna ({{incarna|behemoth}}). Once per turn, during the Spirit, {{speed|fast|20}}, or {{speed|slow|20}} phase, you may either:\n* Push {{incarna|behemoth}}; or\n* Add or Move {{incarna|behemoth}} to any of your {{sacredsite}} on the island.\n'''''UNRELENTING STRIDES'''''<br/>On any turn that you don't use Innate Powers, you may use ''The Behemoth Rises'' an additional time. ''(When you use an Innate Power, cover this Special Rule with a Reminder Marker; when you use this Special Rule, cover your Innate Power.)''",
+  "innates": [
+    {
+      "name": "SMASH, STOMP, AND FLATTEN",
+      "speed": "slow",
+      "range": null,
+      "target": "behemoth",
+      "option": null,
+      "thresholds": []
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Ember-Eyed Behemoth",
+    "gamebox": "Nature Incarnate",
+    "setup": "Put 2 {{presence}} and {{incarna|behemoth}}, Unempowered ({{incarna|unempowered}}) side up, in the highest-numbered Wetland on your starting board that is adjacent to '''any''' Jungle.\n\nYou start with your 4 Unique Power Cards and 0 Energy.",
+    "playstyle": "Slowly but consistently stomps its Incarna around the island, smashing Invaders. ({{dahan}} can keep clear, unless it '''''really''''' gets going.)\n\nBenefits from spread-out {{sacredsite}}, both for targeting Powers and for moving its Incarna long distances. Adding {{presence}} at its Incarna (which can count as {{presence}}) can make it easier to get {{presence}} into new lands, particularly non-Jungles.",
+    "complexity": "moderate",
+    "incarnapieces": "<gallery>File:Ember-Eyed Behemoth Incarna.png",
+    "special": "'''''THE BEHEMOTH RISES'''''<br/>You have an Incarna ({{incarna|behemoth}}). Once per turn, during the Spirit, {{speed|fast|20}}, or {{speed|slow|20}} phase, you may either:\n* Push {{incarna|behemoth}}; or\n* Add or Move {{incarna|behemoth}} to any of your {{sacredsite}} on the island.\n'''''UNRELENTING STRIDES'''''<br/>On any turn that you don't use Innate Powers, you may use ''The Behemoth Rises'' an additional time. ''(When you use an Innate Power, cover this Special Rule with a Reminder Marker; when you use this Special Rule, cover your Innate Power.)''",
+    "growthtype": "one",
+    "growthrows": "two",
+    "growth1": "{{Growth|first=reclaim|second=gain1p}}",
+    "growth2": "{{Growth|first=addpresence3junglepresence|second=addpresence0}}",
+    "growth3": "{{Growth|first=gain1p|second=addpresence1|third=energy3|fourth=discardfirepower}}",
+    "growth4": "'''''(MAX 1/GAME)'''''<br/>{{Growth|first=reclaimallfire|second=empowerbehemoth|third=moveincarnabehemoth}}",
+    "presence1": "{{PresenceT|energy0|energy1|energy2fire|energy3|earth|energy4plant|energy5fire}}",
+    "presence2": "{{PresenceT|card1|card2|card2|card3|fireX|card4}}",
+    "psummary": "{{Powersummary|offense=5|control=1|fear=1|defense=1|utility=2}}",
+    "loresection": "behemoth",
+    "strategy": "==General Strategy==\n\n==Links to Guides==\n{{Sacredsite}} [[{{PAGENAME}}/Turn 3 Empowerment Build]]",
+    "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Ember-Eyed Behemoth' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

@@ -1,0 +1,78 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Devouring Teeth Lurk Underfoot",
+  "expansion": "Horizons of Spirit Island",
+  "complexity": "low",
+  "setup": "Put 1 Presence on your starting board, in land #5. You start with your 4 Unique Power Cards and 0 Energy.",
+  "playstyle": "Likes being in the same lands as Invaders, so it can use Range 0 offensive and defensive Powers. The first of its Innate Power can give some mobility, if needed. Has a poor Plays track and potent but expensive Unique Powers, so can be better at handling fewer large threats than lots of little ones.",
+  "special_rules": "TERRITORIAL AGGRESSION Your Damage-Dealing Powers do +1 Damage. (This adds +1 Damage total for the Power, even if the Power Damages multiple Invaders or \"each Invader\". It can boost Minor/Major Power Cards, too, not just your Uniques + Innate.)",
+  "special_rules_raw": "'''''TERRITORIAL AGGRESSION'''''\n\nYour Damage-Dealing Powers do +1 Damage.\n\n''(This adds +1 Damage total for the Power, even if the Power Damages multiple Invaders or \"each Invader\". It can boost Minor/Major Power Cards, too, not just your Uniques + Innate.)''",
+  "innates": [
+    {
+      "name": "DEATH APPROACHES FROM BENEATH THE SURFACE",
+      "speed": "slow",
+      "range": "1",
+      "target": "invaders",
+      "option": null,
+      "thresholds": [
+        {
+          "fire": "1",
+          "animal": "1",
+          "effect": "If you don't have Presence in target land, Gather 1 of your Presence. (This is required.)"
+        },
+        {
+          "fire": "2",
+          "earth": "1",
+          "animal": "2",
+          "effect": "1 Damage. (+1 for your \"Territorial Aggression\" Special Rule)"
+        },
+        {
+          "fire": "3",
+          "earth": "1",
+          "animal": "3",
+          "effect": "2 Damage."
+        },
+        {
+          "fire": "4",
+          "earth": "2",
+          "animal": "5",
+          "effect": "2 Fear. 4 Damage."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Devouring Teeth Lurk Underfoot",
+    "gamebox": "Horizons of Spirit Island",
+    "setup": "Put 1 {{presence}} on your starting board, in land #5.\n\nYou start with your 4 Unique Power Cards and 0 Energy.",
+    "playstyle": "Likes being in the same lands as Invaders, so it can use Range 0 offensive and defensive Powers. The first of its Innate Power can give some mobility, if needed.\n\nHas a poor Plays track and potent but expensive Unique Powers, so can be better at handling fewer large threats than lots of little ones.",
+    "complexity": "low",
+    "special": "'''''TERRITORIAL AGGRESSION'''''\n\nYour Damage-Dealing Powers do +1 Damage.\n\n''(This adds +1 Damage total for the Power, even if the Power Damages multiple Invaders or \"each Invader\". It can boost Minor/Major Power Cards, too, not just your Uniques + Innate.)''",
+    "growthtype": "one",
+    "growthrows": "",
+    "growth1": "{{Growth|first=reclaim|second=addpresence0}}",
+    "growth2": "{{Growth|first=gain1p|second=addpresence1}}",
+    "growth3": "{{Growth|first=addpresence2|second=energy3}}",
+    "presence1": "{{PresenceT|energy2|fire|energy3|energy4|animal|energy6|energy7}}",
+    "presence2": "{{PresenceT|card1|card2|animalX|fireX|card3|earthX|card4}}",
+    "psummary": "{{Powersummary\n|offense=5\n|control=2\n|fear=2\n|defense=1\n|utility=1\n}}",
+    "loresection": "teeth",
+    "suggestedcard1": "Devouring Ants",
+    "suggestedcard2": "Gnawing Rootbiters",
+    "suggestedcard3": "Quicken the Earth\\'s Struggles",
+    "suggestedcard4": "Pillar of Living Flame",
+    "suggestedcard5": "Rouse the Trees and Stones",
+    "suggestedcard6": "Poisoned Land",
+    "suggestedcard7": "Savage Mawbeasts",
+    "aspectname#": "",
+    "complexitychange#": "",
+    "aspectreplacement#": "",
+    "aspecttext#": "",
+    "aspectexpansion#": "",
+    "strategy": "",
+    "design_and_extras": "==Spirit Spotlight==\n\n<youtube>B82mT1mPm3A</youtube>\n\n==Theme Music==\n\n<youtube>SSZlTHYHDc8</youtube>\n\n==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Devouring Teeth Lurk Underfoot' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

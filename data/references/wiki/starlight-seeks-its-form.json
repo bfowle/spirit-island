@@ -1,0 +1,123 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Starlight Seeks Its Form",
+  "expansion": "Jagged Earth",
+  "complexity": "veryhigh",
+  "setup": "Put 1 Presence on your starting board, in a land with Blight.",
+  "playstyle": "A build-your-own-Spirit, capable of going in many different directions based on Elements picked, Growth choices selected, and Power Cards kept. Has a very high personal/visual complexity and a huge number of early-game options, but doesn't alter play much for other players at the table. As it commits to choices, it loses versatility - not all paths will be good (or even possible) at all things. It especially wants a measure of adaptation to early Power Cards, rather than trying to pre-select a strategy.",
+  "special_rules": "GROWTH BEGETS GROWTH You have 6 Presence tracks. (As usual, you may add Presence from any track.) 4 of the Presence tracks are next to rows of Growth choices: these choices start unavailable. Upon emptying a Growth track, pick one of its two Growth choices to be immediately available. The other stays unavailable for the rest of the game (cover with a spare piece). After you add Presence from a space marked {{energyplus1}}, gain 1 Energy. SLOWLY COALESCING NATURE After revealing an {{gainelement}}, place 1 Element Marker of your choice on it. That element is permanent and is constantly available (As if pre-printed on the Presence track.)",
+  "special_rules_raw": "'''''GROWTH BEGETS GROWTH'''''<br>You have 6 {{presence}} tracks. ''(As usual, you may add {{presence}} from any track.)'' 4 of the {{presence}} tracks are next to rows of Growth choices: these choices start unavailable. Upon emptying a Growth track, pick one of its two Growth choices to be immediately available. The other stays unavailable for the rest of the game ''(cover with a spare piece)''.<br>After you add {{presence}} from a space marked {{energyplus1}}, gain 1 Energy.\n\n'''''SLOWLY COALESCING NATURE'''''<br>After revealing an {{gainelement}}, place 1 Element Marker of your choice on it. That element is permanent and is constantly available ''(As if pre-printed on the {{presence}} track.)''",
+  "innates": [
+    {
+      "name": "AIR MOVES, EARTH ENDURES",
+      "speed": "fast",
+      "range": "1",
+      "target": "any",
+      "option": null,
+      "thresholds": [
+        {
+          "air": "3",
+          "effect": "Push up to 2 Explorer or 1 Town."
+        },
+        {
+          "earth": "3",
+          "effect": "Defend 5."
+        }
+      ]
+    },
+    {
+      "name": "FIRE BURNS, WATER SOOTHES",
+      "speed": "slow",
+      "range": "1",
+      "target": "any",
+      "option": "sacred",
+      "thresholds": [
+        {
+          "fire": "3",
+          "effect": "1 Fear. 2 Damage."
+        },
+        {
+          "water": "3",
+          "effect": "Remove 1 Blight."
+        }
+      ]
+    },
+    {
+      "name": "WOOD SEEKS GROWTH, HUMANS SEEK FREEDOM",
+      "speed": "slow",
+      "range": "2",
+      "target": "any",
+      "option": null,
+      "thresholds": [
+        {
+          "plant": "3",
+          "effect": "Choose a Spirit with Presence in target land. They gain a Power Card."
+        },
+        {
+          "animal": "3",
+          "effect": "1 Damage per Dahan OR Push up to 3 Dahan."
+        }
+      ]
+    },
+    {
+      "name": "SIDEREAL GUIDANCE",
+      "speed": "slow",
+      "range": "1",
+      "target": "any",
+      "option": null,
+      "thresholds": [
+        {
+          "moon": "2",
+          "effect": "Gather up to 1 Explorer/Dahan."
+        },
+        {
+          "moon": "3",
+          "effect": "Instead, Gather up to 3 Explorer."
+        }
+      ]
+    },
+    {
+      "name": "STARS BLAZE IN THE DAYTIME SKY",
+      "speed": "slow",
+      "range": null,
+      "target": "yourself",
+      "option": null,
+      "thresholds": [
+        {
+          "sun": "4",
+          "effect": "3 Fear. Gain 1 Energy. Reclaim up to 1 Power Card from play or your discard pile."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Starlight Seeks Its Form",
+    "gamebox": "Jagged Earth",
+    "setup": "Put 1 {{presence}} on your starting board, in a land with {{blight}}.",
+    "playstyle": "A build-your-own-Spirit, capable of going in many different directions based on Elements picked, Growth choices selected, and Power Cards kept. Has a very high personal/visual complexity and a huge number of early-game options, but doesn't alter play much for other players at the table.\n\nAs it commits to choices, it loses versatility - not all paths will be good (or even possible) at all things. It especially wants a measure of adaptation to early Power Cards, rather than trying to pre-select a strategy.",
+    "complexity": "veryhigh",
+    "special": "'''''GROWTH BEGETS GROWTH'''''<br>You have 6 {{presence}} tracks. ''(As usual, you may add {{presence}} from any track.)'' 4 of the {{presence}} tracks are next to rows of Growth choices: these choices start unavailable. Upon emptying a Growth track, pick one of its two Growth choices to be immediately available. The other stays unavailable for the rest of the game ''(cover with a spare piece)''.<br>After you add {{presence}} from a space marked {{energyplus1}}, gain 1 Energy.\n\n'''''SLOWLY COALESCING NATURE'''''<br>After revealing an {{gainelement}}, place 1 Element Marker of your choice on it. That element is permanent and is constantly available ''(As if pre-printed on the {{presence}} track.)''",
+    "growthtype": "three",
+    "growth1": "{{Growth|first=reclaim1}}",
+    "growth2": "{{Growth|first=addpresence0}}",
+    "growth3": "{{Growth|first=energy1}}",
+    "growth4": "{{Growth|first=movepresence3}}",
+    "presence1": "{{PresenceT|empty|growthreclaimhalf|growthdivider|growthgainpowercard|growthmovepresence1}}",
+    "presence2": "{{PresenceT|empty|growth3energy|growthdivider|growthplusonecardplay|growthmovepresence2}}",
+    "presence3": "{{PresenceT|emptystarlight|elementXstarlight|growthreclaimall|growthdivider|growthgainpowercard|growth1energy}}",
+    "presence4": "{{PresenceT|emptystarlight|emptystarlight|growth2damage0range|growthdivider|growthplusonecardplay|growthfastpower}}",
+    "presence5": "{{PresenceT|energy1|energy2|element|energy4}}",
+    "presence6": "{{PresenceT|card2|element|element|card3}}",
+    "psummary": "{{Powersummary|offense=1|control=1|fear=1|defense=2|utility=2}}",
+    "loresection": "starlight",
+    "unique1": "{{Powercard\n|cost=0\n|title=Shape the Self Anew\n|elements={{CardElements|moon}}\n|targeting={{Targeting|turn=slow|target=you}}\n|text=Gain a Minor Power Card.<br><br>You may forget this Power Card to gain 3 Energy.\n|threshold=4 {{element|simplemoon}}<br>You may gain a Major Power instead of a Minor Power.\n}}",
+    "unique2": "{{Powercard\n|cost=1\n|title=Boon of Reimagining\n|elements={{CardElements|moon}}\n|targeting={{Targeting|turn=slow|target=anyspirit}}\n|text=Target Spirit may Forget a Power Card from hand or discard.<br><br>If they do, they draw 6 Minor Power Cards and gain 2 of them.<br><br>If you target another Spirit, they gain 1 Energy.\n}}",
+    "unique3": "{{Powercard\n|cost=1\n|fast=yes\n|title=Peace of the Nighttime Sky\n|elements={{CardElements|moon}}\n|targeting={{Targeting|turn=fast|range=1|option=sacred|target=any}}\n|text=If the Terror Level is 1, Invaders do not Ravage in target land this turn.<br><br>You may Repeat this Power. If you do, Forget this Power Card and gain {{element|simplemoon}}.\n}}",
+    "unique4": "{{Powercard\n|cost=0\n|title=Gather the Scattered Light of Stars\n|elements={{CardElements|moon}}\n|targeting={{Targeting|turn=slow|target=you}}\n|text=At the end of turn after discarding, Reclaim up to 2 cards to your hand.<br><br>You may then Forget a Unique Power Card to Reclaim up to 3 additional cards.\n}}",
+    "strategy": "==Spirit Spotlight==\n<youtube>g40avKpQhiU</youtube>\n\n==Links to Guides==\n{{sacredsite}} [https://boardgamegeek.com/thread/2518429/openings-starlight-seeks-its-form {{PAGENAME}} - jyonker13’s Opening]",
+    "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Starlight Seeks Its Form' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

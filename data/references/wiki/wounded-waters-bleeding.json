@@ -1,0 +1,86 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Wounded Waters Bleeding",
+  "expansion": "Nature Incarnate",
+  "complexity": "high",
+  "setup": "On your starting board, put 2 Presence in a land with Blight, then put 2 Presence and 1 Blight (from the box) in the highest-numbered land with a Town Setup Symbol. You start with your 4 Unique Power Cards and 4 Energy.</br>Set your 4 Healing Cards nearby.",
+  "playstyle": "Starts off wounded, losing a Presence or a Power Card every turn. Heals over the course of the game, finding a new nature - while some choices may be a touch better or worse due to Adversary, Power Card picks, teammates, etc., most combinations are viable in most games. Benefits from careful Presence placement, both due to losing Presence and because some if its Unique Powers must target from lands with Blight.",
+  "special_rules": "SEEKING A PATH TOWARDS HEALING</br>After playing cards each Spirit Phase: * Claim a Healing Marker (Element Marker) matching whichever of {{element|simplewater}} or {{element|simpleanimal}} you have more of. (You break ties.) * You may then Claim a Healing Card if you meet its requirements. (You can claim your first Healing Card on Turn 3.) * Then Destroy 1 Presence or Forget a Power Card (unless a Healing Card just removed this rule).",
+  "special_rules_raw": "'''''SEEKING A PATH TOWARDS HEALING'''''</br>After playing cards each Spirit Phase:\n* Claim a '''Healing Marker''' (Element Marker) matching whichever of {{element|simplewater}} or {{element|simpleanimal}} you have more of. (''You break ties.'')\n* You may then Claim a Healing Card if you meet its requirements. (''You can claim your first Healing Card on Turn 3.'')\n* Then Destroy 1 {{presence}} or Forget a Power Card (''unless a Healing Card just removed this rule'').",
+  "innates": [
+    {
+      "name": "SWIRL AND SPILL",
+      "speed": "slow",
+      "range": "1",
+      "target": "any",
+      "option": null,
+      "thresholds": [
+        {
+          "water": "2",
+          "effect": "Push up to 2 Explorer/Dahan/Blight."
+        },
+        {
+          "water": "3",
+          "animal": "1",
+          "effect": "1 Fear. Push up to 2 Town/Presence/Beasts."
+        },
+        {
+          "water": "5",
+          "plant": "2",
+          "animal": "2",
+          "effect": "In one land pushed into, Downgrade all Town and all City."
+        }
+      ]
+    },
+    {
+      "name": "SANGUINARY TAINT",
+      "speed": "slow",
+      "range": "1",
+      "target": "any",
+      "option": null,
+      "thresholds": [
+        {
+          "animal": "2",
+          "effect": "1 Fear. 1 Damage. Push 1 Dahan."
+        },
+        {
+          "water": "1",
+          "animal": "3",
+          "effect": "1 Damage. Add 1 Beasts."
+        },
+        {
+          "fire": "2",
+          "water": "2",
+          "animal": "5",
+          "effect": "1 Fear. 4 Damage. Add 1 Disease."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Wounded Waters Bleeding",
+    "gamebox": "Nature Incarnate",
+    "setup": "On your starting board, put 2 {{Presence}} in a land with {{Blight}}, then put 2 {{Presence}} and 1 {{Blight}} (''from the box'') in the highest-numbered land with a {{Invader|town}} Setup Symbol.\n\nYou start with your 4 Unique Power Cards and '''4 Energy'''.</br>Set your 4 Healing Cards nearby.",
+    "playstyle": "Starts off wounded, losing a {{Presence}} or a Power Card every turn. Heals over the course of the game, finding a new nature - while some choices may be a touch better or worse due to Adversary, Power Card picks, teammates, etc., most combinations are viable in most games.\n\nBenefits from careful {{Presence}} placement, both due to losing {{Presence}} and because some if its Unique Powers must target from lands with {{Blight}}.",
+    "complexity": "high",
+    "special": "'''''SEEKING A PATH TOWARDS HEALING'''''</br>After playing cards each Spirit Phase:\n* Claim a '''Healing Marker''' (Element Marker) matching whichever of {{element|simplewater}} or {{element|simpleanimal}} you have more of. (''You break ties.'')\n* You may then Claim a Healing Card if you meet its requirements. (''You can claim your first Healing Card on Turn 3.'')\n* Then Destroy 1 {{presence}} or Forget a Power Card (''unless a Healing Card just removed this rule'').",
+    "growthtype": "one",
+    "growthrows": "two",
+    "growth1": "{{growth|first=reclaim|second=gain1p|third=energy1}}",
+    "growth2": "{{growth|first=gain1p|second=addpresence2}}",
+    "growth3": "<div style=\"float:left; font-weight:bold; font-size:0.7em; text-align:center; position:relative; top:48px;\">'''''REQUIRES AT</br>LEAST 1</br>HEALING CARD'''''</div><div style=\"background-color:rgba(50,90,240,.25);\">{{growth|first=addpresence3|second=energy3|third=adddestroyedpresence1}}</div>",
+    "presence1": "{{PresenceT|blank|blank|blank|blank|energy3|energy4fireorplant|energy5any}}",
+    "presence2": "{{PresenceT|energy0card1|wateroranimal|gatherblight|energy1card2}}",
+    "presence3": "{{PresenceT|blank|blank|blank|blank|card3|reclaim1|card4}}",
+    "psummary": "{{Powersummary|offense=4|control=5|fear=2|defense=1|utility=1}}</br><hr>'''HEALING MARKER TRACK'''</br>[[file:Healing Marker Track.png|200px]]</br>This track is where '''Healing Markers''' are placed when claimed. Check the Special Rule '''''SEEKING A PATH TOWARDS HEALING''''' for more details.",
+    "loresection": "waters",
+    "strategy": "",
+    "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Wounded Waters Bleeding' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n<gallery>File:Wounded Waters Bleeding Home.png",
+    "Rulings": "",
+    "extratab": "Healing Cards",
+    "extratabcontents": "Important note: Wounded Waters Bleeding claims these Healing Cards through its Special Rule, '''''SEEKING A PATH TOWARDS HEALING'''''.\n<div>\n<div style=\"display: inline-block\">[[File:Serene_Waters_(ni).png|link=Serene Waters]]</div>\n<div style=\"display: inline-block\">[[File:Waters_Renew_(ni).png|link=Waters Renew]]</div>\n</div>\n<div style=\"margin-top:4px;\">\n<div style=\"display: inline-block\">[[File:Roiling_Waters_(ni).png|link=Roiling Waters]]</div>\n<div style=\"display: inline-block\">[[File:Waters_Taste_of_Ruin_(ni).png|link=Waters Taste of Ruin]]</div>\n</div>"
+  },
+  "unique_card_details": []
+}

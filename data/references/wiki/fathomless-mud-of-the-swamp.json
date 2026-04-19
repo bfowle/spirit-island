@@ -1,0 +1,78 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Fathomless Mud of the Swamp",
+  "expansion": "Horizons of Spirit Island",
+  "complexity": "low",
+  "setup": "Put 2 Presence on your starting board, in the lowest-numbered Wetland. You start with your 4 Unique Powers and 0 Energy.",
+  "playstyle": "Likes having {{sacredsite}} where Invaders will Build, but may need to re-create those {{sacredsite}} after oozing outwards with its Innate Power. In smaller games, might be able to cut off the most Inland lands from Explore actions by Destroying Inland Town/City and stopping new ones from being built. Causes a fair bit of Fear, much of which represents unpleasantness, hardship, and disgust.",
+  "special_rules": "OFFER NO FIRM FOUNDATIONS At your {{sacredsite}}, Build actions add Explorer instead of Town/City.",
+  "special_rules_raw": "'''''OFFER NO FIRM FOUNDATIONS'''''\n\nAt your {{sacredsite}}, Build actions add {{invader|explorer}} instead of {{invader|town}}/{{invader|city}}.",
+  "innates": [
+    {
+      "name": "SPREADING AND DREADFUL MIRE",
+      "speed": "slow",
+      "range": "1",
+      "target": "invaders",
+      "option": "sacred",
+      "thresholds": [
+        {
+          "water": "1",
+          "effect": "Move 1 Presence from the origin {{sacredsite}} to target land. (This is required.)"
+        },
+        {
+          "moon": "1",
+          "water": "2",
+          "earth": "1",
+          "effect": "1 Fear. 1 Damage. Push 1 Dahan."
+        },
+        {
+          "moon": "2",
+          "water": "3",
+          "earth": "2",
+          "effect": "1 Fear. 1 Damage. Push 1 Dahan."
+        },
+        {
+          "moon": "3",
+          "water": "4",
+          "earth": "3",
+          "plant": "2",
+          "effect": "2 Damage."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Fathomless Mud of the Swamp",
+    "gamebox": "Horizons of Spirit Island",
+    "setup": "Put 2 {{presence}} on your starting board, in the lowest-numbered Wetland.\n\nYou start with your 4 Unique Powers and 0 Energy.",
+    "playstyle": "Likes having {{sacredsite}} where Invaders will Build, but may need to re-create those {{sacredsite}} after oozing outwards with its Innate Power. In smaller games, might be able to cut off the most Inland lands from Explore actions by Destroying Inland {{invader|town}}/{{invader|city}} and stopping new ones from being built.\n\nCauses a fair bit of Fear, much of which represents unpleasantness, hardship, and disgust.",
+    "complexity": "low",
+    "special": "'''''OFFER NO FIRM FOUNDATIONS'''''\n\nAt your {{sacredsite}}, Build actions add {{invader|explorer}} instead of {{invader|town}}/{{invader|city}}.",
+    "growthtype": "one",
+    "growthrows": "",
+    "growth1": "{{Growth|first=reclaim|second=addpresence0}}",
+    "growth2": "{{Growth|first=addpresence1|second=addpresence1}}",
+    "growth3": "{{Growth|first=gain1p|second=addpresence2|third=energy2}}",
+    "presence1": "{{PresenceT|energy1|plant|energy2|energy3|water|energy4|energy5}}",
+    "presence2": "{{PresenceT|card1|card2|earthX|card3|moonX|card4}}",
+    "psummary": "{{Powersummary\n|offense=3\n|control=2\n|fear=3\n|defense=3\n|utility=2\n}}",
+    "loresection": "mud",
+    "suggestedcard1": "Steam Vents",
+    "suggestedcard2": "Entrancing Apparitions",
+    "suggestedcard3": "Uncanny Melting",
+    "suggestedcard4": "Cleansing Floods",
+    "suggestedcard5": "Pull Beneath the Hungry Earth",
+    "suggestedcard6": "The Land Thrashes in Furious Pain",
+    "suggestedcard7": "Gift of Power",
+    "aspectname#": "",
+    "complexitychange#": "",
+    "aspectreplacement#": "",
+    "aspecttext#": "",
+    "aspectexpansion#": "",
+    "strategy": "",
+    "design_and_extras": "==Theme Music==\n\n<youtube>IjpWmbWDAa8</youtube>\n\n==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Fathomless Mud of the Swamp' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

@@ -1,0 +1,87 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Serpent Slumbering Beneath the Island",
+  "expansion": "Promotional Pack 1",
+  "complexity": "high",
+  "setup": "Put 1 Presence on your starting board in the land #5.",
+  "playstyle": "There are several ways to play the Serpent, but all require patience: early game involves slowly building up Powers and Presence. It's not helpless during this time, but it isn't as effective as anyone else. It becomes incredibly powerful after awakening, but getting there requires a lot of time. Make sure to Absorb Essence before you run up against your Presence cap - and to get other players' buy-in before using Absorb Essence on their Presence.",
+  "special_rules": "DEEP SLUMBER You start off limited to 5 Presence on the island. Raise this with your \"Absorb Essence\" Power Card. Each use covers the lowest revealed number; your Presence limit is the lowest uncovered number. <div id=\"presence\"><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"> 5</div><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"> 7</div><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"> 8</div> <div class=\"option\" style=\"line-height: 95%; font-size:150%;\"> 10</div><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"> 11</div><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"> 12</div><div class=\"option\" style=\"border: 0px !important; line-height: 95%; font-size:150%;\"> 13</div></div>",
+  "special_rules_raw": "'''''DEEP SLUMBER''''' <br>You start off limited to 5 {{presence}} on the island. Raise this with your \"Absorb Essence\" Power Card. Each use covers the lowest revealed number; your {{presence}} limit is the lowest uncovered number.<br><div id=\"presence\"><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"><br>'''5'''</div><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"><br>'''7'''</div><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"><br>'''8'''</div><br><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"><br>'''10'''</div><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"><br>'''11'''</div><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"><br>'''12'''</div><div class=\"option\" style=\"border: 0px !important; line-height: 95%; font-size:150%;\"><br>'''13'''</div></div>",
+  "innates": [
+    {
+      "name": "SERPENT WAKES IN POWER",
+      "speed": "slow",
+      "range": null,
+      "target": "you",
+      "option": null,
+      "thresholds": [
+        {
+          "fire": "2",
+          "water": "1",
+          "plant": "1",
+          "effect": "Gain 1 Energy. Other spirits with any Absorbed Presence also gain 1 Energy."
+        },
+        {
+          "water": "2",
+          "earth": "3",
+          "plant": "2",
+          "effect": "Add 1 Presence to {{Range|1}}. Other spirits with 2 or more Absorbed Presence may do likewise."
+        },
+        {
+          "fire": "3",
+          "water": "3",
+          "earth": "3",
+          "plant": "3",
+          "effect": "Gain a Major Power without Forgetting. Other Spirits with 3 or more Absorbed Presence may do likewise."
+        }
+      ]
+    },
+    {
+      "name": "SERPENT ROUSES IN ANGER",
+      "speed": "slow",
+      "range": "0",
+      "target": "any",
+      "option": null,
+      "thresholds": [
+        {
+          "fire": "1",
+          "earth": "1",
+          "effect": "For each {{fire}} {{earth}} you have, 1 Damage to 1 Town / City."
+        },
+        {
+          "moon": "2",
+          "earth": "2",
+          "effect": "For each 2 {{moon}} 2 {{earth}} you have, 2 Fear and you may Push 1 Town from target land."
+        },
+        {
+          "moon": "5",
+          "fire": "6",
+          "earth": "6",
+          "effect": "{{Energycost|cost=7}} In every land in the game: X Damage, where X is the number of Presence you have in and adjacent to that land."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Serpent Slumbering Beneath the Island",
+    "gamebox": "Promotional Pack 1",
+    "setup": "Put 1 {{Presence}} on your starting board in the land #5.",
+    "playstyle": "There are several ways to play the Serpent, but all require patience: early game involves slowly building up Powers and Presence. It's not helpless during this time, but it isn't as effective as anyone else. It  becomes incredibly powerful after awakening, but getting there requires a lot of time.<br>Make sure to Absorb Essence before you run up against your Presence cap - and to get other players' buy-in before using Absorb Essence on their Presence.",
+    "complexity": "high",
+    "special": "'''''DEEP SLUMBER''''' <br>You start off limited to 5 {{presence}} on the island. Raise this with your \"Absorb Essence\" Power Card. Each use covers the lowest revealed number; your {{presence}} limit is the lowest uncovered number.<br><div id=\"presence\"><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"><br>'''5'''</div><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"><br>'''7'''</div><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"><br>'''8'''</div><br><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"><br>'''10'''</div><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"><br>'''11'''</div><div class=\"option\" style=\"line-height: 95%; font-size:150%;\"><br>'''12'''</div><div class=\"option\" style=\"border: 0px !important; line-height: 95%; font-size:150%;\"><br>'''13'''</div></div>",
+    "growthtype": "two",
+    "growth1": "{{growth|first=reclaim|second=movepresence1}}",
+    "growth2": "{{growth|first=gain1p|second=energy1}}",
+    "growth3": "{{growth|first=energy4}}",
+    "growth4": "{{growth|first=noblight}}",
+    "presence1": "{{PresenceT|energy1|fire|any|reclaim1E|earth|energy6|any|energy12}}",
+    "presence2": "{{PresenceT|card1|moonX|card2|waterX|serpent|card4|card5reclaim1}}",
+    "psummary": "{{Powersummary|offense=2|control=2|fear=2|defense=4|utility=5}}",
+    "loresection": "serpent",
+    "strategy": "==General Strategy==\nWhat jumps out at us?\n\n* '''That Presence Track!''' It spends most of its distance with low Energy gain and poor Card Plays, then rockets up at the end - particularly Energy, which far surpasses what any other Spirit can gain. And there's a crux-point in the middle where you must have advanced both tracks a certain distance to pass. But it has elements all over the place: Fire, Water, Moon, Earth, and two \"Any\"! The Serpent will be really good at triggering thresholds on Major Powers within its bailiwick... though it'll want to get its Card Plays up to 4+ to really shine with them.\n* '''Special Rule - Deep Slumber:''' The Serpent is limited in how much Presence it can have on the Island at once: just 5, to start with. There are two ways to get around this. One way is to let its Presence be destroyed by Blight, but this inflicts harm (losing Presence from the board) even as it stings it towards wakefulness (can play more Presence from its mat). The other is to subsume the Presence of more wakeful and speedy spirits using its \"Absorb Essence\" unique power card - we'll look at that later.\n* '''Innate Power - The Serpent Wakes in Power:''' A trio of development powers (Energy gain, Presence gain, Power Card gain) triggered with a core of plant and water. Most interesting is that spirits which have had some of their Presence absorbed by the Serpent will share in its benefits!\n* '''Innate Power - The Serpent Rouses in Anger:''' A trio of offensive powers (damage and fear) triggered with moon, fire, and earth. The first two are useful but unexceptional, but that final level has the potential for widespread, massive damage - but it's really hard to trigger.\n* '''Growth'''' is mostly straightforward. Unsurprisingly given its slumber, there's only one \"add Presence\" option. The flat-out \"+4 Energy\" choice could enable early Major Power plays. And its Reclaim includes a Move Presence option - representing the Serpent shifting slowly in the deeps; it is not as tied to place as many spirits are. (Or rather, its place is \"the Island\".)\n\nIts Unique Powers show us another aspect of the Serpent:\n\nSome general trends:\n\n* Most of them affect other Spirits. The Serpent starts off unable to affect the Invaders or Dahan, and only able to affect the land in a very low-power but broad-area way. But it can empower other spirits - though not itself - in several ways.\n* They're not very expensive. Absorb Essence costs 2, but gives back 3. Given its low Card Plays, the Serpent is likely to slowly accumulate Energy over the course of the early game (or perhaps it might decide to take an early Major Power).\n* They grant the same Elements as its Presence track: 3 Earth, 3 Water, 3 Fire, 2 Moon. Triggering the higher levels of The Serpent Wakes in Power (innate #1) is going to require taking Power Cards which grant Plant.\n\nThe specific powers:\n\n* '''Gift of the Primordial Deeps''' and '''Gift of Flowing Power''' both give other Spirits a boost, as well as the chance to either play another Power Card or gain Elements.\n* '''Absorb Essence''' is clearly a card to get teammates' buy-in before using: it removes another Spirit's Presence from the island! They do gain benefits: an Energy and an Element right away, from their contact with such an encompassing spirit, plus possible longer-term rewards from The Serpent Wakes in Power (innate #1). You'll probably have to use it at some point in order to get a reasonable number of Presence onto the board, but the decision of when and how often to use it is key.\n* '''Elemental Aegis''' defends many lands at once - weakly in early-game, more strongly as more Presence is absorbed.\n\n'''Overall:''' Fighting alongside the Serpent requires an awareness of its limitations (slow start, occasionally needs to chow down on someone's Presence) and of the benefits it brings to its allies (energy, power cards, additional plays, and more). It's far from powerless in early-game - the element and card-play boosts it gives to allies can push them over into higher-level Innates much earlier than would normally be possible; it can damage buildings with its Serpent Rouses in Anger innate; and it can grab an early Major Power if it so chooses - but it can only manage one or perhaps two things a turn, and is nowhere near as good at defense as, eg, Vital Strength of the Earth. Its allies should expect to pick up some of the slack in early-game, but will reap the rewards in later-game... if the island can survive that long.\n\n==Links to Guides==\n\n{{Sacredsite}} [https://boardgamegeek.com/thread/2282835/openings-serpent-slumbering-beneath-island Serpent Slumbering Beneath the Island/jyonker13's Opening]\n\n{{Sacredsite}} [https://forums.greaterthangames.com/t/a-guide-to-serpent-slumbering-beneath-the-island/17388 Serpent Slumbering Beneath the Island/pktt's Guide]\n\n{{Sacredsite}} [https://www.reddit.com/r/spiritisland/comments/1glk3y7/solo_serpent_strategy_guide Serpent Slumbering Beneath the Island/Uncaffeinated's Solo Serpent Strategy Guide]",
+    "design_and_extras": "==Theme Music==\n\n<youtube>0W7jR-Z14Ek</youtube>\n\n==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Serpent Slumbering Beneath the Island' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

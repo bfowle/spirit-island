@@ -6,3 +6,4 @@ target/
 .idea/
 .vscode/
 node_modules/
+.wiki-cache/

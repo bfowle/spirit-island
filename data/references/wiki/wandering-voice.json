@@ -1,0 +1,68 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Wandering Voice Keens Delirium",
+  "expansion": "Nature Incarnate",
+  "complexity": "high",
+  "setup": "Put 2 Presence on your starting board: 1 in land #6 and 1 in land #7. Put {{incarna|voice}}, Unempowered ({{incarna|unempowered}}) side up, on your starting board in land #6. You start with your 4 Unique Power Cards and 0 Energy.",
+  "playstyle": "Very positional; has a highly mobile Incarna (particularly with lots of {{element|simpleair}}) that adds Strife and chases Explorer/Town around as it roams the island. Has a harder time setting up Dahan counterattacks, but can use Mind-Shattering Song to more directly harm Invaders with Strife - and earn a fair bit of Fear in the process.",
+  "special_rules": "A CLARION VOICE GIVEN FORM</br>You have an Incarna ({{incarna|voice}}). If Empowered, it Isolates its land. SPREAD TUMULT AND DELUSION</br>When your Actions add/move {{incarna|voice}} to a land with Invaders, Add 1 Strife in the destination land. In lands with or adjacent to {{incarna|voice}}: if Strife is present, Dahan do not participate in Ravage. (They do not take Damage or counterattack. Isolate has no effect on {{incarna|voice}} and Dahan being adjacent.) SENSELESS ROAMING</br>When your Actions add Strife to an Explorer/Town, you may Push it.",
+  "special_rules_raw": "'''''A CLARION VOICE GIVEN FORM'''''</br>You have an Incarna ({{incarna|voice}}). If Empowered, it Isolates its land.\n\n'''''SPREAD TUMULT AND DELUSION'''''</br>When your Actions add/move {{incarna|voice}} to a land with Invaders, Add 1 {{strife}} in the destination land.\n\nIn lands with or adjacent to {{incarna|voice}}: if {{strife}} is present, {{dahan}} do not participate in Ravage. ''(They do not take Damage or counterattack. Isolate has no effect on {{incarna|voice}} and {{dahan}} being adjacent.)''\n\n'''''SENSELESS ROAMING'''''</br>When your Actions add {{strife}} to an {{invader|explorer}}/{{invader|town}}, you may Push it.",
+  "innates": [
+    {
+      "name": "INSCRUTABLE JOURNEYING",
+      "speed": "fast",
+      "range": "",
+      "target": "yourself",
+      "option": null,
+      "thresholds": []
+    },
+    {
+      "name": "MIND-SHATTERING SONG",
+      "speed": "slow",
+      "range": "1",
+      "target": "strife",
+      "option": "sacred",
+      "thresholds": [
+        {
+          "moon": "1",
+          "air": "2",
+          "effect": "1 Fear per {{moon}} you have."
+        },
+        {
+          "sun": "1",
+          "air": "2",
+          "effect": "1 Damage per {{sun}} you have, to Invaders with Strife only."
+        },
+        {
+          "moon": "1",
+          "sun": "1",
+          "air": "4",
+          "effect": "For each {{sun}} {{moon}} pair you have, Destroy 1 Invader with Strife."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Wandering Voice Keens Delirium",
+    "gamebox": "Nature Incarnate",
+    "setup": "Put 2 {{presence}} on your starting board: 1 in land #6 and 1 in land #7. Put {{incarna|voice}}, Unempowered ({{incarna|unempowered}}) side up, on your starting board in land #6.\n\nYou start with your 4 Unique Power Cards and 0 Energy.",
+    "playstyle": "Very positional; has a highly mobile Incarna (particularly with lots of {{element|simpleair}}) that adds {{strife}} and chases {{invader|explorer}}/{{invader|town}} around as it roams the island.\n\nHas a harder time setting up {{dahan}} counterattacks, but can use Mind-Shattering Song to more directly harm Invaders with {{strife}} - and earn a fair bit of {{fear}} in the process.",
+    "complexity": "high",
+    "incarnapieces": "<gallery>File:Wandering Voice Keens Delirium Incarna.png",
+    "special": "'''''A CLARION VOICE GIVEN FORM'''''</br>You have an Incarna ({{incarna|voice}}). If Empowered, it Isolates its land.\n\n'''''SPREAD TUMULT AND DELUSION'''''</br>When your Actions add/move {{incarna|voice}} to a land with Invaders, Add 1 {{strife}} in the destination land.\n\nIn lands with or adjacent to {{incarna|voice}}: if {{strife}} is present, {{dahan}} do not participate in Ravage. ''(They do not take Damage or counterattack. Isolate has no effect on {{incarna|voice}} and {{dahan}} being adjacent.)''\n\n'''''SENSELESS ROAMING'''''</br>When your Actions add {{strife}} to an {{invader|explorer}}/{{invader|town}}, you may Push it.",
+    "growthtype": "one",
+    "growth1": "{{Growth|first=reclaim|second=addmovevoiceincarna|third=energy1}}",
+    "growth2": "{{Growth|first=addpresence3|second=addpresence1}}",
+    "growth3": "{{Growth|first=gain1p|second=addpresence2|third=energy1|fourth=gainair}}",
+    "presence1": "{{PresenceT|energy0|energy1|sunormoon|energy2|air|energy4|pushvoiceincarna}}",
+    "presence2": "{{PresenceT|card1|card2|card2|card3|reclaim1|card4}}",
+    "psummary": "{{Powersummary|offense=2|control=5|fear=3|defense=1|utility=2}}",
+    "loresection": "voice",
+    "strategy": "==Builds==\n'''The Reclaim Loop Build'''\n\nThis build spreads actions thin for the first 3 turns in order to reclaim loop all for uniques and max the right innate from turn 4 onwards. This can run into problems against adversaries such as France and Prussia, who apply lots of early pressure, but works well against adversaries such as Hapsburg Livestock and Russia that allow a more laid back opening. \n\nThe exact order of cardplays is not essential, though it is important to note the player will have only 3 energy to spend from turns 1-3. This means they must choose either play a pay an energy to activate Turmoil's Touch, or use the reclaim 1 on a 1-cost unique. Activating turmoil's touch allows them to gradually increase their hand size, searching for an on-element card to replace Turmoil's Touch in the loop. This also gives choice event coverage. Reclaiming a 1-cost gives the player an extra solve in the early game, which can matter when dealing with difficult seeds. \n\n * Turn 1: G2 Top Bottom - Play a 1-cost Unique. Push {{incarna|voice}} x1\n * Turn 2: G2 Bottom Bottom - Play Exhale Confusion. Push {{incarna|voice}} x1\n * Turn 3: G2 Bottom Bottom - Play 1-Cost Unique, Turmoil's Touch, and Exhale Confusion (pay 1 energy for the Turmoil's Touch) . Push {{incarna|voice}} x2, tier 2 Mind Shattering Song (2 fear, 3 damage to strifed invaders).\n * Turn 4+: G1 Reclaim - Play 4 uniques, Empower {{incarna|voice}}, push {{incarna|voice}} x2. Max Mind Shattering Song (3 Fear, 3 Damage to strifed invaders, Destroy 3 strifed Invaders).\n\nAnother option is to play 0 cards on turn 2 and then playing all 4 cards on turn 3 to empower and max Mind Shattering Song a turn early. This foregoes 2 fear, a use of the left innate, and the effect of Turmoil's Touch. Since actions are delayed relative to the line above, there is a higher risk of flipping the blight card, and more vulnerability to choice event edge cases, since you cannot gain cards with Turmoil's Touch.\n\n'''Mixed Track Builds'''\n\nThese build makes more use of G3 to draft build a more flexible hand, using the energy from top track to play 1-costs or bank for majors. The player can take G3 along Top track and use their Turmoil's Touch draw as forget fodder for a major; the Sun/Moon track element makes many low cost majors viable, and relying on Damage rather than defend effects simplifies Incarna positioning. Alternatively, they can take G3 down bottom track to look for inexpensive air cards, and generating more actions. Two sample lines are provided below, though this approach is more contextual than the other, fairly rigid builds. Note that in both lines, the G2 can be delayed to turn 2 or 3, trading an Incarna push for early draft knowledge.\n\nTOP TRACK FOCUS\n * Turn 1: G2 Top Bottom - Gain 1 energy. Play Turmoil's Touch (pay energy to take a card). Push {{incarna|voice}} x1\n * Turn 2: G3 Top - Gain 2 energy, Draft a Minor/Major. Play 2 {{air}} cards and choose {{sun}} for Track Elements. Push {{incarna|voice}} x2, ~2 damage from Mind Shattering Song.\n * Turn 3: G3 Top - Gain 3 energy, Draft a Major/Minor. Play 2 {{air}} cards and choose {{sun}} for Track Elements. Push {{incarna|voice}} x2, ~2 damage from Mind Shattering Song.\n * Turn 4: G3 Top - Gain 3 energy, Draft a Major/Minor, Play 1 {{air}} card. Push {{incarna|voice}} x2, ~2 damage from Mind Shattering Song.\n * Turn 5: G1 Reclaim - Gain 3 energy. Play 1 {{air}} card. Push {{incarna|voice}} x2, ~2 damage from Mind Shattering Song.\n\nBOTTOM TRACK FOCUS\n * Turn 1: G2 Top Bottom - Gain 1 energy. Play Turmoil's Touch (pay energy to take a card). Push {{incarna|voice}} x1\n * Turn 2: G3 Bottom - Gain 2 energy, draft a Minor. Play 2 {{air}} cards. Push {{incarna|voice}} x2. Tier 1 or 2 of Mind Shattering Song.\n * Turn 3: G3 Bottom - Gain 2 energy, draft a Minor. Play 2 {{air}} cards. Push {{incarna|voice}} x2. Tier 1 or 2 of Mind Shattering Song.\n * Turn 4: G1 Reclaim - Gain 2 energy. Play 3 {{air}} cards. Push {{incarna|voice}} x2. Tier 1 and 2 of Mind Shattering Song\n\n'''Full Bottom Track'''\n\nThis is Voice's most aggressive build - before the turn 2 ravage you get 4-5 {{incarna|voice}} Pushes, 4+ {{fear}}, and two looks at the minor deck. The idea here is to make a fast pocket by pushing all the invaders towards the coast, find a zero-cost air card, and eventually grow towards 4 plays to begin destroy the Invaders with max Mind Shattering Song. This build can't play 1 costs consistently, so if you don't see a good zero on the first draft it may be wise to pivot to a mixed-style build, grabbing minors for the first two turns, unlocking both 2 plays and one energy, then taking a G2 to reach 3 plays before you reclaim. \n * Turn 1: G3 Bottom - Gain 1 energy and draft a Minor. Play a 1-cost unique and Turmoil's Touch. Push {{incarna|voice}} x2. Tier 1+2 of Mind Shattering Song. Only use Turmoil's effect if the minor draft was bad.\n * Turn 2: G3 Bottom - Gain 1 energy, draft a Minor. Play 2 remaining uniques. Push {{incarna|voice}} x2. Tier 1+2 of Mind Shattering Song.\n * Turn 3: G3 Bottom - Gain 1 energy, draft a Minor. Play 2-3 Minors (max 1 total cost). Push {{incarna|voice}} x1 or x2. Tier 1 or 2 of Mind Shattering Song.\n * Turn 4: G1 Reclaim - Gain 1 energy. Plays vary.\n\n'''Early Reclaim'''\n\nThis build has a similar first two turns to the Full Bottom build, except you grab the top energy on turn 2 then reclaim right away. This provides enough energy to play 2 1-costs on turn 2, and puts your good cards back in your hands for turn 3. This generally gives a similar amount of early board control, since full bottom cannot usually play 3 cards on turn 3 without support. The growth order of the first two turns can be reversed to bank energy for majors, or, of playing solo, to double up on Turmoil's Touch draws. \n\n * Turn 1: G3 Bottom - Gain 1 energy and draft a Minor. Play a 0-cost and an {{air}} card. Push {{incarna|voice}} x1 or x2. Tier 1 and/or 2 of Mind Shattering Song. \n * Turn 2: G3 Top - Gain 2 energy, draft a Minor/Major. Play 2 {{air}} cards. Push {{incarna|voice}} x2. Tier 1+2 of Mind Shattering Song.\n * Turn 3: G3 Reclaim - Gain 2 energy. Play any 2 cards.\n\n\n'''Top Track'''\n\nThis Build is similar to the unique reclaim loop in that it sacrifices early board control for track scaling, using the {{incarna|voice}} pushes to stem the bleeding. This build is the fastest way to empower the {{incarna|voice}} (turn 3). The energy and early access to isolates make it a strong option into England. Choosing not to empower the {{incarna|voice}} allows a wider range of plays in the early game, since you no longer need to worry about playing exactly Frightful Keening and Turmoil's Touch on Turn 3.\n\n * Turn 1: G2 Top Top - Gain 1 energy and play Twist Perceptions. Push {{incarna|voice}} x1.\n * Turn 2: G2 Top Top - Gain 2 energy. Play Delirium. Push {{incarna|voice}} x1. Tier 1+2 of Mind Shattering Song.\n * Turn 3: G3 Bottom - Gain 3 energy and a Major. Play Frightful Keening and Turmoil's Touch. Empower {{incarna|voice}}. Push {{incarna|voice}} x2 + Isolate, Max Mind Shattering Song.\n * Turn 4: G3 Top - Gain 5 energy and a Major. Play both majors, to a max cost of 8. Push {{incarna|voice}} x1 or x2 + Isolate.\n * Turn 5: G1 Reclaim - Gain 5 energy. Plays vary.",
+    "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Wandering Voice Keens Delirium' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n<gallery>File:Wandering Voice Keens Delirium Home.png",
+    "Rulings": "==Notes==\n{{Reflist}}"
+  },
+  "unique_card_details": []
+}

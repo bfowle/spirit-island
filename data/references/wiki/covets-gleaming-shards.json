@@ -1,0 +1,80 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": null,
+  "expansion": "Apocrypha",
+  "complexity": "veryhigh",
+  "setup": "Place {{Incarna|covets}}, your Hoard marker ({{Hoard_(marker)}}), and 1 Presence on your starting board in your choice of a Mountain or a land with Blight. Take another 13 presence discs and put them on the bottom of your Hoard as Treasure markers. Set aside metal tokens ({{Metal}}) near your Hoard. You start with your 4 Unique Power Cards and 0 Energy.",
+  "playstyle": "Can do nearly anything... if it collects enough metal! Benefits from letting the Invaders build up enough that finding metal is easier, and will tend to do worse if it prioritizes preventing blight over its core drive.",
+  "special_rules": "PREDATORY ROAMING You have an Incarna ({{Incarna|covets}}). When targeting a land with a power, you may push {{Incarna|covets}} towards or into that land. This can enable Range and targeting requirements. Once per turn, you may add or move {{Incarna|covets}} directly into {{Hoard_(marker)}}. ALWAYS SEEKING METAL Your powers can Find metal ({{Metal}}): Choose a Town/City without {{Metal}} and attach 1 {{Metal}} (for Town) or 2 {{Metal}} (for City). When it is Destroyed, Removed, or Pushed (but not when Gathered, Replaced, or otherwise Moved), it Drops its {{Metal}}, leaving it unattached. COLLECTOR OF SPOILS At {{Incarna|covets}}, each dropped {{Metal}} is attached to {{Incarna|covets}}. When {{Metal}} attached to {{Incarna|covets}} is at {{Hoard_(marker)}}, Store it in the Hoard. (Follow instructions on Hoard.)",
+  "special_rules_raw": "'''''PREDATORY ROAMING'''''<br/>You have an Incarna ({{Incarna|covets}}). When targeting a land with a power, you may push {{Incarna|covets}} towards or into that land. This can enable Range and targeting requirements.<br/>Once per turn, you may add or move {{Incarna|covets}} directly into {{Hoard_(marker)}}.\n\n'''''ALWAYS SEEKING METAL'''''<br/>Your powers can '''Find''' metal ({{Metal}}): Choose a {{town}}/{{city}} without {{Metal}} and attach 1 {{Metal}} (for {{town}}) or 2 {{Metal}} (for {{city}}). When it is Destroyed, Removed, or Pushed (but ''not'' when Gathered, Replaced, or otherwise Moved), it '''Drops''' its {{Metal}}, leaving it unattached.\n\n'''''COLLECTOR OF SPOILS'''''<br/>At {{Incarna|covets}}, each dropped {{Metal}} is attached to {{Incarna|covets}}. When {{Metal}} attached to {{Incarna|covets}} is at {{Hoard_(marker)}}, '''Store''' it in the Hoard. ''(Follow instructions on Hoard.)''",
+  "innates": [
+    {
+      "name": "SCENT OF SHINING EARTH",
+      "speed": "fast",
+      "range": "1",
+      "target": "buildingnometal",
+      "option": null,
+      "thresholds": [
+        {
+          "earth": "1",
+          "effect": "Find {{Metal}} in a Town/City."
+        },
+        {
+          "fire": "2",
+          "earth": "2",
+          "effect": "Add 1 more {{Metal}} to a City."
+        },
+        {
+          "air": "2",
+          "earth": "3",
+          "effect": "Find {{Metal}} in a Town."
+        },
+        {
+          "earth": "4",
+          "effect": "Repeat this Power in a different target land."
+        }
+      ]
+    },
+    {
+      "name": "THREATS, DEMANDS, AND INTIMIDATION",
+      "speed": "fast",
+      "range": "1",
+      "target": "towncity",
+      "option": null,
+      "thresholds": [
+        {
+          "sun": "2",
+          "earth": "2",
+          "effect": "You may Push or Gather a Dahan."
+        },
+        {
+          "earth": "2",
+          "animal": "2",
+          "effect": "An Invader does not participate in Ravage."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "gamebox": "Apocrypha",
+    "setup": "Place {{Incarna|covets}}, your Hoard marker ({{Hoard_(marker)}}), and 1 {{Presence}} on your starting board in your choice of a Mountain or a land with {{blight}}. Take another 13 presence discs and put them on the bottom of your Hoard as Treasure markers. Set aside metal tokens ({{Metal}}) near your Hoard. You start with your 4 Unique Power Cards and 0 Energy.",
+    "playstyle": "Can do nearly anything... if it collects enough metal! Benefits from letting the Invaders build up enough that finding metal is easier, and will tend to do worse if it prioritizes preventing blight over its core drive.",
+    "complexity": "veryhigh",
+    "incarnapieces": "<gallery>File:Covets Gleaming Shards of Earth Incarna.svg",
+    "special": "'''''PREDATORY ROAMING'''''<br/>You have an Incarna ({{Incarna|covets}}). When targeting a land with a power, you may push {{Incarna|covets}} towards or into that land. This can enable Range and targeting requirements.<br/>Once per turn, you may add or move {{Incarna|covets}} directly into {{Hoard_(marker)}}.\n\n'''''ALWAYS SEEKING METAL'''''<br/>Your powers can '''Find''' metal ({{Metal}}): Choose a {{town}}/{{city}} without {{Metal}} and attach 1 {{Metal}} (for {{town}}) or 2 {{Metal}} (for {{city}}). When it is Destroyed, Removed, or Pushed (but ''not'' when Gathered, Replaced, or otherwise Moved), it '''Drops''' its {{Metal}}, leaving it unattached.\n\n'''''COLLECTOR OF SPOILS'''''<br/>At {{Incarna|covets}}, each dropped {{Metal}} is attached to {{Incarna|covets}}. When {{Metal}} attached to {{Incarna|covets}} is at {{Hoard_(marker)}}, '''Store''' it in the Hoard. ''(Follow instructions on Hoard.)''",
+    "growthtype": "one",
+    "growth1": "{{growth|first=reclaim|second=gain1p}}",
+    "growth2": "{{growth|first=addpresencecovetslair|second=addpresencecovetsincarna|third=energy1}}",
+    "growth3": "{{growth|first=gain1p|second=addpresence1|third=energy2}}",
+    "presence1": "{{PresenceT|energy0|energy1|fire|energy2animal|energy3earth|copyoneelement|energy5pushcovetsincarna}}",
+    "presence2": "{{PresenceT|card1|sunX|card2|airX|animalX|card3}}<!--<div style=\"display: flex; align-items: center;\"><div style=\"float:left; top:30px;\">{{PresenceT|card1|airX|card2|sunX}}</div><div style=\"float:left;\"><div id=\"presence\"><div class=\"track\"><div class=\"option\"><div style=\"position:relative; top:14px; text-align:center;\">[[File:Fireelement.png|30px]]</div></div></div><br><div class=\"track\"><div class=\"option\"><div style=\"position:relative; top:14px; text-align:center;\">[[File:Animalelement.png|30px]]</div></div></div></div></div><div style=\"float:left;\">{{PresenceT|card3|dotted=yes}}</div><div style=\"clear: both;\"></div></div>-->",
+    "psummary": "{{powersummary|offense=5|control=4|fear=5|defense=1|utility=3}}",
+    "loresection": "covets",
+    "uniquepowercards": "[[File:Favors_of_Steel_and_Bone_(apocrypha).png]] [[File:Melt_Earth_to_Slag_(apocrypha).png]] [[File:Petition_for_Smoldering_Wrath_(apocrypha).png]] [[File:Unnerving_Attention_(apocrypha).png]]",
+    "strategy": "==General Strategy==\n\n==Links to Guides==",
+    "design_and_extras": "None available at the moment. Check back later!\n=The Gleaming Hoard Board=\n<div class=\"\" style=\"text-align:left;\">[[File:Hoard_Board.png|1000px]]</div>"
+  },
+  "unique_card_details": []
+}

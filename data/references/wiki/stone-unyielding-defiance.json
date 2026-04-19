@@ -1,0 +1,63 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Stone's Unyielding Defiance",
+  "expansion": "Jagged Earth",
+  "complexity": "moderate",
+  "setup": "Put 2 Presence on your starting board: 1 in the lowest-numbered Mountain without Dahan; 1 in an adjacent land that has Blight (if possible) or is Sands (if not).",
+  "playstyle": "Most of its special rules and innates require being where the Invaders are - particularly in the worst, most-overrun lands, so it can mitigate incoming Blight and (eventually) destroy the Invaders with their own Ravages. Does best with the patience to build up a position over time, and the temperance to hold some Energy in reserve so it can take advantage of Hold the Island Fast With a Bulwark of Will.",
+  "special_rules": "BESTOW THE ENDURANCE OF BEDROCK When Blight is added to one of your lands, unless the Blight then outnumbers your Presence, it does not cascade or destroy Presence (yours or others'). DEEP LAYERS EXPOSED TO THE SURFACE The first time you uncover each of your \"+1 Card Play\" Presence spaces, gain a Minor Power. (They're marked with [[Image:Minorsymbol.png|15px]] as a reminder.)",
+  "special_rules_raw": "'''''BESTOW THE ENDURANCE OF BEDROCK'''''\n\nWhen {{blight}} is added to one of your lands, unless the {{blight}} then outnumbers your {{presence}}, it does not cascade or destroy {{presence}} (yours or others').\n\n'''''DEEP LAYERS EXPOSED TO THE SURFACE'''''\n\nThe first time you uncover each of your \"+1 Card Play\" {{presence}} spaces, gain a Minor Power. ''(They're marked with [[Image:Minorsymbol.png|15px]] as a reminder.)''",
+  "innates": [
+    {
+      "name": "HOLD THE ISLAND FAST WITH A BULWARK OF WILL",
+      "speed": "fast",
+      "range": null,
+      "target": "you",
+      "option": null,
+      "thresholds": [
+        {
+          "earth": "2",
+          "effect": "When Blight is added to one of your lands, you may pay 2 Energy per Blight to take it from the box instead of the Blight Card. (Handle any cascade separately.)"
+        },
+        {
+          "earth": "4",
+          "effect": "The cost is 1 Energy instead of 2."
+        },
+        {
+          "earth": "6",
+          "plant": "1",
+          "effect": "When an Event or Blight card directly destroys Presence (yours or others'), you may prevent any number of Presence from being destroyed by paying 1 Energy each. (\"Directly\" means \"not by adding Blight\".)"
+        }
+      ]
+    },
+    {
+      "name": "LET THEM BREAK THEMSELVES AGAINST THE STONE",
+      "speed": "fast",
+      "range": "0",
+      "target": "any",
+      "option": null,
+      "thresholds": []
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Stone's Unyielding Defiance",
+    "gamebox": "Jagged Earth",
+    "setup": "Put 2 {{presence}} on your starting board: 1 in the lowest-numbered Mountain without {{dahan}}; 1 in an adjacent land that has {{blight}} (if possible) or is Sands (if not).",
+    "playstyle": "Most of its special rules and innates require being where the Invaders are - particularly in the worst, most-overrun lands, so it can mitigate incoming Blight and (eventually) destroy the Invaders with their own Ravages.\n\nDoes best with the patience to build up a position over time, and the temperance to hold some Energy in reserve so it can take advantage of Hold the Island Fast With a Bulwark of Will.",
+    "complexity": "moderate",
+    "special": "'''''BESTOW THE ENDURANCE OF BEDROCK'''''\n\nWhen {{blight}} is added to one of your lands, unless the {{blight}} then outnumbers your {{presence}}, it does not cascade or destroy {{presence}} (yours or others').\n\n'''''DEEP LAYERS EXPOSED TO THE SURFACE'''''\n\nThe first time you uncover each of your \"+1 Card Play\" {{presence}} spaces, gain a Minor Power. ''(They're marked with [[Image:Minorsymbol.png|15px]] as a reminder.)''",
+    "growthtype": "one",
+    "growth1": "{{growth|first=reclaim|second=gain2earth|third=Stone}}",
+    "growth2": "{{growth|first=addpresence2|second=energy3}}",
+    "growth3": "{{growth|first=gain1p|second=addpresence1}}",
+    "presence1": "{{PresenceT|energy2|energy3|card+1stone|energy4|card+1stone|energy6|card+1stone}}",
+    "presence2": "{{PresenceT|card1|earthX|earthX|earthreclaimX|earthanyX|card2earth}}",
+    "psummary": "{{Powersummary|offense=4|control=2|fear=1|defense=5|utility=2}}",
+    "loresection": "stone",
+    "strategy": "==Spirit Spotlight==\n\n<youtube>gP4X50O5--0</youtube>\n\n==Links to Guides==\n\n{{sacredsite}} [[{{PAGENAME}}/jyonker13’s Opening]][https://boardgamegeek.com/thread/2512536/openings-stones-unyielding-defiance]",
+    "design_and_extras": "==Spirit Spotlight==\n\n<youtube>https://www.youtube.com/watch?v=gP4X50O5--0</youtube>\n\n==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Stone\\'s Unyielding Defiance' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

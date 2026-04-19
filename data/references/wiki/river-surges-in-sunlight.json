@@ -1,0 +1,65 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "River Surges in Sunlight",
+  "expansion": "Base Game",
+  "complexity": "low",
+  "setup": "Put 1 Presence on your starting board in the highest-numbered Wetlands.",
+  "playstyle": "While capable of some direct offense, River Surges in Sunlight is best at flooding out Explorers and Towns, displacing them from lands where they might Build or Ravage. The ability to get free Sacred Sites makes a wide range of Powers more useful.",
+  "special_rules": "RIVER'S DOMAIN Your Presence in Wetlands counts as {{sacredsite}}.",
+  "special_rules_raw": "'''''RIVER'S DOMAIN'''''<br>Your {{presence}} in Wetlands counts as {{sacredsite}}.",
+  "innates": [
+    {
+      "name": "MASSIVE FLOODING",
+      "speed": "slow",
+      "range": "1",
+      "target": "any",
+      "option": "sacred",
+      "thresholds": [
+        {
+          "sun": "1",
+          "water": "2",
+          "effect": "Push 1 Explorer / Town."
+        },
+        {
+          "sun": "2",
+          "water": "3",
+          "effect": "Instead, 2 Damage. Push up to 3 Explorer / Town."
+        },
+        {
+          "sun": "3",
+          "water": "4",
+          "earth": "1",
+          "effect": "Instead, 2 Damage to each Invader."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "River Surges in Sunlight",
+    "gamebox": "Base Game",
+    "setup": "Put 1 {{presence}} on your starting board in the highest-numbered Wetlands.",
+    "playstyle": "While capable of some direct offense, River Surges in Sunlight is best at flooding out Explorers and Towns, displacing them from lands where they might Build or Ravage. <br> The ability to get free Sacred Sites makes a wide range of Powers more useful.",
+    "complexity": "low",
+    "special": "'''''RIVER'S DOMAIN'''''<br>Your {{presence}} in Wetlands counts as {{sacredsite}}.",
+    "growthtype": "one",
+    "growth1": "{{Growth|first=reclaim|second=gain1p|third=energy1}}",
+    "growth2": "{{Growth|first=addpresence1|second=addpresence1}}",
+    "growth3": "{{Growth|first=gain1p|second=addpresence2}}",
+    "presence1": "{{PresenceT|energy1|energy2|energy2|energy3|energy4|energy4|energy5}}",
+    "presence2": "{{PresenceT|card1|card2|card2|card3|reclaim1|card4|card5}}",
+    "psummary": "{{Powersummary|offense=4|control=5|fear=1|defense=1|utility=4}}",
+    "loresection": "river",
+    "suggestedcard1": "Uncanny Melting",
+    "suggestedcard2": "Nature\\'s Resilience",
+    "suggestedcard3": "Pull Beneath the Hungry Earth",
+    "suggestedcard4": "Accelerated Rot",
+    "suggestedcard5": "Song of Sanctity",
+    "suggestedcard6": "Tsunami",
+    "suggestedcard7": "Encompassing Ward",
+    "strategy": "==General Strategy==\n\nWhat do we see?\n\n* '''Growth:''' It can play two Presence/turn, allowing for fast expansion, though flowing through one land at a time. Its single-Presence option grants a Power Card - unlike Lightning's, which grants extra Energy. River's nature is a bit more fluid than Lightning's; it changes more easily.\n* '''Presence Tracks:''' It has average-ish Energy and Card Plays (a bit worse than average, but being able to play 2 Presence in one turn more than makes up for that). However, there's a symbol on the Card Plays track we haven't seem before: Reclaim One. Once this symbol is uncovered, River can reclaim one Power Card every Spirit Phase, allowing it to go longer without taking Reclaim All during Growth. This bonus is especially useful when trying to take a \"high Plays, low Energy\" many-small-Powers approach; that River gets it partway along its Plays tracks indicates that it's probably well-suited to that strategy.\n* '''Special Rules: River's Home''' - Any Presence in Wetland is considered a Sacred Site, even if there's only one of it. Definitely useful, though whether it's critical depends on how much River needs Sacred Sites.\n* '''Innate Power: Massive Flooding''' - At the base level, this Pushes Invaders from a land. At the highest level, it inflicts widespread damage on all Invaders in the land. The middle level splits the difference. The low level looks pretty easy to trigger (though we'll have to check the elements on River's cards); the top level looks much harder, requiring at least 4 Power Cards. This needs a Sacred Site to use, so will be easiest near Wetlands.\n \n\"Push\" means \"move from the target land to adjacent lands\" - you can Push all affected Invaders to the same place, or scatter them among multiple lands. For River's Powers, Pushing represents forced relocation (for Towns) / diversion (for Explorers) due to flooding, but other Powers might Push Invaders to represent \"frightening them away\", \"giving them wanderlust\", \"making a land uninhabitable/unpalatable\", or other such effects. Moving Invaders around with Push and Gather can be useful in several different ways: to get them out of lands where they're about to Build or Ravage, to move them into lands where your Powers are more effective, or to concentrate them together so a particularly potent Power can wipe them all out in one blow.\n\nMassive Flooding isn't River's only way of Pushing Invaders:\n\n* '''Wash Away''' also Pushes Explorers and Towns. In concert with Massive Flooding, River can do a lot of movement!\n* '''Flash Floods''' isn't just damage, it's Fast damage - useful for picking off Explorers before they can Build. On the coasts, it can take out Towns, or almost destroy a City.\n* '''Boon of Vigor''' can be used on itself if necessary, but is much better used cooperatively - particularly if you can coordinate the timing so that you use it on a turn they're playing lots of Power Cards.\n* '''River's Bounty''' lets River call to the Dahan by providing blessings of good harvest and health. Improvements to net population growth and additional time for things like fighting are represented by adding another Dahan piece to the board. River Surges in Sunlight also benefits, as the Dahan tend to its banks and make offerings of dance and song.\n \nLooking across the Power Cards, a few things stand out:\n\n* None of them require Sacred Sites. So the free Sacred Sites from River's Home will be useful only for the Massive Flooding innate and for any gained Power Cards requiring Sacred Sites.\n* All of them provide Water, and all but one of them provide Sun. So it'll be possible to trigger Massive Flooding just about every turn. Maybe those free Sacred Sites will be important after all!\n* Overall, they're pretty cheap. Their total Energy cost is 3, but River's Bounty will usually give 1 back, and Boon of Vigor can also do so in a pinch.\n \n'''Overall:''' River Surges in Sunlight works very well with a Plays-heavy, lots-of-small-Powers strategy: it has good ability to gain Power Cards, the Reclaim One bonus spot, cheap Unique Power cards, and powerful higher-level Innate Power effects. However, it can also take a different tack, using its double-Presence placement to blast up the Energy track and grab Major Powers, planning on never triggering anything but the lowest level of its innate until late-game. Which is better will depend on what other Spirits are fighting alongside it, what Adversary is being faced, and initial Power picks.\n\n==Links to Guides==\n\n{{Sacredsite}} [[{{PAGENAME}}/Antistone's Opening]][https://boardgamegeek.com/thread/1967085/openings-river-surges-sunlight]\n\n{{Sacredsite}} [[{{PAGENAME}}/Phantaskippy's Guide]][https://forums.greaterthangames.com/t/phantaskippys-guide-to-phantasms-part-1-river-surges-in-sunlight/16951]\n\n{{Sacredsite}} [[{{PAGENAME}}/Build Diagrams]]",
+    "design_and_extras": "==Spirit Spotlight==\n\n<youtube>U8WfgwHRGTo</youtube>\n\n==Theme Music==\n\n<youtube>LuQ1-VbvDWk</youtube>\n\n==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'River Surges in Sunlight' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

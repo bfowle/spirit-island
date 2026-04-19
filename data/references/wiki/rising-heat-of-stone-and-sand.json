@@ -1,0 +1,77 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Rising Heat of Stone and Sand",
+  "expansion": "Horizons of Spirit Island",
+  "complexity": "low",
+  "setup": "Put 2 Presence on your starting board, in the highest-numbered Sands. You start with your 4 Unique Power Cards and 0 Energy.",
+  "playstyle": "Weaken-and-Destroy. Likes having {{sacredsite}} where there's Town/City, as it makes all Spirits' Damage more effective there. Has an easier time setting up {{sacredsite}} in Sands and Mountains, but can do so in any terrain with a bit more time.",
+  "special_rules": "BLISTERING HEAT At your {{sacredsite}}, Invaders have -1 Health (min. 1).",
+  "special_rules_raw": "'''''BLISTERING HEAT'''''\n\nAt your {{sacredsite}}, Invaders have -1 Health (min. 1).",
+  "innates": [
+    {
+      "name": "SCORCH WITH WAVES OF HEAT",
+      "speed": "slow",
+      "range": "1",
+      "target": "any",
+      "option": "sacred",
+      "thresholds": [
+        {
+          "fire": "2",
+          "air": "2",
+          "effect": "2 Damage to Explorer only."
+        },
+        {
+          "fire": "3",
+          "earth": "2",
+          "effect": "2 Damage."
+        },
+        {
+          "fire": "4",
+          "air": "1",
+          "earth": "3",
+          "effect": "2 Damage."
+        },
+        {
+          "fire": "5",
+          "air": "2",
+          "earth": "3",
+          "effect": "1 Damage to each Invader."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Rising Heat of Stone and Sand",
+    "gamebox": "Horizons of Spirit Island",
+    "setup": "Put 2 {{presence}} on your starting board, in the highest-numbered Sands.\n\nYou start with your 4 Unique Power Cards and 0 Energy.",
+    "playstyle": "Weaken-and-Destroy. Likes having {{sacredsite}} where there's {{invader|town}}/{{invader|city}}, as it makes all Spirits' Damage more effective there.\n\nHas an easier time setting up {{sacredsite}} in Sands and Mountains, but can do so in any terrain with a bit more time.",
+    "complexity": "low",
+    "special": "'''''BLISTERING HEAT'''''\n\nAt your {{sacredsite}}, Invaders have -1 Health (min. 1).",
+    "growthtype": "one",
+    "growthrows": "",
+    "growth1": "{{Growth|first=reclaim|second=gain1p|third=energy1}}",
+    "growth2": "{{Growth|first=addpresence3ms|second=addpresence3ms}}",
+    "growth3": "{{Growth|first=gain1p|second=addpresence1|third=energy2}}",
+    "presence1": "{{PresenceT|energy1|earth|energy2|energy3|fire|energy4|energy5}}",
+    "presence2": "{{PresenceT|card1|card2|card2|card3|card4|card5fire}}",
+    "psummary": "{{Powersummary\n|offense=5\n|control=3\n|fear=1\n|defense=2\n|utility=3\n}}",
+    "loresection": "heat",
+    "suggestedcard1": "Visions of Fiery Doom",
+    "suggestedcard2": "Drought",
+    "suggestedcard3": "Purifying Flame",
+    "suggestedcard4": "Indomitable Claim",
+    "suggestedcard5": "Encompassing Ward",
+    "suggestedcard6": "Talons of Lightning",
+    "suggestedcard7": "Land of Haunts and Embers",
+    "aspectname#": "",
+    "complexitychange#": "",
+    "aspectreplacement#": "",
+    "aspecttext#": "",
+    "aspectexpansion#": "",
+    "strategy": "",
+    "design_and_extras": "==Spirit Spotlight==\n\n<youtube>jrO_w-o93DA</youtube>\n\n==Theme Music==\n\n<youtube>jQk3CvVMozw</youtube>\n\n==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Rising Heat of Stone and Sand' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

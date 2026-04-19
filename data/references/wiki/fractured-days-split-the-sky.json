@@ -1,0 +1,67 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Fractured Days Split the Sky",
+  "expansion": "Jagged Earth",
+  "complexity": "veryhigh",
+  "setup": "Put 3 Presence on your starting board: 1 in the lowest-numbered land with 1 Dahan, and 2 in the highest-numbered land without Dahan. Deal 4 Minor and Major Powers face-up as your initial Days That Never Were cards; in a 1 or 2-player game, instead deal 6 of each. In a 1-board game, gain 1 Time.",
+  "playstyle": "Excellent at support and sweeping indirect effects, but starts off very limited otherwise. Several of its Unique Powers need setup to use well; it's entirely possible 1 or 2 of them may see no play in a given game. Has a hard time getting lots of Presence onto the board. This can make targeting tricky, and may be quite dangerous if a Blighted Island effect Destroys Presence.",
+  "special_rules": "FRAGMENTS OF SHATTERED TIME Each Presence on this ability represents 1 Time. Many of your Powers require Time as an additional cost. Spend it when you Resolve the Power. (Not when you play it.) When you Gain 1 Time, put 1 of your Presence here from your Presence track (or, optionally, the island). When you Spend 1 Time, return it to a Presence track - or if you have no free spaces, Destroy it. DAYS THAT NEVER WERE Your 3rd Growth option lets you gain any one Power Card from a special set you create during Setup. When you gain a Power Card any other way, you may add one unchosen card to this set.",
+  "special_rules_raw": "'''''FRAGMENTS OF SHATTERED TIME'''''\n\nEach {{presence}} on this ability represents 1 Time. Many of your Powers require Time as an additional cost. Spend it when you '''Resolve''' the Power. ''(Not when you play it.)''\n\nWhen you '''Gain 1 Time''', put 1 of your {{presence}} here from your {{presence}} track (or, optionally, the island). When you '''Spend 1 Time''', return it to a {{presence}} track - or if you have no free spaces, Destroy it.\n\n'''''DAYS THAT NEVER WERE'''''\n\nYour 3rd Growth option lets you gain any one Power Card from a special set you create during Setup. When you gain a Power Card any other way, you may add one unchosen card to this set.",
+  "innates": [
+    {
+      "name": "SLIP THE FLOW OF TIME",
+      "speed": "fast",
+      "range": null,
+      "target": "anyspirit",
+      "option": null,
+      "thresholds": []
+    },
+    {
+      "name": "VISIONS OF A SHIFTING FUTURE",
+      "speed": "slow",
+      "range": null,
+      "target": "yourself",
+      "option": null,
+      "thresholds": [
+        {
+          "moon": "2",
+          "sun": "1",
+          "air": "2",
+          "effect": "Look at the top card of either the Invader Deck or (if relevant) the Event Deck. Return it, then shuffle that deck's top 2 cards. (For the Invader Deck, differing Invader Stages may give away which card is next.)"
+        },
+        {
+          "moon": "3",
+          "sun": "2",
+          "air": "2",
+          "effect": "Instead of returning-and-shuffling, you may put the card you looked at on the bottom of its deck. You may not do this for cards specially placed during Setup."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Fractured Days Split the Sky",
+    "gamebox": "Jagged Earth",
+    "setup": "Put 3 {{presence}} on your starting board: 1 in the lowest-numbered land with 1 {{dahan}}, and 2 in the highest-numbered land without {{dahan}}. Deal 4 Minor and Major Powers face-up as your initial Days That Never Were cards; in a 1 or 2-player game, instead deal 6 of each. In a 1-board game, gain 1 Time.",
+    "playstyle": "Excellent at support and sweeping indirect effects, but starts off very limited otherwise. Several of its Unique Powers need setup to use well; it's entirely possible 1 or 2 of them may see no play in a given game.\n\nHas a hard time getting lots of {{presence}} onto the board. This can make targeting tricky, and may be quite dangerous if a Blighted Island effect Destroys {{presence}}.",
+    "complexity": "veryhigh",
+    "special": "'''''FRAGMENTS OF SHATTERED TIME'''''\n\nEach {{presence}} on this ability represents 1 Time. Many of your Powers require Time as an additional cost. Spend it when you '''Resolve''' the Power. ''(Not when you play it.)''\n\nWhen you '''Gain 1 Time''', put 1 of your {{presence}} here from your {{presence}} track (or, optionally, the island). When you '''Spend 1 Time''', return it to a {{presence}} track - or if you have no free spaces, Destroy it.\n\n'''''DAYS THAT NEVER WERE'''''\n\nYour 3rd Growth option lets you gain any one Power Card from a special set you create during Setup. When you gain a Power Card any other way, you may add one unchosen card to this set.",
+    "growthtype": "one",
+    "growthrows": "two",
+    "growth1": "{{Growth|first=gainair|second=reclaim|third=gain2time}}",
+    "growth2": "{{Growth|first=gainmoon|second=gain1p|third=addpresence2|fourth=gain1timeor2cardplaysx2}}",
+    "growth3": "{{Growth|first=gainsun|second=movepresence4|third=daysthatneverwerecard|fourth=gain1timeor2energyx3}}",
+    "presence1": "{{PresenceT|energy1|energy1|energy2|energy2|energy2|energy3}}",
+    "presence2": "{{PresenceT|card1|card1|card1|card2|card2|card3}}",
+    "psummary": "{{Powersummary|offense=1|control=2|fear=1|defense=3|utility=5}}",
+    "loresection": "days",
+    "unique1": "{{Powercard\n|cost=1\n|fast=yes\n|title=Blur the Arc of Years\n|elements={{CardElements|sun,moon,air}}\n|targeting={{Targeting|turn=fast|range=1|target=any}}\n|text=If no {{dahan}} / Invaders are present: Remove 1 {{blight}}.<br><br>If Invaders are present: they Build, then Ravage.<br><br>If {{dahan}} are present: Add 1 {{dahan}}. Push up to 2 {{dahan}}.<br><br>You may Repeat this Power ''(once)'' on the same land by spending 1 Time.\n}}",
+    "unique2": "{{Powercard\n|cost=0\n|fast=Yes\n|title=The Past Returns Again\n|elements={{CardElements|sun,moon}}\n|targeting={{Targeting|turn=fast}}\n|text='''Cost to Use: N Time, and Spirits jointly pay N Energy (where N = # of players).'''<br><br>Swap the top card of the Invader Deck with a card in the Invader discard that is within 1 Invader Stage of it.<br><br>''(The discarded card stays face-down. The card going onto the deck turns face-down. You can't swap cards that don't exist.)''\n}}",
+    "unique3": "{{Powercard\n|cost=1\n|fast=Yes\n|title=Pour Time Sideways\n|elements={{CardElements|moon,air,water}}\n|targeting={{Targeting|turn=fast|target=yourself}}\n|text='''Cost to Use: 3 Time.'''<br><br>Move 1 of your {{presence}} to a different land with your {{presence}}.<br><br>On the board moved from: During the Invader Phase, Resolve Invader and \"Each board / Each land...\" Actions one fewer time.<br><br>On the board moved to: During the Invader Phase, Resolve Invader and \"Each board / Each land...\" Actions one more time.\n}}",
+    "unique4": "{{Powercard\n|cost=1\n|fast=Yes\n|title=Absolute Stasis\n|elements={{CardElements|sun,air,earth}}\n|targeting={{Targeting|turn=fast|range=2|option=sacredsite|target=any}}\n|text='''Cost to Use: 1 Time.'''<br><br>Until the end of the {{speed|slow}} phase, target land and everything in it cease to exist for all purposes except checking victory/defeat.<br><br>''(You cannot target into, out of, or through where the land was.)''<br><br>This cannot target an Ocean even if Oceans are in play.\n}}",
+    "strategy": "==General Strategy==\n\n{{Invader|explorer}} Check back later!\n\n==Links to Guides==\n{{sacredsite}} [[{{PAGENAME}}/jyonker13’s Opening]][https://boardgamegeek.com/thread/2486927/openings-fractured-days-split-sky]",
+    "design_and_extras": "==Spirit Spotlight==\n\n<youtube>sM0nl6SZ97M</youtube>\n\n==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Fractured Days Split the Sky' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

@@ -1,0 +1,68 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Finder of Paths Unseen",
+  "expansion": "Promotional Pack 2",
+  "complexity": "veryhigh",
+  "setup": "Put 1 Presence on your starting board in land #3. Put 1 Presence on any board in land #1. Note that you have 6 Unique Power Cards.",
+  "playstyle": "All about moving the Invaders - and Dahan/Presence/Beast from time to time. Good at creating Invader-free \"safe-zones,\" due to its many movement Powers and its capacity to Isolate. Can't afford to Destroy Invaders too often without a way to re-add Destroyed Presence, so either needs a big-hammer Major Power or to rely on its teammates for offense. Changes the topology of the board, which increases complexity for all players - particularly in larger games!",
+  "special_rules": "RESPONSIBILITIES TO THE DEAD After one of your Actions Destroys 1 or more Dahan/Invaders, or directly triggers their Destruction by moving them, Destroy 1 of your Presence and lose 1 Energy. If you have no Energy to lose, Destroy another Presence. OPEN THE WAYS You may make up to two of your lands adjacent at a time. You may change which lands are adjacent once between Actions.<ref group=\"\">If, at the end of an Action, one or both of the two lands made adjacent through this Special Rule are no longer your lands, they are no longer adjacent. Source: https://discord.com/channels/481998947850649601/693569012075855872/755880244409401385</ref>",
+  "special_rules_raw": "'''''RESPONSIBILITIES TO THE DEAD'''''\n\nAfter one of your Actions Destroys 1 or more {{dahan}}/Invaders, or directly triggers their Destruction by moving them, Destroy 1 of your {{presence}} and lose 1 Energy. If you have no Energy to lose, Destroy another {{presence}}.\n\n'''''OPEN THE WAYS'''''\n\nYou may make up to two of your lands adjacent at a time. You may change which lands are adjacent once between Actions.<ref group=\"\">If, at the end of an Action, one or both of the two lands made adjacent through this Special Rule are no longer your lands, they are no longer adjacent. Source: https://discord.com/channels/481998947850649601/693569012075855872/755880244409401385</ref>",
+  "innates": [
+    {
+      "name": "LAY PATHS THEY CANNOT HELP BUT WALK",
+      "speed": "fast",
+      "range": "0",
+      "target": "any",
+      "option": null,
+      "thresholds": [
+        {
+          "moon": "2",
+          "air": "2",
+          "effect": "Push up to half (rounded down) of Invaders from target land. Do likewise for Dahan, Presence, and Beast (each separately)."
+        },
+        {
+          "sun": "2",
+          "air": "2",
+          "effect": "Push up to 1 Invader/Dahan/Presence/Beast."
+        },
+        {
+          "moon": "2",
+          "air": "4",
+          "water": "3",
+          "effect": "Repeat this Power."
+        }
+      ]
+    },
+    {
+      "name": "CLOSE THE WAYS",
+      "speed": "fast",
+      "range": "1",
+      "target": "any",
+      "option": null,
+      "thresholds": []
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Finder of Paths Unseen",
+    "gamebox": "Promotional Pack 2",
+    "setup": "Put 1 {{presence}} on your starting board in land #3. Put 1 {{presence}} on any board in land #1. Note that you have 6 Unique Power Cards.",
+    "playstyle": "All about moving the Invaders - and {{dahan}}/{{presence}}/{{beast}} from time to time. Good at creating Invader-free \"safe-zones,\" due to its many movement Powers and its capacity to Isolate. Can't afford to Destroy Invaders too often without a way to re-add Destroyed {{presence}}, so either needs a big-hammer Major Power or to rely on its teammates for offense.\n\nChanges the topology of the board, which increases complexity for all players - '''particularly''' in larger games!",
+    "complexity": "veryhigh",
+    "special": "'''''RESPONSIBILITIES TO THE DEAD'''''\n\nAfter one of your Actions Destroys 1 or more {{dahan}}/Invaders, or directly triggers their Destruction by moving them, Destroy 1 of your {{presence}} and lose 1 Energy. If you have no Energy to lose, Destroy another {{presence}}.\n\n'''''OPEN THE WAYS'''''\n\nYou may make up to two of your lands adjacent at a time. You may change which lands are adjacent once between Actions.<ref group=\"\">If, at the end of an Action, one or both of the two lands made adjacent through this Special Rule are no longer your lands, they are no longer adjacent. Source: https://discord.com/channels/481998947850649601/693569012075855872/755880244409401385</ref>",
+    "growthtype": "one",
+    "growth1": "{{Growth|first=reclaim|second=gain1p|third=ignorerange}}",
+    "growth2": "{{Growth|first=addpresence1|second=new+1cardplay}}",
+    "growth3": "{{Growth|first=gain1p|second=addpresence2}}",
+    "growth4": "{{Growth|first=addpresence|second=energy2}}",
+    "presence1": "{{presence}} spaces may be uncovered along any paths from the starting 2 spaces, including traveling backwards.<br/>{{PresenceT|energy0|sun|blank|energy2water|blank|energy+2|blank|energy+1any}}<div style=\"width: 12px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-92px) translateX(68px) rotate(0deg); position: absolute;\"></div><div style=\"width: 82px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-92px) translateX(142px) rotate(0deg); position: absolute;\"></div><div style=\"width: 82px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-92px) translateX(286px) rotate(0deg); position: absolute;\"></div><div style=\"width: 82px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-92px) translateX(430px) rotate(0deg); position: absolute;\"></div><div style=\"width: 72px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-39px) translateX(116px) rotate(60deg); position: absolute;\"></div><div style=\"width: 78px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-39px) translateX(169px) rotate(-56deg); position: absolute;\"></div><div style=\"width:71px; border-bottom: 12px solid seagreen; transform: translateY(-22px) translateX(321px) rotate(-56deg); position: absolute;\"></div><div style=\"width: 65px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-34px) translateX(407px) rotate(60deg); position: absolute;\"></div><div style=\"width: 72px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-36px) translateX(459px) rotate(-54deg); position: absolute;\"></div>",
+    "presence2": "{{PresenceT|blank|blank|energy1moon|blank|movepresair|blank|energy+1range+1|energy+1range+1text}}<div style=\"width: 82px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-105px) translateX(208px) rotate(0deg); position: absolute;\"></div>",
+    "presence3": "{{PresenceT|card1|earthX|blank|card+1|blank|card+1|blank|pushtowncity}}<div style=\"width: 12px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-114px) translateX(68px) rotate(0deg); position: absolute;\"></div><div style=\"width: 82px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-114px) translateX(142px) rotate(0deg); position: absolute;\"></div><div style=\"width: 82px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-114px) translateX(286px) rotate(0deg); position: absolute;\"></div><div style=\"width: 82px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-114px) translateX(430px) rotate(0deg); position: absolute;\"></div><div style=\"width: 87px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-190px) translateX(88px) rotate(-60deg); position: absolute;\"></div><div style=\"width: 90px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-190px) translateX(326px) rotate(60deg); position: absolute;\"></div><div style=\"width: 84px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-189px) translateX(382px) rotate(-60deg); position: absolute;\"></div><div style=\"width: 90px; height: 20px; border-bottom: 12px solid seagreen; transform: translateY(-189px) translateX(468px) rotate(60deg); position: absolute;\"></div>",
+    "psummary": "{{Powersummary|offense=-1|control=5|fear=1|defense=2|utility=2}}",
+    "loresection": "finder",
+    "strategy": "Wiki Text Acceptable. Link to Forum Posts, or new Strategy Pages\n\n==Links to Guides==\n{{sacredsite}} [[{{PAGENAME}}/jyonker13’s Opening]][https://boardgamegeek.com/thread/2493091/openings-finder-paths-unseen]\n\n{{sacredsite}} [[{{PAGENAME}}/Build Diagrams]]",
+    "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Finder of Paths Unseen' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

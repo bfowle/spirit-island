@@ -1,0 +1,77 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Eyes Watch from the Trees",
+  "expansion": "Horizons of Spirit Island",
+  "complexity": "low",
+  "setup": "Put 2 Presence on your starting board, in the highest-numbered Jungle. You start with your 4 Unique Powers and 0 Energy.",
+  "playstyle": "Good at Defending against Ravages, and at steadily earning Fear. Its ability to Gather Dahan to fight back when Defending can make a huge difference, changing a stalling tactic into a blow against the Invaders.",
+  "special_rules": "Dahan Trust the Watchers After one of your Powers adds Defend to a single land, Gather up to 1 Dahan into that land. (\"Power\" includes both your Innate Power and your Power Cards. Can be used with any number of Defend Powers each turn.)",
+  "special_rules_raw": "'''''Dahan Trust the Watchers'''''\n\nAfter one of your Powers adds Defend to a single land, Gather up to 1 {{dahan}} into that land.\n\n''(\"Power\" includes both your Innate Power and your Power Cards. Can be used with any number of Defend Powers each turn.)''",
+  "innates": [
+    {
+      "name": "Mischief and Sabotage",
+      "speed": "fast",
+      "range": "1",
+      "target": "invaders",
+      "option": "sacred",
+      "thresholds": [
+        {
+          "moon": "1",
+          "plant": "2",
+          "effect": "1 Fear and Defend 2."
+        },
+        {
+          "moon": "2",
+          "plant": "3",
+          "effect": "Instead, 1 Fear and Defend 4."
+        },
+        {
+          "moon": "2",
+          "air": "2",
+          "plant": "4",
+          "effect": "Instead, 3 Fear and Defend 6."
+        },
+        {
+          "moon": "3",
+          "air": "3",
+          "plant": "5",
+          "effect": "Instead, 5 Fear and Defend 12."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Eyes Watch from the Trees",
+    "gamebox": "Horizons of Spirit Island",
+    "setup": "Put 2 {{presence}} on your starting board, in the highest-numbered Jungle.\n\nYou start with your 4 Unique Powers and 0 Energy.",
+    "playstyle": "Good at Defending against Ravages, and at steadily earning {{fear}}.\n\nIts ability to Gather {{dahan}} to fight back when Defending can make a huge difference, changing a stalling tactic into a blow against the Invaders.",
+    "complexity": "low",
+    "special": "'''''Dahan Trust the Watchers'''''\n\nAfter one of your Powers adds Defend to a single land, Gather up to 1 {{dahan}} into that land.\n\n''(\"Power\" includes both your Innate Power and your Power Cards. Can be used with any number of Defend Powers each turn.)''",
+    "growthtype": "one",
+    "growthrows": "",
+    "growth1": "{{Growth|first=reclaim|second=gain1p|third=energy1}}",
+    "growth2": "{{Growth|first=addpresence2|second=addpresence0}}",
+    "growth3": "{{Growth|first=gain1p|second=addpresence3|third=energy1}}",
+    "presence1": "{{PresenceT|energy1|energy1|energy2|plant|energy3|moon|energy4}}",
+    "presence2": "{{PresenceT|card1|card2|airX|card3|plantX|card4}}",
+    "psummary": "{{Powersummary\n|offense=2\n|control=3\n|fear=4\n|defense=5\n|utility=1\n}}",
+    "loresection": "eyes",
+    "suggestedcard1": "Lure of the Unknown",
+    "suggestedcard2": "Drift Down Into Slumber",
+    "suggestedcard3": "Delusions of Danger",
+    "suggestedcard4": "Terrifying Nightmares",
+    "suggestedcard5": "Dark and Tangled Woods",
+    "suggestedcard6": "The Jungle Hungers",
+    "suggestedcard7": "Veil the Night\\'s Hunt",
+    "aspectname#": "",
+    "complexitychange#": "",
+    "aspectreplacement#": "",
+    "aspecttext#": "",
+    "aspectexpansion#": "",
+    "strategy": "",
+    "design_and_extras": "==Theme Music==\n\n<youtube>vsRrbvLE-Ik</youtube>\n\n==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Eyes Watch from the Trees' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

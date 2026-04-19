@@ -1,0 +1,96 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Towering Roots of the Jungle",
+  "expansion": "Nature Incarnate",
+  "complexity": "moderate",
+  "setup": "Put 3 Presence on your starting board: 1 in the highest-numbered Jungle without Blight, 1 in the highest-numbered Mountain, and 1 in the highest-numbered Wetland. Put {{incarna|roots}}, Unempowered ({{incarna|unempowered}}) side up, in the Jungle with your Presence. You start with your 4 Unique Power Cards and 0 Energy.",
+  "playstyle": "Incredibly good at protecting everything at its {{incarna|roots}} - and can draw Invaders towards there - but is constrained in when and where it can move its {{incarna|roots}}. Has some ability to Remove Invaders (driving them from the island), but starts off vastly better at guarding the land than at smashing things.",
+  "special_rules": "ENDURING VITALITY</br>Some of your Actions Add Vitality Tokens ({{vitality}}). (Each {{vitality}} in a land with no Blight prevents 1 Blight from being added, then is Removed.) HEART-TREE GUARDS THE LAND</br>You have an Incarna ({{incarna|roots}}). * Your Powers get {{range|+1}} if {{incarna|roots}} is in the origin land. * Invaders/Dahan/Beast can't be damaged or destroyed at {{incarna|roots}}. * Empower {{incarna|roots}} the first time it's in a land with 3 or more {{vitality}}. * Skip all Build Actions at empowered {{incarna|roots}}.",
+  "special_rules_raw": "'''''ENDURING VITALITY'''''</br>Some of your Actions Add Vitality Tokens ({{vitality}}). ''(Each {{vitality}} in a land with no {{blight}} prevents 1 {{blight}} from being added, then is Removed.)''\n\n'''''HEART-TREE GUARDS THE LAND'''''</br>You have an Incarna ({{incarna|roots}}).\n* Your Powers get {{range|+1}} if {{incarna|roots}} is in the origin land.\n* Invaders/{{dahan}}/{{beast}} can't be damaged or destroyed at {{incarna|roots}}.\n* Empower {{incarna|roots}} the first time it's in a land with 3 or more {{vitality}}.\n* Skip all Build Actions at empowered {{incarna|roots}}.",
+  "innates": [
+    {
+      "name": "SHELTER UNDER TOWERING BRANCHES",
+      "speed": "slow",
+      "range": "0",
+      "target": "any",
+      "option": "sacred",
+      "thresholds": [
+        {
+          "sun": "1",
+          "plant": "1",
+          "effect": "Gather up to 1 Dahan."
+        },
+        {
+          "sun": "1",
+          "earth": "1",
+          "plant": "2",
+          "effect": "Gather up to 1 Explorer."
+        },
+        {
+          "sun": "2",
+          "earth": "1",
+          "plant": "3",
+          "effect": "Gather up to 1 Town."
+        },
+        {
+          "sun": "3",
+          "earth": "2",
+          "plant": "4",
+          "effect": "Gather up to 1 City."
+        }
+      ]
+    },
+    {
+      "name": "REVOKE SANCTUARY AND CAST OUT",
+      "speed": "slow",
+      "range": "0",
+      "target": "rootsincarnainvaders",
+      "option": "sacred",
+      "thresholds": [
+        {
+          "moon": "1",
+          "sun": "1",
+          "plant": "2",
+          "effect": "1 Fear. Remove 1 Explorer/Town."
+        },
+        {
+          "moon": "1",
+          "sun": "2",
+          "plant": "3",
+          "effect": "1 Fear. Remove 1 Explorer/Town."
+        },
+        {
+          "moon": "2",
+          "sun": "2",
+          "plant": "4",
+          "effect": "1 Fear. Remove 1 Invader."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Towering Roots of the Jungle",
+    "gamebox": "Nature Incarnate",
+    "lore": "roots",
+    "setup": "Put 3 {{presence}} on your starting board: 1 in the highest-numbered Jungle without {{blight}}, 1 in the highest-numbered Mountain, and 1 in the highest-numbered Wetland. Put {{incarna|roots}}, Unempowered ({{incarna|unempowered}}) side up, in the Jungle with your {{presence}}.\n\nYou start with your 4 Unique Power Cards and 0 Energy.",
+    "playstyle": "Incredibly good at protecting everything at its {{incarna|roots}} - and can draw Invaders towards there - but is constrained in when and where it can move its {{incarna|roots}}. Has some ability to Remove Invaders (driving them from the island), but starts off vastly better at guarding the land than at smashing things.",
+    "complexity": "moderate",
+    "incarnapieces": "<gallery>File:Towering Roots of the Jungle Incarna.png",
+    "special": "'''''ENDURING VITALITY'''''</br>Some of your Actions Add Vitality Tokens ({{vitality}}). ''(Each {{vitality}} in a land with no {{blight}} prevents 1 {{blight}} from being added, then is Removed.)''\n\n'''''HEART-TREE GUARDS THE LAND'''''</br>You have an Incarna ({{incarna|roots}}).\n* Your Powers get {{range|+1}} if {{incarna|roots}} is in the origin land.\n* Invaders/{{dahan}}/{{beast}} can't be damaged or destroyed at {{incarna|roots}}.\n* Empower {{incarna|roots}} the first time it's in a land with 3 or more {{vitality}}.\n* Skip all Build Actions at empowered {{incarna|roots}}.",
+    "growthtype": "one",
+    "growthrows": "two",
+    "growth1": "{{Growth|first=reclaim|second=addpresence0|}}",
+    "growth2": "{{Growth|first=gain1p|second=addpresence1|third=addvitalityrootsincarna}}",
+    "growth3": "{{Growth|first=gain1p|second=addpresence3|third=replacepresencerootsincarna|fourth=energy1}}",
+    "presence1": "{{PresenceT|energy1|energy2|earth|energy4|plant|energy6}}",
+    "presence2": "{{PresenceT|card1|card2|sunX|card3|plantX|card4}}",
+    "psummary": "{{Powersummary|offense=1|control=3|fear=2|defense=5|utility=2}}",
+    "loresection": "roots",
+    "strategy": "",
+    "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Towering Roots of the Jungle' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<gallery>File:Towering Roots of the Jungle Home.png",
+    "Rulings": "==Notes==\n{{Reflist}}"
+  },
+  "unique_card_details": []
+}

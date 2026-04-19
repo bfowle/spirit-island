@@ -15,6 +15,7 @@ SKILLS=(
   "si-daily-challenge"
   "si-post-game"
   "si-at-the-table"
+  "si-wiki-fetch"
 )
 
 uninstall=0

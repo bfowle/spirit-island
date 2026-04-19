@@ -1,0 +1,90 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Shroud of Silent Mist",
+  "expansion": "Jagged Earth",
+  "complexity": "high",
+  "setup": "Put 2 Presence on your starting board: 1 in the highest-numbered Wetland and 1 in the highest-numbered Mountain.",
+  "playstyle": "Constantly shifting and moving its Presence around the board. Hurt more than most by Presence loss due to its desire to surround and envelop the Invaders. Can (slowly) clear the most built-up of lands, but its real strength is the free Fear from Slow and Silent Death. Extremely limited Energy income, but can stretch to Major Powers if it manages to gather enough Energy from its Special Rules.",
+  "special_rules": "GATHER POWER FROM THE COOL AND DARK Once a turn, when you Gain a Power Card without {{element|simplefire}}, gain 1 Energy. MISTS SHIFT AND FLOW When targeting a land with a Power, you may Gather 1 of your Presence into the target or an adjacent land. This can enable you to meet Range and targeting requirements. SLOW AND SILENT DEATH Invaders and Dahan in your lands don't heal Damage. During Time Passes: 1 Fear (max. 5) per land of yours with Damaged Invaders. Gain 1 Energy per 3 lands of yours with Damaged Invaders.",
+  "special_rules_raw": "'''''GATHER POWER FROM THE COOL AND DARK'''''\n\nOnce a turn, when you Gain a Power Card without {{element|simplefire}}, gain 1 Energy.\n\n'''''MISTS SHIFT AND FLOW'''''\n\nWhen targeting a land with a Power, you may Gather 1 of your {{presence}} into the target or an adjacent land. This can enable you to meet Range and targeting requirements.\n\n'''''SLOW AND SILENT DEATH'''''\n\nInvaders and {{dahan}} in your lands don't heal Damage.\n\n'''During Time Passes''': 1 {{fear}} (max. 5) per land of yours with Damaged Invaders. Gain 1 Energy per 3 lands of yours with Damaged Invaders.",
+  "innates": [
+    {
+      "name": "SUFFOCATING SHROUD",
+      "speed": "slow",
+      "range": "0",
+      "target": "any",
+      "option": null,
+      "thresholds": [
+        {
+          "moon": "1",
+          "air": "2",
+          "water": "1",
+          "effect": "1 Damage."
+        },
+        {
+          "moon": "2",
+          "air": "3",
+          "water": "2",
+          "effect": "For each adjacent land with your Presence, 1 Damage to a different Invader."
+        },
+        {
+          "moon": "4",
+          "air": "4",
+          "water": "3",
+          "effect": "1 Damage."
+        },
+        {
+          "moon": "5",
+          "air": "6",
+          "water": "4",
+          "effect": "1 Damage to each Invader."
+        }
+      ]
+    },
+    {
+      "name": "LOST IN THE SWIRLING HAZE",
+      "speed": "slow",
+      "range": "0",
+      "target": "any",
+      "option": null,
+      "thresholds": [
+        {
+          "air": "1",
+          "water": "2",
+          "effect": "Push up to 1 Dahan."
+        },
+        {
+          "air": "2",
+          "water": "3",
+          "effect": "Push up to 2 Explorer/Dahan."
+        },
+        {
+          "air": "3",
+          "water": "4",
+          "effect": "Push up to 2 Explorer/Dahan."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Shroud of Silent Mist",
+    "gamebox": "Jagged Earth",
+    "setup": "Put 2 {{presence}} on your starting board: 1 in the highest-numbered Wetland and 1 in the highest-numbered Mountain.",
+    "playstyle": "Constantly shifting and moving its {{presence}} around the board. Hurt more than most by {{presence}} loss due to its desire to surround and envelop the Invaders.\n\nCan (slowly) clear the most built-up of lands, but its real strength is the free Fear from ''Slow and Silent Death''.\n\nExtremely limited Energy income, but can stretch to Major Powers if it manages to gather enough Energy from its Special Rules.",
+    "complexity": "high",
+    "special": "'''''GATHER POWER FROM THE COOL AND DARK'''''\n\nOnce a turn, when you Gain a Power Card without {{element|simplefire}}, gain 1 Energy.\n\n'''''MISTS SHIFT AND FLOW'''''\n\nWhen targeting a land with a Power, you may Gather 1 of your {{presence}} into the target or an adjacent land. This can enable you to meet Range and targeting requirements.\n\n'''''SLOW AND SILENT DEATH'''''\n\nInvaders and {{dahan}} in your lands don't heal Damage.\n\n'''During Time Passes''': 1 {{fear}} (max. 5) per land of yours with Damaged Invaders. Gain 1 Energy per 3 lands of yours with Damaged Invaders.",
+    "growthtype": "one",
+    "growth1": "{{growth|first=reclaim|second=gain1p}}",
+    "growth2": "{{growth|first=addpresence0|second=addpresence0}}",
+    "growth3": "{{growth|first=gain1p|second=addpresence3mw}}",
+    "presence1": "{{PresenceT|energy0|energy1|water|energy2|air}}",
+    "presence2": "{{PresenceT|card1|card2|movepres|moonX|card3|card4|reclaim1|card5}}",
+    "psummary": "{{Powersummary|offense=4|control=4|fear=5|defense=2|utility=1}}",
+    "loresection": "shroud",
+    "strategy": "==Spirit Spotlight==\n\n<youtube>kHLqD_I4jXc</youtube>\n\n==Links to Guides==\n<div>{{sacredsite}} [https://boardgamegeek.com/thread/2488254/openings-shroud-silent-mist Openings: Shroud of Silent Mist - Written by jyonker13]</div>\n<div>{{sacredsite}} [https://boardgamegeek.com/thread/2722115/advanced-guide-shroud-silent-mist <nowiki>[</nowiki>Advanced Guide<nowiki>]</nowiki> Shroud of Silent Mist - Written by Rei]</div>",
+    "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Shroud of Silent Mist' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}

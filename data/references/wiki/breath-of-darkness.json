@@ -1,0 +1,92 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Breath of Darkness Down Your Spine",
+  "expansion": "Nature Incarnate",
+  "complexity": "high",
+  "setup": "Put 2 Presence and your Incarna ({{incarna|breath}}), Unempowered ({{incarna|unempowered}}), on your starting board: 1 Presence and {{incarna|breath}} in the lowest-numbered Jungle and 1 in the highest-numbered Jungle. Set [[The Endless Dark]] ({{endlessdark}}) tile next to the island with 1 Explorer on it. You start with your 4 Unique Power Cards and 0 Energy.",
+  "playstyle": "Abducts lone Invaders to gain Fear and keep them off the board for a time; its mobile Incarna is particularly useful for this. Reclaiming permits the Invaders to escape its void en masse, so can be quite painful. Has trouble with built-up lands, and may need to scatter Invaders or take a Major Power to deal with them.",
+  "special_rules": "TERROR STALKS THE LAND</br>You have an Incarna ({{incarna|breath}}). Empower {{incarna|breath}} after uncovering {{empower}}. You may Abduct 1 Explorer/Town at empowered {{incarna|breath}} each {{speed|fast}} phase. To Abduct a piece, Move it to [[The Endless Dark]] ({{endlessdark}}). When pieces Escape, Move them to non-Ocean lands with your Presence/{{incarna|breath}}; if they have no legal land to move to, you lose. When your Powers would directly damage or directly destroy the only Invader in a land, instead Abduct it. (Check if it is alone at the start of the damage/destroy instruction. {{endlessdark}} is not a land.) SHADOW-TOUCHED REALM</br>Your land-targeting Powers can target {{endlessdark}} as if it were a land, ignoring Range. ({{endlessdark}} is Inland and has no terrain.) Rules for The Endless Dark</br>{{#lst:The Endless Dark|ted}}",
+  "special_rules_raw": "'''''TERROR STALKS THE LAND'''''</br>You have an Incarna ({{incarna|breath}}). Empower {{incarna|breath}} after uncovering {{empower}}. You may Abduct 1 {{invader|explorer}}/{{invader|town}} at empowered {{incarna|breath}} each {{speed|fast}} phase.\n\nTo Abduct a piece, Move it to [[The Endless Dark]] ({{endlessdark}}). When pieces Escape, Move them to non-Ocean lands with your {{presence}}/{{incarna|breath}}; if they have no legal land to move to, you lose.\n\nWhen your Powers would directly damage or directly destroy the only Invader in a land, instead Abduct it. ''(Check if it is alone at the start of the damage/destroy instruction. {{endlessdark}} is not a land.)''\n\n'''''SHADOW-TOUCHED REALM'''''</br>Your land-targeting Powers can target {{endlessdark}} as if it were a land, ignoring Range. ''({{endlessdark}} is Inland and has no terrain.)''\n\n'''''Rules for The Endless Dark'''''</br>{{#lst:The Endless Dark|ted}}",
+  "innates": [
+    {
+      "name": "LEAVE A TRAIL OF DEATHLY SILENCE",
+      "speed": "fast",
+      "range": null,
+      "target": "yourself",
+      "option": null,
+      "thresholds": [
+        {
+          "moon": "2",
+          "animal": "1",
+          "effect": "1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}."
+        },
+        {
+          "moon": "3",
+          "air": "1",
+          "animal": "1",
+          "effect": "1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}."
+        },
+        {
+          "moon": "4",
+          "air": "2",
+          "animal": "2",
+          "effect": "1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}."
+        },
+        {
+          "moon": "5",
+          "air": "2",
+          "animal": "3",
+          "effect": "Move {{incarna|breath}} to {{endlessdark}}. It Brings 1 Invader (from its land)."
+        }
+      ]
+    },
+    {
+      "name": "LOST IN THE ENDLESS DARK",
+      "speed": "slow",
+      "range": null,
+      "target": "endlessdark",
+      "option": null,
+      "thresholds": [
+        {
+          "moon": "2",
+          "air": "1",
+          "effect": "1 Fear per Invader (max. 4). Downgrade up to 1 Invader. (Downgrading Removes Explorer.)"
+        },
+        {
+          "moon": "4",
+          "air": "3",
+          "effect": "1 Fear per Invader (max. 4). Downgrade any number of Invaders."
+        },
+        {
+          "moon": "3",
+          "animal": "2",
+          "effect": "Add 1 Beast."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Breath of Darkness Down Your Spine",
+    "gamebox": "Nature Incarnate",
+    "lore": "breath",
+    "setup": "Put 2 {{presence}} and your Incarna ({{incarna|breath}}), Unempowered ({{incarna|unempowered}}), on your starting board: 1 {{presence}} and {{incarna|breath}} in the lowest-numbered Jungle and 1 in the highest-numbered Jungle. Set [[The Endless Dark]] ({{endlessdark}}) tile next to the island with 1 {{invader|explorer}} on it.\n\nYou start with your 4 Unique Power Cards and 0 Energy.",
+    "playstyle": "Abducts lone Invaders to gain {{fear}} and keep them off the board for a time; its mobile Incarna is particularly useful for this. Reclaiming permits the Invaders to escape its void en masse, so can be quite painful.\n\nHas trouble with built-up lands, and may need to scatter Invaders or take a Major Power to deal with them.",
+    "complexity": "high",
+    "incarnapieces": "<gallery>File:Breath of Darkness Down Your Spine Incarna.png",
+    "special": "'''''TERROR STALKS THE LAND'''''</br>You have an Incarna ({{incarna|breath}}). Empower {{incarna|breath}} after uncovering {{empower}}. You may Abduct 1 {{invader|explorer}}/{{invader|town}} at empowered {{incarna|breath}} each {{speed|fast}} phase.\n\nTo Abduct a piece, Move it to [[The Endless Dark]] ({{endlessdark}}). When pieces Escape, Move them to non-Ocean lands with your {{presence}}/{{incarna|breath}}; if they have no legal land to move to, you lose.\n\nWhen your Powers would directly damage or directly destroy the only Invader in a land, instead Abduct it. ''(Check if it is alone at the start of the damage/destroy instruction. {{endlessdark}} is not a land.)''\n\n'''''SHADOW-TOUCHED REALM'''''</br>Your land-targeting Powers can target {{endlessdark}} as if it were a land, ignoring Range. ''({{endlessdark}} is Inland and has no terrain.)''\n\n'''''Rules for The Endless Dark'''''</br>{{#lst:The Endless Dark|ted}}",
+    "growthtype": "one",
+    "growthrows": "two",
+    "growth1": "{{Growth|first=reclaim|second=gain1p|third=movebreathincarna|fourth=darknessescapeall}}",
+    "growth2": "{{Growth|first=gain1p|second=addpresence3|third=darknessescape2}}",
+    "growth3": "{{Growth|first=addpresence1|second=addmovebreathincarna|third=darknessescape1|fourth=energycardplays}}",
+    "presence1": "{{PresenceT|energy1|energy2|moon|energy3|empowerincarna|energy4animal|energy5air}}",
+    "presence2": "{{PresenceT|card2|movepres|card3|moonX|reclaim1|card4air}}",
+    "psummary": "{{Powersummary|offense=2|control=4|fear=5|defense=1|utility=2}}",
+    "loresection": "breath",
+    "strategy": "{{Sacredsite}} [[{{PAGENAME}}/3 + Moon Loop]]",
+    "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Breath of Darkness Down Your Spine' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n<gallery>File:Breath of Darkness Down Your Spine Home.png"
+  },
+  "unique_card_details": []
+}

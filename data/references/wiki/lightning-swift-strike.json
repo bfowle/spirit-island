@@ -1,0 +1,71 @@
+{
+  "source": "spiritislandwiki.com",
+  "type": "spirit",
+  "name": "Lightning's Swift Strike",
+  "expansion": "Base Game",
+  "complexity": "low",
+  "setup": "Put 2 Presence on your starting board in the highest-numbered Sands.",
+  "playstyle": "Virtually all offense to start with: without a more defensive teammate, Blight may become a problem. Excellent at destroying buildings, less good at containing Explorers. Using Thundering Destruction tends to be a burst affair: a turn or two of position and build up Energy, followed by a really big turn. Starting Powers are extremely focused on Air and Fire: good for Thundering Destruction, bad for Major Power versatility.",
+  "special_rules": "SWIFTNESS OF LIGHTNING For every {{air}} you have, you may use 1 {{slow}} Power as if it were {{fast}}. (Power Cards or your Innate Powers.)",
+  "special_rules_raw": "'''''SWIFTNESS OF LIGHTNING'''''<br> For every {{air}} you have, you may use 1 {{slow}} Power as if it were {{fast}}. ''(Power Cards or your Innate Powers.)''",
+  "innates": [
+    {
+      "name": "THUNDERING DESTRUCTION",
+      "speed": "slow",
+      "range": "1",
+      "target": "any",
+      "option": "sacred",
+      "thresholds": [
+        {
+          "fire": "3",
+          "air": "2",
+          "effect": "Destroy 1 Town."
+        },
+        {
+          "fire": "4",
+          "air": "3",
+          "effect": "You may instead destroy 1 City."
+        },
+        {
+          "fire": "5",
+          "air": "4",
+          "water": "1",
+          "effect": "Also, Destroy 1 Town / City."
+        },
+        {
+          "fire": "5",
+          "air": "5",
+          "water": "2",
+          "effect": "Also, Destroy 1 Town / City."
+        }
+      ]
+    }
+  ],
+  "unique_cards": [],
+  "raw_template": {
+    "name": "Lightning's Swift Strike",
+    "gamebox": "Base Game",
+    "setup": "Put 2 {{Presence}} on your starting board in the highest-numbered Sands.",
+    "playstyle": "Virtually all offense to start with: without a more defensive teammate, Blight may become a problem. Excellent at destroying buildings, less good at containing Explorers. Using Thundering Destruction tends to be a burst affair: a turn or two of position and build up Energy, followed by a really big turn. <br> Starting Powers are extremely focused on Air and Fire: good for Thundering Destruction, bad for Major Power versatility.",
+    "complexity": "low",
+    "special": "'''''SWIFTNESS OF LIGHTNING'''''<br> For every {{air}} you have, you may use 1 {{slow}} Power as if it were {{fast}}. ''(Power Cards or your Innate Powers.)''",
+    "growthtype": "one",
+    "growth1": "{{growth|first=reclaim|second=gain1p|third=energy1}}",
+    "growth2": "{{growth|first=addpresence2|second=addpresence0}}",
+    "growth3": "{{growth|first=addpresence1|second=energy3}}",
+    "presence1": "{{PresenceT|energy1|energy1|energy2|energy2|energy3|energy4|energy4|energy5}}",
+    "presence2": "{{PresenceT|card2|card3|card4|card5|card6}}",
+    "psummary": "{{Powersummary|offense=5|control=2|fear=3|defense=1|utility=2}}",
+    "loresection": "lightning",
+    "suggestedcard1": "Delusions of Danger",
+    "suggestedcard2": "Call to Bloodshed",
+    "suggestedcard3": "Powerstorm",
+    "suggestedcard4": "Purifying Flame",
+    "suggestedcard5": "Pillar of Living Flame",
+    "suggestedcard6": "Entrancing Apparitions",
+    "suggestedcard7": "Call to Isolation",
+    "strategy": "==General Strategy==\nSome things of note:\n* '''Growth:''' It can play two Presence/turn. Not all Spirits can manage this! Lightning can spread quickly, setting up a new Sacred Site (two Presence in one land) in a single turn, even 2 lands away.\n* '''Growth:''' It only gains new Power Cards when Reclaiming / not placing new Presence. So it’s not going to be gaining huge numbers of new Powers unless it Reclaims a lot - which would limit its expansion.\n* '''Presence track:''' It has a slow Energy ramp-up, but incredible Card Plays - better than any other Spirit in the game.\n* '''Special Rules:''' Swiftness of Lightning - For every Air it has, Lightning’s Swift Strike can make one of its Powers Fast - that is, use it before the Invaders go rather than afterwards. That seems pretty good, but we’ll have to see how many of its unique powers are Air-aspected before we know how often it’ll be useful in practice.\n* '''Innate Power:''' Thundering Destruction - That’s a lot of wrecked buildings at higher levels! It’ll take playing 4-5 Fire to reach the best effects, but Lightning has that awesome Plays track, so playing 4-5 Power Cards in one turn isn’t as distant a feat for it as for others. The targeting is a bit restrictive, though: it must strike from a Sacred Site, and can only reach a single land away. And we don’t know how readily it has access to Air and Fire - so let’s look at its Unique Power Cards!\n\nBefore we go into specific cards, we can see two things right off the bat:\n\n* ''Every single Power has both Air and Fire'' - which makes sense; that’s Lightning for you. That means it’ll have a really easy time finding the Elements to use Swiftness of Lightning and Thundering Destruction!\n* ''A couple of those Power Cards cost 2 or 3 Energy to play'' - destructive power takes some oomph! Playing both of those together would require 5 Energy, far more than Lightning starts out getting in a single turn. So Lightning is going to be somewhat Energy-hungry, and may want to occasionally hold some Energy in reserve to build up for a massive strike the following turn.\n\nThe cards themselves:\n\n* '''Shatter Homesteads''' is a workhouse power, destroying those Towns that crop up all over the place in a particularly intimidating fashion. Like the Thundering Destruction innate, it must be used from a Sacred Site, but has better range.\n* '''Raging Storm''' hurts every Invader in a land, damaging buildings and wiping out Explorers entirely. The more Invaders there are, the more Lightning can pound on them - but it’s not cheap to do. It can be used from any of Lightning's Presence, though.\n* '''Lightning’s Boon''' grants Lightning’s overwhelming speed to other spirits, amping up their ability to pre-empt the Invaders. It could in theory self-target, but with Swiftness of Lightning, that’ll rarely be necessary!\n* '''Harbingers of the Lightning''' asks some Dahan to warn the Invaders about what Lightning’s Swift Strike is going to do to them if they stick around. It also asks the Dahan to move, setting up shop near the Invaders - perhaps simply a threatening gesture, perhaps a setup for a counterattack.\n\n'''Overall:''' Most of Lightning’s Powers do a small amount of Fear, plus any Fear caused by destroying Towns and Cities - so we can expect that Lightning will be decent at helping frighten the Invaders. The only way it has to destroy Explorers is Raging Storm, which is expensive: Lightning isn’t good at wiping out small groups of people hidden away in the jungle. But while it has a hard time stopping the Invaders from Building, it’s really good at wrecking those buildings once they show up! It can do this best in bursts - playing lots of Power Cards to trigger Thundering Destruction - but setting those up may take a turn of gathering strength.\n\n==Links to Guides==\n\n{{Sacredsite}} [[{{PAGENAME}}/Antistone's Opening]][https://boardgamegeek.com/thread/1969985/openings-lightnings-swift-strike]\n\n{{Sacredsite}} [[{{PAGENAME}}/Phantaskippy's Guide]][https://forums.greaterthangames.com/t/phantaskippys-guide-to-phantasms-part-3-lightnings-swift-strike/16960]\n\n{{Sacredsite}} [[{{PAGENAME}}/4 Plays Reclaim Loop]]",
+    "design_and_extras": "==Spirit Spotlight==\n\n<youtube>W8CgizaZUKY</youtube>\n\n==Theme Music==\n\n<youtube>zUOTywujymY</youtube>\n\n==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Lightning\\'s Swift Strike' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
+  },
+  "unique_card_details": []
+}
