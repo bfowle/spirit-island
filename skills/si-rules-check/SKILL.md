@@ -134,8 +134,95 @@ If a previously-authored chapter has a T1 block:
 5. **Sum of card costs ≤ current Energy**.
 6. **Fast cards resolve in Fast phase; Slow in Slow phase.**
 7. **Elements accumulate from cards played that turn only; reset at turn end.**
-8. **Innate firing requires threshold elements *this turn*; free of energy cost.**
+8. **Innate firing requires threshold elements *available at the innate's phase of resolution*; free of energy cost.** See "Innate element timing" below — Fast innates cannot see Slow-card elements.
 9. **Special-rule usage (e.g., Shadows of the Dahan's 1E range extension) spends energy from the spirit's pool.**
+10. **Invader phase contents by turn** determine which card effects are material vs. dormant that turn. See "Invader phase by turn" below.
+11. **Dormant-effect rule**: card clauses gated on Ravage / Damage-from-Invaders are null effects on turns where the trigger does not occur in the target land. Don't cite them as opener value on those turns.
+
+## Invader phase by turn (base-game standard invader deck)
+
+The standard 8-round game has the invader deck advance one column per turn:
+
+| Turn | Explore | Build | Ravage | Notes                                                            |
+|------|---------|-------|--------|------------------------------------------------------------------|
+| 1    | ✓       | —     | —      | Invader Card 1 = Stage I Explore. No Build, no Ravage.           |
+| 2    | ✓       | ✓     | —      | Card 1 advances to Build column; Card 2 enters Explore. No Ravage. |
+| 3    | ✓       | ✓     | ✓      | Card 1 → Ravage (first Ravage of the game); Card 2 → Build; Card 3 → Explore. |
+| 4+   | ✓       | ✓     | ✓      | Full cycle continues; each card cycles through Ravage → discard.   |
+
+**Implications for opener prose**:
+
+- T1 cards tagged "prevents Ravage", "Dahan take 0 Damage from Ravaging", "Invaders can't Ravage here", "Defend N" → null this turn. Only their Fear / elements / non-Ravage effects are material.
+- T2 cards with "prevents Ravage" etc. → still null (no Ravage until T3).
+- T3 is the earliest turn these effects are material, and only in lands Ravaged that turn.
+
+**Adversary caveats**: adversary escalation cards can shift this. Sweden front-loads a Build; some Habsburg levels add early Builds. Check the adversary JSON (`data/adversaries.json` / per-level escalation text) before claiming standard base-deck timing.
+
+## Innate element timing
+
+When an Innate Power resolves, it checks its thresholds against elements generated **so far this turn** — i.e., elements produced by cards whose effects have already resolved.
+
+| Innate speed | Can see elements from | Cannot see |
+|--------------|----------------------|------------|
+| **Fast**     | Fast cards played this turn before the innate resolves | Slow cards (resolve later in the turn) |
+| **Slow**     | Fast cards + Slow cards played this turn before the innate resolves | — |
+| **Fast or Slow** (player's choice) | Depends on which phase the player resolves it in | — |
+
+**Corollary**: a Slow card cannot "feed" a Fast innate. The Slow card's elements arrive after the Fast innate's resolution window has closed.
+
+**Worked example — Shadows T1 Opening A**:
+- Fast phase: Concealing Shadows plays → 1 Moon + 1 Air in pool.
+  - Darkness Swallows the Unwary (Fast innate) checks L1 threshold (2 Moon + 1 Fire): pool has 1M+1A → **does NOT fire**.
+- Slow phase: Mantle of Dread plays → adds 1 Moon + 1 Fire + 1 Air (pool now 2M+1F+2A).
+  - Darkness Swallows has already resolved. It does not re-check. **L1 does not fire this turn**.
+
+Authoring consequence: claims like "L1 fires T1 via Concealing + Mantle elements" are **invalid** — the Fast innate can't see Mantle's Slow-phase contribution.
+
+**Elements do NOT persist across turns.** At Time Passes, the element pool resets to empty. T2 starts with 0 elements regardless of T1 plays.
+
+## Dormant-effect detection
+
+Card effects that depend on a trigger outside the current turn are **dormant** on turns where the trigger doesn't fire. When citing such a card in opener prose, you must explicitly say so.
+
+Common dormant clauses + their trigger:
+
+| Clause                                                     | Trigger (when material)                                                |
+|------------------------------------------------------------|------------------------------------------------------------------------|
+| "Dahan take 0/no Damage from Ravaging this turn"           | A Ravage happens in target land THIS turn (T3+ in base)                |
+| "Defend N"                                                 | The target land takes Damage from a Ravage THIS turn                    |
+| "Invaders can't Ravage here this turn"                     | A Ravage would otherwise happen in target land THIS turn                |
+| "Dahan here deal 2 Damage during Ravages this turn"        | A Ravage happens in target land THIS turn                                |
+| "Invaders in this land skip their next Build"              | A Build happens in target land THIS turn (T2+ in base; target-specific) |
+| "Push N Explorers/Towns that were just brought by Explore" | An Explore placed units in target land THIS turn                       |
+
+**Rule for opener writers**: on any turn where the trigger doesn't fire, write "dormant this turn; first becomes material on T<N>" rather than citing the effect as the card's T<current> value. The card's Fear / elements / other clauses remain material.
+
+## Phase-timing summary block (included in skill output)
+
+When invoked on a spirit, the skill returns a summary like:
+
+```
+# Shadows Flicker Like Flame — Phase Timing Summary
+
+## Turn 1 invader contents
+- Explore only. Ravage-protection / Defend effects are dormant T1.
+
+## Turn 2 invader contents
+- Explore + Build. Ravage-protection / Defend still dormant.
+
+## Turn 3 invader contents
+- Explore + Build + Ravage. First turn Ravage-protection becomes material.
+
+## Innate speed
+- Darkness Swallows the Unwary: Fast → resolves in Fast phase; only sees elements from Fast cards played so far this turn.
+
+## Fast-phase element ceiling from Uniques alone
+- Concealing Shadows (Fast, 1M+1A) is the only Fast Unique.
+- Fast-phase Moon ceiling from Uniques = 1. L1 needs 2 Moon → not reachable from Uniques alone.
+- L1 fires in Fast phase only with a drafted Fast Moon+Fire Minor (e.g., Visions of Fiery Doom 1M+1F, or Land of Haunts and Embers 1M+1F+1A).
+```
+
+Authors read this block **before** writing T1/T2/T3 prose and cite specific lines when asserting "L1 fires T<N>" or "dormant this turn" in their chapter text.
 
 ## Related
 

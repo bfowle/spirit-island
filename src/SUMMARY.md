@@ -14,6 +14,7 @@
 
 # Part II — Fundamentals of Strategy
 
+- [Deliberate Play](fundamentals/deliberate-play.md)
 - [Terrain](fundamentals/terrain.md)
 - [Adjacency & Range](fundamentals/adjacency-and-range.md)
 - [Tempo](fundamentals/tempo.md)
