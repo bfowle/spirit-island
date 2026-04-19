@@ -1,4 +1,4 @@
-# Ember-Eyed Behemoth
+# Fathomless Mud of the Swamp
 
 ```admonish success title="Mechanics Wiki-verified"
 Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
@@ -7,12 +7,12 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Nature Incarnate                                        |
-| Complexity            | Moderate                               |
+| Expansion             | Horizons of Spirit Island                                        |
+| Complexity            | Low                               |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 5 · Control 1 · Fear 1 · Defense 1 · Utility 2             |
-| Primary Elements      | _(unknown)_ (derived from innates + uniques)|
+| Power summary (1–5)   | Offense 3 · Control 2 · Fear 3 · Defense 3 · Utility 2             |
+| Primary Elements      | Water, Moon, Earth, Plant (derived from innates + uniques)|
 | Aspects               | `[VERIFY from physical aspect panels]` |
 ```
 
@@ -20,22 +20,21 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 
 **Wiki-printed playstyle note**:
 
-> Slowly but consistently stomps its Incarna around the island, smashing Invaders. (Dahan can keep clear, unless it really gets going.) Benefits from spread-out {{sacredsite}}, both for targeting Powers and for moving its Incarna long distances. Adding Presence at its Incarna (which can count as Presence) can make it easier to get Presence into new lands, particularly non-Jungles.
+> Likes having {{sacredsite}} where Invaders will Build, but may need to re-create those {{sacredsite}} after oozing outwards with its Innate Power. In smaller games, might be able to cut off the most Inland lands from Explore actions by Destroying Inland Town/City and stopping new ones from being built. Causes a fair bit of Fear, much of which represents unpleasantness, hardship, and disgust.
 
 Strategic framing `[VERIFY: enhance with play experience]`.
 
 ## Starting Setup
 
-> Put 2 Presence and {{incarna|behemoth}}, Unempowered ({{incarna|unempowered}}) side up, in the highest-numbered Wetland on your starting board that is adjacent to any Jungle. You start with your 4 Unique Power Cards and 0 Energy.
+> Put 2 Presence on your starting board, in the lowest-numbered Wetland. You start with your 4 Unique Powers and 0 Energy.
 
 ## Growth Options (one)
 
 | Growth | Effects |
 |--------|---------|
-| G1 | first=reclaim, second=gain1p |
-| G2 | first=addpresence3junglepresence, second=addpresence0 |
-| G3 | first=gain1p, second=addpresence1, third=energy3 |
-| G4 | first=reclaimallfire, second=empowerbehemoth, third=moveincarnabehemoth |
+| G1 | first=reclaim, second=addpresence0 |
+| G2 | first=addpresence1, second=addpresence1 |
+| G3 | first=gain1p, second=addpresence2, third=energy2 |
 
 **Growth token reference** (Wiki shorthand):
 - `reclaim` — Reclaim all discarded Power Cards.
@@ -49,20 +48,25 @@ Strategic framing `[VERIFY: enhance with play experience]`.
 
 As Presence leaves each track, these values are revealed:
 
-- **Energy track**: energy0, energy1, energy2fire, energy3, earth, energy4plant, energy5fire
-- **Card-play track**: card1, card2, card2, card3, fireX, card4
+- **Energy track**: energy1, plant, energy2, energy3, water, energy4, energy5
+- **Card-play track**: card1, card2, earthX, card3, moonX, card4
 
 ## Core Mechanics & Special Rules
 
 ### Special Rule
 
-THE BEHEMOTH RISES You have an Incarna ({{incarna|behemoth}}). Once per turn, during the Spirit, {{speed|fast|20}}, or {{speed|slow|20}} phase, you may either: * Push {{incarna|behemoth}}; or * Add or Move {{incarna|behemoth}} to any of your {{sacredsite}} on the island. UNRELENTING STRIDES On any turn that you don't use Innate Powers, you may use The Behemoth Rises an additional time. (When you use an Innate Power, cover this Special Rule with a Reminder Marker; when you use this Special Rule, cover your Innate Power.)
+OFFER NO FIRM FOUNDATIONS At your {{sacredsite}}, Build actions add Explorer instead of Town/City.
 
-### Innate: SMASH, STOMP, AND FLATTEN
+### Innate: SPREADING AND DREADFUL MIRE
 
-- **Speed**: slow · **Range**: None · **Target**: behemoth
+- **Speed**: slow · **Range**: 1 (optionally from a sacred site) · **Target**: invaders
 
-_(no thresholds listed in Wiki)_
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 1 Water | Move 1 Presence from the origin {{sacredsite}} to target land. (This is required.) |
+| 2 | 1 Moon + 2 Water + 1 Earth | 1 Fear. 1 Damage. Push 1 Dahan. |
+| 3 | 2 Moon + 3 Water + 2 Earth | 1 Fear. 1 Damage. Push 1 Dahan. |
+| 4 | 3 Moon + 4 Water + 3 Earth + 2 Plant | 2 Damage. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -73,11 +77,20 @@ _(no thresholds listed in Wiki)_
 
 ### Minor Powers
 
-_(none in Wiki's suggested list)_
+| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| **Steam Vents** | 1 | Fast | 0 | Any Land | Fire, Air, Water, Earth | Destroy 1 Explorer. |
+| **Entrancing Apparitions** | 1 | Fast | 1 | Any Land | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers. |
+| **Uncanny Melting** | 1 | Slow | 1, from your Sacred Site | Any Land | Sun, Moon, Water | If Invaders are present, 1 Fear. If target land is a Sands or Wetland, Remove 1 Blight. |
+| **Pull Beneath the Hungry Earth** | 1 | Slow | 1 | Any Land | Moon, Water, Earth | If your Presence is present, 1 Fear and 1 Damage. If target land is a Sands or Wetland, 1 Damage. |
+| **None** | 0 | Slow | No Range | Any Spirit | Moon, Water, Earth, Plant | Target Spirit gains a Minor Power Card. |
 
 ### Major Powers
 
-_(none in Wiki's suggested list)_
+| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| **Cleansing Floods** | 5 | Slow | 1, from a Wetland | Any Land | Sun, Water | 4 Damage. Remove 1 Blight. |
+| **The Land Thrashes in Furious Pain** | 4 | Slow | 2 | Land with Dahan | Moon, Fire, Earth | 2 Damage per Blight. For each Blight in adjacent lands, 1 Damage (in target land). |
 
 
 
@@ -154,8 +167,8 @@ Pending re-scrape of mindwanderer current data. Historical directional figures u
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/ember-eyed-behemoth.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Ember-Eyed Behemoth](https://spiritislandwiki.com/index.php?title=Ember-Eyed_Behemoth).
+- **Authoritative mechanics** (this chapter): `data/references/wiki/fathomless-mud-of-the-swamp.json` — parsed via `scripts/wiki-fetch.py`.
+- Spirit Island Wiki — [Fathomless Mud of the Swamp](https://spiritislandwiki.com/index.php?title=Fathomless_Mud_of_the_Swamp).
 - Cross-reference: [Archetype Index](../../combos/archetype-index.md).
 - Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
 ```

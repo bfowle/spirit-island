@@ -1,4 +1,4 @@
-# Ember-Eyed Behemoth
+# Rising Heat of Stone and Sand
 
 ```admonish success title="Mechanics Wiki-verified"
 Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
@@ -7,12 +7,12 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Nature Incarnate                                        |
-| Complexity            | Moderate                               |
+| Expansion             | Horizons of Spirit Island                                        |
+| Complexity            | Low                               |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 5 · Control 1 · Fear 1 · Defense 1 · Utility 2             |
-| Primary Elements      | _(unknown)_ (derived from innates + uniques)|
+| Power summary (1–5)   | Offense 5 · Control 3 · Fear 1 · Defense 2 · Utility 3             |
+| Primary Elements      | Fire, Air, Earth (derived from innates + uniques)|
 | Aspects               | `[VERIFY from physical aspect panels]` |
 ```
 
@@ -20,22 +20,21 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 
 **Wiki-printed playstyle note**:
 
-> Slowly but consistently stomps its Incarna around the island, smashing Invaders. (Dahan can keep clear, unless it really gets going.) Benefits from spread-out {{sacredsite}}, both for targeting Powers and for moving its Incarna long distances. Adding Presence at its Incarna (which can count as Presence) can make it easier to get Presence into new lands, particularly non-Jungles.
+> Weaken-and-Destroy. Likes having {{sacredsite}} where there's Town/City, as it makes all Spirits' Damage more effective there. Has an easier time setting up {{sacredsite}} in Sands and Mountains, but can do so in any terrain with a bit more time.
 
 Strategic framing `[VERIFY: enhance with play experience]`.
 
 ## Starting Setup
 
-> Put 2 Presence and {{incarna|behemoth}}, Unempowered ({{incarna|unempowered}}) side up, in the highest-numbered Wetland on your starting board that is adjacent to any Jungle. You start with your 4 Unique Power Cards and 0 Energy.
+> Put 2 Presence on your starting board, in the highest-numbered Sands. You start with your 4 Unique Power Cards and 0 Energy.
 
 ## Growth Options (one)
 
 | Growth | Effects |
 |--------|---------|
-| G1 | first=reclaim, second=gain1p |
-| G2 | first=addpresence3junglepresence, second=addpresence0 |
-| G3 | first=gain1p, second=addpresence1, third=energy3 |
-| G4 | first=reclaimallfire, second=empowerbehemoth, third=moveincarnabehemoth |
+| G1 | first=reclaim, second=gain1p, third=energy1 |
+| G2 | first=addpresence3ms, second=addpresence3ms |
+| G3 | first=gain1p, second=addpresence1, third=energy2 |
 
 **Growth token reference** (Wiki shorthand):
 - `reclaim` — Reclaim all discarded Power Cards.
@@ -49,20 +48,25 @@ Strategic framing `[VERIFY: enhance with play experience]`.
 
 As Presence leaves each track, these values are revealed:
 
-- **Energy track**: energy0, energy1, energy2fire, energy3, earth, energy4plant, energy5fire
-- **Card-play track**: card1, card2, card2, card3, fireX, card4
+- **Energy track**: energy1, earth, energy2, energy3, fire, energy4, energy5
+- **Card-play track**: card1, card2, card2, card3, card4, card5fire
 
 ## Core Mechanics & Special Rules
 
 ### Special Rule
 
-THE BEHEMOTH RISES You have an Incarna ({{incarna|behemoth}}). Once per turn, during the Spirit, {{speed|fast|20}}, or {{speed|slow|20}} phase, you may either: * Push {{incarna|behemoth}}; or * Add or Move {{incarna|behemoth}} to any of your {{sacredsite}} on the island. UNRELENTING STRIDES On any turn that you don't use Innate Powers, you may use The Behemoth Rises an additional time. (When you use an Innate Power, cover this Special Rule with a Reminder Marker; when you use this Special Rule, cover your Innate Power.)
+BLISTERING HEAT At your {{sacredsite}}, Invaders have -1 Health (min. 1).
 
-### Innate: SMASH, STOMP, AND FLATTEN
+### Innate: SCORCH WITH WAVES OF HEAT
 
-- **Speed**: slow · **Range**: None · **Target**: behemoth
+- **Speed**: slow · **Range**: 1 (optionally from a sacred site) · **Target**: any
 
-_(no thresholds listed in Wiki)_
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 2 Fire + 2 Air | 2 Damage to Explorer only. |
+| 2 | 3 Fire + 2 Earth | 2 Damage. |
+| 3 | 4 Fire + 1 Air + 3 Earth | 2 Damage. |
+| 4 | 5 Fire + 2 Air + 3 Earth | 1 Damage to each Invader. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -73,11 +77,20 @@ _(no thresholds listed in Wiki)_
 
 ### Minor Powers
 
-_(none in Wiki's suggested list)_
+| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| **Visions of Fiery Doom** | 1 | Fast | 0 | Any Land | Moon, Fire | 1 Fear. Push 1 Explorer/Town. |
+| **Drought** | 1 | Slow | 1 | Any Land | Sun, Fire, Earth | Destroy 3 [[Towns]]. 1 Damage to each [[Town]]/[[City]]. Add 1 [[Blight]]. |
+| **Purifying Flame** | 1 | Slow | 1, from your Sacred Site | Any Land | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blight. |
+| **Encompassing Ward** | 1 | Fast | No Range | Any Spirit | Sun, Water, Earth | Target Spirit provides Defend 2 in each of its lands. |
+| **Land of Haunts and Embers** | 0 | Fast | 2 | Any Land | Moon, Fire, Air | 2 Fear. Push up to 2 Explorers/Towns. If Blight is present, 2 Fear and Push up to 2 Explorers/Towns. Add 1 Blight. |
 
 ### Major Powers
 
-_(none in Wiki's suggested list)_
+| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| **None** | 4 | Fast | 1 | Any Land | Sun, Earth | Add 1 Presence in target land even if you normally could not due to land type. Defend 20. |
+| **Talons of Lightning** | 6 | Fast | 1 | Mountain or Wetland | Fire, Air | 3 Fear. 5 Damage. |
 
 
 
@@ -154,8 +167,8 @@ Pending re-scrape of mindwanderer current data. Historical directional figures u
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/ember-eyed-behemoth.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Ember-Eyed Behemoth](https://spiritislandwiki.com/index.php?title=Ember-Eyed_Behemoth).
+- **Authoritative mechanics** (this chapter): `data/references/wiki/rising-heat-of-stone-and-sand.json` — parsed via `scripts/wiki-fetch.py`.
+- Spirit Island Wiki — [Rising Heat of Stone and Sand](https://spiritislandwiki.com/index.php?title=Rising_Heat_of_Stone_and_Sand).
 - Cross-reference: [Archetype Index](../../combos/archetype-index.md).
 - Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
 ```

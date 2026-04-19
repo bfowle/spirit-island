@@ -1,4 +1,4 @@
-# Ember-Eyed Behemoth
+# Eyes Watch from the Trees
 
 ```admonish success title="Mechanics Wiki-verified"
 Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
@@ -7,12 +7,12 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Nature Incarnate                                        |
-| Complexity            | Moderate                               |
+| Expansion             | Horizons of Spirit Island                                        |
+| Complexity            | Low                               |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 5 · Control 1 · Fear 1 · Defense 1 · Utility 2             |
-| Primary Elements      | _(unknown)_ (derived from innates + uniques)|
+| Power summary (1–5)   | Offense 2 · Control 3 · Fear 4 · Defense 5 · Utility 1             |
+| Primary Elements      | Moon, Plant, Air (derived from innates + uniques)|
 | Aspects               | `[VERIFY from physical aspect panels]` |
 ```
 
@@ -20,22 +20,21 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 
 **Wiki-printed playstyle note**:
 
-> Slowly but consistently stomps its Incarna around the island, smashing Invaders. (Dahan can keep clear, unless it really gets going.) Benefits from spread-out {{sacredsite}}, both for targeting Powers and for moving its Incarna long distances. Adding Presence at its Incarna (which can count as Presence) can make it easier to get Presence into new lands, particularly non-Jungles.
+> Good at Defending against Ravages, and at steadily earning Fear. Its ability to Gather Dahan to fight back when Defending can make a huge difference, changing a stalling tactic into a blow against the Invaders.
 
 Strategic framing `[VERIFY: enhance with play experience]`.
 
 ## Starting Setup
 
-> Put 2 Presence and {{incarna|behemoth}}, Unempowered ({{incarna|unempowered}}) side up, in the highest-numbered Wetland on your starting board that is adjacent to any Jungle. You start with your 4 Unique Power Cards and 0 Energy.
+> Put 2 Presence on your starting board, in the highest-numbered Jungle. You start with your 4 Unique Powers and 0 Energy.
 
 ## Growth Options (one)
 
 | Growth | Effects |
 |--------|---------|
-| G1 | first=reclaim, second=gain1p |
-| G2 | first=addpresence3junglepresence, second=addpresence0 |
-| G3 | first=gain1p, second=addpresence1, third=energy3 |
-| G4 | first=reclaimallfire, second=empowerbehemoth, third=moveincarnabehemoth |
+| G1 | first=reclaim, second=gain1p, third=energy1 |
+| G2 | first=addpresence2, second=addpresence0 |
+| G3 | first=gain1p, second=addpresence3, third=energy1 |
 
 **Growth token reference** (Wiki shorthand):
 - `reclaim` — Reclaim all discarded Power Cards.
@@ -49,20 +48,25 @@ Strategic framing `[VERIFY: enhance with play experience]`.
 
 As Presence leaves each track, these values are revealed:
 
-- **Energy track**: energy0, energy1, energy2fire, energy3, earth, energy4plant, energy5fire
-- **Card-play track**: card1, card2, card2, card3, fireX, card4
+- **Energy track**: energy1, energy1, energy2, plant, energy3, moon, energy4
+- **Card-play track**: card1, card2, airX, card3, plantX, card4
 
 ## Core Mechanics & Special Rules
 
 ### Special Rule
 
-THE BEHEMOTH RISES You have an Incarna ({{incarna|behemoth}}). Once per turn, during the Spirit, {{speed|fast|20}}, or {{speed|slow|20}} phase, you may either: * Push {{incarna|behemoth}}; or * Add or Move {{incarna|behemoth}} to any of your {{sacredsite}} on the island. UNRELENTING STRIDES On any turn that you don't use Innate Powers, you may use The Behemoth Rises an additional time. (When you use an Innate Power, cover this Special Rule with a Reminder Marker; when you use this Special Rule, cover your Innate Power.)
+Dahan Trust the Watchers After one of your Powers adds Defend to a single land, Gather up to 1 Dahan into that land. ("Power" includes both your Innate Power and your Power Cards. Can be used with any number of Defend Powers each turn.)
 
-### Innate: SMASH, STOMP, AND FLATTEN
+### Innate: Mischief and Sabotage
 
-- **Speed**: slow · **Range**: None · **Target**: behemoth
+- **Speed**: fast · **Range**: 1 (optionally from a sacred site) · **Target**: invaders
 
-_(no thresholds listed in Wiki)_
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 1 Moon + 2 Plant | 1 Fear and Defend 2. |
+| 2 | 2 Moon + 3 Plant | Instead, 1 Fear and Defend 4. |
+| 3 | 2 Moon + 2 Air + 4 Plant | Instead, 3 Fear and Defend 6. |
+| 4 | 3 Moon + 3 Air + 5 Plant | Instead, 5 Fear and Defend 12. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -73,13 +77,23 @@ _(no thresholds listed in Wiki)_
 
 ### Minor Powers
 
-_(none in Wiki's suggested list)_
+| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| **Lure of the Unknown** | 0 | Fast | 2 | Land with No Invaders | Moon, Fire, Air, Plant | Gather 1 Explorer/Town. |
+| **Delusions of Danger** | 1 | Fast | 1 | Any Land | Sun, Moon, Air | Push 1 Explorer. **OR** 2 Fear. |
+| **Dark and Tangled Woods** | 1 | Fast | 1 | Any Land | Moon, Earth, Plant | 2 Fear. If target land is a Mountain or Jungle, Defend 3. |
 
 ### Major Powers
 
-_(none in Wiki's suggested list)_
+| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| **Terrifying Nightmares** | 4 | Fast | 2 | Any Land | Moon, Air | 2 Fear. Push up to 4 Explorers/Towns. |
+| **The Jungle Hungers** | 3 | Slow | 1, from a Jungle | Any Land | Moon, Plant | Destroy all Explorers and all Towns. Destroy all Dahan. |
 
-
+### Other (error or unclassified)\n\n| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| Drift Down Into Slumber | — | — | — | — | — | _Wiki error_ |
+| Veil the Night\'s Hunt | — | — | — | — | — | _Wiki error_ |
 
 ## Key Strategic Principles
 
@@ -154,8 +168,8 @@ Pending re-scrape of mindwanderer current data. Historical directional figures u
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/ember-eyed-behemoth.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Ember-Eyed Behemoth](https://spiritislandwiki.com/index.php?title=Ember-Eyed_Behemoth).
+- **Authoritative mechanics** (this chapter): `data/references/wiki/eyes-watch-from-the-trees.json` — parsed via `scripts/wiki-fetch.py`.
+- Spirit Island Wiki — [Eyes Watch from the Trees](https://spiritislandwiki.com/index.php?title=Eyes_Watch_from_the_Trees).
 - Cross-reference: [Archetype Index](../../combos/archetype-index.md).
 - Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
 ```

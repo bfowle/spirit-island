@@ -51,11 +51,11 @@
         },
         {
           "plant": "3",
-          "effect": "This Power has {{range|+1}}."
+          "effect": "This Power has Range +1."
         },
         {
           "air": "1",
-          "effect": "This Power has {{range|+1}}."
+          "effect": "This Power has Range +1."
         }
       ]
     }
@@ -428,5 +428,6 @@
         "artdepictions": "Keeper of the Forbidden Wilds,Invaders"
       }
     }
-  ]
+  ],
+  "suggested_card_details": []
 }

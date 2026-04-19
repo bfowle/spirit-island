@@ -6,7 +6,7 @@
   "complexity": "moderate",
   "setup": "Put 2 Presence on your starting board: 1 in each of the 2 lands with the most Dahan.",
   "playstyle": "Has a keen interest in where the Dahan are - partly because so many of its starting powers work through them partly because its Presence can move along with them. When picking new Power Cards, it will often want to take good Dahan-centric Powers, but it can also branch out into other areas.",
-  "special_rules": "ALLY OF THE DAHAN Your Presence may move with Dahan. (Whenever a Dahan moves from 1 of your lands to another land, you may move 1 Presence along with it.) SWORN TO VICTORY After a Ravage Action destroys 1 or more Dahan, for each Dahan Destroyed, Destroy 1 of your Presence within {{range|1}}.<ref group=\"\">Old, outdated text: After placing Blight from a Ravage, for each Dahan that died during the Ravage, destroy 1 of your Presence within {{range|1}}</ref><ref group=\"\">Updated errata taken from this FAQ entry: https://querki.net/u/darker/spirit-island-faq/#!.bu6ofsi</ref>",
+  "special_rules": "ALLY OF THE DAHAN Your Presence may move with Dahan. (Whenever a Dahan moves from 1 of your lands to another land, you may move 1 Presence along with it.) SWORN TO VICTORY After a Ravage Action destroys 1 or more Dahan, for each Dahan Destroyed, Destroy 1 of your Presence within Range 1.",
   "special_rules_raw": "'''''ALLY OF THE DAHAN'''''<br>Your {{presence}} may move with {{dahan}}. ''(Whenever a {{dahan}} moves from 1 of your lands to another land, you may move 1 {{presence}} along with it.)''\n\n'''''SWORN TO VICTORY'''''<br>After a Ravage Action destroys 1 or more {{dahan}}, for each {{dahan}} Destroyed, Destroy 1 of your {{presence}} within {{range|1}}.<ref group=\"\">Old, outdated text: After placing {{blight}} from a Ravage, for each {{dahan}} that died during the Ravage, destroy 1 of your {{presence}} within {{range|1}}</ref><ref group=\"\">Updated errata taken from this FAQ entry: https://querki.net/u/darker/spirit-island-faq/#!.bu6ofsi</ref>",
   "innates": [
     {
@@ -321,5 +321,6 @@
         "artdepictions": "Thunderspeaker,Invaders"
       }
     }
-  ]
+  ],
+  "suggested_card_details": []
 }

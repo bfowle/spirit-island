@@ -1,308 +1,198 @@
 # Bringer of Dreams and Nightmares
 
-```admonish warning title="Accuracy status — partial revision 2026-04-19"
-Mechanical sections corrected against [Spirit Island Wiki authoritative data](../../../data/references/spirit-mechanics.md). `[VERIFY]` markers indicate fields pending physical-copy check.
-
-**Previous errors removed**: "Predatory Nightmares" labeled as an innate (it's a Unique card); the critical special rule **"To Dream a Thousand Deaths"** (damage → fear conversion) was missing entirely — this is Bringer's core identity mechanic.
+```admonish success title="Mechanics Wiki-verified"
+Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Base                                               |
-| Complexity            | High                                               |
-| Play Difficulty       | 2                                                  |
-| Archetypes            | Fear-Rush (primary, exclusive win path)            |
-| Primary Elements      | Moon, Air (Animal at higher innate levels)         |
-| Typical Opening       | Full bottom, Minor-heavy                           |
-| Typical Draft Bias    | Mixed (Minors T1–T4; late Major closer)            |
-| Rei's Guide           | Not covered by Rei                                 |
-| latentoctopus         | Not currently listed                               |
-| Aspects               | Enticing, Violence `[VERIFY]`                      |
+| Expansion             | Base Game                                        |
+| Complexity            | High                               |
+| Play Difficulty       | `[VERIFY from spirit panel]`                       |
+| Growth type           | "one" — see Growth Options below         |
+| Power summary (1–5)   | Offense 1 · Control 2 · Fear 5 · Defense 2 · Utility 2             |
+| Primary Elements      | Moon, Air, Animal, Fire (derived from innates + uniques)|
+| Aspects               | `[VERIFY from physical aspect panels]` |
 ```
 
 ## Spirit Overview — Framing
 
-Bringer is the **fear-only** spirit, literally. Per the spirit's core special rule, Bringer's Powers never cause Damage or Destruction — instead, damage that *would* destroy invaders converts to Fear + Pushes. The entire spirit plays as a fear-generation engine that never lands a kill in the traditional sense.
+**Wiki-printed playstyle note**:
 
-**One-line fantasy**: nightmares spread from dreaming spirits into waking invaders; colonizers flee the island not because they lost, but because they can't sleep.
+> With most Spirits, Terror Victories are a backup plan if the main push against the Invaders stalls out for too long, but Bringer turns Fear into a more viable primary strategy. Its transformation of damage & destruction into Fear can turn Major Powers into tremendous sources of terror and panic. However, the only real offense Bringer has is the Dahan fighting back. While it does have some defensive ability, it is fundamentally poor at clearing areas of Invaders.
 
-**The honest complexity signal**: Wiki labels this "High" complexity — which is right. The mechanics are simple (fear generation); the **psychological reframe** is hard. New players try to kill with Bringer and fail. You must internalize "damage becomes fear and pushes, not kills" before the spirit feels playable. 2–3 games to click.
+Strategic framing `[VERIFY: enhance with play experience]`.
+
+## Starting Setup
+
+> Put 2 Presence on your starting board in the highest-numbered Sands.
+
+## Growth Options (one)
+
+| Growth | Effects |
+|--------|---------|
+| G1 | first=reclaim, second=gain1p |
+| G2 | first=reclaim1, second=addpresence0 |
+| G3 | first=gain1p, second=addpresence1 |
+| G4 | first=Night, second=energy2 |
+
+**Growth token reference** (Wiki shorthand):
+- `reclaim` — Reclaim all discarded Power Cards.
+- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
+- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
+- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
+- `card1` / `card2` — +1/+2 Card Plays this turn.
+- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+
+## Presence Tracks
+
+As Presence leaves each track, these values are revealed:
+
+- **Energy track**: energy2, air, energy3, moon, energy4, any, energy5
+- **Card-play track**: card2, card2, card2, card3, card3, any
 
 ## Core Mechanics & Special Rules
 
-### Special Rule: To Dream a Thousand Deaths
+### Special Rule
 
-Powers never cause actual Damage or Destruction (except to Bringer's own Presence). Damage that would destroy Explorer/Town/City converts to **0/2/5 Fear** respectively; Invaders that would be destroyed are **Pushed** instead.
+TO DREAM A THOUSAND DEATHS Your Powers never cause Damage, nor can they Destroy anything other than your own Presence. When your Powers would Destroy (or deal enough Damage to Destroy) Explorer/Town/City, instead generate 0/2/5 Fear. The Power Pushes all Explorer/Town it would Destroy. Notes: A single Power cannot Destroy a given Invader more than once. Powers that cause Damage via Dahan are affected just like all others. All effects other than Damage/Destroy work as usual.
 
-**Strategic implication**: this is *the* Bringer mechanic. Every "damage effect" from Bringer's own cards, or any effect that targets Bringer's target land, produces fear scaled by what the damage *would have* killed. A 5-damage "destroy a City" effect generates 5 fear + a Push rather than a kill. This shapes every single card evaluation.
+### Innate: SPIRITS MAY YET DREAM
 
-### Innate: Spirits May Yet Dream — Fast, target Any Spirit
+- **Speed**: fast · **Range**: None · **Target**: anyspirit
 
-- **2 Moon, 2 Air**: Reveal a face-down Fear Card.
-- **3 Moon**: Target Spirit gains an element they already possess.
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 2 Moon + 2 Air | Turn any face down Fear Card face-up. (It's earned/resolved normally, but players can see what's coming) |
+| 2 | 3 Moon | Target Spirit gains an element that they have at least 1 of. |
 
-**Strategic implication**: fear-card revelation is a pool-acceleration trick. You don't wait for fear to fill the pool naturally; you reveal fear cards directly. The element-duplication at Level 2 is a multiplayer-support trick.
 
-### Innate: Night Terrors — Fast, 0 Range
+### Innate: NIGHT TERRORS
 
-- **1 Moon, 1 Air**: 1 Fear.
-- **2 Moon, 1 Air, 1 Animal**: +1 Fear (total 2).
-- **3 Moon, 2 Air, 1 Animal**: +1 Fear (total 3).
+- **Speed**: fast · **Range**: 0 · **Target**: invaders
 
-**Strategic implication**: baseline fear generation every turn. Scales with Animal element, which shows up on Bringer's Unique cards.
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 1 Moon + 1 Air | 1 Fear. |
+| 2 | 2 Moon + 1 Air + 1 Animal | +1 Fear. |
+| 3 | 3 Moon + 2 Air + 1 Animal | +1 Fear. |
 
-### Unique Cards
 
-All four starting Uniques per Wiki:
+## Unique Cards (all, Wiki-verified)
 
-- **Call on Midnight's Dream** — 0 Energy, Fast, Moon + Air. Generates 2 Fear OR gain a Major Power (forget this card as payment).
-- **Dread Apparitions** — 1 Energy, Fast, 2 Moon + 1 Air + 1 Animal. +1 Fear and Defend 1 in target land with Invaders.
-- **Dreams of the Dahan** — 1 Energy, Fast, 2 Moon + 1 Air. Move Dahan to land OR generate Fear based on Dahan count.
-- **Predatory Nightmares** — 2 Energy, Fast, Moon + Fire. Move up to 2 Dahan away; convert 2 Damage into Fear/Pushes.
+#### Call on Midnight's Dream
+
+- **0 Energy · Fast · Range 0 · Any Land · Moon, Animal**
+- *If target land has Dahan, gain a Major Power. If you Forget this Power, gain Energy equal to Dahan and you may play the Major Power immediately, paying its cost. **OR** If Invaders are present, 2 Fear.*
+
+#### Dread Apparitions
+
+- **2 Energy · Fast · Range 1 · Land with 1 or more Invaders · Moon, Air**
+- *When Powers generate Fear in target land, Defend 1 per Fear. 1 Fear. (Fear from To Dream a Thousand Deaths counts. Fear from Destroying Towns/Cities does not.)*
+
+#### Dreams of the Dahan
+
+- **0 Energy · Fast · Range 2 · Any Land · Moon, Air**
+- *Gather up to 2 [[Dahan]]. **OR** If target land has [[Towns]]/[[Cities]], 1 [[Fear]] for each [[Dahan]], to a maximum of 3 [[Fear]].*
+
+#### Predatory Nightmares
+
+- **2 Energy · Slow · Range 1, from your Sacred Site · Land with 1 or more Invaders · Moon, Fire, Earth, Animal**
+- *2 Damage. Push up to 2 Dahan. (When your Powers would Destroy Invaders, instead they generate Fear and/or Push those Invaders.)*
+
+
+## Suggested Draft Cards (Wiki-recommended)
+
+### Minor Powers
+
+_(none in Wiki's suggested list)_
+
+### Major Powers
+
+_(none in Wiki's suggested list)_
+
+
 
 ## Key Strategic Principles
 
-1. **Fear is the only win path.** To Dream a Thousand Deaths means Bringer never kills. Terror 2/3 flip is the win condition; everything else is means to that end.
-2. **Moon + Air are primary.** Both innates require them. Draft Moon + Air Minors aggressively; Animal is secondary for Night Terrors Level 2+.
-3. **Call on Midnight's Dream is a Major-acquisition tool.** The card generates 2 fear OR forgets itself for a Major. A powerful T3–T4 play: self-forget Midnight's Dream + gain a Moon/Air Major in one turn.
-4. **Reveal fear cards via Spirits May Yet Dream.** Don't wait for the pool to fill; accelerate Terror flips.
-5. **Dreams of the Dahan scales.** Dahan density in a land = fear output. Partner with Thunderspeaker or draft Dahan-summoning Minors to feed this card.
-6. **Predatory Nightmares is the 2E "fear-burst" card.** 2 damage converted = 4 fear (Towns) or 5+ fear (Cities) in the land. Save for City turns.
-7. **Dread Apparitions is defend.** +1 Fear and Defend 1 is Bringer's only defensive card. Use sparingly; usually 1 play per game.
+`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
 
-```admonish tip title="Pro Tip"
-Call on Midnight's Dream is the cleanest Major-acquisition in the game — no Forget penalty beyond losing Midnight's Dream itself. The card is arguably worth forgetting even when you don't urgently need a Major; the Major gained will likely exceed the card's value.
-```
+1. Use the Special Rule to its fullest (see above for exact text).
+2. Element thresholds drive innate firing — see the innate tables above.
+3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
 
 ## Opening Strategy
 
-### Opening A — Full bottom, Minor-heavy 🟥 (needs playtest)
-
-**When to pick this**: default for most adversaries.
-
-**Target arc**: Level 1 Night Terrors firing T1 · Level 2 Night Terrors T4 · Terror 2 flip T5–T6 · Terror 3 T7–T8.
-
-#### Turn 1
-
-- **Growth**: **G3 bottom** (presence + Minor gain).
-- **Cards played**: **Dread Apparitions or Call on Midnight's Dream** + a 0-cost Moon Minor.
-- **Presence placement**: inland dahan-land (Dreams of the Dahan scaling target).
-- **Elements by end**: 2 Moon, 1 Air.
-- **E / CP state**: 1E / 2CP → 0E / 2CP.
-- **Milestone**: 2–3 fear generated (innate Level 1 + card).
-
-#### Turn 2
-
-- **Growth**: **G3 bottom** (second Minor gain + presence).
-- **Cards played**: reclaimed Unique + Minor (Moon-bearing if possible).
-- **Presence placement**: second land.
-- **Elements by end**: 2 Moon sustained, 2 Air.
-- **E / CP state**: 1E / 2CP → 0E / 2CP.
-- **Milestone**: fear pool 4–5/8.
-
-#### Turn 3
-
-- **Growth**: **G1 Reclaim + G3 Minor**.
-- **Cards played**: **Dreams of the Dahan + Minor**. Target Dahan-dense land for fear-scaling.
-- **Presence placement**: third land.
-- **Elements by end**: 3 Moon, 2 Air.
-- **E / CP state**: 1E / 2CP → 0E / 2CP.
-- **Milestone**: Level 2 Night Terrors threshold reached (need Animal for full Level 2); 6–7/8 fear.
-
-#### Turn 4 — state audit
-
-After T3:
-
-- **Presence**: 6–7 of 13, across 3–4 lands.
-- **Energy / CP**: 1E / 2–3CP.
-- **Engine**: Night Terrors Level 1 firing; approaching Level 2.
-- **Fear pool**: 7–8/8 — Terror 2 flip imminent.
-- **Blight**: 0–2 (Bringer doesn't prevent ravages; accept some blight).
-
-Pivot advice:
-- **Missing Animal element by T3** → draft Animal-bearing Minor T4; delay Level 2 to T5.
-- **Partner not covering board** → Bringer cannot self-save; this opening fails without a defensive partner in multiplayer.
-- **Sweden L3+ fear penalties** → Terror 2 slips to T7; accept slower win.
-
-### Opening B — Early Major via Call on Midnight's Dream 🟥
-
-**When to pick this**: a strong Moon/Air Major would solve your adversary matchup.
-
-- **T1**: Dread Apparitions + Minor.
-- **T2**: G4 + Call on Midnight's Dream self-forgets for Major gain (Terrifying Nightmares is the canonical target).
-- **T3**: Major fires; fear-spike.
-
-### Opening decision
-
-<pre class="mermaid">
-graph TD
-  Start[Round 1 — Bringer] --> Adv{Adversary?}
-  Adv -->|Brandenburg-Prussia| A[Opening A]
-  Adv -->|England| A
-  Adv -->|Scotland| A
-  Adv -->|Habsburg Livestock| A
-  Adv -->|Sweden L0-L2| A
-  Adv -->|Sweden L3+| B[Opening B - Major via Midnight's Dream]
-  Adv -->|Russia| B
-  Adv -->|Multi-handed with board-carry partner| A
-  Adv -->|Other| A
-</pre>
-
-## Element & Aspect Preferences
-
-**Preferred elements**: Moon (primary), Air (secondary), Animal (Night Terrors Level 2+).
-
-**Aspects** `[VERIFY names and mechanics]`: Enticing, Violence.
+`[VERIFY: needs play data]` — opening variants should be rehearsed turn-by-turn per the [SPIRIT_TEMPLATE.md](../../../templates/SPIRIT_TEMPLATE.md) opener format.
 
 ## Card Priority Ratings
 
-Bringer is **Mixed** draft-bias.
+**Uniques**: see above, all 4 cards are starting-deck and usually all grade A-tier for the spirit's intended playstyle.
 
-### Uniques
+**Suggested Minors + Majors**: see tables above. Wiki's suggestions reflect community-recommended drafts.
 
-| Card                        | Grade | Notes                                                   |
-|-----------------------------|-------|---------------------------------------------------------|
-| Call on Midnight's Dream    | A+    | 0-cost fear OR Major-acquisition; top priority.         |
-| Dreams of the Dahan         | A     | Dahan-scaling fear; play when Dahan-dense land targeted.|
-| Dread Apparitions           | A-    | Fear + Defend; 1 Energy.                                |
-| Predatory Nightmares        | A-    | 2E fear-burst; save for City turns.                     |
-
-### Minors to Target
-
-| Card                        | Grade | Why with Bringer                                         |
-|-----------------------------|-------|---------------------------------------------------------|
-| 0-cost Moon Minors          | A+    | Threshold.                                              |
-| Moon-Air dual Minors        | A+    | Both innates scale.                                     |
-| Animal-bearing Minors       | A     | Night Terrors Level 2+ threshold.                       |
-| Dahan-summon Minors         | A-    | Feeds Dreams of the Dahan.                              |
-
-### Majors that Over-perform on Bringer
-
-| Card                    | Grade | Why                                                     |
-|-------------------------|-------|---------------------------------------------------------|
-| Terrifying Nightmares   | A+    | Fear finisher; Moon-heavy.                              |
-| Voice of Command        | A     | Fear + strife `[VERIFY elements]`.                      |
-| Paralyzing Fright       | A-    | 3-cost closer.                                          |
-
-### Cards to AVOID drafting
-
-- **Direct-damage Majors** — Bringer's To Dream a Thousand Deaths converts damage to fear, but if the Major has specific "damage" effects for scaling, they convert inefficiently.
-- **Earth/Fire-heavy Majors without Moon/Air** — wrong element profile.
+`[VERIFY: ratings per matchup pending]`.
 
 ## Adversary Matchup Matrix
 
-| Adversary            | L0 | L3 | L5 | L6 | Notes                                            |
-|----------------------|----|----|----|----|-------------------------------------------------|
-| England              | A  | A- | B+ | B+ | Town density = fear-conversion multiplied.        |
-| Brandenburg-Prussia  | A  | A  | A- | B+ | Cities = 5 fear each; ideal matchup.             |
-| Sweden               | B- | C+ | C  | C- | Fear penalties cripple the engine.                |
-| France (Plantation)  | B+ | B  | B- | C+ | Dahan capture disrupts Dreams of the Dahan.       |
-| Habsburg Mining      | B  | B- | C+ | C  | Scaling outpaces fear-rush.                       |
-| Russia               | C+ | C  | C- | D  | Fear-suppression mid-late.                        |
-| Scotland             | A  | A- | B+ | B  | Favorable.                                        |
-| Habsburg Livestock   | A  | A- | B+ | B  | Decent.                                           |
+`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
 
-### Strategy Cliff — Sweden L2+ / Russia L3+
+| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
+|----------------------|----|----|----|----|----------------------|
+| England              | ?  | ?  | ?  | ?  |                      |
+| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
+| Sweden               | ?  | ?  | ?  | ?  |                      |
+| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
+| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
+| Russia               | ?  | ?  | ?  | ?  |                      |
+| Scotland             | ?  | ?  | ?  | ?  |                      |
+| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
 
-```admonish info title="Strategy Cliff — Sweden L2+"
-**What changes**: fear-card penalties active; each fear card produces reduced effect.
+## Board / Map Configuration
 
-**Impact on Bringer**: Terror flips still happen, but the *effect* of each fear card is diminished. Bringer's win-rate drops ~15% at L3; ~25% at L5.
-
-**Mitigation**: shift to kill-rush partner; Bringer alone cannot close.
-```
-
-## Board Position Evaluation
-
-- **Favorable**: any board (terrain-agnostic).
-- **Neutral**: all boards.
-- **Unfavorable**: sparse boards with few invaders overall (less fear-conversion fodder).
+`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
 
 ## Game-Phase Strategy
 
-- **Early (T1–3)**: fear-generating cards + 0-cost Minors; place presence in Dahan lands.
-- **Mid (T4–6)**: Level 2 Night Terrors firing; Dreams of the Dahan compounds; Terror 2 flip.
-- **Late (T7+)**: Major closer (if gained) + To Dream a Thousand Deaths conversion for Terror 3.
+`[VERIFY: needs play data]`.
 
 ## Synergy Partners (Multiplayer)
 
-```admonish tip title="Best Partners"
-- **Thunderspeaker** — dahan density scales Dreams of the Dahan + Thunderspeaker's own fear. Double-engine.
-- **Shadows** — double fear-rush; Terror 3 arrives by T7.
-- **Vital Strength of the Earth** — Earth handles board; Bringer fear-closes.
-- **Keeper of the Forbidden Wilds** — Keeper defends; Bringer closes fear-race.
-```
-
-```admonish warning title="Anti-Synergy"
-- **Spirits that kill invaders fast** (Lightning, Fangs) — fewer invaders alive = less fear-conversion fodder.
-- **Sweden / Russia adversaries** — structural weakness regardless of partner.
-```
+`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
 
 ## Common Mistakes
 
-```admonish failure title="Common Mistake — Trying to kill"
-Bringer's cards never kill — they convert would-be kills to fear + pushes. Attempting to "finish" an invader with Bringer's cards is the conceptual trap.
-```
-
-```admonish failure title="Common Mistake — Missing Call on Midnight's Dream Major-forge"
-Midnight's Dream forgets *itself* for a Major; there's no Unique-Forget penalty. Not using this is leaving 1 free Major on the table.
-```
-
-```admonish failure title="Common Mistake — Drafting non-Moon/Air Minors"
-Both innates require Moon + Air. Non-threshold Minors stall the engine.
-```
-
-```admonish failure title="Common Mistake — Bringer solo vs. Sweden or Russia"
-Structural fear-suppression makes Bringer underfire consistently. Pair with kill-focused partner or switch spirits.
-```
+`[VERIFY: collect from play]`.
 
 ## Tempo Profile
 
-| Round | Energy | CP | Presence | Fear Pool | Key Play                                |
-|-------|--------|----|----------|-----------|-----------------------------------------|
-| 1     | 1E     | 2  | 4        | 2–3/8     | Dread Apparitions + Minor               |
-| 2     | 1E     | 2  | 5        | 4–5/8     | Reclaimed + Minor                       |
-| 3     | 1E     | 2  | 6        | 6–7/8     | Dreams of the Dahan + Minor             |
-| 4     | 1–2E   | 2  | 6–7      | 8/8 → flip | Terror 2 flip; Level 2 Night Terrors    |
-| 5     | 2E     | 3  | 7        | 3–4/8     | Sustained fear + Major consideration    |
-| 6     | 2–3E   | 3  | 6        | 6–7/8     | Terror 2 sustained; second Terror flip prep |
-| 7     | 3E     | 3  | 6        | 8/8 → flip | Terror 3 flip                           |
-| 8     | 3E     | 3  | 5        | —         | Game closes                             |
-
-Cliff turn: **T4**. Terror 2 must flip.
-
-## Major vs. Minor — Bringer Specifically
-
-**Draft bias**: Mixed (Minor-heavy early; 1 Major mid-game via Midnight's Dream).
-
-See [Major vs. Minor Fundamentals](../../fundamentals/major-vs-minor.md).
+`[VERIFY: per-round targets need playtest]`.
 
 ## Expansion Sensitivity
 
-- **Base only**: fear deck thinner; Bringer's fear-card-reveal innate has less variance.
-- **+ Branch & Claw**: event + blight decks introduce pressure on ravage turns; Bringer must accept more blight (no defend engine).
-- **+ Jagged Earth**: deeper fear deck; Bringer's Spirits May Yet Dream innate gets more variance in what it reveals.
-- **+ Nature Incarnate**: Incarna + new fear cards; sample-variance increases.
+- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
+- **+ Branch & Claw**: events + blight deck introduce variance.
+- **+ Jagged Earth**: Major/Minor pool deepens.
+- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
+
+Per-expansion specifics `[VERIFY]`.
 
 ## Stat Snapshot
 
-```admonish note title="Stat Insight"
-Per mindwanderer estimates `[VERIFY actual numbers]`:
-- Solo L6 win rate: approximately 40–45%.
-- Best vs. Brandenburg-Prussia L6 (~55%).
-- Worst vs. Russia L6 (~22%).
-- Strong 2-handed: Bringer + Thunderspeaker (~68%); Bringer + Shadows (~70%).
+```admonish note title="Stat Insight `[VERIFY from mindwanderer]`"
+Pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
 ```
 
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- Authoritative mechanics: [data/references/spirit-mechanics.md](../../../data/references/spirit-mechanics.md).
-- Spirit Island Wiki — Bringer of Dreams and Nightmares.
-- Cross-reference: [Fear Rush archetype](../../combos/fear-rush.md), [Fear Track fundamentals](../../fundamentals/fear-track.md).
+- **Authoritative mechanics** (this chapter): `data/references/wiki/bringer-of-dreams-and-nightmares.json` — parsed via `scripts/wiki-fetch.py`.
+- Spirit Island Wiki — [Bringer of Dreams and Nightmares](https://spiritislandwiki.com/index.php?title=Bringer_of_Dreams_and_Nightmares).
+- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
+- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
 ```
 
 ---
 
-*Last revised: 2026-04-19 — v0.2.1 (surgical correction; `[VERIFY]` markers pending physical-copy check)*
+*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*

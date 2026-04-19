@@ -114,5 +114,6 @@
     "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Dances Up Earthquakes' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n<gallery>File:Dances Up Earthquakes Home.png",
     "Rulings": "==Begin a Dance of Decades (Special Rule)==\n* When choosing an amount of Energy to pay to make a Power Card an impending card, you may pay 0 Energy.\n==Notes==\n{{Reflist}}"
   },
-  "unique_card_details": []
+  "unique_card_details": [],
+  "suggested_card_details": []
 }

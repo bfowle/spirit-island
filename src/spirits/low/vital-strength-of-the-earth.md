@@ -1,307 +1,196 @@
 # Vital Strength of the Earth
 
-```admonish warning title="Accuracy status — partial revision 2026-04-19"
-Mechanical sections corrected against [Spirit Island Wiki authoritative data](../../../data/references/spirit-mechanics.md). `[VERIFY]` markers indicate fields pending physical-copy check.
-
-**Previous errors removed**: innate name "Guardian of the Vital Heart" was wrong (actual: **Gift of Strength** — a different innate entirely, a *Spirit-target cooperative buff*, not a damage power); "Draw of the Fresh Waters" was wrong (actual: **Draw of the Fruitful Earth**); "Gift of Constancy" was a hallucinated Unique; missed "Earth's Vitality" (Defend 3 in Sacred-Site lands) special rule; "Rituals of Destruction" was missing from the Unique list.
+```admonish success title="Mechanics Wiki-verified"
+Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Base                                               |
-| Complexity            | Low                                                |
-| Play Difficulty       | 0                                                  |
-| Archetypes            | Defend & Outlast · Major Power Shopping · Support  |
-| Primary Elements      | Sun, Earth, Plant                                  |
-| Typical Opening       | Slow-ramp; Sacred Site formation; Early Major      |
-| Typical Draft Bias    | Major-heavy                                        |
-| Rei's Guide           | Not covered by Rei                                 |
-| latentoctopus         | Not currently listed                               |
-| Aspects               | Resilience, Might, Nourishing `[VERIFY]`           |
+| Expansion             | Base Game                                        |
+| Complexity            | Low                               |
+| Play Difficulty       | `[VERIFY from spirit panel]`                       |
+| Growth type           | "one" — see Growth Options below         |
+| Power summary (1–5)   | Offense 2 · Control 3 · Fear 1 · Defense 5 · Utility 3             |
+| Primary Elements      | Earth, Plant, Sun, Animal (derived from innates + uniques)|
+| Aspects               | `[VERIFY from physical aspect panels]` |
 ```
 
 ## Spirit Overview — Framing
 
-Earth is the **canonical Defend & Outlast + Major Power Shopping spirit**. "Earth's Vitality" makes Sacred-Site lands automatically Defend 3 — a massive passive defensive floor. Gift of Strength is a Spirit-target innate that *buffs another Spirit's Power Card plays*, making Earth a cooperative powerhouse in multiplayer.
+**Wiki-printed playstyle note**:
 
-**One-line fantasy**: the land itself refuses the invaders. What they destroy regrows; when Majors land, the ravaged land shrugs off blight.
+> Powerful but slow: has potent Power Cards and an excellent Energy income, but starts wtih only one card play per turn, and Growth is limited to adding one Presence per turn. Also slow to change: learning new Powers carries slightly more cost than reclaiming played Power Cards
 
-**The honest complexity signal**: Low officially. Earth is where players *learn* Major-Power Shopping. Simple mechanics; execution requires energy-banking discipline and Sacred-Site placement reading. Missing a banking turn means missing a Major T5 which means losing an L5+ game.
+Strategic framing `[VERIFY: enhance with play experience]`.
 
-**Critical reframe** (from previous chapter): Earth's innate is a **support buff for another Spirit** — the "Gift" in Gift of Strength. In solo play, Earth can target self; in multiplayer, targeting the partner scaling-up their Major play is often the highest-value use.
+## Starting Setup
+
+> Put 3 Presence on your starting board: 2 in the highest-numbered Mountain, 1 in the highest-numbered Jungle.
+
+## Growth Options (one)
+
+| Growth | Effects |
+|--------|---------|
+| G1 | first=reclaim, second=addpresence2 |
+| G2 | first=gain1p, second=addpresence0 |
+| G3 | first=addpresence1, second=energy2 |
+
+**Growth token reference** (Wiki shorthand):
+- `reclaim` — Reclaim all discarded Power Cards.
+- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
+- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
+- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
+- `card1` / `card2` — +1/+2 Card Plays this turn.
+- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+
+## Presence Tracks
+
+As Presence leaves each track, these values are revealed:
+
+- **Energy track**: energy2, energy3, energy4, energy6, energy7, energy8
+- **Card-play track**: card1, card1, card2, card2, card3, card4
 
 ## Core Mechanics & Special Rules
 
-### Special Rule: Earth's Vitality
+### Special Rule
 
-**Defend 3 in every land where you have a Sacred Site.**
+EARTH'S VITALITY Defend 3 in every land where you have {{Sacredsite}}.
 
-**Strategic implication**: this is passive, automatic, every turn. A Sacred Site land is a Defend 3 land with no card plays needed. Earth's core defensive floor is free. Sacred-Site count = defended-land count.
+### Innate: GIFT OF STRENGTH
 
-### Innate: Gift of Strength — Fast, 0 Range, target Any Spirit
+- **Speed**: fast · **Range**: None · **Target**: anyspirit
 
-- **Level 1** (1 Sun, 2 Earth, 2 Plant): once this turn, Target Spirit may Repeat 1 Power Card with Energy cost of 1 or less.
-- **Level 2** (2 Sun, 3 Earth, 2 Plant): Energy cost limit 3 or less.
-- **Level 3** (2 Sun, 4 Earth, 3 Plant): Energy cost limit 6 or less.
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 1 Sun + 2 Earth + 2 Plant | Once this turn, Target Spirit may Repeat 1 Power Card with Energy cost of 1 or less. |
+| 2 | 2 Sun + 3 Earth + 2 Plant | Instead, the Energy cost limit is 3 or less. |
+| 3 | 2 Sun + 4 Earth + 3 Plant | Instead, the Energy cost limit is 6 or less. |
 
-**Strategic implication**: Earth's innate is a **power-repeat buff**. In multiplayer, targeting a partner with a high-cost closer Major doubles their output. In solo, Earth targets self — repeating its own Majors.
 
-### Unique Cards
+## Unique Cards (all, Wiki-verified)
 
-All four starting Uniques per Wiki:
+#### A Year of Perfect Stillness
 
-- **A Year of Perfect Stillness** — `[VERIFY: cost, speed, elements]`. Prevents all Invader actions in one land for a turn.
-- **Draw of the Fruitful Earth** — `[VERIFY: cost, speed, elements]`. Gathers Explorers and Dahan.
-- **Guard the Healing Land** — `[VERIFY: cost, speed, elements]`. Defends and removes Blight (requires Sacred Site).
-- **Rituals of Destruction** — `[VERIFY: cost, speed, elements]`. Strong offensive power (requires Dahan in target land).
+- **3 Energy · Fast · Range 1 · Any Land · Sun, Earth**
+- *Invaders skip all Actions in target land this turn.*
+
+#### Draw of the Fruitful Earth
+
+- **1 Energy · Slow · Range 1 · Any Land · Earth, Plant, Animal**
+- *Gather up to 2 [[Explorers]]. Gather up to 2 [[Dahan]].*
+
+#### Guard the Healing Land
+
+- **3 Energy · Fast · Range 1, from your Sacred Site · Any Land · Water, Earth, Plant**
+- *Remove 1 Blight. Defend 4.*
+
+#### Rituals of Destruction
+
+- **3 Energy · Slow · Range 1, from your Sacred Site · Land with Dahan · Sun, Moon, Fire, Earth, Plant**
+- *2 Damage. If target land has at least 3 Dahan, +3 Damage and 2 Fear.*
+
+
+## Suggested Draft Cards (Wiki-recommended)
+
+### Minor Powers
+
+| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| **Rouse the Trees and Stones** | 1 | Slow | 1, from your Sacred Site | Land with no Blight | Fire, Earth, Plant | 2 Damage. Push 1 Explorer. |
+| **Call to Migrate** | 1 | Slow | 1 | Any Land | Fire, Air, Animal | Gather up to 3 Dahan. Push up to 3 Dahan. |
+| **Devouring Ants** | 1 | Slow | 1, from your Sacred Site | Any Land | Sun, Earth, Animal | 1 Fear. 1 Damage. Destroy 1 Dahan. If target land is a Jungle or Sands, +1 Damage. |
+| **Voracious Growth** | 1 | Slow | 1, from your Sacred Site | Jungle or Wetland | Water, Plant | 2 Damage. **OR** Remove 1 Blight. |
+| **Savage Mawbeasts** | 0 | Slow | 1, from your Sacred Site | Any Land | Fire, Animal | If target land is a Jungle or Wetland, 1 Fear and 1 Damage. |
+
+### Major Powers
+
+| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| **Poisoned Land** | 3 | Slow | 1 | Any Land | Earth, Plant, Animal | 1 Fear. 7 Damage. Add 1 Blight. Destroy all Dahan. |
+| **Vigor of the Breaking Dawn** | 3 | Fast | 2 | Land with Dahan | Sun, Animal | 2 Damage per Dahan. |
+
+
 
 ## Key Strategic Principles
 
-1. **Sacred Sites are passive defense.** Every Sacred Site = Defend 3 every turn via Earth's Vitality. Target 3+ Sacred Sites by T5.
-2. **Gift of Strength is the engine.** In multiplayer, it's a partner-targeted repeat-Major buff. In solo, self-targeted power repetition.
-3. **Rituals of Destruction requires Dahan.** Earth's direct-damage Unique needs Dahan in target; coordinate with Thunderspeaker or draft Dahan-summoning.
-4. **Guard the Healing Land needs Sacred Site.** Its defend + blight-remove triggers only in Sacred Site lands — plays together with the passive Defend 3 for essentially uninterrupted land protection.
-5. **A Year of Perfect Stillness is the emergency valve.** Prevents all Invader actions in a land for a turn — use when a cascade is imminent.
-6. **Sun + Earth + Plant threshold spread.** All three are required for higher innate levels; draft broad.
-7. **Major Power Shopping is standard.** Forget the weakest Unique for an Earth/Plant Major T3–T4.
+`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
 
-```admonish tip title="Pro Tip"
-In multiplayer, Gift of Strength on a partner's T5+ turn with a 6-cost Major can produce two Major plays in one turn — essentially cloning your partner's closer. This is Earth's highest-leverage play and a core reason Earth pairs well with Major-heavy partners.
-```
+1. Use the Special Rule to its fullest (see above for exact text).
+2. Element thresholds drive innate firing — see the innate tables above.
+3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
 
 ## Opening Strategy
 
-### Opening A — Slow-ramp, Sacred Site formation 🟥 (needs playtest)
-
-**When to pick this**: default for most adversaries.
-
-**Target arc**: 2 Sacred Sites by T3 · first Major T4 · Level 2 Gift of Strength T5 · 3+ Majors in rotation by T8.
-
-#### Turn 1
-
-- **Growth**: **G2 top** (energy + card play) OR **G1 top** (energy bank).
-- **Cards played**: **Guard the Healing Land + Draw of the Fruitful Earth**.
-- **Presence placement**: inland jungle/mountain, paired with existing presence for Sacred Site formation.
-- **Elements by end**: 1 Earth, 1 Plant `[VERIFY: exact element counts from Unique cards]`.
-- **E / CP state**: 1E / 2CP → 0E / 2CP.
-- **Milestone**: 1 Sacred Site formed; Defend 3 active via Earth's Vitality.
-
-#### Turn 2
-
-- **Growth**: **G1 top** (energy bank for T3–T4 Major).
-- **Cards played**: Guard reclaimed + a Minor.
-- **Presence placement**: second land; near first for Sacred Site pairing.
-- **Elements by end**: 2 Earth, 1 Plant, 1 Sun.
-- **E / CP state**: 1E / 2CP → 1E / 2CP (bank).
-- **Milestone**: 2E banked; Sacred Site forming.
-
-#### Turn 3
-
-- **Growth**: **G4 Major gain**. Forget `[VERIFY which Unique is the canonical Forget target — Draw of the Fruitful Earth is typical based on archetype logic]`. Gain Earth/Plant Major (Vigor of the Breaking Dawn, Tigers Hunting, Rouse the Trees and Stones).
-- **Cards played**: **Guard + a Minor**.
-- **Presence placement**: third land.
-- **Elements by end**: 2 Earth, 2 Plant, 1 Sun.
-- **E / CP state**: 2E / 2CP → 1E / 2CP.
-- **Milestone**: Major in hand; 2 Sacred Sites.
-
-#### Turn 4 — state audit
-
-After T3:
-
-- **Presence**: 5–6 of 13; 2 Sacred Sites.
-- **Energy / CP**: 2–3E / 2–3CP.
-- **Engine**: Major in rotation; Level 1 Gift of Strength firing (1 Sun + 2 Earth + 2 Plant needs checking).
-- **Fear pool**: 2 of 8 (fear-slow; Earth doesn't fear-rush).
-- **Blight**: 0–1 (Earth's Vitality + Guard handles).
-
-Pivot advice:
-- **Major offered T3 doesn't fit Earth/Plant** → delay Forget; gain T4 instead.
-- **Energy-starved** → skip the T2 Minor; bank 2E reliably.
-- **Blight at 2** → A Year of Perfect Stillness is your emergency valve.
-
-### Opening B — All-defend, late Major 🟥
-
-**When to pick this**: extreme board pressure (Russia L5+, Habsburg Mining L5+).
-
-- T1–T3: defend + bank; no Major draft.
-- T4: G4 Major gain.
-- T5: Major fires.
-
-### Opening decision
-
-<pre class="mermaid">
-graph TD
-  Start[Round 1 — Earth] --> Adv{Adversary?}
-  Adv -->|England| A[Opening A]
-  Adv -->|Brandenburg-Prussia| A
-  Adv -->|Sweden| A
-  Adv -->|Russia L5+| B[Opening B - All-defend]
-  Adv -->|Habsburg Mining L5+| B
-  Adv -->|Habsburg Livestock| A
-  Adv -->|Scotland| A
-  Adv -->|France| A
-  Adv -->|Other| A
-</pre>
-
-## Element & Aspect Preferences
-
-**Preferred elements**: Sun, Earth, Plant (all three needed for higher innate levels).
-
-**Aspects** `[VERIFY names and mechanics]`: Resilience, Might, Nourishing.
+`[VERIFY: needs play data]` — opening variants should be rehearsed turn-by-turn per the [SPIRIT_TEMPLATE.md](../../../templates/SPIRIT_TEMPLATE.md) opener format.
 
 ## Card Priority Ratings
 
-Earth is **Major-heavy**.
+**Uniques**: see above, all 4 cards are starting-deck and usually all grade A-tier for the spirit's intended playstyle.
 
-### Uniques
+**Suggested Minors + Majors**: see tables above. Wiki's suggestions reflect community-recommended drafts.
 
-| Card                          | Grade | Notes                                               |
-|-------------------------------|-------|-----------------------------------------------------|
-| Guard the Healing Land        | A+    | Defend + blight removal; core defensive card.       |
-| A Year of Perfect Stillness   | A     | Emergency prevent-all-actions; save for cascades.   |
-| Rituals of Destruction        | A-    | Direct-damage when Dahan positioned.                |
-| Draw of the Fruitful Earth    | B+    | Standard Forget target T3 (for Major).              |
-
-### Minors to Target
-
-| Card                          | Grade | Why                                                 |
-|-------------------------------|-------|-----------------------------------------------------|
-| Earth-bearing Minors          | A+    | Threshold.                                          |
-| Plant-bearing Minors          | A+    | Threshold.                                          |
-| Sun-bearing Minors            | A     | Level 3 innate threshold.                           |
-
-### Majors that Over-perform
-
-| Card                          | Grade | Why                                                 |
-|-------------------------------|-------|-----------------------------------------------------|
-| Vigor of the Breaking Dawn    | A+    | Earth + Plant + Sun; all thresholds fire.           |
-| Tigers Hunting                | A     | Plant + Animal splat damage.                        |
-| Entwined Fates                | A-    | Fear + spread.                                      |
-| Rouse the Trees and Stones    | A     | Plant-Earth closer.                                 |
-| Fire and Flood                | A     | Multi-element.                                      |
-
-### Cards to AVOID
-
-- Water/Moon-only Majors: wrong element profile.
-- Fast-phase-only cards that duplicate Guard: redundant.
+`[VERIFY: ratings per matchup pending]`.
 
 ## Adversary Matchup Matrix
 
-| Adversary            | L0 | L3 | L5 | L6 | Notes                                            |
-|----------------------|----|----|----|----|-------------------------------------------------|
-| England              | A  | A- | B+ | B  | Slow-build matches engine. **L5 cliff**: buildings +1 HP means Rituals of Destruction needs more Dahan/damage. |
-| Brandenburg-Prussia  | A- | B+ | B  | B- | Fast cities; tight Major timing.                 |
-| Sweden               | A  | A- | B+ | B  | Defend holds.                                    |
-| France               | A- | B+ | B  | B  | Dahan preservation strong.                       |
-| Habsburg Mining      | A+ | A  | A- | B+ | Best matchup; Major curve matches.               |
-| Russia               | A  | A- | B+ | B  | Defend absorbs settlers.                         |
-| Scotland             | A  | A- | B+ | B  | Decent.                                          |
-| Habsburg Livestock   | A  | A- | B+ | B  | Fine.                                            |
+`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
 
-### Strategy Cliff — England L5
+| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
+|----------------------|----|----|----|----|----------------------|
+| England              | ?  | ?  | ?  | ?  |                      |
+| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
+| Sweden               | ?  | ?  | ?  | ?  |                      |
+| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
+| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
+| Russia               | ?  | ?  | ?  | ?  |                      |
+| Scotland             | ?  | ?  | ?  | ?  |                      |
+| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
 
-```admonish info title="Strategy Cliff — England L5"
-**What changes**: buildings gain +1 HP.
+## Board / Map Configuration
 
-**Impact on Earth**: Rituals of Destruction's damage output (based on Dahan) needs recalibration — more Dahan needed per Town/City kill. Gift of Strength's repeat-Major helps; doubling a Major attack via self-repeat can overcome the HP increase.
-
-**Mitigation**: bias Major drafts toward higher-damage single-target Majors (Tigers Hunting, Vigor of the Breaking Dawn). Position more Dahan in Rituals target lands.
-```
-
-## Board Position Evaluation
-
-- **Favorable**: Mountain + jungle with sacred-site density.
-- **Neutral**: most boards.
-- **Unfavorable**: coastal-heavy, sparse inland.
+`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
 
 ## Game-Phase Strategy
 
-- **Early (T1–3)**: Guard every turn; bank energy; forget Draw for Major.
-- **Mid (T4–6)**: 1–2 Majors in rotation; Level 2 innate firing; second Major.
-- **Late (T7+)**: 2–3 Majors per turn; Gift of Strength self-repeat for double-Major.
+`[VERIFY: needs play data]`.
 
 ## Synergy Partners (Multiplayer)
 
-```admonish tip title="Best Partners"
-- **Any high-cost-Major partner** (Shadows, Thunderspeaker, Bringer, Lightning) — Gift of Strength repeats *their* Majors. Multiplayer Earth is extremely strong.
-- **Lightning** — Lightning kills early; Earth defends + buffs Lightning's late Major.
-- **Bringer** — Bringer fear-rushes; Earth defends board + Gift-of-Strength's repeat on Midnight's-Dream-forged Major.
-- **Sharp Fangs** — Fangs damage + Earth defend; dahan-heavy coordination via Rituals of Destruction.
-```
-
-```admonish warning title="Anti-Synergy"
-- **Keeper / Stone** — both hoard Majors; games go 10+ turns.
-- **A partner without good Majors** — Gift of Strength underfires.
-```
+`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
 
 ## Common Mistakes
 
-```admonish failure title="Common Mistake"
-Not forgetting Draw of the Fruitful Earth. Card stays in hand; you lose Forget slot for a Major.
-```
-
-```admonish failure title="Common Mistake"
-Not banking energy T1–T3. Can't afford Majors T4–T5.
-```
-
-```admonish failure title="Common Mistake"
-Playing A Year of Perfect Stillness on a defendable ravage. Emergency card only.
-```
-
-```admonish failure title="Common Mistake"
-Ignoring Gift of Strength's partner-target. In multiplayer, self-targeting is frequently *worse* than giving a partner's Major a repeat.
-```
-
-```admonish failure title="Common Mistake"
-Picking Earth for fast-scaling adversary (Brandenburg-Prussia L6 Stage III fast). Timing doesn't align.
-```
+`[VERIFY: collect from play]`.
 
 ## Tempo Profile
 
-| Round | Energy | CP | Presence | Sacred Sites | Majors | Key Play |
-|---|---|---|---|---|---|---|
-| 1 | 1E | 2 | 4 | 0–1 | 0 | Guard + Draw |
-| 2 | 1–2E | 2 | 5 | 1 | 0 | Bank + Guard |
-| 3 | 2E | 2 | 6 | 1 | 1 in hand | Major gain (G4); forget Draw |
-| 4 | 2–3E | 2 | 6 | 1–2 | 1 | Major fires |
-| 5 | 3E | 3 | 7 | 2 | 1–2 | Gain 2nd Major |
-| 6 | 3–4E | 3 | 7 | 2 | 2 | 2 Majors play |
-| 7 | 4E | 3 | 6 | 2 | 2–3 | Major chain + Gift of Strength repeat |
-| 8 | 4E+ | 3 | 6 | 2 | 2–3 | Close |
-
-Cliff turn: **T5**. Major must have fired; second Major en route.
-
-## Major vs. Minor — Earth Specifically
-
-**Draft bias**: Major-heavy. Canonical archetype.
-
-See [Major Power Shopping archetype](../../combos/major-power-shopping.md).
+`[VERIFY: per-round targets need playtest]`.
 
 ## Expansion Sensitivity
 
-- **Base only**: Earth's engine fully functional; no expansion dependency for core strategy.
-- **+ Branch & Claw**: blight deck makes Guard the Healing Land's blight-removal more valuable.
-- **+ Jagged Earth**: deeper Major pool; better high-threshold Major options.
-- **+ Nature Incarnate**: Incarna opponents (some aspects); no core shift.
+- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
+- **+ Branch & Claw**: events + blight deck introduce variance.
+- **+ Jagged Earth**: Major/Minor pool deepens.
+- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
+
+Per-expansion specifics `[VERIFY]`.
 
 ## Stat Snapshot
 
-```admonish note title="Stat Insight"
-Per mindwanderer estimates `[VERIFY]`:
-- Solo L6: approximately 58–62%.
-- Best vs. Habsburg Mining L6 (~70%).
-- Worst vs. Brandenburg-Prussia L6 (~42%).
+```admonish note title="Stat Insight `[VERIFY from mindwanderer]`"
+Pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
 ```
 
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- Authoritative mechanics: [data/references/spirit-mechanics.md](../../../data/references/spirit-mechanics.md).
-- Spirit Island Wiki — Vital Strength of the Earth.
-- Cross-reference: [Defend & Outlast](../../combos/defend-and-outlast.md), [Major Power Shopping](../../combos/major-power-shopping.md).
+- **Authoritative mechanics** (this chapter): `data/references/wiki/vital-strength-of-the-earth.json` — parsed via `scripts/wiki-fetch.py`.
+- Spirit Island Wiki — [Vital Strength of the Earth](https://spiritislandwiki.com/index.php?title=Vital_Strength_of_the_Earth).
+- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
+- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
 ```
 
 ---
 
-*Last revised: 2026-04-19 — v0.2.1 (surgical correction; `[VERIFY]` markers pending physical-copy check)*
+*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*

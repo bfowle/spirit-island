@@ -6,7 +6,7 @@
   "complexity": "moderate",
   "setup": "Put 2 Presence on your starting board: 1 in the highest-numbered land with Dahan, and 1 in land #4.",
   "playstyle": "Requires some comfort with risk: both Overenthusiastic Arson and Let's See What Will Happen involve uncertainty about how the Fast Powers phase will pan out. Can be effective from the get-go, but benefits greatly from not working too hard, instead improving its capacity for mischief by adding Presence and gaining Power Cards. Bonus Energy from Let's See What Will Happen can be extremely helpful in avoiding the distraction of gaining Energy elsewhere.",
-  "special_rules": "A REAL FLAIR FOR DISCORD After one of your Powers adds Strife in a land, you may pay 1 Energy to add 1 Strife within {{range|1}} of that land. CLEANING UP MESSES IS A DRAG After one of your Powers Removes Blight, Destroy 1 of your Presence. Ignore this rule for Let's See What Happens.",
+  "special_rules": "A REAL FLAIR FOR DISCORD After one of your Powers adds Strife in a land, you may pay 1 Energy to add 1 Strife within Range 1 of that land. CLEANING UP MESSES IS A DRAG After one of your Powers Removes Blight, Destroy 1 of your Presence. Ignore this rule for Let's See What Happens.",
   "special_rules_raw": "'''''A REAL FLAIR FOR DISCORD'''''\n\nAfter one of your Powers adds {{strife}} in a land, you may pay 1 Energy to add 1 {{strife}} within {{range|1}} of that land.\n\n'''''CLEANING UP MESSES IS A DRAG'''''\n\nAfter one of your Powers Removes {{blight}}, Destroy 1 of your {{presence}}. Ignore this rule for Let's See What Happens.",
   "innates": [
     {
@@ -420,5 +420,6 @@
         "artdepictions": ""
       }
     }
-  ]
+  ],
+  "suggested_card_details": []
 }

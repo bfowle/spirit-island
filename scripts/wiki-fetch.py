@@ -68,25 +68,45 @@ TOKEN_MAP = {
 
 
 def clean_wiki_text(text: str | None) -> str | None:
-    """Replace wiki-markup tokens like {{fear}} or {{invader|explorer}} with readable text."""
+    """Replace wiki-markup tokens like {{fear}} or {{invader|explorer}} with readable text.
+
+    Also strips:
+    - <ref>...</ref> tags and their content (errata references).
+    - <br/> / <br> → space.
+    - MediaWiki bold/italic markers (''' and '').
+    - Common template-with-arg patterns like {{range|1}} → "Range 1".
+    """
     if text is None:
         return None
     import re
 
+    # Strip <ref>...</ref> blocks entirely (including any content).
+    text = re.sub(r"<ref[^>]*>.*?</ref>", "", text, flags=re.DOTALL)
+    # Strip self-closing <ref /> tags
+    text = re.sub(r"<ref[^/]*/>", "", text)
+
     def replace_template(match: "re.Match[str]") -> str:
         inner = match.group(1).strip()
-        # {{invader|explorer}} → Explorer (take the 2nd part)
-        # {{fear}} → Fear
         parts = [p.strip() for p in inner.split("|")]
         head = parts[0].lower()
+        # {{range|1}} → "Range 1"
+        if head == "range" and len(parts) > 1:
+            return f"Range {parts[1]}"
+        # {{invader|explorer}} → "Explorer"
         if head == "invader" and len(parts) > 1:
             return TOKEN_MAP.get(parts[1].lower(), parts[1].title())
+        # Preserve threshold tokens for readability
         if head == "threshold" and len(parts) > 1:
-            # Rare case; preserve
             return match.group(0)
         return TOKEN_MAP.get(head, match.group(0))
 
-    text = re.sub(r"\{\{([^{}]+)\}\}", replace_template, text)
+    # Iterate the regex a few times to catch nested patterns.
+    for _ in range(3):
+        new_text = re.sub(r"\{\{([^{}]+)\}\}", replace_template, text)
+        if new_text == text:
+            break
+        text = new_text
+
     text = text.replace("<br/>", " ").replace("<br>", " ")
     # MediaWiki markers: ''' = bold, '' = italic — strip pairs
     text = re.sub(r"'{2,}", "", text)

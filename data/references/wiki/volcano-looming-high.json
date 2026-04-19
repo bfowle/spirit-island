@@ -6,7 +6,7 @@
   "complexity": "moderate",
   "setup": "Put 1 Presence and 1 Badlands on your starting board in a mountain of your choice. Push all Dahan from that land.",
   "playstyle": "Benefits more than most Spirits from getting Presence onto the board; in addition to the usual benefits, it can fuel an Explosive Eruption. This can result in a huge turn, but if overdone the following turn or two may be very constrained. Bigger eruptions are extremely powerful, but cause Blight, and the Invaders may not provide the luxury of enough time to build up the desired pressure - judging the timing of when to erupt and for how much is a key part of playing this Spirit.",
-  "special_rules": "MOUNTAIN HOME Your Presence may only be added/moved into Mountains. COLLAPSE IN A BLAST OF LAVA AND STEAM When your Presence is destroyed, in that land, deal 1 Damage per destroyed Presence to both Invaders and to Dahan. VOLCANIC PEAKS TOWER OVER THE LANDSCAPE Your Power Cards gain {{range|+1}} if you have 3 or more Presence in the origin land.",
+  "special_rules": "MOUNTAIN HOME Your Presence may only be added/moved into Mountains. COLLAPSE IN A BLAST OF LAVA AND STEAM When your Presence is destroyed, in that land, deal 1 Damage per destroyed Presence to both Invaders and to Dahan. VOLCANIC PEAKS TOWER OVER THE LANDSCAPE Your Power Cards gain Range +1 if you have 3 or more Presence in the origin land.",
   "special_rules_raw": "'''''MOUNTAIN HOME'''''\n\nYour {{presence}} may only be added/moved into Mountains.\n\n'''''COLLAPSE IN A BLAST OF LAVA AND STEAM'''''\n\nWhen your {{presence}} is destroyed, in that land, deal 1 Damage per destroyed {{presence}} to both Invaders and to {{dahan}}.\n\n'''''VOLCANIC PEAKS TOWER OVER THE LANDSCAPE'''''\n\nYour Power Cards gain {{range|+1}} if you have 3 or more {{presence}} in the origin land.",
   "innates": [
     {
@@ -22,7 +22,7 @@
         {
           "fire": "2",
           "earth": "2",
-          "effect": "In one land within {{range|1}}, X Damage."
+          "effect": "In one land within Range 1, X Damage."
         },
         {
           "fire": "3",
@@ -33,13 +33,13 @@
           "fire": "4",
           "air": "2",
           "earth": "4",
-          "effect": "In each land within {{range|1}}, 4 Damage. Add 1 Blight to target land; doing so does not Destroy your Presence."
+          "effect": "In each land within Range 1, 4 Damage. Add 1 Blight to target land; doing so does not Destroy your Presence."
         },
         {
           "fire": "5",
           "air": "3",
           "earth": "5",
-          "effect": "In each land within {{range|2}}, +4 Damage. In each land adjacent to the target, add 1 Blight if it doesn't have any."
+          "effect": "In each land within Range 2, +4 Damage. In each land adjacent to the target, add 1 Blight if it doesn't have any."
         }
       ]
     },
@@ -136,5 +136,6 @@
     "strategy": "==Links to Guides==\n{{sacredsite}} [https://boardgamegeek.com/thread/2508259/openings-volcano-looming-high Openings: Volcano Looming High - Written by jyonker13]",
     "design_and_extras": "==Spirit Spotlight==\n\n<youtube>wLt_jI8VUVY</youtube>\n\n==Notes from Eric Reuss==\nI’ve wanted to do a volcano spirit since the very early days of Spirit Island, but held off for a long time due to underlying mechanics: I felt lava flows should be represented by Barrier tokens, cutting off the Invaders. As it turns out, there are no Barrier tokens (that’s a story for another day), but the decision to hold off still worked out well, as Badlands tokens are also thematically useful for it. (Wilds, too, which is now the game’s representation of a barrier-to-exploration that endures until a way is found around it.) But I put a shout-out to it on the panel lore for Serpent Slumbering Beneath the Island so folks would at least know that yes, there’s volcanic activity on the island, and a Spirit of that sort might come along someday.  \n\n(This is one of two Spirits in Jagged Earth that a very early playtester has been hoping for / looking forward to for a very long time. The wait is over, Ricky!)  \n\nEvery iteration of Volcano has centered around an eruption mechanic in which you build up Presence, then remove it in a blast (big or small, your choice). Early versions did some damage, but were more an explosion of Powers - Volcano had phenomenal energy income, but not very good plays, so when it's explosions let it play an extra Power Card per Presence destroyed it could blast out some phenomenal turns. But testers said this didn’t feel thematic enough, and indeed - if the power cards you drew weren’t very Volcano-y, you’d erupt for a huge blast of Open Blossoms and Accelerated Rot, which kind of funny the first time, but not very volcano-y. Successive versions have shifted further and further from that, so now it just does Damage and Fear - and possibly Blight.  \n\nEarly versions also returned some or all of the Presence to your Spirit panel, both so that erupting carried a cost to your infrastructure, and so that you didn’t run out of Presence to erupt with if the game went long! That proved not super-fun, though, as well as really making small explosions a bad choice even when they were tactically useful, so it slowly got revised into a system where Volcano can renew from its self-destruction with the right elements.  \n\nOne question that’s come up is how Blight - usually indicative of farming/colonization - can destroy a volcano. The answer is: it doesn’t! It wrecks the connection between the physical feature of the land and the Spirit, destroying the Spirit, whereupon the physical volcano has no volition and subsides into quiescence. For a Spirit like Volcano Looming High, it might yet survive by retreating to the cradle of the deep earth’s fire - but it’s knocked out of the fight with the Invaders, which means that they will eventually triumph.\n\n==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Volcano Looming High' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
   },
-  "unique_card_details": []
+  "unique_card_details": [],
+  "suggested_card_details": []
 }

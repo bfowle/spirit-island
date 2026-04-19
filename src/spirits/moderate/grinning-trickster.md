@@ -1,5 +1,199 @@
 # Grinning Trickster Stirs Up Trouble
 
-```admonish note "Stub"
-Coming in **M3**. See the [SUMMARY](../SUMMARY.md) for chapters currently available.
+```admonish success title="Mechanics Wiki-verified"
+Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
 ```
+
+```admonish abstract title="At a Glance"
+| Field                 | Value                                              |
+|-----------------------|----------------------------------------------------|
+| Expansion             | Jagged Earth                                        |
+| Complexity            | Moderate                               |
+| Play Difficulty       | `[VERIFY from spirit panel]`                       |
+| Growth type           | "two" — see Growth Options below         |
+| Power summary (1–5)   | Offense 4 · Control 3 · Fear 2 · Defense 5 · Utility 4             |
+| Primary Elements      | Fire, Air, Moon, Animal (derived from innates + uniques)|
+| Aspects               | `[VERIFY from physical aspect panels]` |
+```
+
+## Spirit Overview — Framing
+
+**Wiki-printed playstyle note**:
+
+> Requires some comfort with risk: both Overenthusiastic Arson and Let's See What Will Happen involve uncertainty about how the Fast Powers phase will pan out. Can be effective from the get-go, but benefits greatly from not working too hard, instead improving its capacity for mischief by adding Presence and gaining Power Cards. Bonus Energy from Let's See What Will Happen can be extremely helpful in avoiding the distraction of gaining Energy elsewhere.
+
+Strategic framing `[VERIFY: enhance with play experience]`.
+
+## Starting Setup
+
+> Put 2 Presence on your starting board: 1 in the highest-numbered land with Dahan, and 1 in land #4.
+
+## Growth Options (two)
+
+| Growth | Effects |
+|--------|---------|
+| G1 | first=Sharp1, second=movepresence1 |
+| G2 | first=addpresence2 |
+| G3 | first=gain1p |
+| G4 | first=energycardplays |
+
+**Growth token reference** (Wiki shorthand):
+- `reclaim` — Reclaim all discarded Power Cards.
+- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
+- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
+- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
+- `card1` / `card2` — +1/+2 Card Plays this turn.
+- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+
+## Presence Tracks
+
+As Presence leaves each track, these values are revealed:
+
+- **Energy track**: energy1, moon, energy2, any, fire, energy3
+- **Card-play track**: card2, pushdahan, card3, card3, card4, airX, card5
+
+## Core Mechanics & Special Rules
+
+### Special Rule
+
+A REAL FLAIR FOR DISCORD After one of your Powers adds Strife in a land, you may pay 1 Energy to add 1 Strife within Range 1 of that land. CLEANING UP MESSES IS A DRAG After one of your Powers Removes Blight, Destroy 1 of your Presence. Ignore this rule for Let's See What Happens.
+
+### Innate: LET'S SEE WHAT HAPPENS
+
+- **Speed**: fast · **Range**: 1 · **Target**: invaders
+
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 1 Moon + 1 Fire + 2 Air | Discard Minor Powers from the deck until you get one that targets a land. Use its text effects on target land immediately, ignoring normal Range/Targeting restrictions. All "up to" instructions must be used at max. value. Treat all "OR"s as "AND"s. (It is not considered a card of yours or a card in play. Its effects are treated as performed by this Power, as if its text were copied here.) |
+| 2 | 2 Moon + 1 Fire + 2 Air | You may Forget a Power Card to gain the just-used Power Card (to hand) and 1 Energy. |
+
+
+### Innate: WHY DON'T YOU AND THEM FIGHT
+
+- **Speed**: fast · **Range**: 0 · **Target**: invaders
+
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 3 Moon | This Power may be {{slow}}. |
+| 2 | 3 Air | Add 1 Strife. |
+| 3 | 3 Sun + 3 Fire | 1 Invader and 1 Dahan deal Damage to each other. |
+| 4 | 3 Animal | If target land has Beast, 2 Damage. Otherwise, you may Gather 1 Beast. |
+
+
+## Unique Cards (all, Wiki-verified)
+
+#### None
+
+- **0 Energy · Slow · Range 1 · Any Land · Sun, Air, Animal**
+- *Add 1 Strife.*
+
+#### None
+
+- **1 Energy · Slow · Range 1 · Land with 1 or more Invaders · Moon, Fire, Air, Animal**
+- *1 Invader with Strife deals Damage to other Invaders (not to each Invader). 1 Fear per Invader this Power Destroyed.*
+
+#### None
+
+- **1 Energy · Fast · Range 1 · Any Land · Fire, Air**
+- *Destroy 1 Town. Discard the top card of the Minor Power Deck. If it provides Fire: 1 Fear, 2 Damage, and add 1 Blight.*
+
+#### None
+
+- **0 Energy · Slow · Range 1 · Any Land · Moon, Fire, Animal**
+- *1 Fear if Invaders are present. If you can gather 1 Beasts, do so, then push 1 Explorer. Otherwise, add 1 Beasts.*
+
+
+## Suggested Draft Cards (Wiki-recommended)
+
+### Minor Powers
+
+_(none in Wiki's suggested list)_
+
+### Major Powers
+
+_(none in Wiki's suggested list)_
+
+
+
+## Key Strategic Principles
+
+`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+
+1. Use the Special Rule to its fullest (see above for exact text).
+2. Element thresholds drive innate firing — see the innate tables above.
+3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+
+## Opening Strategy
+
+`[VERIFY: needs play data]` — opening variants should be rehearsed turn-by-turn per the [SPIRIT_TEMPLATE.md](../../../templates/SPIRIT_TEMPLATE.md) opener format.
+
+## Card Priority Ratings
+
+**Uniques**: see above, all 4 cards are starting-deck and usually all grade A-tier for the spirit's intended playstyle.
+
+**Suggested Minors + Majors**: see tables above. Wiki's suggestions reflect community-recommended drafts.
+
+`[VERIFY: ratings per matchup pending]`.
+
+## Adversary Matchup Matrix
+
+`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
+
+| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
+|----------------------|----|----|----|----|----------------------|
+| England              | ?  | ?  | ?  | ?  |                      |
+| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
+| Sweden               | ?  | ?  | ?  | ?  |                      |
+| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
+| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
+| Russia               | ?  | ?  | ?  | ?  |                      |
+| Scotland             | ?  | ?  | ?  | ?  |                      |
+| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
+
+## Board / Map Configuration
+
+`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+
+## Game-Phase Strategy
+
+`[VERIFY: needs play data]`.
+
+## Synergy Partners (Multiplayer)
+
+`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+
+## Common Mistakes
+
+`[VERIFY: collect from play]`.
+
+## Tempo Profile
+
+`[VERIFY: per-round targets need playtest]`.
+
+## Expansion Sensitivity
+
+- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
+- **+ Branch & Claw**: events + blight deck introduce variance.
+- **+ Jagged Earth**: Major/Minor pool deepens.
+- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
+
+Per-expansion specifics `[VERIFY]`.
+
+## Stat Snapshot
+
+```admonish note title="Stat Insight `[VERIFY from mindwanderer]`"
+Pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
+```
+
+## Source Notes
+
+```admonish abstract title="Sources"
+- **Authoritative mechanics** (this chapter): `data/references/wiki/grinning-trickster-stirs-up-trouble.json` — parsed via `scripts/wiki-fetch.py`.
+- Spirit Island Wiki — [Grinning Trickster Stirs Up Trouble](https://spiritislandwiki.com/index.php?title=Grinning_Trickster_Stirs_Up_Trouble).
+- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
+- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
+```
+
+---
+
+*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*

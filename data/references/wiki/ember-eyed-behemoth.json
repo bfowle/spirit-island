@@ -92,5 +92,6 @@
     "strategy": "==General Strategy==\n\n==Links to Guides==\n{{Sacredsite}} [[{{PAGENAME}}/Turn 3 Empowerment Build]]",
     "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Ember-Eyed Behemoth' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
   },
-  "unique_card_details": []
+  "unique_card_details": [],
+  "suggested_card_details": []
 }

@@ -1,4 +1,4 @@
-# Ember-Eyed Behemoth
+# Wandering Voice Keens Delirium
 
 ```admonish success title="Mechanics Wiki-verified"
 Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
@@ -8,11 +8,11 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Nature Incarnate                                        |
-| Complexity            | Moderate                               |
+| Complexity            | High                               |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 5 · Control 1 · Fear 1 · Defense 1 · Utility 2             |
-| Primary Elements      | _(unknown)_ (derived from innates + uniques)|
+| Power summary (1–5)   | Offense 2 · Control 5 · Fear 3 · Defense 1 · Utility 2             |
+| Primary Elements      | Air, Moon, Sun (derived from innates + uniques)|
 | Aspects               | `[VERIFY from physical aspect panels]` |
 ```
 
@@ -20,22 +20,21 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 
 **Wiki-printed playstyle note**:
 
-> Slowly but consistently stomps its Incarna around the island, smashing Invaders. (Dahan can keep clear, unless it really gets going.) Benefits from spread-out {{sacredsite}}, both for targeting Powers and for moving its Incarna long distances. Adding Presence at its Incarna (which can count as Presence) can make it easier to get Presence into new lands, particularly non-Jungles.
+> Very positional; has a highly mobile Incarna (particularly with lots of {{element|simpleair}}) that adds Strife and chases Explorer/Town around as it roams the island. Has a harder time setting up Dahan counterattacks, but can use Mind-Shattering Song to more directly harm Invaders with Strife - and earn a fair bit of Fear in the process.
 
 Strategic framing `[VERIFY: enhance with play experience]`.
 
 ## Starting Setup
 
-> Put 2 Presence and {{incarna|behemoth}}, Unempowered ({{incarna|unempowered}}) side up, in the highest-numbered Wetland on your starting board that is adjacent to any Jungle. You start with your 4 Unique Power Cards and 0 Energy.
+> Put 2 Presence on your starting board: 1 in land #6 and 1 in land #7. Put {{incarna|voice}}, Unempowered ({{incarna|unempowered}}) side up, on your starting board in land #6. You start with your 4 Unique Power Cards and 0 Energy.
 
 ## Growth Options (one)
 
 | Growth | Effects |
 |--------|---------|
-| G1 | first=reclaim, second=gain1p |
-| G2 | first=addpresence3junglepresence, second=addpresence0 |
-| G3 | first=gain1p, second=addpresence1, third=energy3 |
-| G4 | first=reclaimallfire, second=empowerbehemoth, third=moveincarnabehemoth |
+| G1 | first=reclaim, second=addmovevoiceincarna, third=energy1 |
+| G2 | first=addpresence3, second=addpresence1 |
+| G3 | first=gain1p, second=addpresence2, third=energy1 |
 
 **Growth token reference** (Wiki shorthand):
 - `reclaim` — Reclaim all discarded Power Cards.
@@ -49,20 +48,31 @@ Strategic framing `[VERIFY: enhance with play experience]`.
 
 As Presence leaves each track, these values are revealed:
 
-- **Energy track**: energy0, energy1, energy2fire, energy3, earth, energy4plant, energy5fire
-- **Card-play track**: card1, card2, card2, card3, fireX, card4
+- **Energy track**: energy0, energy1, sunormoon, energy2, air, energy4, pushvoiceincarna
+- **Card-play track**: card1, card2, card2, card3, reclaim1, card4
 
 ## Core Mechanics & Special Rules
 
 ### Special Rule
 
-THE BEHEMOTH RISES You have an Incarna ({{incarna|behemoth}}). Once per turn, during the Spirit, {{speed|fast|20}}, or {{speed|slow|20}} phase, you may either: * Push {{incarna|behemoth}}; or * Add or Move {{incarna|behemoth}} to any of your {{sacredsite}} on the island. UNRELENTING STRIDES On any turn that you don't use Innate Powers, you may use The Behemoth Rises an additional time. (When you use an Innate Power, cover this Special Rule with a Reminder Marker; when you use this Special Rule, cover your Innate Power.)
+A CLARION VOICE GIVEN FORM</br>You have an Incarna ({{incarna|voice}}). If Empowered, it Isolates its land. SPREAD TUMULT AND DELUSION</br>When your Actions add/move {{incarna|voice}} to a land with Invaders, Add 1 Strife in the destination land. In lands with or adjacent to {{incarna|voice}}: if Strife is present, Dahan do not participate in Ravage. (They do not take Damage or counterattack. Isolate has no effect on {{incarna|voice}} and Dahan being adjacent.) SENSELESS ROAMING</br>When your Actions add Strife to an Explorer/Town, you may Push it.
 
-### Innate: SMASH, STOMP, AND FLATTEN
+### Innate: INSCRUTABLE JOURNEYING
 
-- **Speed**: slow · **Range**: None · **Target**: behemoth
+- **Speed**: fast · **Range**:  · **Target**: yourself
 
 _(no thresholds listed in Wiki)_
+
+
+### Innate: MIND-SHATTERING SONG
+
+- **Speed**: slow · **Range**: 1 (optionally from a sacred site) · **Target**: strife
+
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 1 Moon + 2 Air | 1 Fear per {{moon}} you have. |
+| 2 | 1 Sun + 2 Air | 1 Damage per {{sun}} you have, to Invaders with Strife only. |
+| 3 | 1 Sun + 1 Moon + 4 Air | For each {{sun}} {{moon}} pair you have, Destroy 1 Invader with Strife. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -154,8 +164,8 @@ Pending re-scrape of mindwanderer current data. Historical directional figures u
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/ember-eyed-behemoth.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Ember-Eyed Behemoth](https://spiritislandwiki.com/index.php?title=Ember-Eyed_Behemoth).
+- **Authoritative mechanics** (this chapter): `data/references/wiki/wandering-voice-keens-delirium.json` — parsed via `scripts/wiki-fetch.py`.
+- Spirit Island Wiki — [Wandering Voice Keens Delirium](https://spiritislandwiki.com/index.php?title=Wandering_Voice_Keens_Delirium).
 - Cross-reference: [Archetype Index](../../combos/archetype-index.md).
 - Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
 ```

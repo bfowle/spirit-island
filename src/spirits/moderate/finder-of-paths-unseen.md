@@ -1,209 +1,176 @@
 # Finder of Paths Unseen
 
-```admonish warning title="Accuracy status — partial revision 2026-04-19"
-Mechanical sections corrected against [Spirit Island Wiki](../../../data/references/spirit-mechanics.md). **Previous errors**: all 4 previously-cited Unique names were hallucinated; missed both special rules; missed one of two innates. Note: Wiki data credits 6 Uniques for Finder (not 4 as is typical) — verify.
+```admonish success title="Mechanics Wiki-verified"
+Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Promo Pack 2                                       |
-| Complexity            | Very High                                          |
-| Play Difficulty       | 3                                                  |
-| Archetypes            | Terrain Control · Isolation · Mobility             |
-| Primary Elements      | Moon, Air, Sun, Water, Earth, Plant                |
-| Typical Opening       | Hybrid; Paths setup                                |
-| Typical Draft Bias    | Mixed                                              |
-| Rei's Guide           | Not covered by Rei                                 |
-| latentoctopus         | Not currently listed                               |
-| Aspects               | `[VERIFY]`                                         |
+| Expansion             | Promotional Pack 2                                        |
+| Complexity            | Veryhigh                               |
+| Play Difficulty       | `[VERIFY from spirit panel]`                       |
+| Growth type           | "one" — see Growth Options below         |
+| Power summary (1–5)   | Offense -1 · Control 5 · Fear 1 · Defense 2 · Utility 2             |
+| Primary Elements      | Air, Moon, Sun, Water (derived from innates + uniques)|
+| Aspects               | `[VERIFY from physical aspect panels]` |
 ```
 
 ## Spirit Overview — Framing
 
-Finder is the **adjacency-manipulator + isolator**. "Open the Ways" lets Finder make up to two of their lands adjacent at a time — **reshaping the map itself** for targeting purposes. "Lay Paths" pushes half of invaders/dahan/presence/beasts from a target land. "Close the Ways" isolates lands.
+**Wiki-printed playstyle note**:
 
-**One-line fantasy**: the hidden paths. Finder rewrites where adjacency exists, where invaders can travel, and where the island's people can be moved.
+> All about moving the Invaders - and Dahan/Presence/Beast from time to time. Good at creating Invader-free "safe-zones," due to its many movement Powers and its capacity to Isolate. Can't afford to Destroy Invaders too often without a way to re-add Destroyed Presence, so either needs a big-hammer Major Power or to rely on its teammates for offense. Changes the topology of the board, which increases complexity for all players - particularly in larger games!
 
-**The honest complexity signal**: Very High per Wiki. Finder's Open the Ways rule changes targeting fundamentally — the "where does your power reach" question shifts turn by turn.
+Strategic framing `[VERIFY: enhance with play experience]`.
+
+## Starting Setup
+
+> Put 1 Presence on your starting board in land #3. Put 1 Presence on any board in land #1. Note that you have 6 Unique Power Cards.
+
+## Growth Options (one)
+
+| Growth | Effects |
+|--------|---------|
+| G1 | first=reclaim, second=gain1p, third=ignorerange |
+| G2 | first=addpresence1, second=new+1cardplay |
+| G3 | first=gain1p, second=addpresence2 |
+| G4 | first=addpresence, second=energy2 |
+
+**Growth token reference** (Wiki shorthand):
+- `reclaim` — Reclaim all discarded Power Cards.
+- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
+- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
+- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
+- `card1` / `card2` — +1/+2 Card Plays this turn.
+- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+
+## Presence Tracks
+
+As Presence leaves each track, these values are revealed:
+
+- **Energy track**: _(unknown)_
+- **Card-play track**: blank, blank, energy1moon, blank, movepresair, blank, energy+1range+1, energy+1range+1text
 
 ## Core Mechanics & Special Rules
 
-### Special Rule: Responsibilities to the Dead
+### Special Rule
 
-Following destruction actions, lose 1 Presence and 1 Energy (or destroy another Presence if lacking energy).
+RESPONSIBILITIES TO THE DEAD After one of your Actions Destroys 1 or more Dahan/Invaders, or directly triggers their Destruction by moving them, Destroy 1 of your Presence and lose 1 Energy. If you have no Energy to lose, Destroy another Presence. OPEN THE WAYS You may make up to two of your lands adjacent at a time. You may change which lands are adjacent once between Actions.
 
-**Strategic implication**: Finder pays a cost every time something (invaders, dahan) is destroyed near Finder's effects. Destructive plays are expensive; push-based plays are preferred.
+### Innate: LAY PATHS THEY CANNOT HELP BUT WALK
 
-### Special Rule: Open the Ways
+- **Speed**: fast · **Range**: 0 · **Target**: any
 
-You may make up to **two of your lands adjacent at a time**. You may change which lands are adjacent once between Actions.
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 2 Moon + 2 Air | Push up to half (rounded down) of Invaders from target land. Do likewise for Dahan, Presence, and Beast (each separately). |
+| 2 | 2 Sun + 2 Air | Push up to 1 Invader/Dahan/Presence/Beast. |
+| 3 | 2 Moon + 4 Air + 3 Water | Repeat this Power. |
 
-**Strategic implication**: Finder bridges distant lands. A far-side-of-board target becomes "adjacent" for targeting purposes. This is Finder's core spatial superpower.
 
-### Innate: Lay Paths They Cannot Help But Walk — Fast, 0 Range, Any Land
+### Innate: CLOSE THE WAYS
 
-- **2 Moon, 2 Air**: Push up to half (rounded down) of Invaders from target land; do likewise for Dahan, Presence, and Beasts (each separately).
-- **2 Sun, 2 Air**: Push up to 1 Invader/Dahan/Presence/Beasts.
-- **2 Moon, 4 Air, 3 Water**: Repeat this Power.
+- **Speed**: fast · **Range**: 1 · **Target**: any
 
-### Innate: Close the Ways — Fast, 1 Range, Any Land
+_(no thresholds listed in Wiki)_
 
-- **1 Air, 2 Water**: Isolate target land.
-- **2 Air, 2 Earth**: Isolate target land.
-- **3 Air, 2 Plant**: Isolate target land.
 
-**Strategic implication**: multiple threshold paths to the same Isolate effect — different element combos activate the same outcome, making Finder flexible on element draft.
+## Unique Cards (all, Wiki-verified)
 
-### Unique Cards (6 cards per Wiki — unusual count)
 
-All per Wiki; costs/speeds/elements `[VERIFY]`:
 
-- **A Circuitous and Wending Journey**
-- **Aid from the Spirit-Speakers**
-- **Offer Passage Between Worlds**
-- **Paths Tied by Nature**
-- **Traveler's Boon**
-- **Ways of Shore and Heartland**
+## Suggested Draft Cards (Wiki-recommended)
+
+### Minor Powers
+
+_(none in Wiki's suggested list)_
+
+### Major Powers
+
+_(none in Wiki's suggested list)_
+
+
 
 ## Key Strategic Principles
 
-1. **Open the Ways reshapes targeting.** Before every turn, decide which two lands are "adjacent." This is the top-level strategic question.
-2. **Isolate via Close the Ways.** Multiple element thresholds = flexible Isolate; pick the threshold you can hit.
-3. **Lay Paths pushes half.** Massive half-board push at Level 1; Level 3 repeats.
-4. **Destructive plays are costly.** Responsibilities to the Dead penalizes destruction; push > damage.
-5. **Air is load-bearing.** Most innate thresholds want Air.
-6. **6 Uniques = more draft flexibility.** Finder has more starting cards than typical; hand variance is higher.
+`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+
+1. Use the Special Rule to its fullest (see above for exact text).
+2. Element thresholds drive innate firing — see the innate tables above.
+3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
 
 ## Opening Strategy
 
-### Opening A — Hybrid Paths 🟥
-
-**Target arc**: Open the Ways active T1 · Level 1 innates firing T2 · Level 2+ T4.
-
-#### Turn 1
-
-- **Growth**: **G2 or G3**.
-- **Cards played**: 1 Unique (Traveler's Boon or Paths Tied by Nature likely good openers).
-- **Presence placement**: set up Open the Ways anchor lands.
-- **Elements by end**: 1 Moon, 1 Air.
-- **Milestone**: Open the Ways rule in use.
-
-#### Turn 2
-
-- **Growth**: **G3** (Minor gain).
-- **Cards played**: Unique + Minor.
-- **Presence placement**: second Paths anchor.
-- **Elements by end**: 2 Moon, 2 Air.
-- **Milestone**: Level 1 Lay Paths firing.
-
-#### Turn 3
-
-- **Growth**: **G1 Reclaim**.
-- **Cards played**: 3 cards.
-- **Milestone**: Level 1 Close the Ways isolating 1 land.
-
-#### Turn 4 — state audit
-
-- Presence 5–6; Open the Ways actively reshaping; 1+ Isolate deployed.
-
-### Opening decision
-
-<pre class="mermaid">
-graph TD
-  Start[Round 1 — Finder] --> Adv{Adversary?}
-  Adv -->|Default| A[Opening A - Paths setup]
-  Adv -->|Other| A
-</pre>
-
-## Element & Aspect Preferences
-
-**Preferred elements**: Moon, Air, Sun, Water, Earth, Plant (flexible; multiple innate thresholds).
-
-**Aspects**: `[VERIFY]`.
+`[VERIFY: needs play data]` — opening variants should be rehearsed turn-by-turn per the [SPIRIT_TEMPLATE.md](../../../templates/SPIRIT_TEMPLATE.md) opener format.
 
 ## Card Priority Ratings
 
-Finder is **Mixed**.
+**Uniques**: see above, all 4 cards are starting-deck and usually all grade A-tier for the spirit's intended playstyle.
 
-### Uniques (6 total)
+**Suggested Minors + Majors**: see tables above. Wiki's suggestions reflect community-recommended drafts.
 
-All 6 Uniques grade-unknown until playtested; `[VERIFY: cost/speed/effect for each]`.
-
-### Majors
-
-Push-based Majors > damage-based (avoids Responsibilities to the Dead penalty).
+`[VERIFY: ratings per matchup pending]`.
 
 ## Adversary Matchup Matrix
 
-| Adversary | L0 | L3 | L5 | L6 | Notes |
-|---|---|---|---|---|---|
-| England | A | A- | B+ | B | Open the Ways helps bridge coastal+inland. |
-| Brandenburg-Prussia | A- | B+ | B | B- | Push-heavy approach helps. |
-| Sweden | A- | B+ | B | B- | Fear-neutral. |
-| France | A | A- | B+ | B | Push re-routes capture. |
-| Habsburg Mining | B+ | B | B- | C+ | Scaling outpaces. |
-| Russia | B+ | B | B- | C+ | Push vs. settlers. |
-| Scotland | A- | B+ | B | B- | Fine. |
-| Habsburg Livestock | A | A- | B+ | B | Terrain focus. |
+`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
 
-## Synergy Partners
+| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
+|----------------------|----|----|----|----|----------------------|
+| England              | ?  | ?  | ?  | ?  |                      |
+| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
+| Sweden               | ?  | ?  | ?  | ?  |                      |
+| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
+| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
+| Russia               | ?  | ?  | ?  | ?  |                      |
+| Scotland             | ?  | ?  | ?  | ?  |                      |
+| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
 
-```admonish tip title="Best Partners"
-- **Earth** — Earth Majors + Finder reaches them anywhere.
-- **Keeper** — Wilds-based play + Finder mobility.
-- **Thunderspeaker** — Finder moves dahan to Thunderspeaker's kill-zones.
-- **Shadows** — Finder's targeting flexibility + Shadows' Dahan-leveraged targeting.
-```
+## Board / Map Configuration
 
-```admonish warning title="Anti-Synergy"
-- **Another mobility spirit** (Ocean in some contexts) — redundancy.
-```
+`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+
+## Game-Phase Strategy
+
+`[VERIFY: needs play data]`.
+
+## Synergy Partners (Multiplayer)
+
+`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
 
 ## Common Mistakes
 
-```admonish failure title="Common Mistake"
-Not changing Open the Ways adjacency turn by turn. The rule allows changing once between Actions — use it.
-```
-
-```admonish failure title="Common Mistake"
-Drafting destructive Majors. Responsibilities to the Dead punishes destruction.
-```
+`[VERIFY: collect from play]`.
 
 ## Tempo Profile
 
-| Round | Energy | CP | Presence | Paths Active | Key Play |
-|---|---|---|---|---|---|
-| 1 | 1E | 2 | 4 | 1 | Unique + Minor |
-| 2 | 1E | 2 | 5 | 2 | Lay Paths + Minor |
-| 3 | 2E | 2 | 6 | 2 | Reclaim + 3 cards |
-| 4 | 2E | 3 | 7 | 2 | Close the Ways isolates |
-| 5 | 2–3E | 3 | 7 | 2 | Sustained |
-| 6 | 3E | 3 | 6 | 2 | Terror 2 approaching |
-| 7 | 3E | 3 | 6 | 2 | Close via mobility |
-| 8 | 3E | 3 | 5 | 2 | Terror 2-3 close |
+`[VERIFY: per-round targets need playtest]`.
 
 ## Expansion Sensitivity
 
-- **Promo Pack 2 minimum** (Finder is from this pack).
-- **+ Jagged Earth / Nature Incarnate**: deeper pool; Finder's targeting flexibility scales with card variety.
+- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
+- **+ Branch & Claw**: events + blight deck introduce variance.
+- **+ Jagged Earth**: Major/Minor pool deepens.
+- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
+
+Per-expansion specifics `[VERIFY]`.
 
 ## Stat Snapshot
 
-```admonish note title="Stat Insight"
-Per mindwanderer `[VERIFY]`:
-- Solo L6: ~50%.
-- Small sample size.
+```admonish note title="Stat Insight `[VERIFY from mindwanderer]`"
+Pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
 ```
 
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- Authoritative mechanics: [data/references/spirit-mechanics.md](../../../data/references/spirit-mechanics.md).
-- Spirit Island Wiki — Finder page.
-- Cross-reference: [Terrain Control archetype](../../combos/terrain-control.md).
+- **Authoritative mechanics** (this chapter): `data/references/wiki/finder-of-paths-unseen.json` — parsed via `scripts/wiki-fetch.py`.
+- Spirit Island Wiki — [Finder of Paths Unseen](https://spiritislandwiki.com/index.php?title=Finder_of_Paths_Unseen).
+- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
+- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
 ```
 
 ---
 
-*Last revised: 2026-04-19 — v0.2.1 (surgical correction; `[VERIFY]` markers pending physical-copy check)*
+*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*

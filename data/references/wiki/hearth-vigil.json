@@ -124,5 +124,6 @@
     "strategy": "==General Strategy==\n\n==Links to Guides==",
     "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Hearth-Vigil' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n<gallery>File:Hearth-Vigil Home.png"
   },
-  "unique_card_details": []
+  "unique_card_details": [],
+  "suggested_card_details": []
 }

@@ -126,5 +126,6 @@
     "extratab": "Healing Cards",
     "extratabcontents": "Important note: Wounded Waters Bleeding claims these Healing Cards through its Special Rule, '''''SEEKING A PATH TOWARDS HEALING'''''.\n<div>\n<div style=\"display: inline-block\">[[File:Serene_Waters_(ni).png|link=Serene Waters]]</div>\n<div style=\"display: inline-block\">[[File:Waters_Renew_(ni).png|link=Waters Renew]]</div>\n</div>\n<div style=\"margin-top:4px;\">\n<div style=\"display: inline-block\">[[File:Roiling_Waters_(ni).png|link=Roiling Waters]]</div>\n<div style=\"display: inline-block\">[[File:Waters_Taste_of_Ruin_(ni).png|link=Waters Taste of Ruin]]</div>\n</div>"
   },
-  "unique_card_details": []
+  "unique_card_details": [],
+  "suggested_card_details": []
 }

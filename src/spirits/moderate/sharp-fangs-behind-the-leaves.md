@@ -1,196 +1,198 @@
 # Sharp Fangs Behind the Leaves
 
-```admonish warning title="Accuracy status — partial revision 2026-04-19"
-Mechanical sections corrected against [Spirit Island Wiki](../../../data/references/spirit-mechanics.md). **Previous errors**: "Elusive Ways of the Predator" and "Stir the Trees and Stones" were hallucinated Uniques (actual: **Prey on the Builders**, **Terrifying Chase**); missed 2nd innate **Frenzied Assault**.
+```admonish success title="Mechanics Wiki-verified"
+Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Base `[VERIFY — may be Branch & Claw; Wiki was unclear]` |
-| Complexity            | Moderate                                           |
-| Play Difficulty       | 1                                                  |
-| Archetypes            | Direct Damage · Beast Scaling · Minor-heavy        |
-| Primary Elements      | Plant, Animal, Moon, Fire                          |
-| Typical Opening       | Beast-build + Ranging Hunt                         |
-| Typical Draft Bias    | Minor-heavy                                        |
-| Rei's Guide           | Not covered by Rei                                 |
-| latentoctopus         | [Fangs concepts + 4 opening variants](https://latentoctopus.github.io/guide/fangs-concepts/) |
-| Aspects               | Encircle, Unconstrained                            |
+| Expansion             | Branch and Claw                                        |
+| Complexity            | Moderate                               |
+| Play Difficulty       | `[VERIFY from spirit panel]`                       |
+| Growth type           | "two" — see Growth Options below         |
+| Power summary (1–5)   | Offense 3 · Control 3 · Fear 4 · Defense 2 · Utility 1             |
+| Primary Elements      | Animal, Moon, Plant, Fire (derived from innates + uniques)|
+| Aspects               | `[VERIFY from physical aspect panels]` |
 ```
 
 ## Spirit Overview — Framing
 
-Fangs is the **beast-scaling damage spirit**. Presence converts to Beasts via the Call Forth Predators special rule; Beasts retaliate via Ranging Hunt and concentrate damage via Frenzied Assault.
+**Wiki-printed playstyle note**:
 
-**One-line fantasy**: the jungle hunts.
+> All about Beasts and Jungles. Can be very fast out of the gate, but doesn't have the late-game power that some spirits do, and is likely to have some difficulty with Blighted areas. "Ranging Hunt" is a critical Innate ability, particularly in early-game: it simultaneously gives Beasts mobility and permits picking off a stray Explorers or Towns on most turns.
+
+Strategic framing `[VERIFY: enhance with play experience]`.
+
+## Starting Setup
+
+> Put 1 Presence and 1 Beast on your starting board in the highest-numbered Jungle. Put 1 Presence in a land of your choice with Beast anywhere on the island.
+
+## Growth Options (two)
+
+| Growth | Effects |
+|--------|---------|
+| G1 | first=Sharp1, second=gain1p |
+| G2 | first=Sharp |
+| G3 | first=gain1p, second=energy1 |
+| G4 | first=energy3 |
+
+**Growth token reference** (Wiki shorthand):
+- `reclaim` — Reclaim all discarded Power Cards.
+- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
+- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
+- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
+- `card1` / `card2` — +1/+2 Card Plays this turn.
+- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+
+## Presence Tracks
+
+As Presence leaves each track, these values are revealed:
+
+- **Energy track**: energy1, animal, plant, energy2, animal, energy3, energy4
+- **Card-play track**: card2, card2, card3, reclaim1, card4, card5reclaim1
 
 ## Core Mechanics & Special Rules
 
-### Special Rule: Ally of the Beasts
+### Special Rule
 
-Your Presence may move with Beasts.
+ALLY OF THE BEASTS Your Presence may move with Beast. (Whenever a Beast moves from 1 of your lands to another land, you may move 1 Presence along with it.) CALL FORTH PREDATORS During each Spirit Phase, you may replace 1 of your Presence with 1 Beast. The replaced Presence leaves the game. (It was not destroyed, so things which return destroyed Presence cannot bring it back.)
 
-### Special Rule: Call Forth Predators
+### Innate: RANGING HUNT
 
-During each Spirit Phase, you may replace 1 of your Presence with 1 Beasts.
+- **Speed**: fast · **Range**: 1 · **Target**: noblight
 
-**Strategic implication**: Fangs's engine converts Presence → Beasts each turn. The spirit's "presence count" on the spirit panel depletes turn over turn; Beasts on the board accumulate.
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 2 Animal | You may Gather 1 Beast. |
+| 2 | 2 Plant + 3 Animal | 1 Damage per Beast. |
+| 3 | 2 Animal | You may Push up to 2 Beast. |
 
-### Innate: Ranging Hunt — Fast, 1 Range, non-Blighted lands
 
-- **2 Animal, 2 Plant**: You may Gather 1 Beasts.
-- **2 Plant, 3 Animal**: 1 Damage per Beasts.
-- **2 Animal**: You may Push up to 2 Beasts.
+### Innate: FRENZIED ASSAULT
 
-### Innate: Frenzied Assault — Slow, 1 Range, lands with Beasts
+- **Speed**: slow · **Range**: 1 · **Target**: beast
 
-- **1 Moon, 1 Fire, 4 Animal**: 1 Fear and 2 Damage; Remove 1 Beasts.
-- **1 Moon, 2 Fire, 5 Animal**: +1 Fear and +1 Damage.
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 1 Moon + 1 Fire + 4 Animal | 1 Fear and 2 Damage. Remove 1 Beast. |
+| 2 | 1 Moon + 2 Fire + 5 Animal | +1 Fear and +1 Damage. |
 
-### Unique Cards
 
-Per Wiki:
+## Unique Cards (all, Wiki-verified)
 
-- **Prey on the Builders** — 1 Energy, Fast, 0 Range.
-- **Teeth Gleam from Darkness** — 1 Energy, `[VERIFY speed]`, targets non-Blighted lands.
-- **Terrifying Chase** — 1 Energy.
-- **Too Near the Jungle** — 1 Energy, Slow, 0 Range.
+#### None
+
+- **1 Energy · Fast · Range 0 · Any Land · Moon, Fire, Animal**
+- *You may Gather 1 Beasts. If target land has Beasts, Invaders do not Build there this turn.*
+
+#### None
+
+- **1 Energy · Slow · Range 1, from a Jungle · Land with no Blight · Moon, Plant, Animal**
+- *1 Fear. Add 1 Beasts. **OR** If target land has both Beasts and Invaders: 3 Fear.*
+
+#### None
+
+- **1 Energy · Slow · Range 0 · Any Land · Sun, Animal**
+- *Push 2 Explorers/Towns/Dahan. Push another 2 Explorers/Towns/Dahan per Beasts in target land. If you Pushed any Invaders, 2 Fear.*
+
+#### None
+
+- **0 Energy · Slow · Range 1, from a Jungle · Any Land · Plant, Animal**
+- *1 Fear. Destroy 1 Explorer.*
+
+
+## Suggested Draft Cards (Wiki-recommended)
+
+### Minor Powers
+
+_(none in Wiki's suggested list)_
+
+### Major Powers
+
+_(none in Wiki's suggested list)_
+
+
 
 ## Key Strategic Principles
 
-1. **Convert presence → beasts every turn.** Call Forth Predators is the core.
-2. **Plant-Animal dual element is the Ranging Hunt trigger.**
-3. **Beast positioning > quantity.** 3 beasts in 1 land > 3 beasts in 3 lands for damage.
-4. **Frenzied Assault is the City-killer.** Needs 4+ Animal + Moon + Fire.
-5. **Energy-tight.** Cost-1 Uniques + 0-cost Minors preferred.
-6. **Non-Blighted land targeting** for Ranging Hunt — adversaries that blight fast reduce Fangs's effectiveness.
+`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+
+1. Use the Special Rule to its fullest (see above for exact text).
+2. Element thresholds drive innate firing — see the innate tables above.
+3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
 
 ## Opening Strategy
 
-Per latentoctopus's 4 openings:
-
-### Opening 1 — Top Track Hybrid 🟨
-
-G2 top + G3 Minor T1–T2; T3 reclaim + Minor. Ranging Hunt active T2+.
-
-### Opening 2 — Full Bottom 🟨
-
-Bottom-track CP focus; 3 CP by T2; energy-tighter.
-
-### Opening 3 — Hybrid with Majors 🟨
-
-Major T3 (forget a Unique); Plant-Animal threshold Majors.
-
-### Opening 4 — Reclaim-Heavy Beast Scaling 🟥
-
-Constant reclaim; energy-starved but Beast-rich. Strong vs. BP and Scotland.
-
-### Opening decision
-
-<pre class="mermaid">
-graph TD
-  Start[Round 1 — Fangs] --> Adv{Adversary?}
-  Adv -->|Default| A[Opening 1 - Top hybrid]
-  Adv -->|Build-heavy| B[Opening 2 - Full bottom]
-  Adv -->|Health-increase adversaries| C[Opening 3 - Majors]
-  Adv -->|BP/Scotland| D[Opening 4 - Beast scaling]
-  Adv -->|Other| A
-</pre>
-
-## Element & Aspect Preferences
-
-**Preferred elements**: Plant-Animal dual (essential), Moon + Fire (Frenzied Assault).
-
-**Aspects**: Encircle, Unconstrained.
+`[VERIFY: needs play data]` — opening variants should be rehearsed turn-by-turn per the [SPIRIT_TEMPLATE.md](../../../templates/SPIRIT_TEMPLATE.md) opener format.
 
 ## Card Priority Ratings
 
-Fangs is **Minor-heavy**.
+**Uniques**: see above, all 4 cards are starting-deck and usually all grade A-tier for the spirit's intended playstyle.
 
-### Uniques
+**Suggested Minors + Majors**: see tables above. Wiki's suggestions reflect community-recommended drafts.
 
-| Card | Grade | Notes |
-|---|---|---|
-| Teeth Gleam from Darkness | A+ | Core. |
-| Too Near the Jungle | A | Push. |
-| Prey on the Builders | A | Build-prevention (Fast). |
-| Terrifying Chase | A- | `[VERIFY effect]` |
-
-### Minors
-
-Plant-Animal duals + blight-handling Minors (per latentoctopus).
-
-### Majors (Opening 3 only)
-
-Tigers Hunting, Rouse the Trees and Stones.
+`[VERIFY: ratings per matchup pending]`.
 
 ## Adversary Matchup Matrix
 
-| Adversary | L0 | L3 | L5 | L6 | Notes |
-|---|---|---|---|---|---|
-| England | A | A- | B+ | B | Town density favors Ranging Hunt. **L5 cliff**: +1 HP buildings; Ranging Hunt's 1-damage-per-Beasts at 3 Animal threshold still effective if 3+ beasts in target. |
-| Brandenburg-Prussia | A+ | A | A- | B+ | Opening 4 specifically shines. |
-| Sweden | A- | B+ | B | B- | Fear penalties. |
-| France | A- | B+ | B | B- | Blight. |
-| Habsburg Mining | B+ | B | B- | C+ | Scaling. |
-| Russia | B+ | B | B- | C+ | Settlers tough. |
-| Scotland | A+ | A | A- | B+ | Opening 4 strong. |
-| Habsburg Livestock | A- | B+ | B | B | Decent. |
+`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
 
-## Synergy Partners
+| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
+|----------------------|----|----|----|----|----------------------|
+| England              | ?  | ?  | ?  | ?  |                      |
+| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
+| Sweden               | ?  | ?  | ?  | ?  |                      |
+| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
+| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
+| Russia               | ?  | ?  | ?  | ?  |                      |
+| Scotland             | ?  | ?  | ?  | ?  |                      |
+| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
 
-```admonish tip title="Best Partners"
-- **Thunderspeaker** — dahan + beasts share battlefield.
-- **River** — push + beasts kill.
-- **Earth** — Earth defends; Fangs damages.
-- **Bringer** — Bringer fear-rushes; Fangs kills for fear.
-```
+## Board / Map Configuration
+
+`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+
+## Game-Phase Strategy
+
+`[VERIFY: needs play data]`.
+
+## Synergy Partners (Multiplayer)
+
+`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
 
 ## Common Mistakes
 
-```admonish failure title="Common Mistake"
-Not converting presence to beasts. Presence on panel is inert.
-```
-
-```admonish failure title="Common Mistake"
-Spreading beasts thinly. Concentrate for Frenzied Assault scaling.
-```
-
-```admonish failure title="Common Mistake"
-Drafting 1-cost Minors on Opening 2.
-```
+`[VERIFY: collect from play]`.
 
 ## Tempo Profile
 
-Per openings above.
-
-## Major vs. Minor
-
-**Draft bias**: Minor-heavy. Opening 3 deviates.
+`[VERIFY: per-round targets need playtest]`.
 
 ## Expansion Sensitivity
 
-- **Base/B&C minimum**.
-- **+ Jagged Earth / later**: deeper Animal-Plant Major pool.
+- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
+- **+ Branch & Claw**: events + blight deck introduce variance.
+- **+ Jagged Earth**: Major/Minor pool deepens.
+- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
+
+Per-expansion specifics `[VERIFY]`.
 
 ## Stat Snapshot
 
-```admonish note title="Stat Insight"
-Per mindwanderer `[VERIFY]`:
-- Solo L6: ~52%.
-- Best vs. Scotland L6 (~65% — Opening 4).
-- Worst vs. Habsburg Mining L6 (~40%).
+```admonish note title="Stat Insight `[VERIFY from mindwanderer]`"
+Pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
 ```
 
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- Authoritative mechanics: [data/references/spirit-mechanics.md](../../../data/references/spirit-mechanics.md).
-- [latentoctopus Fangs concepts + 4 openings](https://latentoctopus.github.io/guide/fangs-concepts/).
-- Cross-reference: [Dahan Rush archetype](../../combos/dahan-rush.md) (Beast proxy-dahan section).
+- **Authoritative mechanics** (this chapter): `data/references/wiki/sharp-fangs-behind-the-leaves.json` — parsed via `scripts/wiki-fetch.py`.
+- Spirit Island Wiki — [Sharp Fangs Behind the Leaves](https://spiritislandwiki.com/index.php?title=Sharp_Fangs_Behind_the_Leaves).
+- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
+- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
 ```
 
 ---
 
-*Last revised: 2026-04-19 — v0.2.1 (surgical correction; `[VERIFY]` markers pending physical-copy check)*
+*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*

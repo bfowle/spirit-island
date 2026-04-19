@@ -1,188 +1,178 @@
 # Lightning's Swift Strike
 
-```admonish warning title="Accuracy status — partial revision 2026-04-19"
-Mechanical sections corrected against [Spirit Island Wiki](../../../data/references/spirit-mechanics.md). **Previous errors**: missed the "Swiftness of Lightning" special rule (makes Slow Powers Fast via Air); innate threshold details corrected; "Delusions of Danger" Unique was likely hallucinated (not in the Wiki-surfaced 4-card list).
+```admonish success title="Mechanics Wiki-verified"
+Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Base                                               |
-| Complexity            | Low                                                |
-| Play Difficulty       | 0                                                  |
-| Archetypes            | Direct Damage · Fast-Phase Speed                   |
-| Primary Elements      | Air, Fire, Water (Level 3 of innate)               |
-| Typical Opening       | Fast + Air-accumulation                            |
-| Typical Draft Bias    | Minor-heavy                                        |
-| Rei's Guide           | Not covered by Rei                                 |
-| latentoctopus         | Not currently listed                               |
-| Aspects               | Wind, Pandemonium, Immense, Sparking `[VERIFY]`    |
+| Expansion             | Base Game                                        |
+| Complexity            | Low                               |
+| Play Difficulty       | `[VERIFY from spirit panel]`                       |
+| Growth type           | "one" — see Growth Options below         |
+| Power summary (1–5)   | Offense 5 · Control 2 · Fear 3 · Defense 1 · Utility 2             |
+| Primary Elements      | Fire, Air, Water (derived from innates + uniques)|
+| Aspects               | `[VERIFY from physical aspect panels]` |
 ```
 
 ## Spirit Overview — Framing
 
-Lightning is the **fast-phase damage spirit**. "Swiftness of Lightning" converts Slow Powers to Fast Powers based on Air element — Lightning's effective damage window is *before* the Invader Phase, preventing builds and ravages before they happen.
+**Wiki-printed playstyle note**:
 
-**One-line fantasy**: the sky cracks open; an Explorer dies before it becomes a Town.
+> Virtually all offense to start with: without a more defensive teammate, Blight may become a problem. Excellent at destroying buildings, less good at containing Explorers. Using Thundering Destruction tends to be a burst affair: a turn or two of position and build up Energy, followed by a really big turn. Starting Powers are extremely focused on Air and Fire: good for Thundering Destruction, bad for Major Power versatility.
+
+Strategic framing `[VERIFY: enhance with play experience]`.
+
+## Starting Setup
+
+> Put 2 Presence on your starting board in the highest-numbered Sands.
+
+## Growth Options (one)
+
+| Growth | Effects |
+|--------|---------|
+| G1 | first=reclaim, second=gain1p, third=energy1 |
+| G2 | first=addpresence2, second=addpresence0 |
+| G3 | first=addpresence1, second=energy3 |
+
+**Growth token reference** (Wiki shorthand):
+- `reclaim` — Reclaim all discarded Power Cards.
+- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
+- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
+- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
+- `card1` / `card2` — +1/+2 Card Plays this turn.
+- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+
+## Presence Tracks
+
+As Presence leaves each track, these values are revealed:
+
+- **Energy track**: energy1, energy1, energy2, energy2, energy3, energy4, energy4, energy5
+- **Card-play track**: card2, card3, card4, card5, card6
 
 ## Core Mechanics & Special Rules
 
-### Special Rule: Swiftness of Lightning
+### Special Rule
 
-For every Air element you have, you may use **1 Slow Power as if it were Fast**.
+SWIFTNESS OF LIGHTNING For every {{air}} you have, you may use 1 {{slow}} Power as if it were {{fast}}. (Power Cards or your Innate Powers.)
 
-**Strategic implication**: this is the core Lightning trick. With 3 Air, Lightning can play 3 Slow cards in the Fast phase — wiping the board pre-ravage. Drafting Air is essential not just for innate threshold but for timing conversion.
+### Innate: THUNDERING DESTRUCTION
 
-### Innate: Thundering Destruction — Slow, 1 Range from Sacred Site, Any land
+- **Speed**: slow · **Range**: 1 (optionally from a sacred site) · **Target**: any
 
-- **3 Fire, 2 Air**: Destroy 1 Town.
-- **4 Fire, 3 Air**: Destroy 1 City instead.
-- **5 Fire, 4 Air, 1 Water**: Also destroy 1 Town/City.
-- **5 Fire, 5 Air, 2 Water**: Also destroy 1 Town/City.
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 3 Fire + 2 Air | Destroy 1 Town. |
+| 2 | 4 Fire + 3 Air | You may instead destroy 1 City. |
+| 3 | 5 Fire + 4 Air + 1 Water | Also, Destroy 1 Town / City. |
+| 4 | 5 Fire + 5 Air + 2 Water | Also, Destroy 1 Town / City. |
 
-**Strategic implication**: multi-Town/City destruction at Level 3+. With Swiftness of Lightning, this Slow-phase innate can fire in Fast phase if Air is high enough.
 
-### Unique Cards
+## Unique Cards (all, Wiki-verified)
 
-Per Wiki:
 
-- **Harbingers of the Lightning** — `[VERIFY cost/speed/elements]`.
-- **Lightning's Boon** — `[VERIFY cost/speed/elements]`.
-- **Raging Storm** — `[VERIFY cost/speed/elements]`.
-- **Shatter Homesteads** — `[VERIFY cost/speed/elements]`.
+
+## Suggested Draft Cards (Wiki-recommended)
+
+### Minor Powers
+
+| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| **Delusions of Danger** | 1 | Fast | 1 | Any Land | Sun, Moon, Air | Push 1 Explorer. **OR** 2 Fear. |
+| **Call to Bloodshed** | 1 | Slow | 1 | Land with Dahan | Sun, Fire, Animal | 1 Damage per Dahan. **OR** Gather up to 3 Dahan. |
+| **Purifying Flame** | 1 | Slow | 1, from your Sacred Site | Any Land | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blight. |
+| **Entrancing Apparitions** | 1 | Fast | 1 | Any Land | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers. |
+| **Call to Isolation** | 0 | Fast | 1 | Land with Dahan | Sun, Air, Animal | Push 1 Explorer/Town per Dahan. **OR** Push 1 Dahan. |
+
+### Major Powers
+
+| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| **Powerstorm** | 3 | Fast | No Range | Any Spirit | Sun, Fire, Air | Target Spirit gains 3 Energy. Once this turn, target Spirit may Repeat a Power Card by paying its cost again. |
+| **Pillar of Living Flame** | 5 | Slow | 2, from your Sacred Site | Any Land | Fire | 3 Fear. 5 Damage. If target land is a Jungle or Wetland, add 1 Blight. |
+
+
 
 ## Key Strategic Principles
 
-1. **Swiftness of Lightning = timing conversion.** Every Air element = 1 Slow-to-Fast conversion. Air is the single most important element for Lightning.
-2. **Fire + Air is the damage engine.** Thundering Destruction requires both heavily; drafts prioritize both.
-3. **Destroy Explorers pre-Build.** Lightning's Fast-phase kills prevent the Town-upgrade chain.
-4. **Sacred Site for Thundering Destruction's 1 Range.** 2 Presence in one land unlocks Sacred Site targeting.
-5. **Majors are optional finishers.** Lightning's Uniques + innate are usually sufficient; a Major T5+ helps close.
+`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+
+1. Use the Special Rule to its fullest (see above for exact text).
+2. Element thresholds drive innate firing — see the innate tables above.
+3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
 
 ## Opening Strategy
 
-### Opening A — Air accumulation 🟥
-
-#### Turn 1
-
-- **Growth**: G2 top (energy + CP) or G3 (Minor gain).
-- **Cards played**: Shatter Homesteads + Lightning's Boon.
-- **Presence placement**: adjacent to first invader-dense land.
-- **Elements by end**: 1 Air, 1 Fire.
-
-#### Turn 2
-
-- **Growth**: G2 top.
-- **Cards played**: reclaim + Minor.
-- **Elements by end**: 2 Air, 2 Fire.
-
-#### Turn 3
-
-- **Growth**: G1 Reclaim + G3 Minor.
-- **Cards played**: 3 cards.
-- **Elements by end**: 3 Air, 2 Fire (Thundering Destruction Level 1 threshold).
-
-#### Turn 4 — state audit
-
-- Presence 6, Swiftness of Lightning converting 3 Slows to Fast, Thundering Destruction firing.
-
-### Opening decision
-
-<pre class="mermaid">
-graph TD
-  Start[Round 1 — Lightning] --> Adv{Adversary?}
-  Adv -->|Any base/B&C| A[Opening A]
-  Adv -->|Brandenburg-Prussia L5+| A2[Opening A + Major T4]
-  Adv -->|Other| A
-</pre>
-
-## Element & Aspect Preferences
-
-**Preferred elements**: Air (primary; Swiftness of Lightning), Fire (secondary), Water (Level 3 innate).
-
-**Aspects**: Wind, Pandemonium, Immense, Sparking `[VERIFY]`.
+`[VERIFY: needs play data]` — opening variants should be rehearsed turn-by-turn per the [SPIRIT_TEMPLATE.md](../../../templates/SPIRIT_TEMPLATE.md) opener format.
 
 ## Card Priority Ratings
 
-Lightning is **Minor-heavy**.
+**Uniques**: see above, all 4 cards are starting-deck and usually all grade A-tier for the spirit's intended playstyle.
 
-### Uniques
+**Suggested Minors + Majors**: see tables above. Wiki's suggestions reflect community-recommended drafts.
 
-| Card | Grade | Notes |
-|---|---|---|
-| Shatter Homesteads | A+ | Core kill. `[VERIFY speed]` |
-| Lightning's Boon | A | `[VERIFY effect]` |
-| Raging Storm | A- | `[VERIFY]` |
-| Harbingers of the Lightning | `[VERIFY]` | Wiki didn't surface effect. |
-
-### Majors
-
-Fiery Power, Tigers Hunting (Air-Fire threshold preferred).
+`[VERIFY: ratings per matchup pending]`.
 
 ## Adversary Matchup Matrix
 
-| Adversary | L0 | L3 | L5 | L6 | Notes |
-|---|---|---|---|---|---|
-| England | A | A- | B+ | B | Town kills prevent Stage III. **L5 cliff**: +1 HP buildings; Thundering Destruction Level 1 still destroys Towns (effect-based, not damage-based). |
-| Brandenburg-Prussia | A+ | A | A- | B+ | Fast-phase Explorer kills prevent City-upgrades. |
-| Sweden | A | A- | B+ | B | Kills still work; fear bonus. |
-| France | A- | B+ | B | B- | Dahan-safe. |
-| Habsburg Mining | B+ | B | B- | C+ | Scaling runs out. |
-| Russia | B+ | B | B | B- | Settlers killable. |
-| Scotland | A | A- | B+ | B | Favorable. |
-| Habsburg Livestock | A- | B+ | B | B | Decent. |
+`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
 
-## Synergy Partners
+| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
+|----------------------|----|----|----|----|----------------------|
+| England              | ?  | ?  | ?  | ?  |                      |
+| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
+| Sweden               | ?  | ?  | ?  | ?  |                      |
+| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
+| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
+| Russia               | ?  | ?  | ?  | ?  |                      |
+| Scotland             | ?  | ?  | ?  | ?  |                      |
+| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
 
-```admonish tip title="Best Partners"
-- **Earth** — Earth defends + repeats Lightning's Majors via Gift of Strength.
-- **Thunderspeaker** — Lightning kills Explorers; Thunderspeaker's dahan handle Towns.
-- **Shadows** — kill-fear compounds.
-- **Green** — Green defends; Lightning damages.
-```
+## Board / Map Configuration
+
+`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+
+## Game-Phase Strategy
+
+`[VERIFY: needs play data]`.
+
+## Synergy Partners (Multiplayer)
+
+`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
 
 ## Common Mistakes
 
-```admonish failure title="Common Mistake"
-Holding Shatter Homesteads for "a better target." Shatter is for Explorers and early Towns.
-```
-
-```admonish failure title="Common Mistake"
-Ignoring Air element. Swiftness of Lightning + Thundering Destruction both need Air heavily.
-```
-
-```admonish failure title="Common Mistake"
-Trying to defend. Lightning has no defend.
-```
+`[VERIFY: collect from play]`.
 
 ## Tempo Profile
 
-Typical arc; see Opening Strategy above.
-
-## Major vs. Minor
-
-**Draft bias**: Minor-heavy.
+`[VERIFY: per-round targets need playtest]`.
 
 ## Expansion Sensitivity
 
-- **Base only**: fully functional.
-- **+ expansions**: deeper Air-Fire Major pool.
+- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
+- **+ Branch & Claw**: events + blight deck introduce variance.
+- **+ Jagged Earth**: Major/Minor pool deepens.
+- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
+
+Per-expansion specifics `[VERIFY]`.
 
 ## Stat Snapshot
 
-```admonish note title="Stat Insight"
-Per mindwanderer `[VERIFY]`:
-- Solo L6: ~58%.
-- Best vs. Brandenburg-Prussia L6 (~68%).
+```admonish note title="Stat Insight `[VERIFY from mindwanderer]`"
+Pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
 ```
 
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- Authoritative mechanics: [data/references/spirit-mechanics.md](../../../data/references/spirit-mechanics.md).
-- Cross-reference: [Teaching Methods](../../social/teaching-methods.md).
+- **Authoritative mechanics** (this chapter): `data/references/wiki/lightnings-swift-strike.json` — parsed via `scripts/wiki-fetch.py`.
+- Spirit Island Wiki — [Lightning's Swift Strike](https://spiritislandwiki.com/index.php?title=Lightning's_Swift_Strike).
+- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
+- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
 ```
 
 ---
 
-*Last revised: 2026-04-19 — v0.2.1 (surgical correction; `[VERIFY]` markers pending physical-copy check)*
+*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*

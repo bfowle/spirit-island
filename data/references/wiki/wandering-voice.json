@@ -110,5 +110,6 @@
     "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Wandering Voice Keens Delirium' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n<gallery>File:Wandering Voice Keens Delirium Home.png",
     "Rulings": "==Notes==\n{{Reflist}}"
   },
-  "unique_card_details": []
+  "unique_card_details": [],
+  "suggested_card_details": []
 }

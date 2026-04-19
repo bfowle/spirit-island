@@ -1,224 +1,200 @@
 # Keeper of the Forbidden Wilds
 
-```admonish warning title="Accuracy status — partial revision 2026-04-19"
-Mechanical sections corrected against [Spirit Island Wiki authoritative data](../../../data/references/spirit-mechanics.md). **Previous errors**: all 4 Unique card names were wrong; innate names were hallucinated. Strategic framing preserved where possible.
+```admonish success title="Mechanics Wiki-verified"
+Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Branch & Claw                                      |
-| Complexity            | Moderate                                           |
-| Play Difficulty       | 2                                                  |
-| Archetypes            | Major Power Shopping · Defend & Outlast · Wilds-scaling |
-| Primary Elements      | Sun, Plant (primary), Fire, Air                    |
-| Typical Opening       | Slow-ramp; Sacred Site + Wilds formation           |
-| Typical Draft Bias    | Major-heavy                                        |
-| Rei's Guide           | Not covered by Rei                                 |
-| latentoctopus         | Not currently listed                               |
-| Aspects               | `[VERIFY]`                                         |
+| Expansion             | Branch and Claw                                        |
+| Complexity            | Moderate                               |
+| Play Difficulty       | `[VERIFY from spirit panel]`                       |
+| Growth type           | "two" — see Growth Options below         |
+| Power summary (1–5)   | Offense 5 · Control 2 · Fear 1 · Defense 4 · Utility 3             |
+| Primary Elements      | Plant, Sun, Fire, Earth (derived from innates + uniques)|
+| Aspects               | `[VERIFY from physical aspect panels]` |
 ```
 
 ## Spirit Overview — Framing
 
-Keeper is the **Wilds-token defender + Major-Power shopper**. Forbidden Ground special rule pushes Dahan out of newly-created Sacred Sites — a unique dahan-interaction. Spreading Wilds adds **Wilds tokens** to lands; Wilds scale Sacrosanct Wilderness damage.
+**Wiki-printed playstyle note**:
 
-**One-line fantasy**: the forest forbids. Where Keeper's presence roots, the land itself rejects colonial intrusion — Dahan retreat to safer ground, and what crosses Keeper's thresholds is punished.
+> A slowly growing wall - expanding can sometimes be difficult, but the Invaders will have an equally difficult time penetrating wherever the Keeper plants itself. In larger games, it may be useful to spread to one of the two far-distant lands early on, to have multiple points from which to slowly grow.
 
-**The honest complexity signal**: Moderate. Keeper has two innates + two special rules + Wilds-token mechanic. Players learning Keeper often miss the Dahan-pushing effect of Forbidden Ground and end up with dahan clustered incorrectly.
+Strategic framing `[VERIFY: enhance with play experience]`.
+
+## Starting Setup
+
+> Put 1 Presence and 1 {{wild}} on your starting board in the highest-numbered Jungle.
+
+## Growth Options (two)
+
+| Growth | Effects |
+|--------|---------|
+| G1 | first=reclaim, second=energy1 |
+| G2 | first=gain1p |
+| G3 | first=Keeper, second=energy1 |
+| G4 | first=Keeper3, second=noblight |
+
+**Growth token reference** (Wiki shorthand):
+- `reclaim` — Reclaim all discarded Power Cards.
+- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
+- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
+- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
+- `card1` / `card2` — +1/+2 Card Plays this turn.
+- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+
+## Presence Tracks
+
+As Presence leaves each track, these values are revealed:
+
+- **Energy track**: energy2, sun, energy4, energy5, plant, energy7, energy8, energy9
+- **Card-play track**: card1, card2, card2, card3, card4, card5reclaim1
 
 ## Core Mechanics & Special Rules
 
-### Special Rule: Forbidden Ground
+### Special Rule
 
-After you create a Sacred Site, **Push all Dahan from that land**. Dahan Events never move Dahan to your Sacred Site, but Powers can.
+FORBIDDEN GROUND After you create a {{sacredsite}}, Push all Dahan from that land. Dahan Events never move Dahan to your {{sacredsite}}, but Powers can do so.
 
-**Strategic implication**: Keeper's Sacred Sites are dahan-hostile by design. Don't build Sacred Sites in dahan-dense lands unless you're OK pushing the dahan out.
+### Innate: PUNISH THOSE WHO TRESPASS
 
-### Innate: Punish Those Who Trespass — Slow, 0 Range, Any land
+- **Speed**: slow · **Range**: 0 · **Target**: any
 
-- Base (2 Sun, 1 Fire, 2 Plant): 2 Damage; Destroy 1 Dahan.
-- Upgrade (2 Sun, 2 Fire, 3 Plant): +1 Damage per Sun/Plant you have.
-- Upgrade (4 Plant): Split this Power's Damage between target land and another 1 of your lands.
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 2 Sun + 1 Fire + 2 Plant | 2 Damage. Destroy 1 Dahan. |
+| 2 | 2 Sun + 2 Fire + 3 Plant | +1 Damage per {{sun}}{{plant}} you have. |
+| 3 | 4 Plant | Split this Power's Damage however desired between target land and another 1 of your lands. |
 
-**Strategic implication**: Punish's base effect destroys 1 Dahan — another dahan-hostile element. Drafts around this have to accept Dahan-loss or target Dahan-free lands.
 
-### Innate: Spreading Wilds — Slow, 1 Range, Land without Blight
+### Innate: SPREADING WILDS
 
-- (2 Sun): Push 1 Explorer per 2 Sun you have.
-- (1 Plant): If target has no Explorer, add 1 Wilds.
-- (3 Plant): +1 Range.
-- (1 Air): +1 Range.
+- **Speed**: slow · **Range**: 1 · **Target**: noblight
 
-**Strategic implication**: Wilds accumulate via Spreading Wilds in Explorer-free lands. The Wilds mechanic feeds Sacrosanct Wilderness Unique.
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 2 Sun | Push 1 Explorer from target land per 2 {{sun}} you have. |
+| 2 | 1 Plant | If target land has no Explorer, add 1 {{wild}}. |
+| 3 | 3 Plant | This Power has Range +1. |
+| 4 | 1 Air | This Power has Range +1. |
 
-### Unique Cards
 
-All four starting Uniques per Wiki:
+## Unique Cards (all, Wiki-verified)
 
-- **Boon of Growing Power** — `[VERIFY: cost, speed, elements]`. Grants another Spirit energy and card draw.
-- **Regrow from Roots** — `[VERIFY: cost, speed, elements]`. Removes blight in Jungle/Wetlands.
-- **Sacrosanct Wilderness** — `[VERIFY: cost, speed, elements]`. Adds Wilds and deals damage based on Wilds present.
-- **Towering Wrath** — `[VERIFY: cost, speed, elements]`. Damage scales with Sacred Sites in target area.
+#### None
+
+- **1 Energy · Slow · Range No Range · Any Spirit · Sun, Moon, Plant**
+- *Target Spirit gains a Power Card. If you target another Spirit, they also gain 1 Energy.*
+
+#### None
+
+- **1 Energy · Slow · Range 1 · Jungle or Wetland · Water, Earth, Plant**
+- *If there are 2 Blight or fewer in target land, Remove 1 Blight.*
+
+#### None
+
+- **2 Energy · Fast · Range 1 · Land with no Blight · Sun, Earth, Plant**
+- *Push 2 Dahan. 2 Damage per Wilds in target land. **OR** Add 1 Wilds.*
+
+#### None
+
+- **3 Energy · Slow · Range 1, from your Sacred Site · Any Land · Sun, Fire, Plant**
+- *2 Fear. For each of your Sacred Site in/adjacent to target land, 2 Damage. Destroy all Dahan.*
+
+
+## Suggested Draft Cards (Wiki-recommended)
+
+### Minor Powers
+
+_(none in Wiki's suggested list)_
+
+### Major Powers
+
+_(none in Wiki's suggested list)_
+
+
 
 ## Key Strategic Principles
 
-1. **Forbidden Ground is dahan-hostile.** Sacred Sites push Dahan out. Accept this; don't try to Dahan-cluster around Keeper.
-2. **Wilds are a secondary resource.** Spreading Wilds + Sacrosanct Wilderness = damage scaling via Wilds. Draft around this.
-3. **Sun + Plant is the primary element pair.** Both innates want both.
-4. **Boon of Growing Power is a multiplayer lever.** In solo it's limited; in multiplayer it enables a partner's high-cost Major play.
-5. **Regrow from Roots = Jungle/Wetland blight removal.** Terrain-gated; check board.
-6. **Towering Wrath scales with Sacred Site count.** 2–3 Sacred Sites = heavy damage.
-7. **Major Power Shopping standard.** Forget the weakest Unique T3–T4 for a Sun/Plant Major.
+`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+
+1. Use the Special Rule to its fullest (see above for exact text).
+2. Element thresholds drive innate firing — see the innate tables above.
+3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
 
 ## Opening Strategy
 
-### Opening A — Sacred Site formation + Early Major 🟥
-
-**Target arc**: 2 Sacred Sites by T3 · Level 1 innates firing T3 · Major T4+.
-
-#### Turn 1
-
-- **Growth**: **G2 top** or **G3 bottom** depending on energy need.
-- **Cards played**: one Unique that fits (Boon of Growing Power for multiplayer; Regrow from Roots if board is jungle-heavy).
-- **Presence placement**: form first Sacred Site in an Explorer-present land (Wilds prep requires Explorer-free; Sacred Site prep separate).
-- **Elements by end**: 1 Sun, 1 Plant.
-- **E / CP state**: 1E / 2CP → 0E / 2CP.
-
-#### Turn 2
-
-- **Growth**: **G3 bottom** (Minor gain) or **G4 Major gain** if Plant-Sun Major is offered.
-- **Cards played**: Unique + drafted Minor.
-- **Presence placement**: second Sacred Site forming.
-- **Elements by end**: 2 Sun, 1 Plant, 1 Air.
-- **E / CP state**: 1E / 2CP → 0E / 2CP.
-
-#### Turn 3
-
-- **Growth**: **G1 Reclaim**.
-- **Cards played**: Major (if gained) + Sacrosanct Wilderness.
-- **Elements by end**: 2 Sun, 1 Fire, 2 Plant (Level 1 Punish Those Who Trespass threshold).
-- **E / CP state**: 2E / 2CP → 0–1E / 2CP.
-- **Milestone**: Punish firing for 2 damage; Wilds accumulating.
-
-#### Turn 4 — state audit
-
-- **Presence**: 5–6; 2 Sacred Sites; 1–2 Wilds on board.
-- **Energy / CP**: 2E / 2–3CP.
-- **Engine**: Major in rotation; Punish firing; Sacrosanct Wilderness scales.
-
-### Opening decision
-
-<pre class="mermaid">
-graph TD
-  Start[Round 1 — Keeper] --> Adv{Adversary?}
-  Adv -->|Default| A[Opening A - SS formation + Early Major]
-  Adv -->|Russia L5+| B[Defend-heavy variant]
-  Adv -->|Multiplayer partner with high-cost Majors| A
-  Adv -->|Other| A
-</pre>
-
-## Element & Aspect Preferences
-
-**Preferred elements**: Sun, Plant (primary), Fire, Air.
-
-**Aspects**: `[VERIFY — Wiki didn't surface aspect names]`.
+`[VERIFY: needs play data]` — opening variants should be rehearsed turn-by-turn per the [SPIRIT_TEMPLATE.md](../../../templates/SPIRIT_TEMPLATE.md) opener format.
 
 ## Card Priority Ratings
 
-Keeper is **Major-heavy**.
+**Uniques**: see above, all 4 cards are starting-deck and usually all grade A-tier for the spirit's intended playstyle.
 
-### Uniques
+**Suggested Minors + Majors**: see tables above. Wiki's suggestions reflect community-recommended drafts.
 
-| Card                    | Grade | Notes                                          |
-|-------------------------|-------|------------------------------------------------|
-| Towering Wrath          | A+    | Sacred-Site-scaling damage.                    |
-| Sacrosanct Wilderness   | A     | Wilds-scaling damage; play when Wilds are on board.|
-| Regrow from Roots       | A-    | Blight removal (Jungle/Wetland only).          |
-| Boon of Growing Power   | A (multiplayer) / B (solo) | Partner gift.                   |
-
-### Minors & Majors
-
-Sun-Plant duals preferred. Vigor of the Breaking Dawn, Tigers Hunting, Rouse the Trees and Stones are canonical Major targets.
+`[VERIFY: ratings per matchup pending]`.
 
 ## Adversary Matchup Matrix
 
-| Adversary            | L0 | L3 | L5 | L6 | Notes |
-|---|---|---|---|---|---|
-| England              | A+ | A  | A- | B+ | Slow-build matches; **L5 cliff**: buildings +1 HP means Punish's base 2 damage no longer kills Towns alone. |
-| Brandenburg-Prussia  | A- | B+ | B  | B- | Fast cities outpace.                   |
-| Sweden               | A  | A- | B+ | B  | Defend + Majors handle.                |
-| France               | A  | A- | B+ | B  | Forbidden Ground's dahan-push actually helps vs. plantation. |
-| Habsburg Mining      | A+ | A  | A- | B+ | Best matchup.                          |
-| Russia               | A  | A- | B+ | B  | Defend absorbs.                        |
-| Scotland             | A  | A- | B+ | B  | Decent.                                |
-| Habsburg Livestock   | A  | A- | B+ | B  | Fine.                                  |
+`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
 
-## Synergy Partners
+| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
+|----------------------|----|----|----|----|----------------------|
+| England              | ?  | ?  | ?  | ?  |                      |
+| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
+| Sweden               | ?  | ?  | ?  | ?  |                      |
+| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
+| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
+| Russia               | ?  | ?  | ?  | ?  |                      |
+| Scotland             | ?  | ?  | ?  | ?  |                      |
+| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
 
-```admonish tip title="Best Partners"
-- **Lightning** — Lightning kills early; Keeper's Majors close late.
-- **Shadows** — Shadows fear-rushes; Keeper absorbs board.
-- **Bringer** — Boon of Growing Power on Bringer's Call-on-Midnight's-Dream Major turn = double Major.
-- **Fangs** — Fangs beast damage + Keeper's defensive wall.
-```
+## Board / Map Configuration
 
-```admonish warning title="Anti-Synergy"
-- **Thunderspeaker** — Keeper's Forbidden Ground pushes Dahan out of Sacred Sites; Thunderspeaker wants Dahan concentrated. Coordinate Sacred Site placement carefully.
-- **Earth** — double Major-shoppers compete for offers.
-```
+`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+
+## Game-Phase Strategy
+
+`[VERIFY: needs play data]`.
+
+## Synergy Partners (Multiplayer)
+
+`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
 
 ## Common Mistakes
 
-```admonish failure title="Common Mistake"
-Forming Sacred Sites in dahan-dense lands without realizing Forbidden Ground pushes them out. Scout the dahan before committing presence-density.
-```
-
-```admonish failure title="Common Mistake"
-Drafting Majors without Sun-Plant threshold.
-```
-
-```admonish failure title="Common Mistake"
-Over-concentrating presence in 1 land. 2–3 Sacred Sites spread > 1 mega-dense land.
-```
+`[VERIFY: collect from play]`.
 
 ## Tempo Profile
 
-| Round | Energy | CP | Presence | Sacred Sites | Wilds | Majors | Key Play |
-|---|---|---|---|---|---|---|---|
-| 1 | 1E | 2 | 4 | 0 | 0 | 0 | Unique + Minor |
-| 2 | 2E | 2 | 5 | 1 | 0 | 1 in hand | G4 Major gain |
-| 3 | 3E | 2 | 6 | 1–2 | 1 | 1 | Major fires; Wilds forming |
-| 4 | 2–3E | 3 | 6–7 | 2 | 1–2 | 1 | Level 2 innate |
-| 5 | 3E | 3 | 7 | 2 | 2 | 1–2 | 2nd Major gain |
-| 6 | 3–4E | 3 | 7 | 2 | 2–3 | 2 | 2 Majors |
-| 7 | 4E | 3 | 6 | 2 | 3 | 2–3 | Major chain |
-| 8 | 4E | 3 | 6 | 2 | 3 | 2–3 | Close |
+`[VERIFY: per-round targets need playtest]`.
 
 ## Expansion Sensitivity
 
-- **Base only**: Keeper is a Branch & Claw spirit — not available in base-only.
-- **+ Branch & Claw (minimum)**: full functionality.
-- **+ Jagged Earth**: deeper Major pool.
-- **+ Nature Incarnate**: no core shift.
+- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
+- **+ Branch & Claw**: events + blight deck introduce variance.
+- **+ Jagged Earth**: Major/Minor pool deepens.
+- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
+
+Per-expansion specifics `[VERIFY]`.
 
 ## Stat Snapshot
 
-```admonish note title="Stat Insight"
-Per mindwanderer `[VERIFY]`:
-- Solo L6: ~58%.
-- Best vs. Habsburg Mining L6 (~70%).
-- Worst vs. Brandenburg-Prussia L6 (~42%).
+```admonish note title="Stat Insight `[VERIFY from mindwanderer]`"
+Pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
 ```
 
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- Authoritative mechanics: [data/references/spirit-mechanics.md](../../../data/references/spirit-mechanics.md).
-- Spirit Island Wiki — Keeper page.
-- Cross-reference: [Major Power Shopping](../../combos/major-power-shopping.md), [Defend & Outlast](../../combos/defend-and-outlast.md).
+- **Authoritative mechanics** (this chapter): `data/references/wiki/keeper-of-the-forbidden-wilds.json` — parsed via `scripts/wiki-fetch.py`.
+- Spirit Island Wiki — [Keeper of the Forbidden Wilds](https://spiritislandwiki.com/index.php?title=Keeper_of_the_Forbidden_Wilds).
+- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
+- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
 ```
 
 ---
 
-*Last revised: 2026-04-19 — v0.2.1 (surgical correction; `[VERIFY]` markers pending physical-copy check)*
+*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*

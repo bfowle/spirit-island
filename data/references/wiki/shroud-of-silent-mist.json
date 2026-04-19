@@ -132,5 +132,6 @@
     "strategy": "==Spirit Spotlight==\n\n<youtube>kHLqD_I4jXc</youtube>\n\n==Links to Guides==\n<div>{{sacredsite}} [https://boardgamegeek.com/thread/2488254/openings-shroud-silent-mist Openings: Shroud of Silent Mist - Written by jyonker13]</div>\n<div>{{sacredsite}} [https://boardgamegeek.com/thread/2722115/advanced-guide-shroud-silent-mist <nowiki>[</nowiki>Advanced Guide<nowiki>]</nowiki> Shroud of Silent Mist - Written by Rei]</div>",
     "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Shroud of Silent Mist' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>"
   },
-  "unique_card_details": []
+  "unique_card_details": [],
+  "suggested_card_details": []
 }

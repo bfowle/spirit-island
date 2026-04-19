@@ -125,5 +125,6 @@
     "design_and_extras": "==Spirit Spotlight==\n\n<youtube>sVwy1bY8eyc</youtube>\n\n==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Shifting Memory of Ages' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<div style=\"width:100px; border:1px solid black; padding:4px;\"><div style=\"text-align:center; border:1px solid black; border-color:rgb(100,100,100); padding:4px;\">[[File:{{PAGENAME}}_Home.png|80px]]</div><div style=\"text-align:center; padding:2px;\">\"Home\" Icon</div></div>",
     "Rulings": "===INSIGHTS INTO THE WORLD'S NATURE (Special Rule)===\n* When you '''Prepare''' an Element Marker, you choose one of the eight Elements and place a Marker that depicts that Element onto your board. Once chosen, that Element cannot change.\n* You are allowed to spend an Element Marker to gain 1 of that Element for a single Action."
   },
-  "unique_card_details": []
+  "unique_card_details": [],
+  "suggested_card_details": []
 }

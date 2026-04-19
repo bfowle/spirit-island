@@ -6,7 +6,7 @@
   "complexity": "moderate",
   "setup": "Put 3 Presence on your starting board: 1 in the highest-numbered Jungle without Blight, 1 in the highest-numbered Mountain, and 1 in the highest-numbered Wetland. Put {{incarna|roots}}, Unempowered ({{incarna|unempowered}}) side up, in the Jungle with your Presence. You start with your 4 Unique Power Cards and 0 Energy.",
   "playstyle": "Incredibly good at protecting everything at its {{incarna|roots}} - and can draw Invaders towards there - but is constrained in when and where it can move its {{incarna|roots}}. Has some ability to Remove Invaders (driving them from the island), but starts off vastly better at guarding the land than at smashing things.",
-  "special_rules": "ENDURING VITALITY</br>Some of your Actions Add Vitality Tokens ({{vitality}}). (Each {{vitality}} in a land with no Blight prevents 1 Blight from being added, then is Removed.) HEART-TREE GUARDS THE LAND</br>You have an Incarna ({{incarna|roots}}). * Your Powers get {{range|+1}} if {{incarna|roots}} is in the origin land. * Invaders/Dahan/Beast can't be damaged or destroyed at {{incarna|roots}}. * Empower {{incarna|roots}} the first time it's in a land with 3 or more {{vitality}}. * Skip all Build Actions at empowered {{incarna|roots}}.",
+  "special_rules": "ENDURING VITALITY</br>Some of your Actions Add Vitality Tokens ({{vitality}}). (Each {{vitality}} in a land with no Blight prevents 1 Blight from being added, then is Removed.) HEART-TREE GUARDS THE LAND</br>You have an Incarna ({{incarna|roots}}). * Your Powers get Range +1 if {{incarna|roots}} is in the origin land. * Invaders/Dahan/Beast can't be damaged or destroyed at {{incarna|roots}}. * Empower {{incarna|roots}} the first time it's in a land with 3 or more {{vitality}}. * Skip all Build Actions at empowered {{incarna|roots}}.",
   "special_rules_raw": "'''''ENDURING VITALITY'''''</br>Some of your Actions Add Vitality Tokens ({{vitality}}). ''(Each {{vitality}} in a land with no {{blight}} prevents 1 {{blight}} from being added, then is Removed.)''\n\n'''''HEART-TREE GUARDS THE LAND'''''</br>You have an Incarna ({{incarna|roots}}).\n* Your Powers get {{range|+1}} if {{incarna|roots}} is in the origin land.\n* Invaders/{{dahan}}/{{beast}} can't be damaged or destroyed at {{incarna|roots}}.\n* Empower {{incarna|roots}} the first time it's in a land with 3 or more {{vitality}}.\n* Skip all Build Actions at empowered {{incarna|roots}}.",
   "innates": [
     {
@@ -137,5 +137,6 @@
     "design_and_extras": "==Art Depictions==\n\n{{#cargo_query:\ntable=PowerCards,Sets\n|fields=PowerCards.image=Image,name_en=Card Name\n|where=artdepictions HOLDS 'Towering Roots of the Jungle' AND cardstatus='Active'\n|join on=PowerCards.box HOLDS Sets.name\n|order by=Sets.sort_order ASC,spirit ASC,cardtype DESC,name_en ASC\n|group by=name_en\n|format=table\n|template=Template:ArtDepiction\n|named args=no\n|limit=500\n}}\n\n==Gallery==\n\n<gallery>File:Towering Roots of the Jungle Home.png",
     "Rulings": "==Notes==\n{{Reflist}}"
   },
-  "unique_card_details": []
+  "unique_card_details": [],
+  "suggested_card_details": []
 }

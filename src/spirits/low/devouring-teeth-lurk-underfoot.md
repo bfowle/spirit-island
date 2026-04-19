@@ -1,4 +1,4 @@
-# Ember-Eyed Behemoth
+# Devouring Teeth Lurk Underfoot
 
 ```admonish success title="Mechanics Wiki-verified"
 Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
@@ -7,12 +7,12 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Nature Incarnate                                        |
-| Complexity            | Moderate                               |
+| Expansion             | Horizons of Spirit Island                                        |
+| Complexity            | Low                               |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 5 · Control 1 · Fear 1 · Defense 1 · Utility 2             |
-| Primary Elements      | _(unknown)_ (derived from innates + uniques)|
+| Power summary (1–5)   | Offense 5 · Control 2 · Fear 2 · Defense 1 · Utility 1             |
+| Primary Elements      | Fire, Animal, Earth (derived from innates + uniques)|
 | Aspects               | `[VERIFY from physical aspect panels]` |
 ```
 
@@ -20,22 +20,21 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 
 **Wiki-printed playstyle note**:
 
-> Slowly but consistently stomps its Incarna around the island, smashing Invaders. (Dahan can keep clear, unless it really gets going.) Benefits from spread-out {{sacredsite}}, both for targeting Powers and for moving its Incarna long distances. Adding Presence at its Incarna (which can count as Presence) can make it easier to get Presence into new lands, particularly non-Jungles.
+> Likes being in the same lands as Invaders, so it can use Range 0 offensive and defensive Powers. The first of its Innate Power can give some mobility, if needed. Has a poor Plays track and potent but expensive Unique Powers, so can be better at handling fewer large threats than lots of little ones.
 
 Strategic framing `[VERIFY: enhance with play experience]`.
 
 ## Starting Setup
 
-> Put 2 Presence and {{incarna|behemoth}}, Unempowered ({{incarna|unempowered}}) side up, in the highest-numbered Wetland on your starting board that is adjacent to any Jungle. You start with your 4 Unique Power Cards and 0 Energy.
+> Put 1 Presence on your starting board, in land #5. You start with your 4 Unique Power Cards and 0 Energy.
 
 ## Growth Options (one)
 
 | Growth | Effects |
 |--------|---------|
-| G1 | first=reclaim, second=gain1p |
-| G2 | first=addpresence3junglepresence, second=addpresence0 |
-| G3 | first=gain1p, second=addpresence1, third=energy3 |
-| G4 | first=reclaimallfire, second=empowerbehemoth, third=moveincarnabehemoth |
+| G1 | first=reclaim, second=addpresence0 |
+| G2 | first=gain1p, second=addpresence1 |
+| G3 | first=addpresence2, second=energy3 |
 
 **Growth token reference** (Wiki shorthand):
 - `reclaim` — Reclaim all discarded Power Cards.
@@ -49,20 +48,25 @@ Strategic framing `[VERIFY: enhance with play experience]`.
 
 As Presence leaves each track, these values are revealed:
 
-- **Energy track**: energy0, energy1, energy2fire, energy3, earth, energy4plant, energy5fire
-- **Card-play track**: card1, card2, card2, card3, fireX, card4
+- **Energy track**: energy2, fire, energy3, energy4, animal, energy6, energy7
+- **Card-play track**: card1, card2, animalX, fireX, card3, earthX, card4
 
 ## Core Mechanics & Special Rules
 
 ### Special Rule
 
-THE BEHEMOTH RISES You have an Incarna ({{incarna|behemoth}}). Once per turn, during the Spirit, {{speed|fast|20}}, or {{speed|slow|20}} phase, you may either: * Push {{incarna|behemoth}}; or * Add or Move {{incarna|behemoth}} to any of your {{sacredsite}} on the island. UNRELENTING STRIDES On any turn that you don't use Innate Powers, you may use The Behemoth Rises an additional time. (When you use an Innate Power, cover this Special Rule with a Reminder Marker; when you use this Special Rule, cover your Innate Power.)
+TERRITORIAL AGGRESSION Your Damage-Dealing Powers do +1 Damage. (This adds +1 Damage total for the Power, even if the Power Damages multiple Invaders or "each Invader". It can boost Minor/Major Power Cards, too, not just your Uniques + Innate.)
 
-### Innate: SMASH, STOMP, AND FLATTEN
+### Innate: DEATH APPROACHES FROM BENEATH THE SURFACE
 
-- **Speed**: slow · **Range**: None · **Target**: behemoth
+- **Speed**: slow · **Range**: 1 · **Target**: invaders
 
-_(no thresholds listed in Wiki)_
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1 | 1 Fire + 1 Animal | If you don't have Presence in target land, Gather 1 of your Presence. (This is required.) |
+| 2 | 2 Fire + 1 Earth + 2 Animal | 1 Damage. (+1 for your "Territorial Aggression" Special Rule) |
+| 3 | 3 Fire + 1 Earth + 3 Animal | 2 Damage. |
+| 4 | 4 Fire + 2 Earth + 5 Animal | 2 Fear. 4 Damage. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -73,13 +77,23 @@ _(no thresholds listed in Wiki)_
 
 ### Minor Powers
 
-_(none in Wiki's suggested list)_
+| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| **Devouring Ants** | 1 | Slow | 1, from your Sacred Site | Any Land | Sun, Earth, Animal | 1 Fear. 1 Damage. Destroy 1 Dahan. If target land is a Jungle or Sands, +1 Damage. |
+| **Gnawing Rootbiters** | 0 | Slow | 1 | Any Land | Earth, Animal | Push up to 2 Towns. |
+| **Rouse the Trees and Stones** | 1 | Slow | 1, from your Sacred Site | Land with no Blight | Fire, Earth, Plant | 2 Damage. Push 1 Explorer. |
+| **Savage Mawbeasts** | 0 | Slow | 1, from your Sacred Site | Any Land | Fire, Animal | If target land is a Jungle or Wetland, 1 Fear and 1 Damage. |
 
 ### Major Powers
 
-_(none in Wiki's suggested list)_
+| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| **Pillar of Living Flame** | 5 | Slow | 2, from your Sacred Site | Any Land | Fire | 3 Fear. 5 Damage. If target land is a Jungle or Wetland, add 1 Blight. |
+| **Poisoned Land** | 3 | Slow | 1 | Any Land | Earth, Plant, Animal | 1 Fear. 7 Damage. Add 1 Blight. Destroy all Dahan. |
 
-
+### Other (error or unclassified)\n\n| Card | Cost | Speed | Range | Target | Elements | Effect |
+|------|------|-------|-------|--------|----------|--------|
+| Quicken the Earth\'s Struggles | — | — | — | — | — | _Wiki error_ |
 
 ## Key Strategic Principles
 
@@ -154,8 +168,8 @@ Pending re-scrape of mindwanderer current data. Historical directional figures u
 ## Source Notes
 
 ```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/ember-eyed-behemoth.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Ember-Eyed Behemoth](https://spiritislandwiki.com/index.php?title=Ember-Eyed_Behemoth).
+- **Authoritative mechanics** (this chapter): `data/references/wiki/devouring-teeth-lurk-underfoot.json` — parsed via `scripts/wiki-fetch.py`.
+- Spirit Island Wiki — [Devouring Teeth Lurk Underfoot](https://spiritislandwiki.com/index.php?title=Devouring_Teeth_Lurk_Underfoot).
 - Cross-reference: [Archetype Index](../../combos/archetype-index.md).
 - Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
 ```
