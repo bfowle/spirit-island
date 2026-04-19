@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Jagged Earth                                        |
-| Complexity            | Moderate                               |
+| Complexity            | Moderate                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "oneandone" — see Growth Options below         |
 | Power summary (1–5)   | Offense 4 · Control 4 · Fear 4 · Defense 2 · Utility 1             |
@@ -20,7 +20,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 
 **Wiki-printed playstyle note**:
 
-> Very focused on the interior - its best options for coastal lands are "draw the Invaders inland" or "turn Town/City into Explorer, then draw them inland". Likes the interior to be dangerous, full of Badlands, Beast, Disease, and {{wild}}, ideally where its Presence is. Has better-than-average potential for containing Invaders and setting up a zone safe from Explores, but the coasts may get messy while doing so.
+> Very focused on the interior - its best options for coastal lands are "draw the Invaders inland" or "turn Town/City into Explorer, then draw them inland". Likes the interior to be dangerous, full of Badlands, Beast, Disease, and Wilds, ideally where its Presence is. Has better-than-average potential for containing Invaders and setting up a zone safe from Explores, but the coasts may get messy while doing so.
 
 Strategic framing `[VERIFY: enhance with play experience]`.
 
@@ -74,22 +74,22 @@ _(no thresholds listed in Wiki)_
 
 ## Unique Cards (all, Wiki-verified)
 
-#### None
+#### Gift of the Untamed Wild
 
 - **0 Energy · Slow · Range No Range · Any Spirit · Moon, Fire, Air, Plant**
 - *Target Spirit chooses to either: Add 1 Wilds to one of their lands. **OR** Replace 1 of their Presence with 1 Disease.*
 
-#### None
+#### Perils of the Deepest Island
 
 - **1 Energy · Slow · Range 0 · Inland Land · Moon, Plant, Animal**
 - *1 Fear. Add 1 Badlands. Add 1 Beasts within 1 Range. Push up to 2 Dahan.*
 
-#### None
+#### Softly Beckon Ever Inward
 
 - **2 Energy · Slow · Range 0 · Inland Land · Moon, Air**
 - *Gather up to 2 Explorers. Gather up to 2 Towns. Gather up to 2 Beasts. Gather up to 2 Dahan.*
 
-#### None
+#### Swallowed by the Wilderness
 
 - **1 Energy · Fast · Range 0 · Inland Land · Fire, Air, Plant, Animal**
 - *2 Fear. 1 Damage per Beasts/Disease/Wilds/Badlands. (Count max. 5 tokens.)*

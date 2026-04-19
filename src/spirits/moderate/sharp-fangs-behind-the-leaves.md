@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Branch and Claw                                        |
-| Complexity            | Moderate                               |
+| Complexity            | Moderate                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "two" — see Growth Options below         |
 | Power summary (1–5)   | Offense 3 · Control 3 · Fear 4 · Defense 2 · Utility 1             |
@@ -81,22 +81,22 @@ ALLY OF THE BEASTS Your Presence may move with Beast. (Whenever a Beast moves fr
 
 ## Unique Cards (all, Wiki-verified)
 
-#### None
+#### Prey on the Builders
 
 - **1 Energy · Fast · Range 0 · Any Land · Moon, Fire, Animal**
 - *You may Gather 1 Beasts. If target land has Beasts, Invaders do not Build there this turn.*
 
-#### None
+#### Teeth Gleam from Darkness
 
 - **1 Energy · Slow · Range 1, from a Jungle · Land with no Blight · Moon, Plant, Animal**
 - *1 Fear. Add 1 Beasts. **OR** If target land has both Beasts and Invaders: 3 Fear.*
 
-#### None
+#### Terrifying Chase
 
 - **1 Energy · Slow · Range 0 · Any Land · Sun, Animal**
 - *Push 2 Explorers/Towns/Dahan. Push another 2 Explorers/Towns/Dahan per Beasts in target land. If you Pushed any Invaders, 2 Fear.*
 
-#### None
+#### Too Near the Jungle
 
 - **0 Energy · Slow · Range 1, from a Jungle · Any Land · Plant, Animal**
 - *1 Fear. Destroy 1 Explorer.*

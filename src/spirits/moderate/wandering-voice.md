@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Nature Incarnate                                        |
-| Complexity            | High                               |
+| Complexity            | High                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 2 · Control 5 · Fear 3 · Defense 1 · Utility 2             |
@@ -20,7 +20,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 
 **Wiki-printed playstyle note**:
 
-> Very positional; has a highly mobile Incarna (particularly with lots of {{element|simpleair}}) that adds Strife and chases Explorer/Town around as it roams the island. Has a harder time setting up Dahan counterattacks, but can use Mind-Shattering Song to more directly harm Invaders with Strife - and earn a fair bit of Fear in the process.
+> Very positional; has a highly mobile Incarna (particularly with lots of Simpleair) that adds Strife and chases Explorer/Town around as it roams the island. Has a harder time setting up Dahan counterattacks, but can use Mind-Shattering Song to more directly harm Invaders with Strife - and earn a fair bit of Fear in the process.
 
 Strategic framing `[VERIFY: enhance with play experience]`.
 
@@ -70,9 +70,9 @@ _(no thresholds listed in Wiki)_
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Moon + 2 Air | 1 Fear per {{moon}} you have. |
-| 2 | 1 Sun + 2 Air | 1 Damage per {{sun}} you have, to Invaders with Strife only. |
-| 3 | 1 Sun + 1 Moon + 4 Air | For each {{sun}} {{moon}} pair you have, Destroy 1 Invader with Strife. |
+| 1 | 1 Moon + 2 Air | 1 Fear per Moon you have. |
+| 2 | 1 Sun + 2 Air | 1 Damage per Sun you have, to Invaders with Strife only. |
+| 3 | 1 Sun + 1 Moon + 4 Air | For each Sun Moon pair you have, Destroy 1 Invader with Strife. |
 
 
 ## Unique Cards (all, Wiki-verified)

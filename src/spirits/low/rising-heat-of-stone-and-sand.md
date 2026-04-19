@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Horizons of Spirit Island                                        |
-| Complexity            | Low                               |
+| Complexity            | Low                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 5 · Control 3 · Fear 1 · Defense 2 · Utility 3             |
@@ -20,7 +20,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 
 **Wiki-printed playstyle note**:
 
-> Weaken-and-Destroy. Likes having {{sacredsite}} where there's Town/City, as it makes all Spirits' Damage more effective there. Has an easier time setting up {{sacredsite}} in Sands and Mountains, but can do so in any terrain with a bit more time.
+> Weaken-and-Destroy. Likes having Sacred Site where there's Town/City, as it makes all Spirits' Damage more effective there. Has an easier time setting up Sacred Site in Sands and Mountains, but can do so in any terrain with a bit more time.
 
 Strategic framing `[VERIFY: enhance with play experience]`.
 
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-BLISTERING HEAT At your {{sacredsite}}, Invaders have -1 Health (min. 1).
+BLISTERING HEAT At your Sacred Site, Invaders have -1 Health (min. 1).
 
 ### Innate: SCORCH WITH WAVES OF HEAT
 
@@ -89,7 +89,7 @@ BLISTERING HEAT At your {{sacredsite}}, Invaders have -1 Health (min. 1).
 
 | Card | Cost | Speed | Range | Target | Elements | Effect |
 |------|------|-------|-------|--------|----------|--------|
-| **None** | 4 | Fast | 1 | Any Land | Sun, Earth | Add 1 Presence in target land even if you normally could not due to land type. Defend 20. |
+| **Indomitable Claim** | 4 | Fast | 1 | Any Land | Sun, Earth | Add 1 Presence in target land even if you normally could not due to land type. Defend 20. |
 | **Talons of Lightning** | 6 | Fast | 1 | Mountain or Wetland | Fire, Air | 3 Fear. 5 Damage. |
 
 

@@ -5,7 +5,7 @@
   "expansion": "Nature Incarnate",
   "complexity": "high",
   "setup": "Put 2 Presence on your starting board: 1 in land #6 and 1 in land #7. Put {{incarna|voice}}, Unempowered ({{incarna|unempowered}}) side up, on your starting board in land #6. You start with your 4 Unique Power Cards and 0 Energy.",
-  "playstyle": "Very positional; has a highly mobile Incarna (particularly with lots of {{element|simpleair}}) that adds Strife and chases Explorer/Town around as it roams the island. Has a harder time setting up Dahan counterattacks, but can use Mind-Shattering Song to more directly harm Invaders with Strife - and earn a fair bit of Fear in the process.",
+  "playstyle": "Very positional; has a highly mobile Incarna (particularly with lots of Simpleair) that adds Strife and chases Explorer/Town around as it roams the island. Has a harder time setting up Dahan counterattacks, but can use Mind-Shattering Song to more directly harm Invaders with Strife - and earn a fair bit of Fear in the process.",
   "special_rules": "A CLARION VOICE GIVEN FORM</br>You have an Incarna ({{incarna|voice}}). If Empowered, it Isolates its land. SPREAD TUMULT AND DELUSION</br>When your Actions add/move {{incarna|voice}} to a land with Invaders, Add 1 Strife in the destination land. In lands with or adjacent to {{incarna|voice}}: if Strife is present, Dahan do not participate in Ravage. (They do not take Damage or counterattack. Isolate has no effect on {{incarna|voice}} and Dahan being adjacent.) SENSELESS ROAMING</br>When your Actions add Strife to an Explorer/Town, you may Push it.",
   "special_rules_raw": "'''''A CLARION VOICE GIVEN FORM'''''</br>You have an Incarna ({{incarna|voice}}). If Empowered, it Isolates its land.\n\n'''''SPREAD TUMULT AND DELUSION'''''</br>When your Actions add/move {{incarna|voice}} to a land with Invaders, Add 1 {{strife}} in the destination land.\n\nIn lands with or adjacent to {{incarna|voice}}: if {{strife}} is present, {{dahan}} do not participate in Ravage. ''(They do not take Damage or counterattack. Isolate has no effect on {{incarna|voice}} and {{dahan}} being adjacent.)''\n\n'''''SENSELESS ROAMING'''''</br>When your Actions add {{strife}} to an {{invader|explorer}}/{{invader|town}}, you may Push it.",
   "innates": [
@@ -27,18 +27,18 @@
         {
           "moon": "1",
           "air": "2",
-          "effect": "1 Fear per {{moon}} you have."
+          "effect": "1 Fear per Moon you have."
         },
         {
           "sun": "1",
           "air": "2",
-          "effect": "1 Damage per {{sun}} you have, to Invaders with Strife only."
+          "effect": "1 Damage per Sun you have, to Invaders with Strife only."
         },
         {
           "moon": "1",
           "sun": "1",
           "air": "4",
-          "effect": "For each {{sun}} {{moon}} pair you have, Destroy 1 Invader with Strife."
+          "effect": "For each Sun Moon pair you have, Destroy 1 Invader with Strife."
         }
       ]
     }

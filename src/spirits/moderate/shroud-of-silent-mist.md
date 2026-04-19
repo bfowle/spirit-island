@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Jagged Earth                                        |
-| Complexity            | High                               |
+| Complexity            | High                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 4 · Control 4 · Fear 5 · Defense 2 · Utility 1             |
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-GATHER POWER FROM THE COOL AND DARK Once a turn, when you Gain a Power Card without {{element|simplefire}}, gain 1 Energy. MISTS SHIFT AND FLOW When targeting a land with a Power, you may Gather 1 of your Presence into the target or an adjacent land. This can enable you to meet Range and targeting requirements. SLOW AND SILENT DEATH Invaders and Dahan in your lands don't heal Damage. During Time Passes: 1 Fear (max. 5) per land of yours with Damaged Invaders. Gain 1 Energy per 3 lands of yours with Damaged Invaders.
+GATHER POWER FROM THE COOL AND DARK Once a turn, when you Gain a Power Card without Simplefire, gain 1 Energy. MISTS SHIFT AND FLOW When targeting a land with a Power, you may Gather 1 of your Presence into the target or an adjacent land. This can enable you to meet Range and targeting requirements. SLOW AND SILENT DEATH Invaders and Dahan in your lands don't heal Damage. During Time Passes: 1 Fear (max. 5) per land of yours with Damaged Invaders. Gain 1 Energy per 3 lands of yours with Damaged Invaders.
 
 ### Innate: SUFFOCATING SHROUD
 

@@ -38,8 +38,10 @@
     {"slug": "towering-roots-of-the-jungle", "name": "Towering Roots of the Jungle", "expansion": "nature-incarnate", "complexity": "high", "play_difficulty": 3, "archetypes": ["incarna", "plant"], "primary_elements": ["plant", "earth"], "draft_bias": "mixed", "chapter_path": "spirits/high/towering-roots-of-the-jungle.md", "brett_priority": true, "chapter_status": "stub"},
     {"slug": "hearth-vigil", "name": "Hearth-Vigil", "expansion": "nature-incarnate", "complexity": "high", "play_difficulty": 2, "archetypes": ["incarna", "dahan-protection"], "primary_elements": ["fire", "sun"], "draft_bias": "mixed", "chapter_path": "spirits/high/hearth-vigil.md", "brett_priority": true, "chapter_status": "stub"},
     {"slug": "breath-of-darkness", "name": "Breath of Darkness Down Your Spine", "expansion": "nature-incarnate", "complexity": "high", "play_difficulty": 3, "archetypes": ["incarna", "fear"], "primary_elements": ["moon", "air"], "draft_bias": "mixed", "chapter_path": "spirits/high/breath-of-darkness.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "wandering-voice", "name": "Wandering Voice Keens Delirium", "expansion": "nature-incarnate", "complexity": "very-high", "play_difficulty": 3, "archetypes": ["incarna", "strife"], "primary_elements": ["air", "moon"], "draft_bias": "mixed", "chapter_path": "spirits/very-high/wandering-voice.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "covets-gleaming-shards", "name": "Covets Gleaming Shards of Earth", "expansion": "nature-incarnate", "complexity": "very-high", "play_difficulty": 3, "archetypes": ["hoarding", "major-heavy"], "primary_elements": ["earth"], "draft_bias": "major-heavy", "chapter_path": "spirits/very-high/covets-gleaming-shards.md", "brett_priority": false, "chapter_status": "stub"},
-    {"slug": "ferocious-warrior", "name": "Ferocious Warrior of the Lost Lands", "expansion": "nature-incarnate", "complexity": "very-high", "play_difficulty": 3, "archetypes": ["dahan-warrior"], "primary_elements": ["fire", "air", "animal"], "draft_bias": "mixed", "chapter_path": "spirits/very-high/ferocious-warrior.md", "brett_priority": false, "chapter_status": "stub"}
+    {"slug": "wandering-voice", "name": "Wandering Voice Keens Delirium", "expansion": "nature-incarnate", "complexity": "very-high", "play_difficulty": 3, "archetypes": ["incarna", "strife"], "primary_elements": ["air", "moon"], "draft_bias": "mixed", "chapter_path": "spirits/very-high/wandering-voice.md", "brett_priority": true, "chapter_status": "stub"}
+  ],
+  "removed_apocrypha": [
+    "Covets Gleaming Shards of Earth (fan-made; not in any expansion)",
+    "Ferocious Warrior of the Lost Lands (fan-made; not in any expansion — Wiki has no official spirit page)"
   ]
 }

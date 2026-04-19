@@ -47,18 +47,18 @@
         {
           "fire": "1",
           "earth": "1",
-          "effect": "For each {{fire}} {{earth}} you have, 1 Damage to 1 Town / City."
+          "effect": "For each Fire Earth you have, 1 Damage to 1 Town / City."
         },
         {
           "moon": "2",
           "earth": "2",
-          "effect": "For each 2 {{moon}} 2 {{earth}} you have, 2 Fear and you may Push 1 Town from target land."
+          "effect": "For each 2 Moon 2 Earth you have, 2 Fear and you may Push 1 Town from target land."
         },
         {
           "moon": "5",
           "fire": "6",
           "earth": "6",
-          "effect": "{{Energycost|cost=7}} In every land in the game: X Damage, where X is the number of Presence you have in and adjacent to that land."
+          "effect": "Cost 7 In every land in the game: X Damage, where X is the number of Presence you have in and adjacent to that land."
         }
       ]
     }

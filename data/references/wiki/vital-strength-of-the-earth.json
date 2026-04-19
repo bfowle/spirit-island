@@ -6,7 +6,7 @@
   "complexity": "low",
   "setup": "Put 3 Presence on your starting board: 2 in the highest-numbered Mountain, 1 in the highest-numbered Jungle.",
   "playstyle": "Powerful but slow: has potent Power Cards and an excellent Energy income, but starts wtih only one card play per turn, and Growth is limited to adding one Presence per turn. Also slow to change: learning new Powers carries slightly more cost than reclaiming played Power Cards",
-  "special_rules": "EARTH'S VITALITY Defend 3 in every land where you have {{Sacredsite}}.",
+  "special_rules": "EARTH'S VITALITY Defend 3 in every land where you have Sacred Site.",
   "special_rules_raw": "'''''EARTH'S VITALITY'''''\n\nDefend 3 in every land where you have {{Sacredsite}}.",
   "innates": [
     {
@@ -437,7 +437,7 @@
       ],
       "text": "1 Fear. 7 Damage. Add 1 Blight. Destroy all Dahan.",
       "text_raw": "1 Fear.<br/>7 Damage.<br/>Add 1 Blight.<br/>Destroy all Dahan.",
-      "threshold": "3 {{element|earth}} 2 {{element|plant}} 2 {{element|animal}} — 3 Earth, 2 Plant, 2 Animal: For each Blight (including the one just added), 1 Fear and 4 Damage.",
+      "threshold": "3 Earth 2 Plant 2 Animal — 3 Earth, 2 Plant, 2 Animal: For each Blight (including the one just added), 1 Fear and 4 Damage.",
       "artist": "Nolan Nasser",
       "status": "Active",
       "raw_template": {
@@ -528,7 +528,7 @@
       ],
       "text": "2 Damage per Dahan.",
       "text_raw": "2 Damage per Dahan.",
-      "threshold": "3 {{element|sun}} 2 {{element|animal}} — 3 Sun, 2 Animal: You may Push up to 2 Dahan. In lands you Pushed Dahan to, 2 Damage per Dahan present.",
+      "threshold": "3 Sun 2 Animal — 3 Sun, 2 Animal: You may Push up to 2 Dahan. In lands you Pushed Dahan to, 2 Damage per Dahan present.",
       "artist": "Loic Belliau",
       "status": "Active",
       "raw_template": {
@@ -620,7 +620,7 @@
       ],
       "text": "If target land is a Jungle or Wetland, 1 Fear and 1 Damage.",
       "text_raw": "If target land is a Jungle or Wetland, 1 Fear and 1 Damage.",
-      "threshold": "3 {{element|animal}} — 3 Animal: 1 Damage.",
+      "threshold": "3 Animal — 3 Animal: 1 Damage.",
       "artist": "Cari Corene",
       "status": "Active",
       "raw_template": {

@@ -6,7 +6,7 @@
   "complexity": "low",
   "setup": "Put 2 Presence on your starting board in the highest-numbered Sands.",
   "playstyle": "Virtually all offense to start with: without a more defensive teammate, Blight may become a problem. Excellent at destroying buildings, less good at containing Explorers. Using Thundering Destruction tends to be a burst affair: a turn or two of position and build up Energy, followed by a really big turn. Starting Powers are extremely focused on Air and Fire: good for Thundering Destruction, bad for Major Power versatility.",
-  "special_rules": "SWIFTNESS OF LIGHTNING For every {{air}} you have, you may use 1 {{slow}} Power as if it were {{fast}}. (Power Cards or your Innate Powers.)",
+  "special_rules": "SWIFTNESS OF LIGHTNING For every Air you have, you may use 1 Slow Power as if it were Fast. (Power Cards or your Innate Powers.)",
   "special_rules_raw": "'''''SWIFTNESS OF LIGHTNING'''''<br> For every {{air}} you have, you may use 1 {{slow}} Power as if it were {{fast}}. ''(Power Cards or your Innate Powers.)''",
   "innates": [
     {
@@ -235,7 +235,7 @@
       ],
       "text": "Target Spirit gains 3 Energy. Once this turn, target Spirit may Repeat a Power Card by paying its cost again.",
       "text_raw": "Target Spirit gains 3 Energy.<br/>Once this turn, target Spirit may Repeat a Power Card by paying its cost again.",
-      "threshold": "2 {{element|sun}} 2 {{element|fire}} 3 {{element|air}} — 2 Sun, 2 Fire, 3 Air: Target may Repeat up to 2 other Power Cards by paying their costs.",
+      "threshold": "2 Sun 2 Fire 3 Air — 2 Sun, 2 Fire, 3 Air: Target may Repeat up to 2 other Power Cards by paying their costs.",
       "artist": "Nolan Nasser",
       "status": "Active",
       "raw_template": {
@@ -326,7 +326,7 @@
       ],
       "text": "3 Fear. 5 Damage. If target land is a Jungle or Wetland, add 1 Blight.",
       "text_raw": "3 Fear. 5 Damage.<br/>If target land is a Jungle or Wetland, add 1 Blight.",
-      "threshold": "4 {{element|fire}} — 4 Fire: 2 Fear and 5 Damage.",
+      "threshold": "4 Fire — 4 Fire: 2 Fear and 5 Damage.",
       "artist": "Jorge Ramos",
       "status": "Active",
       "raw_template": {

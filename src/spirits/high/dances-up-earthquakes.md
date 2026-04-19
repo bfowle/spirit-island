@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Nature Incarnate                                        |
-| Complexity            | Veryhigh                               |
+| Complexity            | Very High                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 5 · Control 2 · Fear 2 · Defense 3 · Utility 4             |

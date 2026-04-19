@@ -18,11 +18,11 @@
       "thresholds": [
         {
           "air": "4",
-          "effect": "This Power may be {{fast}}."
+          "effect": "This Power may be Fast."
         },
         {
           "animal": "1",
-          "effect": "Gather up to 1 Dahan per {{air}} you have. Push up to 1 Dahan per {{sun}} you have."
+          "effect": "Gather up to 1 Dahan per Air you have. Push up to 1 Dahan per Sun you have."
         }
       ]
     },
@@ -35,7 +35,7 @@
       "thresholds": [
         {
           "air": "4",
-          "effect": "This Power may be {{fast}}."
+          "effect": "This Power may be Fast."
         },
         {
           "sun": "2",

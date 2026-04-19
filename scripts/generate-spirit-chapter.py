@@ -124,10 +124,25 @@ def derive_primary_elements(spirit: dict) -> str:
     return ", ".join(e.title() for e, _ in sorted_elems[:4])
 
 
+def format_complexity(c: str | None) -> str:
+    """Format Wiki complexity values like 'veryhigh' → 'Very High'."""
+    if not c:
+        return "?"
+    mapping = {
+        "low": "Low",
+        "moderate": "Moderate",
+        "high": "High",
+        "veryhigh": "Very High",
+        "very high": "Very High",
+    }
+    return mapping.get(c.lower(), c.title())
+
+
 def render_chapter(spirit: dict, aspects_note: str = "") -> str:
     """Produce the full chapter markdown."""
     name = spirit["name"]
-    complexity = spirit.get("complexity", "?").lower()
+    complexity_raw = spirit.get("complexity")
+    complexity = format_complexity(complexity_raw)
     expansion = spirit.get("expansion", "?")
     growths = spirit.get("growths", [])
     growth_type = spirit.get("growth_type", "?")
@@ -186,7 +201,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | {expansion}                                        |
-| Complexity            | {complexity.title()}                               |
+| Complexity            | {complexity}                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "{growth_type}" — see Growth Options below         |
 | Power summary (1–5)   | {power_summary_display(power_summary)}             |
@@ -379,6 +394,9 @@ def main():
                 continue
             try:
                 spirit = json.loads(json_path.read_text())
+                # Fall back to registry name if Wiki didn't provide one
+                if not spirit.get("name"):
+                    spirit["name"] = entry["name"]
                 aspects = aspects_map.get(spirit["name"], "")
                 md = render_chapter(spirit, aspects_note=aspects)
                 if args.dry_run:

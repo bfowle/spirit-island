@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Jagged Earth                                        |
-| Complexity            | Moderate                               |
+| Complexity            | Moderate                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 1 · Control 2 · Fear 2 · Defense 4 · Utility 5             |
@@ -26,7 +26,7 @@ Strategic framing `[VERIFY: enhance with play experience]`.
 
 ## Starting Setup
 
-> Put 2 Presence on your starting board in the highest-numbered land that is Sands or Mountain. Prepare 1 {{element|simplemoon}}, 1 {{element|simpleair}}, and 1 {{element|simpleearth}} marker (put them by your Special Rules).
+> Put 2 Presence on your starting board in the highest-numbered land that is Sands or Mountain. Prepare 1 Simplemoon, 1 Simpleair, and 1 Simpleearth marker (put them by your Special Rules).
 
 ## Growth Options (one)
 

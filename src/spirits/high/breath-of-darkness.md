@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Nature Incarnate                                        |
-| Complexity            | High                               |
+| Complexity            | High                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 2 · Control 4 · Fear 5 · Defense 1 · Utility 2             |
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-TERROR STALKS THE LAND</br>You have an Incarna ({{incarna|breath}}). Empower {{incarna|breath}} after uncovering {{empower}}. You may Abduct 1 Explorer/Town at empowered {{incarna|breath}} each {{speed|fast}} phase. To Abduct a piece, Move it to [[The Endless Dark]] ({{endlessdark}}). When pieces Escape, Move them to non-Ocean lands with your Presence/{{incarna|breath}}; if they have no legal land to move to, you lose. When your Powers would directly damage or directly destroy the only Invader in a land, instead Abduct it. (Check if it is alone at the start of the damage/destroy instruction. {{endlessdark}} is not a land.) SHADOW-TOUCHED REALM</br>Your land-targeting Powers can target {{endlessdark}} as if it were a land, ignoring Range. ({{endlessdark}} is Inland and has no terrain.) Rules for The Endless Dark</br>{{#lst:The Endless Dark|ted}}
+TERROR STALKS THE LAND</br>You have an Incarna ({{incarna|breath}}). Empower {{incarna|breath}} after uncovering {{empower}}. You may Abduct 1 Explorer/Town at empowered {{incarna|breath}} each Fast phase. To Abduct a piece, Move it to [[The Endless Dark]] ({{endlessdark}}). When pieces Escape, Move them to non-Ocean lands with your Presence/{{incarna|breath}}; if they have no legal land to move to, you lose. When your Powers would directly damage or directly destroy the only Invader in a land, instead Abduct it. (Check if it is alone at the start of the damage/destroy instruction. {{endlessdark}} is not a land.) SHADOW-TOUCHED REALM</br>Your land-targeting Powers can target {{endlessdark}} as if it were a land, ignoring Range. ({{endlessdark}} is Inland and has no terrain.) Rules for The Endless Dark</br>{{#lst:The Endless Dark|ted}}
 
 ### Innate: LEAVE A TRAIL OF DEATHLY SILENCE
 

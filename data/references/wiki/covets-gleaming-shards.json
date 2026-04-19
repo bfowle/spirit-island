@@ -115,7 +115,7 @@
     "growth2": "{{growth|first=addpresencecovetslair|second=addpresencecovetsincarna|third=energy1}}",
     "growth3": "{{growth|first=gain1p|second=addpresence1|third=energy2}}",
     "presence1": "{{PresenceT|energy0|energy1|fire|energy2animal|energy3earth|copyoneelement|energy5pushcovetsincarna}}",
-    "presence2": "{{PresenceT|card1|sunX|card2|airX|animalX|card3}}<!--<div style=\"display: flex; align-items: center;\"><div style=\"float:left; top:30px;\">{{PresenceT|card1|airX|card2|sunX}}</div><div style=\"float:left;\"><div id=\"presence\"><div class=\"track\"><div class=\"option\"><div style=\"position:relative; top:14px; text-align:center;\">[[File:Fireelement.png|30px]]</div></div></div><br><div class=\"track\"><div class=\"option\"><div style=\"position:relative; top:14px; text-align:center;\">[[File:Animalelement.png|30px]]</div></div></div></div></div><div style=\"float:left;\">{{PresenceT|card3|dotted=yes}}</div><div style=\"clear: both;\"></div></div>-->",
+    "presence2": "{{PresenceT|card1|sunX|card2|airX|animalX|card3}}",
     "psummary": "{{powersummary|offense=5|control=4|fear=5|defense=1|utility=3}}",
     "loresection": "covets",
     "uniquepowercards": "[[File:Favors_of_Steel_and_Bone_(apocrypha).png]] [[File:Melt_Earth_to_Slag_(apocrypha).png]] [[File:Petition_for_Smoldering_Wrath_(apocrypha).png]] [[File:Unnerving_Attention_(apocrypha).png]]",

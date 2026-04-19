@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Nature Incarnate                                        |
-| Complexity            | High                               |
+| Complexity            | High                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 4 · Control 5 · Fear 2 · Defense 1 · Utility 1             |
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-SEEKING A PATH TOWARDS HEALING</br>After playing cards each Spirit Phase: * Claim a Healing Marker (Element Marker) matching whichever of {{element|simplewater}} or {{element|simpleanimal}} you have more of. (You break ties.) * You may then Claim a Healing Card if you meet its requirements. (You can claim your first Healing Card on Turn 3.) * Then Destroy 1 Presence or Forget a Power Card (unless a Healing Card just removed this rule).
+SEEKING A PATH TOWARDS HEALING</br>After playing cards each Spirit Phase: * Claim a Healing Marker (Element Marker) matching whichever of Water or Simpleanimal you have more of. (You break ties.) * You may then Claim a Healing Card if you meet its requirements. (You can claim your first Healing Card on Turn 3.) * Then Destroy 1 Presence or Forget a Power Card (unless a Healing Card just removed this rule).
 
 ### Innate: SWIRL AND SPILL
 

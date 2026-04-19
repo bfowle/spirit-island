@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Base Game                                        |
-| Complexity            | Low                               |
+| Complexity            | Low                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 2 · Control 3 · Fear 1 · Defense 5 · Utility 3             |
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-EARTH'S VITALITY Defend 3 in every land where you have {{Sacredsite}}.
+EARTH'S VITALITY Defend 3 in every land where you have Sacred Site.
 
 ### Innate: GIFT OF STRENGTH
 

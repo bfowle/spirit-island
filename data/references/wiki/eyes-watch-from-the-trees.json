@@ -245,7 +245,7 @@
       ],
       "text": "2 Fear. Push up to 4 Explorers/Towns.",
       "text_raw": "2 Fear.<br/>Push up to 4 Explorers/Towns.",
-      "threshold": "4 {{element|moon}} — 4 Moon: 4 Fear.",
+      "threshold": "4 Moon — 4 Moon: 4 Fear.",
       "artist": "Loic Belliau",
       "status": "Active",
       "raw_template": {
@@ -337,7 +337,7 @@
       ],
       "text": "Destroy all Explorers and all Towns. Destroy all Dahan.",
       "text_raw": "Destroy all Explorers and all Towns.<br/>Destroy all Dahan.",
-      "threshold": "2 {{element|moon}} 3 {{element|plant}} — 2 Moon, 3 Plant: Destroy 1 City. Do not Destroy any Dahan.",
+      "threshold": "2 Moon 3 Plant — 2 Moon, 3 Plant: Destroy 1 City. Do not Destroy any Dahan.",
       "artist": "Joshua Wright",
       "status": "Active",
       "raw_template": {

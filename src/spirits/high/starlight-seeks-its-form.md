@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Jagged Earth                                        |
-| Complexity            | Veryhigh                               |
+| Complexity            | Very High                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "three" — see Growth Options below         |
 | Power summary (1–5)   | Offense 1 · Control 1 · Fear 1 · Defense 2 · Utility 2             |

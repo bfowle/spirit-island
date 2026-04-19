@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Jagged Earth                                        |
-| Complexity            | Moderate                               |
+| Complexity            | Moderate                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "two" — see Growth Options below         |
 | Power summary (1–5)   | Offense 4 · Control 3 · Fear 2 · Defense 5 · Utility 4             |
@@ -74,7 +74,7 @@ A REAL FLAIR FOR DISCORD After one of your Powers adds Strife in a land, you may
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 3 Moon | This Power may be {{slow}}. |
+| 1 | 3 Moon | This Power may be Slow. |
 | 2 | 3 Air | Add 1 Strife. |
 | 3 | 3 Sun + 3 Fire | 1 Invader and 1 Dahan deal Damage to each other. |
 | 4 | 3 Animal | If target land has Beast, 2 Damage. Otherwise, you may Gather 1 Beast. |
@@ -82,22 +82,22 @@ A REAL FLAIR FOR DISCORD After one of your Powers adds Strife in a land, you may
 
 ## Unique Cards (all, Wiki-verified)
 
-#### None
+#### Impersonate Authority
 
 - **0 Energy · Slow · Range 1 · Any Land · Sun, Air, Animal**
 - *Add 1 Strife.*
 
-#### None
+#### Incite the Mob
 
 - **1 Energy · Slow · Range 1 · Land with 1 or more Invaders · Moon, Fire, Air, Animal**
 - *1 Invader with Strife deals Damage to other Invaders (not to each Invader). 1 Fear per Invader this Power Destroyed.*
 
-#### None
+#### Overenthusiastic Arson
 
 - **1 Energy · Fast · Range 1 · Any Land · Fire, Air**
 - *Destroy 1 Town. Discard the top card of the Minor Power Deck. If it provides Fire: 1 Fear, 2 Damage, and add 1 Blight.*
 
-#### None
+#### Unexpected Tigers
 
 - **0 Energy · Slow · Range 1 · Any Land · Moon, Fire, Animal**
 - *1 Fear if Invaders are present. If you can gather 1 Beasts, do so, then push 1 Explorer. Otherwise, add 1 Beasts.*

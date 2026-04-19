@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Promotional Pack 1                                        |
-| Complexity            | High                               |
+| Complexity            | High                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "two" — see Growth Options below         |
 | Power summary (1–5)   | Offense 2 · Control 2 · Fear 2 · Defense 4 · Utility 5             |
@@ -75,9 +75,9 @@ DEEP SLUMBER You start off limited to 5 Presence on the island. Raise this with 
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Fire + 1 Earth | For each {{fire}} {{earth}} you have, 1 Damage to 1 Town / City. |
-| 2 | 2 Moon + 2 Earth | For each 2 {{moon}} 2 {{earth}} you have, 2 Fear and you may Push 1 Town from target land. |
-| 3 | 5 Moon + 6 Fire + 6 Earth | {{Energycost|cost=7}} In every land in the game: X Damage, where X is the number of Presence you have in and adjacent to that land. |
+| 1 | 1 Fire + 1 Earth | For each Fire Earth you have, 1 Damage to 1 Town / City. |
+| 2 | 2 Moon + 2 Earth | For each 2 Moon 2 Earth you have, 2 Fear and you may Push 1 Town from target land. |
+| 3 | 5 Moon + 6 Fire + 6 Earth | Cost 7 In every land in the game: X Damage, where X is the number of Presence you have in and adjacent to that land. |
 
 
 ## Unique Cards (all, Wiki-verified)

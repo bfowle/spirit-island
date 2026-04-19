@@ -65,8 +65,6 @@
   - [Hearth-Vigil](spirits/high/hearth-vigil.md)
   - [Breath of Darkness Down Your Spine](spirits/high/breath-of-darkness.md)
   - [Wandering Voice Keens Delirium](spirits/very-high/wandering-voice.md)
-  - [Covets Gleaming Shards of Earth](spirits/very-high/covets-gleaming-shards.md)
-  - [Ferocious Warrior of the Lost Lands](spirits/very-high/ferocious-warrior.md)
 - [Aspects](spirits/aspects.md)
 
 # Part IV — Adversary Mastery

@@ -242,7 +242,7 @@
       ],
       "text": "3 Fear. 5 Damage. If target land is a Jungle or Wetland, add 1 Blight.",
       "text_raw": "3 Fear. 5 Damage.<br/>If target land is a Jungle or Wetland, add 1 Blight.",
-      "threshold": "4 {{element|fire}} — 4 Fire: 2 Fear and 5 Damage.",
+      "threshold": "4 Fire — 4 Fire: 2 Fear and 5 Damage.",
       "artist": "Jorge Ramos",
       "status": "Active",
       "raw_template": {
@@ -335,7 +335,7 @@
       ],
       "text": "1 Fear. 7 Damage. Add 1 Blight. Destroy all Dahan.",
       "text_raw": "1 Fear.<br/>7 Damage.<br/>Add 1 Blight.<br/>Destroy all Dahan.",
-      "threshold": "3 {{element|earth}} 2 {{element|plant}} 2 {{element|animal}} — 3 Earth, 2 Plant, 2 Animal: For each Blight (including the one just added), 1 Fear and 4 Damage.",
+      "threshold": "3 Earth 2 Plant 2 Animal — 3 Earth, 2 Plant, 2 Animal: For each Blight (including the one just added), 1 Fear and 4 Damage.",
       "artist": "Nolan Nasser",
       "status": "Active",
       "raw_template": {
@@ -380,7 +380,7 @@
       ],
       "text": "If target land is a Jungle or Wetland, 1 Fear and 1 Damage.",
       "text_raw": "If target land is a Jungle or Wetland, 1 Fear and 1 Damage.",
-      "threshold": "3 {{element|animal}} — 3 Animal: 1 Damage.",
+      "threshold": "3 Animal — 3 Animal: 1 Damage.",
       "artist": "Cari Corene",
       "status": "Active",
       "raw_template": {

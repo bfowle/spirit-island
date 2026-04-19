@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Branch and Claw                                        |
-| Complexity            | Moderate                               |
+| Complexity            | Moderate                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "two" — see Growth Options below         |
 | Power summary (1–5)   | Offense 5 · Control 2 · Fear 1 · Defense 4 · Utility 3             |
@@ -26,7 +26,7 @@ Strategic framing `[VERIFY: enhance with play experience]`.
 
 ## Starting Setup
 
-> Put 1 Presence and 1 {{wild}} on your starting board in the highest-numbered Jungle.
+> Put 1 Presence and 1 Wilds on your starting board in the highest-numbered Jungle.
 
 ## Growth Options (two)
 
@@ -56,7 +56,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-FORBIDDEN GROUND After you create a {{sacredsite}}, Push all Dahan from that land. Dahan Events never move Dahan to your {{sacredsite}}, but Powers can do so.
+FORBIDDEN GROUND After you create a Sacred Site, Push all Dahan from that land. Dahan Events never move Dahan to your Sacred Site, but Powers can do so.
 
 ### Innate: PUNISH THOSE WHO TRESPASS
 
@@ -65,7 +65,7 @@ FORBIDDEN GROUND After you create a {{sacredsite}}, Push all Dahan from that lan
 | Level | Thresholds | Effect |
 |-------|------------|--------|
 | 1 | 2 Sun + 1 Fire + 2 Plant | 2 Damage. Destroy 1 Dahan. |
-| 2 | 2 Sun + 2 Fire + 3 Plant | +1 Damage per {{sun}}{{plant}} you have. |
+| 2 | 2 Sun + 2 Fire + 3 Plant | +1 Damage per SunPlant you have. |
 | 3 | 4 Plant | Split this Power's Damage however desired between target land and another 1 of your lands. |
 
 
@@ -75,30 +75,30 @@ FORBIDDEN GROUND After you create a {{sacredsite}}, Push all Dahan from that lan
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Sun | Push 1 Explorer from target land per 2 {{sun}} you have. |
-| 2 | 1 Plant | If target land has no Explorer, add 1 {{wild}}. |
+| 1 | 2 Sun | Push 1 Explorer from target land per 2 Sun you have. |
+| 2 | 1 Plant | If target land has no Explorer, add 1 Wilds. |
 | 3 | 3 Plant | This Power has Range +1. |
 | 4 | 1 Air | This Power has Range +1. |
 
 
 ## Unique Cards (all, Wiki-verified)
 
-#### None
+#### Boon of Growing Power
 
 - **1 Energy · Slow · Range No Range · Any Spirit · Sun, Moon, Plant**
 - *Target Spirit gains a Power Card. If you target another Spirit, they also gain 1 Energy.*
 
-#### None
+#### Regrow from Roots
 
 - **1 Energy · Slow · Range 1 · Jungle or Wetland · Water, Earth, Plant**
 - *If there are 2 Blight or fewer in target land, Remove 1 Blight.*
 
-#### None
+#### Sacrosanct Wilderness
 
 - **2 Energy · Fast · Range 1 · Land with no Blight · Sun, Earth, Plant**
 - *Push 2 Dahan. 2 Damage per Wilds in target land. **OR** Add 1 Wilds.*
 
-#### None
+#### Towering Wrath
 
 - **3 Energy · Slow · Range 1, from your Sacred Site · Any Land · Sun, Fire, Plant**
 - *2 Fear. For each of your Sacred Site in/adjacent to target land, 2 Damage. Destroy all Dahan.*

@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Base Game                                        |
-| Complexity            | Moderate                               |
+| Complexity            | Moderate                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "always" — see Growth Options below         |
 | Power summary (1–5)   | Offense 4 · Control 3 · Fear 2 · Defense 5 · Utility 4             |
@@ -56,7 +56,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-CHOKE THE LAND WITH GREEN Whenever Invaders would Ravage or Build in a land with your {{sacredsite}}, you may prevent it by destroying one of your Presence in that land. STEADY REGENERATION When adding Presence to the board via Growth, you may optionally use your destroyed Presence. If the island is Healthy, do so freely. If the island is Blighted, doing so costs 1 Energy per destroyed Presence you add.
+CHOKE THE LAND WITH GREEN Whenever Invaders would Ravage or Build in a land with your Sacred Site, you may prevent it by destroying one of your Presence in that land. STEADY REGENERATION When adding Presence to the board via Growth, you may optionally use your destroyed Presence. If the island is Healthy, do so freely. If the island is Blighted, doing so costs 1 Energy per destroyed Presence you add.
 
 ### Innate: CREEPERS TEAR INTO MORTAR
 

@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Jagged Earth                                        |
-| Complexity            | Moderate                               |
+| Complexity            | Moderate                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 1 · Control 5 · Fear 5 · Defense 5 · Utility 1             |
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-FLY FAST AS THOUGHT When you Gather or Push Beast, they may come from or go to lands up to 2 distant (rather than adjacent only). A JOINING OF SWARMS AND FLOCKS Your {{sacredsite}} may also count as Beast. (Note: You never have more than 1 {{sacredsite}} in a land, no matter how many Presence you have there.) (If something changes a Beast that is your {{sacredsite}}, it affects 2 of your Presence there - e.g., Push 1 Beast will Push 2 of your Presence together.)
+FLY FAST AS THOUGHT When you Gather or Push Beast, they may come from or go to lands up to 2 distant (rather than adjacent only). A JOINING OF SWARMS AND FLOCKS Your Sacred Site may also count as Beast. (Note: You never have more than 1 Sacred Site in a land, no matter how many Presence you have there.) (If something changes a Beast that is your Sacred Site, it affects 2 of your Presence there - e.g., Push 1 Beast will Push 2 of your Presence together.)
 
 ### Innate: THE TEEMING HOST ARRIVES
 
@@ -64,7 +64,7 @@ FLY FAST AS THOUGHT When you Gather or Push Beast, they may come from or go to l
 | Level | Thresholds | Effect |
 |-------|------------|--------|
 | 1 | 2 Air + 1 Animal | Gather up to 1 Beasts. |
-| 2 | 3 Air + 1 Water + 2 Animal | Instead, Gather up to 1 Beasts per {{air}} you have. |
+| 2 | 3 Air + 1 Water + 2 Animal | Instead, Gather up to 1 Beasts per Air you have. |
 | 3 | 1 Fire + 4 Air + 2 Animal | Push up to 3 Beasts. |
 
 
@@ -82,22 +82,22 @@ FLY FAST AS THOUGHT When you Gather or Push Beast, they may come from or go to l
 
 ## Unique Cards (all, Wiki-verified)
 
-#### None
+#### A Dreadful Tide of Scurrying Flesh
 
 - **0 Energy · Fast · Range Range 1, from your Sacred Site · Land with 2 or more Beasts tokens · Moon, Air, Water, Animal**
 - *Remove up to half (round down) of Beasts in target land. For each Beasts Removed, 2 Fear and skip one Invader Action.*
 
-#### None
+#### Boon of Swarming Bedevilment
 
 - **0 Energy · Fast · Range No Range · Another Spirit · Air, Water, Animal**
 - *For the rest of this turn, each of target Spirit's Presence grants Defend 1 in its land. Target Spirit may Push up to 1 of their Presence.*
 
-#### None
+#### Ever-Multiplying Swarm
 
 - **1 Energy · Slow · Range 0 · Any Land · Fire, Earth, Animal**
 - *Add 2 Beasts.*
 
-#### None
+#### Guide the Way on Feathered Wings
 
 - **0 Energy · Fast · Range 1 · Any Land · Sun, Air, Animal**
 - *Move 1 Beasts up to two lands. As it moves, up to 2 Dahan may move with it, for part or all of the way. (The Beasts/Dahan may move to an adjacent land and then back.)*

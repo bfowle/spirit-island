@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Horizons of Spirit Island                                        |
-| Complexity            | Low                               |
+| Complexity            | Low                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 3 · Control 5 · Fear 1 · Defense 1 · Utility 3             |
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-A STIFF WIND AT THEIR BACKS After you Add Presence during Growth, Push up to 1 Explorer/Dahan from that land. (Let other players know this is due to your Special Rule, so they know you're still in the Spirit Phase and not using a {{speed|fast}} power.)
+A STIFF WIND AT THEIR BACKS After you Add Presence during Growth, Push up to 1 Explorer/Dahan from that land. (Let other players know this is due to your Special Rule, so they know you're still in the Spirit Phase and not using a Fast power.)
 
 ### Innate: VIOLENT WINDSTORMS
 

@@ -6,7 +6,7 @@
   "complexity": "low",
   "setup": "Put 1 Presence on your starting board in the highest-numbered Wetlands.",
   "playstyle": "While capable of some direct offense, River Surges in Sunlight is best at flooding out Explorers and Towns, displacing them from lands where they might Build or Ravage. The ability to get free Sacred Sites makes a wide range of Powers more useful.",
-  "special_rules": "RIVER'S DOMAIN Your Presence in Wetlands counts as {{sacredsite}}.",
+  "special_rules": "RIVER'S DOMAIN Your Presence in Wetlands counts as Sacred Site.",
   "special_rules_raw": "'''''RIVER'S DOMAIN'''''<br>Your {{presence}} in Wetlands counts as {{sacredsite}}.",
   "innates": [
     {
@@ -233,7 +233,7 @@
       ],
       "text": "2 Fear. 4 Damage.",
       "text_raw": "2 Fear.<br/>4 Damage.",
-      "threshold": "3 {{element|sun}} 2 {{element|water}} 3 {{element|plant}} — 3 Sun, 2 Water, 3 Plant: 5 Damage. Remove 1 Blight.",
+      "threshold": "3 Sun 2 Water 3 Plant — 3 Sun, 2 Water, 3 Plant: 5 Damage. Remove 1 Blight.",
       "artist": "Graham Stermberg",
       "status": "Active",
       "raw_template": {
@@ -324,7 +324,7 @@
       ],
       "text": "2 Fear. 8 Damage. Destroy 2 Dahan.",
       "text_raw": "2 Fear.<br/>8 Damage.<br/>Destroy 2 Dahan.",
-      "threshold": "3 {{element|water}} 2 {{element|earth}} — 3 Water, 2 Earth: In each other Coastal land on the same board: 1 Fear, 4 Damage, and Destroy 1 Dahan.",
+      "threshold": "3 Water 2 Earth — 3 Water, 2 Earth: In each other Coastal land on the same board: 1 Fear, 4 Damage, and Destroy 1 Dahan.",
       "artist": "Jason Behnke",
       "status": "Active",
       "raw_template": {

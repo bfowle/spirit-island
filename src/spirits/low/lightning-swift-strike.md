@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Base Game                                        |
-| Complexity            | Low                               |
+| Complexity            | Low                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 5 · Control 2 · Fear 3 · Defense 1 · Utility 2             |
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-SWIFTNESS OF LIGHTNING For every {{air}} you have, you may use 1 {{slow}} Power as if it were {{fast}}. (Power Cards or your Innate Powers.)
+SWIFTNESS OF LIGHTNING For every Air you have, you may use 1 Slow Power as if it were Fast. (Power Cards or your Innate Powers.)
 
 ### Innate: THUNDERING DESTRUCTION
 

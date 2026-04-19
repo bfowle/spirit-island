@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Horizons of Spirit Island                                        |
-| Complexity            | Low                               |
+| Complexity            | Low                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 3 · Control 2 · Fear 3 · Defense 3 · Utility 2             |
@@ -20,7 +20,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 
 **Wiki-printed playstyle note**:
 
-> Likes having {{sacredsite}} where Invaders will Build, but may need to re-create those {{sacredsite}} after oozing outwards with its Innate Power. In smaller games, might be able to cut off the most Inland lands from Explore actions by Destroying Inland Town/City and stopping new ones from being built. Causes a fair bit of Fear, much of which represents unpleasantness, hardship, and disgust.
+> Likes having Sacred Site where Invaders will Build, but may need to re-create those Sacred Site after oozing outwards with its Innate Power. In smaller games, might be able to cut off the most Inland lands from Explore actions by Destroying Inland Town/City and stopping new ones from being built. Causes a fair bit of Fear, much of which represents unpleasantness, hardship, and disgust.
 
 Strategic framing `[VERIFY: enhance with play experience]`.
 
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-OFFER NO FIRM FOUNDATIONS At your {{sacredsite}}, Build actions add Explorer instead of Town/City.
+OFFER NO FIRM FOUNDATIONS At your Sacred Site, Build actions add Explorer instead of Town/City.
 
 ### Innate: SPREADING AND DREADFUL MIRE
 
@@ -63,7 +63,7 @@ OFFER NO FIRM FOUNDATIONS At your {{sacredsite}}, Build actions add Explorer ins
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Water | Move 1 Presence from the origin {{sacredsite}} to target land. (This is required.) |
+| 1 | 1 Water | Move 1 Presence from the origin Sacred Site to target land. (This is required.) |
 | 2 | 1 Moon + 2 Water + 1 Earth | 1 Fear. 1 Damage. Push 1 Dahan. |
 | 3 | 2 Moon + 3 Water + 2 Earth | 1 Fear. 1 Damage. Push 1 Dahan. |
 | 4 | 3 Moon + 4 Water + 3 Earth + 2 Plant | 2 Damage. |
@@ -83,7 +83,7 @@ OFFER NO FIRM FOUNDATIONS At your {{sacredsite}}, Build actions add Explorer ins
 | **Entrancing Apparitions** | 1 | Fast | 1 | Any Land | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers. |
 | **Uncanny Melting** | 1 | Slow | 1, from your Sacred Site | Any Land | Sun, Moon, Water | If Invaders are present, 1 Fear. If target land is a Sands or Wetland, Remove 1 Blight. |
 | **Pull Beneath the Hungry Earth** | 1 | Slow | 1 | Any Land | Moon, Water, Earth | If your Presence is present, 1 Fear and 1 Damage. If target land is a Sands or Wetland, 1 Damage. |
-| **None** | 0 | Slow | No Range | Any Spirit | Moon, Water, Earth, Plant | Target Spirit gains a Minor Power Card. |
+| **Gift of Power** | 0 | Slow | No Range | Any Spirit | Moon, Water, Earth, Plant | Target Spirit gains a Minor Power Card. |
 
 ### Major Powers
 

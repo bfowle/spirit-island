@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Base Game                                        |
-| Complexity            | Low                               |
+| Complexity            | Low                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 4 · Control 5 · Fear 1 · Defense 1 · Utility 4             |
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-RIVER'S DOMAIN Your Presence in Wetlands counts as {{sacredsite}}.
+RIVER'S DOMAIN Your Presence in Wetlands counts as Sacred Site.
 
 ### Innate: MASSIVE FLOODING
 

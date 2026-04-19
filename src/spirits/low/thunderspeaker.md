@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Base Game                                        |
-| Complexity            | Moderate                               |
+| Complexity            | Moderate                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 4 · Control 5 · Fear 3 · Defense 2 · Utility 1             |
@@ -63,8 +63,8 @@ ALLY OF THE DAHAN Your Presence may move with Dahan. (Whenever a Dahan moves fro
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 4 Air | This Power may be {{fast}}. |
-| 2 | 1 Animal | Gather up to 1 Dahan per {{air}} you have. Push up to 1 Dahan per {{sun}} you have. |
+| 1 | 4 Air | This Power may be Fast. |
+| 2 | 1 Animal | Gather up to 1 Dahan per Air you have. Push up to 1 Dahan per Sun you have. |
 
 
 ### Innate: LEAD THE FURIOUS ASSAULT
@@ -73,7 +73,7 @@ ALLY OF THE DAHAN Your Presence may move with Dahan. (Whenever a Dahan moves fro
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 4 Air | This Power may be {{fast}}. |
+| 1 | 4 Air | This Power may be Fast. |
 | 2 | 2 Sun + 1 Fire | Destroy 1 Town for every 2 Dahan in target land. |
 | 3 | 4 Sun + 3 Fire | Destroy 1 City for every 3 Dahan in target land. |
 

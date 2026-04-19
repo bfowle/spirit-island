@@ -6,7 +6,7 @@
   "complexity": "low",
   "setup": "Put 3 Presence on your starting board: 1 in the highest-numbered Sands, 2 in the lowest-numbered Mountain.",
   "playstyle": "Incredibly good at handling Explorer, clearing newly-Explored lands of Invaders so they don't Build there. Not nearly so good at dealing with Town/City. Can focus on Energy and largely forego its Innate Power, focus on Plays to aim for mid-to-high Innate thresholds, or strike a more balanced path. Adds at most 1 Presence per turn, so there won't be time to do it all.",
-  "special_rules": "A STIFF WIND AT THEIR BACKS After you Add Presence during Growth, Push up to 1 Explorer/Dahan from that land. (Let other players know this is due to your Special Rule, so they know you're still in the Spirit Phase and not using a {{speed|fast}} power.)",
+  "special_rules": "A STIFF WIND AT THEIR BACKS After you Add Presence during Growth, Push up to 1 Explorer/Dahan from that land. (Let other players know this is due to your Special Rule, so they know you're still in the Spirit Phase and not using a Fast power.)",
   "special_rules_raw": "'''''A STIFF WIND AT THEIR BACKS'''''\n\nAfter you Add {{presence}} during Growth, Push up to 1 {{invader|explorer}}/{{dahan}} from that land.\n\n''(Let other players know this is due to your Special Rule, so they know you're still in the Spirit Phase and not using a {{speed|fast}} power.)''",
   "innates": [
     {
@@ -280,7 +280,7 @@
       ],
       "text": "Target Spirit gains 3 Energy. Once this turn, target Spirit may Repeat a Power Card by paying its cost again.",
       "text_raw": "Target Spirit gains 3 Energy.<br/>Once this turn, target Spirit may Repeat a Power Card by paying its cost again.",
-      "threshold": "2 {{element|sun}} 2 {{element|fire}} 3 {{element|air}} — 2 Sun, 2 Fire, 3 Air: Target may Repeat up to 2 other Power Cards by paying their costs.",
+      "threshold": "2 Sun 2 Fire 3 Air — 2 Sun, 2 Fire, 3 Air: Target may Repeat up to 2 other Power Cards by paying their costs.",
       "artist": "Nolan Nasser",
       "status": "Active",
       "raw_template": {
@@ -372,7 +372,7 @@
       ],
       "text": "Move up to 5 Dahan to any land (including back into target land). If you moved at least 1 Dahan, Defend 5 in that land.",
       "text_raw": "Move up to 5 Dahan to any land ''(including back into target land)''.<br/>If you moved at least 1 Dahan, Defend 5 in that land.",
-      "threshold": "2 {{element|sun}} 2 {{element|air}} 2 {{element|animal}} — 2 Sun, 2 Air, 2 Animal: First, Gather up to 3 Dahan.",
+      "threshold": "2 Sun 2 Air 2 Animal — 2 Sun, 2 Air, 2 Animal: First, Gather up to 3 Dahan.",
       "artist": "Loic Belliau",
       "status": "Active",
       "raw_template": {

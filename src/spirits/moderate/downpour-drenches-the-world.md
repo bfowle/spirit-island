@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Promotional Pack 2                                        |
-| Complexity            | High                               |
+| Complexity            | High                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 2 · Control 3 · Fear 1 · Defense 5 · Utility 3             |
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-DRENCH THE LANDSCAPE Spirit Actions and Special Rules treat your {{sacredsite}} as Wetlands in addition to the printed terrain. POUR DOWN POWER ACROSS THE ISLAND For each 2 {{element|simplewater}} you have, during the {{speed|fast}}/{{speed|slow}} phase you may either: * Gain 1 Energy; or * Repeat a land-targeting Power Card by paying its cost again. (It need not target the same land.) Use scenario markers or spare game pieces to track uses of this rule. (Max 5 times per turn, no matter how much {{element|simplewater}} you have.)
+DRENCH THE LANDSCAPE Spirit Actions and Special Rules treat your Sacred Site as Wetlands in addition to the printed terrain. POUR DOWN POWER ACROSS THE ISLAND For each 2 Water you have, during the Fast/Slow phase you may either: * Gain 1 Energy; or * Repeat a land-targeting Power Card by paying its cost again. (It need not target the same land.) Use scenario markers or spare game pieces to track uses of this rule. (Max 5 times per turn, no matter how much Water you have.)
 
 ### Innate: RAIN AND MUD SUPPRESS CONFLICT
 

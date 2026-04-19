@@ -8,7 +8,7 @@ Card data, innate thresholds, special rules, growth options, presence track, and
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
 | Expansion             | Promotional Pack 1                                        |
-| Complexity            | High                               |
+| Complexity            | High                                       |
 | Play Difficulty       | `[VERIFY from spirit panel]`                       |
 | Growth type           | "one" — see Growth Options below         |
 | Power summary (1–5)   | Offense 5 · Control 3 · Fear 4 · Defense 1 · Utility 2             |
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-BLAZING PRESENCE Post-Setup, after your Presence is added/moved, in the land it goes to: * For each {{element|simplefire}} showing on your Presence Tracks, do 1 Damage. * If 2 {{element|simplefire}} or more are showing on your Presence Tracks, add 1 Blight. * Push all Beast and any number of Dahan. If you add multiple Presence into a land at the same time, only do the above effects once. DESTRUCTIVE NATURE Blight added due to Spirit effects (Powers, Special Rules, Scenario-based Rituals, etc) does not destroy your Presence. (This includes cascades.)
+BLAZING PRESENCE Post-Setup, after your Presence is added/moved, in the land it goes to: * For each Simplefire showing on your Presence Tracks, do 1 Damage. * If 2 Simplefire or more are showing on your Presence Tracks, add 1 Blight. * Push all Beast and any number of Dahan. If you add multiple Presence into a land at the same time, only do the above effects once. DESTRUCTIVE NATURE Blight added due to Spirit effects (Powers, Special Rules, Scenario-based Rituals, etc) does not destroy your Presence. (This includes cascades.)
 
 ### Innate: FIRESTORM
 
@@ -63,8 +63,8 @@ BLAZING PRESENCE Post-Setup, after your Presence is added/moved, in the land it 
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Plant | 1 Damage per 2 {{fire}} you have. |
-| 2 | 3 Plant | Instead, 1 Damage per {{fire}} you have. |
+| 1 | 1 Plant | 1 Damage per 2 Fire you have. |
+| 2 | 3 Plant | Instead, 1 Damage per Fire you have. |
 | 3 | 4 Fire + 2 Air | Split this Power's Damage however desired between target land and any number of your lands with Blight. |
 | 4 | 7 Fire | In a land with Blight where you have Presence, Push all Dahan. Destroy all Invaders and Beast. Add 1 Blight. |
 
@@ -82,22 +82,24 @@ BLAZING PRESENCE Post-Setup, after your Presence is added/moved, in the land it 
 
 ## Unique Cards (all, Wiki-verified)
 
-#### None
+#### Asphyxiating Smoke
 
 - **2 Energy · Slow · Range 2, from your Sacred Site · Any Land · Fire, Air, Plant**
 - *1 Fear. Destroy 1 Town. Push 1 Dahan.*
 
-#### None
+#### Flame's Fury
 
 - **0 Energy · Fast · Range No Range · Any Spirit · Sun, Fire, Plant**
 - *Target Spirit gains 1 Energy. Target Spirit does +1 Damage with each Damage dealing Power they use this turn. (Powers which Damage multiple lands or each Invader only get 1 extra Damage total. Repeated Powers keep the +1 boost. Destroy effects don't get any bonus.)*
 
-#### None
+#### Flash-Fires
 
 - **2 Energy · Slow · Range 1 · Any Land · Fire, Air**
 - *1 Fear. 1 Damage.*
 
-#### None
+- **Threshold**: 2 Air — 2 Air: This Power is Fast.
+
+#### Threatening Flames
 
 - **0 Energy · Fast · Range 0 · Land with 1 or more Blight and 1 or more Invaders · Fire, Plant**
 - *2 Fear. Push 1 Explorer/Town per Terror Level from target land to adjacent lands without your Presence. If there are no such adjacent lands, +2 Fear.*

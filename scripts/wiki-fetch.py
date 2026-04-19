@@ -64,6 +64,22 @@ TOKEN_MAP = {
     "build": "Build",
     "explore": "Explore",
     "or": " **OR** ",
+    # Additional tokens found in Wiki text fields:
+    "fast": "Fast",
+    "slow": "Slow",
+    "sacredsite": "Sacred Site",
+    "moon": "Moon",
+    "sun": "Sun",
+    "air": "Air",
+    "water": "Water",
+    "earth": "Earth",
+    "fire": "Fire",
+    "plant": "Plant",
+    "animal": "Animal",
+    "simplewater": "Water",
+    "wild": "Wilds",
+    "town": "Town",
+    "city": "City",
 }
 
 
@@ -92,9 +108,23 @@ def clean_wiki_text(text: str | None) -> str | None:
         # {{range|1}} → "Range 1"
         if head == "range" and len(parts) > 1:
             return f"Range {parts[1]}"
+        # {{speed|fast}} → "Fast"
+        if head == "speed" and len(parts) > 1:
+            return TOKEN_MAP.get(parts[1].lower(), parts[1].title())
+        # {{element|water}} → "Water"
+        if head == "element" and len(parts) > 1:
+            return TOKEN_MAP.get(parts[1].lower(), parts[1].title())
         # {{invader|explorer}} → "Explorer"
         if head == "invader" and len(parts) > 1:
             return TOKEN_MAP.get(parts[1].lower(), parts[1].title())
+        # {{Energycost|cost=7}} → "Cost 7"
+        if head == "energycost":
+            for part in parts[1:]:
+                if "=" in part:
+                    k, v = part.split("=", 1)
+                    if k.strip().lower() == "cost":
+                        return f"Cost {v.strip()}"
+            return match.group(0)
         # Preserve threshold tokens for readability
         if head == "threshold" and len(parts) > 1:
             return match.group(0)
@@ -125,6 +155,14 @@ def _throttle(delay: float) -> None:
     _LAST_FETCH_TS = time.monotonic()
 
 
+def _strip_html_comments(text: str) -> str:
+    """Remove <!-- ... --> blocks from wikitext. Some pages use them to annotate
+    language fields (e.g. `| <!--English-->name_en=Foo`) which confuses the key
+    parser. Stripping them before parsing is safe — they're just comments."""
+    import re
+    return re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
+
+
 def fetch_wikitext(page: str, delay: float = DEFAULT_DELAY_SECS) -> str:
     """Fetch raw wikitext for a wiki page via the MediaWiki API with rate-limit handling.
 
@@ -150,7 +188,7 @@ def fetch_wikitext(page: str, delay: float = DEFAULT_DELAY_SECS) -> str:
             data = json.loads(body)
             if "error" in data:
                 raise RuntimeError(f"Wiki API error for '{page}': {data['error']}")
-            return data["parse"]["wikitext"]
+            return _strip_html_comments(data["parse"]["wikitext"])
         except urllib.error.HTTPError as e:
             last_err = e
             if e.code in (429, 500, 502, 503, 504):
@@ -426,7 +464,7 @@ def parse_spirit_page(wikitext: str) -> dict:
     return {
         "source": "spiritislandwiki.com",
         "type": "spirit",
-        "name": tpl.get("name"),
+        "name": tpl.get("name") or tpl.get("name_en"),
         "expansion": tpl.get("gamebox"),
         "complexity": tpl.get("complexity"),
         "setup": clean_wiki_text(tpl.get("setup")),
@@ -456,7 +494,7 @@ def parse_card_page(wikitext: str) -> dict:
     return {
         "source": "spiritislandwiki.com",
         "type": "power_card",
-        "name": tpl.get("name"),
+        "name": tpl.get("name") or tpl.get("name_en"),
         "spirit": tpl.get("spirit") or tpl.get("unique"),
         "card_type": tpl.get("cardtype"),
         "expansion": tpl.get("set"),
