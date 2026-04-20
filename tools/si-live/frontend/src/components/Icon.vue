@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 
 // Vite glob import — all icon files in src/assets/icons/ get bundled.
-// Keys look like '/src/assets/icons/element-moon.png'; values are resolved URLs.
 const iconModules = import.meta.glob('../assets/icons/*.{svg,png}', {
   eager: true,
   query: '?url',
@@ -17,20 +16,9 @@ for (const [path, url] of Object.entries(iconModules)) {
 
 const props = withDefaults(
   defineProps<{
-    /**
-     * Icon slug. Examples:
-     *   element: "element-moon", "element-fire", …
-     *   unit:    "unit-explorer", "unit-town", "unit-city", "unit-dahan"
-     *   resource:"resource-fear", "resource-blight", "resource-sacred-site"
-     *   speed:   "speed-fast", "speed-slow"
-     *   terrain: "terrain-mountain", "terrain-wetland", "terrain-jungle", "terrain-sands"
-     */
     name: string
-    /** Pixel size (short side). Default 16. */
     size?: number | string
-    /** Optional override alt/title text. Defaults to humanized name. */
     label?: string
-    /** Hide from screen readers when decorative. */
     decorative?: boolean
   }>(),
   { size: 16, decorative: false },
@@ -43,10 +31,17 @@ const altText = computed(() => {
   if (props.label) return props.label
   return props.name.replace(/^[a-z]+-/, '').replace(/-/g, ' ')
 })
-</script>
 
-<script lang="ts">
-// extra block so we can compute an SVG class; keeps the component tidy
+// True for black-silhouette SVGs from the Wiki (units + the Fear/Blight/
+// SacredSite resources). These need CSS polarity-flip on dark bg. Everything
+// else — color PNGs + the color-keyed SVGs (FastColor, SlowColor) — keeps
+// its native colors (Fast stays red, Slow stays blue).
+const isMono = computed(() =>
+  props.name.startsWith('unit-') ||
+  props.name === 'resource-fear' ||
+  props.name === 'resource-blight' ||
+  props.name === 'resource-sacred-site',
+)
 </script>
 
 <template>
@@ -59,7 +54,7 @@ const altText = computed(() => {
     :width="dim"
     :height="dim"
     class="si-icon"
-    :class="{ 'si-icon-mono': src.endsWith('.svg') }"
+    :class="{ 'si-icon-mono': isMono }"
   />
   <span v-else class="si-icon-missing" :title="`missing icon: ${name}`">?</span>
 </template>
@@ -72,8 +67,8 @@ const altText = computed(() => {
   user-select: none;
   flex-shrink: 0;
 }
-/* Black silhouette SVGs from the Wiki need to flip polarity in dark mode so
-   they stay visible. PNG element icons (colored) skip this. */
+/* Only monochrome silhouettes get polarity-flipped in dark mode. FastColor
+   and SlowColor SVGs keep their canonical Fast=red / Slow=blue hues. */
 .si-icon-mono {
   filter: var(--icon-svg-filter);
 }

@@ -177,42 +177,63 @@ function cardInfo(name: string): CardDetail | undefined {
       </div>
     </div>
 
-    <!-- Presence tracks: numeric summary always visible; the bowl visualization
-         is collapsible via the toggle button. -->
+    <!-- Presence tracks: bowls always visible. Only the disc color/style
+         customization panel is behind a toggle. -->
     <div class="presence-block">
-      <div class="presence-hdr">
-        <div class="presence-stats">
-          <div class="presence-stat">
-            <span class="stat-label">Energy track</span>
-            <div class="stat-detail">
-              <span class="stat-placed">
-                <strong>{{ placedEnergy }}</strong> / {{ fullEnergyTrack.length || '?' }} placed
-              </span>
-              <span class="stat-income">
-                Income next turn: <strong>{{ nextEnergyIncome }}E</strong>
-              </span>
-            </div>
-          </div>
-          <div class="presence-stat">
-            <span class="stat-label">Card Play track</span>
-            <div class="stat-detail">
-              <span class="stat-placed">
-                <strong>{{ placedCardplay }}</strong> / {{ fullCardplayTrack.length || '?' }} placed
-              </span>
-              <span class="stat-income">
-                Card plays next turn: <strong>{{ nextCardplayIncome }}</strong>
-              </span>
-            </div>
+      <div class="presence-stats">
+        <div class="presence-stat">
+          <span class="stat-label">Energy track</span>
+          <div class="stat-detail">
+            <span class="stat-placed">
+              <strong>{{ placedEnergy }}</strong> / {{ fullEnergyTrack.length || '?' }} placed
+            </span>
+            <span class="stat-income">
+              Income next turn: <strong>{{ nextEnergyIncome }}E</strong>
+            </span>
           </div>
         </div>
-        <button class="bowl-toggle" @click="presenceExpanded = !presenceExpanded">
-          {{ presenceExpanded ? 'Hide bowls' : 'Show bowls' }}
-        </button>
+        <div class="presence-stat">
+          <span class="stat-label">Card Play track</span>
+          <div class="stat-detail">
+            <span class="stat-placed">
+              <strong>{{ placedCardplay }}</strong> / {{ fullCardplayTrack.length || '?' }} placed
+            </span>
+            <span class="stat-income">
+              Card plays next turn: <strong>{{ nextCardplayIncome }}</strong>
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div v-if="presenceExpanded" class="tracks">
+      <PresenceTrack
+        v-if="fullEnergyTrack.length"
+        label="Energy"
+        :full-track="fullEnergyTrack"
+        :covered-tokens="modelValue.presence_on_track_energy ?? []"
+        :palette="palette"
+        :disc-style="discStyle"
+        @update:covered-tokens="updateEnergyCovered"
+      />
+      <PresenceTrack
+        v-if="fullCardplayTrack.length"
+        label="Card Plays"
+        :full-track="fullCardplayTrack"
+        :covered-tokens="modelValue.presence_on_track_cardplay ?? []"
+        :palette="palette"
+        :disc-style="discStyle"
+        @update:covered-tokens="updateCardplayCovered"
+      />
+      <div v-if="!fullEnergyTrack.length && !wikiError" class="track-loading">Loading presence tracks…</div>
+      <div v-if="wikiError" class="track-error">{{ wikiError }}</div>
+
+      <!-- Only the disc-style customization panel is collapsible -->
+      <details class="disc-custom" :open="presenceExpanded" @toggle="presenceExpanded = ($event.target as HTMLDetailsElement).open">
+        <summary>
+          <span>Disc appearance</span>
+          <span class="custom-hint">{{ presenceExpanded ? 'click to hide' : 'change color / style' }}</span>
+        </summary>
         <div class="disc-controls">
-          <span class="disc-label">Disc color</span>
+          <span class="disc-label">Color</span>
           <div class="swatches">
             <button
               v-for="[name, hex] in stockColorEntries"
@@ -226,7 +247,7 @@ function cardInfo(name: string): CardDetail | undefined {
             <label class="swatch-custom" title="custom color">
               <input type="color" v-model="discColor" />
             </label>
-            <button class="reset-color" @click="resetToDefault" title="Reset to canonical color">↺</button>
+            <button class="reset-color" @click="resetToDefault" title="Reset to canonical">↺</button>
           </div>
           <div class="style-picker">
             <button
@@ -238,28 +259,7 @@ function cardInfo(name: string): CardDetail | undefined {
             >{{ opt.label }}</button>
           </div>
         </div>
-
-        <PresenceTrack
-          v-if="fullEnergyTrack.length"
-          label="Energy"
-          :full-track="fullEnergyTrack"
-          :covered-tokens="modelValue.presence_on_track_energy ?? []"
-          :palette="palette"
-          :disc-style="discStyle"
-          @update:covered-tokens="updateEnergyCovered"
-        />
-        <PresenceTrack
-          v-if="fullCardplayTrack.length"
-          label="Card Plays"
-          :full-track="fullCardplayTrack"
-          :covered-tokens="modelValue.presence_on_track_cardplay ?? []"
-          :palette="palette"
-          :disc-style="discStyle"
-          @update:covered-tokens="updateCardplayCovered"
-        />
-        <div v-if="!fullEnergyTrack.length && !wikiError" class="track-loading">Loading presence tracks…</div>
-        <div v-if="wikiError" class="track-error">{{ wikiError }}</div>
-      </div>
+      </details>
     </div>
 
     <!-- Card piles with rich detail -->
@@ -392,24 +392,21 @@ function cardInfo(name: string): CardDetail | undefined {
 .el-name { text-transform: capitalize; color: var(--text-secondary); }
 .el-count { font-family: var(--font-mono); font-weight: var(--fw-semibold); color: var(--text-primary); }
 
-/* Presence block — numeric summary always visible; bowl visuals toggle */
+/* Presence block — stats + tracks + bowls all visible by default. Only the
+   disc customization (color swatches + style picker) sits inside a collapsible. */
 .presence-block {
   background: var(--bg-inset);
   border: 1px solid var(--border-subtle);
   border-radius: var(--r-md);
   padding: var(--sp-3);
-}
-.presence-hdr {
   display: flex;
-  justify-content: space-between;
-  align-items: start;
+  flex-direction: column;
   gap: var(--sp-3);
 }
 .presence-stats {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-3) var(--sp-5);
-  flex: 1;
 }
 .presence-stat { display: flex; flex-direction: column; gap: 2px; }
 .stat-label {
@@ -428,18 +425,34 @@ function cardInfo(name: string): CardDetail | undefined {
 }
 .stat-placed strong { color: var(--text-primary); font-family: var(--font-mono); }
 .stat-income strong { color: var(--accent-amber); font-family: var(--font-mono); }
-.bowl-toggle {
-  font-size: var(--fs-xs);
-  padding: var(--sp-1) var(--sp-3);
-  white-space: nowrap;
-}
 
-.tracks {
-  display: flex; flex-direction: column; gap: var(--sp-3);
-  padding: var(--sp-3) 0 0;
-  margin-top: var(--sp-3);
-  border-top: 1px solid var(--border-subtle);
+/* Collapsible disc-custom panel */
+.disc-custom {
+  margin-top: var(--sp-1);
+  padding-top: var(--sp-2);
+  border-top: 1px dashed var(--border-subtle);
 }
+.disc-custom > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  padding: 2px 0;
+}
+.disc-custom > summary::-webkit-details-marker { display: none; }
+.disc-custom > summary::before {
+  content: '▸';
+  margin-right: var(--sp-2);
+  color: var(--text-muted);
+  transition: transform var(--motion-fast);
+}
+.disc-custom[open] > summary::before { transform: rotate(90deg); }
+.disc-custom > summary > span:first-of-type { flex: 1; font-weight: var(--fw-medium); color: var(--text-primary); }
+.custom-hint { font-size: var(--fs-xxs); color: var(--text-muted); font-style: italic; }
+.disc-custom .disc-controls { margin-top: var(--sp-2); }
 
 .track-loading, .track-error { font-size: var(--fs-xs); color: var(--text-muted); font-style: italic; }
 .track-error { color: var(--status-danger); font-style: normal; }

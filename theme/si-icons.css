@@ -18,11 +18,25 @@
   image-rendering: -webkit-optimize-contrast;
 }
 
-/* In mdbook-gruvbox-dark theme + browser dark-mode, invert monochrome SVGs. */
-html.ayu .si[src$=".svg"],
-html.navy .si[src$=".svg"],
-html.coal .si[src$=".svg"],
-html.gruvbox .si[src$=".svg"] {
+/* Invert only true monochrome silhouettes in dark mode. Colored Wiki SVGs
+   (FastColor, SlowColor, terrain variants) keep their canonical colors —
+   Fast should stay red, Slow should stay blue. Detect monochrome via path. */
+html.ayu    .si[src*="unit-"]:is([src$=".svg"]),
+html.ayu    .si[src*="resource-fear"],
+html.ayu    .si[src*="resource-blight"],
+html.ayu    .si[src*="resource-sacred-site"],
+html.navy   .si[src*="unit-"]:is([src$=".svg"]),
+html.navy   .si[src*="resource-fear"],
+html.navy   .si[src*="resource-blight"],
+html.navy   .si[src*="resource-sacred-site"],
+html.coal   .si[src*="unit-"]:is([src$=".svg"]),
+html.coal   .si[src*="resource-fear"],
+html.coal   .si[src*="resource-blight"],
+html.coal   .si[src*="resource-sacred-site"],
+html.gruvbox .si[src*="unit-"]:is([src$=".svg"]),
+html.gruvbox .si[src*="resource-fear"],
+html.gruvbox .si[src*="resource-blight"],
+html.gruvbox .si[src*="resource-sacred-site"] {
   filter: invert(0.92) brightness(1.05);
 }
 

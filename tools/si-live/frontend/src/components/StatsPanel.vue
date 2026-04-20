@@ -118,6 +118,122 @@ const blightPct = computed(() =>
     : Math.min(100, (stats.value.blight_current / stats.value.blight_cap) * 100),
 )
 
+// Heuristic win-probability estimate.
+// Model: base 50% at round 1. Fear progress lifts us (each threshold crossing
+// ≈ +15%). Blight ratio hurts (each step toward cap ≈ −5%). Round pressure
+// hurts slowly (−2% per round past 6). Wilson CI heuristic: width ≈ 1/√N
+// where N is a notional "games of similar state" — we treat current state as
+// n=12 worth of evidence, which gives a ~±25% band.
+function clamp(v: number, lo = 0, hi = 1): number { return Math.max(lo, Math.min(hi, v)) }
+
+const winProbability = computed(() => {
+  if (!stats.value) return { mean: 0.5, lo: 0.25, hi: 0.75 }
+  const s = stats.value
+  const fearRatio = s.fear_threshold > 0 ? s.fear_current / s.fear_threshold : 0
+  const blightRatio = s.blight_cap > 0 ? s.blight_current / s.blight_cap : 0
+  const round = props.state.round
+  let mean = 0.50
+  mean += fearRatio * 0.20                          // fear progress helps
+  mean += (s.terror_level - 1) * 0.10               // each terror flip ~+10%
+  mean -= blightRatio * 0.30                        // blight hurts
+  mean -= Math.max(0, round - 6) * 0.05             // round 7+ accumulates risk
+  mean = clamp(mean)
+  // Wilson-ish interval at notional n=12 observations of this state:
+  const n = 12
+  const z = 1.96
+  const denom = 1 + (z * z) / n
+  const center = (mean + (z * z) / (2 * n)) / denom
+  const margin = (z * Math.sqrt((mean * (1 - mean)) / n + (z * z) / (4 * n * n))) / denom
+  return {
+    mean,
+    lo: clamp(center - margin),
+    hi: clamp(center + margin),
+  }
+})
+
+const winProbPct = computed(() => `${(winProbability.value.mean * 100).toFixed(0)}%`)
+const winProbCI = computed(() =>
+  `${(winProbability.value.lo * 100).toFixed(0)}–${(winProbability.value.hi * 100).toFixed(0)}%`,
+)
+
+// Win-prob history — track estimate at each round's advance. Derived from the
+// state log's `turn_advanced` entries.
+interface TurnAdvance { round: number; fear_current: number; blight_current: number }
+const turnAdvances = computed<TurnAdvance[]>(() =>
+  ((props.state.log ?? []) as { round: number; event: string; details: TurnAdvance }[])
+    .filter(e => e.event === 'turn_advanced')
+    .map(e => ({
+      round: e.round,
+      fear_current: e.details.fear_current ?? 0,
+      blight_current: e.details.blight_current ?? 0,
+    }))
+)
+
+function estimateWinAt(round: number, fearCurr: number, blightCurr: number): number {
+  const fearRatio = (stats.value?.fear_threshold ?? 4) > 0 ? fearCurr / (stats.value!.fear_threshold) : 0
+  const blightRatio = (stats.value?.blight_cap ?? 3) > 0 ? blightCurr / (stats.value!.blight_cap) : 0
+  let m = 0.5 + fearRatio * 0.2 - blightRatio * 0.3 - Math.max(0, round - 6) * 0.05
+  return clamp(m)
+}
+
+const winChartData = computed(() => {
+  const labels: string[] = []
+  const series: number[] = []
+  const hi: number[] = []
+  const lo: number[] = []
+  const maxRound = Math.max(props.state.round, 8)
+  for (let r = 1; r <= maxRound; r++) {
+    labels.push(`T${r}`)
+    const rec = turnAdvances.value.find(t => t.round === r)
+    if (rec) {
+      const m = estimateWinAt(r, rec.fear_current, rec.blight_current)
+      series.push(m * 100)
+      hi.push(Math.min(100, m * 100 + 20))
+      lo.push(Math.max(0, m * 100 - 20))
+    } else if (r === props.state.round) {
+      const m = winProbability.value.mean
+      series.push(m * 100)
+      hi.push(winProbability.value.hi * 100)
+      lo.push(winProbability.value.lo * 100)
+    } else {
+      series.push(NaN)
+      hi.push(NaN)
+      lo.push(NaN)
+    }
+  }
+  return {
+    labels,
+    datasets: [
+      {
+        label: 'Win % (upper)',
+        data: hi,
+        borderColor: 'rgba(82, 183, 136, 0.25)',
+        backgroundColor: 'rgba(82, 183, 136, 0.1)',
+        borderWidth: 1,
+        pointRadius: 0,
+        fill: '+1',
+      },
+      {
+        label: 'Win % (est.)',
+        data: series,
+        borderColor: '#52b788',
+        backgroundColor: 'rgba(82, 183, 136, 0.15)',
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 3,
+      },
+      {
+        label: 'Win % (lower)',
+        data: lo,
+        borderColor: 'rgba(82, 183, 136, 0.25)',
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        pointRadius: 0,
+      },
+    ],
+  }
+})
+
 const ELEMENT_ICONS: Record<string, string> = {
   moon: 'element-moon',
   fire: 'element-fire',
@@ -162,10 +278,26 @@ const spiritElements = computed(() => {
       </div>
     </div>
 
+    <div class="section win-prob-section">
+      <div class="section-hdr">
+        <h3>Win probability estimate</h3>
+        <span class="win-prob-big">
+          <span class="wp-mean">{{ winProbPct }}</span>
+          <span class="wp-ci">({{ winProbCI }})</span>
+        </span>
+      </div>
+      <div class="chart-box">
+        <Line :data="winChartData" :options="chartOptions" />
+      </div>
+      <p class="wp-note">
+        Heuristic: baseline 50%, adjusted by fear progress (+20% × fear/threshold), terror level (+10% per flip), blight pressure (−30% × blight/cap), round pressure (−5%/round past T6). ±20pp band is a notional uncertainty, not a bootstrapped CI — refine later with playlog data.
+      </p>
+    </div>
+
     <div class="section">
       <div class="section-hdr">
         <h3>Fear over rounds</h3>
-        <span class="subtle">Populated from log entries tagged <code>fear_generated</code>.</span>
+        <span class="subtle">Populated from <code>fear_generated</code> log entries (use the Quick-fear buttons in Turn Controller).</span>
       </div>
       <div class="chart-box">
         <Line :data="fearChartData" :options="chartOptions" />
@@ -249,6 +381,29 @@ const spiritElements = computed(() => {
 }
 
 .bar-hdr span { white-space: nowrap; }
+
+.win-prob-section { }
+.win-prob-big {
+  display: inline-flex; align-items: baseline; gap: var(--sp-2);
+}
+.wp-mean {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: var(--fw-bold);
+  color: var(--accent-green);
+}
+.wp-ci {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+.wp-note {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  font-style: italic;
+  margin: var(--sp-2) 0 0;
+  line-height: 1.45;
+}
 
 .bar-count {
   font-family: var(--font-mono);

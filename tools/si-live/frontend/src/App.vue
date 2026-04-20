@@ -8,6 +8,7 @@ import Pools from './components/Pools.vue'
 import StatsPanel from './components/StatsPanel.vue'
 import SetupWizard from './components/SetupWizard.vue'
 import SavedGames from './components/SavedGames.vue'
+import TurnController from './components/TurnController.vue'
 
 const state = ref<GameState | null>(null)
 const error = ref<string | null>(null)
@@ -74,22 +75,6 @@ function humanSlug(slug: string): string {
       </div>
 
       <div class="app-meta">
-        <div class="turn-indicator">
-          <span class="turn-label">Round</span>
-          <span class="turn-value">{{ state.round }}</span>
-        </div>
-        <label class="phase-select">
-          <span class="field-label">Phase</span>
-          <select v-model="state.phase">
-            <option value="setup">Setup</option>
-            <option value="growth">Growth</option>
-            <option value="fast">Fast</option>
-            <option value="invader">Invader</option>
-            <option value="slow">Slow</option>
-            <option value="timepasses">Time Passes</option>
-            <option value="end">End</option>
-          </select>
-        </label>
         <button class="ghost" @click="showSavedGames = true" title="Browse archived games">Saved Games</button>
         <button class="primary new-game-btn" @click="showWizard = true">New Game</button>
         <span v-if="saving" class="saving" aria-live="polite">saving…</span>
@@ -98,6 +83,10 @@ function humanSlug(slug: string): string {
 
     <SetupWizard :show="showWizard" @close="showWizard = false" @game-started="onGameStarted" />
     <SavedGames :show="showSavedGames" @close="showSavedGames = false" @game-loaded="onGameStarted" />
+
+    <section class="section">
+      <TurnController v-model="state" />
+    </section>
 
     <section class="section pools-section">
       <Pools v-model="state.pools" />

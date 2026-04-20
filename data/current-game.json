@@ -1,10 +1,10 @@
 {
   "version": "1.0",
   "round": 1,
-  "phase": "setup",
+  "phase": "fast",
   "setup": {
-    "adversary": "england",
-    "level": 3,
+    "adversary": "brandenburg-prussia",
+    "level": 6,
     "scenario": null,
     "spirits": [
       "shadows-flicker-like-flame"
@@ -13,11 +13,15 @@
       "A"
     ],
     "expansions_active": [
-      "base"
+      "base",
+      "branch-and-claw",
+      "jagged-earth",
+      "nature-incarnate",
+      "promo-2"
     ]
   },
   "pools": {
-    "fear_current": 0,
+    "fear_current": 1,
     "fear_threshold": 4,
     "terror_level": 1,
     "blight_current": 0,
@@ -26,8 +30,8 @@
   },
   "spirits": {
     "shadows-flicker-like-flame": {
-      "energy": 0,
-      "card_plays": 1,
+      "energy": 3,
+      "card_plays": 2,
       "presence_on_board": {},
       "presence_on_track_energy": [
         "energy1",
@@ -37,7 +41,6 @@
         "energy6"
       ],
       "presence_on_track_cardplay": [
-        "card2",
         "card3",
         "card3",
         "card4",
@@ -45,20 +48,73 @@
       ],
       "elements_this_turn": {},
       "hand": [
-        "Concealing Shadows",
-        "Crops Wither and Fade",
         "Favors Called Due",
-        "Mantle of Dread"
+        "Concealing Shadows"
       ],
       "discard": [],
       "forgotten": [],
-      "played_this_turn": [],
+      "played_this_turn": [
+        "Crops Wither and Fade",
+        "Mantle of Dread"
+      ],
       "growth_options": []
     }
   },
   "board_state": {
     "A": {
       "lands": {
+        "7": {
+          "terrain": "sands",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 2,
+          "blight": 0,
+          "tokens": []
+        },
+        "8": {
+          "terrain": "jungle",
+          "coastal": false,
+          "explorers": 1,
+          "towns": 1,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "1": {
+          "terrain": "mountain",
+          "coastal": true,
+          "explorers": 1,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": [
+            "beast"
+          ]
+        },
+        "4": {
+          "terrain": "sands",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 1,
+          "tokens": []
+        },
+        "6": {
+          "terrain": "mountain",
+          "coastal": false,
+          "explorers": 1,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 1,
+          "blight": 0,
+          "tokens": []
+        },
         "2": {
           "terrain": "wetland",
           "coastal": true,
@@ -71,66 +127,14 @@
             "disease"
           ]
         },
-        "8": {
-          "terrain": "jungle",
-          "coastal": false,
-          "explorers": 0,
-          "towns": 1,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
-        "7": {
-          "terrain": "sands",
-          "coastal": false,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 2,
-          "blight": 0,
-          "tokens": []
-        },
-        "6": {
-          "terrain": "mountain",
-          "coastal": false,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 1,
-          "blight": 0,
-          "tokens": []
-        },
-        "1": {
-          "terrain": "mountain",
-          "coastal": true,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": [
-            "beast"
-          ]
-        },
         "3": {
           "terrain": "jungle",
           "coastal": true,
-          "explorers": 0,
+          "explorers": 1,
           "towns": 0,
           "cities": 0,
           "dahan": 2,
           "blight": 0,
-          "tokens": []
-        },
-        "4": {
-          "terrain": "sands",
-          "coastal": false,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 1,
           "tokens": []
         },
         "5": {
@@ -143,7 +147,9 @@
           "blight": 0,
           "tokens": []
         }
-      }
+      },
+      "variant": "balanced",
+      "variant_name": "Board A"
     }
   },
   "log": []
