@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch, computed } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import type { GameState, Phase } from './types'
 import { fetchState, saveState } from './api'
 import Board from './components/Board.vue'
@@ -24,15 +24,14 @@ const showWizard = ref(false)
 const showSavedGames = ref(false)
 let saveTimer: number | null = null
 
-// Sidebar collapse state
-const sidebarCollapsed = ref(false)
-
 // Active spirit tab for multi-spirit games
 const activeSpiritTab = ref<string | null>(null)
 
+// Stats drawer state
+const statsDrawerOpen = ref(false)
+
 function onGameStarted(newState: GameState) {
   state.value = newState
-  // Set first spirit as active tab
   const slugs = Object.keys(newState.spirits ?? {})
   activeSpiritTab.value = slugs[0] ?? null
 }
@@ -203,7 +202,6 @@ watch(
 onMounted(async () => {
   try {
     state.value = await fetchState()
-    // Initialize active spirit tab
     const slugs = Object.keys(state.value?.spirits ?? {})
     activeSpiritTab.value = slugs[0] ?? null
   } catch (e) {
@@ -251,22 +249,70 @@ watch(density, (d) => {
   document.documentElement.dataset.density = d
 }, { immediate: true })
 
-// Phase-based grid area mapping
-const PHASE_GRID: Record<Phase, string> = {
-  setup:      '"board decks" "board decks"',
-  growth:     '"spirits decks" "spirits stats"',
-  fast:       '"spirits board" "spirits board"',
-  event:      '"decks board" "decks stats"',
-  fear:       '"decks board" "decks stats"',
-  invader:    '"decks board" "decks board"',
-  slow:       '"spirits board" "spirits board"',
-  timepasses: '"retro stats" "retro stats"',
-  end:        '"retro stats" "retro stats"',
+// ─────────────────────────────────────────────────────────────────────────────
+// SESSION 2: Phase-based grid area mapping
+// ─────────────────────────────────────────────────────────────────────────────
+// Each phase defines which sections are PRIMARY (get the biggest space) and
+// which are SECONDARY (collapsible strips or hidden). The grid dynamically
+// switches layouts.
+
+type GridLayout = {
+  columns: string
+  rows: string
+  areas: string
 }
 
-const gridAreas = computed(() => {
+const PHASE_LAYOUTS: Record<Phase, GridLayout> = {
+  setup: {
+    columns: '1fr 1fr',
+    rows: '1fr 1fr',
+    areas: '"board decks" "board decks"',
+  },
+  growth: {
+    columns: '2fr 1fr',
+    rows: '1fr auto',
+    areas: '"spirits decks" "spirits stats"',
+  },
+  fast: {
+    columns: '1fr 1.2fr',
+    rows: '1fr',
+    areas: '"spirits board"',
+  },
+  event: {
+    columns: '1fr 1.5fr',
+    rows: '2fr 1fr',
+    areas: '"decks board" "stats board"',
+  },
+  fear: {
+    columns: '1fr 1.5fr',
+    rows: '2fr 1fr',
+    areas: '"decks board" "stats board"',
+  },
+  invader: {
+    columns: '1fr 1.5fr',
+    rows: '1fr',
+    areas: '"decks board"',
+  },
+  slow: {
+    columns: '1fr 1.2fr',
+    rows: '1fr',
+    areas: '"spirits board"',
+  },
+  timepasses: {
+    columns: '1.5fr 1fr',
+    rows: '1fr',
+    areas: '"retro stats"',
+  },
+  end: {
+    columns: '1.5fr 1fr',
+    rows: '1fr',
+    areas: '"retro stats"',
+  },
+}
+
+const currentLayout = computed(() => {
   const phase = state.value?.phase ?? 'setup'
-  return PHASE_GRID[phase]
+  return PHASE_LAYOUTS[phase]
 })
 
 // Determine which sections are visible (primary) for current phase
@@ -289,6 +335,86 @@ function isPrimary(section: string): boolean {
 
 // Spirit slugs for tabs
 const spiritSlugs = computed(() => Object.keys(state.value?.spirits ?? {}))
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SESSION 3: Spirit multi-panel with tabs + pinned mini-view
+// ─────────────────────────────────────────────────────────────────────────────
+// When multiple spirits exist, show a tab bar. The active spirit gets the full
+// panel. Other spirits show a "pinned mini" strip with key stats (energy,
+// card plays, elements) so the player can see all spirits at a glance.
+
+const showMiniPanels = computed(() => spiritSlugs.value.length > 1)
+
+// Mini-panel data for non-active spirits
+function getMiniData(slug: string) {
+  const spirit = state.value?.spirits?.[slug]
+  if (!spirit) return null
+  return {
+    slug,
+    name: humanSlug(slug).split(' ').slice(0, 2).join(' '),
+    energy: spirit.energy ?? 0,
+    cardPlays: spirit.card_plays ?? 1,
+    handCount: spirit.hand?.length ?? 0,
+    discardCount: spirit.discard?.length ?? 0,
+    elements: spirit.elements_this_turn ?? {},
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SESSION 4: Win-prob sparkline data for stats drawer
+// ─────────────────────────────────────────────────────────────────────────────
+// Track win probability over rounds for a sparkline. Derived from log's
+// `turn_advanced` entries.
+
+const winProbHistory = computed(() => {
+  if (!state.value) return []
+  const log = (state.value.log ?? []) as Array<{ round: number; event: string; details: Record<string, unknown> }>
+  const history: number[] = []
+  
+  for (let r = 1; r <= state.value.round; r++) {
+    const turnAdvance = log.find(e => e.event === 'turn_advanced' && e.round === r)
+    if (turnAdvance) {
+      // Simple heuristic estimation for historical rounds
+      const fearCurr = (turnAdvance.details.fear_current as number) ?? 0
+      const blightCurr = (turnAdvance.details.blight_current as number) ?? 0
+      const threshold = state.value.pools.fear_threshold || 4
+      const cap = state.value.pools.blight_cap || 3
+      const fearRatio = threshold > 0 ? fearCurr / threshold : 0
+      const blightRatio = cap > 0 ? blightCurr / cap : 0
+      const m = 0.5 + fearRatio * 0.2 - blightRatio * 0.3 - Math.max(0, r - 6) * 0.05
+      history.push(Math.max(0, Math.min(1, m)))
+    } else if (r === state.value.round) {
+      // Current round: use live calculation
+      const wp = computeWinProb(state.value, affinityMap.value)
+      history.push(wp.mean)
+    }
+  }
+  return history
+})
+
+// Current win probability for display
+const currentWinProb = computed(() => {
+  if (!state.value) return { mean: 0.5, lo: 0.3, hi: 0.7 }
+  return computeWinProb(state.value, affinityMap.value)
+})
+
+// Generate SVG sparkline path
+const sparklinePath = computed(() => {
+  const data = winProbHistory.value
+  if (data.length < 2) return ''
+  const width = 80
+  const height = 24
+  const padding = 2
+  const step = (width - padding * 2) / (data.length - 1)
+  
+  let path = ''
+  data.forEach((v, i) => {
+    const x = padding + i * step
+    const y = height - padding - (v * (height - padding * 2))
+    path += i === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`
+  })
+  return path
+})
 </script>
 
 <template>
@@ -337,12 +463,22 @@ const spiritSlugs = computed(() => Object.keys(state.value?.spirits ?? {}))
     </div>
 
     <!-- MAIN DASHBOARD GRID -->
-    <main class="dash-main" :style="{ gridTemplateAreas: gridAreas }">
-      <!-- SPIRITS AREA (with tabs for multi-spirit) -->
+    <main
+      class="dash-main"
+      :style="{
+        gridTemplateColumns: currentLayout.columns,
+        gridTemplateRows: currentLayout.rows,
+        gridTemplateAreas: currentLayout.areas,
+      }"
+    >
+      <!-- ═══════════════════════════════════════════════════════════════════ -->
+      <!-- SESSION 3: SPIRITS AREA with tabs + mini-panels -->
+      <!-- ═══════════════════════════════════════════════════════════════════ -->
       <section class="grid-spirits" :class="{ hidden: !isPrimary('spirits') }">
         <div class="area-header">
           <h2>Spirits</h2>
-          <div v-if="spiritSlugs.length > 1" class="spirit-tabs">
+          <!-- Tab bar for multi-spirit -->
+          <div v-if="showMiniPanels" class="spirit-tabs">
             <button
               v-for="slug in spiritSlugs"
               :key="slug"
@@ -350,9 +486,42 @@ const spiritSlugs = computed(() => Object.keys(state.value?.spirits ?? {}))
               class="spirit-tab"
               :class="{ active: activeSpiritTab === slug }"
               @click="activeSpiritTab = slug"
-            >{{ humanSlug(slug).split(' ').slice(0, 2).join(' ') }}</button>
+            >
+              <span class="tab-name">{{ humanSlug(slug).split(' ').slice(0, 2).join(' ') }}</span>
+              <span class="tab-stats">
+                <span class="tab-energy">{{ state.spirits[slug]?.energy ?? 0 }}E</span>
+                <span class="tab-cards">{{ state.spirits[slug]?.hand?.length ?? 0 }}H</span>
+              </span>
+            </button>
           </div>
         </div>
+
+        <!-- Mini-panels strip for non-active spirits -->
+        <div v-if="showMiniPanels" class="spirit-minis">
+          <div
+            v-for="slug in spiritSlugs.filter(s => s !== activeSpiritTab)"
+            :key="slug"
+            class="mini-panel"
+            @click="activeSpiritTab = slug"
+          >
+            <span class="mini-name">{{ humanSlug(slug).split(' ')[0] }}</span>
+            <div class="mini-stats">
+              <span class="mini-stat energy">{{ state.spirits[slug]?.energy ?? 0 }}E</span>
+              <span class="mini-stat plays">{{ state.spirits[slug]?.card_plays ?? 1 }}CP</span>
+              <span class="mini-stat hand">{{ state.spirits[slug]?.hand?.length ?? 0 }}H</span>
+            </div>
+            <div class="mini-elements">
+              <span
+                v-for="(count, el) in (state.spirits[slug]?.elements_this_turn ?? {})"
+                :key="el"
+                class="mini-el"
+                :class="`el-${el}`"
+              >{{ count }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active spirit full panel -->
         <div class="spirit-content">
           <SpiritPanel
             v-for="slug in spiritSlugs"
@@ -443,6 +612,64 @@ const spiritSlugs = computed(() => Object.keys(state.value?.spirits ?? {}))
       </section>
     </main>
 
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- SESSION 4: STATS DRAWER (collapsible right edge) -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <aside class="stats-drawer" :class="{ open: statsDrawerOpen }">
+      <button class="drawer-toggle" @click="statsDrawerOpen = !statsDrawerOpen">
+        <span class="toggle-icon">{{ statsDrawerOpen ? '›' : '‹' }}</span>
+        <span class="toggle-label">Stats</span>
+      </button>
+      <div class="drawer-content">
+        <!-- Win probability sparkline -->
+        <div class="drawer-section">
+          <div class="drawer-label">Win Probability</div>
+          <div class="win-prob-row">
+            <span class="wp-value">{{ (currentWinProb.mean * 100).toFixed(0) }}%</span>
+            <svg class="sparkline" viewBox="0 0 80 24" preserveAspectRatio="none">
+              <path :d="sparklinePath" fill="none" stroke="var(--accent-green)" stroke-width="1.5" />
+            </svg>
+          </div>
+          <div class="wp-ci">{{ (currentWinProb.lo * 100).toFixed(0) }}–{{ (currentWinProb.hi * 100).toFixed(0) }}% CI</div>
+        </div>
+
+        <!-- Quick pool bars -->
+        <div class="drawer-section">
+          <div class="drawer-label">Fear</div>
+          <div class="mini-bar">
+            <div
+              class="mini-fill fear"
+              :style="{ width: (state.pools.fear_threshold ? (state.pools.fear_current / state.pools.fear_threshold) * 100 : 0) + '%' }"
+            ></div>
+          </div>
+          <div class="mini-stat-row">
+            <span>{{ state.pools.fear_current }}/{{ state.pools.fear_threshold }}</span>
+            <span class="terror-badge">T{{ state.pools.terror_level }}</span>
+          </div>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-label">Blight</div>
+          <div class="mini-bar">
+            <div
+              class="mini-fill blight"
+              :style="{ width: (state.pools.blight_cap ? (state.pools.blight_current / state.pools.blight_cap) * 100 : 0) + '%' }"
+            ></div>
+          </div>
+          <div class="mini-stat-row">
+            <span>{{ state.pools.blight_current }}/{{ state.pools.blight_cap }}</span>
+          </div>
+        </div>
+
+        <!-- Round + Phase quick view -->
+        <div class="drawer-section">
+          <div class="drawer-label">Round</div>
+          <div class="round-display">{{ state.round }}</div>
+          <div class="phase-display">{{ state.phase }}</div>
+        </div>
+      </div>
+    </aside>
+
     <!-- FOOTER: Turn Controller -->
     <footer class="dash-footer">
       <TurnController v-model="state" />
@@ -459,10 +686,18 @@ const spiritSlugs = computed(() => Object.keys(state.value?.spirits ?? {}))
 .dashboard {
   display: grid;
   grid-template-rows: auto auto auto 1fr auto;
+  grid-template-columns: 1fr auto;
   height: 100vh;
   max-height: 100vh;
   overflow: hidden;
   background: var(--bg-canvas);
+}
+
+.dash-header,
+.dash-status,
+.end-banner,
+.dash-footer {
+  grid-column: 1 / -1;
 }
 
 .banner {
@@ -554,8 +789,6 @@ h1 {
 /* ─── MAIN GRID ─── */
 .dash-main {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
   gap: var(--sp-3);
   padding: var(--sp-3);
   overflow: hidden;
@@ -587,7 +820,7 @@ h1 {
   border: 1px solid var(--border-subtle);
   border-radius: var(--r-lg);
   padding: var(--sp-3);
-  overflow: auto;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -611,14 +844,19 @@ h1 {
   margin: 0;
 }
 
-/* ─── SPIRIT TABS ─── */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* SESSION 3: SPIRIT TABS + MINI PANELS                                        */
+/* ═══════════════════════════════════════════════════════════════════════════ */
 .spirit-tabs {
   display: flex;
   gap: 4px;
 }
 
 .spirit-tab {
-  padding: 3px var(--sp-2);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4px var(--sp-2);
   font-size: var(--fs-xs);
   border: 1px solid var(--border-subtle);
   background: var(--bg-inset);
@@ -626,6 +864,7 @@ h1 {
   border-radius: var(--r-sm);
   cursor: pointer;
   transition: all var(--motion-fast);
+  min-width: 80px;
 }
 .spirit-tab:hover {
   background: var(--bg-muted);
@@ -636,6 +875,97 @@ h1 {
   border-color: var(--accent-blue);
   color: var(--text-white);
 }
+
+.tab-name {
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+.tab-stats {
+  display: flex;
+  gap: var(--sp-2);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.spirit-tab.active .tab-stats { color: var(--text-secondary); }
+
+.tab-energy { color: var(--pool-energy); }
+.tab-cards { color: var(--text-muted); }
+
+/* Mini-panel strip for non-active spirits */
+.spirit-minis {
+  display: flex;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+  flex-shrink: 0;
+}
+
+.mini-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-2);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all var(--motion-fast);
+}
+.mini-panel:hover {
+  background: var(--bg-muted);
+  border-color: var(--border-default);
+}
+
+.mini-name {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--text-secondary);
+  min-width: 60px;
+}
+
+.mini-stats {
+  display: flex;
+  gap: var(--sp-1);
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+}
+
+.mini-stat {
+  padding: 1px 4px;
+  border-radius: var(--r-sm);
+  background: var(--bg-muted);
+}
+.mini-stat.energy { color: var(--pool-energy); }
+.mini-stat.plays { color: var(--accent-purple); }
+.mini-stat.hand { color: var(--text-muted); }
+
+.mini-elements {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.mini-el {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: var(--fw-bold);
+  border-radius: var(--r-full);
+  background: var(--bg-muted);
+  color: var(--text-primary);
+}
+.mini-el.el-sun { background: #d9a45e33; color: #d9a45e; }
+.mini-el.el-moon { background: #7bb8f533; color: #7bb8f5; }
+.mini-el.el-fire { background: #dc2f0233; color: #dc2f02; }
+.mini-el.el-air { background: #c77dff33; color: #c77dff; }
+.mini-el.el-water { background: #2a9d8f33; color: #2a9d8f; }
+.mini-el.el-earth { background: #b85c6433; color: #b85c64; }
+.mini-el.el-plant { background: #6fa66133; color: #6fa661; }
+.mini-el.el-animal { background: #e9c46a33; color: #e9c46a; }
 
 .spirit-content {
   flex: 1;
@@ -658,7 +988,7 @@ h1 {
 /* ─── DECKS GRID ─── */
 .decks-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: var(--sp-3);
   flex: 1;
   overflow: auto;
@@ -685,6 +1015,162 @@ h1 {
   grid-column: span 2;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* SESSION 4: STATS DRAWER                                                     */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+.stats-drawer {
+  grid-row: 4;
+  grid-column: 2;
+  width: 48px;
+  background: var(--bg-surface);
+  border-left: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  transition: width var(--motion-base);
+  overflow: hidden;
+}
+
+.stats-drawer.open {
+  width: 180px;
+}
+
+.drawer-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--sp-2) var(--sp-1);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--motion-fast);
+}
+.drawer-toggle:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.toggle-icon {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--accent);
+}
+
+.toggle-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+}
+.stats-drawer.open .toggle-label {
+  writing-mode: horizontal-tb;
+}
+
+.drawer-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-fast);
+}
+
+.stats-drawer.open .drawer-content {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.drawer-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+}
+
+.win-prob-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.wp-value {
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--accent-green);
+}
+
+.sparkline {
+  flex: 1;
+  height: 24px;
+  max-width: 80px;
+}
+
+.wp-ci {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.mini-bar {
+  height: 6px;
+  background: var(--bg-canvas);
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+
+.mini-fill {
+  height: 100%;
+  border-radius: var(--r-full);
+  transition: width var(--motion-fast);
+}
+.mini-fill.fear { background: linear-gradient(90deg, #d4a373, #d9771f); }
+.mini-fill.blight { background: linear-gradient(90deg, #52b788, #2a9d8f); }
+
+.mini-stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.terror-badge {
+  padding: 1px 4px;
+  background: var(--accent-amber);
+  color: var(--bg-canvas);
+  font-size: 0.6rem;
+  font-weight: var(--fw-bold);
+  border-radius: var(--r-sm);
+}
+
+.round-display {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.phase-display {
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  text-transform: capitalize;
+}
+
 /* ─── FOOTER ─── */
 .dash-footer {
   background: var(--bg-surface);
@@ -694,9 +1180,13 @@ h1 {
 
 /* ─── RESPONSIVE: single column below 1100px ─── */
 @media (max-width: 1100px) {
-  .dash-main {
+  .dashboard {
     grid-template-columns: 1fr;
-    grid-template-rows: auto;
+  }
+
+  .dash-main {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto !important;
     grid-template-areas:
       "spirits"
       "board"
@@ -717,6 +1207,19 @@ h1 {
 
   .terrain-card {
     grid-column: span 1;
+  }
+
+  .stats-drawer {
+    display: none;
+  }
+
+  .spirit-minis {
+    flex-wrap: wrap;
+  }
+
+  .mini-panel {
+    flex: 1 1 calc(50% - var(--sp-1));
+    min-width: 140px;
   }
 }
 </style>
