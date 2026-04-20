@@ -26,7 +26,7 @@ Strategic framing `[VERIFY: enhance with play experience]`.
 
 ## Starting Setup
 
-> Put 3 Presence and 2 Blight on your starting board in the highest-numbered Sands. (Blight comes from the box, not the Blight Card)
+> Put 3 Presence and 2 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> on your starting board in the highest-numbered Sands. (Blight comes from the box, not the Blight Card)
 
 ## Growth Options (one)
 
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-BLAZING PRESENCE Post-Setup, after your Presence is added/moved, in the land it goes to: * For each Simplefire showing on your Presence Tracks, do 1 Damage. * If 2 Simplefire or more are showing on your Presence Tracks, add 1 Blight. * Push all Beast and any number of Dahan. If you add multiple Presence into a land at the same time, only do the above effects once. DESTRUCTIVE NATURE Blight added due to Spirit effects (Powers, Special Rules, Scenario-based Rituals, etc) does not destroy your Presence. (This includes cascades.)
+BLAZING PRESENCE Post-Setup, after your Presence is added/moved, in the land it goes to: * For each Simplefire showing on your Presence Tracks, do 1 Damage. * If 2 Simplefire or more are showing on your Presence Tracks, add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. * Push all Beast and any number of Dahan. If you add multiple Presence into a land at the same time, only do the above effects once. DESTRUCTIVE NATURE Blight added due to Spirit effects (Powers, Special Rules, Scenario-based Rituals, etc) does not destroy your Presence. (This includes cascades.)
 
 ### Innate: FIRESTORM
 
@@ -63,10 +63,10 @@ BLAZING PRESENCE Post-Setup, after your Presence is added/moved, in the land it 
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Plant | 1 Damage per 2 Fire you have. |
-| 2 | 3 Plant | Instead, 1 Damage per Fire you have. |
-| 3 | 4 Fire + 2 Air | Split this Power's Damage however desired between target land and any number of your lands with Blight. |
-| 4 | 7 Fire | In a land with Blight where you have Presence, Push all Dahan. Destroy all Invaders and Beast. Add 1 Blight. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | 1 Damage per 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire you have. |
+| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Instead, 1 Damage per Fire you have. |
+| 3 | 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Split this Power's Damage however desired between target land and any number of your lands with Blight. |
+| 4 | 7 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire | In a land with Blight where you have Presence, Push all Dahan. Destroy all Invaders and Beast. Add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. |
 
 
 ### Innate: THE BURNED LAND REGROWS
@@ -75,9 +75,9 @@ BLAZING PRESENCE Post-Setup, after your Presence is added/moved, in the land it 
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 4 Fire + 1 Plant | If target land has 2 Blight or more, remove 1 Blight |
-| 2 | 4 Fire + 2 Plant | Instead, remove 1 Blight. |
-| 3 | 5 Fire + 2 Earth + 2 Plant | Remove another Blight. |
+| 1 | 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | If target land has 2 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> or more, remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> |
+| 2 | 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Instead, remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. |
+| 3 | 5 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Remove another Blight. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -85,7 +85,7 @@ BLAZING PRESENCE Post-Setup, after your Presence is added/moved, in the land it 
 #### Asphyxiating Smoke
 
 - **2 Energy · Slow · Range 2, from your Sacred Site · Any Land · Fire, Air, Plant**
-- *1 Fear. Destroy 1 Town. Push 1 Dahan.*
+- *1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.*
 
 #### Flame's Fury
 
@@ -95,14 +95,14 @@ BLAZING PRESENCE Post-Setup, after your Presence is added/moved, in the land it 
 #### Flash-Fires
 
 - **2 Energy · Slow · Range 1 · Any Land · Fire, Air**
-- *1 Fear. 1 Damage.*
+- *1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage.*
 
-- **Threshold**: 2 Air — 2 Air: This Power is Fast.
+- **Threshold**: 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air — 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: This Power is Fast.
 
 #### Threatening Flames
 
 - **0 Energy · Fast · Range 0 · Land with 1 or more Blight and 1 or more Invaders · Fire, Plant**
-- *2 Fear. Push 1 Explorer/Town per Terror Level from target land to adjacent lands without your Presence. If there are no such adjacent lands, +2 Fear.*
+- *2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Terror Level from target land to adjacent lands without your Presence. If there are no such adjacent lands, +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.*
 
 ## Card Priority Ratings
 
@@ -128,15 +128,15 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
 | 1 | **Hazards Spread Across the Island** | 0 | Fast | Fire, Air, Earth, Plant | Choose a type of token from Badlands/Beasts/Disease/Strife/Wilds that exists in an adjace… | elements air+earth+fire+plant → 17.4 |
-| 2 | **Dry Wood Explodes in Smoldering Splinters** | 1 | Slow | Fire, Air, Plant | You may spend 1 Energy to make this Power Fast. 2 Fear. 1 Damage. | elements air+fire+plant → 16.8 |
-| 3 | **Animated Wrackroot** | 0 | Slow | Moon, Fire, Plant | 1 Fear. Destroy 1 Explorer. **OR** Add 1 Wilds. | elements fire+plant → 16.2 |
-| 4 | **Sear Anger Into the Wild Lands** | 0 | Slow | Sun, Fire, Plant | Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear and 1 Damage. | elements fire+plant → 16.2 |
-| 5 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer/Town. | elements air+fire+plant → 16.8 |
-| 6 | **Rouse the Trees and Stones** | 1 | Slow | Fire, Earth, Plant | 2 Damage. Push 1 Explorer. | elements earth+fire+plant → 16.8 |
-| 7 | **Roiling Bog and Snagging Thorn** | 0 | Fast | Moon, Fire, Water, Plant | 1 Fear. Isolate. Defend 2.</br>1 Dahan does not participate in Ravage.</br>(Check when ra… | elements fire+plant → 16.2 |
+| 2 | **Dry Wood Explodes in Smoldering Splinters** | 1 | Slow | Fire, Air, Plant | You may spend 1 Energy to make this Power Fast. 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. | elements air+fire+plant → 16.8 |
+| 3 | **Animated Wrackroot** | 0 | Slow | Moon, Fire, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** Add 1 Wilds. | elements fire+plant → 16.2 |
+| 4 | **Sear Anger Into the Wild Lands** | 0 | Slow | Sun, Fire, Plant | Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. | elements fire+plant → 16.2 |
+| 5 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. | elements air+fire+plant → 16.8 |
+| 6 | **Rouse the Trees and Stones** | 1 | Slow | Fire, Earth, Plant | 2 Damage. Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements earth+fire+plant → 16.8 |
+| 7 | **Roiling Bog and Snagging Thorn** | 0 | Fast | Moon, Fire, Water, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Isolate. Defend 2.</br>1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> does not participate in Ravage.</br>(Check when ra… | elements fire+plant → 16.2 |
 | 8 | **Purifying Flame** | 1 | Slow | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blig… | elements air+fire+plant → 16.8 |
-| 9 | **Shadows of the Burning Forest** | 0 | Slow | Moon, Fire, Plant | 2 Fear. If target land is a Mountain or Jungle, Push 1 Explorer and 1 Town. | elements fire+plant → 16.2 |
-| 10 | **The Shore Seethes with Hatred** | 1 | Slow | Fire, Water, Earth, Plant | 1 Fear. Add 1 Badlands and 1 Wilds. | elements earth+fire+plant → 16.8 |
+| 9 | **Shadows of the Burning Forest** | 0 | Slow | Moon, Fire, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. | elements fire+plant → 16.2 |
+| 10 | **The Shore Seethes with Hatred** | 1 | Slow | Fire, Water, Earth, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Badlands and 1 Wilds. | elements earth+fire+plant → 16.8 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
@@ -194,7 +194,7 @@ Auto-derived from `data/references/wiki/heart-of-the-wildfire.json`. This sectio
 
 ### Starting state
 
-- **Setup**: Put 3 Presence and 2 Blight on your starting board in the highest-numbered Sands. (Blight comes from the box, not the Blight Card)
+- **Setup**: Put 3 Presence and 2 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> on your starting board in the highest-numbered Sands. (Blight comes from the box, not the Blight Card)
 - **Starting income** (from `presence_energy_track[0]` = `energy0`, `presence_cardplay_track[0]` = `card1`): **0 Energy · 1 Card Play**
 - **Hand at start**: 4 Unique Power Cards (listed below)
 - **Growth type**: `one` — pick **one** growth option per turn
@@ -218,14 +218,14 @@ Auto-derived from `data/references/wiki/heart-of-the-wildfire.json`. This sectio
 ### Innate Powers
 
 - **FIRESTORM** (Speed: Fast · Range: 0 · Target: blight)
-  - **L1** — 1 Plant: 1 Damage per 2 Fire you have.
-  - **L2** — 3 Plant: Instead, 1 Damage per Fire you have.
-  - **L3** — 4 Fire + 2 Air: Split this Power's Damage however desired between target land and any number of your lands with Blight.
-  - **L4** — 7 Fire: In a land with Blight where you have Presence, Push all Dahan. Destroy all Invaders and Beast. Add 1 Blight.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: 1 Damage per 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire you have.
+  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Instead, 1 Damage per Fire you have.
+  - **L3** — 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: Split this Power's Damage however desired between target land and any number of your lands with Blight.
+  - **L4** — 7 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire: In a land with Blight where you have Presence, Push all Dahan. Destroy all Invaders and Beast. Add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">.
 - **THE BURNED LAND REGROWS** (Speed: Slow · Range: 0 · Target: any)
-  - **L1** — 4 Fire + 1 Plant: If target land has 2 Blight or more, remove 1 Blight
-  - **L2** — 4 Fire + 2 Plant: Instead, remove 1 Blight.
-  - **L3** — 5 Fire + 2 Earth + 2 Plant: Remove another Blight.
+  - **L1** — 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: If target land has 2 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> or more, remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">
+  - **L2** — 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Instead, remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">.
+  - **L3** — 5 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Remove another Blight.
 
 ### Fast-phase element ceiling from Uniques
 
@@ -238,10 +238,10 @@ Fast innates resolve in Fast phase and can only see elements from **Fast cards p
 
 | Card | Cost | Speed | Range | Target | Elements | Effect |
 |------|------|-------|-------|--------|----------|--------|
-| **Asphyxiating Smoke** | 2 | Slow | 2, from your Sacred Site | Any Land | fire, air, plant | 1 Fear. Destroy 1 Town. Push 1 Dahan. |
+| **Asphyxiating Smoke** | 2 | Slow | 2, from your Sacred Site | Any Land | fire, air, plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
 | **Flame's Fury** | 0 | Fast | No Range | Any Spirit | sun, fire, plant | Target Spirit gains 1 Energy. Target Spirit does +1 Damage with each Damage dealing Power they use … |
-| **Flash-Fires** | 2 | Slow | 1 | Any Land | fire, air | 1 Fear. 1 Damage. |
-| **Threatening Flames** | 0 | Fast | 0 | Land with 1 or more Blight and 1 or more Invaders | fire, plant | 2 Fear. Push 1 Explorer/Town per Terror Level from target land to adjacent lands without your Prese… |
+| **Flash-Fires** | 2 | Slow | 1 | Any Land | fire, air | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. |
+| **Threatening Flames** | 0 | Fast | 0 | Land with 1 or more Blight and 1 or more Invaders | fire, plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Terror Level from target land to adjacent lands without your Prese… |
 
 ### Invader phase by turn (base deck)
 

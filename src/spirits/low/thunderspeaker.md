@@ -63,8 +63,8 @@ ALLY OF THE DAHAN Your Presence may move with Dahan. (Whenever a Dahan moves fro
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 4 Air | This Power may be Fast. |
-| 2 | 1 Animal | Gather up to 1 Dahan per Air you have. Push up to 1 Dahan per Sun you have. |
+| 1 | 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | This Power may be Fast. |
+| 2 | 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> per Air you have. Push up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> per Sun you have. |
 
 
 ### Innate: LEAD THE FURIOUS ASSAULT
@@ -73,9 +73,9 @@ ALLY OF THE DAHAN Your Presence may move with Dahan. (Whenever a Dahan moves fro
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 4 Air | This Power may be Fast. |
-| 2 | 2 Sun + 1 Fire | Destroy 1 Town for every 2 Dahan in target land. |
-| 3 | 4 Sun + 3 Fire | Destroy 1 City for every 3 Dahan in target land. |
+| 1 | 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | This Power may be Fast. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire | Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> for every 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> in target land. |
+| 3 | 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire | Destroy 1 City <img class="si" src="/spirit-island/theme/icons/unit-city.svg" alt="City"> for every 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> in target land. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -83,17 +83,17 @@ ALLY OF THE DAHAN Your Presence may move with Dahan. (Whenever a Dahan moves fro
 #### Manifestation of Power and Glory
 
 - **3 Energy · Slow · Range 0 · Land with Dahan · Sun, Fire, Air**
-- *1 Fear. Each Dahan deals Damage equal to the number of your Presence in target land.*
+- *1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Each Dahan deals Damage equal to the number of your Presence in target land.*
 
 #### Sudden Ambush
 
 - **2 Energy · Fast · Range 1 · Any Land · Fire, Air, Animal**
-- *You may Gather 1 Dahan. Each Dahan Destroys 1 Explorer.*
+- *You may Gather 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each Dahan Destroys 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">.*
 
 #### Voice of Thunder
 
 - **0 Energy · Slow · Range 1 · Any Land · Sun, Air**
-- *Push up to 4 Dahan. **OR** If Invaders are present, 2 Fear.*
+- *Push up to 4 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. **OR** If Invaders are present, 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.*
 
 #### Words of Warning
 
@@ -124,15 +124,15 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
 | 1 | **Purifying Flame** | 1 | Slow | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blig… | elements air+fire+sun → 11.1 |
-| 2 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage. | elements air+sun → 9.6 |
+| 2 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | elements air+sun → 9.6 |
 | 3 | **Birds Cry Warning** | 1 | Fast | Sun, Air, Animal | The next time Dahan would be Destroyed in target land, Destroy 2 fewer Dahan. **OR** Push… | elements air+animal+sun → 10.2 |
-| 4 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+sun → 9.6 |
-| 5 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer/Town per Dahan. **OR** Push 1 Dahan. | elements air+animal+sun → 10.2 |
-| 6 | **Fire in the Sky** | 1 | Fast | Sun, Fire, Air | 2 Fear. Add 1 Strife. | elements air+fire+sun → 11.1 |
+| 4 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+sun → 9.6 |
+| 5 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Dahan. **OR** Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+animal+sun → 10.2 |
+| 6 | **Fire in the Sky** | 1 | Fast | Sun, Fire, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. | elements air+fire+sun → 11.1 |
 | 7 | **Spur on with Words of Fire** | 1 | Fast | Sun, Fire, Air | If you target a Spirit other than yourself, they gain +1 Energy. Target Spirit may immedi… | elements air+fire+sun → 11.1 |
-| 8 | **Enticing Splendor** | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer/Town. **OR** Gather up to 2 Dahan. | elements air+sun → 9.6 |
-| 9 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer. **OR** 2 Fear. | elements air+sun → 9.6 |
-| 10 | **Call to Migrate** | 1 | Slow | Fire, Air, Animal | Gather up to 3 Dahan. Push up to 3 Dahan. | elements air+animal+fire → 9.3 |
+| 8 | **Enticing Splendor** | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. **OR** Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+sun → 9.6 |
+| 9 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+sun → 9.6 |
+| 10 | **Call to Migrate** | 1 | Slow | Fire, Air, Animal | Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Push up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+animal+fire → 9.3 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
@@ -214,12 +214,12 @@ Auto-derived from `data/references/wiki/thunderspeaker.json`. This section state
 ### Innate Powers
 
 - **GATHER THE WARRIORS** (Speed: Slow · Range: 1 · Target: any)
-  - **L1** — 4 Air: This Power may be Fast.
-  - **L2** — 1 Animal: Gather up to 1 Dahan per Air you have. Push up to 1 Dahan per Sun you have.
+  - **L1** — 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: This Power may be Fast.
+  - **L2** — 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> per Air you have. Push up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> per Sun you have.
 - **LEAD THE FURIOUS ASSAULT** (Speed: Slow · Range: 0 · Target: any)
-  - **L1** — 4 Air: This Power may be Fast.
-  - **L2** — 2 Sun + 1 Fire: Destroy 1 Town for every 2 Dahan in target land.
-  - **L3** — 4 Sun + 3 Fire: Destroy 1 City for every 3 Dahan in target land.
+  - **L1** — 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: This Power may be Fast.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire: Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> for every 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> in target land.
+  - **L3** — 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire: Destroy 1 City <img class="si" src="/spirit-island/theme/icons/unit-city.svg" alt="City"> for every 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> in target land.
 
 ### Fast-phase element ceiling from Uniques
 
@@ -231,9 +231,9 @@ Fast innates resolve in Fast phase and can only see elements from **Fast cards p
 
 | Card | Cost | Speed | Range | Target | Elements | Effect |
 |------|------|-------|-------|--------|----------|--------|
-| **Manifestation of Power and Glory** | 3 | Slow | 0 | Land with Dahan | sun, fire, air | 1 Fear. Each Dahan deals Damage equal to the number of your Presence in target land. |
-| **Sudden Ambush** | 2 | Fast | 1 | Any Land | fire, air, animal | You may Gather 1 Dahan. Each Dahan Destroys 1 Explorer. |
-| **Voice of Thunder** | 0 | Slow | 1 | Any Land | sun, air | Push up to 4 Dahan. **OR** If Invaders are present, 2 Fear. |
+| **Manifestation of Power and Glory** | 3 | Slow | 0 | Land with Dahan | sun, fire, air | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Each Dahan deals Damage equal to the number of your Presence in target land. |
+| **Sudden Ambush** | 2 | Fast | 1 | Any Land | fire, air, animal | You may Gather 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each Dahan Destroys 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. |
+| **Voice of Thunder** | 0 | Slow | 1 | Any Land | sun, air | Push up to 4 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. **OR** If Invaders are present, 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
 | **Words of Warning** | 1 | Fast | 1 | Land with Dahan | sun, air, animal | Defend 3. During Ravage, Dahan in target land deal Damage simultaneously with Invaders. |
 
 ### Invader phase by turn (base deck)

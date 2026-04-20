@@ -1,12 +1,54 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { Board, Land } from '../types'
+import type { Board, Land, Spirit } from '../types'
 import LandEditor from './LandEditor.vue'
 import Icon from './Icon.vue'
+import PresenceDisc from './PresenceDisc.vue'
 import { getLayout } from '../boardLayouts'
 
-const props = defineProps<{ modelValue: Board; boardId: string }>()
+const props = defineProps<{
+  modelValue: Board
+  boardId: string
+  /** All spirits in the game, keyed by slug. Needed to resolve disc colors +
+   *  count per-spirit presence on each land. */
+  spirits: Record<string, Spirit>
+}>()
 defineEmits<{ 'update:modelValue': [value: Board] }>()
+
+interface DiscInfo {
+  slug: string
+  count: number
+  color: string | undefined
+  style: 'glass' | 'wood' | 'solid'
+}
+
+function presenceOn(landId: string): DiscInfo[] {
+  const out: DiscInfo[] = []
+  for (const [slug, spirit] of Object.entries(props.spirits)) {
+    const key = `${props.boardId}.${landId}`
+    const n = spirit.presence_on_board?.[key] ?? 0
+    if (n > 0) {
+      out.push({
+        slug,
+        count: n,
+        color: spirit.disc_color,
+        style: spirit.disc_style ?? 'glass',
+      })
+    }
+  }
+  return out
+}
+
+function bumpPresence(landId: string, slug: string, delta: number) {
+  const spirit = props.spirits[slug]
+  if (!spirit) return
+  const key = `${props.boardId}.${landId}`
+  const current = spirit.presence_on_board?.[key] ?? 0
+  const next = Math.max(0, current + delta)
+  if (!spirit.presence_on_board) spirit.presence_on_board = {}
+  if (next === 0) delete spirit.presence_on_board[key]
+  else spirit.presence_on_board[key] = next
+}
 
 type ViewMode = 'grid' | 'map'
 const viewMode = ref<ViewMode>('grid')
@@ -103,7 +145,31 @@ function toggleLand(id: string) {
           <span v-if="!summaryChips(modelValue.lands[id]).length" class="sum-empty">—</span>
         </div>
 
-        <LandEditor v-model="modelValue.lands[id]" />
+        <div v-if="presenceOn(id).length" class="presence-row">
+          <span
+            v-for="info in presenceOn(id)"
+            :key="info.slug"
+            class="presence-cluster"
+            :title="`${info.slug} — ${info.count} Presence`"
+          >
+            <PresenceDisc
+              v-for="n in info.count"
+              :key="n"
+              :slug="info.slug"
+              :color="info.color"
+              :style="info.style"
+              :size="14"
+            />
+          </span>
+        </div>
+
+        <LandEditor
+          v-model="modelValue.lands[id]"
+          :land-id="id"
+          :spirits="spirits"
+          :board-id="boardId"
+          @bump-presence="(slug, delta) => bumpPresence(id, slug, delta)"
+        />
       </div>
     </div>
 
@@ -127,6 +193,23 @@ function toggleLand(id: string) {
           @click="toggleLand(id)"
         >
           <span class="map-id">{{ id }}</span>
+          <div v-if="presenceOn(id).length" class="map-presence">
+            <span
+              v-for="info in presenceOn(id)"
+              :key="info.slug"
+              class="presence-cluster"
+              :title="`${info.slug} — ${info.count}`"
+            >
+              <PresenceDisc
+                v-for="n in info.count"
+                :key="n"
+                :slug="info.slug"
+                :color="info.color"
+                :style="info.style"
+                :size="10"
+              />
+            </span>
+          </div>
           <div class="map-chips">
             <span
               v-for="chip in summaryChips(modelValue.lands[id])"
@@ -151,7 +234,13 @@ function toggleLand(id: string) {
           </span>
           <button class="ghost" @click="expandedLand = null">Close</button>
         </div>
-        <LandEditor v-model="modelValue.lands[expandedLand]" />
+        <LandEditor
+          v-model="modelValue.lands[expandedLand]"
+          :land-id="expandedLand"
+          :spirits="spirits"
+          :board-id="boardId"
+          @bump-presence="(slug, delta) => bumpPresence(expandedLand!, slug, delta)"
+        />
       </div>
     </div>
   </div>
@@ -242,6 +331,18 @@ function toggleLand(id: string) {
 .sum-chip { display: inline-flex; align-items: center; gap: 3px; background: var(--bg-muted); border: 1px solid var(--border-subtle); border-radius: var(--r-full); padding: 1px var(--sp-2); font-size: var(--fs-xs); }
 .sum-count { font-family: var(--font-mono); font-weight: var(--fw-semibold); color: var(--text-primary); }
 .sum-empty { color: var(--text-faint); font-style: italic; font-size: var(--fs-xs); }
+
+.presence-row {
+  display: flex; flex-wrap: wrap; gap: var(--sp-1);
+  padding: 2px 0;
+}
+.presence-cluster { display: inline-flex; gap: 2px; align-items: center; }
+
+.map-presence {
+  display: flex; gap: 2px; flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2px;
+}
 
 /* ───────── Map view ───────── */
 

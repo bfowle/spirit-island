@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-Dahan Trust the Watchers After one of your Powers adds Defend to a single land, Gather up to 1 Dahan into that land. ("Power" includes both your Innate Power and your Power Cards. Can be used with any number of Defend Powers each turn.)
+Dahan Trust the Watchers After one of your Powers adds Defend to a single land, Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> into that land. ("Power" includes both your Innate Power and your Power Cards. Can be used with any number of Defend Powers each turn.)
 
 ### Innate: Mischief and Sabotage
 
@@ -63,10 +63,10 @@ Dahan Trust the Watchers After one of your Powers adds Defend to a single land, 
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Moon + 2 Plant | 1 Fear and Defend 2. |
-| 2 | 2 Moon + 3 Plant | Instead, 1 Fear and Defend 4. |
-| 3 | 2 Moon + 2 Air + 4 Plant | Instead, 3 Fear and Defend 6. |
-| 4 | 3 Moon + 3 Air + 5 Plant | Instead, 5 Fear and Defend 12. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 2. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Instead, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 4. |
+| 3 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Instead, 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 6. |
+| 4 | 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 5 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Instead, 5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 12. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -89,15 +89,15 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer/Town. | elements air+moon+plant → 11.4 |
-| 2 | **Roiling Bog and Snagging Thorn** | 0 | Fast | Moon, Fire, Water, Plant | 1 Fear. Isolate. Defend 2.</br>1 Dahan does not participate in Ravage.</br>(Check when ra… | elements moon+plant → 9.9 |
+| 1 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. | elements air+moon+plant → 11.4 |
+| 2 | **Roiling Bog and Snagging Thorn** | 0 | Fast | Moon, Fire, Water, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Isolate. Defend 2.</br>1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> does not participate in Ravage.</br>(Check when ra… | elements moon+plant → 9.9 |
 | 3 | **Disorienting Landscape** | 1 | Fast | Moon, Air, Plant | Push 1 [[Explorer]]. If target land is a Mountain or Jungle, add 1 [[Wilds]]. | elements air+moon+plant → 11.4 |
-| 4 | **Favor of the Sun and Star-lit Dark** | 1 | Fast | Sun, Moon, Plant | Defend 4. Push up to 1 Blight. | elements moon+plant → 9.9 |
-| 5 | **Dark and Tangled Woods** | 1 | Fast | Moon, Earth, Plant | 2 Fear. If target land is a Mountain or Jungle, Defend 3. | elements moon+plant → 9.9 |
-| 6 | **Razor-Sharp Undergrowth** | 1 | Fast | Moon, Plant | Destroy 1 Explorer and 1 Dahan. Add 1 Wilds. Defend 2. | elements moon+plant → 9.9 |
-| 7 | **Shadows of the Burning Forest** | 0 | Slow | Moon, Fire, Plant | 2 Fear. If target land is a Mountain or Jungle, Push 1 Explorer and 1 Town. | elements moon+plant → 9.9 |
-| 8 | **Animated Wrackroot** | 0 | Slow | Moon, Fire, Plant | 1 Fear. Destroy 1 Explorer. **OR** Add 1 Wilds. | elements moon+plant → 9.9 |
-| 9 | **Inflame the Fires of Life** | 1 | Slow | Moon, Fire, Plant, Animal | Add 1 Disease. **OR** 1 Fear. Add 1 Strife. | elements moon+plant → 9.9 |
+| 4 | **Favor of the Sun and Star-lit Dark** | 1 | Fast | Sun, Moon, Plant | Defend 4. Push up to 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements moon+plant → 9.9 |
+| 5 | **Dark and Tangled Woods** | 1 | Fast | Moon, Earth, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Defend 3. | elements moon+plant → 9.9 |
+| 6 | **Razor-Sharp Undergrowth** | 1 | Fast | Moon, Plant | Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Add 1 Wilds. Defend 2. | elements moon+plant → 9.9 |
+| 7 | **Shadows of the Burning Forest** | 0 | Slow | Moon, Fire, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. | elements moon+plant → 9.9 |
+| 8 | **Animated Wrackroot** | 0 | Slow | Moon, Fire, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** Add 1 Wilds. | elements moon+plant → 9.9 |
+| 9 | **Inflame the Fires of Life** | 1 | Slow | Moon, Fire, Plant, Animal | Add 1 Disease. **OR** 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. | elements moon+plant → 9.9 |
 | 10 | **Gift of Power** | 0 | Slow | Moon, Water, Earth, Plant | Target Spirit gains a Minor Power Card. | elements moon+plant → 9.9 |
 
 ### Top 5 Major Draft Picks (from full pool)
@@ -105,8 +105,8 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
 | 1 | **Death Falls Gently from Open Blossoms** | 4 | Slow | Moon, Air, Plant | 4 Damage. If any Invaders remain, add 1 Disease. | elements air+moon+plant → 11.4 |
-| 2 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+moon+plant → 11.4 |
-| 3 | **Trees Radiate Celestial Brilliance** | 3 | Fast | Sun, Moon, Plant | 3 Fear. Defend 6. This turn, Invaders in target land skip the next Build Action. | elements moon+plant → 9.9 |
+| 2 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+moon+plant → 11.4 |
+| 3 | **Trees Radiate Celestial Brilliance** | 3 | Fast | Sun, Moon, Plant | 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Defend 6. This turn, Invaders in target land skip the next Build Action. | elements moon+plant → 9.9 |
 | 4 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+moon+plant → 11.4 |
 | 5 | **Transform to a Murderous Darkness** | 6 | Slow | Moon, Fire, Air, Water, Plant | Target Spirit may choose one of their Sacred Site. In that land: Replace all their Presen… | elements air+moon+plant → 11.4 |
 
@@ -118,11 +118,11 @@ These are the cards shipped with Eyes Watch from the Trees in the **Horizons of 
 
 | Card | Type | Cost | Speed | Elements | Effect (truncated) |
 |------|------|------|-------|----------|--------------------|
-| **Lure of the Unknown** | Minor | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer/Town. |
+| **Lure of the Unknown** | Minor | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. |
 | Drift Down Into Slumber | — | — | — | — | (fetch error: No {{PowerCardArticle|...}} template found on page) |
-| **Delusions of Danger** | Minor | 1 | Fast | Sun, Moon, Air | Push 1 Explorer. **OR** 2 Fear. |
-| **Terrifying Nightmares** | Major | 4 | Fast | Moon, Air | 2 Fear. Push up to 4 Explorers/Towns. |
-| **Dark and Tangled Woods** | Minor | 1 | Fast | Moon, Earth, Plant | 2 Fear. If target land is a Mountain or Jungle, Defend 3. |
+| **Delusions of Danger** | Minor | 1 | Fast | Sun, Moon, Air | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
+| **Terrifying Nightmares** | Major | 4 | Fast | Moon, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 4 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns. |
+| **Dark and Tangled Woods** | Minor | 1 | Fast | Moon, Earth, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Defend 3. |
 | **The Jungle Hungers** | Major | 3 | Slow | Moon, Plant | Destroy all Explorers and all Towns. Destroy all Dahan. |
 | Veil the Night\'s Hunt | — | — | — | — | (fetch error: Wiki API error for 'Veil_the_Night\'s_Hunt': {'code': 'missingtitle', 'info': "The page you specified doesn't exist.", 'docref': 'See https://spiritislandwiki.com/api.php for API usage. Subscribe to the mediawiki-api-announce mailing list at &lt;https://lists.wikimedia.org/mailman/listinfo/mediawiki-api-announce&gt; for notice of API deprecations and breaking changes.'}) |
 
@@ -186,17 +186,17 @@ Auto-derived from `data/references/wiki/eyes-watch-from-the-trees.json`. This se
 ### Innate Powers
 
 - **Mischief and Sabotage** (Speed: Fast · Range: 1 · Target: invaders)
-  - **L1** — 1 Moon + 2 Plant: 1 Fear and Defend 2.
-  - **L2** — 2 Moon + 3 Plant: Instead, 1 Fear and Defend 4.
-  - **L3** — 2 Moon + 2 Air + 4 Plant: Instead, 3 Fear and Defend 6.
-  - **L4** — 3 Moon + 3 Air + 5 Plant: Instead, 5 Fear and Defend 12.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 2.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Instead, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 4.
+  - **L3** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Instead, 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 6.
+  - **L4** — 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 5 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Instead, 5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 12.
 
 ### Fast-phase element ceiling from Uniques
 
 Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
 
 - Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 1 Moon, Uniques give 0; need 2 Plant, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon, Uniques give 0; need 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
 
 ### Unique Power Cards
 

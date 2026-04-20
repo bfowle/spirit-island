@@ -56,7 +56,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-TO DREAM A THOUSAND DEATHS Your Powers never cause Damage, nor can they Destroy anything other than your own Presence. When your Powers would Destroy (or deal enough Damage to Destroy) Explorer/Town/City, instead generate 0/2/5 Fear. The Power Pushes all Explorer/Town it would Destroy. Notes: A single Power cannot Destroy a given Invader more than once. Powers that cause Damage via Dahan are affected just like all others. All effects other than Damage/Destroy work as usual.
+TO DREAM A THOUSAND DEATHS Your Powers never cause Damage, nor can they Destroy anything other than your own Presence. When your Powers would Destroy (or deal enough Damage to Destroy) Explorer/Town/City, instead generate 0/2/5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. The Power Pushes all Explorer/Town it would Destroy. Notes: A single Power cannot Destroy a given Invader more than once. Powers that cause Damage via Dahan are affected just like all others. All effects other than Damage/Destroy work as usual.
 
 ### Innate: SPIRITS MAY YET DREAM
 
@@ -64,8 +64,8 @@ TO DREAM A THOUSAND DEATHS Your Powers never cause Damage, nor can they Destroy 
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Moon + 2 Air | Turn any face down Fear Card face-up. (It's earned/resolved normally, but players can see what's coming) |
-| 2 | 3 Moon | Target Spirit gains an element that they have at least 1 of. |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Turn any face down Fear Card face-up. (It's earned/resolved normally, but players can see what's coming) |
+| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon | Target Spirit gains an element that they have at least 1 of. |
 
 
 ### Innate: NIGHT TERRORS
@@ -74,9 +74,9 @@ TO DREAM A THOUSAND DEATHS Your Powers never cause Damage, nor can they Destroy 
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Moon + 1 Air | 1 Fear. |
-| 2 | 2 Moon + 1 Air + 1 Animal | +1 Fear. |
-| 3 | 3 Moon + 2 Air + 1 Animal | +1 Fear. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
+| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -84,12 +84,12 @@ TO DREAM A THOUSAND DEATHS Your Powers never cause Damage, nor can they Destroy 
 #### Call on Midnight's Dream
 
 - **0 Energy · Fast · Range 0 · Any Land · Moon, Animal**
-- *If target land has Dahan, gain a Major Power. If you Forget this Power, gain Energy equal to Dahan and you may play the Major Power immediately, paying its cost. **OR** If Invaders are present, 2 Fear.*
+- *If target land has Dahan, gain a Major Power. If you Forget this Power, gain Energy equal to Dahan and you may play the Major Power immediately, paying its cost. **OR** If Invaders are present, 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.*
 
 #### Dread Apparitions
 
 - **2 Energy · Fast · Range 1 · Land with 1 or more Invaders · Moon, Air**
-- *When Powers generate Fear in target land, Defend 1 per Fear. 1 Fear. (Fear from To Dream a Thousand Deaths counts. Fear from Destroying Towns/Cities does not.)*
+- *When Powers generate Fear in target land, Defend 1 per Fear. 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. (Fear from To Dream a Thousand Deaths counts. Fear from Destroying Towns/Cities does not.)*
 
 #### Dreams of the Dahan
 
@@ -99,7 +99,7 @@ TO DREAM A THOUSAND DEATHS Your Powers never cause Damage, nor can they Destroy 
 #### Predatory Nightmares
 
 - **2 Energy · Slow · Range 1, from your Sacred Site · Land with 1 or more Invaders · Moon, Fire, Earth, Animal**
-- *2 Damage. Push up to 2 Dahan. (When your Powers would Destroy Invaders, instead they generate Fear and/or Push those Invaders.)*
+- *2 Damage. Push up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. (When your Powers would Destroy Invaders, instead they generate Fear and/or Push those Invaders.)*
 
 ## Card Priority Ratings
 
@@ -124,23 +124,23 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer/Town/Dahan. 2 Fear. If target land has any Beasts, 1 Fear. | elements air+animal+moon → 11.4 |
-| 2 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear. The next time an Invader is Destroyed in target land this turn, 1 Fear. | elements air+moon → 10.5 |
+| 1 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town/Dahan. 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land has any Beasts, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+animal+moon → 11.4 |
+| 2 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. The next time an Invader is Destroyed in target land this turn, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon → 10.5 |
 | 3 | **Bats Scout for Raids by Darkness** | 1 | Slow | Moon, Air, Animal | For each [[Dahan]], 1 Damage to [[Towns]]/[[Cities]]. **OR** 1 [[Fear]]. [[Gather]] up to… | elements air+animal+moon → 11.4 |
-| 4 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | elements air+animal+moon → 11.4 |
-| 5 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer. **OR** 2 Fear. | elements air+moon → 10.5 |
-| 6 | **Haunted by Primal Memories** | 1 | Fast | Moon, Air, Earth | 1 Fear. Defend 3. If Beasts are present, +2 Fear. | elements air+moon → 10.5 |
-| 7 | **Terror Turns to Madness** | 0 | Slow | Moon, Air, Water | If the Terror Level is... Terror Level 1: 3 Fear. Terror Level 2: 2 Fear or add 1 Strife.… | elements air+moon → 10.5 |
+| 4 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | elements air+animal+moon → 11.4 |
+| 5 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon → 10.5 |
+| 6 | **Haunted by Primal Memories** | 1 | Fast | Moon, Air, Earth | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Defend 3. If Beasts are present, +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon → 10.5 |
+| 7 | **Terror Turns to Madness** | 0 | Slow | Moon, Air, Water | If the Terror Level is... Terror Level 1: 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Terror Level 2: 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> or add 1 Strife.… | elements air+moon → 10.5 |
 | 8 | **Veil the Night's Hunt** | 1 | Fast | Moon, Air, Animal | For each Dahan present, choose a different Invader. 1 Damage to each of those Invaders. *… | elements air+animal+moon → 11.4 |
-| 9 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer/Town. | elements air+moon → 10.5 |
-| 10 | **Land of Haunts and Embers** | 0 | Fast | Moon, Fire, Air | 2 Fear. Push up to 2 Explorers/Towns. If Blight is present, 2 Fear and Push up to 2 Explo… | elements air+moon → 10.5 |
+| 9 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. | elements air+moon → 10.5 |
+| 10 | **Land of Haunts and Embers** | 0 | Fast | Moon, Fire, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns. If Blight is present, 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Push up to 2 Explo… | elements air+moon → 10.5 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Sleep and Never Waken** | 3 | Fast | Moon, Air, Earth, Animal | Invaders skip all Actions in target land. 1 Fear per 2 Explorers this Power Removes. Remo… | elements air+animal+moon → 11.4 |
-| 2 | **Terrifying Nightmares** | 4 | Fast | Moon, Air | 2 Fear. Push up to 4 Explorers/Towns. | elements air+moon → 10.5 |
+| 1 | **Sleep and Never Waken** | 3 | Fast | Moon, Air, Earth, Animal | Invaders skip all Actions in target land. 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> this Power Removes. Remo… | elements air+animal+moon → 11.4 |
+| 2 | **Terrifying Nightmares** | 4 | Fast | Moon, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 4 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns. | elements air+moon → 10.5 |
 | 3 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+animal+moon → 11.4 |
 | 4 | **Weave Together the Fabric of Place** | 4 | Fast | Sun, Moon, Air, Water, Earth | Target land and a land adjacent to it become a single land for this turn. (It has the ter… | elements air+moon → 10.5 |
 | 5 | **Death Falls Gently from Open Blossoms** | 4 | Slow | Moon, Air, Plant | 4 Damage. If any Invaders remain, add 1 Disease. | elements air+moon → 10.5 |
@@ -216,12 +216,12 @@ Auto-derived from `data/references/wiki/bringer-of-dreams-and-nightmares.json`. 
 ### Innate Powers
 
 - **SPIRITS MAY YET DREAM** (Speed: Fast · Range: ? · Target: anyspirit)
-  - **L1** — 2 Moon + 2 Air: Turn any face down Fear Card face-up. (It's earned/resolved normally, but players can see what's coming)
-  - **L2** — 3 Moon: Target Spirit gains an element that they have at least 1 of.
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: Turn any face down Fear Card face-up. (It's earned/resolved normally, but players can see what's coming)
+  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon: Target Spirit gains an element that they have at least 1 of.
 - **NIGHT TERRORS** (Speed: Fast · Range: 0 · Target: invaders)
-  - **L1** — 1 Moon + 1 Air: 1 Fear.
-  - **L2** — 2 Moon + 1 Air + 1 Animal: +1 Fear.
-  - **L3** — 3 Moon + 2 Air + 1 Animal: +1 Fear.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.
+  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.
 
 ### Fast-phase element ceiling from Uniques
 
@@ -235,9 +235,9 @@ Fast innates resolve in Fast phase and can only see elements from **Fast cards p
 | Card | Cost | Speed | Range | Target | Elements | Effect |
 |------|------|-------|-------|--------|----------|--------|
 | **Call on Midnight's Dream** | 0 | Fast | 0 | Any Land | moon, animal | If target land has Dahan, gain a Major Power. If you Forget this Power, gain Energy equal to Dahan … |
-| **Dread Apparitions** | 2 | Fast | 1 | Land with 1 or more Invaders | moon, air | When Powers generate Fear in target land, Defend 1 per Fear. 1 Fear. (Fear from To Dream a Thousand… |
+| **Dread Apparitions** | 2 | Fast | 1 | Land with 1 or more Invaders | moon, air | When Powers generate Fear in target land, Defend 1 per Fear. 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. (Fear from To Dream a Thousand… |
 | **Dreams of the Dahan** | 0 | Fast | 2 | Any Land | moon, air | Gather up to 2 [[Dahan]]. **OR** If target land has [[Towns]]/[[Cities]], 1 [[Fear]] for each [[Dah… |
-| **Predatory Nightmares** | 2 | Slow | 1, from your Sacred Site | Land with 1 or more Invaders | moon, fire, earth, animal | 2 Damage. Push up to 2 Dahan. (When your Powers would Destroy Invaders, instead they generate Fear … |
+| **Predatory Nightmares** | 2 | Slow | 1, from your Sacred Site | Land with 1 or more Invaders | moon, fire, earth, animal | 2 Damage. Push up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. (When your Powers would Destroy Invaders, instead they generate Fear … |
 
 ### Invader phase by turn (base deck)
 

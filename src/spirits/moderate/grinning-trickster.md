@@ -64,8 +64,8 @@ A REAL FLAIR FOR DISCORD After one of your Powers adds Strife in a land, you may
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Moon + 1 Fire + 2 Air | Discard Minor Powers from the deck until you get one that targets a land. Use its text effects on target land immediately, ignoring normal Range/Targeting restrictions. All "up to" instructions must be used at max. value. Treat all "OR"s as "AND"s. (It is not considered a card of yours or a card in play. Its effects are treated as performed by this Power, as if its text were copied here.) |
-| 2 | 2 Moon + 1 Fire + 2 Air | You may Forget a Power Card to gain the just-used Power Card (to hand) and 1 Energy. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Discard Minor Powers from the deck until you get one that targets a land. Use its text effects on target land immediately, ignoring normal Range/Targeting restrictions. All "up to" instructions must be used at max. value. Treat all "OR"s as "AND"s. (It is not considered a card of yours or a card in play. Its effects are treated as performed by this Power, as if its text were copied here.) |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | You may Forget a Power Card to gain the just-used Power Card (to hand) and 1 Energy. |
 
 
 ### Innate: WHY DON'T YOU AND THEM FIGHT
@@ -74,10 +74,10 @@ A REAL FLAIR FOR DISCORD After one of your Powers adds Strife in a land, you may
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 3 Moon | This Power may be Slow. |
-| 2 | 3 Air | Add 1 Strife. |
-| 3 | 3 Sun + 3 Fire | 1 Invader and 1 Dahan deal Damage to each other. |
-| 4 | 3 Animal | If target land has Beast, 2 Damage. Otherwise, you may Gather 1 Beast. |
+| 1 | 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon | This Power may be Slow. |
+| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Add 1 Strife. |
+| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire | 1 Invader and 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> deal Damage to each other. |
+| 4 | 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | If target land has Beast, 2 Damage. Otherwise, you may Gather 1 Beast. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -90,17 +90,17 @@ A REAL FLAIR FOR DISCORD After one of your Powers adds Strife in a land, you may
 #### Incite the Mob
 
 - **1 Energy · Slow · Range 1 · Land with 1 or more Invaders · Moon, Fire, Air, Animal**
-- *1 Invader with Strife deals Damage to other Invaders (not to each Invader). 1 Fear per Invader this Power Destroyed.*
+- *1 Invader with Strife deals Damage to other Invaders (not to each Invader). 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Invader this Power Destroyed.*
 
 #### Overenthusiastic Arson
 
 - **1 Energy · Fast · Range 1 · Any Land · Fire, Air**
-- *Destroy 1 Town. Discard the top card of the Minor Power Deck. If it provides Fire: 1 Fear, 2 Damage, and add 1 Blight.*
+- *Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. Discard the top card of the Minor Power Deck. If it provides Fire: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">, 2 Damage, and add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">.*
 
 #### Unexpected Tigers
 
 - **0 Energy · Slow · Range 1 · Any Land · Moon, Fire, Animal**
-- *1 Fear if Invaders are present. If you can gather 1 Beasts, do so, then push 1 Explorer. Otherwise, add 1 Beasts.*
+- *1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if Invaders are present. If you can gather 1 Beasts, do so, then push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Otherwise, add 1 Beasts.*
 
 ## Card Priority Ratings
 
@@ -125,16 +125,16 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer/Town. | elements air+fire+moon → 12.0 |
-| 2 | **Land of Haunts and Embers** | 0 | Fast | Moon, Fire, Air | 2 Fear. Push up to 2 Explorers/Towns. If Blight is present, 2 Fear and Push up to 2 Explo… | elements air+fire+moon → 12.0 |
-| 3 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage. | elements air+moon+sun → 10.5 |
+| 1 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. | elements air+fire+moon → 12.0 |
+| 2 | **Land of Haunts and Embers** | 0 | Fast | Moon, Fire, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns. If Blight is present, 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Push up to 2 Explo… | elements air+fire+moon → 12.0 |
+| 3 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | elements air+moon+sun → 10.5 |
 | 4 | **Veil the Night's Hunt** | 1 | Fast | Moon, Air, Animal | For each Dahan present, choose a different Invader. 1 Damage to each of those Invaders. *… | elements air+animal+moon → 10.5 |
-| 5 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear. The next time an Invader is Destroyed in target land this turn, 1 Fear. | elements air+moon+sun → 10.5 |
+| 5 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. The next time an Invader is Destroyed in target land this turn, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon+sun → 10.5 |
 | 6 | **Bats Scout for Raids by Darkness** | 1 | Slow | Moon, Air, Animal | For each [[Dahan]], 1 Damage to [[Towns]]/[[Cities]]. **OR** 1 [[Fear]]. [[Gather]] up to… | elements air+animal+moon → 10.5 |
-| 7 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer. **OR** 2 Fear. | elements air+moon+sun → 10.5 |
-| 8 | **Entrancing Apparitions** | 1 | Fast | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers. | elements air+moon → 9.6 |
-| 9 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer/Town/Dahan. 2 Fear. If target land has any Beasts, 1 Fear. | elements air+animal+moon → 10.5 |
-| 10 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | elements air+animal+moon → 10.5 |
+| 7 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon+sun → 10.5 |
+| 8 | **Entrancing Apparitions** | 1 | Fast | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+moon → 9.6 |
+| 9 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town/Dahan. 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land has any Beasts, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+animal+moon → 10.5 |
+| 10 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | elements air+animal+moon → 10.5 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
@@ -143,8 +143,8 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 | 1 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+animal+fire+moon+sun → 13.8 |
 | 2 | **Transform to a Murderous Darkness** | 6 | Slow | Moon, Fire, Air, Water, Plant | Target Spirit may choose one of their Sacred Site. In that land: Replace all their Presen… | elements air+fire+moon → 12.0 |
 | 3 | **Weave Together the Fabric of Place** | 4 | Fast | Sun, Moon, Air, Water, Earth | Target land and a land adjacent to it become a single land for this turn. (It has the ter… | elements air+moon+sun → 10.5 |
-| 4 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+moon+sun → 10.5 |
-| 5 | **Sleep and Never Waken** | 3 | Fast | Moon, Air, Earth, Animal | Invaders skip all Actions in target land. 1 Fear per 2 Explorers this Power Removes. Remo… | elements air+animal+moon → 10.5 |
+| 4 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+moon+sun → 10.5 |
+| 5 | **Sleep and Never Waken** | 3 | Fast | Moon, Air, Earth, Animal | Invaders skip all Actions in target land. 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> this Power Removes. Remo… | elements air+animal+moon → 10.5 |
 
 ### HoSI Beginner Deck Bundle — for reference only
 
@@ -217,29 +217,29 @@ Auto-derived from `data/references/wiki/grinning-trickster.json`. This section s
 ### Innate Powers
 
 - **LET'S SEE WHAT HAPPENS** (Speed: Fast · Range: 1 · Target: invaders)
-  - **L1** — 1 Moon + 1 Fire + 2 Air: Discard Minor Powers from the deck until you get one that targets a land. Use its text effects on target land immediately, ignoring normal Range/Targeting restrictions. All "up to" instructions must be used at max. value. Treat all "OR"s as "AND"s. (It is not considered a card of yours or a card in play. Its effects are treated as performed by this Power, as if its text were copied here.)
-  - **L2** — 2 Moon + 1 Fire + 2 Air: You may Forget a Power Card to gain the just-used Power Card (to hand) and 1 Energy.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: Discard Minor Powers from the deck until you get one that targets a land. Use its text effects on target land immediately, ignoring normal Range/Targeting restrictions. All "up to" instructions must be used at max. value. Treat all "OR"s as "AND"s. (It is not considered a card of yours or a card in play. Its effects are treated as performed by this Power, as if its text were copied here.)
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: You may Forget a Power Card to gain the just-used Power Card (to hand) and 1 Energy.
 - **WHY DON'T YOU AND THEM FIGHT** (Speed: Fast · Range: 0 · Target: invaders)
-  - **L1** — 3 Moon: This Power may be Slow.
-  - **L2** — 3 Air: Add 1 Strife.
-  - **L3** — 3 Sun + 3 Fire: 1 Invader and 1 Dahan deal Damage to each other.
-  - **L4** — 3 Animal: If target land has Beast, 2 Damage. Otherwise, you may Gather 1 Beast.
+  - **L1** — 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon: This Power may be Slow.
+  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: Add 1 Strife.
+  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire: 1 Invader and 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> deal Damage to each other.
+  - **L4** — 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: If target land has Beast, 2 Damage. Otherwise, you may Gather 1 Beast.
 
 ### Fast-phase element ceiling from Uniques
 
 Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
 
 - Fast-phase Unique elements: **Fire** ×1, **Air** ×1
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 1 Moon, Uniques give 0; need 2 Air, Uniques give 1. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon, Uniques give 0; need 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air, Uniques give 1. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
 
 ### Unique Power Cards
 
 | Card | Cost | Speed | Range | Target | Elements | Effect |
 |------|------|-------|-------|--------|----------|--------|
 | **Impersonate Authority** | 0 | Slow | 1 | Any Land | sun, air, animal | Add 1 Strife. |
-| **Incite the Mob** | 1 | Slow | 1 | Land with 1 or more Invaders | moon, fire, air, animal | 1 Invader with Strife deals Damage to other Invaders (not to each Invader). 1 Fear per Invader this… |
-| **Overenthusiastic Arson** | 1 | Fast | 1 | Any Land | fire, air | Destroy 1 Town. Discard the top card of the Minor Power Deck. If it provides Fire: 1 Fear, 2 Damage… |
-| **Unexpected Tigers** | 0 | Slow | 1 | Any Land | moon, fire, animal | 1 Fear if Invaders are present. If you can gather 1 Beasts, do so, then push 1 Explorer. Otherwise,… |
+| **Incite the Mob** | 1 | Slow | 1 | Land with 1 or more Invaders | moon, fire, air, animal | 1 Invader with Strife deals Damage to other Invaders (not to each Invader). 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Invader this… |
+| **Overenthusiastic Arson** | 1 | Fast | 1 | Any Land | fire, air | Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. Discard the top card of the Minor Power Deck. If it provides Fire: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">, 2 Damage… |
+| **Unexpected Tigers** | 0 | Slow | 1 | Any Land | moon, fire, animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if Invaders are present. If you can gather 1 Beasts, do so, then push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Otherwise,… |
 
 ### Invader phase by turn (base deck)
 

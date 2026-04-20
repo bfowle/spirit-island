@@ -64,9 +64,9 @@ CHOKE THE LAND WITH GREEN Whenever Invaders would Ravage or Build in a land with
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Moon + 2 Plant | 1 Damage to 1 Town / City. |
-| 2 | 2 Moon + 3 Plant | Repeat this Power. |
-| 3 | 3 Moon + 4 Plant | Repeat this Power again. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | 1 Damage to 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> / City. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Repeat this Power. |
+| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 4 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Repeat this Power again. |
 
 
 ### Innate: ALL-ENVELOPING GREEN
@@ -75,9 +75,9 @@ CHOKE THE LAND WITH GREEN Whenever Invaders would Ravage or Build in a land with
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Water + 3 Plant | Defend 2. |
-| 2 | 2 Water + 4 Plant | Instead, Defend 4. |
-| 3 | 3 Water + 1 Earth + 5 Plant | Also, remove 1 Blight. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Defend 2. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 4 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Instead, Defend 4. |
+| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 5 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Also, remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -85,7 +85,7 @@ CHOKE THE LAND WITH GREEN Whenever Invaders would Ravage or Build in a land with
 #### Fields Choked with Growth
 
 - **0 Energy · Slow · Range 1 · Any Land · Sun, Water, Plant**
-- *Push 1 Town. **OR** Push 3 Dahan.*
+- *Push 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. **OR** Push 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.*
 
 #### Gift of Proliferation
 
@@ -95,12 +95,12 @@ CHOKE THE LAND WITH GREEN Whenever Invaders would Ravage or Build in a land with
 #### Overgrow in a Night
 
 - **2 Energy · Fast · Range 1 · Any Land · Moon, Plant**
-- *Add 1 Presence. **OR** If target land has your Presence and Invaders, 3 Fear.*
+- *Add 1 Presence. **OR** If target land has your Presence and Invaders, 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.*
 
 #### Stem the Flow of Fresh Water
 
 - **0 Energy · Slow · Range 1, from your Sacred Site · Any Land · Water, Plant**
-- *1 Damage to 1 Town/City. If target land is a Mountain or Sands, instead, 1 Damage to each Town/City.*
+- *1 Damage to 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">/City. If target land is a Mountain or Sands, instead, 1 Damage to each Town/City.*
 
 ## Card Priority Ratings
 
@@ -125,16 +125,16 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Roiling Bog and Snagging Thorn** | 0 | Fast | Moon, Fire, Water, Plant | 1 Fear. Isolate. Defend 2.</br>1 Dahan does not participate in Ravage.</br>(Check when ra… | elements moon+plant+water → 17.4 |
+| 1 | **Roiling Bog and Snagging Thorn** | 0 | Fast | Moon, Fire, Water, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Isolate. Defend 2.</br>1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> does not participate in Ravage.</br>(Check when ra… | elements moon+plant+water → 17.4 |
 | 2 | **Gift of Power** | 0 | Slow | Moon, Water, Earth, Plant | Target Spirit gains a Minor Power Card. | elements earth+moon+plant+water → 17.7 |
 | 3 | **Thriving Chokefungus** | 1 | Slow | Moon, Water, Plant | Add 1 Disease and 1 Badlands. | elements moon+plant+water → 17.4 |
-| 4 | **Animated Wrackroot** | 0 | Slow | Moon, Fire, Plant | 1 Fear. Destroy 1 Explorer. **OR** Add 1 Wilds. | elements moon+plant → 14.4 |
-| 5 | **Razor-Sharp Undergrowth** | 1 | Fast | Moon, Plant | Destroy 1 Explorer and 1 Dahan. Add 1 Wilds. Defend 2. | elements moon+plant → 14.4 |
-| 6 | **Flow Downriver, Blow Downwind** | 0 | Slow | Air, Water, Plant | Push up to 1 Blight/Explorer/Town. | elements plant+water → 14.4 |
-| 7 | **Shadows of the Burning Forest** | 0 | Slow | Moon, Fire, Plant | 2 Fear. If target land is a Mountain or Jungle, Push 1 Explorer and 1 Town. | elements moon+plant → 14.4 |
-| 8 | **Dark and Tangled Woods** | 1 | Fast | Moon, Earth, Plant | 2 Fear. If target land is a Mountain or Jungle, Defend 3. | elements earth+moon+plant → 14.7 |
-| 9 | **Favor of the Sun and Star-lit Dark** | 1 | Fast | Sun, Moon, Plant | Defend 4. Push up to 1 Blight. | elements moon+plant → 14.4 |
-| 10 | **Poisoned Dew** | 1 | Slow | Fire, Water, Plant | Destroy 1 Explorer. If target land is a Jungle or a Wetland, Destroy all Explorer. | elements plant+water → 14.4 |
+| 4 | **Animated Wrackroot** | 0 | Slow | Moon, Fire, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** Add 1 Wilds. | elements moon+plant → 14.4 |
+| 5 | **Razor-Sharp Undergrowth** | 1 | Fast | Moon, Plant | Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Add 1 Wilds. Defend 2. | elements moon+plant → 14.4 |
+| 6 | **Flow Downriver, Blow Downwind** | 0 | Slow | Air, Water, Plant | Push up to 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">/Explorer/Town. | elements plant+water → 14.4 |
+| 7 | **Shadows of the Burning Forest** | 0 | Slow | Moon, Fire, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. | elements moon+plant → 14.4 |
+| 8 | **Dark and Tangled Woods** | 1 | Fast | Moon, Earth, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Defend 3. | elements earth+moon+plant → 14.7 |
+| 9 | **Favor of the Sun and Star-lit Dark** | 1 | Fast | Sun, Moon, Plant | Defend 4. Push up to 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements moon+plant → 14.4 |
+| 10 | **Poisoned Dew** | 1 | Slow | Fire, Water, Plant | Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. If target land is a Jungle or a Wetland, Destroy all Explorer. | elements plant+water → 14.4 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
@@ -144,7 +144,7 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 | 2 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements earth+moon+plant+water → 17.7 |
 | 3 | **Entwined Power** | 2 | Fast | Moon, Water, Plant | You and target Spirit may use each other's Presence to target Powers (only). Target Spiri… | elements moon+plant+water → 17.4 |
 | 4 | **Transformative Sacrifice** | 3 | Fast | Moon, Fire, Water, Plant | Target Spirit may Remove up to 3 Presence (from anywhere on the island). Then for each re… | elements moon+plant+water → 17.4 |
-| 5 | **Dream of the Untouched Land** | 6 | Fast | Moon, Water, Earth, Plant, Animal | Remove up to 3 Blight and up to 3 Health worth of Invaders. | elements earth+moon+plant+water → 17.7 |
+| 5 | **Dream of the Untouched Land** | 6 | Fast | Moon, Water, Earth, Plant, Animal | Remove up to 3 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> and up to 3 Health worth of Invaders. | elements earth+moon+plant+water → 17.7 |
 
 ### HoSI Beginner Deck Bundle — for reference only
 
@@ -217,13 +217,13 @@ Auto-derived from `data/references/wiki/a-spread-of-rampant-green.json`. This se
 ### Innate Powers
 
 - **CREEPERS TEAR INTO MORTAR** (Speed: Slow · Range: 0 · Target: any)
-  - **L1** — 1 Moon + 2 Plant: 1 Damage to 1 Town / City.
-  - **L2** — 2 Moon + 3 Plant: Repeat this Power.
-  - **L3** — 3 Moon + 4 Plant: Repeat this Power again.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: 1 Damage to 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> / City.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Repeat this Power.
+  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 4 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Repeat this Power again.
 - **ALL-ENVELOPING GREEN** (Speed: Fast · Range: 1 · Target: any)
-  - **L1** — 1 Water + 3 Plant: Defend 2.
-  - **L2** — 2 Water + 4 Plant: Instead, Defend 4.
-  - **L3** — 3 Water + 1 Earth + 5 Plant: Also, remove 1 Blight.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Defend 2.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 4 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Instead, Defend 4.
+  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 5 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Also, remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">.
 
 ### Fast-phase element ceiling from Uniques
 
@@ -235,10 +235,10 @@ Fast innates resolve in Fast phase and can only see elements from **Fast cards p
 
 | Card | Cost | Speed | Range | Target | Elements | Effect |
 |------|------|-------|-------|--------|----------|--------|
-| **Fields Choked with Growth** | 0 | Slow | 1 | Any Land | sun, water, plant | Push 1 Town. **OR** Push 3 Dahan. |
+| **Fields Choked with Growth** | 0 | Slow | 1 | Any Land | sun, water, plant | Push 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. **OR** Push 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
 | **Gift of Proliferation** | 1 | Fast | No Range | Another Spirit | moon, plant | Target Spirit adds 1 Presence up to 1 Range from their Presence. |
-| **Overgrow in a Night** | 2 | Fast | 1 | Any Land | moon, plant | Add 1 Presence. **OR** If target land has your Presence and Invaders, 3 Fear. |
-| **Stem the Flow of Fresh Water** | 0 | Slow | 1, from your Sacred Site | Any Land | water, plant | 1 Damage to 1 Town/City. If target land is a Mountain or Sands, instead, 1 Damage to each Town/City. |
+| **Overgrow in a Night** | 2 | Fast | 1 | Any Land | moon, plant | Add 1 Presence. **OR** If target land has your Presence and Invaders, 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
+| **Stem the Flow of Fresh Water** | 0 | Slow | 1, from your Sacred Site | Any Land | water, plant | 1 Damage to 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">/City. If target land is a Mountain or Sands, instead, 1 Damage to each Town/City. |
 
 ### Invader phase by turn (base deck)
 

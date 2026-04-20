@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { Land } from '../types'
+import type { Land, Spirit } from '../types'
 import { UNIT_KEYS, type UnitKey } from '../types'
 import Icon from './Icon.vue'
+import PresenceDisc from './PresenceDisc.vue'
 
-const props = defineProps<{ modelValue: Land }>()
+const props = withDefaults(
+  defineProps<{
+    modelValue: Land
+    landId?: string
+    boardId?: string
+    spirits?: Record<string, Spirit>
+  }>(),
+  {},
+)
+
+const emit = defineEmits<{ 'bump-presence': [slug: string, delta: number] }>()
 
 function bump(key: UnitKey, delta: number) {
   const current = (props.modelValue[key] as number | undefined) ?? 0
@@ -21,6 +32,24 @@ const UNIT_META: Record<UnitKey, { label: string; icon?: string }> = {
 }
 
 const tokens = computed(() => props.modelValue.tokens ?? [])
+
+interface SpiritPresenceRow {
+  slug: string
+  count: number
+  color?: string
+  style: 'glass' | 'wood' | 'solid'
+}
+
+const spiritPresenceRows = computed<SpiritPresenceRow[]>(() => {
+  if (!props.spirits || !props.boardId || !props.landId) return []
+  const key = `${props.boardId}.${props.landId}`
+  return Object.entries(props.spirits).map(([slug, spirit]) => ({
+    slug,
+    count: spirit.presence_on_board?.[key] ?? 0,
+    color: spirit.disc_color,
+    style: spirit.disc_style ?? 'glass',
+  }))
+})
 </script>
 
 <template>
@@ -44,6 +73,19 @@ const tokens = computed(() => props.modelValue.tokens ?? [])
           <button class="step" @click="bump(k, -1)" aria-label="decrement">−</button>
           <span class="val">{{ (modelValue[k] as number) ?? 0 }}</span>
           <button class="step" @click="bump(k, 1)" aria-label="increment">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="spiritPresenceRows.length" class="presence-rows">
+      <div class="presence-heading">Presence</div>
+      <div v-for="row in spiritPresenceRows" :key="row.slug" class="presence-row-item">
+        <PresenceDisc :slug="row.slug" :color="row.color" :style="row.style" :size="14" />
+        <span class="presence-spirit">{{ row.slug }}</span>
+        <div class="stepper">
+          <button class="step" @click="emit('bump-presence', row.slug, -1)" aria-label="decrement">−</button>
+          <span class="val">{{ row.count }}</span>
+          <button class="step" @click="emit('bump-presence', row.slug, 1)" aria-label="increment">+</button>
         </div>
       </div>
     </div>
@@ -137,5 +179,38 @@ const tokens = computed(() => props.modelValue.tokens ?? [])
   font-weight: var(--fw-semibold);
   font-size: var(--fs-sm);
   color: var(--text-primary);
+}
+
+.presence-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--sp-2);
+  padding-top: var(--sp-2);
+  border-top: 1px dashed var(--border-subtle);
+}
+.presence-heading {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: var(--fw-medium);
+}
+.presence-row-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--sp-2);
+  align-items: center;
+  padding: 2px var(--sp-1);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-xs);
+}
+.presence-row-item:hover { background: var(--bg-hover); }
+.presence-spirit {
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

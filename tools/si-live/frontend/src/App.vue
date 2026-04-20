@@ -9,6 +9,7 @@ import StatsPanel from './components/StatsPanel.vue'
 import SetupWizard from './components/SetupWizard.vue'
 import SavedGames from './components/SavedGames.vue'
 import TurnController from './components/TurnController.vue'
+import InvaderDeck from './components/InvaderDeck.vue'
 
 const state = ref<GameState | null>(null)
 const error = ref<string | null>(null)
@@ -93,6 +94,10 @@ function humanSlug(slug: string): string {
     </section>
 
     <section class="section">
+      <InvaderDeck v-model="state.invader_deck" />
+    </section>
+
+    <section class="section">
       <div class="section-hdr">
         <h2>Stats</h2>
       </div>
@@ -103,7 +108,7 @@ function humanSlug(slug: string): string {
       <div class="section-hdr">
         <h2>Board {{ bid }}</h2>
       </div>
-      <Board v-model="state.board_state[bid]" :board-id="bid" />
+      <Board v-model="state.board_state[bid]" :board-id="bid" :spirits="state.spirits" />
     </section>
 
     <section v-for="slug in Object.keys(state.spirits)" :key="slug" class="section">

@@ -22,6 +22,7 @@ export interface Board {
 export interface Spirit {
   energy: number
   card_plays: number
+  /** Keys are "{boardId}.{landId}" (e.g., "A.6"). Values are presence count. */
   presence_on_board?: Record<string, number>
   presence_on_track_energy?: string[]
   presence_on_track_cardplay?: string[]
@@ -31,6 +32,16 @@ export interface Spirit {
   forgotten?: string[]
   played_this_turn?: string[]
   growth_options?: unknown[]
+  /** Per-spirit disc customization (drives the color + style used everywhere
+   *  this spirit's presence is rendered). */
+  disc_color?: string
+  disc_style?: 'glass' | 'wood' | 'solid'
+}
+
+export interface SpiritDiscInfo {
+  slug: string
+  color: string
+  style: 'glass' | 'wood' | 'solid'
 }
 
 export interface Pools {
@@ -51,6 +62,20 @@ export interface Setup {
   expansions_active: string[]
 }
 
+export interface InvaderCard {
+  stage: number
+  terrain: string
+  notes?: string
+}
+
+export interface InvaderDeckState {
+  ravage: InvaderCard | null
+  build: InvaderCard | null
+  explore: InvaderCard | null
+  upcoming: InvaderCard[]
+  discarded: number
+}
+
 export interface GameState {
   version: string
   round: number
@@ -60,6 +85,7 @@ export interface GameState {
   spirits: Record<string, Spirit>
   board_state: Record<string, Board>
   log: unknown[]
+  invader_deck?: InvaderDeckState
 }
 
 export const TERRAINS = ['mountain', 'wetland', 'jungle', 'sands'] as const

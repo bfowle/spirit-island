@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-A STIFF WIND AT THEIR BACKS After you Add Presence during Growth, Push up to 1 Explorer/Dahan from that land. (Let other players know this is due to your Special Rule, so they know you're still in the Spirit Phase and not using a Fast power.)
+A STIFF WIND AT THEIR BACKS After you Add Presence during Growth, Push up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Dahan from that land. (Let other players know this is due to your Special Rule, so they know you're still in the Spirit Phase and not using a Fast power.)
 
 ### Innate: VIOLENT WINDSTORMS
 
@@ -63,10 +63,10 @@ A STIFF WIND AT THEIR BACKS After you Add Presence during Growth, Push up to 1 E
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Sun + 2 Air | Push up to 1 Explorer. |
-| 2 | 2 Sun + 3 Air | 1 Fear. Push up to 2 Explorer/Town. |
-| 3 | 2 Sun + 4 Air | For each Invader Pushed by this Power, 1 Damage in the land it was Pushed to. |
-| 4 | 3 Sun + 5 Air | 4 Damage (in target land). |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Push up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 2 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. |
+| 3 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | For each Invader Pushed by this Power, 1 Damage in the land it was Pushed to. |
+| 4 | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 5 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | 4 Damage (in target land). |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -89,14 +89,14 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage. | elements air+sun → 9.9 |
-| 2 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+sun → 9.9 |
-| 3 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer/Town per Dahan. **OR** Push 1 Dahan. | elements air+sun → 9.9 |
-| 4 | **Enticing Splendor** | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer/Town. **OR** Gather up to 2 Dahan. | elements air+sun → 9.9 |
+| 1 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | elements air+sun → 9.9 |
+| 2 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+sun → 9.9 |
+| 3 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Dahan. **OR** Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+sun → 9.9 |
+| 4 | **Enticing Splendor** | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. **OR** Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+sun → 9.9 |
 | 5 | **Birds Cry Warning** | 1 | Fast | Sun, Air, Animal | The next time Dahan would be Destroyed in target land, Destroy 2 fewer Dahan. **OR** Push… | elements air+sun → 9.9 |
-| 6 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer. **OR** 2 Fear. | elements air+sun → 9.9 |
+| 6 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+sun → 9.9 |
 | 7 | **Purifying Flame** | 1 | Slow | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blig… | elements air+sun → 9.9 |
-| 8 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear. The next time an Invader is Destroyed in target land this turn, 1 Fear. | elements air+sun → 9.9 |
+| 8 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. The next time an Invader is Destroyed in target land this turn, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+sun → 9.9 |
 | 9 | **Reaching Grasp** | 0 | Fast | Sun, Air, Water | Target Spirit gets +2 Range with all their Powers. | elements air+sun → 9.9 |
 | 10 | **Spur on with Words of Fire** | 1 | Fast | Sun, Fire, Air | If you target a Spirit other than yourself, they gain +1 Energy. Target Spirit may immedi… | elements air+sun → 9.9 |
 
@@ -106,9 +106,9 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 |---|------|------|-------|----------|--------------------|---------------|
 | 1 | **Sweep into the Sea** | 4 | Slow | Sun, Air, Water | Push all Explorers and Towns one land towards the nearest Ocean. **OR** If target land is… | elements air+sun → 9.9 |
 | 2 | **Voice of Command** | 3 | Fast | Sun, Air | 1 Damage per Dahan/Explorer, to Towns/Cities only. Defend 2. During Ravage Actions, Explo… | elements air+sun → 9.9 |
-| 3 | **Irresistible Call** | 6 | Fast | Sun, Air, Plant | Gather 5 Towns, 5 Dahan, 5 Beasts, and 15 Explorers. | elements air+sun → 9.9 |
-| 4 | **Wrap in Wings of Sunlight** | 3 | Fast | Sun, Air, Animal | Move up to 5 Dahan to any land (including back into target land). If you moved at least 1… | elements air+sun → 9.9 |
-| 5 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+sun → 9.9 |
+| 3 | **Irresistible Call** | 6 | Fast | Sun, Air, Plant | Gather 5 Towns <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">, 5 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">, 5 Beasts, and 15 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+sun → 9.9 |
+| 4 | **Wrap in Wings of Sunlight** | 3 | Fast | Sun, Air, Animal | Move up to 5 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> to any land (including back into target land). If you moved at least 1… | elements air+sun → 9.9 |
+| 5 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+sun → 9.9 |
 
 ### HoSI Beginner Deck Bundle — for reference only
 
@@ -122,9 +122,9 @@ These are the cards shipped with Sun-Bright Whirlwind in the **Horizons of Spiri
 | **Elemental Boon** | Minor | 1 | Fast |  | Target Spirit gains 3 different Elements of their choice. If you target another Spirit, y… |
 | **Reaching Grasp** | Minor | 0 | Fast | Sun, Air, Water | Target Spirit gets +2 Range with all their Powers. |
 | **Powerstorm** | Major | 3 | Fast | Sun, Fire, Air | Target Spirit gains 3 Energy. Once this turn, target Spirit may Repeat a Power Card by pa… |
-| **Enticing Splendor** | Minor | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer/Town. **OR** Gather up to 2 Dahan. |
-| **Wrap in Wings of Sunlight** | Major | 3 | Fast | Sun, Air, Animal | Move up to 5 Dahan to any land (including back into target land). If you moved at least 1… |
-| **Call to Isolation** | Minor | 0 | Fast | Sun, Air, Animal | Push 1 Explorer/Town per Dahan. **OR** Push 1 Dahan. |
+| **Enticing Splendor** | Minor | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. **OR** Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
+| **Wrap in Wings of Sunlight** | Major | 3 | Fast | Sun, Air, Animal | Move up to 5 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> to any land (including back into target land). If you moved at least 1… |
+| **Call to Isolation** | Minor | 0 | Fast | Sun, Air, Animal | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Dahan. **OR** Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
 
 ### Cards to Avoid (anti-synergy flagged)
 
@@ -186,10 +186,10 @@ Auto-derived from `data/references/wiki/sun-bright-whirlwind.json`. This section
 ### Innate Powers
 
 - **VIOLENT WINDSTORMS** (Speed: Slow · Range: 1 · Target: any)
-  - **L1** — 1 Sun + 2 Air: Push up to 1 Explorer.
-  - **L2** — 2 Sun + 3 Air: 1 Fear. Push up to 2 Explorer/Town.
-  - **L3** — 2 Sun + 4 Air: For each Invader Pushed by this Power, 1 Damage in the land it was Pushed to.
-  - **L4** — 3 Sun + 5 Air: 4 Damage (in target land).
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: Push up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 2 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town.
+  - **L3** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: For each Invader Pushed by this Power, 1 Damage in the land it was Pushed to.
+  - **L4** — 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 5 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: 4 Damage (in target land).
 
 ### Fast-phase element ceiling from Uniques
 

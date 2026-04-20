@@ -384,11 +384,34 @@ DEFAULT_TARGETS = [
     REPO / "src/spirits/low/shadows-flicker-like-flame.md",
 ]
 
+AUTHORED_CHAPTERS = [
+    # Low complexity
+    REPO / "src/spirits/low/river-surges-in-sunlight.md",
+    REPO / "src/spirits/low/lightning-swift-strike.md",
+    REPO / "src/spirits/low/shadows-flicker-like-flame.md",
+    REPO / "src/spirits/low/vital-strength-of-the-earth.md",
+    REPO / "src/spirits/low/ocean-hungry-grasp.md",
+    REPO / "src/spirits/low/a-spread-of-rampant-green.md",
+    REPO / "src/spirits/low/thunderspeaker.md",
+    REPO / "src/spirits/low/bringer-of-dreams-and-nightmares.md",
+    REPO / "src/spirits/low/rising-heat-of-stone-and-sand.md",
+    REPO / "src/spirits/low/sun-bright-whirlwind.md",
+    REPO / "src/spirits/low/devouring-teeth-lurk-underfoot.md",
+    REPO / "src/spirits/low/eyes-watch-from-the-trees.md",
+    REPO / "src/spirits/low/fathomless-mud-of-the-swamp.md",
+    # Moderate
+    REPO / "src/spirits/moderate/keeper-of-the-forbidden-wilds.md",
+    REPO / "src/spirits/moderate/heart-of-the-wildfire.md",
+    REPO / "src/spirits/moderate/serpent-slumbering-beneath-the-island.md",
+    REPO / "src/spirits/moderate/grinning-trickster.md",
+]
+
 
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("targets", nargs="*", help="Specific markdown files to process")
     p.add_argument("--default-set", action="store_true", help="Apply to the Shadows chapter")
+    p.add_argument("--all-authored", action="store_true", help="Apply to all 17 authored spirit chapters")
     p.add_argument("--snapshots", action="store_true", help="Also inject Shadows Turn snapshots")
     p.add_argument("--dry-run", action="store_true")
     args = p.parse_args()
@@ -396,8 +419,10 @@ def main():
     targets = [Path(t) for t in args.targets]
     if args.default_set:
         targets.extend(DEFAULT_TARGETS)
+    if args.all_authored:
+        targets.extend(AUTHORED_CHAPTERS)
     if not targets:
-        p.error("no targets; pass filenames or --default-set")
+        p.error("no targets; pass filenames, --default-set, or --all-authored")
 
     total_changes = 0
     for t in targets:

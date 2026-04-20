@@ -63,9 +63,9 @@ OCEAN IN PLAY You may add/move Presence into Oceans, but may not add/move Presen
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Moon + 1 Air + 2 Water | 1 Fear. |
-| 2 | 2 Moon + 1 Air + 3 Water | +1 Fear. |
-| 3 | 3 Moon + 2 Air + 4 Water | +2 Fear. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
+| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
 
 
 ### Innate: OCEAN BREAKS THE SHORE
@@ -74,9 +74,9 @@ OCEAN IN PLAY You may add/move Presence into Oceans, but may not add/move Presen
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Water + 1 Earth | Drown 1 Town. |
-| 2 | 3 Water + 2 Earth | You may instead Drown 1 City. |
-| 3 | 4 Water + 3 Earth | Also, Drown 1 Town / City. |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | Drown 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. |
+| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | You may instead Drown 1 City <img class="si" src="/spirit-island/theme/icons/unit-city.svg" alt="City">. |
+| 3 | 4 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | Also, Drown 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> / City. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -84,22 +84,22 @@ OCEAN IN PLAY You may add/move Presence into Oceans, but may not add/move Presen
 #### Call of the Deeps
 
 - **0 Energy · Fast · Range 0 · Coastal Land · Moon, Air, Water**
-- *Gather 1 Explorer. If target land is the Ocean, you may Gather another Explorer.*
+- *Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. If target land is the Ocean, you may Gather another Explorer.*
 
 #### Grasping Tide
 
 - **1 Energy · Fast · Range 1 · Coastal Land · Moon, Water**
-- *2 Fear. Defend 4.*
+- *2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Defend 4.*
 
 #### Swallow the Land-Dwellers
 
 - **0 Energy · Slow · Range 0 · Coastal Land · Water, Earth**
-- *Drown 1 Explorer, 1 Town, and 1 Dahan.*
+- *Drown 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">, 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">, and 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.*
 
 #### Tidal Boon
 
 - **1 Energy · Slow · Range No Range · Another Spirit · Moon, Water, Earth**
-- *Target Spirit gains 2 Energy and may Push 1 Town and up to 2 Dahan from one of their lands. If Dahan are pushed to your Ocean, you may move them to any Coastal land instead of Drowning them.*
+- *Target Spirit gains 2 Energy and may Push 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> and up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> from one of their lands. If Dahan are pushed to your Ocean, you may move them to any Coastal land instead of Drowning them.*
 
 ## Card Priority Ratings
 
@@ -124,15 +124,15 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Sucking Ooze** | 0 | Fast | Moon, Water, Earth | 2 Fear if Invaders are present. Isolate target land. | elements earth+moon+water → 15.6 |
+| 1 | **Sucking Ooze** | 0 | Fast | Moon, Water, Earth | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if Invaders are present. Isolate target land. | elements earth+moon+water → 15.6 |
 | 2 | **Infested Aquifers** | 1 | Slow | Moon, Water, Earth, Animal | If target land has any Disease, 1 Damage to each Invader. **OR** If target land is a Moun… | elements earth+moon+water → 15.6 |
-| 3 | **Pull Beneath the Hungry Earth** | 1 | Slow | Moon, Water, Earth | If your Presence is present, 1 Fear and 1 Damage. If target land is a Sands or Wetland, 1… | elements earth+moon+water → 15.6 |
-| 4 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage. | elements air+moon+water → 14.7 |
-| 5 | **Entrancing Apparitions** | 1 | Fast | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers. | elements air+moon+water → 14.7 |
+| 3 | **Pull Beneath the Hungry Earth** | 1 | Slow | Moon, Water, Earth | If your Presence is present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. If target land is a Sands or Wetland, 1… | elements earth+moon+water → 15.6 |
+| 4 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | elements air+moon+water → 14.7 |
+| 5 | **Entrancing Apparitions** | 1 | Fast | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+moon+water → 14.7 |
 | 6 | **Gift of Power** | 0 | Slow | Moon, Water, Earth, Plant | Target Spirit gains a Minor Power Card. | elements earth+moon+water → 15.6 |
-| 7 | **Steam Vents** | 1 | Fast | Fire, Air, Water, Earth | Destroy 1 Explorer. | elements air+earth+water → 14.7 |
-| 8 | **Call to Trade** | 1 | Fast | Air, Water, Earth, Plant | You may Gather 1 Dahan. If the Terror Level is 2 or lower, Gather 1 Town and the first Ra… | elements air+earth+water → 14.7 |
-| 9 | **Terror Turns to Madness** | 0 | Slow | Moon, Air, Water | If the Terror Level is... Terror Level 1: 3 Fear. Terror Level 2: 2 Fear or add 1 Strife.… | elements air+moon+water → 14.7 |
+| 7 | **Steam Vents** | 1 | Fast | Fire, Air, Water, Earth | Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+earth+water → 14.7 |
+| 8 | **Call to Trade** | 1 | Fast | Air, Water, Earth, Plant | You may Gather 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. If the Terror Level is 2 or lower, Gather 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> and the first Ra… | elements air+earth+water → 14.7 |
+| 9 | **Terror Turns to Madness** | 0 | Slow | Moon, Air, Water | If the Terror Level is... Terror Level 1: 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Terror Level 2: 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> or add 1 Strife.… | elements air+moon+water → 14.7 |
 | 10 | **Sky Stretches to Shore** | 1 | Fast | Sun, Air, Water, Earth | This turn, target Spirit may use 1 Slow Power as if it were Fast, or vice versa. Target S… | elements air+earth+water → 14.7 |
 
 ### Top 5 Major Draft Picks (from full pool)
@@ -142,8 +142,8 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 | 1 | **Weave Together the Fabric of Place** | 4 | Fast | Sun, Moon, Air, Water, Earth | Target land and a land adjacent to it become a single land for this turn. (It has the ter… | elements air+earth+moon+water → 17.7 |
 | 2 | **Bargain of Coursing Paths** | 2 | Fast | Moon, Air, Water, Earth | Bargain: 1 Presence now and -1 Energy/turn. Now: Mark both target land and another land w… | elements air+earth+moon+water → 17.7 |
 | 3 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+earth+moon+water → 17.7 |
-| 4 | **Melt Earth Into Quicksand** | 4 | Fast | Moon, Water, Earth | 1 Fear. 2 Damage. Isolate target land. After Invaders/Dahan are Moved into target land, D… | elements earth+moon+water → 15.6 |
-| 5 | **Mists of Oblivion** | 4 | Slow | Moon, Air, Water | 1 Fear per Town/City this Power Destroys (max. 4 Fear). 1 Damage to each Invader. | elements air+moon+water → 14.7 |
+| 4 | **Melt Earth Into Quicksand** | 4 | Fast | Moon, Water, Earth | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 2 Damage. Isolate target land. After Invaders/Dahan are Moved into target land, D… | elements earth+moon+water → 15.6 |
+| 5 | **Mists of Oblivion** | 4 | Slow | Moon, Air, Water | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Town/City this Power Destroys (max. 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">). 1 Damage to each Invader. | elements air+moon+water → 14.7 |
 
 ### HoSI Beginner Deck Bundle — for reference only
 
@@ -215,13 +215,13 @@ Auto-derived from `data/references/wiki/ocean-hungry-grasp.json`. This section s
 ### Innate Powers
 
 - **POUND SHIPS TO SPLINTERS** (Speed: Fast · Range: 0 · Target: coastal)
-  - **L1** — 1 Moon + 1 Air + 2 Water: 1 Fear.
-  - **L2** — 2 Moon + 1 Air + 3 Water: +1 Fear.
-  - **L3** — 3 Moon + 2 Air + 4 Water: +2 Fear.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.
+  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.
 - **OCEAN BREAKS THE SHORE** (Speed: Slow · Range: 0 · Target: coastal)
-  - **L1** — 2 Water + 1 Earth: Drown 1 Town.
-  - **L2** — 3 Water + 2 Earth: You may instead Drown 1 City.
-  - **L3** — 4 Water + 3 Earth: Also, Drown 1 Town / City.
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: Drown 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">.
+  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: You may instead Drown 1 City <img class="si" src="/spirit-island/theme/icons/unit-city.svg" alt="City">.
+  - **L3** — 4 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: Also, Drown 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> / City.
 
 ### Fast-phase element ceiling from Uniques
 
@@ -234,10 +234,10 @@ Fast innates resolve in Fast phase and can only see elements from **Fast cards p
 
 | Card | Cost | Speed | Range | Target | Elements | Effect |
 |------|------|-------|-------|--------|----------|--------|
-| **Call of the Deeps** | 0 | Fast | 0 | Coastal Land | moon, air, water | Gather 1 Explorer. If target land is the Ocean, you may Gather another Explorer. |
-| **Grasping Tide** | 1 | Fast | 1 | Coastal Land | moon, water | 2 Fear. Defend 4. |
-| **Swallow the Land-Dwellers** | 0 | Slow | 0 | Coastal Land | water, earth | Drown 1 Explorer, 1 Town, and 1 Dahan. |
-| **Tidal Boon** | 1 | Slow | No Range | Another Spirit | moon, water, earth | Target Spirit gains 2 Energy and may Push 1 Town and up to 2 Dahan from one of their lands. If Daha… |
+| **Call of the Deeps** | 0 | Fast | 0 | Coastal Land | moon, air, water | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. If target land is the Ocean, you may Gather another Explorer. |
+| **Grasping Tide** | 1 | Fast | 1 | Coastal Land | moon, water | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Defend 4. |
+| **Swallow the Land-Dwellers** | 0 | Slow | 0 | Coastal Land | water, earth | Drown 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">, 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">, and 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
+| **Tidal Boon** | 1 | Slow | No Range | Another Spirit | moon, water, earth | Target Spirit gains 2 Energy and may Push 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> and up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> from one of their lands. If Daha… |
 
 ### Invader phase by turn (base deck)
 

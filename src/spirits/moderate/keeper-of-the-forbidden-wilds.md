@@ -64,9 +64,9 @@ FORBIDDEN GROUND After you create a Sacred Site, Push all Dahan from that land. 
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Sun + 1 Fire + 2 Plant | 2 Damage. Destroy 1 Dahan. |
-| 2 | 2 Sun + 2 Fire + 3 Plant | +1 Damage per SunPlant you have. |
-| 3 | 4 Plant | Split this Power's Damage however desired between target land and another 1 of your lands. |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | 2 Damage. Destroy 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | +1 Damage per SunPlant you have. |
+| 3 | 4 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Split this Power's Damage however desired between target land and another 1 of your lands. |
 
 
 ### Innate: SPREADING WILDS
@@ -75,10 +75,10 @@ FORBIDDEN GROUND After you create a Sacred Site, Push all Dahan from that land. 
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Sun | Push 1 Explorer from target land per 2 Sun you have. |
-| 2 | 1 Plant | If target land has no Explorer, add 1 Wilds. |
-| 3 | 3 Plant | This Power has Range +1. |
-| 4 | 1 Air | This Power has Range +1. |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> from target land per 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun you have. |
+| 2 | 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | If target land has no Explorer, add 1 Wilds. |
+| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | This Power has Range +1. |
+| 4 | 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | This Power has Range +1. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -91,17 +91,17 @@ FORBIDDEN GROUND After you create a Sacred Site, Push all Dahan from that land. 
 #### Regrow from Roots
 
 - **1 Energy · Slow · Range 1 · Jungle or Wetland · Water, Earth, Plant**
-- *If there are 2 Blight or fewer in target land, Remove 1 Blight.*
+- *If there are 2 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> or fewer in target land, Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">.*
 
 #### Sacrosanct Wilderness
 
 - **2 Energy · Fast · Range 1 · Land with no Blight · Sun, Earth, Plant**
-- *Push 2 Dahan. 2 Damage per Wilds in target land. **OR** Add 1 Wilds.*
+- *Push 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. 2 Damage per Wilds in target land. **OR** Add 1 Wilds.*
 
 #### Towering Wrath
 
 - **3 Energy · Slow · Range 1, from your Sacred Site · Any Land · Sun, Fire, Plant**
-- *2 Fear. For each of your Sacred Site in/adjacent to target land, 2 Damage. Destroy all Dahan.*
+- *2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. For each of your Sacred Site in/adjacent to target land, 2 Damage. Destroy all Dahan.*
 
 ## Card Priority Ratings
 
@@ -126,16 +126,16 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Sear Anger Into the Wild Lands** | 0 | Slow | Sun, Fire, Plant | Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear and 1 Damage. | elements fire+plant+sun → 13.2 |
+| 1 | **Sear Anger Into the Wild Lands** | 0 | Slow | Sun, Fire, Plant | Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. | elements fire+plant+sun → 13.2 |
 | 2 | **Purifying Flame** | 1 | Slow | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blig… | elements air+fire+plant+sun → 13.5 |
 | 3 | **Gift of Living Energy** | 0 | Fast | Sun, Fire, Plant | Target Spirit gains 1 Energy. If you have at least 2 Sacred Sites, target Spirit gains 1 … | elements fire+plant+sun → 13.2 |
-| 4 | **Pact of the Joined Hunt** | 1 | Slow | Sun, Plant, Animal | Target Spirit Gathers 1 Dahan into one of their lands. 1 Damage in that land per Dahan pr… | elements plant+sun → 11.1 |
-| 5 | **Enticing Splendor** | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer/Town. **OR** Gather up to 2 Dahan. | elements air+plant+sun → 11.4 |
-| 6 | **Favor of the Sun and Star-lit Dark** | 1 | Fast | Sun, Moon, Plant | Defend 4. Push up to 1 Blight. | elements plant+sun → 11.1 |
-| 7 | **Absorb Corruption** | 1 | Slow | Sun, Earth, Plant | Gather 1 Blight. **OR** Pay 1 Energy to Remove 1 Blight. | elements plant+sun → 11.1 |
-| 8 | **Like Calls to Like** | 1 | Slow | Sun, Water, Plant | If target land has Explorer, Gather up to 1 Explorer. Do likewise for Town, Dahan, Blight… | elements plant+sun → 11.1 |
-| 9 | **Song of Sanctity** | 1 | Slow | Sun, Water, Plant | If Explorer(s) are present, Push all Explorers. Otherwise, Remove 1 Blight. | elements plant+sun → 11.1 |
-| 10 | **Teeming Rivers** | 1 | Slow | Sun, Water, Plant, Animal | If target land has no Blight, add 1 Beasts. If target land has exactly 1 Blight, Remove i… | elements plant+sun → 11.1 |
+| 4 | **Pact of the Joined Hunt** | 1 | Slow | Sun, Plant, Animal | Target Spirit Gathers 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> into one of their lands. 1 Damage in that land per Dahan pr… | elements plant+sun → 11.1 |
+| 5 | **Enticing Splendor** | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. **OR** Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+plant+sun → 11.4 |
+| 6 | **Favor of the Sun and Star-lit Dark** | 1 | Fast | Sun, Moon, Plant | Defend 4. Push up to 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements plant+sun → 11.1 |
+| 7 | **Absorb Corruption** | 1 | Slow | Sun, Earth, Plant | Gather 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. **OR** Pay 1 Energy to Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements plant+sun → 11.1 |
+| 8 | **Like Calls to Like** | 1 | Slow | Sun, Water, Plant | If target land has Explorer, Gather up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Do likewise for Town, Dahan, Blight… | elements plant+sun → 11.1 |
+| 9 | **Song of Sanctity** | 1 | Slow | Sun, Water, Plant | If Explorer(s) are present, Push all Explorers. Otherwise, Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements plant+sun → 11.1 |
+| 10 | **Teeming Rivers** | 1 | Slow | Sun, Water, Plant, Animal | If target land has no Blight, add 1 Beasts. If target land has exactly 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">, Remove i… | elements plant+sun → 11.1 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
@@ -144,7 +144,7 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 | 1 | **Forests of Living Obsidian** | 4 | Slow | Sun, Fire, Earth, Plant | Add 1 Badlands. Push all Dahan. 1 Damage to each Invader. If the origin land is your Sacr… | elements fire+plant+sun → 13.2 |
 | 2 | **Unrelenting Growth** | 4 | Slow | Sun, Fire, Water, Plant | Target Spirit adds 2 Presence and 1 Wilds to a land at Range 1 of their Presence. | elements fire+plant+sun → 13.2 |
 | 3 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+fire+plant+sun → 13.5 |
-| 4 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+plant+sun → 11.4 |
+| 4 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+plant+sun → 11.4 |
 | 5 | **The Trees and Stones Speak of War** | 2 | Fast | Sun, Earth, Plant | For each Dahan, 1 Damage and Defend 2. | elements plant+sun → 11.1 |
 
 ### HoSI Beginner Deck Bundle — for reference only
@@ -218,14 +218,14 @@ Auto-derived from `data/references/wiki/keeper-of-the-forbidden-wilds.json`. Thi
 ### Innate Powers
 
 - **PUNISH THOSE WHO TRESPASS** (Speed: Slow · Range: 0 · Target: any)
-  - **L1** — 2 Sun + 1 Fire + 2 Plant: 2 Damage. Destroy 1 Dahan.
-  - **L2** — 2 Sun + 2 Fire + 3 Plant: +1 Damage per SunPlant you have.
-  - **L3** — 4 Plant: Split this Power's Damage however desired between target land and another 1 of your lands.
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: 2 Damage. Destroy 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: +1 Damage per SunPlant you have.
+  - **L3** — 4 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Split this Power's Damage however desired between target land and another 1 of your lands.
 - **SPREADING WILDS** (Speed: Slow · Range: 1 · Target: noblight)
-  - **L1** — 2 Sun: Push 1 Explorer from target land per 2 Sun you have.
-  - **L2** — 1 Plant: If target land has no Explorer, add 1 Wilds.
-  - **L3** — 3 Plant: This Power has Range +1.
-  - **L4** — 1 Air: This Power has Range +1.
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun: Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> from target land per 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun you have.
+  - **L2** — 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: If target land has no Explorer, add 1 Wilds.
+  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: This Power has Range +1.
+  - **L4** — 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: This Power has Range +1.
 
 ### Fast-phase element ceiling from Uniques
 
@@ -238,9 +238,9 @@ Fast innates resolve in Fast phase and can only see elements from **Fast cards p
 | Card | Cost | Speed | Range | Target | Elements | Effect |
 |------|------|-------|-------|--------|----------|--------|
 | **Boon of Growing Power** | 1 | Slow | No Range | Any Spirit | sun, moon, plant | Target Spirit gains a Power Card. If you target another Spirit, they also gain 1 Energy. |
-| **Regrow from Roots** | 1 | Slow | 1 | Jungle or Wetland | water, earth, plant | If there are 2 Blight or fewer in target land, Remove 1 Blight. |
-| **Sacrosanct Wilderness** | 2 | Fast | 1 | Land with no Blight | sun, earth, plant | Push 2 Dahan. 2 Damage per Wilds in target land. **OR** Add 1 Wilds. |
-| **Towering Wrath** | 3 | Slow | 1, from your Sacred Site | Any Land | sun, fire, plant | 2 Fear. For each of your Sacred Site in/adjacent to target land, 2 Damage. Destroy all Dahan. |
+| **Regrow from Roots** | 1 | Slow | 1 | Jungle or Wetland | water, earth, plant | If there are 2 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> or fewer in target land, Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. |
+| **Sacrosanct Wilderness** | 2 | Fast | 1 | Land with no Blight | sun, earth, plant | Push 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. 2 Damage per Wilds in target land. **OR** Add 1 Wilds. |
+| **Towering Wrath** | 3 | Slow | 1, from your Sacred Site | Any Land | sun, fire, plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. For each of your Sacred Site in/adjacent to target land, 2 Damage. Destroy all Dahan. |
 
 ### Invader phase by turn (base deck)
 
