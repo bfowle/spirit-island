@@ -26,7 +26,7 @@ Strategic framing `[VERIFY: enhance with play experience]`.
 
 ## Starting Setup
 
-> Put 2 Presence and your Incarna ({{incarna|breath}}), Unempowered ({{incarna|unempowered}}), on your starting board: 1 Presence and {{incarna|breath}} in the lowest-numbered Jungle and 1 in the highest-numbered Jungle. Set [[The Endless Dark]] ({{endlessdark}}) tile next to the island with 1 Explorer on it. You start with your 4 Unique Power Cards and 0 Energy.
+> Put 2 Presence and your Incarna ({{incarna|breath}}), Unempowered ({{incarna|unempowered}}), on your starting board: 1 Presence and {{incarna|breath}} in the lowest-numbered Jungle and 1 in the highest-numbered Jungle. Set [[The Endless Dark]] ({{endlessdark}}) tile next to the island with 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> on it. You start with your 4 Unique Power Cards and 0 Energy.
 
 ## Growth Options (one)
 
@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-TERROR STALKS THE LAND</br>You have an Incarna ({{incarna|breath}}). Empower {{incarna|breath}} after uncovering {{empower}}. You may Abduct 1 Explorer/Town at empowered {{incarna|breath}} each Fast phase. To Abduct a piece, Move it to [[The Endless Dark]] ({{endlessdark}}). When pieces Escape, Move them to non-Ocean lands with your Presence/{{incarna|breath}}; if they have no legal land to move to, you lose. When your Powers would directly damage or directly destroy the only Invader in a land, instead Abduct it. (Check if it is alone at the start of the damage/destroy instruction. {{endlessdark}} is not a land.) SHADOW-TOUCHED REALM</br>Your land-targeting Powers can target {{endlessdark}} as if it were a land, ignoring Range. ({{endlessdark}} is Inland and has no terrain.) Rules for The Endless Dark</br>{{#lst:The Endless Dark|ted}}
+TERROR STALKS THE LAND</br>You have an Incarna ({{incarna|breath}}). Empower {{incarna|breath}} after uncovering {{empower}}. You may Abduct 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town at empowered {{incarna|breath}} each Fast phase. To Abduct a piece, Move it to [[The Endless Dark]] ({{endlessdark}}). When pieces Escape, Move them to non-Ocean lands with your Presence/{{incarna|breath}}; if they have no legal land to move to, you lose. When your Powers would directly damage or directly destroy the only Invader in a land, instead Abduct it. (Check if it is alone at the start of the damage/destroy instruction. {{endlessdark}} is not a land.) SHADOW-TOUCHED REALM</br>Your land-targeting Powers can target {{endlessdark}} as if it were a land, ignoring Range. ({{endlessdark}} is Inland and has no terrain.) Rules for The Endless Dark</br>{{#lst:The Endless Dark|ted}}
 
 ### Innate: LEAVE A TRAIL OF DEATHLY SILENCE
 
@@ -63,10 +63,10 @@ TERROR STALKS THE LAND</br>You have an Incarna ({{incarna|breath}}). Empower {{i
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Moon + 1 Animal | 1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}. |
-| 2 | 3 Moon + 1 Air + 1 Animal | 1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}. |
-| 3 | 4 Moon + 2 Air + 2 Animal | 1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}. |
-| 4 | 5 Moon + 2 Air + 3 Animal | Move {{incarna|breath}} to {{endlessdark}}. It Brings 1 Invader (from its land). |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}. |
+| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}. |
+| 3 | 4 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}. |
+| 4 | 5 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Move {{incarna|breath}} to {{endlessdark}}. It Brings 1 Invader (from its land). |
 
 
 ### Innate: LOST IN THE ENDLESS DARK
@@ -75,9 +75,9 @@ TERROR STALKS THE LAND</br>You have an Incarna ({{incarna|breath}}). Empower {{i
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Moon + 1 Air | 1 Fear per Invader (max. 4). Downgrade up to 1 Invader. (Downgrading Removes Explorer.) |
-| 2 | 4 Moon + 3 Air | 1 Fear per Invader (max. 4). Downgrade any number of Invaders. |
-| 3 | 3 Moon + 2 Animal | Add 1 Beast. |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Invader (max. 4). Downgrade up to 1 Invader. (Downgrading Removes Explorer.) |
+| 2 | 4 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Invader (max. 4). Downgrade any number of Invaders. |
+| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Add 1 Beast. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -100,24 +100,24 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer/Town/Dahan. 2 Fear. If target land has any Beasts, 1 Fear. | elements air+animal+moon → 19.5 |
+| 1 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town/Dahan. 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land has any Beasts, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+animal+moon → 19.5 |
 | 2 | **Bats Scout for Raids by Darkness** | 1 | Slow | Moon, Air, Animal | For each [[Dahan]], 1 Damage to [[Towns]]/[[Cities]]. **OR** 1 [[Fear]]. [[Gather]] up to… | elements air+animal+moon → 19.5 |
 | 3 | **Veil the Night's Hunt** | 1 | Fast | Moon, Air, Animal | For each Dahan present, choose a different Invader. 1 Damage to each of those Invaders. *… | elements air+animal+moon → 19.5 |
-| 4 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | elements air+animal+moon → 19.5 |
-| 5 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer. **OR** 2 Fear. | elements air+moon → 15.9 |
-| 6 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear. The next time an Invader is Destroyed in target land this turn, 1 Fear. | elements air+moon → 15.9 |
-| 7 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer/Town. | elements air+moon → 15.9 |
-| 8 | **Land of Haunts and Embers** | 0 | Fast | Moon, Fire, Air | 2 Fear. Push up to 2 Explorers/Towns. If Blight is present, 2 Fear and Push up to 2 Explo… | elements air+moon → 15.9 |
-| 9 | **Haunted by Primal Memories** | 1 | Fast | Moon, Air, Earth | 1 Fear. Defend 3. If Beasts are present, +2 Fear. | elements air+moon → 15.9 |
-| 10 | **Terror Turns to Madness** | 0 | Slow | Moon, Air, Water | If the Terror Level is... Terror Level 1: 3 Fear. Terror Level 2: 2 Fear or add 1 Strife.… | elements air+moon → 15.9 |
+| 4 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | elements air+animal+moon → 19.5 |
+| 5 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon → 15.9 |
+| 6 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. The next time an Invader is Destroyed in target land this turn, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon → 15.9 |
+| 7 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. | elements air+moon → 15.9 |
+| 8 | **Land of Haunts and Embers** | 0 | Fast | Moon, Fire, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns. If Blight is present, 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Push up to 2 Explo… | elements air+moon → 15.9 |
+| 9 | **Haunted by Primal Memories** | 1 | Fast | Moon, Air, Earth | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Defend 3. If Beasts are present, +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon → 15.9 |
+| 10 | **Terror Turns to Madness** | 0 | Slow | Moon, Air, Water | If the Terror Level is... Terror Level 1: 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Terror Level 2: 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> or add 1 Strife.… | elements air+moon → 15.9 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Sleep and Never Waken** | 3 | Fast | Moon, Air, Earth, Animal | Invaders skip all Actions in target land. 1 Fear per 2 Explorers this Power Removes. Remo… | elements air+animal+moon → 19.5 |
+| 1 | **Sleep and Never Waken** | 3 | Fast | Moon, Air, Earth, Animal | Invaders skip all Actions in target land. 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> this Power Removes. Remo… | elements air+animal+moon → 19.5 |
 | 2 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+animal+moon → 19.5 |
-| 3 | **Terrifying Nightmares** | 4 | Fast | Moon, Air | 2 Fear. Push up to 4 Explorers/Towns. | elements air+moon → 15.9 |
+| 3 | **Terrifying Nightmares** | 4 | Fast | Moon, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 4 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns. | elements air+moon → 15.9 |
 | 4 | **Transform to a Murderous Darkness** | 6 | Slow | Moon, Fire, Air, Water, Plant | Target Spirit may choose one of their Sacred Site. In that land: Replace all their Presen… | elements air+moon → 15.9 |
 | 5 | **Weave Together the Fabric of Place** | 4 | Fast | Sun, Moon, Air, Water, Earth | Target land and a land adjacent to it become a single land for this turn. (It has the ter… | elements air+moon → 15.9 |
 
@@ -167,7 +167,7 @@ Auto-derived from `data/references/wiki/breath-of-darkness.json`. This section s
 
 ### Starting state
 
-- **Setup**: Put 2 Presence and your Incarna ({{incarna|breath}}), Unempowered ({{incarna|unempowered}}), on your starting board: 1 Presence and {{incarna|breath}} in the lowest-numbered Jungle and 1 in the highest-numbered Jungle. Set [[The Endless Dark]] ({{endlessdark}}) tile next to the island with 1 Explorer on it. You start with your 4 Unique Power Cards and 0 Energy.
+- **Setup**: Put 2 Presence and your Incarna ({{incarna|breath}}), Unempowered ({{incarna|unempowered}}), on your starting board: 1 Presence and {{incarna|breath}} in the lowest-numbered Jungle and 1 in the highest-numbered Jungle. Set [[The Endless Dark]] ({{endlessdark}}) tile next to the island with 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> on it. You start with your 4 Unique Power Cards and 0 Energy.
 - **Starting income** (from `presence_energy_track[0]` = `energy1`, `presence_cardplay_track[0]` = `card2`): **1 Energy · 2 Card Play**
 - **Hand at start**: 4 Unique Power Cards (listed below)
 - **Growth type**: `one` — pick **one** growth option per turn
@@ -191,21 +191,21 @@ Auto-derived from `data/references/wiki/breath-of-darkness.json`. This section s
 ### Innate Powers
 
 - **LEAVE A TRAIL OF DEATHLY SILENCE** (Speed: Fast · Range: ? · Target: yourself)
-  - **L1** — 2 Moon + 1 Animal: 1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}.
-  - **L2** — 3 Moon + 1 Air + 1 Animal: 1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}.
-  - **L3** — 4 Moon + 2 Air + 2 Animal: 1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}.
-  - **L4** — 5 Moon + 2 Air + 3 Animal: Move {{incarna|breath}} to {{endlessdark}}. It Brings 1 Invader (from its land).
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}.
+  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}.
+  - **L3** — 4 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 1 Damage at {{incarna|breath}}. You may Push {{incarna|breath}}.
+  - **L4** — 5 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Move {{incarna|breath}} to {{endlessdark}}. It Brings 1 Invader (from its land).
 - **LOST IN THE ENDLESS DARK** (Speed: Slow · Range: ? · Target: endlessdark)
-  - **L1** — 2 Moon + 1 Air: 1 Fear per Invader (max. 4). Downgrade up to 1 Invader. (Downgrading Removes Explorer.)
-  - **L2** — 4 Moon + 3 Air: 1 Fear per Invader (max. 4). Downgrade any number of Invaders.
-  - **L3** — 3 Moon + 2 Animal: Add 1 Beast.
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Invader (max. 4). Downgrade up to 1 Invader. (Downgrading Removes Explorer.)
+  - **L2** — 4 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Invader (max. 4). Downgrade any number of Invaders.
+  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Add 1 Beast.
 
 ### Fast-phase element ceiling from Uniques
 
 Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
 
 - Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 Moon, Uniques give 0; need 1 Animal, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon, Uniques give 0; need 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
 
 ### Unique Power Cards
 

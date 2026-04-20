@@ -1,4 +1,4 @@
-export type Phase = 'setup' | 'growth' | 'fast' | 'invader' | 'slow' | 'timepasses' | 'end'
+export type Phase = 'setup' | 'growth' | 'fast' | 'event' | 'fear' | 'invader' | 'slow' | 'timepasses' | 'end'
 
 export interface Land {
   terrain: string
@@ -51,6 +51,8 @@ export interface Pools {
   blight_current: number
   blight_cap: number
   island_blighted?: boolean
+  /** Selected Blight card at setup (name matches data/decks/blight.json). */
+  blight_card?: string | null
 }
 
 export interface Setup {
@@ -63,17 +65,54 @@ export interface Setup {
 }
 
 export interface InvaderCard {
+  /** 1 | 2 | 3, locked at setup when the stack is built from adversary/level data. */
   stage: number
-  terrain: string
-  notes?: string
+  /** Revealed when the card is flipped (e.g., "Jungle", "Mountain + Wetland"). */
+  terrain?: string | null
+  /** Optional notes (adversary escalation effect applied, etc.). */
+  notes?: string | null
 }
 
 export interface InvaderDeckState {
   ravage: InvaderCard | null
   build: InvaderCard | null
   explore: InvaderCard | null
+  /** Ordered upcoming stack; [0] = next to flip into Explore. */
   upcoming: InvaderCard[]
-  discarded: number
+  /** Discarded (post-Ravage) cards — preserved for retrospective analysis. */
+  discarded: InvaderCard[]
+  /** Human-readable notation of the stack shape (e.g., "3 · 4 · 5"). */
+  notation?: string | null
+}
+
+export interface FearCardEntry {
+  name: string
+  terror_level: number
+  round: number
+}
+
+export interface FearDeckState {
+  deck_size: number
+  /** Card count at each terror level [T1, T2, T3]. When absent, evenly split from deck_size. */
+  tier_counts?: [number, number, number]
+  earned: FearCardEntry[]
+  resolved: FearCardEntry[]
+  unseen: number
+}
+
+export interface EventCardEntry {
+  name: string
+  previewed_on_turn: number
+  resolved_on_turn?: number | null
+}
+
+export interface EventDeckState {
+  /** Face-up cards previewed for next turn. Typically 1 at a time. */
+  previewed: EventCardEntry[]
+  /** Events that have already resolved in prior turns. */
+  resolved: EventCardEntry[]
+  /** Rough remaining count in the event deck. */
+  unseen: number
 }
 
 export interface GameState {
@@ -86,6 +125,8 @@ export interface GameState {
   board_state: Record<string, Board>
   log: unknown[]
   invader_deck?: InvaderDeckState
+  fear_deck?: FearDeckState
+  event_deck?: EventDeckState
 }
 
 export const TERRAINS = ['mountain', 'wetland', 'jungle', 'sands'] as const

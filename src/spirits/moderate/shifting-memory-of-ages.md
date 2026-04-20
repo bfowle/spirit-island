@@ -64,9 +64,9 @@ LONG AGES OF KNOWLEDGE AND FORGETFULNESS When you would Forget a Power Card from
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Earth | Defend 2. |
-| 2 | 1 Air + 2 Earth | Instead, Defend 3. |
-| 3 | 2 Moon + 3 Air + 4 Earth | Instead, Defend 2 per card in the Invader discard pile. |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | Defend 2. |
+| 2 | 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | Instead, Defend 3. |
+| 3 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | Instead, Defend 2 per card in the Invader discard pile. |
 
 
 ### Innate: OBSERVE THE EVER-CHANGING WORLD
@@ -75,8 +75,8 @@ LONG AGES OF KNOWLEDGE AND FORGETFULNESS When you would Forget a Power Card from
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Moon | Prepare 1 Element Marker. |
-| 2 | 2 Moon + 1 Air | Instead, after each of the next three Actions that change which pieces are in target land, Prepare 1 Element Marker. (You can stack the markers you intend to take here or on the target land so you don't need to ponder on what to take mid-turn. Any Action can trigger Preparing a marker, not just your own.) |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon | Prepare 1 Element Marker. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Instead, after each of the next three Actions that change which pieces are in target land, Prepare 1 Element Marker. (You can stack the markers you intend to take here or on the target land so you don't need to ponder on what to take mid-turn. Any Action can trigger Preparing a marker, not just your own.) |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -99,16 +99,16 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Haunted by Primal Memories** | 1 | Fast | Moon, Air, Earth | 1 Fear. Defend 3. If Beasts are present, +2 Fear. | elements air+earth+moon → 9.0 |
-| 2 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | elements air+earth+moon → 9.0 |
-| 3 | **Sucking Ooze** | 0 | Fast | Moon, Water, Earth | 2 Fear if Invaders are present. Isolate target land. | elements earth+moon → 6.9 |
-| 4 | **Dark and Tangled Woods** | 1 | Fast | Moon, Earth, Plant | 2 Fear. If target land is a Mountain or Jungle, Defend 3. | elements earth+moon → 6.9 |
+| 1 | **Haunted by Primal Memories** | 1 | Fast | Moon, Air, Earth | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Defend 3. If Beasts are present, +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+earth+moon → 9.0 |
+| 2 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | elements air+earth+moon → 9.0 |
+| 3 | **Sucking Ooze** | 0 | Fast | Moon, Water, Earth | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if Invaders are present. Isolate target land. | elements earth+moon → 6.9 |
+| 4 | **Dark and Tangled Woods** | 1 | Fast | Moon, Earth, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Defend 3. | elements earth+moon → 6.9 |
 | 5 | **Guardian Serpents** | 1 | Fast | Sun, Moon, Earth, Animal | Add 1 Beasts in one of target Spirit's lands. If target Spirit has a Sacred Site in that … | elements earth+moon → 6.9 |
 | 6 | **Quicken the Earth's Struggles** | 1 | Fast | Moon, Fire, Earth, Animal | 1 Damage to each Town/City. **OR** Defend 10. | elements earth+moon → 6.9 |
-| 7 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+earth → 6.3 |
+| 7 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+earth → 6.3 |
 | 8 | **Drift Down into Slumber** | 0 | Fast | Air, Earth, Plant | Defend 1. If target land is a Jungle or Sands, instead Defend 4. | elements air+earth → 6.3 |
 | 9 | **Gift of Power** | 0 | Slow | Moon, Water, Earth, Plant | Target Spirit gains a Minor Power Card. | elements earth+moon → 6.9 |
-| 10 | **Rites of the Land's Rejection** | 1 | Fast | Moon, Fire, Earth | Invaders do not Build in target land this turn. 1 Fear per Town/City or 1 Fear per Dahan,… | elements earth+moon → 6.9 |
+| 10 | **Rites of the Land's Rejection** | 1 | Fast | Moon, Fire, Earth | Invaders do not Build in target land this turn. 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Town/City or 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Dahan,… | elements earth+moon → 6.9 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
@@ -116,9 +116,9 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 |---|------|------|-------|----------|--------------------|---------------|
 | 1 | **Weave Together the Fabric of Place** | 4 | Fast | Sun, Moon, Air, Water, Earth | Target land and a land adjacent to it become a single land for this turn. (It has the ter… | elements air+earth+moon → 9.0 |
 | 2 | **Bargain of Coursing Paths** | 2 | Fast | Moon, Air, Water, Earth | Bargain: 1 Presence now and -1 Energy/turn. Now: Mark both target land and another land w… | elements air+earth+moon → 9.0 |
-| 3 | **Sleep and Never Waken** | 3 | Fast | Moon, Air, Earth, Animal | Invaders skip all Actions in target land. 1 Fear per 2 Explorers this Power Removes. Remo… | elements air+earth+moon → 9.0 |
+| 3 | **Sleep and Never Waken** | 3 | Fast | Moon, Air, Earth, Animal | Invaders skip all Actions in target land. 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> this Power Removes. Remo… | elements air+earth+moon → 9.0 |
 | 4 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+earth+moon → 9.0 |
-| 5 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+earth+moon → 9.0 |
+| 5 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+earth+moon → 9.0 |
 
 ### HoSI Beginner Deck Bundle — for reference only
 
@@ -191,19 +191,19 @@ Auto-derived from `data/references/wiki/shifting-memory-of-ages.json`. This sect
 ### Innate Powers
 
 - **LEARN THE INVADERS' TACTICS** (Speed: Fast · Range: 1 · Target: invaders)
-  - **L1** — 2 Earth: Defend 2.
-  - **L2** — 1 Air + 2 Earth: Instead, Defend 3.
-  - **L3** — 2 Moon + 3 Air + 4 Earth: Instead, Defend 2 per card in the Invader discard pile.
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: Defend 2.
+  - **L2** — 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: Instead, Defend 3.
+  - **L3** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: Instead, Defend 2 per card in the Invader discard pile.
 - **OBSERVE THE EVER-CHANGING WORLD** (Speed: Fast · Range: 1 · Target: any)
-  - **L1** — 1 Moon: Prepare 1 Element Marker.
-  - **L2** — 2 Moon + 1 Air: Instead, after each of the next three Actions that change which pieces are in target land, Prepare 1 Element Marker. (You can stack the markers you intend to take here or on the target land so you don't need to ponder on what to take mid-turn. Any Action can trigger Preparing a marker, not just your own.)
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon: Prepare 1 Element Marker.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: Instead, after each of the next three Actions that change which pieces are in target land, Prepare 1 Element Marker. (You can stack the markers you intend to take here or on the target land so you don't need to ponder on what to take mid-turn. Any Action can trigger Preparing a marker, not just your own.)
 
 ### Fast-phase element ceiling from Uniques
 
 Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
 
 - Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 Earth, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
 
 ### Unique Power Cards
 

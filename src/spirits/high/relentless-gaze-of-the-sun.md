@@ -64,10 +64,10 @@ RELENTLESS PUNISHMENT After using a Power Card, if you had at least 3 Presence i
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Sun | Move all of your Presence from origin land directly to target land. 1 Damage, to Town/City only. |
-| 2 | 3 Sun + 1 Fire | 3 Damage to Invaders. 3 Damage to Dahan. Add 1 Blight without cascading. |
-| 3 | 4 Sun + 2 Fire + 1 Air | 3 Fear if this Power destroyed any Invaders. |
-| 4 | 5 Sun + 3 Fire + 2 Air | 1 Damage per remaining Presence of yours in target land. |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun | Move all of your Presence from origin land directly to target land. 1 Damage, to Town/City only. |
+| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire | 3 Damage to Invaders. 3 Damage to Dahan. Add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> without cascading. |
+| 3 | 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if this Power destroyed any Invaders. |
+| 4 | 5 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | 1 Damage per remaining Presence of yours in target land. |
 
 
 ### Innate: CONSIDER A HARMONIOUS NATURE
@@ -76,10 +76,10 @@ RELENTLESS PUNISHMENT After using a Power Card, if you had at least 3 Presence i
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 3 Sun + 1 Moon | When your Powers would Add Blight, you may Destroy 1 Presence instead (there or elsewhere). |
-| 2 | 3 Sun + 1 Water | Your Powers don't damage or destroy Dahan. |
-| 3 | 3 Sun + 1 Plant | Choose another Spirit. They Add 1 {{destroyedpresence}} to one of your lands. |
-| 4 | 3 Sun + 1 Water + 1 Plant | Give up to 3 of your Energy to the chosen Spirit. |
+| 1 | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon | When your Powers would Add Blight, you may Destroy 1 Presence instead (there or elsewhere). |
+| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Your Powers don't damage or destroy Dahan. |
+| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Choose another Spirit. They Add 1 {{destroyedpresence}} to one of your lands. |
+| 4 | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Give up to 3 of your Energy to the chosen Spirit. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -102,16 +102,16 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Sunset's Fire Flows Across the Land** | 1 | Slow | Sun, Moon, Fire, Water | 1 Fear. 1 Damage. You may pay 1 Energy to deal 1 Damage in an adjacent land. | elements fire+moon+sun+water → 16.5 |
+| 1 | **Sunset's Fire Flows Across the Land** | 1 | Slow | Sun, Moon, Fire, Water | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. You may pay 1 Energy to deal 1 Damage in an adjacent land. | elements fire+moon+sun+water → 16.5 |
 | 2 | **Purifying Flame** | 1 | Slow | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blig… | elements air+fire+plant+sun → 16.2 |
-| 3 | **Sear Anger Into the Wild Lands** | 0 | Slow | Sun, Fire, Plant | Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear and 1 Damage. | elements fire+plant+sun → 15.3 |
-| 4 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage. | elements air+moon+sun+water → 15.3 |
+| 3 | **Sear Anger Into the Wild Lands** | 0 | Slow | Sun, Fire, Plant | Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. | elements fire+plant+sun → 15.3 |
+| 4 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | elements air+moon+sun+water → 15.3 |
 | 5 | **Territorial Strife** | 0 | Slow | Sun, Fire, Animal | 3 Damage to Explorers/Towns. **OR** Add 1 Strife. | elements fire+sun → 14.7 |
 | 6 | **Blood Draws Predators** | 1 | Fast | Sun, Fire, Water, Animal | After the next time Invaders are Destroyed in target land: Add 1 Beasts, then 1 Damage pe… | elements fire+sun+water → 15.6 |
 | 7 | **Elusive Ambushes** | 1 | Fast | Sun, Fire, Water | 1 Damage. **OR** Defend 4. | elements fire+sun+water → 15.6 |
-| 8 | **Call to Bloodshed** | 1 | Slow | Sun, Fire, Animal | 1 Damage per Dahan. **OR** Gather up to 3 Dahan. | elements fire+sun → 14.7 |
+| 8 | **Call to Bloodshed** | 1 | Slow | Sun, Fire, Animal | 1 Damage per Dahan. **OR** Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements fire+sun → 14.7 |
 | 9 | **Drought** | 1 | Slow | Sun, Fire, Earth | Destroy 3 [[Towns]]. 1 Damage to each [[Town]]/[[City]]. Add 1 [[Blight]]. | elements fire+sun → 14.7 |
-| 10 | **Call to Ferocity** | 0 | Slow | Sun, Fire, Earth | Gather up to 3 Dahan. **OR** If target land has Dahan, 1 Fear and Push 1 Explorer and 1 T… | elements fire+sun → 14.7 |
+| 10 | **Call to Ferocity** | 0 | Slow | Sun, Fire, Earth | Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. **OR** If target land has Dahan, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 T… | elements fire+sun → 14.7 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
@@ -120,7 +120,7 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 | 1 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+fire+moon+plant+sun+water → 18.0 |
 | 2 | **Exaltation of the Incandescent Sky** | 7 | Fast | Sun, Fire, Air, Water | Target Spirit may play 1 Power Card by paying its cost, make up to 2 of their Powers Fast… | elements air+fire+sun+water → 16.5 |
 | 3 | **Forests of Living Obsidian** | 4 | Slow | Sun, Fire, Earth, Plant | Add 1 Badlands. Push all Dahan. 1 Damage to each Invader. If the origin land is your Sacr… | elements fire+plant+sun → 15.3 |
-| 4 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+moon+plant+sun → 15.0 |
+| 4 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+moon+plant+sun → 15.0 |
 | 5 | **Unrelenting Growth** | 4 | Slow | Sun, Fire, Water, Plant | Target Spirit adds 2 Presence and 1 Wilds to a land at Range 1 of their Presence. | elements fire+plant+sun+water → 16.2 |
 
 ### HoSI Beginner Deck Bundle — for reference only
@@ -194,15 +194,15 @@ Auto-derived from `data/references/wiki/relentless-gaze-of-the-sun.json`. This s
 ### Innate Powers
 
 - **SCORCHING CONVERGENCE** (Speed: Slow · Range: 1 · Target: any)
-  - **L1** — 2 Sun: Move all of your Presence from origin land directly to target land. 1 Damage, to Town/City only.
-  - **L2** — 3 Sun + 1 Fire: 3 Damage to Invaders. 3 Damage to Dahan. Add 1 Blight without cascading.
-  - **L3** — 4 Sun + 2 Fire + 1 Air: 3 Fear if this Power destroyed any Invaders.
-  - **L4** — 5 Sun + 3 Fire + 2 Air: 1 Damage per remaining Presence of yours in target land.
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun: Move all of your Presence from origin land directly to target land. 1 Damage, to Town/City only.
+  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire: 3 Damage to Invaders. 3 Damage to Dahan. Add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> without cascading.
+  - **L3** — 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if this Power destroyed any Invaders.
+  - **L4** — 5 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: 1 Damage per remaining Presence of yours in target land.
 - **CONSIDER A HARMONIOUS NATURE** (Speed: Fast · Range: ? · Target: yourself)
-  - **L1** — 3 Sun + 1 Moon: When your Powers would Add Blight, you may Destroy 1 Presence instead (there or elsewhere).
-  - **L2** — 3 Sun + 1 Water: Your Powers don't damage or destroy Dahan.
-  - **L3** — 3 Sun + 1 Plant: Choose another Spirit. They Add 1 {{destroyedpresence}} to one of your lands.
-  - **L4** — 3 Sun + 1 Water + 1 Plant: Give up to 3 of your Energy to the chosen Spirit.
+  - **L1** — 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon: When your Powers would Add Blight, you may Destroy 1 Presence instead (there or elsewhere).
+  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: Your Powers don't damage or destroy Dahan.
+  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Choose another Spirit. They Add 1 {{destroyedpresence}} to one of your lands.
+  - **L4** — 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Give up to 3 of your Energy to the chosen Spirit.
 
 ### Fast-phase element ceiling from Uniques
 

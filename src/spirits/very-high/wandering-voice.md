@@ -70,9 +70,9 @@ _(no thresholds listed in Wiki)_
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Moon + 2 Air | 1 Fear per Moon you have. |
-| 2 | 1 Sun + 2 Air | 1 Damage per Sun you have, to Invaders with Strife only. |
-| 3 | 1 Sun + 1 Moon + 4 Air | For each Sun Moon pair you have, Destroy 1 Invader with Strife. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Moon you have. |
+| 2 | 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | 1 Damage per Sun you have, to Invaders with Strife only. |
+| 3 | 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | For each Sun Moon pair you have, Destroy 1 Invader with Strife. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -95,26 +95,26 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer. **OR** 2 Fear. | elements air+moon+sun → 6.3 |
-| 2 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage. | elements air+moon+sun → 6.3 |
-| 3 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear. The next time an Invader is Destroyed in target land this turn, 1 Fear. | elements air+moon+sun → 6.3 |
-| 4 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer/Town. | elements air+moon → 5.4 |
-| 5 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer/Town/Dahan. 2 Fear. If target land has any Beasts, 1 Fear. | elements air+moon → 5.4 |
-| 6 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+sun → 5.1 |
-| 7 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer/Town per Dahan. **OR** Push 1 Dahan. | elements air+sun → 5.1 |
-| 8 | **Enticing Splendor** | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer/Town. **OR** Gather up to 2 Dahan. | elements air+sun → 5.1 |
+| 1 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon+sun → 6.3 |
+| 2 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | elements air+moon+sun → 6.3 |
+| 3 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. The next time an Invader is Destroyed in target land this turn, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon+sun → 6.3 |
+| 4 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. | elements air+moon → 5.4 |
+| 5 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town/Dahan. 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land has any Beasts, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon → 5.4 |
+| 6 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+sun → 5.1 |
+| 7 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Dahan. **OR** Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+sun → 5.1 |
+| 8 | **Enticing Splendor** | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. **OR** Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+sun → 5.1 |
 | 9 | **Disorienting Landscape** | 1 | Fast | Moon, Air, Plant | Push 1 [[Explorer]]. If target land is a Mountain or Jungle, add 1 [[Wilds]]. | elements air+moon → 5.4 |
-| 10 | **Entrancing Apparitions** | 1 | Fast | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers. | elements air+moon → 5.4 |
+| 10 | **Entrancing Apparitions** | 1 | Fast | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+moon → 5.4 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Terrifying Nightmares** | 4 | Fast | Moon, Air | 2 Fear. Push up to 4 Explorers/Towns. | elements air+moon → 5.4 |
+| 1 | **Terrifying Nightmares** | 4 | Fast | Moon, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 4 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns. | elements air+moon → 5.4 |
 | 2 | **Weave Together the Fabric of Place** | 4 | Fast | Sun, Moon, Air, Water, Earth | Target land and a land adjacent to it become a single land for this turn. (It has the ter… | elements air+moon+sun → 6.3 |
 | 3 | **Bargain of Coursing Paths** | 2 | Fast | Moon, Air, Water, Earth | Bargain: 1 Presence now and -1 Energy/turn. Now: Mark both target land and another land w… | elements air+moon → 5.4 |
 | 4 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+moon+sun → 6.3 |
-| 5 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+moon+sun → 6.3 |
+| 5 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+moon+sun → 6.3 |
 
 ### HoSI Beginner Deck Bundle — for reference only
 
@@ -187,9 +187,9 @@ Auto-derived from `data/references/wiki/wandering-voice.json`. This section stat
 
 - **INSCRUTABLE JOURNEYING** (Speed: Fast · Range: ? · Target: yourself)
 - **MIND-SHATTERING SONG** (Speed: Slow · Range: 1 · Target: strife)
-  - **L1** — 1 Moon + 2 Air: 1 Fear per Moon you have.
-  - **L2** — 1 Sun + 2 Air: 1 Damage per Sun you have, to Invaders with Strife only.
-  - **L3** — 1 Sun + 1 Moon + 4 Air: For each Sun Moon pair you have, Destroy 1 Invader with Strife.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Moon you have.
+  - **L2** — 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: 1 Damage per Sun you have, to Invaders with Strife only.
+  - **L3** — 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: For each Sun Moon pair you have, Destroy 1 Invader with Strife.
 
 ### Fast-phase element ceiling from Uniques
 

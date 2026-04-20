@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-GATHER POWER FROM THE COOL AND DARK Once a turn, when you Gain a Power Card without Simplefire, gain 1 Energy. MISTS SHIFT AND FLOW When targeting a land with a Power, you may Gather 1 of your Presence into the target or an adjacent land. This can enable you to meet Range and targeting requirements. SLOW AND SILENT DEATH Invaders and Dahan in your lands don't heal Damage. During Time Passes: 1 Fear (max. 5) per land of yours with Damaged Invaders. Gain 1 Energy per 3 lands of yours with Damaged Invaders.
+GATHER POWER FROM THE COOL AND DARK Once a turn, when you Gain a Power Card without Simplefire, gain 1 Energy. MISTS SHIFT AND FLOW When targeting a land with a Power, you may Gather 1 of your Presence into the target or an adjacent land. This can enable you to meet Range and targeting requirements. SLOW AND SILENT DEATH Invaders and Dahan in your lands don't heal Damage. During Time Passes: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> (max. 5) per land of yours with Damaged Invaders. Gain 1 Energy per 3 lands of yours with Damaged Invaders.
 
 ### Innate: SUFFOCATING SHROUD
 
@@ -63,10 +63,10 @@ GATHER POWER FROM THE COOL AND DARK Once a turn, when you Gain a Power Card with
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Moon + 2 Air + 1 Water | 1 Damage. |
-| 2 | 2 Moon + 3 Air + 2 Water | For each adjacent land with your Presence, 1 Damage to a different Invader. |
-| 3 | 4 Moon + 4 Air + 3 Water | 1 Damage. |
-| 4 | 5 Moon + 6 Air + 4 Water | 1 Damage to each Invader. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | 1 Damage. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | For each adjacent land with your Presence, 1 Damage to a different Invader. |
+| 3 | 4 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | 1 Damage. |
+| 4 | 5 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 6 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | 1 Damage to each Invader. |
 
 
 ### Innate: LOST IN THE SWIRLING HAZE
@@ -75,9 +75,9 @@ GATHER POWER FROM THE COOL AND DARK Once a turn, when you Gain a Power Card with
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Air + 2 Water | Push up to 1 Dahan. |
-| 2 | 2 Air + 3 Water | Push up to 2 Explorer/Dahan. |
-| 3 | 3 Air + 4 Water | Push up to 2 Explorer/Dahan. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Push up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Push up to 2 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Dahan. |
+| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Push up to 2 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Dahan. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -100,14 +100,14 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage. | elements air+moon+water → 23.4 |
-| 2 | **Terror Turns to Madness** | 0 | Slow | Moon, Air, Water | If the Terror Level is... Terror Level 1: 3 Fear. Terror Level 2: 2 Fear or add 1 Strife.… | elements air+moon+water → 23.4 |
-| 3 | **Entrancing Apparitions** | 1 | Fast | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers. | elements air+moon+water → 23.4 |
-| 4 | **Rain of Blood** | 0 | Slow | Air, Water, Animal | 2 Fear. If target land has at least 2 Towns/Cities, 1 Fear. | elements air+water → 18.6 |
-| 5 | **Flow Downriver, Blow Downwind** | 0 | Slow | Air, Water, Plant | Push up to 1 Blight/Explorer/Town. | elements air+water → 18.6 |
-| 6 | **Fleshrot Fever** | 1 | Slow | Fire, Air, Water, Animal | 1 Fear. Add 1 Disease. | elements air+water → 18.6 |
-| 7 | **Call to Trade** | 1 | Fast | Air, Water, Earth, Plant | You may Gather 1 Dahan. If the Terror Level is 2 or lower, Gather 1 Town and the first Ra… | elements air+water → 18.6 |
-| 8 | **Steam Vents** | 1 | Fast | Fire, Air, Water, Earth | Destroy 1 Explorer. | elements air+water → 18.6 |
+| 1 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | elements air+moon+water → 23.4 |
+| 2 | **Terror Turns to Madness** | 0 | Slow | Moon, Air, Water | If the Terror Level is... Terror Level 1: 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Terror Level 2: 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> or add 1 Strife.… | elements air+moon+water → 23.4 |
+| 3 | **Entrancing Apparitions** | 1 | Fast | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+moon+water → 23.4 |
+| 4 | **Rain of Blood** | 0 | Slow | Air, Water, Animal | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land has at least 2 Towns <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">/Cities, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+water → 18.6 |
+| 5 | **Flow Downriver, Blow Downwind** | 0 | Slow | Air, Water, Plant | Push up to 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">/Explorer/Town. | elements air+water → 18.6 |
+| 6 | **Fleshrot Fever** | 1 | Slow | Fire, Air, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Disease. | elements air+water → 18.6 |
+| 7 | **Call to Trade** | 1 | Fast | Air, Water, Earth, Plant | You may Gather 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. If the Terror Level is 2 or lower, Gather 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> and the first Ra… | elements air+water → 18.6 |
+| 8 | **Steam Vents** | 1 | Fast | Fire, Air, Water, Earth | Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+water → 18.6 |
 | 9 | **Reaching Grasp** | 0 | Fast | Sun, Air, Water | Target Spirit gets +2 Range with all their Powers. | elements air+water → 18.6 |
 | 10 | **Confounding Mists** | 1 | Fast | Air, Water | Defend 4. **OR** Each Invader added to target land this turn may be immediately Pushed to… | elements air+water → 18.6 |
 
@@ -115,7 +115,7 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Mists of Oblivion** | 4 | Slow | Moon, Air, Water | 1 Fear per Town/City this Power Destroys (max. 4 Fear). 1 Damage to each Invader. | elements air+moon+water → 23.4 |
+| 1 | **Mists of Oblivion** | 4 | Slow | Moon, Air, Water | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Town/City this Power Destroys (max. 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">). 1 Damage to each Invader. | elements air+moon+water → 23.4 |
 | 2 | **Transform to a Murderous Darkness** | 6 | Slow | Moon, Fire, Air, Water, Plant | Target Spirit may choose one of their Sacred Site. In that land: Replace all their Presen… | elements air+moon+water → 23.4 |
 | 3 | **Weave Together the Fabric of Place** | 4 | Fast | Sun, Moon, Air, Water, Earth | Target land and a land adjacent to it become a single land for this turn. (It has the ter… | elements air+moon+water → 23.4 |
 | 4 | **Bargain of Coursing Paths** | 2 | Fast | Moon, Air, Water, Earth | Bargain: 1 Presence now and -1 Energy/turn. Now: Mark both target land and another land w… | elements air+moon+water → 23.4 |
@@ -191,14 +191,14 @@ Auto-derived from `data/references/wiki/shroud-of-silent-mist.json`. This sectio
 ### Innate Powers
 
 - **SUFFOCATING SHROUD** (Speed: Slow · Range: 0 · Target: any)
-  - **L1** — 1 Moon + 2 Air + 1 Water: 1 Damage.
-  - **L2** — 2 Moon + 3 Air + 2 Water: For each adjacent land with your Presence, 1 Damage to a different Invader.
-  - **L3** — 4 Moon + 4 Air + 3 Water: 1 Damage.
-  - **L4** — 5 Moon + 6 Air + 4 Water: 1 Damage to each Invader.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: 1 Damage.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: For each adjacent land with your Presence, 1 Damage to a different Invader.
+  - **L3** — 4 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: 1 Damage.
+  - **L4** — 5 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 6 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: 1 Damage to each Invader.
 - **LOST IN THE SWIRLING HAZE** (Speed: Slow · Range: 0 · Target: any)
-  - **L1** — 1 Air + 2 Water: Push up to 1 Dahan.
-  - **L2** — 2 Air + 3 Water: Push up to 2 Explorer/Dahan.
-  - **L3** — 3 Air + 4 Water: Push up to 2 Explorer/Dahan.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: Push up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: Push up to 2 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Dahan.
+  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: Push up to 2 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Dahan.
 
 ### Fast-phase element ceiling from Uniques
 

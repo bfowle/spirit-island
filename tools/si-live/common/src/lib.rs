@@ -13,4 +13,7 @@ pub mod schema;
 pub mod stats;
 
 pub use elements::Element;
-pub use schema::{Card, GameState, Phase, Spirit};
+pub use schema::{
+    Card, EventCardEntry, EventDeckState, FearCardEntry, FearDeckState, GameState, InvaderCard,
+    InvaderDeckState, Phase, Spirit,
+};

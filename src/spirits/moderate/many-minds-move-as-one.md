@@ -63,9 +63,9 @@ FLY FAST AS THOUGHT When you Gather or Push Beast, they may come from or go to l
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Air + 1 Animal | Gather up to 1 Beasts. |
-| 2 | 3 Air + 1 Water + 2 Animal | Instead, Gather up to 1 Beasts per Air you have. |
-| 3 | 1 Fire + 4 Air + 2 Animal | Push up to 3 Beasts. |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Gather up to 1 Beasts. |
+| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Instead, Gather up to 1 Beasts per Air you have. |
+| 3 | 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Push up to 3 Beasts. |
 
 
 ### Innate: BESET AND CONFOUND THE INVADERS
@@ -74,10 +74,10 @@ FLY FAST AS THOUGHT When you Gather or Push Beast, they may come from or go to l
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Air + 2 Animal | 2 Fear and Defend 2. |
-| 2 | 2 Air + 3 Animal | Instead, 3 Fear and Defend 4. |
-| 3 | 3 Air + 4 Animal | Instead, 4 Fear and Defend 7. |
-| 4 | 4 Air + 1 Earth + 5 Animal | Instead, 6 Fear and Defend 10. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 2. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Instead, 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 4. |
+| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Instead, 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 7. |
+| 4 | 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 5 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Instead, 6 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 10. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -85,7 +85,7 @@ FLY FAST AS THOUGHT When you Gather or Push Beast, they may come from or go to l
 #### A Dreadful Tide of Scurrying Flesh
 
 - **0 Energy · Fast · Range Range 1, from your Sacred Site · Land with 2 or more Beasts tokens · Moon, Air, Water, Animal**
-- *Remove up to half (round down) of Beasts in target land. For each Beasts Removed, 2 Fear and skip one Invader Action.*
+- *Remove up to half (round down) of Beasts in target land. For each Beasts Removed, 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and skip one Invader Action.*
 
 #### Boon of Swarming Bedevilment
 
@@ -100,7 +100,7 @@ FLY FAST AS THOUGHT When you Gather or Push Beast, they may come from or go to l
 #### Guide the Way on Feathered Wings
 
 - **0 Energy · Fast · Range 1 · Any Land · Sun, Air, Animal**
-- *Move 1 Beasts up to two lands. As it moves, up to 2 Dahan may move with it, for part or all of the way. (The Beasts/Dahan may move to an adjacent land and then back.)*
+- *Move 1 Beasts up to two lands. As it moves, up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> may move with it, for part or all of the way. (The Beasts/Dahan may move to an adjacent land and then back.)*
 
 - **Pursue with Scratches$ Pecks$ and Stings** — `[VERIFY]` (Wiki fetch error: Wiki API error for 'Pursue_with_Scratches$_Pecks$_and_Stings': {'code': 'missingtitle', 'info': "The page you specified doesn't exist.", 'docref': 'See https://spiritislandwiki.com/api.php for API usage. Subscribe to the mediawiki-api-announce mailing list at &lt;https://lists.wikimedia.org/mailman/listinfo/mediawiki-api-announce&gt; for notice of API deprecations and breaking changes.'})
 
@@ -128,25 +128,25 @@ The spirit's own 5 Unique Power cards (always in hand; always A-tier by default 
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer/Town/Dahan. 2 Fear. If target land has any Beasts, 1 Fear. | elements air+animal → 18.0 |
-| 2 | **Set Them on an Ever-Twisting Trail** | 1 | Fast | Air, Plant, Animal | Gather or Push 1 Explorer. Isolate target land. | elements air+animal → 18.0 |
-| 3 | **Swarming Wasps** | 0 | Fast | Fire, Air, Animal | Add 1 Beasts. **OR** If target land has Beasts, Push up to 2 Explorers. | elements air+animal+fire → 18.3 |
-| 4 | **Rain of Blood** | 0 | Slow | Air, Water, Animal | 2 Fear. If target land has at least 2 Towns/Cities, 1 Fear. | elements air+animal+water → 18.6 |
-| 5 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer/Town per Dahan. **OR** Push 1 Dahan. | elements air+animal → 18.0 |
+| 1 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town/Dahan. 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land has any Beasts, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+animal → 18.0 |
+| 2 | **Set Them on an Ever-Twisting Trail** | 1 | Fast | Air, Plant, Animal | Gather or Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Isolate target land. | elements air+animal → 18.0 |
+| 3 | **Swarming Wasps** | 0 | Fast | Fire, Air, Animal | Add 1 Beasts. **OR** If target land has Beasts, Push up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+animal+fire → 18.3 |
+| 4 | **Rain of Blood** | 0 | Slow | Air, Water, Animal | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land has at least 2 Towns <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">/Cities, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+animal+water → 18.6 |
+| 5 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Dahan. **OR** Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+animal → 18.0 |
 | 6 | **Bats Scout for Raids by Darkness** | 1 | Slow | Moon, Air, Animal | For each [[Dahan]], 1 Damage to [[Towns]]/[[Cities]]. **OR** 1 [[Fear]]. [[Gather]] up to… | elements air+animal → 18.0 |
-| 7 | **Fleshrot Fever** | 1 | Slow | Fire, Air, Water, Animal | 1 Fear. Add 1 Disease. | elements air+animal+fire+water → 18.9 |
+| 7 | **Fleshrot Fever** | 1 | Slow | Fire, Air, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Disease. | elements air+animal+fire+water → 18.9 |
 | 8 | **Birds Cry Warning** | 1 | Fast | Sun, Air, Animal | The next time Dahan would be Destroyed in target land, Destroy 2 fewer Dahan. **OR** Push… | elements air+animal → 18.0 |
 | 9 | **Veil the Night's Hunt** | 1 | Fast | Moon, Air, Animal | For each Dahan present, choose a different Invader. 1 Damage to each of those Invaders. *… | elements air+animal → 18.0 |
-| 10 | **Call to Migrate** | 1 | Slow | Fire, Air, Animal | Gather up to 3 Dahan. Push up to 3 Dahan. | elements air+animal+fire → 18.3 |
+| 10 | **Call to Migrate** | 1 | Slow | Fire, Air, Animal | Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Push up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+animal+fire → 18.3 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Winds of Rust and Atrophy** | 3 | Fast | Air, Water, Animal | 1 Fear and Defend 6. Downgrade 1 Town/City. | elements air+animal+water → 18.6 |
-| 2 | **Infestation of Venomous Spiders** | 4 | Fast | Air, Earth, Plant, Animal | Add 1 Beasts. Gather up to 1 Beasts. For each Beasts, 1 Fear (max. 4) and Invaders skip o… | elements air+animal+earth → 18.3 |
-| 3 | **Plague Ships Sail to Distant Ports** | 4 | Fast | Fire, Air, Water, Animal | 1 Fear. Add 4 Disease among Coastal lands (on any boards) other than target land. | elements air+animal+fire+water → 18.9 |
-| 4 | **Wrap in Wings of Sunlight** | 3 | Fast | Sun, Air, Animal | Move up to 5 Dahan to any land (including back into target land). If you moved at least 1… | elements air+animal → 18.0 |
+| 1 | **Winds of Rust and Atrophy** | 3 | Fast | Air, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 6. Downgrade 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">/City. | elements air+animal+water → 18.6 |
+| 2 | **Infestation of Venomous Spiders** | 4 | Fast | Air, Earth, Plant, Animal | Add 1 Beasts. Gather up to 1 Beasts. For each Beasts, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> (max. 4) and Invaders skip o… | elements air+animal+earth → 18.3 |
+| 3 | **Plague Ships Sail to Distant Ports** | 4 | Fast | Fire, Air, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 4 Disease among Coastal lands (on any boards) other than target land. | elements air+animal+fire+water → 18.9 |
+| 4 | **Wrap in Wings of Sunlight** | 3 | Fast | Sun, Air, Animal | Move up to 5 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> to any land (including back into target land). If you moved at least 1… | elements air+animal → 18.0 |
 | 5 | **Flocking Red-Talons** | 3 | Fast | Air, Water, Plant, Animal | Add 1 Beasts. Move up to 2 Beasts within 3 Range to target land. For each Beasts present,… | elements air+animal+water → 18.6 |
 
 ### HoSI Beginner Deck Bundle — for reference only
@@ -219,14 +219,14 @@ Auto-derived from `data/references/wiki/many-minds-move-as-one.json`. This secti
 ### Innate Powers
 
 - **THE TEEMING HOST ARRIVES** (Speed: Fast · Range: 2 · Target: any)
-  - **L1** — 2 Air + 1 Animal: Gather up to 1 Beasts.
-  - **L2** — 3 Air + 1 Water + 2 Animal: Instead, Gather up to 1 Beasts per Air you have.
-  - **L3** — 1 Fire + 4 Air + 2 Animal: Push up to 3 Beasts.
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Gather up to 1 Beasts.
+  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Instead, Gather up to 1 Beasts per Air you have.
+  - **L3** — 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Push up to 3 Beasts.
 - **BESET AND CONFOUND THE INVADERS** (Speed: Fast · Range: 2 · Target: invaders)
-  - **L1** — 1 Air + 2 Animal: 2 Fear and Defend 2.
-  - **L2** — 2 Air + 3 Animal: Instead, 3 Fear and Defend 4.
-  - **L3** — 3 Air + 4 Animal: Instead, 4 Fear and Defend 7.
-  - **L4** — 4 Air + 1 Earth + 5 Animal: Instead, 6 Fear and Defend 10.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 2.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Instead, 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 4.
+  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Instead, 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 7.
+  - **L4** — 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 5 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Instead, 6 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Defend 10.
 
 ### Fast-phase element ceiling from Uniques
 
@@ -239,10 +239,10 @@ Fast innates resolve in Fast phase and can only see elements from **Fast cards p
 
 | Card | Cost | Speed | Range | Target | Elements | Effect |
 |------|------|-------|-------|--------|----------|--------|
-| **A Dreadful Tide of Scurrying Flesh** | 0 | Fast | Range 1, from your Sacred Site | Land with 2 or more Beasts tokens | moon, air, water, animal | Remove up to half (round down) of Beasts in target land. For each Beasts Removed, 2 Fear and skip o… |
+| **A Dreadful Tide of Scurrying Flesh** | 0 | Fast | Range 1, from your Sacred Site | Land with 2 or more Beasts tokens | moon, air, water, animal | Remove up to half (round down) of Beasts in target land. For each Beasts Removed, 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and skip o… |
 | **Boon of Swarming Bedevilment** | 0 | Fast | No Range | Another Spirit | air, water, animal | For the rest of this turn, each of target Spirit's Presence grants Defend 1 in its land. Target Spi… |
 | **Ever-Multiplying Swarm** | 1 | Slow | 0 | Any Land | fire, earth, animal | Add 2 Beasts. |
-| **Guide the Way on Feathered Wings** | 0 | Fast | 1 | Any Land | sun, air, animal | Move 1 Beasts up to two lands. As it moves, up to 2 Dahan may move with it, for part or all of the … |
+| **Guide the Way on Feathered Wings** | 0 | Fast | 1 | Any Land | sun, air, animal | Move 1 Beasts up to two lands. As it moves, up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> may move with it, for part or all of the … |
 
 ### Invader phase by turn (base deck)
 

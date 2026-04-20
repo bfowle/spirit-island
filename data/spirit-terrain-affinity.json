@@ -1,0 +1,183 @@
+{
+  "schema_version": "0.1",
+  "last_updated": "2026-04-19",
+  "notes": "Heuristic per-spirit terrain scoring for win-probability modelling. Each spirit has a baseline affinity for each terrain (-1..+1 where + means the spirit handles invaders in that terrain well; - means it suffers there), and a `concentration` factor (how the spirit responds when a terrain doubles or triples across a turn: positive = concentration helps, negative = concentration hurts). Values are authored estimates marked [VERIFY] until physical-play data refines them.",
+  "spirits": {
+    "shadows-flicker-like-flame": {
+      "terrain_affinity": {
+        "mountain": 0.2,
+        "jungle": 0.4,
+        "sands": 0.1,
+        "wetland": 0.2
+      },
+      "concentration": 0.3,
+      "rationale": "Shadows's Fear output scales with enemy density — concentrated invader clusters are fear-efficient. Mild jungle preference via Darkness-affinity aspect + Mantle push targeting. [VERIFY]"
+    },
+    "lightning-swift-strike": {
+      "terrain_affinity": {
+        "mountain": 0.3,
+        "jungle": 0.2,
+        "sands": 0.1,
+        "wetland": 0.1
+      },
+      "concentration": 0.5,
+      "rationale": "Lightning strikes hardest on big piles — Fast damage scales well with concentration; Jagged Lightning and Thundering Destruction hit more effectively with doubled-up invaders. [VERIFY]"
+    },
+    "river-surges-in-sunlight": {
+      "terrain_affinity": {
+        "mountain": 0.0,
+        "jungle": 0.1,
+        "sands": 0.2,
+        "wetland": 0.4
+      },
+      "concentration": -0.2,
+      "rationale": "River pushes across the coast/wetland line; strong wetland affinity; concentration hurts because it reduces push targets and complicates the draining cycle. [VERIFY]"
+    },
+    "vital-strength-of-the-earth": {
+      "terrain_affinity": {
+        "mountain": 0.4,
+        "jungle": 0.1,
+        "sands": 0.2,
+        "wetland": 0.2
+      },
+      "concentration": 0.4,
+      "rationale": "Vital Strength absorbs more hits than it prevents — concentrated invaders let its damage-scaling uniques (Guard the Healing Land, Rituals of the Destroying Flame) hit more at once. [VERIFY]"
+    },
+    "ocean-hungry-grasp": {
+      "terrain_affinity": {
+        "mountain": -0.1,
+        "jungle": 0.1,
+        "sands": 0.3,
+        "wetland": 0.1,
+        "coastal lands": 0.8
+      },
+      "concentration": 0.1,
+      "rationale": "Ocean dominates coastal terrain and Coastal Lands invader cards are catastrophic in its favor. Inland concentration is neutral at best. [VERIFY]"
+    },
+    "a-spread-of-rampant-green": {
+      "terrain_affinity": {
+        "mountain": 0.2,
+        "jungle": 0.4,
+        "sands": 0.0,
+        "wetland": 0.3
+      },
+      "concentration": 0.2,
+      "rationale": "Rampant Green's Defend scales with presence; jungle/wetland preference from its archetypal growth pattern; mild concentration benefit via Gift of Proliferation copying. [VERIFY]"
+    },
+    "thunderspeaker": {
+      "terrain_affinity": {
+        "mountain": 0.2,
+        "jungle": 0.3,
+        "sands": 0.2,
+        "wetland": 0.2
+      },
+      "concentration": -0.3,
+      "rationale": "Thunderspeaker needs Dahan adjacency; concentration in invader terrain typically disperses spirit focus and leaves Dahan unsupported. [VERIFY]"
+    },
+    "bringer-of-dreams-and-nightmares": {
+      "terrain_affinity": {
+        "mountain": 0.3,
+        "jungle": 0.3,
+        "sands": 0.3,
+        "wetland": 0.3
+      },
+      "concentration": 0.5,
+      "rationale": "Bringer's Fear scaling is fear-per-kill and area-effect heavy; concentrated invaders mean bigger fear bursts from Lure of the Deep Wilderness and Predatory Nightmares. [VERIFY]"
+    },
+    "rising-heat-of-stone-and-sand": {
+      "terrain_affinity": {
+        "mountain": 0.5,
+        "jungle": 0.0,
+        "sands": 0.4,
+        "wetland": -0.2
+      },
+      "concentration": 0.3,
+      "rationale": "Rising Heat lives on mountain/sands; struggles in wetland. Concentration helps its Fire-scaling damage innates. [VERIFY]"
+    },
+    "sun-bright-whirlwind": {
+      "terrain_affinity": {
+        "mountain": 0.2,
+        "jungle": 0.2,
+        "sands": 0.3,
+        "wetland": 0.2
+      },
+      "concentration": -0.1,
+      "rationale": "Whirlwind covers ground with fast push-from-range; concentration slightly penalizes because it reduces target diversity. [VERIFY]"
+    },
+    "devouring-teeth-lurk-underfoot": {
+      "terrain_affinity": {
+        "mountain": 0.3,
+        "jungle": 0.4,
+        "sands": 0.2,
+        "wetland": 0.2
+      },
+      "concentration": 0.6,
+      "rationale": "Teeth's damage scales hard with per-land explorer/town counts — concentrated invader terrain is a feast. [VERIFY]"
+    },
+    "eyes-watch-from-the-trees": {
+      "terrain_affinity": {
+        "mountain": 0.1,
+        "jungle": 0.5,
+        "sands": 0.0,
+        "wetland": 0.1
+      },
+      "concentration": 0.2,
+      "rationale": "Eyes's Sacred-Site + Plant + Animal focus aligns with jungle; concentration mildly benefits via shared element triggers. [VERIFY]"
+    },
+    "fathomless-mud-of-the-swamp": {
+      "terrain_affinity": {
+        "mountain": 0.0,
+        "jungle": 0.1,
+        "sands": 0.1,
+        "wetland": 0.6
+      },
+      "concentration": -0.1,
+      "rationale": "Mud is a wetland-dominant spirit. Concentration dilutes its strength as it needs to spread Presence for Disease tokens + Innate triggers. [VERIFY]"
+    },
+    "keeper-of-the-forbidden-wilds": {
+      "terrain_affinity": {
+        "mountain": 0.3,
+        "jungle": 0.4,
+        "sands": 0.1,
+        "wetland": 0.2
+      },
+      "concentration": 0.2,
+      "rationale": "Keeper pushes and defends jungle+mountain preferentially via Wilds Aflame / Boon of Reclamation. [VERIFY]"
+    },
+    "heart-of-the-wildfire": {
+      "terrain_affinity": {
+        "mountain": 0.3,
+        "jungle": 0.3,
+        "sands": 0.3,
+        "wetland": -0.2
+      },
+      "concentration": 0.8,
+      "rationale": "Wildfire is the archetype 'concentration is strength' spirit — its blight-spread + innate fire damage is exponential with invader density. [VERIFY]"
+    },
+    "serpent-slumbering-beneath-the-island": {
+      "terrain_affinity": {
+        "mountain": 0.4,
+        "jungle": 0.2,
+        "sands": 0.3,
+        "wetland": 0.2
+      },
+      "concentration": 0.6,
+      "rationale": "Serpent's big-hammer release scales with accumulated invaders; concentrated terrain reveals are favorable. [VERIFY]"
+    },
+    "grinning-trickster": {
+      "terrain_affinity": {
+        "mountain": 0.2,
+        "jungle": 0.2,
+        "sands": 0.2,
+        "wetland": 0.2
+      },
+      "concentration": 0.1,
+      "rationale": "Trickster trades board-state for surprise; concentration is mildly beneficial for AoE effects. [VERIFY]"
+    }
+  },
+  "default": {
+    "terrain_affinity": {"mountain": 0.0, "jungle": 0.0, "sands": 0.0, "wetland": 0.0},
+    "concentration": 0.0,
+    "rationale": "Unscored spirit — neutral baseline."
+  }
+}

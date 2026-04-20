@@ -49,7 +49,8 @@ async fn main() -> anyhow::Result<()> {
     let data_dir: PathBuf = std::env::var("SI_DATA_DIR")
         .unwrap_or_else(|_| "data".to_string())
         .into();
-    let state = load_or_default(&state_path)?;
+    let mut state = load_or_default(&state_path)?;
+    migrate_invader_deck(&mut state, &data_dir);
 
     let app_state = AppState {
         state: Arc::new(RwLock::new(state)),
@@ -73,6 +74,9 @@ async fn main() -> anyhow::Result<()> {
         .route("/api/saved-games/:id/load", axum::routing::post(post_load_saved_game))
         .route("/api/saved-games/:id", axum::routing::delete(delete_saved_game))
         .route("/api/spirit/:slug", get(get_spirit_wiki))
+        .route("/api/deck/:kind", get(get_deck))
+        .route("/api/invader-stack", get(get_invader_stack))
+        .route("/api/spirit-affinity", get(get_spirit_affinity))
         .fallback_service(ServeDir::new(&frontend_dist).append_index_html_on_directories(true))
         .layer(CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any))
         .with_state(app_state);
@@ -97,6 +101,109 @@ fn load_or_default(path: &PathBuf) -> anyhow::Result<GameState> {
     }
 }
 
+/// Look up the canonical invader stack for a given adversary+level from
+/// `data/adversary-stacks.json`. Falls back to base 3·4·5 if not found.
+fn canonical_stack(
+    data_dir: &PathBuf,
+    adversary: Option<&str>,
+    level: Option<u8>,
+) -> (Vec<u8>, String) {
+    let path = data_dir.join("adversary-stacks.json");
+    let raw = std::fs::read_to_string(&path).unwrap_or_default();
+    let root: serde_json::Value = serde_json::from_str(&raw).unwrap_or(serde_json::json!({}));
+    let base_default = root.get("base").cloned().unwrap_or_else(|| {
+        serde_json::json!({
+            "stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3],
+            "notation": "3 · 4 · 5"
+        })
+    });
+    let picked = adversary
+        .and_then(|adv| {
+            let lvl = level.unwrap_or(0).to_string();
+            root.get("adversaries")
+                .and_then(|v| v.get(adv))
+                .and_then(|v| v.get("levels"))
+                .and_then(|v| v.get(&lvl))
+                .cloned()
+        })
+        .unwrap_or(base_default);
+    let seq: Vec<u8> = picked
+        .get("stack_sequence")
+        .and_then(|v| v.as_array())
+        .map(|a| a.iter().filter_map(|v| v.as_u64().map(|n| n as u8)).collect())
+        .unwrap_or_default();
+    let notation = picked
+        .get("notation")
+        .and_then(|v| v.as_str())
+        .unwrap_or("3 · 4 · 5")
+        .to_string();
+    (seq, notation)
+}
+
+/// Ensure the saved game's invader_deck matches the canonical sequence for its
+/// adversary/level. If the notation differs (old saves pre-Prussia-6 fix), rebuild
+/// the upcoming stack from canonical while preserving exposed + discarded cards.
+///
+/// This auto-migration is safe because:
+///   - Stage is locked per position (revealed cards don't change identity)
+///   - Discarded cards preserve play history
+///   - Only the unrevealed tail of the stack is replaced, so no flipped progress is lost
+fn migrate_invader_deck(state: &mut GameState, data_dir: &PathBuf) {
+    let adversary = state.setup.adversary.as_deref();
+    let level = state.setup.level;
+    let (canonical_seq, canonical_notation) = canonical_stack(data_dir, adversary, level);
+    if canonical_seq.is_empty() {
+        return;
+    }
+
+    let Some(deck) = state.invader_deck.as_mut() else {
+        // Saved game predates the invader_deck schema entirely; seed fresh.
+        state.invader_deck = Some(si_common::InvaderDeckState {
+            ravage: None,
+            build: None,
+            explore: None,
+            upcoming: canonical_seq
+                .iter()
+                .map(|&s| si_common::InvaderCard {
+                    stage: s,
+                    terrain: None,
+                    notes: None,
+                })
+                .collect(),
+            discarded: Vec::new(),
+            notation: Some(canonical_notation),
+        });
+        return;
+    };
+
+    // Already aligned? skip.
+    if deck.notation.as_deref() == Some(canonical_notation.as_str()) {
+        return;
+    }
+
+    // Migrate: keep discarded + exposed; rebuild upcoming from canonical[revealed_count..]
+    let exposed_count = usize::from(deck.ravage.is_some())
+        + usize::from(deck.build.is_some())
+        + usize::from(deck.explore.is_some());
+    let revealed_count = deck.discarded.len() + exposed_count;
+    let tail = canonical_seq.iter().skip(revealed_count).copied();
+    deck.upcoming = tail
+        .map(|stage| si_common::InvaderCard {
+            stage,
+            terrain: None,
+            notes: None,
+        })
+        .collect();
+    deck.notation = Some(canonical_notation);
+    tracing::info!(
+        adversary = ?adversary,
+        level = ?level,
+        revealed_count,
+        new_upcoming = deck.upcoming.len(),
+        "auto-migrated invader_deck to canonical stack"
+    );
+}
+
 async fn health() -> impl IntoResponse {
     (StatusCode::OK, "ok")
 }
@@ -104,7 +211,23 @@ async fn health() -> impl IntoResponse {
 async fn get_state(
     axum::extract::State(state): axum::extract::State<AppState>,
 ) -> impl IntoResponse {
-    let snapshot = state.state.read().await.clone();
+    // Take a write lock so we can migrate stale invader decks in place before
+    // returning. Old saves (pre-Prussia-6 fix) get auto-corrected as soon as
+    // the frontend asks for state.
+    let snapshot = {
+        let mut guard = state.state.write().await;
+        let pre = guard.invader_deck.as_ref().and_then(|d| d.notation.clone());
+        migrate_invader_deck(&mut guard, &state.data_dir);
+        let post = guard.invader_deck.as_ref().and_then(|d| d.notation.clone());
+        let cloned = guard.clone();
+        drop(guard);
+        if pre != post {
+            if let Err(e) = persist(&state.state_path, &cloned).await {
+                tracing::error!(?e, "failed to persist migrated state");
+            }
+        }
+        cloned
+    };
     Json(snapshot)
 }
 
@@ -489,6 +612,78 @@ async fn post_new_game(
         );
     }
 
+    // Pick adversary stack sequence from data/adversary-stacks.json.
+    // Fall back to the base 3·4·5 default when the adversary/level combo isn't known.
+    let stacks_path = state.data_dir.join("adversary-stacks.json");
+    let stacks_json: serde_json::Value = std::fs::read_to_string(&stacks_path)
+        .ok()
+        .and_then(|raw| serde_json::from_str(&raw).ok())
+        .unwrap_or_else(|| serde_json::json!({}));
+    let base_default = stacks_json
+        .get("base")
+        .cloned()
+        .unwrap_or_else(|| serde_json::json!({
+            "stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3],
+            "notation": "3 · 4 · 5"
+        }));
+    let picked = req
+        .adversary
+        .as_ref()
+        .and_then(|adv| {
+            let level = req.level.unwrap_or(0).to_string();
+            stacks_json
+                .get("adversaries")
+                .and_then(|v| v.get(adv))
+                .and_then(|v| v.get("levels"))
+                .and_then(|v| v.get(&level))
+                .cloned()
+        })
+        .unwrap_or(base_default);
+    let stack_seq = picked
+        .get("stack_sequence")
+        .and_then(|v| v.as_array())
+        .cloned()
+        .unwrap_or_default();
+    let notation = picked
+        .get("notation")
+        .and_then(|v| v.as_str())
+        .unwrap_or("3 · 4 · 5")
+        .to_string();
+    let upcoming_cards: Vec<serde_json::Value> = stack_seq
+        .into_iter()
+        .filter_map(|v| v.as_u64())
+        .map(|s| serde_json::json!({ "stage": s, "terrain": null }))
+        .collect();
+
+    let player_count = req.spirits.len().max(1) as u8;
+    let fear_threshold = match player_count {
+        1 => 4,
+        2 => 4,
+        3 => 4,
+        4 => 4,
+        _ => 4,
+    };
+    // Fear deck size = 3 × player count by default (one section per terror tier
+    // per player). Adversary data may override via `fear_split` on the level
+    // entry — e.g., some adversaries thicken a specific terror tier.
+    let adv_fear_split: Option<[u32; 3]> = picked
+        .get("fear_split")
+        .and_then(|v| v.as_array())
+        .and_then(|a| {
+            if a.len() == 3 {
+                Some([
+                    a[0].as_u64().unwrap_or(0) as u32,
+                    a[1].as_u64().unwrap_or(0) as u32,
+                    a[2].as_u64().unwrap_or(0) as u32,
+                ])
+            } else {
+                None
+            }
+        });
+    let default_tier = u32::from(player_count);
+    let tier_counts: [u32; 3] = adv_fear_split.unwrap_or([default_tier, default_tier, default_tier]);
+    let fear_deck_size: u32 = tier_counts.iter().sum();
+
     let new_state = serde_json::json!({
         "version": "1.0",
         "round": 1,
@@ -503,7 +698,7 @@ async fn post_new_game(
         },
         "pools": {
             "fear_current": 0,
-            "fear_threshold": 4,
+            "fear_threshold": fear_threshold,
             "terror_level": 1,
             "blight_current": 0,
             "blight_cap": 3,
@@ -512,6 +707,30 @@ async fn post_new_game(
         "spirits": spirits_out,
         "board_state": board_state,
         "log": [],
+        "invader_deck": {
+            "ravage": null,
+            "build": null,
+            "explore": null,
+            "upcoming": upcoming_cards,
+            "discarded": [],
+            "notation": notation,
+        },
+        "fear_deck": {
+            "deck_size": fear_deck_size,
+            "tier_counts": tier_counts,
+            "earned": [],
+            "resolved": [],
+            "unseen": fear_deck_size,
+        },
+        // Event deck — starts empty. Players will mark the face-up previewed
+        // card at start of Setup; per rules, the first previewed Event resolves
+        // on Turn 2 (not Turn 1). `unseen` is event-pool-size approximate; tools
+        // don't need it exact since we don't draw programmatically.
+        "event_deck": {
+            "previewed": [],
+            "resolved": [],
+            "unseen": 62,
+        },
     });
 
     // Parse into GameState; reject if the schema doesn't match
@@ -664,10 +883,14 @@ async fn post_load_saved_game(
         Ok(s) => s,
         Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("read: {e}")).into_response(),
     };
-    let parsed: GameState = match serde_json::from_str(&raw) {
+    let mut parsed: GameState = match serde_json::from_str(&raw) {
         Ok(s) => s,
         Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("parse: {e}")).into_response(),
     };
+    // Auto-migrate invader deck from canonical adversary-stacks.json. Old saves
+    // (pre-Prussia-6 fix) get their upcoming stack replaced with the current
+    // canonical sequence; exposed + discarded cards are preserved.
+    migrate_invader_deck(&mut parsed, &state.data_dir);
     {
         let mut guard = state.state.write().await;
         *guard = parsed.clone();
@@ -704,6 +927,82 @@ async fn get_spirit_wiki(
     let path = state.data_dir.join("references/wiki").join(format!("{slug}.json"));
     let Ok(raw) = std::fs::read_to_string(&path) else {
         return (StatusCode::NOT_FOUND, format!("no wiki data for {slug}")).into_response();
+    };
+    match serde_json::from_str::<serde_json::Value>(&raw) {
+        Ok(v) => Json(v).into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, format!("parse: {e}")).into_response(),
+    }
+}
+
+// --- Deck lookup -----------------------------------------------------------
+
+/// Serves baked deck JSON (fear/event/minor/major/unique/blight) from data/decks/.
+async fn get_deck(
+    axum::extract::State(state): axum::extract::State<AppState>,
+    axum::extract::Path(kind): axum::extract::Path<String>,
+) -> impl IntoResponse {
+    let allowed = ["fear", "event", "minor", "major", "unique", "blight"];
+    if !allowed.contains(&kind.as_str()) {
+        return (StatusCode::BAD_REQUEST, format!("unknown deck kind: {kind}")).into_response();
+    }
+    let path = state.decks_dir.join(format!("{kind}.json"));
+    let Ok(raw) = std::fs::read_to_string(&path) else {
+        return (StatusCode::NOT_FOUND, format!("deck file not found: {kind}")).into_response();
+    };
+    match serde_json::from_str::<serde_json::Value>(&raw) {
+        Ok(v) => Json(v).into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, format!("parse: {e}")).into_response(),
+    }
+}
+
+// --- Invader stack lookup --------------------------------------------------
+
+#[derive(Deserialize)]
+struct InvaderStackQuery {
+    adversary: Option<String>,
+    level: Option<u8>,
+}
+
+async fn get_invader_stack(
+    axum::extract::State(state): axum::extract::State<AppState>,
+    Query(q): Query<InvaderStackQuery>,
+) -> impl IntoResponse {
+    let path = state.data_dir.join("adversary-stacks.json");
+    let Ok(raw) = std::fs::read_to_string(&path) else {
+        return (StatusCode::NOT_FOUND, "adversary-stacks.json not found".to_string()).into_response();
+    };
+    let root: serde_json::Value = match serde_json::from_str(&raw) {
+        Ok(v) => v,
+        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("parse: {e}")).into_response(),
+    };
+    let base_default = root.get("base").cloned().unwrap_or_else(|| serde_json::json!({
+        "stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3],
+        "notation": "3 · 4 · 5"
+    }));
+    let picked = q
+        .adversary
+        .as_ref()
+        .and_then(|adv| {
+            let level = q.level.unwrap_or(0).to_string();
+            root.get("adversaries")
+                .and_then(|v| v.get(adv))
+                .and_then(|v| v.get("levels"))
+                .and_then(|v| v.get(&level))
+                .cloned()
+        })
+        .unwrap_or(base_default);
+    Json(picked).into_response()
+}
+
+// --- Spirit-terrain affinity lookup ----------------------------------------
+
+async fn get_spirit_affinity(
+    axum::extract::State(state): axum::extract::State<AppState>,
+) -> impl IntoResponse {
+    let path = state.data_dir.join("spirit-terrain-affinity.json");
+    let Ok(raw) = std::fs::read_to_string(&path) else {
+        return (StatusCode::NOT_FOUND, "spirit-terrain-affinity.json not found".to_string())
+            .into_response();
     };
     match serde_json::from_str::<serde_json::Value>(&raw) {
         Ok(v) => Json(v).into_response(),

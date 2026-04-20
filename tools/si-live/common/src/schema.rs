@@ -21,6 +21,105 @@ pub struct GameState {
     pub board_state: HashMap<String, Board>,
     #[serde(default)]
     pub log: Vec<LogEntry>,
+    /// Invader deck state. Ordered upcoming stack (stage-known; terrain revealed on flip)
+    /// + three exposed positions (ravage/build/explore) + discard pile.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub invader_deck: Option<InvaderDeckState>,
+    /// Fear deck state. 9-slot (3·L1 + 3·L2 + 3·L3) model — earned (drawn, awaiting Fear
+    /// phase) vs resolved (played). Ordered revealed names when looked up from fear.json.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub fear_deck: Option<FearDeckState>,
+    /// Event deck state. Rule: the first Event card is flipped face-up during Setup
+    /// (previewed for Turn 1 planning) but doesn't resolve until Turn 2. Previewed
+    /// and resolved are separate lists so the tool correctly models the one-turn lead.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub event_deck: Option<EventDeckState>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct InvaderCard {
+    /// 1, 2, or 3 — locked when the stack is built (known at setup).
+    pub stage: u8,
+    /// Revealed terrain when the card is flipped (e.g., "Jungle", "Mountain + Wetland").
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub terrain: Option<String>,
+    /// Optional notes (e.g., adversary escalation applied this flip).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub notes: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct InvaderDeckState {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ravage: Option<InvaderCard>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub build: Option<InvaderCard>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub explore: Option<InvaderCard>,
+    /// Upcoming stack: [0] = next to flip into Explore.
+    #[serde(default)]
+    pub upcoming: Vec<InvaderCard>,
+    /// Discarded (post-Ravage) cards — kept ordered, newest last.
+    #[serde(default)]
+    pub discarded: Vec<InvaderCard>,
+    /// Human-readable notation of the stack shape (e.g., "3 · 4 · 5").
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub notation: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct FearDeckState {
+    /// Total size of the Fear deck. Default = 3 × player count (3 players → 9).
+    /// Adversaries/scenarios can add/subtract from specific terror levels.
+    pub deck_size: u32,
+    /// Card count at each terror level: [T1, T2, T3]. When absent, the UI
+    /// treats it as evenly split from `deck_size`. Explicit counts let
+    /// adversaries with asymmetric splits be represented faithfully.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier_counts: Option<[u32; 3]>,
+    /// Fear-generated thresholds crossed so far (cards earned but not yet resolved).
+    /// Each entry is the fear-card name when looked up from `data/decks/fear.json`.
+    #[serde(default)]
+    pub earned: Vec<FearCardEntry>,
+    /// Fear cards already resolved in prior Fear phases.
+    #[serde(default)]
+    pub resolved: Vec<FearCardEntry>,
+    /// Unseen count remaining in the deck.
+    pub unseen: u32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct FearCardEntry {
+    /// Card name (from data/decks/fear.json). Empty if not yet identified.
+    pub name: String,
+    /// Terror level at which the card was drawn (1/2/3).
+    pub terror_level: u8,
+    /// Round the card was earned.
+    pub round: u8,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct EventCardEntry {
+    /// Event name as it appears in data/decks/event.json. Empty until identified.
+    pub name: String,
+    /// The turn this card was previewed (face-up, visible).
+    pub previewed_on_turn: u8,
+    /// The turn the card resolved (usually `previewed_on_turn + 1`).
+    /// None while the card is still in the "previewed" bucket.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub resolved_on_turn: Option<u8>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct EventDeckState {
+    /// Face-up card(s) previewed for next turn. Typically exactly one at a time.
+    #[serde(default)]
+    pub previewed: Vec<EventCardEntry>,
+    /// Cards that have resolved in prior turns, preserved for retrospective review.
+    #[serde(default)]
+    pub resolved: Vec<EventCardEntry>,
+    /// Cards remaining in the Event deck (face-down, unknown).
+    pub unseen: u32,
 }
 
 fn default_version() -> String {
@@ -34,6 +133,11 @@ pub enum Phase {
     Setup,
     Growth,
     Fast,
+    /// Sub-phase of the Invader Phase — event card resolves here.
+    Event,
+    /// Sub-phase of the Invader Phase — earned fear cards resolve here.
+    Fear,
+    /// Sub-phase of the Invader Phase — Ravage / Build / Explore actions.
     Invader,
     Slow,
     TimePasses,
@@ -62,6 +166,9 @@ pub struct Pools {
     pub blight_cap: u8,
     #[serde(default)]
     pub island_blighted: bool,
+    /// Selected Blight card name (matches data/decks/blight.json).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub blight_card: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -137,6 +244,9 @@ pub struct Card {
 pub struct LogEntry {
     pub round: u8,
     pub event: String,
-    #[serde(flatten)]
+    /// Event-specific payload (e.g., `{"amount": 2}` for fear_generated).
+    /// Kept as a named field (not flattened) so the frontend's `{details:{…}}`
+    /// shape round-trips cleanly and `fear_by_round` can read `details.amount`.
+    #[serde(default)]
     pub details: serde_json::Value,
 }

@@ -26,7 +26,7 @@ Strategic framing `[VERIFY: enhance with play experience]`.
 
 ## Starting Setup
 
-> On your starting board, put 2 Presence in a land with Blight, then put 2 Presence and 1 Blight (from the box) in the highest-numbered land with a Town Setup Symbol. You start with your 4 Unique Power Cards and 4 Energy.</br>Set your 4 Healing Cards nearby.
+> On your starting board, put 2 Presence in a land with Blight, then put 2 Presence and 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> (from the box) in the highest-numbered land with a Town Setup Symbol. You start with your 4 Unique Power Cards and 4 Energy.</br>Set your 4 Healing Cards nearby.
 
 ## Growth Options (one)
 
@@ -63,9 +63,9 @@ SEEKING A PATH TOWARDS HEALING</br>After playing cards each Spirit Phase: * Clai
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Water | Push up to 2 Explorer/Dahan/Blight. |
-| 2 | 3 Water + 1 Animal | 1 Fear. Push up to 2 Town/Presence/Beasts. |
-| 3 | 5 Water + 2 Plant + 2 Animal | In one land pushed into, Downgrade all Town and all City. |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Push up to 2 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Dahan/Blight. |
+| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 2 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">/Presence/Beasts. |
+| 3 | 5 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | In one land pushed into, Downgrade all Town and all City. |
 
 
 ### Innate: SANGUINARY TAINT
@@ -74,9 +74,9 @@ SEEKING A PATH TOWARDS HEALING</br>After playing cards each Spirit Phase: * Clai
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Animal | 1 Fear. 1 Damage. Push 1 Dahan. |
-| 2 | 1 Water + 3 Animal | 1 Damage. Add 1 Beasts. |
-| 3 | 2 Fire + 2 Water + 5 Animal | 1 Fear. 4 Damage. Add 1 Disease. |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
+| 2 | 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Damage. Add 1 Beasts. |
+| 3 | 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 5 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 4 Damage. Add 1 Disease. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -99,26 +99,26 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Weep for What is Lost** | 0 | Slow | Fire, Water, Animal | 1 Fear per type of Invader present. Push up to 1 Explorer/Town per Blight. | elements animal+fire+water → 13.2 |
-| 2 | **Call to Tend** | 1 | Slow | Water, Plant, Animal | Remove 1 Blight. **OR** Push up to 3 Dahan. | elements animal+plant+water → 13.2 |
-| 3 | **Call of the Dahan Ways** | 1 | Slow | Moon, Water, Animal | Replace 1 Explorer with 1 Dahan. | elements animal+water → 12.6 |
+| 1 | **Weep for What is Lost** | 0 | Slow | Fire, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per type of Invader present. Push up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Blight. | elements animal+fire+water → 13.2 |
+| 2 | **Call to Tend** | 1 | Slow | Water, Plant, Animal | Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. **OR** Push up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements animal+plant+water → 13.2 |
+| 3 | **Call of the Dahan Ways** | 1 | Slow | Moon, Water, Animal | Replace 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> with 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements animal+water → 12.6 |
 | 4 | **Blood Draws Predators** | 1 | Fast | Sun, Fire, Water, Animal | After the next time Invaders are Destroyed in target land: Add 1 Beasts, then 1 Damage pe… | elements animal+fire+water → 13.2 |
-| 5 | **Fleshrot Fever** | 1 | Slow | Fire, Air, Water, Animal | 1 Fear. Add 1 Disease. | elements animal+fire+water → 13.2 |
+| 5 | **Fleshrot Fever** | 1 | Slow | Fire, Air, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Disease. | elements animal+fire+water → 13.2 |
 | 6 | **Infested Aquifers** | 1 | Slow | Moon, Water, Earth, Animal | If target land has any Disease, 1 Damage to each Invader. **OR** If target land is a Moun… | elements animal+water → 12.6 |
 | 7 | **Mesmerized Tranquility** | 0 | Fast | Water, Earth, Animal | Isolate target land. Each Invader does -1 Damage. | elements animal+water → 12.6 |
-| 8 | **Teeming Rivers** | 1 | Slow | Sun, Water, Plant, Animal | If target land has no Blight, add 1 Beasts. If target land has exactly 1 Blight, Remove i… | elements animal+plant+water → 13.2 |
-| 9 | **Rain of Blood** | 0 | Slow | Air, Water, Animal | 2 Fear. If target land has at least 2 Towns/Cities, 1 Fear. | elements animal+water → 12.6 |
+| 8 | **Teeming Rivers** | 1 | Slow | Sun, Water, Plant, Animal | If target land has no Blight, add 1 Beasts. If target land has exactly 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">, Remove i… | elements animal+plant+water → 13.2 |
+| 9 | **Rain of Blood** | 0 | Slow | Air, Water, Animal | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land has at least 2 Towns <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">/Cities, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements animal+water → 12.6 |
 | 10 | **Sap the Strength of Multitudes** | 0 | Fast | Water, Animal | Defend 5. | elements animal+water → 12.6 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Ravaged Undergrowth Slithers Back to Life** | 3 | Slow | Water, Plant, Animal | Replace 1 Blight with 1 Wilds.</br>1 Fear. 3 Damage.</br>Push that Wilds. | elements animal+plant+water → 13.2 |
+| 1 | **Ravaged Undergrowth Slithers Back to Life** | 3 | Slow | Water, Plant, Animal | Replace 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> with 1 Wilds.</br>1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 3 Damage.</br>Push that Wilds. | elements animal+plant+water → 13.2 |
 | 2 | **Flocking Red-Talons** | 3 | Fast | Air, Water, Plant, Animal | Add 1 Beasts. Move up to 2 Beasts within 3 Range to target land. For each Beasts present,… | elements animal+plant+water → 13.2 |
-| 3 | **Dissolve the Bonds of Kinship** | 4 | Slow | Fire, Water, Animal | Replace 1 City with 2 Explorers. Replace 1 Town with 1 Explorer. Replace 1 Dahan with 1 E… | elements animal+fire+water → 13.2 |
-| 4 | **Inspire the Release of Stolen Lands** | 4 | Slow | Sun, Water, Plant, Animal | Gather up to 3 Dahan. Remove up to 3 Health worth of Invaders per Dahan. | elements animal+plant+water → 13.2 |
-| 5 | **Plague Ships Sail to Distant Ports** | 4 | Fast | Fire, Air, Water, Animal | 1 Fear. Add 4 Disease among Coastal lands (on any boards) other than target land. | elements animal+fire+water → 13.2 |
+| 3 | **Dissolve the Bonds of Kinship** | 4 | Slow | Fire, Water, Animal | Replace 1 City <img class="si" src="/spirit-island/theme/icons/unit-city.svg" alt="City"> with 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Replace 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> with 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Replace 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> with 1 E… | elements animal+fire+water → 13.2 |
+| 4 | **Inspire the Release of Stolen Lands** | 4 | Slow | Sun, Water, Plant, Animal | Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Remove up to 3 Health worth of Invaders per Dahan. | elements animal+plant+water → 13.2 |
+| 5 | **Plague Ships Sail to Distant Ports** | 4 | Fast | Fire, Air, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 4 Disease among Coastal lands (on any boards) other than target land. | elements animal+fire+water → 13.2 |
 
 ### HoSI Beginner Deck Bundle — for reference only
 
@@ -166,7 +166,7 @@ Auto-derived from `data/references/wiki/wounded-waters-bleeding.json`. This sect
 
 ### Starting state
 
-- **Setup**: On your starting board, put 2 Presence in a land with Blight, then put 2 Presence and 1 Blight (from the box) in the highest-numbered land with a Town Setup Symbol. You start with your 4 Unique Power Cards and 4 Energy.</br>Set your 4 Healing Cards nearby.
+- **Setup**: On your starting board, put 2 Presence in a land with Blight, then put 2 Presence and 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> (from the box) in the highest-numbered land with a Town Setup Symbol. You start with your 4 Unique Power Cards and 4 Energy.</br>Set your 4 Healing Cards nearby.
 - **Starting income** (from `presence_energy_track[0]` = `blank`, `presence_cardplay_track[0]` = `energy0card1`): **3 Energy · 0 Card Play**
 - **Hand at start**: 4 Unique Power Cards (listed below)
 - **Growth type**: `one` — pick **one** growth option per turn
@@ -190,13 +190,13 @@ Auto-derived from `data/references/wiki/wounded-waters-bleeding.json`. This sect
 ### Innate Powers
 
 - **SWIRL AND SPILL** (Speed: Slow · Range: 1 · Target: any)
-  - **L1** — 2 Water: Push up to 2 Explorer/Dahan/Blight.
-  - **L2** — 3 Water + 1 Animal: 1 Fear. Push up to 2 Town/Presence/Beasts.
-  - **L3** — 5 Water + 2 Plant + 2 Animal: In one land pushed into, Downgrade all Town and all City.
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: Push up to 2 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Dahan/Blight.
+  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 2 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">/Presence/Beasts.
+  - **L3** — 5 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: In one land pushed into, Downgrade all Town and all City.
 - **SANGUINARY TAINT** (Speed: Slow · Range: 1 · Target: any)
-  - **L1** — 2 Animal: 1 Fear. 1 Damage. Push 1 Dahan.
-  - **L2** — 1 Water + 3 Animal: 1 Damage. Add 1 Beasts.
-  - **L3** — 2 Fire + 2 Water + 5 Animal: 1 Fear. 4 Damage. Add 1 Disease.
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.
+  - **L2** — 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 1 Damage. Add 1 Beasts.
+  - **L3** — 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 5 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 4 Damage. Add 1 Disease.
 
 ### Fast-phase element ceiling from Uniques
 

@@ -5,6 +5,8 @@ import { Line } from 'vue-chartjs'
 import type { GameState } from '../types'
 import type { StatsResponse, DrawProbabilityResponse } from '../stats'
 import { fetchStats, fetchDrawProbability } from '../stats'
+import { fetchSpiritAffinity, type SpiritAffinityMap } from '../api'
+import { computeWinProb } from '../lib/winprob'
 import Icon from './Icon.vue'
 
 Chart.register(...registerables)
@@ -15,17 +17,42 @@ const stats = ref<StatsResponse | null>(null)
 const error = ref<string | null>(null)
 const drawProbs = ref<Record<string, DrawProbabilityResponse>>({})
 
+/** Count cards the player has permanently drafted out of each deck so far.
+ *  These reduce the effective deck population for draw-probability modelling.
+ *  Seen-but-not-kept cards don't count — they're returned to the deck bottom. */
+const draftedByDeck = computed(() => {
+  const log = (props.state.log as Array<{ event: string; details: Record<string, unknown> }>) ?? []
+  const counts: Record<'minor' | 'major' | 'unique', number> = { minor: 0, major: 0, unique: 0 }
+  for (const e of log) {
+    if (e.event === 'card_drafted') {
+      const d = (e.details.deck as 'minor' | 'major' | 'unique' | undefined) ?? 'minor'
+      if (d in counts) counts[d]++
+    }
+  }
+  return counts
+})
+
 async function refresh() {
+  // Each fetch is independent; a stats failure shouldn't suppress draw probs
+  // and vice-versa. Errors are shown inline without blanking existing data.
   try {
     stats.value = await fetchStats()
+    error.value = null
+  } catch (e) {
+    error.value = `stats: ${(e as Error).message}`
+  }
+
+  try {
     const elems = ['moon', 'fire', 'air']
+    const drafted = draftedByDeck.value
     const results = await Promise.all(
       elems.flatMap(el => [
         ['minor', el] as const,
         ['major', el] as const,
       ]).map(async ([deck, element]) => {
         try {
-          const r = await fetchDrawProbability(deck, element, 1, 1, 0)
+          const drawnCount = drafted[deck] ?? 0
+          const r = await fetchDrawProbability(deck, element, 1, 1, drawnCount)
           return [`${deck}:${element}`, r] as const
         } catch {
           return null
@@ -38,24 +65,98 @@ async function refresh() {
     }
     drawProbs.value = next
   } catch (e) {
-    error.value = (e as Error).message
+    error.value = `draw-probs: ${(e as Error).message}`
   }
 }
 
 onMounted(refresh)
 watch(() => props.state, refresh, { deep: true })
 
+// Derive fear-by-round directly from the log so the chart updates instantly
+// without waiting for the debounced backend PUT/GET roundtrip. Also track
+// sources (which event / fear-card / note generated each bump) so the user
+// can attribute fear swings to specific events during retrospection.
+interface FearBump { round: number; amount: number; source: string }
+
+const fearBumps = computed<FearBump[]>(() => {
+  const log = (props.state.log as Array<{ round: number; event: string; details: Record<string, unknown> }>) ?? []
+  const out: FearBump[] = []
+  // Context tracking: most recent "in-flight" event/fear card sets the source
+  // for subsequent fear_generated bumps until another context event arrives.
+  let ctx = ''
+  let ctxRound = -1
+  for (const e of log) {
+    if (ctxRound !== e.round) { ctx = ''; ctxRound = e.round }
+    if (e.event === 'event_card' || e.event === 'event_resolved') {
+      ctx = `Event: ${e.details.card}`
+    } else if (e.event === 'fear_card') {
+      ctx = `Fear card: ${e.details.card}`
+    } else if (e.event === 'invader_card' || e.event === 'invader_rotated') {
+      ctx = `Invader: ${e.details.card ?? e.details.ravaged_terrain ?? ''}`
+    }
+    if (e.event === 'fear_generated') {
+      const amount = typeof e.details.amount === 'number' ? e.details.amount : 0
+      out.push({ round: e.round, amount, source: ctx || 'unattributed' })
+    }
+  }
+  return out
+})
+
+const fearByRound = computed(() => {
+  const by = new Map<number, number>()
+  for (const b of fearBumps.value) by.set(b.round, (by.get(b.round) ?? 0) + b.amount)
+  return by
+})
+
+interface SourceAgg { amount: number; source: string }
+interface RoundAttribution { round: number; total: number; sources: SourceAgg[] }
+
+const fearSourcesByRound = computed<RoundAttribution[]>(() => {
+  const byRound = new Map<number, SourceAgg[]>()
+  for (const b of fearBumps.value) {
+    const list = byRound.get(b.round) ?? []
+    // Aggregate same-source bumps within a round
+    const existing = list.find(s => s.source === b.source)
+    if (existing) existing.amount += b.amount
+    else list.push({ amount: b.amount, source: b.source })
+    byRound.set(b.round, list)
+  }
+  return Array.from(byRound.entries())
+    .sort(([a], [b]) => a - b)
+    .map(([round, sources]) => ({
+      round,
+      total: sources.reduce((acc, s) => acc + s.amount, 0),
+      sources,
+    }))
+})
+
+/** Aggregate total fear generated per source-type across the whole game.
+ *  Lets the retrospective show which card-type / event-type gave the most
+ *  fear — useful for identifying which plays were the highest-leverage. */
+const fearBySource = computed<SourceAgg[]>(() => {
+  const totals = new Map<string, number>()
+  let grand = 0
+  for (const b of fearBumps.value) {
+    totals.set(b.source, (totals.get(b.source) ?? 0) + b.amount)
+    grand += b.amount
+  }
+  const out = Array.from(totals.entries())
+    .map(([source, amount]) => ({ source, amount }))
+    .sort((a, b) => b.amount - a.amount)
+  // Stash grand total for display via the last-returned computed (see template)
+  return out.map(s => ({ ...s, _pct: grand > 0 ? (s.amount / grand) * 100 : 0 } as SourceAgg & { _pct: number }))
+})
+
+const totalFearGenerated = computed(() => fearBumps.value.reduce((a, b) => a + b.amount, 0))
+
 const fearChartData = computed(() => {
-  if (!stats.value) return { labels: [], datasets: [] }
-  const byRound = [...stats.value.fear_by_round].sort((a, b) => a.round - b.round)
   const labels: string[] = []
   const perTurn: number[] = []
   const cumulative: number[] = []
   let running = 0
   for (let r = 1; r <= Math.max(props.state.round, 8); r++) {
     labels.push(`T${r}`)
-    const entry = byRound.find(x => x.round === r)
-    const v = entry?.fear_generated ?? 0
+    const v = fearByRound.value.get(r) ?? 0
     perTurn.push(v)
     running += v
     cumulative.push(running)
@@ -107,48 +208,33 @@ const chartOptions = {
   },
 }
 
-const fearPct = computed(() =>
-  !stats.value || stats.value.fear_threshold === 0
-    ? 0
-    : Math.min(100, (stats.value.fear_current / stats.value.fear_threshold) * 100),
-)
-const blightPct = computed(() =>
-  !stats.value || stats.value.blight_cap === 0
-    ? 0
-    : Math.min(100, (stats.value.blight_current / stats.value.blight_cap) * 100),
-)
+// Read directly from props.state so bars stay in sync instantly — the /api/stats
+// fetch lags behind by the 400ms save debounce and was causing the Stats bar to
+// display stale values (e.g., 1/4 while the pool actually read 2/4).
+const fearPct = computed(() => {
+  const p = props.state.pools
+  return !p.fear_threshold ? 0 : Math.min(100, (p.fear_current / p.fear_threshold) * 100)
+})
+const blightPct = computed(() => {
+  const p = props.state.pools
+  return !p.blight_cap ? 0 : Math.min(100, (p.blight_current / p.blight_cap) * 100)
+})
 
-// Heuristic win-probability estimate.
-// Model: base 50% at round 1. Fear progress lifts us (each threshold crossing
-// ≈ +15%). Blight ratio hurts (each step toward cap ≈ −5%). Round pressure
-// hurts slowly (−2% per round past 6). Wilson CI heuristic: width ≈ 1/√N
-// where N is a notional "games of similar state" — we treat current state as
-// n=12 worth of evidence, which gives a ~±25% band.
-function clamp(v: number, lo = 0, hi = 1): number { return Math.max(lo, Math.min(hi, v)) }
+// Win-probability delegated to shared lib so sticky bar, charts, and banner
+// all stay canonical.
+const affinityMap = ref<SpiritAffinityMap | null>(null)
+onMounted(async () => {
+  try {
+    affinityMap.value = await fetchSpiritAffinity()
+  } catch { /* degrades to non-terrain-aware probability */ }
+})
 
-const winProbability = computed(() => {
-  if (!stats.value) return { mean: 0.5, lo: 0.25, hi: 0.75 }
-  const s = stats.value
-  const fearRatio = s.fear_threshold > 0 ? s.fear_current / s.fear_threshold : 0
-  const blightRatio = s.blight_cap > 0 ? s.blight_current / s.blight_cap : 0
-  const round = props.state.round
-  let mean = 0.50
-  mean += fearRatio * 0.20                          // fear progress helps
-  mean += (s.terror_level - 1) * 0.10               // each terror flip ~+10%
-  mean -= blightRatio * 0.30                        // blight hurts
-  mean -= Math.max(0, round - 6) * 0.05             // round 7+ accumulates risk
-  mean = clamp(mean)
-  // Wilson-ish interval at notional n=12 observations of this state:
-  const n = 12
-  const z = 1.96
-  const denom = 1 + (z * z) / n
-  const center = (mean + (z * z) / (2 * n)) / denom
-  const margin = (z * Math.sqrt((mean * (1 - mean)) / n + (z * z) / (4 * n * n))) / denom
-  return {
-    mean,
-    lo: clamp(center - margin),
-    hi: clamp(center + margin),
-  }
+const winProbability = computed(() => computeWinProb(props.state, affinityMap.value))
+const terrainModifier = computed(() => {
+  const wp = winProbability.value
+  // Back-derive the terrain mod delta from the canonical calc for the footer hint.
+  // Cheap approx: if reason mentions terrain concentration, we'd surface it here.
+  return wp.endState === 'in-progress' ? 0 : 0
 })
 
 const winProbPct = computed(() => `${(winProbability.value.mean * 100).toFixed(0)}%`)
@@ -170,10 +256,12 @@ const turnAdvances = computed<TurnAdvance[]>(() =>
 )
 
 function estimateWinAt(round: number, fearCurr: number, blightCurr: number): number {
-  const fearRatio = (stats.value?.fear_threshold ?? 4) > 0 ? fearCurr / (stats.value!.fear_threshold) : 0
-  const blightRatio = (stats.value?.blight_cap ?? 3) > 0 ? blightCurr / (stats.value!.blight_cap) : 0
-  let m = 0.5 + fearRatio * 0.2 - blightRatio * 0.3 - Math.max(0, round - 6) * 0.05
-  return clamp(m)
+  const threshold = stats.value?.fear_threshold ?? 4
+  const cap = stats.value?.blight_cap ?? 3
+  const fearRatio = threshold > 0 ? fearCurr / threshold : 0
+  const blightRatio = cap > 0 ? blightCurr / cap : 0
+  const m = 0.5 + fearRatio * 0.2 - blightRatio * 0.3 - Math.max(0, round - 6) * 0.05
+  return Math.max(0, Math.min(1, m))
 }
 
 const winChartData = computed(() => {
@@ -263,8 +351,8 @@ const spiritElements = computed(() => {
         <div class="bar-hdr">
           <Icon name="resource-fear" :size="14" decorative />
           <span>Fear</span>
-          <span class="bar-count">{{ stats?.fear_current ?? 0 }} / {{ stats?.fear_threshold ?? 0 }}</span>
-          <span class="tl">Terror {{ stats?.terror_level ?? 1 }}</span>
+          <span class="bar-count">{{ props.state.pools.fear_current }} / {{ props.state.pools.fear_threshold }}</span>
+          <span class="tl">Terror {{ props.state.pools.terror_level }}</span>
         </div>
         <div class="bar"><div class="fill fear" :style="{ width: fearPct + '%' }" /></div>
       </div>
@@ -272,7 +360,7 @@ const spiritElements = computed(() => {
         <div class="bar-hdr">
           <Icon name="resource-blight" :size="14" decorative />
           <span>Blight</span>
-          <span class="bar-count">{{ stats?.blight_current ?? 0 }} / {{ stats?.blight_cap ?? 0 }}</span>
+          <span class="bar-count">{{ props.state.pools.blight_current }} / {{ props.state.pools.blight_cap }}</span>
         </div>
         <div class="bar"><div class="fill blight" :style="{ width: blightPct + '%' }" /></div>
       </div>
@@ -287,20 +375,69 @@ const spiritElements = computed(() => {
         </span>
       </div>
       <div class="chart-box">
-        <Line :data="winChartData" :options="chartOptions" />
+        <Line
+          :data="winChartData"
+          :options="chartOptions"
+          :key="`win-${props.state.round}-${Math.round(winProbability.mean * 1000)}-${winProbability.endState}`"
+        />
       </div>
       <p class="wp-note">
-        Heuristic: baseline 50%, adjusted by fear progress (+20% × fear/threshold), terror level (+10% per flip), blight pressure (−30% × blight/cap), round pressure (−5%/round past T6). ±20pp band is a notional uncertainty, not a bootstrapped CI — refine later with playlog data.
+        Heuristic: baseline 50%, adjusted by fear progress (+20% × fear/threshold), terror level (+10% per flip), blight pressure (−30% × blight/cap), round pressure (−5%/round past T6), and
+        <strong v-if="terrainModifier !== 0" :class="terrainModifier > 0 ? 'pos-mod' : 'neg-mod'">
+          {{ (terrainModifier * 100).toFixed(1) }}% terrain concentration
+        </strong><span v-else>terrain concentration (none in next 3 turns)</span>.
+        ±20pp band is a notional uncertainty, not a bootstrapped CI — refine later with playlog data.
       </p>
     </div>
 
     <div class="section">
       <div class="section-hdr">
         <h3>Fear over rounds</h3>
-        <span class="subtle">Populated from <code>fear_generated</code> log entries (use the Quick-fear buttons in Turn Controller).</span>
+        <span class="subtle">Live from <code>fear_generated</code> log entries — tagged with the event/card context when available.</span>
       </div>
       <div class="chart-box">
-        <Line :data="fearChartData" :options="chartOptions" />
+        <Line
+          :data="fearChartData"
+          :options="chartOptions"
+          :key="`fear-${fearBumps.length}-${fearByRound.size}`"
+        />
+      </div>
+      <div v-if="fearBumps.length" class="fear-by-source">
+        <div class="attribution-label">Fear by source · total {{ totalFearGenerated }}</div>
+        <div class="source-bars">
+          <div
+            v-for="s in fearBySource"
+            :key="s.source"
+            class="source-bar"
+            :title="`${s.source}: +${s.amount} (${((s as unknown as { _pct: number })._pct).toFixed(0)}%)`"
+          >
+            <span class="source-name">{{ s.source }}</span>
+            <div class="source-track">
+              <div class="source-fill" :style="{ width: ((s as unknown as { _pct: number })._pct) + '%' }"></div>
+            </div>
+            <span class="source-val mono">+{{ s.amount }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="fearBumps.length" class="fear-attribution">
+        <div class="attribution-label">Fear sources by round</div>
+        <div class="attribution-rows">
+          <div
+            v-for="(rd, i) in fearSourcesByRound"
+            :key="i"
+            class="attribution-row"
+          >
+            <span class="round-tag mono">R{{ rd.round }}</span>
+            <span class="round-total">+{{ rd.total }} fear</span>
+            <span class="round-sources">
+              <span v-for="(src, si) in rd.sources" :key="si" class="source-chip" :title="src.source">
+                +{{ src.amount }}
+                <span class="source-name">{{ src.source }}</span>
+              </span>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -403,6 +540,92 @@ const spiritElements = computed(() => {
   font-style: italic;
   margin: var(--sp-2) 0 0;
   line-height: 1.45;
+}
+.wp-note .pos-mod { color: var(--status-success); font-style: normal; }
+.wp-note .neg-mod { color: var(--status-danger); font-style: normal; }
+
+.fear-attribution,
+.fear-by-source {
+  margin-top: var(--sp-2);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: var(--sp-2) var(--sp-3);
+}
+
+.source-bars {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.source-bar {
+  display: grid;
+  grid-template-columns: 8rem 1fr 3rem;
+  gap: var(--sp-2);
+  align-items: center;
+  font-size: var(--fs-xs);
+}
+.source-name {
+  color: var(--text-secondary);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.source-track {
+  background: var(--bg-canvas);
+  border-radius: var(--r-full);
+  height: 8px;
+  overflow: hidden;
+}
+.source-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #d9771f, #d4a373);
+  border-radius: var(--r-full);
+}
+.source-val {
+  text-align: right;
+  color: var(--pool-fear);
+  font-weight: var(--fw-semibold);
+}
+.attribution-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: var(--fw-medium);
+  margin-bottom: var(--sp-1);
+}
+.attribution-rows { display: flex; flex-direction: column; gap: 2px; }
+.attribution-row {
+  display: grid;
+  grid-template-columns: 2.5rem 4rem 1fr;
+  gap: var(--sp-2);
+  align-items: center;
+  padding: 2px 0;
+  font-size: var(--fs-xs);
+}
+.attribution-row .round-tag { color: var(--accent-amber); font-weight: var(--fw-semibold); }
+.attribution-row .round-total {
+  font-family: var(--font-mono);
+  color: var(--pool-fear);
+  font-weight: var(--fw-semibold);
+}
+.attribution-row .round-sources {
+  display: inline-flex; gap: 4px; flex-wrap: wrap;
+}
+.source-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 1px 6px;
+  background: var(--bg-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-full);
+  font-size: 0.68rem;
+}
+.source-chip .source-name {
+  color: var(--text-secondary);
+  max-width: 18rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bar-count {

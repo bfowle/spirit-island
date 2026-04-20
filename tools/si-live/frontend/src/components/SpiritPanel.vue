@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import type { Spirit } from '../types'
 import Icon from './Icon.vue'
 import PresenceTrack from './PresenceTrack.vue'
+import { fetchDeck } from '../api'
 import {
   STOCK_COLORS,
   SPIRIT_DEFAULT_COLOR,
@@ -10,7 +11,14 @@ import {
   type DiscStyle,
 } from '../spiritColors'
 
-const props = defineProps<{ modelValue: Spirit; slug?: string }>()
+const props = defineProps<{
+  modelValue: Spirit
+  slug?: string
+  round?: number
+}>()
+const emit = defineEmits<{
+  'log-event': [event: string, details: Record<string, unknown>]
+}>()
 
 interface CardDetail {
   name?: string
@@ -23,12 +31,47 @@ interface CardDetail {
   card_type?: string
 }
 
+interface InnateThreshold {
+  /** Element counts required at this tier, e.g. { moon: "2", fire: "1" }. */
+  [element: string]: string | undefined
+  effect?: string
+}
+
+interface InnatePower {
+  name: string
+  speed?: string
+  range?: string
+  target?: string
+  option?: string
+  thresholds: InnateThreshold[]
+}
+
 // Spirit wiki data (immutable, from data/references/wiki/<slug>.json).
 const fullEnergyTrack = ref<string[]>([])
 const fullCardplayTrack = ref<string[]>([])
 const cardDetailsByName = ref<Record<string, CardDetail>>({})
+const innates = ref<InnatePower[]>([])
 const wikiError = ref<string | null>(null)
 const presenceExpanded = ref<boolean>(false)
+
+// Global decks — loaded once, shared across all SpiritPanel instances so that
+// drafted Minor/Major/Unique cards render with full metadata (cost/speed/
+// elements/text) the same as spirit-uniques.
+const globalDeck = ref<Record<string, CardDetail>>({})
+
+async function loadGlobalDecks() {
+  const decks: Array<'minor' | 'major' | 'unique'> = ['minor', 'major', 'unique']
+  const all = await Promise.allSettled(decks.map(d => fetchDeck<CardDetail & { name: string }>(d)))
+  const merged: Record<string, CardDetail> = {}
+  for (const r of all) {
+    if (r.status === 'fulfilled') {
+      for (const c of r.value) {
+        if (c.name) merged[c.name] = c
+      }
+    }
+  }
+  globalDeck.value = merged
+}
 
 async function loadSpiritMeta(slug: string | undefined) {
   if (!slug) return
@@ -38,7 +81,8 @@ async function loadSpiritMeta(slug: string | undefined) {
     const data = await res.json()
     fullEnergyTrack.value = data.presence_energy_track || []
     fullCardplayTrack.value = data.presence_cardplay_track || []
-    // Collect card lookups from both unique + suggested detail arrays
+    innates.value = data.innates || []
+    // Spirit-local card lookup (uniques + suggested)
     const lookup: Record<string, CardDetail> = {}
     for (const c of data.unique_card_details || []) {
       if (c.name) lookup[c.name] = c
@@ -52,7 +96,9 @@ async function loadSpiritMeta(slug: string | undefined) {
   }
 }
 
-onMounted(() => loadSpiritMeta(props.slug))
+onMounted(async () => {
+  await Promise.all([loadSpiritMeta(props.slug), loadGlobalDecks()])
+})
 watch(() => props.slug, loadSpiritMeta)
 
 function updateEnergyCovered(next: string[]) {
@@ -62,11 +108,7 @@ function updateCardplayCovered(next: string[]) {
   props.modelValue.presence_on_track_cardplay = next
 }
 
-// --- Elements + pile computations ------------------------------------------
-const elements = computed(() => {
-  const e = props.modelValue.elements_this_turn ?? {}
-  return Object.entries(e).filter(([, n]) => (n as number) > 0)
-})
+// --- Pile computations -----------------------------------------------------
 const handCount = computed(() => props.modelValue.hand?.length ?? 0)
 const discardCount = computed(() => props.modelValue.discard?.length ?? 0)
 const playedCount = computed(() => props.modelValue.played_this_turn?.length ?? 0)
@@ -115,11 +157,56 @@ function moveCard(card: string, from: keyof Spirit, to: keyof Spirit) {
   dst.push(card)
   ;(props.modelValue[from] as unknown) = src
   ;(props.modelValue[to] as unknown) = dst
+
+  // Auto-tally elements when a card enters `played_this_turn`; reverse when it leaves.
+  const info = cardInfo(card)
+  const elementsArr = info?.elements ?? []
+  const bumps = (dir: 1 | -1) => {
+    const et = (props.modelValue.elements_this_turn ?? {}) as Record<string, number>
+    for (const el of elementsArr) {
+      const key = el.toLowerCase()
+      const curr = et[key] ?? 0
+      const next = Math.max(0, curr + dir)
+      et[key] = next
+    }
+    props.modelValue.elements_this_turn = et as Spirit['elements_this_turn']
+  }
+  if (to === 'played_this_turn' && from !== 'played_this_turn') bumps(1)
+  if (from === 'played_this_turn' && to !== 'played_this_turn') bumps(-1)
+}
+
+/** Reclaim — move all cards from discard back to hand. The Spirit Island
+ *  term for returning cards from the discard pile into the ready hand. */
+function reclaimAll() {
+  const d = props.modelValue.discard ?? []
+  if (!d.length) return
+  const h = props.modelValue.hand ?? []
+  props.modelValue.hand = [...h, ...d]
+  props.modelValue.discard = []
 }
 
 const ELEMENT_ICONS: Record<string, string> = {
   sun: 'element-sun', moon: 'element-moon', fire: 'element-fire', air: 'element-air',
   water: 'element-water', earth: 'element-earth', plant: 'element-plant', animal: 'element-animal',
+}
+
+const ALL_ELEMENTS = ['sun', 'moon', 'fire', 'air', 'water', 'earth', 'plant', 'animal'] as const
+type ElementKey = typeof ALL_ELEMENTS[number]
+
+/** Adjust a single element count by ±N. Used for manually adding elements
+ *  from effects that don't come from card plays — Elemental Boon, innate
+ *  effects that grant elements, events, or aspect bonuses. */
+function bumpElement(el: ElementKey, delta: number) {
+  const et = { ...(props.modelValue.elements_this_turn ?? {}) } as Record<string, number>
+  const next = Math.max(0, (et[el] ?? 0) + delta)
+  if (next === 0) delete et[el]
+  else et[el] = next
+  props.modelValue.elements_this_turn = et as Spirit['elements_this_turn']
+}
+
+function clearAllElements() {
+  if (!confirm('Clear all element counts for this turn?')) return
+  props.modelValue.elements_this_turn = {}
 }
 
 // --- Disc color + style ----------------------------------------------------
@@ -146,7 +233,93 @@ function resetToDefault() {
 }
 
 function cardInfo(name: string): CardDetail | undefined {
-  return cardDetailsByName.value[name]
+  return cardDetailsByName.value[name] ?? globalDeck.value[name]
+}
+
+/** Parse a card's `threshold` text into element requirements + effect description.
+ *  Handles formats like "2 Plant — 2 Plant: You may do both." or
+ *  "3 Fire + 2 Air: Deal 4 Damage". Returns null for cards without a threshold. */
+interface ThresholdInfo {
+  reqs: Record<string, number>
+  effect: string
+  met: boolean
+  missing: Record<string, number>
+}
+function thresholdInfo(name: string): ThresholdInfo | null {
+  const card = cardInfo(name)
+  const raw = (card as { threshold?: string } | undefined)?.threshold
+  if (!raw) return null
+  if (raw.toLowerCase().includes('no threshold')) return null
+
+  // Threshold text comes in two shapes from the Wiki:
+  //   "2 Plant — 2 Plant: You may do both."                    (single element)
+  //   "3 Sun 2 Water 3 Plant — 3 Sun, 2 Water, 3 Plant: ..."   (multi element;
+  //      header uses spaces, effect prefix uses commas)
+  // We match ALL `<digit>+ <word>+` pairs via global regex so both work.
+  const parts = raw.split(/\s*[—–]\s*/)
+  const header = parts[0].trim()
+  const rest = parts.slice(1).join(' — ').trim()
+
+  const reqs: Record<string, number> = {}
+  const reqRe = /(\d+)\s+([A-Za-z]+)/g
+  let m: RegExpExecArray | null
+  while ((m = reqRe.exec(header)) !== null) {
+    reqs[m[2].toLowerCase()] = parseInt(m[1], 10)
+  }
+  if (!Object.keys(reqs).length) return null
+
+  // Strip the duplicate requirement prefix from the effect text. The prefix is
+  // of the form "N Element" joined by commas/spaces, optionally followed by a colon.
+  const effect = rest
+    .replace(/^(?:\d+\s+[A-Za-z]+[,\s]*)+:?\s*/, '')
+    .trim()
+
+  const pool = (props.modelValue.elements_this_turn ?? {}) as Record<string, number>
+  const missing: Record<string, number> = {}
+  let met = true
+  for (const [el, need] of Object.entries(reqs)) {
+    const have = pool[el] ?? 0
+    if (have < need) {
+      met = false
+      missing[el] = need - have
+    }
+  }
+  return { reqs, effect: effect || rest, met, missing }
+}
+
+// --- Innate tier tracking --------------------------------------------------
+// For each innate, compute which tier the spirit's current element pool
+// satisfies. Tier `i` is satisfied when all element thresholds in
+// `thresholds[i]` are met by `elements_this_turn`. Returns the highest
+// satisfied tier (0-indexed) or -1 if none.
+function highestTierSatisfied(innate: InnatePower): number {
+  const pool = (props.modelValue.elements_this_turn ?? {}) as Record<string, number>
+  let highest = -1
+  for (let i = 0; i < innate.thresholds.length; i++) {
+    const t = innate.thresholds[i]
+    const ok = Object.entries(t).every(([k, v]) => {
+      if (k === 'effect' || v === undefined) return true
+      const need = parseInt(String(v), 10) || 0
+      return (pool[k] ?? 0) >= need
+    })
+    if (ok) highest = i
+    else break   // thresholds are cumulative; a miss means higher tiers also miss
+  }
+  return highest
+}
+
+function tierElementNeeds(tier: InnateThreshold): [string, string][] {
+  return Object.entries(tier)
+    .filter(([k, v]) => k !== 'effect' && v !== undefined)
+    .map(([k, v]) => [k, String(v)])
+}
+
+function logInnateFired(innateName: string, tier: number) {
+  emit('log-event', 'innate_fired', {
+    spirit: props.slug,
+    innate: innateName,
+    tier: tier + 1,
+  })
 }
 </script>
 
@@ -165,14 +338,74 @@ function cardInfo(name: string): CardDetail | undefined {
       </div>
 
       <div class="elements">
-        <span class="section-label">Elements this turn</span>
-        <div class="element-chips">
-          <span v-for="[el, n] in elements" :key="el" class="element-chip" :title="el">
-            <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="14" decorative />
-            <span class="el-name">{{ el }}</span>
-            <span class="el-count">×{{ n }}</span>
-          </span>
-          <span v-if="!elements.length" class="muted">no elements tallied</span>
+        <div class="elements-hdr">
+          <span class="section-label">Elements this turn</span>
+          <button class="ghost tiny" @click="clearAllElements" title="Reset all element counts (end of turn handled automatically)">Clear</button>
+        </div>
+        <!-- Live tally of card-play + manual elements. Each element shows a
+             stepper so the player can add/remove from non-card sources
+             (Elemental Boon, innate grants, events). -->
+        <div class="element-steppers">
+          <div
+            v-for="el in ALL_ELEMENTS"
+            :key="el"
+            class="el-stepper"
+            :class="[`el-${el}`, { active: ((modelValue.elements_this_turn ?? {})[el] ?? 0) > 0 }]"
+          >
+            <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="16" decorative />
+            <span class="el-count-big">{{ (modelValue.elements_this_turn ?? {})[el] ?? 0 }}</span>
+            <div class="el-buttons">
+              <button class="step" @click="bumpElement(el, -1)" aria-label="decrement">−</button>
+              <button class="step" @click="bumpElement(el, 1)" aria-label="increment">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Innate powers: each tier listed with its threshold; highest achieved
+         tier highlighted based on current elements_this_turn. "Mark fired"
+         logs the tier to the state log for retrospective + rules-check. -->
+    <div v-if="innates.length" class="innates-block">
+      <div class="innates-hdr">
+        <span class="section-label">Innate Powers</span>
+        <span class="hdr-hint">Tiers highlight when current elements meet the threshold</span>
+      </div>
+      <div v-for="(innate, ii) in innates" :key="ii" class="innate-card" :class="innate.speed">
+        <div class="innate-name">
+          <Icon
+            v-if="innate.speed"
+            :name="innate.speed.toLowerCase() === 'fast' ? 'speed-fast' : 'speed-slow'"
+            :size="12"
+            decorative
+          />
+          <span>{{ innate.name }}</span>
+        </div>
+        <div class="innate-tiers">
+          <div
+            v-for="(tier, ti) in innate.thresholds"
+            :key="ti"
+            class="tier-row"
+            :class="{
+              achieved: ti <= highestTierSatisfied(innate),
+              highest: ti === highestTierSatisfied(innate),
+            }"
+          >
+            <span class="tier-num mono">L{{ ti + 1 }}</span>
+            <span class="tier-elements">
+              <span v-for="[el, n] in tierElementNeeds(tier)" :key="el" class="tier-elem">
+                <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="11" decorative />
+                <span class="tier-elem-count">{{ n }}</span>
+              </span>
+            </span>
+            <span class="tier-effect">{{ tier.effect }}</span>
+            <button
+              v-if="ti <= highestTierSatisfied(innate)"
+              class="ghost tiny fire-btn"
+              @click="logInnateFired(innate.name, ti)"
+              :title="`Log '${innate.name}' firing at L${ti + 1} in round ${round ?? '?'}`"
+            >⚡ fired</button>
+          </div>
         </div>
       </div>
     </div>
@@ -290,10 +523,31 @@ function cardInfo(name: string): CardDetail | undefined {
                 </span>
               </div>
               <div v-if="cardInfo(c)?.text" class="card-text">{{ cardInfo(c)?.text }}</div>
+              <div v-if="thresholdInfo(c)" class="threshold-row" :class="{ met: thresholdInfo(c)?.met }">
+                <span class="thresh-label">THR</span>
+                <span class="thresh-reqs">
+                  <span
+                    v-for="[el, n] in Object.entries(thresholdInfo(c)!.reqs)"
+                    :key="el"
+                    class="thresh-elem"
+                    :class="{ need: (thresholdInfo(c)?.missing[el] ?? 0) > 0 }"
+                  >
+                    <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="11" decorative />
+                    <span class="thresh-count">{{ n }}</span>
+                  </span>
+                </span>
+                <span class="thresh-effect">{{ thresholdInfo(c)?.effect }}</span>
+                <span v-if="thresholdInfo(c)?.met" class="thresh-badge met-badge">✓ MET</span>
+              </div>
             </div>
             <div class="card-actions">
-              <button class="ghost" @click="moveCard(c, 'hand', 'played_this_turn')">Play</button>
-              <button class="ghost" @click="moveCard(c, 'hand', 'discard')">Discard</button>
+              <button class="ghost" @click="moveCard(c, 'hand', 'played_this_turn')" title="Play this card">Play</button>
+              <button class="ghost" @click="moveCard(c, 'hand', 'discard')" title="Discard">Discard</button>
+              <button
+                class="ghost forget"
+                @click="moveCard(c, 'hand', 'forgotten')"
+                title="Forget (remove from deck — usually paid as a Major Power cost)"
+              >🗑 Forget</button>
             </div>
           </li>
           <li v-if="!(modelValue.hand ?? []).length" class="empty">hand is empty</li>
@@ -324,10 +578,27 @@ function cardInfo(name: string): CardDetail | undefined {
                   <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="12" decorative />
                 </span>
               </div>
+              <div v-if="thresholdInfo(c)" class="threshold-row" :class="{ met: thresholdInfo(c)?.met }">
+                <span class="thresh-label">THR</span>
+                <span class="thresh-reqs">
+                  <span
+                    v-for="[el, n] in Object.entries(thresholdInfo(c)!.reqs)"
+                    :key="el"
+                    class="thresh-elem"
+                    :class="{ need: (thresholdInfo(c)?.missing[el] ?? 0) > 0 }"
+                  >
+                    <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="11" decorative />
+                    <span class="thresh-count">{{ n }}</span>
+                  </span>
+                </span>
+                <span class="thresh-effect">{{ thresholdInfo(c)?.effect }}</span>
+                <span v-if="thresholdInfo(c)?.met" class="thresh-badge met-badge">✓ MET</span>
+              </div>
             </div>
             <div class="card-actions">
-              <button class="ghost" @click="moveCard(c, 'played_this_turn', 'discard')">→ Discard</button>
-              <button class="ghost" @click="moveCard(c, 'played_this_turn', 'hand')">↩ Hand</button>
+              <button class="ghost" @click="moveCard(c, 'played_this_turn', 'discard')" title="Send to discard">→ Discard</button>
+              <button class="ghost" @click="moveCard(c, 'played_this_turn', 'hand')" title="Unplay (return to hand)">↩ Unplay</button>
+              <button class="ghost forget" @click="moveCard(c, 'played_this_turn', 'forgotten')" title="Forget">🗑</button>
             </div>
           </li>
           <li v-if="!(modelValue.played_this_turn ?? []).length" class="empty">no plays yet this turn</li>
@@ -338,6 +609,12 @@ function cardInfo(name: string): CardDetail | undefined {
         <div class="pile-hdr">
           <span class="pile-name">Discard</span>
           <span class="pile-count">{{ discardCount }}</span>
+          <button
+            v-if="discardCount > 0"
+            class="ghost tiny reclaim-all"
+            @click="reclaimAll"
+            :title="`Reclaim all ${discardCount} card(s) from discard back to hand`"
+          >↩ Reclaim all</button>
         </div>
         <ul>
           <li v-for="c in modelValue.discard ?? []" :key="c" class="card-row slim">
@@ -345,7 +622,8 @@ function cardInfo(name: string): CardDetail | undefined {
               <div class="card-title">{{ c }}</div>
             </div>
             <div class="card-actions">
-              <button class="ghost" @click="moveCard(c, 'discard', 'hand')">↩ Hand</button>
+              <button class="ghost" @click="moveCard(c, 'discard', 'hand')" title="Return this card to hand">↩ Reclaim</button>
+              <button class="ghost forget" @click="moveCard(c, 'discard', 'forgotten')" title="Forget">🗑</button>
             </div>
           </li>
           <li v-if="!(modelValue.discard ?? []).length" class="empty">discard empty</li>
@@ -358,7 +636,33 @@ function cardInfo(name: string): CardDetail | undefined {
           <span class="pile-count">{{ forgottenCount }}</span>
         </div>
         <ul>
-          <li v-for="c in modelValue.forgotten ?? []" :key="c" class="empty">{{ c }}</li>
+          <li v-for="c in modelValue.forgotten ?? []" :key="c" class="card-row slim forgotten-row">
+            <div class="card-main">
+              <div class="card-title">{{ c }}</div>
+              <div v-if="cardInfo(c)" class="card-meta">
+                <span v-if="cardInfo(c)?.cost !== undefined" class="meta-chip cost">{{ cardInfo(c)?.cost }}E</span>
+                <span v-if="cardInfo(c)?.speed" class="meta-chip speed">
+                  <Icon v-if="cardInfo(c)?.speed?.toLowerCase() === 'fast'" name="speed-fast" :size="12" decorative />
+                  <Icon v-else-if="cardInfo(c)?.speed?.toLowerCase() === 'slow'" name="speed-slow" :size="12" decorative />
+                  {{ cardInfo(c)?.speed }}
+                </span>
+                <span
+                  v-for="el in cardInfo(c)?.elements ?? []"
+                  :key="el"
+                  class="meta-chip elem"
+                >
+                  <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="12" decorative />
+                </span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <button
+                class="ghost tiny"
+                @click="moveCard(c, 'forgotten', 'discard')"
+                title="Un-forget — return to discard (for mistakes)"
+              >↩ Un-forget</button>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -381,7 +685,8 @@ function cardInfo(name: string): CardDetail | undefined {
   color: var(--text-muted); font-weight: var(--fw-medium);
 }
 
-.elements { display: flex; flex-direction: column; gap: var(--sp-1); }
+.elements { display: flex; flex-direction: column; gap: var(--sp-2); }
+.elements-hdr { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
 .element-chips { display: flex; flex-wrap: wrap; gap: var(--sp-1); align-items: center; min-height: 1.75rem; }
 .element-chip {
   display: inline-flex; align-items: center; gap: 4px;
@@ -391,6 +696,108 @@ function cardInfo(name: string): CardDetail | undefined {
 }
 .el-name { text-transform: capitalize; color: var(--text-secondary); }
 .el-count { font-family: var(--font-mono); font-weight: var(--fw-semibold); color: var(--text-primary); }
+
+.element-steppers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(4rem, 1fr));
+  gap: var(--sp-1);
+}
+.el-stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-sm);
+  transition: all var(--motion-fast);
+  opacity: 0.55;
+}
+.el-stepper.active {
+  opacity: 1;
+  background: var(--bg-muted);
+  border-color: rgba(123, 184, 245, 0.35);
+}
+.el-count-big {
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  line-height: 1;
+  margin: 2px 0;
+}
+.el-stepper:not(.active) .el-count-big { color: var(--text-muted); }
+.el-buttons { display: inline-flex; gap: 2px; }
+.el-buttons .step {
+  width: 1.1rem; height: 1.1rem;
+  padding: 0;
+  font-size: 0.72rem;
+  line-height: 1;
+  border-radius: var(--r-sm);
+}
+.muted { color: var(--text-muted); font-style: italic; font-size: var(--fs-xs); }
+
+.innates-block {
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: var(--sp-3);
+  display: flex; flex-direction: column; gap: var(--sp-2);
+}
+.innates-hdr {
+  display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-2);
+}
+.hdr-hint { font-size: 0.68rem; color: var(--text-muted); font-style: italic; }
+
+.innate-card {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-sm);
+  padding: var(--sp-2);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.innate-card.fast { border-left: 3px solid var(--accent-red); }
+.innate-card.slow { border-left: 3px solid var(--accent-blue); }
+
+.innate-name {
+  display: inline-flex; align-items: center; gap: var(--sp-1);
+  font-family: var(--font-mono); font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm); color: var(--text-white);
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+
+.innate-tiers { display: flex; flex-direction: column; gap: 2px; }
+.tier-row {
+  display: grid;
+  grid-template-columns: 2rem auto 1fr auto;
+  gap: var(--sp-2);
+  padding: 3px var(--sp-1);
+  font-size: var(--fs-xs);
+  align-items: center;
+  border-radius: var(--r-sm);
+  transition: background var(--motion-fast);
+}
+.tier-row.achieved { background: rgba(82, 183, 136, 0.1); }
+.tier-row.highest  {
+  background: rgba(82, 183, 136, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(82, 183, 136, 0.4);
+}
+.tier-num { color: var(--accent-amber); font-weight: var(--fw-bold); }
+.tier-elements { display: inline-flex; gap: 3px; flex-wrap: wrap; }
+.tier-elem {
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 1px 4px;
+  background: var(--bg-muted);
+  border-radius: var(--r-sm);
+}
+.tier-elem-count {
+  font-family: var(--font-mono); font-size: 0.66rem; font-weight: var(--fw-bold);
+  color: var(--text-primary);
+}
+.tier-effect { color: var(--text-secondary); line-height: 1.35; }
+.fire-btn { padding: 2px var(--sp-1); color: var(--accent-amber); white-space: nowrap; }
+.fire-btn:hover { color: var(--status-success); }
 
 /* Presence block — stats + tracks + bowls all visible by default. Only the
    disc customization (color swatches + style picker) sits inside a collapsible. */
@@ -567,4 +974,79 @@ function cardInfo(name: string): CardDetail | undefined {
 
 .empty { color: var(--text-faint); font-style: italic; text-align: center; padding: var(--sp-2); font-size: var(--fs-xs); }
 .muted { color: var(--text-muted); font-style: italic; font-size: var(--fs-xs); }
+
+.card-actions .ghost.forget {
+  color: var(--text-muted);
+  opacity: 0.7;
+  transition: all var(--motion-fast);
+}
+.card-actions .ghost.forget:hover {
+  color: var(--status-danger);
+  opacity: 1;
+}
+.forgotten-row {
+  opacity: 0.65;
+  background: rgba(80, 60, 80, 0.08);
+}
+.forgotten-row .card-title { text-decoration: line-through; color: var(--text-muted); }
+
+.threshold-row {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  gap: var(--sp-2);
+  align-items: center;
+  padding: 4px var(--sp-2);
+  margin-top: 4px;
+  font-size: 0.72rem;
+  background: var(--bg-inset);
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-sm);
+  color: var(--text-secondary);
+  transition: all var(--motion-fast);
+}
+.threshold-row.met {
+  background: rgba(82, 183, 136, 0.15);
+  border-color: rgba(82, 183, 136, 0.5);
+  border-style: solid;
+  color: var(--text-primary);
+}
+.thresh-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.threshold-row.met .thresh-label { color: var(--status-success); }
+.thresh-reqs { display: inline-flex; gap: 4px; }
+.thresh-elem {
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 1px 4px;
+  background: var(--bg-canvas);
+  border-radius: var(--r-sm);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: var(--fw-semibold);
+}
+.thresh-elem.need { opacity: 0.55; }
+.threshold-row.met .thresh-elem { background: rgba(82, 183, 136, 0.2); }
+.thresh-count { color: var(--text-primary); }
+.thresh-effect {
+  font-style: italic;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+.threshold-row.met .thresh-effect { color: var(--text-primary); font-style: normal; }
+.thresh-badge {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.08em;
+  padding: 1px 6px;
+  border-radius: var(--r-sm);
+}
+.met-badge {
+  background: var(--status-success);
+  color: var(--bg-canvas);
+}
 </style>

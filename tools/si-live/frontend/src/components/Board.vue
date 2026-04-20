@@ -13,7 +13,10 @@ const props = defineProps<{
    *  count per-spirit presence on each land. */
   spirits: Record<string, Spirit>
 }>()
-defineEmits<{ 'update:modelValue': [value: Board] }>()
+defineEmits<{
+  'update:modelValue': [value: Board]
+  'bump-pool': [pool: 'blight', delta: number]
+}>()
 
 interface DiscInfo {
   slug: string
@@ -169,6 +172,7 @@ function toggleLand(id: string) {
           :spirits="spirits"
           :board-id="boardId"
           @bump-presence="(slug, delta) => bumpPresence(id, slug, delta)"
+          @bump-pool="(pool, delta) => $emit('bump-pool', pool, delta)"
         />
       </div>
     </div>
@@ -240,6 +244,7 @@ function toggleLand(id: string) {
           :spirits="spirits"
           :board-id="boardId"
           @bump-presence="(slug, delta) => bumpPresence(expandedLand!, slug, delta)"
+          @bump-pool="(pool, delta) => $emit('bump-pool', pool, delta)"
         />
       </div>
     </div>

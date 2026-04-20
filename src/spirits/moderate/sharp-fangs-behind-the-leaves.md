@@ -64,9 +64,9 @@ ALLY OF THE BEASTS Your Presence may move with Beast. (Whenever a Beast moves fr
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Animal | You may Gather 1 Beast. |
-| 2 | 2 Plant + 3 Animal | 1 Damage per Beast. |
-| 3 | 2 Animal | You may Push up to 2 Beast. |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | You may Gather 1 Beast. |
+| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Damage per Beast. |
+| 3 | 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | You may Push up to 2 Beast. |
 
 
 ### Innate: FRENZIED ASSAULT
@@ -75,8 +75,8 @@ ALLY OF THE BEASTS Your Presence may move with Beast. (Whenever a Beast moves fr
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Moon + 1 Fire + 4 Animal | 1 Fear and 2 Damage. Remove 1 Beast. |
-| 2 | 1 Moon + 2 Fire + 5 Animal | +1 Fear and +1 Damage. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 4 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 2 Damage. Remove 1 Beast. |
+| 2 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 5 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and +1 Damage. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -89,17 +89,17 @@ ALLY OF THE BEASTS Your Presence may move with Beast. (Whenever a Beast moves fr
 #### Teeth Gleam from Darkness
 
 - **1 Energy · Slow · Range 1, from a Jungle · Land with no Blight · Moon, Plant, Animal**
-- *1 Fear. Add 1 Beasts. **OR** If target land has both Beasts and Invaders: 3 Fear.*
+- *1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Beasts. **OR** If target land has both Beasts and Invaders: 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.*
 
 #### Terrifying Chase
 
 - **1 Energy · Slow · Range 0 · Any Land · Sun, Animal**
-- *Push 2 Explorers/Towns/Dahan. Push another 2 Explorers/Towns/Dahan per Beasts in target land. If you Pushed any Invaders, 2 Fear.*
+- *Push 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns/Dahan. Push another 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns/Dahan per Beasts in target land. If you Pushed any Invaders, 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.*
 
 #### Too Near the Jungle
 
 - **0 Energy · Slow · Range 1, from a Jungle · Any Land · Plant, Animal**
-- *1 Fear. Destroy 1 Explorer.*
+- *1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">.*
 
 ## Card Priority Ratings
 
@@ -124,16 +124,16 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Inflame the Fires of Life** | 1 | Slow | Moon, Fire, Plant, Animal | Add 1 Disease. **OR** 1 Fear. Add 1 Strife. | elements animal+fire+moon+plant → 15.6 |
-| 2 | **Domesticated Animals Go Berserk** | 1 | Fast | Moon, Fire, Animal | 1 Fear. Defend 5. | elements animal+fire+moon → 14.4 |
-| 3 | **Prowling Panthers** | 1 | Slow | Moon, Fire, Animal | 1 Fear. Add 1 Beasts. **OR** If target land has Beasts, Destroy 1 Explorer/Town. | elements animal+fire+moon → 14.4 |
+| 1 | **Inflame the Fires of Life** | 1 | Slow | Moon, Fire, Plant, Animal | Add 1 Disease. **OR** 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. | elements animal+fire+moon+plant → 15.6 |
+| 2 | **Domesticated Animals Go Berserk** | 1 | Fast | Moon, Fire, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Defend 5. | elements animal+fire+moon → 14.4 |
+| 3 | **Prowling Panthers** | 1 | Slow | Moon, Fire, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Beasts. **OR** If target land has Beasts, Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. | elements animal+fire+moon → 14.4 |
 | 4 | **Quicken the Earth's Struggles** | 1 | Fast | Moon, Fire, Earth, Animal | 1 Damage to each Town/City. **OR** Defend 10. | elements animal+fire+moon → 14.4 |
-| 5 | **Savage Mawbeasts** | 0 | Slow | Fire, Animal | If target land is a Jungle or Wetland, 1 Fear and 1 Damage. | elements animal+fire → 12.9 |
-| 6 | **Weep for What is Lost** | 0 | Slow | Fire, Water, Animal | 1 Fear per type of Invader present. Push up to 1 Explorer/Town per Blight. | elements animal+fire → 12.9 |
-| 7 | **Swarming Wasps** | 0 | Fast | Fire, Air, Animal | Add 1 Beasts. **OR** If target land has Beasts, Push up to 2 Explorers. | elements animal+fire → 12.9 |
+| 5 | **Savage Mawbeasts** | 0 | Slow | Fire, Animal | If target land is a Jungle or Wetland, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. | elements animal+fire → 12.9 |
+| 6 | **Weep for What is Lost** | 0 | Slow | Fire, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per type of Invader present. Push up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Blight. | elements animal+fire → 12.9 |
+| 7 | **Swarming Wasps** | 0 | Fast | Fire, Air, Animal | Add 1 Beasts. **OR** If target land has Beasts, Push up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements animal+fire → 12.9 |
 | 8 | **Blood Draws Predators** | 1 | Fast | Sun, Fire, Water, Animal | After the next time Invaders are Destroyed in target land: Add 1 Beasts, then 1 Damage pe… | elements animal+fire → 12.9 |
-| 9 | **Gold's Allure** | 0 | Slow | Fire, Earth, Animal | Gather 1 Explorer and 1 Town. Add 1 Strife. | elements animal+fire → 12.9 |
-| 10 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer/Town/Dahan. 2 Fear. If target land has any Beasts, 1 Fear. | elements animal+moon → 12.3 |
+| 9 | **Gold's Allure** | 0 | Slow | Fire, Earth, Animal | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. Add 1 Strife. | elements animal+fire → 12.9 |
+| 10 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town/Dahan. 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land has any Beasts, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements animal+moon → 12.3 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
@@ -143,7 +143,7 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 | 2 | **Pent-Up Calamity** | 3 | Fast | Moon, Fire, Earth, Plant, Animal | Add 1 Disease and 1 Strife. **OR** Remove any number of Beasts/Disease/Strife/Wilds. For … | elements animal+fire+moon+plant → 15.6 |
 | 3 | **Unearth a Beast of Wrathful Stone** | 5 | Fast | Moon, Fire, Earth, Animal | After the next Invader Phase (on any turn) with no Ravage/Build Actions in target land:</… | elements animal+fire+moon → 14.4 |
 | 4 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements animal+fire+moon+plant → 15.6 |
-| 5 | **Vengeance of the Dead** | 3 | Fast | Moon, Fire, Animal | 3 Fear. After Towns/Cities/Dahan are Destroyed in target land, 1 Damage per Town/City/Dah… | elements animal+fire+moon → 14.4 |
+| 5 | **Vengeance of the Dead** | 3 | Fast | Moon, Fire, Animal | 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. After Towns/Cities/Dahan are Destroyed in target land, 1 Damage per Town/City/Dah… | elements animal+fire+moon → 14.4 |
 
 ### HoSI Beginner Deck Bundle — for reference only
 
@@ -216,28 +216,28 @@ Auto-derived from `data/references/wiki/sharp-fangs-behind-the-leaves.json`. Thi
 ### Innate Powers
 
 - **RANGING HUNT** (Speed: Fast · Range: 1 · Target: noblight)
-  - **L1** — 2 Animal: You may Gather 1 Beast.
-  - **L2** — 2 Plant + 3 Animal: 1 Damage per Beast.
-  - **L3** — 2 Animal: You may Push up to 2 Beast.
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: You may Gather 1 Beast.
+  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 1 Damage per Beast.
+  - **L3** — 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: You may Push up to 2 Beast.
 - **FRENZIED ASSAULT** (Speed: Slow · Range: 1 · Target: beast)
-  - **L1** — 1 Moon + 1 Fire + 4 Animal: 1 Fear and 2 Damage. Remove 1 Beast.
-  - **L2** — 1 Moon + 2 Fire + 5 Animal: +1 Fear and +1 Damage.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 4 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 2 Damage. Remove 1 Beast.
+  - **L2** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 5 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and +1 Damage.
 
 ### Fast-phase element ceiling from Uniques
 
 Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
 
 - Fast-phase Unique elements: **Moon** ×1, **Fire** ×1, **Animal** ×1
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 Animal, Uniques give 1. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal, Uniques give 1. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
 
 ### Unique Power Cards
 
 | Card | Cost | Speed | Range | Target | Elements | Effect |
 |------|------|-------|-------|--------|----------|--------|
 | **Prey on the Builders** | 1 | Fast | 0 | Any Land | moon, fire, animal | You may Gather 1 Beasts. If target land has Beasts, Invaders do not Build there this turn. |
-| **Teeth Gleam from Darkness** | 1 | Slow | 1, from a Jungle | Land with no Blight | moon, plant, animal | 1 Fear. Add 1 Beasts. **OR** If target land has both Beasts and Invaders: 3 Fear. |
-| **Terrifying Chase** | 1 | Slow | 0 | Any Land | sun, animal | Push 2 Explorers/Towns/Dahan. Push another 2 Explorers/Towns/Dahan per Beasts in target land. If yo… |
-| **Too Near the Jungle** | 0 | Slow | 1, from a Jungle | Any Land | plant, animal | 1 Fear. Destroy 1 Explorer. |
+| **Teeth Gleam from Darkness** | 1 | Slow | 1, from a Jungle | Land with no Blight | moon, plant, animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Beasts. **OR** If target land has both Beasts and Invaders: 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
+| **Terrifying Chase** | 1 | Slow | 0 | Any Land | sun, animal | Push 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns/Dahan. Push another 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns/Dahan per Beasts in target land. If yo… |
+| **Too Near the Jungle** | 0 | Slow | 1, from a Jungle | Any Land | plant, animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. |
 
 ### Invader phase by turn (base deck)
 

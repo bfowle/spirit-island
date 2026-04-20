@@ -684,7 +684,7 @@ Every innate level wants Moon. Non-Moon Minors stall the engine.
 
 ## Tempo Profile
 
-Round-by-round targets, with per-turn Fear contribution `[VERIFY against typical play]`:
+Round-by-round targets, with per-turn Fear contribution confirmed by one authored playthrough (solo, Brandenburg-Prussia Level 6, Board A balanced, 8-round win). Early rounds may hit the low end; the R4 major-draft (Moon-aligned) is the inflection point where per-turn fear jumps from ~2 to 5+.
 
 | Round | Energy | CP | Presence Placed | Moon | Fire | Per-Turn Fear | Key Play                                |
 |-------|--------|----|------------------|------|------|---------------|-----------------------------------------|

@@ -56,7 +56,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-HOME OF THE ISLAND'S HEART Your Presence may only be added/moved to lands that are Inland. ENTHRALL THE FOREIGN EXPLORERS For each of your Presence in a land, up to 2 Explorer do not participate in Ravage.
+HOME OF THE ISLAND'S HEART Your Presence may only be added/moved to lands that are Inland. ENTHRALL THE FOREIGN EXPLORERS For each of your Presence in a land, up to 2 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> do not participate in Ravage.
 
 ### Innate: FORSAKE SOCIETY TO CHASE AFTER DREAMS
 
@@ -82,17 +82,17 @@ _(no thresholds listed in Wiki)_
 #### Perils of the Deepest Island
 
 - **1 Energy · Slow · Range 0 · Inland Land · Moon, Plant, Animal**
-- *1 Fear. Add 1 Badlands. Add 1 Beasts within 1 Range. Push up to 2 Dahan.*
+- *1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Badlands. Add 1 Beasts within 1 Range. Push up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.*
 
 #### Softly Beckon Ever Inward
 
 - **2 Energy · Slow · Range 0 · Inland Land · Moon, Air**
-- *Gather up to 2 Explorers. Gather up to 2 Towns. Gather up to 2 Beasts. Gather up to 2 Dahan.*
+- *Gather up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Gather up to 2 Towns <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. Gather up to 2 Beasts. Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.*
 
 #### Swallowed by the Wilderness
 
 - **1 Energy · Fast · Range 0 · Inland Land · Fire, Air, Plant, Animal**
-- *2 Fear. 1 Damage per Beasts/Disease/Wilds/Badlands. (Count max. 5 tokens.)*
+- *2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage per Beasts/Disease/Wilds/Badlands. (Count max. 5 tokens.)*
 
 ## Card Priority Ratings
 
@@ -118,23 +118,23 @@ The spirit's own 4 Unique Power cards (always in hand; always A-tier by default 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
 | 1 | **Bats Scout for Raids by Darkness** | 1 | Slow | Moon, Air, Animal | For each [[Dahan]], 1 Damage to [[Towns]]/[[Cities]]. **OR** 1 [[Fear]]. [[Gather]] up to… | Slow speed matches innate |
-| 2 | **Animated Wrackroot** | 0 | Slow | Moon, Fire, Plant | 1 Fear. Destroy 1 Explorer. **OR** Add 1 Wilds. | 0-cost (always affordable) |
-| 3 | **Call to Ferocity** | 0 | Slow | Sun, Fire, Earth | Gather up to 3 Dahan. **OR** If target land has Dahan, 1 Fear and Push 1 Explorer and 1 T… | 0-cost (always affordable) |
-| 4 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer/Town/Dahan. 2 Fear. If target land has any Beasts, 1 Fear. | 0-cost (always affordable) |
-| 5 | **Savage Mawbeasts** | 0 | Slow | Fire, Animal | If target land is a Jungle or Wetland, 1 Fear and 1 Damage. | 0-cost (always affordable) |
-| 6 | **Sear Anger Into the Wild Lands** | 0 | Slow | Sun, Fire, Plant | Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear and 1 Damage. | 0-cost (always affordable) |
-| 7 | **Shadows of the Burning Forest** | 0 | Slow | Moon, Fire, Plant | 2 Fear. If target land is a Mountain or Jungle, Push 1 Explorer and 1 Town. | 0-cost (always affordable) |
-| 8 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage. | 0-cost (always affordable) |
-| 9 | **Weep for What is Lost** | 0 | Slow | Fire, Water, Animal | 1 Fear per type of Invader present. Push up to 1 Explorer/Town per Blight. | 0-cost (always affordable) |
-| 10 | **Call to Bloodshed** | 1 | Slow | Sun, Fire, Animal | 1 Damage per Dahan. **OR** Gather up to 3 Dahan. | Slow speed matches innate |
+| 2 | **Animated Wrackroot** | 0 | Slow | Moon, Fire, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** Add 1 Wilds. | 0-cost (always affordable) |
+| 3 | **Call to Ferocity** | 0 | Slow | Sun, Fire, Earth | Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. **OR** If target land has Dahan, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 T… | 0-cost (always affordable) |
+| 4 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town/Dahan. 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land has any Beasts, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | 0-cost (always affordable) |
+| 5 | **Savage Mawbeasts** | 0 | Slow | Fire, Animal | If target land is a Jungle or Wetland, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. | 0-cost (always affordable) |
+| 6 | **Sear Anger Into the Wild Lands** | 0 | Slow | Sun, Fire, Plant | Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. | 0-cost (always affordable) |
+| 7 | **Shadows of the Burning Forest** | 0 | Slow | Moon, Fire, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. | 0-cost (always affordable) |
+| 8 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | 0-cost (always affordable) |
+| 9 | **Weep for What is Lost** | 0 | Slow | Fire, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per type of Invader present. Push up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Blight. | 0-cost (always affordable) |
+| 10 | **Call to Bloodshed** | 1 | Slow | Sun, Fire, Animal | 1 Damage per Dahan. **OR** Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | Slow speed matches innate |
 
 ### Top 5 Major Draft Picks (from full pool)
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Angry Bears** | 3 | Slow | Sun, Fire, Animal | 2 Fear. 2 Damage. If no Beasts are present, add 1 Beasts. Otherwise, +2 Damage, and Push … | Slow speed matches innate |
-| 2 | **Focus the Land's Anguish** | 5 | Slow | Sun | If this Power Destroys any Towns/Cities, 5 Fear. Gather up to 5 Blight. 1 Damage per Blig… | Slow speed matches innate |
-| 3 | **Ravaged Undergrowth Slithers Back to Life** | 3 | Slow | Water, Plant, Animal | Replace 1 Blight with 1 Wilds.</br>1 Fear. 3 Damage.</br>Push that Wilds. | Slow speed matches innate |
+| 1 | **Angry Bears** | 3 | Slow | Sun, Fire, Animal | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 2 Damage. If no Beasts are present, add 1 Beasts. Otherwise, +2 Damage, and Push … | Slow speed matches innate |
+| 2 | **Focus the Land's Anguish** | 5 | Slow | Sun | If this Power Destroys any Towns/Cities, 5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Gather up to 5 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. 1 Damage per Blig… | Slow speed matches innate |
+| 3 | **Ravaged Undergrowth Slithers Back to Life** | 3 | Slow | Water, Plant, Animal | Replace 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> with 1 Wilds.</br>1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 3 Damage.</br>Push that Wilds. | Slow speed matches innate |
 | 4 | **The Wounded Wild Turns on its Assailants** | 4 | Slow | Fire, Plant, Animal | Add 2 Badlands. Gather up to 2 Beasts. 1 Damage per Blight/Beasts/Wilds. | Slow speed matches innate |
 | 5 | **Transform to a Murderous Darkness** | 6 | Slow | Moon, Fire, Air, Water, Plant | Target Spirit may choose one of their Sacred Site. In that land: Replace all their Presen… | Slow speed matches innate |
 
@@ -222,9 +222,9 @@ Fast innates resolve in Fast phase and can only see elements from **Fast cards p
 | Card | Cost | Speed | Range | Target | Elements | Effect |
 |------|------|-------|-------|--------|----------|--------|
 | **Gift of the Untamed Wild** | 0 | Slow | No Range | Any Spirit | moon, fire, air, plant | Target Spirit chooses to either: Add 1 Wilds to one of their lands. **OR** Replace 1 of their Prese… |
-| **Perils of the Deepest Island** | 1 | Slow | 0 | Inland Land | moon, plant, animal | 1 Fear. Add 1 Badlands. Add 1 Beasts within 1 Range. Push up to 2 Dahan. |
-| **Softly Beckon Ever Inward** | 2 | Slow | 0 | Inland Land | moon, air | Gather up to 2 Explorers. Gather up to 2 Towns. Gather up to 2 Beasts. Gather up to 2 Dahan. |
-| **Swallowed by the Wilderness** | 1 | Fast | 0 | Inland Land | fire, air, plant, animal | 2 Fear. 1 Damage per Beasts/Disease/Wilds/Badlands. (Count max. 5 tokens.) |
+| **Perils of the Deepest Island** | 1 | Slow | 0 | Inland Land | moon, plant, animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Badlands. Add 1 Beasts within 1 Range. Push up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
+| **Softly Beckon Ever Inward** | 2 | Slow | 0 | Inland Land | moon, air | Gather up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Gather up to 2 Towns <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. Gather up to 2 Beasts. Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
+| **Swallowed by the Wilderness** | 1 | Fast | 0 | Inland Land | fire, air, plant, animal | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage per Beasts/Disease/Wilds/Badlands. (Count max. 5 tokens.) |
 
 ### Invader phase by turn (base deck)
 

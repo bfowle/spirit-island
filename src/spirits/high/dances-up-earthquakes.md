@@ -63,10 +63,10 @@ BEGIN A DANCE OF DECADES</br>Whenever you would play a Power Card, you may inste
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Earth | If you have at least 1 {{impendingcard}}, Add 1 {{quake}} in one of your lands. |
-| 2 | 1 Moon + 1 Earth | In one of your lands, Defend 1 per {{impendingcard}} (max. 3). |
-| 3 | 1 Moon + 2 Earth | If you have at least 3 {{impendingcard}}, Add 1 {{quake}} in one of your lands. |
-| 4 | 2 Moon + 3 Earth | In one of your lands, Defend 1 per {{impendingcard}} (max. 3). |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | If you have at least 1 {{impendingcard}}, Add 1 {{quake}} in one of your lands. |
+| 2 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In one of your lands, Defend 1 per {{impendingcard}} (max. 3). |
+| 3 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | If you have at least 3 {{impendingcard}}, Add 1 {{quake}} in one of your lands. |
+| 4 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In one of your lands, Defend 1 per {{impendingcard}} (max. 3). |
 
 
 ### Innate: EARTH SHUDDERS, BUILDINGS FALL
@@ -97,25 +97,25 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
 | 1 | **Quicken the Earth's Struggles** | 1 | Fast | Moon, Fire, Earth, Animal | 1 Damage to each Town/City. **OR** Defend 10. | elements earth+moon → 4.5 |
-| 2 | **Sucking Ooze** | 0 | Fast | Moon, Water, Earth | 2 Fear if Invaders are present. Isolate target land. | elements earth+moon → 4.5 |
-| 3 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | elements earth+moon → 4.5 |
+| 2 | **Sucking Ooze** | 0 | Fast | Moon, Water, Earth | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if Invaders are present. Isolate target land. | elements earth+moon → 4.5 |
+| 3 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | elements earth+moon → 4.5 |
 | 4 | **Infested Aquifers** | 1 | Slow | Moon, Water, Earth, Animal | If target land has any Disease, 1 Damage to each Invader. **OR** If target land is a Moun… | elements earth+moon → 4.5 |
-| 5 | **Pull Beneath the Hungry Earth** | 1 | Slow | Moon, Water, Earth | If your Presence is present, 1 Fear and 1 Damage. If target land is a Sands or Wetland, 1… | elements earth+moon → 4.5 |
-| 6 | **Unquenchable Flames** | 1 | Slow | Moon, Fire, Earth | 1 Fear. 1 Damage to Towns/Cities. Invaders do not heal Damage at end of turn. | elements earth+moon → 4.5 |
-| 7 | **Dark and Tangled Woods** | 1 | Fast | Moon, Earth, Plant | 2 Fear. If target land is a Mountain or Jungle, Defend 3. | elements earth+moon → 4.5 |
+| 5 | **Pull Beneath the Hungry Earth** | 1 | Slow | Moon, Water, Earth | If your Presence is present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. If target land is a Sands or Wetland, 1… | elements earth+moon → 4.5 |
+| 6 | **Unquenchable Flames** | 1 | Slow | Moon, Fire, Earth | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage to Towns/Cities. Invaders do not heal Damage at end of turn. | elements earth+moon → 4.5 |
+| 7 | **Dark and Tangled Woods** | 1 | Fast | Moon, Earth, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Defend 3. | elements earth+moon → 4.5 |
 | 8 | **Guardian Serpents** | 1 | Fast | Sun, Moon, Earth, Animal | Add 1 Beasts in one of target Spirit's lands. If target Spirit has a Sacred Site in that … | elements earth+moon → 4.5 |
-| 9 | **Haunted by Primal Memories** | 1 | Fast | Moon, Air, Earth | 1 Fear. Defend 3. If Beasts are present, +2 Fear. | elements earth+moon → 4.5 |
-| 10 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements earth → 3.0 |
+| 9 | **Haunted by Primal Memories** | 1 | Fast | Moon, Air, Earth | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Defend 3. If Beasts are present, +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements earth+moon → 4.5 |
+| 10 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements earth → 3.0 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Melt Earth Into Quicksand** | 4 | Fast | Moon, Water, Earth | 1 Fear. 2 Damage. Isolate target land. After Invaders/Dahan are Moved into target land, D… | elements earth+moon → 4.5 |
+| 1 | **Melt Earth Into Quicksand** | 4 | Fast | Moon, Water, Earth | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 2 Damage. Isolate target land. After Invaders/Dahan are Moved into target land, D… | elements earth+moon → 4.5 |
 | 2 | **The Land Thrashes in Furious Pain** | 4 | Slow | Moon, Fire, Earth | 2 Damage per Blight. For each Blight in adjacent lands, 1 Damage (in target land). | elements earth+moon → 4.5 |
 | 3 | **Pent-Up Calamity** | 3 | Fast | Moon, Fire, Earth, Plant, Animal | Add 1 Disease and 1 Strife. **OR** Remove any number of Beasts/Disease/Strife/Wilds. For … | elements earth+moon → 4.5 |
 | 4 | **Unearth a Beast of Wrathful Stone** | 5 | Fast | Moon, Fire, Earth, Animal | After the next Invader Phase (on any turn) with no Ravage/Build Actions in target land:</… | elements earth+moon → 4.5 |
-| 5 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements earth+moon → 4.5 |
+| 5 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements earth+moon → 4.5 |
 
 ### HoSI Beginner Deck Bundle — for reference only
 
@@ -187,10 +187,10 @@ Auto-derived from `data/references/wiki/dances-up-earthquakes.json`. This sectio
 ### Innate Powers
 
 - **LAND CREAKS WITH TENSION** (Speed: Fast · Range: ? · Target: you)
-  - **L1** — 1 Earth: If you have at least 1 {{impendingcard}}, Add 1 {{quake}} in one of your lands.
-  - **L2** — 1 Moon + 1 Earth: In one of your lands, Defend 1 per {{impendingcard}} (max. 3).
-  - **L3** — 1 Moon + 2 Earth: If you have at least 3 {{impendingcard}}, Add 1 {{quake}} in one of your lands.
-  - **L4** — 2 Moon + 3 Earth: In one of your lands, Defend 1 per {{impendingcard}} (max. 3).
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: If you have at least 1 {{impendingcard}}, Add 1 {{quake}} in one of your lands.
+  - **L2** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: In one of your lands, Defend 1 per {{impendingcard}} (max. 3).
+  - **L3** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: If you have at least 3 {{impendingcard}}, Add 1 {{quake}} in one of your lands.
+  - **L4** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: In one of your lands, Defend 1 per {{impendingcard}} (max. 3).
 - **EARTH SHUDDERS, BUILDINGS FALL** (Speed: Slow · Range: 0 · Target: quake)
 
 ### Fast-phase element ceiling from Uniques
@@ -198,7 +198,7 @@ Auto-derived from `data/references/wiki/dances-up-earthquakes.json`. This sectio
 Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
 
 - Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 1 Earth, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
 
 ### Unique Power Cards
 

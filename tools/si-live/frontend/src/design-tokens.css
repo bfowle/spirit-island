@@ -84,13 +84,15 @@
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  --fs-xxs:  0.64rem;
-  --fs-xs:   0.72rem;
-  --fs-sm:   0.82rem;
-  --fs-base: 0.9rem;
-  --fs-md:   1rem;
-  --fs-lg:   1.1rem;
-  --fs-xl:   1.4rem;
+  /* Type scale — bumped from 13px body / 0.82rem sm for readability at
+   * normal zoom levels. Previous density was too tight; things now breathe. */
+  --fs-xxs:  0.72rem;
+  --fs-xs:   0.82rem;
+  --fs-sm:   0.92rem;
+  --fs-base: 1rem;
+  --fs-md:   1.08rem;
+  --fs-lg:   1.2rem;
+  --fs-xl:   1.5rem;
 
   --lh-tight: 1.3;
   --lh-base:  1.55;
@@ -101,15 +103,15 @@
   --fw-semibold: 600;
   --fw-bold:     700;
 
-  /* ─── Spacing ─── */
+  /* ─── Spacing ─── bumped ~20% so panels breathe */
   --sp-0: 0;
-  --sp-1: 0.25rem;
-  --sp-2: 0.5rem;
-  --sp-3: 0.75rem;
-  --sp-4: 1rem;
-  --sp-5: 1.5rem;
-  --sp-6: 2rem;
-  --sp-7: 3rem;
+  --sp-1: 0.3rem;
+  --sp-2: 0.6rem;
+  --sp-3: 0.9rem;
+  --sp-4: 1.25rem;
+  --sp-5: 1.75rem;
+  --sp-6: 2.25rem;
+  --sp-7: 3.25rem;
 
   /* ─── Radii ─── */
   --r-sm:   4px;
@@ -131,7 +133,7 @@
   color: var(--text-primary);
   background-color: var(--bg-canvas);
   font-family: var(--font-sans);
-  font-size: 13px;              /* Hundari-brainstorm body size */
+  font-size: 15px;              /* bumped from 13px for normal-zoom readability */
   line-height: var(--lh-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -141,6 +143,30 @@
 body { margin: 0; min-height: 100vh; }
 * { box-sizing: border-box; }
 
+/* Density modes. `comfortable` (default) bumps spacing and font sizes a bit
+ * more on top of the new base. `compact` restores the old terse values for
+ * users who prefer maximum information density. */
+html[data-density="comfortable"] {
+  font-size: 15.5px;
+  --sp-1: 0.35rem;
+  --sp-2: 0.7rem;
+  --sp-3: 1.05rem;
+  --sp-4: 1.4rem;
+  --sp-5: 2rem;
+}
+html[data-density="compact"] {
+  font-size: 13px;
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --fs-xxs: 0.64rem;
+  --fs-xs:  0.72rem;
+  --fs-sm:  0.82rem;
+  --fs-base: 0.9rem;
+}
+
 h1, h2, h3, h4 {
   font-weight: var(--fw-bold);
   color: var(--text-white);
@@ -148,9 +174,9 @@ h1, h2, h3, h4 {
   margin: 0;
   line-height: var(--lh-tight);
 }
-h1 { font-size: 28px; }
-h2 { font-size: 22px; color: var(--text-white); }
-h3 { font-size: 15px; color: #ccc; font-weight: var(--fw-semibold); }
+h1 { font-size: 32px; }
+h2 { font-size: 24px; color: var(--text-white); }
+h3 { font-size: 17px; color: #ccc; font-weight: var(--fw-semibold); }
 
 a { color: var(--accent-blue); text-decoration: none; }
 a:hover { color: var(--accent-blue-hover); text-decoration: underline; }

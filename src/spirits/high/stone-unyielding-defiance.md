@@ -63,9 +63,9 @@ BESTOW THE ENDURANCE OF BEDROCK When Blight is added to one of your lands, unles
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Earth | When Blight is added to one of your lands, you may pay 2 Energy per Blight to take it from the box instead of the Blight Card. (Handle any cascade separately.) |
-| 2 | 4 Earth | The cost is 1 Energy instead of 2. |
-| 3 | 6 Earth + 1 Plant | When an Event or Blight card directly destroys Presence (yours or others'), you may prevent any number of Presence from being destroyed by paying 1 Energy each. ("Directly" means "not by adding Blight".) |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | When Blight is added to one of your lands, you may pay 2 Energy per Blight to take it from the box instead of the Blight Card. (Handle any cascade separately.) |
+| 2 | 4 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | The cost is 1 Energy instead of 2. |
+| 3 | 6 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | When an Event or Blight card directly destroys Presence (yours or others'), you may prevent any number of Presence from being destroyed by paying 1 Energy each. ("Directly" means "not by adding Blight".) |
 
 
 ### Innate: LET THEM BREAK THEMSELVES AGAINST THE STONE
@@ -95,14 +95,14 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements earth → 6.0 |
+| 1 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements earth → 6.0 |
 | 2 | **Mesmerized Tranquility** | 0 | Fast | Water, Earth, Animal | Isolate target land. Each Invader does -1 Damage. | elements earth → 6.0 |
 | 3 | **Carapaced Land** | 0 | Fast | Earth, Plant, Animal | If targeting a land with Beasts, this Power has +1 Range. Defend 3. | elements earth+plant → 6.3 |
 | 4 | **Drift Down into Slumber** | 0 | Fast | Air, Earth, Plant | Defend 1. If target land is a Jungle or Sands, instead Defend 4. | elements earth+plant → 6.3 |
 | 5 | **Quicken the Earth's Struggles** | 1 | Fast | Moon, Fire, Earth, Animal | 1 Damage to each Town/City. **OR** Defend 10. | elements earth → 6.0 |
-| 6 | **Sucking Ooze** | 0 | Fast | Moon, Water, Earth | 2 Fear if Invaders are present. Isolate target land. | elements earth → 6.0 |
-| 7 | **Dark and Tangled Woods** | 1 | Fast | Moon, Earth, Plant | 2 Fear. If target land is a Mountain or Jungle, Defend 3. | elements earth+plant → 6.3 |
-| 8 | **Entrap the Forces of Corruption** | 1 | Fast | Earth, Plant, Animal | Gather up to 1 Blight. Isolate target land. When Blight is added to target land, it doesn… | elements earth+plant → 6.3 |
+| 6 | **Sucking Ooze** | 0 | Fast | Moon, Water, Earth | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if Invaders are present. Isolate target land. | elements earth → 6.0 |
+| 7 | **Dark and Tangled Woods** | 1 | Fast | Moon, Earth, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Defend 3. | elements earth+plant → 6.3 |
+| 8 | **Entrap the Forces of Corruption** | 1 | Fast | Earth, Plant, Animal | Gather up to 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. Isolate target land. When Blight is added to target land, it doesn… | elements earth+plant → 6.3 |
 | 9 | **Nature's Resilience** | 1 | Fast | Earth, Plant, Animal | Defend 6. | elements earth+plant → 6.3 |
 | 10 | **Encompassing Ward** | 1 | Fast | Sun, Water, Earth | Target Spirit provides Defend 2 in each of its lands. | elements earth → 6.0 |
 
@@ -113,7 +113,7 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 | 1 | **The Trees and Stones Speak of War** | 2 | Fast | Sun, Earth, Plant | For each Dahan, 1 Damage and Defend 2. | elements earth+plant → 6.3 |
 | 2 | **Walls of Rock and Thorn** | 4 | Fast | Sun, Earth, Plant | 2 Damage. Defend 8. Add 1 Wilds. Isolate target land. | elements earth+plant → 6.3 |
 | 3 | **Bloodwrack Plague** | 4 | Fast | Water, Earth, Animal | Add 2 Disease. For each Disease in target land, Defend 1 in target and all adjacent lands. | elements earth → 6.0 |
-| 4 | **Melt Earth Into Quicksand** | 4 | Fast | Moon, Water, Earth | 1 Fear. 2 Damage. Isolate target land. After Invaders/Dahan are Moved into target land, D… | elements earth → 6.0 |
+| 4 | **Melt Earth Into Quicksand** | 4 | Fast | Moon, Water, Earth | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 2 Damage. Isolate target land. After Invaders/Dahan are Moved into target land, D… | elements earth → 6.0 |
 | 5 | **Bargains of Power and Protection** | 2 | Fast | Sun, Water, Earth, Animal | Remove 1 of your Presence on the island from the game, setting it on the Reminder Card. F… | elements earth → 6.0 |
 
 ### HoSI Beginner Deck Bundle — for reference only
@@ -186,9 +186,9 @@ Auto-derived from `data/references/wiki/stone-unyielding-defiance.json`. This se
 ### Innate Powers
 
 - **HOLD THE ISLAND FAST WITH A BULWARK OF WILL** (Speed: Fast · Range: ? · Target: you)
-  - **L1** — 2 Earth: When Blight is added to one of your lands, you may pay 2 Energy per Blight to take it from the box instead of the Blight Card. (Handle any cascade separately.)
-  - **L2** — 4 Earth: The cost is 1 Energy instead of 2.
-  - **L3** — 6 Earth + 1 Plant: When an Event or Blight card directly destroys Presence (yours or others'), you may prevent any number of Presence from being destroyed by paying 1 Energy each. ("Directly" means "not by adding Blight".)
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: When Blight is added to one of your lands, you may pay 2 Energy per Blight to take it from the box instead of the Blight Card. (Handle any cascade separately.)
+  - **L2** — 4 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: The cost is 1 Energy instead of 2.
+  - **L3** — 6 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: When an Event or Blight card directly destroys Presence (yours or others'), you may prevent any number of Presence from being destroyed by paying 1 Energy each. ("Directly" means "not by adding Blight".)
 - **LET THEM BREAK THEMSELVES AGAINST THE STONE** (Speed: Fast · Range: 0 · Target: any)
 
 ### Fast-phase element ceiling from Uniques
@@ -196,7 +196,7 @@ Auto-derived from `data/references/wiki/stone-unyielding-defiance.json`. This se
 Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
 
 - Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 Earth, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
 
 ### Unique Power Cards
 

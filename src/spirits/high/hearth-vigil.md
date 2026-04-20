@@ -26,7 +26,7 @@ Strategic framing `[VERIFY: enhance with play experience]`.
 
 ## Starting Setup
 
-> Put 3 Presence on your starting board: 1 in the highest-numbered land with Dahan and 2 in the lowest-numbered land with at least 2 Dahan. Add 1 Dahan in each of those lands (additional survivors of the Invaders' diseases). You start with your 4 Unique Power Cards and 1 Energy.
+> Put 3 Presence on your starting board: 1 in the highest-numbered land with Dahan and 2 in the lowest-numbered land with at least 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Add 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> in each of those lands (additional survivors of the Invaders' diseases). You start with your 4 Unique Power Cards and 1 Energy.
 
 ## Growth Options (one)
 
@@ -63,10 +63,10 @@ ROOTED IN THE COMMUNITY Blight added in your lands does not Destroy your Presenc
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 2 Sun + 1 Earth | In one of your lands, 1 Dahan deals Damage before Invaders during Ravages. (Choose a land when Invaders Ravage there.) |
-| 2 | 3 Sun + 1 Earth | In that land, another Dahan deals Damage before Invaders during Ravages. |
-| 3 | 4 Sun + 2 Earth | In that land, all Dahan deal Damage before Invaders during Ravages. |
-| 4 | 5 Sun + 3 Earth | Instead, all Dahan in all of your lands deal Damage before Invaders during Ravages. |
+| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In one of your lands, 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> deals Damage before Invaders during Ravages. (Choose a land when Invaders Ravage there.) |
+| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In that land, another Dahan deals Damage before Invaders during Ravages. |
+| 3 | 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In that land, all Dahan deal Damage before Invaders during Ravages. |
+| 4 | 5 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | Instead, all Dahan in all of your lands deal Damage before Invaders during Ravages. |
 
 
 ### Innate: KEEP WATCH FOR NEW INCURSIONS
@@ -75,9 +75,9 @@ ROOTED IN THE COMMUNITY Blight added in your lands does not Destroy your Presenc
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Animal | Gather up to 2 Dahan, from your lands only. |
-| 2 | 1 Sun + 2 Air + 3 Animal | Once this turn after Invaders are added or moved into target land, 1 Damage per Dahan in target land, to those added/moved Invaders only. |
-| 3 | 2 Sun + 3 Air + 4 Animal | Repeat this Power. |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">, from your lands only. |
+| 2 | 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Once this turn after Invaders are added or moved into target land, 1 Damage per Dahan in target land, to those added/moved Invaders only. |
+| 3 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Repeat this Power. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -100,16 +100,16 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Promises of Protection** | 0 | Fast | Sun, Earth, Animal | Gather up to 2 Dahan. Dahan have +2 Health while in target land. | elements animal+earth+sun → 14.4 |
+| 1 | **Promises of Protection** | 0 | Fast | Sun, Earth, Animal | Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Dahan have +2 Health while in target land. | elements animal+earth+sun → 14.4 |
 | 2 | **Guardian Serpents** | 1 | Fast | Sun, Moon, Earth, Animal | Add 1 Beasts in one of target Spirit's lands. If target Spirit has a Sacred Site in that … | elements animal+earth+sun → 14.4 |
-| 3 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+earth+sun → 12.6 |
-| 4 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer/Town per Dahan. **OR** Push 1 Dahan. | elements air+animal+sun → 13.5 |
+| 3 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+earth+sun → 12.6 |
+| 4 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Dahan. **OR** Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+animal+sun → 13.5 |
 | 5 | **Birds Cry Warning** | 1 | Fast | Sun, Air, Animal | The next time Dahan would be Destroyed in target land, Destroy 2 fewer Dahan. **OR** Push… | elements air+animal+sun → 13.5 |
 | 6 | **Sky Stretches to Shore** | 1 | Fast | Sun, Air, Water, Earth | This turn, target Spirit may use 1 Slow Power as if it were Fast, or vice versa. Target S… | elements air+earth+sun → 12.6 |
 | 7 | **Territorial Strife** | 0 | Slow | Sun, Fire, Animal | 3 Damage to Explorers/Towns. **OR** Add 1 Strife. | elements animal+sun → 11.4 |
 | 8 | **Gift of Constancy** | 0 | Fast | Sun, Earth | Target Spirit gains 2 Energy. At end of turn, target Spirit may Reclaim 1 Power Card inst… | elements earth+sun → 10.5 |
 | 9 | **Blood Draws Predators** | 1 | Fast | Sun, Fire, Water, Animal | After the next time Invaders are Destroyed in target land: Add 1 Beasts, then 1 Damage pe… | elements animal+sun → 11.4 |
-| 10 | **Strong and Constant Currents** | 0 | Fast | Sun, Water, Earth | Push 1 Explorer/Town to an adjacent Coastal land. **OR** Move up to 2 Dahan between targe… | elements earth+sun → 10.5 |
+| 10 | **Strong and Constant Currents** | 0 | Fast | Sun, Water, Earth | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town to an adjacent Coastal land. **OR** Move up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> between targe… | elements earth+sun → 10.5 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
@@ -117,9 +117,9 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 |---|------|------|-------|----------|--------------------|---------------|
 | 1 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+animal+earth+sun → 16.5 |
 | 2 | **Bargains of Power and Protection** | 2 | Fast | Sun, Water, Earth, Animal | Remove 1 of your Presence on the island from the game, setting it on the Reminder Card. F… | elements animal+earth+sun → 14.4 |
-| 3 | **Wrap in Wings of Sunlight** | 3 | Fast | Sun, Air, Animal | Move up to 5 Dahan to any land (including back into target land). If you moved at least 1… | elements air+animal+sun → 13.5 |
+| 3 | **Wrap in Wings of Sunlight** | 3 | Fast | Sun, Air, Animal | Move up to 5 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> to any land (including back into target land). If you moved at least 1… | elements air+animal+sun → 13.5 |
 | 4 | **Instruments of Their Own Ruin** | 4 | Fast | Sun, Fire, Air, Animal | Add 1 Strife. Each Invader with Strife deals Damage to other Invaders in target land. | elements air+animal+sun → 13.5 |
-| 5 | **Manifest Incarnation** | 6 | Slow | Sun, Moon, Earth, Animal | 6 Fear. +1 Fear for each Town/City and for each of your Presence in target land. Remove 1… | elements animal+earth+sun → 14.4 |
+| 5 | **Manifest Incarnation** | 6 | Slow | Sun, Moon, Earth, Animal | 6 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> for each Town/City and for each of your Presence in target land. Remove 1… | elements animal+earth+sun → 14.4 |
 
 ### HoSI Beginner Deck Bundle — for reference only
 
@@ -167,7 +167,7 @@ Auto-derived from `data/references/wiki/hearth-vigil.json`. This section states 
 
 ### Starting state
 
-- **Setup**: Put 3 Presence on your starting board: 1 in the highest-numbered land with Dahan and 2 in the lowest-numbered land with at least 2 Dahan. Add 1 Dahan in each of those lands (additional survivors of the Invaders' diseases). You start with your 4 Unique Power Cards and 1 Energy.
+- **Setup**: Put 3 Presence on your starting board: 1 in the highest-numbered land with Dahan and 2 in the lowest-numbered land with at least 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Add 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> in each of those lands (additional survivors of the Invaders' diseases). You start with your 4 Unique Power Cards and 1 Energy.
 - **Starting income** (from `presence_energy_track[0]` = `gather1dahan1land`, `presence_cardplay_track[0]` = `energy0`): **0 Energy · 0 Card Play**
 - **Hand at start**: 4 Unique Power Cards (listed below)
 - **Growth type**: `one` — pick **one** growth option per turn
@@ -191,21 +191,21 @@ Auto-derived from `data/references/wiki/hearth-vigil.json`. This section states 
 ### Innate Powers
 
 - **WARN OF IMPENDING CONFLICT** (Speed: Fast · Range: ? · Target: yourself)
-  - **L1** — 2 Sun + 1 Earth: In one of your lands, 1 Dahan deals Damage before Invaders during Ravages. (Choose a land when Invaders Ravage there.)
-  - **L2** — 3 Sun + 1 Earth: In that land, another Dahan deals Damage before Invaders during Ravages.
-  - **L3** — 4 Sun + 2 Earth: In that land, all Dahan deal Damage before Invaders during Ravages.
-  - **L4** — 5 Sun + 3 Earth: Instead, all Dahan in all of your lands deal Damage before Invaders during Ravages.
+  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: In one of your lands, 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> deals Damage before Invaders during Ravages. (Choose a land when Invaders Ravage there.)
+  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: In that land, another Dahan deals Damage before Invaders during Ravages.
+  - **L3** — 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: In that land, all Dahan deal Damage before Invaders during Ravages.
+  - **L4** — 5 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: Instead, all Dahan in all of your lands deal Damage before Invaders during Ravages.
 - **KEEP WATCH FOR NEW INCURSIONS** (Speed: Fast · Range: 1 · Target: any)
-  - **L1** — 1 Animal: Gather up to 2 Dahan, from your lands only.
-  - **L2** — 1 Sun + 2 Air + 3 Animal: Once this turn after Invaders are added or moved into target land, 1 Damage per Dahan in target land, to those added/moved Invaders only.
-  - **L3** — 2 Sun + 3 Air + 4 Animal: Repeat this Power.
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">, from your lands only.
+  - **L2** — 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Once this turn after Invaders are added or moved into target land, 1 Damage per Dahan in target land, to those added/moved Invaders only.
+  - **L3** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Repeat this Power.
 
 ### Fast-phase element ceiling from Uniques
 
 Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
 
 - Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 Sun, Uniques give 0; need 1 Earth, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun, Uniques give 0; need 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
 
 ### Unique Power Cards
 

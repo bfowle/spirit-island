@@ -55,7 +55,7 @@ As Presence leaves each track, these values are revealed:
 
 ### Special Rule
 
-DRENCH THE LANDSCAPE Spirit Actions and Special Rules treat your Sacred Site as Wetlands in addition to the printed terrain. POUR DOWN POWER ACROSS THE ISLAND For each 2 Water you have, during the Fast/Slow phase you may either: * Gain 1 Energy; or * Repeat a land-targeting Power Card by paying its cost again. (It need not target the same land.) Use scenario markers or spare game pieces to track uses of this rule. (Max 5 times per turn, no matter how much Water you have.)
+DRENCH THE LANDSCAPE Spirit Actions and Special Rules treat your Sacred Site as Wetlands in addition to the printed terrain. POUR DOWN POWER ACROSS THE ISLAND For each 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water you have, during the Fast/Slow phase you may either: * Gain 1 Energy; or * Repeat a land-targeting Power Card by paying its cost again. (It need not target the same land.) Use scenario markers or spare game pieces to track uses of this rule. (Max 5 times per turn, no matter how much Water you have.)
 
 ### Innate: RAIN AND MUD SUPPRESS CONFLICT
 
@@ -63,9 +63,9 @@ DRENCH THE LANDSCAPE Spirit Actions and Special Rules treat your Sacred Site as 
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 Air + 3 Water | Each of your Presence grants Defend 1 and lowers Dahan counterattack damage by 1. (Total, in its land.) |
-| 2 | 5 Water + 1 Earth | Each of your Presence grants Defend 1 and lowers Dahan counterattack damage by 1. |
-| 3 | 3 Air + 9 Water + 2 Earth | 2 Fear. In your lands, Invaders and Dahan have -1 Health (min 1). |
+| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Each of your Presence grants Defend 1 and lowers Dahan counterattack damage by 1. (Total, in its land.) |
+| 2 | 5 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | Each of your Presence grants Defend 1 and lowers Dahan counterattack damage by 1. |
+| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 9 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. In your lands, Invaders and Dahan have -1 Health (min 1). |
 
 
 ### Innate: WATER NOURISHES LIFE'S GROWTH
@@ -74,9 +74,9 @@ DRENCH THE LANDSCAPE Spirit Actions and Special Rules treat your Sacred Site as 
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 3 Water + 2 Plant | Gain 1 Energy. You may remove 1 Blight by removing one of your Presence (From target land). |
-| 2 | 5 Water + 1 Earth + 2 Plant | Gain +1 Energy. Gather up to 1 Dahan. |
-| 3 | 7 Water + 2 Earth + 3 Plant | When Blight would be added to target land, instead leave it on the card. |
+| 1 | 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Gain 1 Energy. You may remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> by removing one of your Presence (From target land). |
+| 2 | 5 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Gain +1 Energy. Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
+| 3 | 7 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | When Blight would be added to target land, instead leave it on the card. |
 
 
 ## Unique Cards (all, Wiki-verified)
@@ -99,16 +99,16 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 
 | # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
 |---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Call to Trade** | 1 | Fast | Air, Water, Earth, Plant | You may Gather 1 Dahan. If the Terror Level is 2 or lower, Gather 1 Town and the first Ra… | elements air+earth+plant+water → 24.3 |
+| 1 | **Call to Trade** | 1 | Fast | Air, Water, Earth, Plant | You may Gather 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. If the Terror Level is 2 or lower, Gather 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> and the first Ra… | elements air+earth+plant+water → 24.3 |
 | 2 | **Gift of Power** | 0 | Slow | Moon, Water, Earth, Plant | Target Spirit gains a Minor Power Card. | elements earth+plant+water → 22.5 |
-| 3 | **Flow Downriver, Blow Downwind** | 0 | Slow | Air, Water, Plant | Push up to 1 Blight/Explorer/Town. | elements air+plant+water → 21.9 |
-| 4 | **Renewing Rain** | 1 | Slow | Water, Earth, Plant | If target land is a Jungle or Sands, Remove 1 Blight. | elements earth+plant+water → 22.5 |
-| 5 | **The Shore Seethes with Hatred** | 1 | Slow | Fire, Water, Earth, Plant | 1 Fear. Add 1 Badlands and 1 Wilds. | elements earth+plant+water → 22.5 |
-| 6 | **Roiling Bog and Snagging Thorn** | 0 | Fast | Moon, Fire, Water, Plant | 1 Fear. Isolate. Defend 2.</br>1 Dahan does not participate in Ravage.</br>(Check when ra… | elements plant+water → 20.1 |
+| 3 | **Flow Downriver, Blow Downwind** | 0 | Slow | Air, Water, Plant | Push up to 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">/Explorer/Town. | elements air+plant+water → 21.9 |
+| 4 | **Renewing Rain** | 1 | Slow | Water, Earth, Plant | If target land is a Jungle or Sands, Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements earth+plant+water → 22.5 |
+| 5 | **The Shore Seethes with Hatred** | 1 | Slow | Fire, Water, Earth, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Badlands and 1 Wilds. | elements earth+plant+water → 22.5 |
+| 6 | **Roiling Bog and Snagging Thorn** | 0 | Fast | Moon, Fire, Water, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Isolate. Defend 2.</br>1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> does not participate in Ravage.</br>(Check when ra… | elements plant+water → 20.1 |
 | 7 | **Sky Stretches to Shore** | 1 | Fast | Sun, Air, Water, Earth | This turn, target Spirit may use 1 Slow Power as if it were Fast, or vice versa. Target S… | elements air+earth+water → 20.4 |
-| 8 | **Steam Vents** | 1 | Fast | Fire, Air, Water, Earth | Destroy 1 Explorer. | elements air+earth+water → 20.4 |
+| 8 | **Steam Vents** | 1 | Fast | Fire, Air, Water, Earth | Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+earth+water → 20.4 |
 | 9 | **Mesmerized Tranquility** | 0 | Fast | Water, Earth, Animal | Isolate target land. Each Invader does -1 Damage. | elements earth+water → 18.6 |
-| 10 | **Sucking Ooze** | 0 | Fast | Moon, Water, Earth | 2 Fear if Invaders are present. Isolate target land. | elements earth+water → 18.6 |
+| 10 | **Sucking Ooze** | 0 | Fast | Moon, Water, Earth | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if Invaders are present. Isolate target land. | elements earth+water → 18.6 |
 
 ### Top 5 Major Draft Picks (from full pool)
 
@@ -116,7 +116,7 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 |---|------|------|-------|----------|--------------------|---------------|
 | 1 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+earth+plant+water → 24.3 |
 | 2 | **Flocking Red-Talons** | 3 | Fast | Air, Water, Plant, Animal | Add 1 Beasts. Move up to 2 Beasts within 3 Range to target land. For each Beasts present,… | elements air+plant+water → 21.9 |
-| 3 | **Dream of the Untouched Land** | 6 | Fast | Moon, Water, Earth, Plant, Animal | Remove up to 3 Blight and up to 3 Health worth of Invaders. | elements earth+plant+water → 22.5 |
+| 3 | **Dream of the Untouched Land** | 6 | Fast | Moon, Water, Earth, Plant, Animal | Remove up to 3 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> and up to 3 Health worth of Invaders. | elements earth+plant+water → 22.5 |
 | 4 | **Weave Together the Fabric of Place** | 4 | Fast | Sun, Moon, Air, Water, Earth | Target land and a land adjacent to it become a single land for this turn. (It has the ter… | elements air+earth+water → 20.4 |
 | 5 | **Bargain of Coursing Paths** | 2 | Fast | Moon, Air, Water, Earth | Bargain: 1 Presence now and -1 Energy/turn. Now: Mark both target land and another land w… | elements air+earth+water → 20.4 |
 
@@ -190,20 +190,20 @@ Auto-derived from `data/references/wiki/downpour-drenches-the-world.json`. This 
 ### Innate Powers
 
 - **RAIN AND MUD SUPPRESS CONFLICT** (Speed: Fast · Range: ? · Target: you)
-  - **L1** — 1 Air + 3 Water: Each of your Presence grants Defend 1 and lowers Dahan counterattack damage by 1. (Total, in its land.)
-  - **L2** — 5 Water + 1 Earth: Each of your Presence grants Defend 1 and lowers Dahan counterattack damage by 1.
-  - **L3** — 3 Air + 9 Water + 2 Earth: 2 Fear. In your lands, Invaders and Dahan have -1 Health (min 1).
+  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: Each of your Presence grants Defend 1 and lowers Dahan counterattack damage by 1. (Total, in its land.)
+  - **L2** — 5 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: Each of your Presence grants Defend 1 and lowers Dahan counterattack damage by 1.
+  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 9 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. In your lands, Invaders and Dahan have -1 Health (min 1).
 - **WATER NOURISHES LIFE'S GROWTH** (Speed: Fast · Range: 0 · Target: any)
-  - **L1** — 3 Water + 2 Plant: Gain 1 Energy. You may remove 1 Blight by removing one of your Presence (From target land).
-  - **L2** — 5 Water + 1 Earth + 2 Plant: Gain +1 Energy. Gather up to 1 Dahan.
-  - **L3** — 7 Water + 2 Earth + 3 Plant: When Blight would be added to target land, instead leave it on the card.
+  - **L1** — 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Gain 1 Energy. You may remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> by removing one of your Presence (From target land).
+  - **L2** — 5 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Gain +1 Energy. Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.
+  - **L3** — 7 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: When Blight would be added to target land, instead leave it on the card.
 
 ### Fast-phase element ceiling from Uniques
 
 Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
 
 - Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 1 Air, Uniques give 0; need 3 Water, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air, Uniques give 0; need 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
 
 ### Unique Power Cards
 

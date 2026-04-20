@@ -15,7 +15,7 @@
 
 England is the "death by gradual accumulation" adversary. T1–3 is deceptively calm; T4–7 is an avalanche of Towns; T8+ Cities flood the coast if you haven't secured it. New players who focus on "just survive T1" lose on T6 because Towns compound faster than you can clear.
 
-**The one-sentence teach**: Kill or displace Towns *early* — every Town you leave alive becomes 2 Cities later.
+**The one-sentence teach**: Kill or displace Towns *early* — every Town you leave alive becomes 2 Cities <img class="si" src="/spirit-island/theme/icons/unit-city.svg" alt="City"> later.
 
 ## Escalation Timeline
 

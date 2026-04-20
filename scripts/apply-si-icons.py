@@ -406,12 +406,68 @@ AUTHORED_CHAPTERS = [
     REPO / "src/spirits/moderate/grinning-trickster.md",
 ]
 
+# Non-authored spirit stubs (still get inline icon injection for prose that mentions units/elements)
+NON_AUTHORED_SPIRITS = [
+    REPO / "src/spirits/moderate/downpour-drenches-the-world.md",
+    REPO / "src/spirits/moderate/finder-of-paths-unseen.md",
+    REPO / "src/spirits/moderate/many-minds-move-as-one.md",
+    REPO / "src/spirits/moderate/sharp-fangs-behind-the-leaves.md",
+    REPO / "src/spirits/moderate/shifting-memory-of-ages.md",
+    REPO / "src/spirits/moderate/shroud-of-silent-mist.md",
+    REPO / "src/spirits/moderate/vengeance-burning-plague.md",
+    REPO / "src/spirits/moderate/volcano-looming-high.md",
+    REPO / "src/spirits/high/breath-of-darkness.md",
+    REPO / "src/spirits/high/dances-up-earthquakes.md",
+    REPO / "src/spirits/high/ember-eyed-behemoth.md",
+    REPO / "src/spirits/high/fractured-days-split-the-sky.md",
+    REPO / "src/spirits/high/hearth-vigil.md",
+    REPO / "src/spirits/high/lure-of-the-deep-wilderness.md",
+    REPO / "src/spirits/high/relentless-gaze-of-the-sun.md",
+    REPO / "src/spirits/high/starlight-seeks-its-form.md",
+    REPO / "src/spirits/high/stone-unyielding-defiance.md",
+    REPO / "src/spirits/high/towering-roots-of-the-jungle.md",
+    REPO / "src/spirits/high/wounded-waters-bleeding.md",
+    REPO / "src/spirits/very-high/wandering-voice.md",
+]
+
+ADVERSARIES = [
+    REPO / "src/adversaries/brandenburg-prussia.md",
+    REPO / "src/adversaries/england.md",
+    REPO / "src/adversaries/france-plantation-colony.md",
+    REPO / "src/adversaries/habsburg-livestock-colony.md",
+    REPO / "src/adversaries/habsburg-mining-expedition.md",
+    REPO / "src/adversaries/russia.md",
+    REPO / "src/adversaries/scotland.md",
+    REPO / "src/adversaries/sweden.md",
+]
+
+SCENARIOS = [
+    REPO / "src/scenarios/a-diversity-of-spirits.md",
+    REPO / "src/scenarios/blitz.md",
+    REPO / "src/scenarios/dahan-insurrection.md",
+    REPO / "src/scenarios/despicable-theft.md",
+    REPO / "src/scenarios/destiny-unfolds.md",
+    REPO / "src/scenarios/elemental-invocation.md",
+    REPO / "src/scenarios/guard-the-isles-heart.md",
+    REPO / "src/scenarios/powers-long-forgotten.md",
+    REPO / "src/scenarios/rituals-of-destroying-flame.md",
+    REPO / "src/scenarios/rituals-of-terror.md",
+    REPO / "src/scenarios/second-wave.md",
+    REPO / "src/scenarios/the-great-river.md",
+    REPO / "src/scenarios/varied-terrains.md",
+    REPO / "src/scenarios/ward-the-shores.md",
+]
+
 
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("targets", nargs="*", help="Specific markdown files to process")
     p.add_argument("--default-set", action="store_true", help="Apply to the Shadows chapter")
     p.add_argument("--all-authored", action="store_true", help="Apply to all 17 authored spirit chapters")
+    p.add_argument("--non-authored", action="store_true", help="Apply to non-authored spirit stubs (moderate/high/very-high)")
+    p.add_argument("--adversaries", action="store_true", help="Apply to all 8 adversary chapters")
+    p.add_argument("--scenarios", action="store_true", help="Apply to all 14 scenario chapters")
+    p.add_argument("--all", action="store_true", help="Apply to every tracked chapter (authored + non-authored + adversaries + scenarios)")
     p.add_argument("--snapshots", action="store_true", help="Also inject Shadows Turn snapshots")
     p.add_argument("--dry-run", action="store_true")
     args = p.parse_args()
@@ -421,8 +477,19 @@ def main():
         targets.extend(DEFAULT_TARGETS)
     if args.all_authored:
         targets.extend(AUTHORED_CHAPTERS)
+    if args.non_authored:
+        targets.extend(NON_AUTHORED_SPIRITS)
+    if args.adversaries:
+        targets.extend(ADVERSARIES)
+    if args.scenarios:
+        targets.extend(SCENARIOS)
+    if args.all:
+        targets.extend(AUTHORED_CHAPTERS + NON_AUTHORED_SPIRITS + ADVERSARIES + SCENARIOS)
+    # Dedupe while preserving order
+    seen = set()
+    targets = [t for t in targets if not (t in seen or seen.add(t))]
     if not targets:
-        p.error("no targets; pass filenames, --default-set, or --all-authored")
+        p.error("no targets; pass filenames, --default-set, --all-authored, --non-authored, --adversaries, --scenarios, or --all")
 
     total_changes = 0
     for t in targets:

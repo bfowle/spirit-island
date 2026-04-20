@@ -872,12 +872,31 @@ def cmd_deck(args, card_type: str) -> dict:
         file=sys.stderr,
     )
 
+    def _dedupe(cards: list[dict]) -> list[dict]:
+        """Drop errata'd duplicates — for each card name, prefer the entry
+        whose raw_template.errata is empty (= canonical current printing).
+        The Wiki lists both the legacy and re-issued printings for many base
+        cards; only the current one belongs in the deck pool."""
+        by_name: dict[str, list[dict]] = {}
+        for c in cards:
+            by_name.setdefault(c.get("name"), []).append(c)
+        out: list[dict] = []
+        for name, group in by_name.items():
+            canonical = [c for c in group if not c.get("raw_template", {}).get("errata", "")]
+            if canonical:
+                out.append(canonical[0])
+            else:
+                # All copies carry an errata marker — keep first arbitrarily
+                out.append(group[0])
+        return out
+
     def _bundle(name: str, cards: list[dict]) -> dict:
+        deduped = _dedupe(cards)
         return {
             "source": "spiritislandwiki.com",
             "card_type": name,
-            "count": len(cards),
-            "cards": cards,
+            "count": len(deduped),
+            "cards": deduped,
         }
 
     result = {

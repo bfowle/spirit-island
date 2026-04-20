@@ -1,0 +1,117 @@
+{
+  "schema_version": "0.1",
+  "last_updated": "2026-04-19",
+  "notes": "Invader-deck stack sequence per adversary/level. stack_sequence is an ordered list of stage numbers (1/2/3) from top (first revealed) to bottom. Base default = 3·I, 4·II, 5·III (12 cards). Adversary-specific stack modifications (e.g., England Increased Expedition swapping I→II, France Expanded Colony adding Stage II) are marked per-level. Entries marked [VERIFY] use base default pending physical-copy confirmation.",
+  "base": {
+    "stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3],
+    "notation": "3 · 4 · 5",
+    "stage_counts": {"I": 3, "II": 4, "III": 5},
+    "source": "Spirit Island base-game rulebook"
+  },
+  "adversaries": {
+    "england": {
+      "name": "England",
+      "levels": {
+        "0": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "Standard stack; effects focus on extra Builds and Town→City escalation."},
+        "1": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "3": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "4": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "6": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "7": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "9": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "10": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"}
+      }
+    },
+    "brandenburg-prussia": {
+      "name": "Brandenburg-Prussia",
+      "levels": {
+        "0": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "Base stack."},
+        "1": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "2": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "4": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "6": {"stack_sequence": [3, 2, 2, 2, 3, 3, 3, 3], "notation": "3 · 2·2·2 · 3·3·3·3 (Stage III on top)", "notes": "Per user-confirmed shorthand 'Prussia 6 = 3-222-3333': the top card is Stage III, then 3 Stage II, then 4 Stage III. Prussia L6 escalation accelerates Cities early."},
+        "7": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "9": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "10": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"}
+      }
+    },
+    "sweden": {
+      "name": "Sweden",
+      "levels": {
+        "0": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "1": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "2": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "3": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "5": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "6": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "7": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "8": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"}
+      }
+    },
+    "france-plantation-colony": {
+      "name": "France (Plantation Colony)",
+      "levels": {
+        "0": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "2": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "3": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "5": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "6": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "8": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "9": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "10": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"}
+      }
+    },
+    "habsburg-mining-expedition": {
+      "name": "Habsburg Mining Expedition",
+      "levels": {
+        "0": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "1": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "3": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "5": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "6": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "7": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "9": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "10": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"}
+      }
+    },
+    "russia": {
+      "name": "Russia",
+      "levels": {
+        "0": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "1": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "3": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "4": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "6": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "7": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "9": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "11": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"}
+      }
+    },
+    "scotland": {
+      "name": "Scotland",
+      "levels": {
+        "0": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "1": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "3": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "4": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "6": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "7": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "8": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "10": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"}
+      }
+    },
+    "habsburg-livestock-colony": {
+      "name": "Habsburg Livestock Colony",
+      "levels": {
+        "0": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "2": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "3": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "5": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "6": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "8": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "9": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"},
+        "10": {"stack_sequence": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3], "notation": "3 · 4 · 5", "notes": "[VERIFY]"}
+      }
+    }
+  }
+}
