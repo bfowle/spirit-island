@@ -446,8 +446,10 @@ const phaseDisplayName = computed(() => {
 
           <div class="panel-body">
             <Board
-              v-model="state.board"
-              :boards="state.setup.boards ?? ['A']"
+              v-for="boardId in (state.setup.boards ?? ['A'])"
+              :key="boardId"
+              v-model="state.board_state[boardId]"
+              :board-id="boardId"
               :spirits="state.spirits"
               @log-event="(event, details) => appendLog(event, details)"
             />
@@ -468,17 +470,17 @@ const phaseDisplayName = computed(() => {
 
             <div class="deck-card fear-accent">
               <h3>Fear Deck</h3>
-              <FearDeck v-model="state.fear_deck" :terror-level="state.pools.terror_level" @log-event="(event, details) => appendLog(event, details)" />
+              <FearDeck v-model="state.fear_deck" :round="state.round" :terror-level="state.pools.terror_level" @log-event="(event, details) => appendLog(event, details)" />
             </div>
 
             <div class="deck-card event-accent" v-if="state.setup.scenario">
               <h3>Event Deck</h3>
-              <EventDeck v-model="state.event_deck" @log-event="(event, details) => appendLog(event, details)" />
+              <EventDeck v-model="state.event_deck" :round="state.round" @log-event="(event, details) => appendLog(event, details)" />
             </div>
 
             <div class="deck-card terrain-accent">
               <h3>Terrain Timeline</h3>
-              <TerrainTimeline v-model="state.terrain_deck" :round="state.round" />
+              <TerrainTimeline :state="state" />
             </div>
           </div>
         </section>
