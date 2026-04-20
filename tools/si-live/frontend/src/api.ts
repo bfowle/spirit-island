@@ -1,5 +1,5 @@
 import type { GameState } from './types'
-import sampleState from '../../../data/current-game.json'
+import sampleState from '../../../../data/current-game.json'
 
 // v0-mode: mock all backend calls. Use the sample JSON as the live state.
 // When I wire this back into the real project I'll restore the HTTP fetches.
