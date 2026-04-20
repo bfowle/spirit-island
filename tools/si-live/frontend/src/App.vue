@@ -25,9 +25,13 @@ const showSavedGames = ref(false)
 let saveTimer: number | null = null
 
 const activeSpiritTab = ref<string | null>(null)
-const activeView = ref<'game' | 'log'>('game')
 const affinityMap = ref<SpiritAffinityMap | null>(null)
 const gameOverBannerDismissed = ref(false)
+const sidebarCollapsed = ref(false)
+const activeBoardId = ref<string>('A')
+
+// Zone expansion states (for manual override)
+const expandedZones = ref<Set<string>>(new Set())
 
 // Fear tracking for auto-banking
 let lastFear = 0
@@ -46,6 +50,7 @@ onMounted(async () => {
     state.value = await fetchState()
     const slugs = Object.keys(state.value?.spirits ?? {})
     activeSpiritTab.value = slugs[0] ?? null
+    activeBoardId.value = state.value?.setup?.boards?.[0] ?? 'A'
   } catch (e) {
     error.value = (e as Error).message
   }
@@ -67,6 +72,7 @@ watch(state, (s) => {
 // COMPUTED
 // ─────────────────────────────────────────────────────────────────────────────
 const spiritSlugs = computed(() => Object.keys(state.value?.spirits ?? {}))
+const boardIds = computed(() => state.value?.setup?.boards ?? ['A'])
 
 const currentWinProb = computed(() => {
   if (!state.value) return { mean: 0.5, lo: 0.3, hi: 0.7, endState: 'in-progress' }
@@ -126,6 +132,66 @@ const PHASE_LABELS: Record<Phase, string> = {
   end: 'Game End'
 }
 
+const PHASE_HINTS: Record<Phase, string> = {
+  setup: 'Set up the game',
+  growth: 'Growth -> Gain Energy -> Play Cards',
+  fast: 'Resolve fast powers and innates',
+  event: 'Draw and resolve event card',
+  fear: 'Resolve earned fear cards',
+  invader: 'Ravage -> Build -> Explore',
+  slow: 'Resolve slow powers and innates',
+  timepasses: 'Discard played cards, clear elements',
+  end: 'Game complete'
+}
+
+// Phase-aware zone priorities
+// Each phase has a "primary" zone that gets more space
+const PHASE_PRIMARY_ZONE: Record<Phase, 'spirits' | 'board' | 'decks' | 'analytics'> = {
+  setup: 'board',
+  growth: 'spirits',
+  fast: 'spirits',
+  event: 'decks',
+  fear: 'decks',
+  invader: 'board',
+  slow: 'spirits',
+  timepasses: 'analytics',
+  end: 'analytics'
+}
+
+const primaryZone = computed(() => state.value ? PHASE_PRIMARY_ZONE[state.value.phase] : 'board')
+
+// Grid template based on primary zone
+const gridTemplate = computed(() => {
+  const zone = primaryZone.value
+  switch (zone) {
+    case 'spirits':
+      return { columns: '1fr 1fr 320px', areas: '"spirits board decks"' }
+    case 'board':
+      return { columns: '340px 1fr 320px', areas: '"spirits board decks"' }
+    case 'decks':
+      return { columns: '340px 1fr 400px', areas: '"spirits board decks"' }
+    case 'analytics':
+      return { columns: '1fr 1fr 1fr', areas: '"spirits board decks"' }
+    default:
+      return { columns: '340px 1fr 320px', areas: '"spirits board decks"' }
+  }
+})
+
+// Check if a zone is primary for the current phase
+function isZonePrimary(zone: 'spirits' | 'board' | 'decks' | 'analytics'): boolean {
+  return primaryZone.value === zone
+}
+
+// Toggle zone expansion
+function toggleZone(zone: string) {
+  if (expandedZones.value.has(zone)) {
+    expandedZones.value.delete(zone)
+  } else {
+    expandedZones.value.add(zone)
+  }
+  expandedZones.value = new Set(expandedZones.value)
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // METHODS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -170,10 +236,16 @@ function prevPhase() {
   }
 }
 
+function goToPhase(phase: Phase) {
+  if (!state.value) return
+  state.value.phase = phase
+}
+
 function onGameStarted(newState: GameState) {
   state.value = newState
   const slugs = Object.keys(newState.spirits ?? {})
   activeSpiritTab.value = slugs[0] ?? null
+  activeBoardId.value = newState.setup?.boards?.[0] ?? 'A'
   showWizard.value = false
 }
 
@@ -241,247 +313,326 @@ watch(
   <!-- LOADING STATE -->
   <div v-else-if="!state" class="loading-screen">
     <div class="loader"></div>
-    <p>Loading...</p>
+    <p>Loading game state...</p>
   </div>
 
-  <!-- MAIN DASHBOARD -->
-  <div v-else class="app">
+  <!-- MAIN WORKSPACE -->
+  <div v-else class="workspace" :data-phase="state.phase" :data-primary="primaryZone">
+    
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- HEADER                                                                   -->
+    <!-- SIDEBAR                                                                  -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <header class="header">
-      <div class="header-left">
+    <aside class="sidebar" :class="{ collapsed: sidebarCollapsed }">
+      <!-- Logo -->
+      <div class="sidebar-header">
         <div class="logo">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M12 2L2 7l10 5 10-5-10-5z"/>
             <path d="M2 17l10 5 10-5"/>
             <path d="M2 12l10 5 10-5"/>
           </svg>
-          <span>Spirit Island</span>
+          <span v-if="!sidebarCollapsed">Spirit Island</span>
         </div>
-        <span class="separator"></span>
-        <span class="matchup">{{ matchupTag || 'Solo Game' }}</span>
-      </div>
-
-      <div class="header-center">
-        <button class="nav-arrow" @click="prevPhase" :disabled="PHASES.indexOf(state.phase) <= 0">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div class="phase-badge">
-          <span class="phase-name">{{ PHASE_LABELS[state.phase] }}</span>
-        </div>
-        <button class="nav-arrow" @click="advancePhase">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <button class="sidebar-toggle" @click="sidebarCollapsed = !sidebarCollapsed">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path v-if="sidebarCollapsed" d="M9 18l6-6-6-6"/>
+            <path v-else d="M15 18l-6-6 6-6"/>
+          </svg>
         </button>
       </div>
 
-      <div class="header-right">
-        <div class="round-indicator">
-          <span class="round-label">Round</span>
-          <span class="round-value">{{ state.round }}</span>
-        </div>
-        <div class="win-indicator" :class="{ good: currentWinProb.mean >= 0.5 }">
-          {{ Math.round(currentWinProb.mean * 100) }}%
-        </div>
-        <div class="header-actions">
-          <button class="icon-btn" @click="showSavedGames = true" title="Saved Games">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-          </button>
-          <button class="icon-btn" @click="showWizard = true" title="New Game">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <button class="icon-btn" @click="exportGame" title="Export">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- STATUS BAR                                                               -->
-    <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <div class="status-bar">
-      <!-- Fear -->
-      <div class="status-block">
-        <div class="status-top">
-          <span class="status-label">Fear</span>
-          <span class="status-nums">{{ state.pools.fear_current }}<span class="dim">/{{ state.pools.fear_threshold }}</span></span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-bar fear-bar" :style="{ width: fearProgress + '%' }"></div>
-        </div>
-        <div class="quick-actions">
-          <button class="quick-btn" @click="addFear(1)">+1</button>
-          <button class="quick-btn" @click="addFear(2)">+2</button>
-          <button class="quick-btn" @click="addFear(4)">+4</button>
-        </div>
-      </div>
-
-      <!-- Terror Level -->
-      <div class="status-block terror-block">
-        <div class="status-top">
-          <span class="status-label">Terror Level</span>
-        </div>
-        <div class="terror-track">
-          <div class="terror-seg" :class="{ filled: terrorInfo.level >= 1, current: terrorInfo.level === 1 }">I</div>
-          <div class="terror-seg" :class="{ filled: terrorInfo.level >= 2, current: terrorInfo.level === 2 }">II</div>
-          <div class="terror-seg" :class="{ filled: terrorInfo.level >= 3, current: terrorInfo.level === 3 }">III</div>
-          <div class="terror-seg victory" :class="{ filled: terrorInfo.level >= 4 }">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      <!-- Game Info -->
+      <div class="sidebar-section" v-if="!sidebarCollapsed">
+        <div class="sidebar-label">Current Game</div>
+        <div class="game-info">
+          <div class="game-stat">
+            <span class="stat-value">{{ state.round }}</span>
+            <span class="stat-label">Round</span>
+          </div>
+          <div class="game-stat">
+            <span class="stat-value" :class="{ good: currentWinProb.mean >= 0.5 }">{{ Math.round(currentWinProb.mean * 100) }}%</span>
+            <span class="stat-label">Win Prob</span>
           </div>
         </div>
-        <div class="terror-meta">{{ terrorInfo.earned }} / {{ terrorInfo.t1 + terrorInfo.t2 + terrorInfo.t3 }} cards</div>
+        <div class="matchup-info" v-if="matchupTag">{{ matchupTag }}</div>
       </div>
 
-      <!-- Blight -->
-      <div class="status-block">
-        <div class="status-top">
-          <span class="status-label">Blight</span>
-          <span class="status-nums" :class="{ danger: blightProgress >= 75 }">{{ state.pools.blight_current }}<span class="dim">/{{ state.pools.blight_cap }}</span></span>
+      <!-- Phase Navigator -->
+      <div class="sidebar-section">
+        <div class="sidebar-label" v-if="!sidebarCollapsed">Phase</div>
+        <nav class="phase-nav">
+          <button 
+            v-for="phase in PHASES" 
+            :key="phase"
+            class="phase-btn"
+            :class="{ 
+              active: state.phase === phase,
+              completed: PHASES.indexOf(phase) < PHASES.indexOf(state.phase)
+            }"
+            @click="goToPhase(phase)"
+            :title="sidebarCollapsed ? PHASE_LABELS[phase] : undefined"
+          >
+            <span class="phase-indicator"></span>
+            <span class="phase-label" v-if="!sidebarCollapsed">{{ PHASE_LABELS[phase] }}</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="sidebar-section" v-if="!sidebarCollapsed">
+        <div class="sidebar-label">Pools</div>
+        <div class="pool-stats">
+          <div class="pool-row">
+            <span class="pool-label">Fear</span>
+            <div class="pool-bar">
+              <div class="pool-fill fear" :style="{ width: fearProgress + '%' }"></div>
+            </div>
+            <span class="pool-value">{{ state.pools.fear_current }}/{{ state.pools.fear_threshold }}</span>
+          </div>
+          <div class="pool-row">
+            <span class="pool-label">Blight</span>
+            <div class="pool-bar">
+              <div class="pool-fill blight" :class="{ danger: blightProgress >= 75 }" :style="{ width: blightProgress + '%' }"></div>
+            </div>
+            <span class="pool-value">{{ state.pools.blight_current }}/{{ state.pools.blight_cap }}</span>
+          </div>
+          <div class="pool-row">
+            <span class="pool-label">Terror</span>
+            <div class="terror-mini">
+              <span :class="{ active: terrorInfo.level >= 1 }">I</span>
+              <span :class="{ active: terrorInfo.level >= 2 }">II</span>
+              <span :class="{ active: terrorInfo.level >= 3 }">III</span>
+            </div>
+          </div>
         </div>
-        <div class="progress-track blight-track">
-          <div class="progress-bar blight-bar" :class="{ danger: blightProgress >= 75 }" :style="{ width: blightProgress + '%' }"></div>
-        </div>
-        <div class="quick-actions">
-          <button class="quick-btn" @click="adjustBlight(-1)">-1</button>
-          <button class="quick-btn" @click="adjustBlight(1)">+1</button>
-        </div>
       </div>
 
-      <!-- Fear Cards Earned -->
-      <div class="status-block compact">
-        <span class="status-label">Earned</span>
-        <span class="big-num">{{ state.fear_deck?.earned?.length ?? 0 }}</span>
+      <!-- Actions -->
+      <div class="sidebar-footer">
+        <button class="sidebar-btn" @click="showSavedGames = true" :title="sidebarCollapsed ? 'Saved Games' : undefined">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span v-if="!sidebarCollapsed">Saved Games</span>
+        </button>
+        <button class="sidebar-btn" @click="showWizard = true" :title="sidebarCollapsed ? 'New Game' : undefined">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span v-if="!sidebarCollapsed">New Game</span>
+        </button>
+        <button class="sidebar-btn" @click="exportGame" :title="sidebarCollapsed ? 'Export' : undefined">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span v-if="!sidebarCollapsed">Export</span>
+        </button>
       </div>
-    </div>
-
-    <!-- Victory/Defeat Banner -->
-    <div v-if="endResult === 'won' && !gameOverBannerDismissed" class="banner victory-banner">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-      <div class="banner-text">
-        <strong>Victory!</strong>
-        <span>Fear deck exhausted at Terror Level {{ state.pools.terror_level }}</span>
-      </div>
-      <button class="banner-close" @click="gameOverBannerDismissed = true">Dismiss</button>
-    </div>
-
-    <div v-else-if="endResult === 'lost' && !gameOverBannerDismissed" class="banner defeat-banner">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      <div class="banner-text">
-        <strong>Defeat</strong>
-        <span>The island has been blighted</span>
-      </div>
-      <button class="banner-close" @click="gameOverBannerDismissed = true">Dismiss</button>
-    </div>
+    </aside>
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <!-- MAIN CONTENT                                                             -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <main class="main">
-      <!-- Left Column: Spirits -->
-      <section class="column spirits-column">
-        <div class="section-header">
-          <h2>Spirits</h2>
-          <div class="tab-row" v-if="spiritSlugs.length > 1">
-            <button 
-              v-for="slug in spiritSlugs" 
-              :key="slug"
-              class="tab-btn"
-              :class="{ active: activeSpiritTab === slug }"
-              @click="activeSpiritTab = slug"
-            >
-              {{ humanSlug(slug).split(' ').slice(0, 2).join(' ') }}
+    <div class="main-content">
+      <!-- Header Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="phase-display">
+            <button class="phase-arrow" @click="prevPhase" :disabled="PHASES.indexOf(state.phase) <= 0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <div class="phase-info">
+              <span class="phase-name">{{ PHASE_LABELS[state.phase] }}</span>
+              <span class="phase-hint">{{ PHASE_HINTS[state.phase] }}</span>
+            </div>
+            <button class="phase-arrow" @click="advancePhase">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
             </button>
           </div>
         </div>
-        <div class="section-body">
-          <SpiritPanel
-            v-for="slug in spiritSlugs"
-            v-show="activeSpiritTab === slug || spiritSlugs.length === 1"
-            :key="slug"
-            v-model="state.spirits[slug]"
-            :slug="slug"
-            :round="state.round"
-            @log-event="(event, details) => appendLog(event, details)"
-          />
-        </div>
-      </section>
 
-      <!-- Center Column: Board -->
-      <section class="column board-column">
-        <div class="section-header">
-          <h2>Island</h2>
-          <div class="board-tabs">
-            <span v-for="b in (state.setup.boards ?? ['A'])" :key="b" class="board-chip">{{ b }}</span>
+        <div class="topbar-center">
+          <!-- Fear Quick Actions -->
+          <div class="quick-pool">
+            <span class="quick-label">Fear</span>
+            <div class="quick-btns">
+              <button @click="addFear(1)">+1</button>
+              <button @click="addFear(2)">+2</button>
+              <button @click="addFear(4)">+4</button>
+            </div>
+          </div>
+          <div class="quick-pool">
+            <span class="quick-label">Blight</span>
+            <div class="quick-btns">
+              <button @click="adjustBlight(-1)">-1</button>
+              <button @click="adjustBlight(1)">+1</button>
+            </div>
           </div>
         </div>
-        <div class="section-body">
-          <Board
-            v-for="boardId in (state.setup.boards ?? ['A'])"
-            :key="boardId"
-            v-model="state.board_state[boardId]"
-            :board-id="boardId"
-            :spirits="state.spirits"
-            @log-event="(event, details) => appendLog(event, details)"
-          />
-        </div>
-      </section>
 
-      <!-- Right Column: Decks -->
-      <aside class="column decks-column">
-        <div class="section-header">
-          <h2>Decks</h2>
+        <div class="topbar-right">
+          <div class="save-indicator" :class="{ active: saving }">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            <span>{{ saving ? 'Saving...' : 'Saved' }}</span>
+          </div>
         </div>
-        <div class="section-body decks-body">
-          <!-- Invader Deck -->
-          <div class="deck-card">
-            <div class="deck-title">Invader Deck</div>
-            <InvaderDeck 
-              v-model="state.invader_deck" 
+      </header>
+
+      <!-- Victory/Defeat Banner -->
+      <div v-if="endResult === 'won' && !gameOverBannerDismissed" class="banner victory">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <div class="banner-content">
+          <strong>Victory!</strong>
+          <span>Fear deck exhausted at Terror Level {{ state.pools.terror_level }}</span>
+        </div>
+        <button @click="gameOverBannerDismissed = true">Dismiss</button>
+      </div>
+
+      <div v-else-if="endResult === 'lost' && !gameOverBannerDismissed" class="banner defeat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <div class="banner-content">
+          <strong>Defeat</strong>
+          <span>The island has been blighted</span>
+        </div>
+        <button @click="gameOverBannerDismissed = true">Dismiss</button>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!-- WORKSPACE GRID - Phase-aware layout                                     -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <main 
+        class="workspace-grid"
+        :style="{ 
+          gridTemplateColumns: gridTemplate.columns,
+          gridTemplateAreas: gridTemplate.areas
+        }"
+      >
+        <!-- SPIRITS ZONE -->
+        <section class="zone spirits-zone" :class="{ primary: isZonePrimary('spirits') }">
+          <div class="zone-header">
+            <h2>Spirits</h2>
+            <div class="zone-tabs" v-if="spiritSlugs.length > 1">
+              <button 
+                v-for="slug in spiritSlugs" 
+                :key="slug"
+                class="zone-tab"
+                :class="{ active: activeSpiritTab === slug }"
+                @click="activeSpiritTab = slug"
+              >
+                {{ humanSlug(slug).split(' ').slice(0, 2).join(' ') }}
+              </button>
+            </div>
+          </div>
+          <div class="zone-body">
+            <SpiritPanel
+              v-for="slug in spiritSlugs"
+              v-show="activeSpiritTab === slug || spiritSlugs.length === 1"
+              :key="slug"
+              v-model="state.spirits[slug]"
+              :slug="slug"
               :round="state.round"
-              @log-event="(event, details) => appendLog(event, details)" 
+              @log-event="(event, details) => appendLog(event, details)"
             />
           </div>
+        </section>
 
-          <!-- Fear Deck -->
-          <div class="deck-card">
-            <div class="deck-title">Fear Cards</div>
-            <FearDeck 
-              v-model="state.fear_deck" 
-              :round="state.round"
-              :terror-level="state.pools.terror_level"
-              @log-event="(event, details) => appendLog(event, details)" 
+        <!-- BOARD ZONE -->
+        <section class="zone board-zone" :class="{ primary: isZonePrimary('board') }">
+          <div class="zone-header">
+            <h2>Island</h2>
+            <div class="zone-tabs" v-if="boardIds.length > 1">
+              <button 
+                v-for="bid in boardIds" 
+                :key="bid"
+                class="zone-tab"
+                :class="{ active: activeBoardId === bid }"
+                @click="activeBoardId = bid"
+              >
+                Board {{ bid }}
+              </button>
+            </div>
+          </div>
+          <div class="zone-body">
+            <Board
+              v-for="boardId in boardIds"
+              v-show="activeBoardId === boardId || boardIds.length === 1"
+              :key="boardId"
+              v-model="state.board_state[boardId]"
+              :board-id="boardId"
+              :spirits="state.spirits"
+              @log-event="(event, details) => appendLog(event, details)"
             />
           </div>
+        </section>
 
-          <!-- Event Deck (if using events) -->
-          <div class="deck-card" v-if="state.event_deck">
-            <div class="deck-title">Event Deck</div>
-            <EventDeck 
-              v-model="state.event_deck" 
-              :round="state.round"
-              @log-event="(event, details) => appendLog(event, details)" 
-            />
+        <!-- DECKS ZONE -->
+        <section class="zone decks-zone" :class="{ primary: isZonePrimary('decks') }">
+          <div class="zone-header">
+            <h2>Decks</h2>
           </div>
+          <div class="zone-body decks-stack">
+            <!-- Invader Deck -->
+            <div class="deck-panel" :class="{ expanded: state.phase === 'invader' }">
+              <div class="deck-header">
+                <span class="deck-name">Invader Deck</span>
+                <span class="deck-badge invader">{{ state.invader_deck?.stack?.length ?? 0 }} cards</span>
+              </div>
+              <div class="deck-content">
+                <InvaderDeck 
+                  v-model="state.invader_deck" 
+                  :round="state.round"
+                  @log-event="(event, details) => appendLog(event, details)" 
+                />
+              </div>
+            </div>
 
-          <!-- Terrain Timeline -->
-          <div class="deck-card" v-if="state.setup.scenario">
-            <div class="deck-title">Terrain</div>
-            <TerrainTimeline :state="state" />
+            <!-- Fear Deck -->
+            <div class="deck-panel" :class="{ expanded: state.phase === 'fear' }">
+              <div class="deck-header">
+                <span class="deck-name">Fear Cards</span>
+                <span class="deck-badge fear">{{ state.fear_deck?.earned?.length ?? 0 }} earned</span>
+              </div>
+              <div class="deck-content">
+                <FearDeck 
+                  v-model="state.fear_deck" 
+                  :round="state.round"
+                  :terror-level="state.pools.terror_level"
+                  @log-event="(event, details) => appendLog(event, details)" 
+                />
+              </div>
+            </div>
+
+            <!-- Event Deck -->
+            <div class="deck-panel" v-if="state.event_deck" :class="{ expanded: state.phase === 'event' }">
+              <div class="deck-header">
+                <span class="deck-name">Event Deck</span>
+                <span class="deck-badge event">{{ state.event_deck?.resolved?.length ?? 0 }} resolved</span>
+              </div>
+              <div class="deck-content">
+                <EventDeck 
+                  v-model="state.event_deck" 
+                  :round="state.round"
+                  @log-event="(event, details) => appendLog(event, details)" 
+                />
+              </div>
+            </div>
+
+            <!-- Terrain Timeline -->
+            <div class="deck-panel" v-if="state.setup.scenario">
+              <div class="deck-header">
+                <span class="deck-name">Terrain</span>
+              </div>
+              <div class="deck-content">
+                <TerrainTimeline :state="state" />
+              </div>
+            </div>
           </div>
-        </div>
-      </aside>
-    </main>
+        </section>
+      </main>
+    </div>
   </div>
 </template>
 
 <style scoped>
 /* ═══════════════════════════════════════════════════════════════════════════ */
-/* BASE LAYOUT                                                                  */
+/* WORKSPACE SHELL                                                              */
 /* ═══════════════════════════════════════════════════════════════════════════ */
-.app {
+.workspace {
   display: flex;
-  flex-direction: column;
   height: 100vh;
   background: var(--bg-base);
   overflow: hidden;
@@ -500,10 +651,10 @@ watch(
 }
 
 .loader {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   border: 2px solid var(--border-default);
-  border-top-color: var(--text-primary);
+  border-top-color: var(--color-accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -517,7 +668,8 @@ watch(
   padding: var(--sp-8);
   background: var(--bg-surface);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
+  max-width: 400px;
 }
 
 .error-box h2 {
@@ -532,9 +684,302 @@ watch(
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
-/* HEADER                                                                       */
+/* SIDEBAR                                                                      */
 /* ═══════════════════════════════════════════════════════════════════════════ */
-.header {
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-default);
+  transition: width 200ms var(--ease);
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed {
+  width: 56px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.logo svg {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.sidebar-toggle {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+}
+
+.sidebar-toggle:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.sidebar.collapsed .sidebar-toggle {
+  margin: 0 auto;
+}
+
+.sidebar-section {
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sidebar-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: var(--sp-3);
+}
+
+/* Game Info */
+.game-info {
+  display: flex;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-2);
+}
+
+.game-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stat-value.good {
+  color: var(--color-success);
+}
+
+.stat-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.matchup-info {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  text-transform: capitalize;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg-muted);
+  border-radius: var(--radius-sm);
+  margin-top: var(--sp-2);
+}
+
+/* Phase Navigation */
+.phase-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.phase-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  height: 36px;
+  padding: 0 var(--sp-3);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  justify-content: flex-start;
+  transition: all var(--duration-base) var(--ease);
+}
+
+.sidebar.collapsed .phase-btn {
+  justify-content: center;
+  padding: 0;
+}
+
+.phase-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+}
+
+.phase-btn.active {
+  background: var(--bg-muted);
+  color: var(--text-primary);
+}
+
+.phase-btn.completed {
+  color: var(--text-secondary);
+}
+
+.phase-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--bg-subtle);
+  flex-shrink: 0;
+  transition: all var(--duration-base) var(--ease);
+}
+
+.phase-btn.active .phase-indicator {
+  background: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.phase-btn.completed .phase-indicator {
+  background: var(--color-success);
+}
+
+.phase-label {
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
+/* Pool Stats */
+.pool-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.pool-row {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: var(--sp-2);
+  align-items: center;
+}
+
+.pool-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.pool-bar {
+  height: 6px;
+  background: var(--bg-muted);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.pool-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 200ms var(--ease);
+}
+
+.pool-fill.fear {
+  background: var(--color-fear);
+}
+
+.pool-fill.blight {
+  background: var(--color-blight);
+}
+
+.pool-fill.blight.danger {
+  background: var(--color-danger);
+}
+
+.pool-value {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.terror-mini {
+  display: flex;
+  gap: 4px;
+}
+
+.terror-mini span {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: var(--text-faint);
+  padding: 2px 6px;
+  background: var(--bg-muted);
+  border-radius: var(--radius-sm);
+}
+
+.terror-mini span.active {
+  background: var(--color-fear);
+  color: var(--bg-base);
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+  margin-top: auto;
+  padding: var(--sp-3);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  height: 36px;
+  padding: 0 var(--sp-3);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  justify-content: flex-start;
+  font-size: var(--text-sm);
+}
+
+.sidebar.collapsed .sidebar-btn {
+  justify-content: center;
+  padding: 0;
+}
+
+.sidebar-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.sidebar-btn svg {
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* MAIN CONTENT                                                                 */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Top Bar */
+.topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -545,383 +990,186 @@ watch(
   flex-shrink: 0;
 }
 
-.header-left,
-.header-center,
-.header-right {
+.topbar-left,
+.topbar-center,
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.phase-display {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  font-weight: var(--weight-semibold);
-  font-size: var(--text-base);
-  color: var(--text-primary);
-}
-
-.logo svg {
-  color: var(--color-accent);
-}
-
-.separator {
-  width: 1px;
-  height: 16px;
-  background: var(--border-strong);
-}
-
-.matchup {
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-  text-transform: capitalize;
-}
-
-.nav-arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  color: var(--text-secondary);
-}
-
-.nav-arrow:hover:not(:disabled) {
-  background: var(--bg-hover);
-  border-color: var(--border-strong);
-  color: var(--text-primary);
-}
-
-.nav-arrow:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.phase-badge {
-  padding: var(--sp-2) var(--sp-4);
+.phase-arrow {
+  width: 28px;
+  height: 28px;
+  padding: 0;
   background: var(--bg-muted);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.phase-arrow:hover:not(:disabled) {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.phase-arrow:disabled {
+  opacity: 0.3;
+}
+
+.phase-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
 }
 
 .phase-name {
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  color: var(--text-primary);
-}
-
-.round-indicator {
-  display: flex;
-  align-items: baseline;
-  gap: var(--sp-2);
-}
-
-.round-label {
-  font-size: var(--text-xs);
-  font-weight: var(--weight-medium);
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.round-value {
-  font-size: var(--text-lg);
-  font-weight: var(--weight-bold);
-  font-variant-numeric: tabular-nums;
-  color: var(--text-primary);
-}
-
-.win-indicator {
-  padding: var(--sp-1) var(--sp-3);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  font-family: var(--font-mono);
-  color: var(--color-danger);
-  background: rgba(239, 68, 68, 0.12);
-  border-radius: var(--radius-sm);
-}
-
-.win-indicator.good {
-  color: var(--color-success);
-  background: rgba(34, 197, 94, 0.12);
-}
-
-.header-actions {
-  display: flex;
-  gap: var(--sp-1);
-}
-
-.icon-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-muted);
-  border-radius: var(--radius-md);
-  transition: all var(--duration-base) var(--ease);
-}
-
-.icon-btn:hover {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════ */
-/* STATUS BAR                                                                   */
-/* ═══════════════════════════════════════════════════════════════════════════ */
-.status-bar {
-  display: flex;
-  gap: var(--sp-8);
-  padding: var(--sp-4) var(--sp-6);
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-default);
-  flex-shrink: 0;
-}
-
-.status-block {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
-  min-width: 160px;
-}
-
-.status-block.compact {
-  min-width: auto;
-  align-items: center;
-  gap: var(--sp-1);
-}
-
-.status-block.terror-block {
-  min-width: 200px;
-}
-
-.status-top {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-}
-
-.status-label {
-  font-size: var(--text-xs);
-  font-weight: var(--weight-semibold);
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.status-nums {
   font-size: var(--text-base);
   font-weight: var(--weight-semibold);
-  font-variant-numeric: tabular-nums;
-  font-family: var(--font-mono);
   color: var(--text-primary);
 }
 
-.status-nums .dim {
+.phase-hint {
+  font-size: var(--text-xs);
   color: var(--text-muted);
-  font-weight: var(--weight-normal);
 }
 
-.status-nums.danger {
-  color: var(--color-danger);
-}
-
-.big-num {
-  font-size: 32px;
-  font-weight: var(--weight-bold);
-  font-variant-numeric: tabular-nums;
-  font-family: var(--font-mono);
-  line-height: 1;
-  color: var(--text-primary);
-}
-
-.progress-track {
-  height: 6px;
-  background: var(--bg-muted);
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-}
-
-.progress-bar {
-  height: 100%;
-  border-radius: var(--radius-sm);
-  transition: width 200ms var(--ease);
-}
-
-.fear-bar {
-  background: var(--color-fear);
-}
-
-.blight-bar {
-  background: var(--color-blight);
-}
-
-.blight-bar.danger {
-  background: var(--color-danger);
-}
-
-.quick-actions {
+/* Quick Pools */
+.quick-pool {
   display: flex;
-  gap: var(--sp-1);
+  align-items: center;
+  gap: var(--sp-2);
 }
 
-.quick-btn {
-  height: 26px;
-  padding: 0 var(--sp-2);
+.quick-label {
   font-size: var(--text-xs);
   font-weight: var(--weight-medium);
-  font-family: var(--font-mono);
-  background: var(--bg-muted);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
-.quick-btn:hover {
-  background: var(--bg-hover);
-  border-color: var(--border-default);
-  color: var(--text-primary);
-}
-
-/* Terror Track */
-.terror-track {
+.quick-btns {
   display: flex;
   gap: 2px;
 }
 
-.terror-seg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 32px;
-  font-size: var(--text-sm);
-  font-weight: var(--weight-bold);
-  color: var(--text-faint);
+.quick-btns button {
+  height: 26px;
+  padding: 0 var(--sp-2);
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
   background: var(--bg-muted);
   border: 1px solid var(--border-subtle);
 }
 
-.terror-seg:first-child {
-  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+.quick-btns button:hover {
+  background: var(--bg-hover);
 }
 
-.terror-seg.victory {
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-}
-
-.terror-seg.filled {
-  background: var(--bg-subtle);
-  color: var(--text-secondary);
-  border-color: var(--border-default);
-}
-
-.terror-seg.current {
-  background: var(--color-fear);
-  color: var(--bg-base);
-  border-color: var(--color-fear);
-}
-
-.terror-seg.victory.filled {
-  background: var(--color-success);
-  color: var(--bg-base);
-  border-color: var(--color-success);
-}
-
-.terror-meta {
+.save-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
   font-size: var(--text-xs);
   color: var(--text-muted);
-  font-family: var(--font-mono);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════ */
-/* BANNERS                                                                      */
-/* ═══════════════════════════════════════════════════════════════════════════ */
+.save-indicator.active {
+  color: var(--color-accent);
+}
+
+/* Banner */
 .banner {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  padding: var(--sp-3) var(--sp-6);
+  padding: var(--sp-3) var(--sp-5);
   flex-shrink: 0;
 }
 
-.victory-banner {
+.banner.victory {
   background: rgba(34, 197, 94, 0.1);
   border-bottom: 1px solid rgba(34, 197, 94, 0.2);
   color: var(--color-success);
 }
 
-.defeat-banner {
+.banner.defeat {
   background: rgba(239, 68, 68, 0.1);
   border-bottom: 1px solid rgba(239, 68, 68, 0.2);
   color: var(--color-danger);
 }
 
-.banner-text {
+.banner-content {
   flex: 1;
   display: flex;
   align-items: baseline;
   gap: var(--sp-2);
 }
 
-.banner-text strong {
+.banner-content strong {
   font-weight: var(--weight-semibold);
 }
 
-.banner-text span {
+.banner-content span {
   font-size: var(--text-sm);
   opacity: 0.8;
 }
 
-.banner-close {
+.banner button {
   background: transparent;
   border: none;
   color: inherit;
   opacity: 0.6;
   font-size: var(--text-xs);
+  padding: var(--sp-1) var(--sp-2);
 }
 
-.banner-close:hover {
+.banner button:hover {
   opacity: 1;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
-/* MAIN CONTENT                                                                 */
+/* WORKSPACE GRID                                                               */
 /* ═══════════════════════════════════════════════════════════════════════════ */
-.main {
+.workspace-grid {
   display: grid;
-  grid-template-columns: 380px 1fr 320px;
   gap: 1px;
   flex: 1;
   min-height: 0;
   background: var(--border-subtle);
+  transition: grid-template-columns 300ms var(--ease);
 }
 
-.column {
+/* Zone Base Styles */
+.zone {
   display: flex;
   flex-direction: column;
   background: var(--bg-base);
   overflow: hidden;
+  transition: all 300ms var(--ease);
 }
 
-.section-header {
+.zone.primary {
+  /* Primary zone has subtle highlight */
+}
+
+.zone-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--sp-3) var(--sp-4);
   background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-default);
+  border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
 }
 
-.section-header h2 {
+.zone-header h2 {
   font-size: var(--text-xs);
   font-weight: var(--weight-semibold);
   text-transform: uppercase;
@@ -929,125 +1177,160 @@ watch(
   color: var(--text-muted);
 }
 
-.section-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: var(--sp-4);
+.zone.primary .zone-header h2 {
+  color: var(--text-secondary);
 }
 
-/* Spirit Tabs */
-.tab-row {
+.zone-tabs {
   display: flex;
-  gap: var(--sp-1);
-  padding: var(--sp-1);
+  gap: 2px;
+  padding: 2px;
   background: var(--bg-muted);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
 }
 
-.tab-btn {
-  height: 28px;
+.zone-tab {
+  height: 26px;
   padding: 0 var(--sp-3);
   font-size: var(--text-xs);
   font-weight: var(--weight-medium);
   background: transparent;
   border: none;
-  border-radius: var(--radius-sm);
   color: var(--text-muted);
+  border-radius: var(--radius-sm);
 }
 
-.tab-btn:hover {
+.zone-tab:hover {
   color: var(--text-secondary);
 }
 
-.tab-btn.active {
+.zone-tab.active {
   background: var(--bg-surface);
   color: var(--text-primary);
   box-shadow: var(--shadow-sm);
 }
 
-/* Board Chips */
-.board-tabs {
-  display: flex;
-  gap: var(--sp-2);
+.zone-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-4);
 }
 
-.board-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  font-size: var(--text-xs);
-  font-weight: var(--weight-semibold);
-  background: var(--bg-muted);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-}
+/* Grid Area Assignments */
+.spirits-zone { grid-area: spirits; }
+.board-zone { grid-area: board; }
+.decks-zone { grid-area: decks; }
 
-/* Decks Column */
-.decks-body {
+/* Decks Stack */
+.decks-stack {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-4);
+  gap: var(--sp-3);
 }
 
-.deck-card {
+.deck-panel {
   background: var(--bg-surface);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  transition: all 200ms var(--ease);
 }
 
-.deck-title {
+.deck-panel.expanded {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.1);
+}
+
+.deck-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: var(--sp-3) var(--sp-4);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-semibold);
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid var(--border-subtle);
   background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.deck-name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.deck-badge {
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--bg-muted);
+  color: var(--text-muted);
+}
+
+.deck-badge.invader {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--color-danger);
+}
+
+.deck-badge.fear {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--color-fear);
+}
+
+.deck-badge.event {
+  background: rgba(168, 85, 247, 0.12);
+  color: var(--color-blight);
+}
+
+.deck-content {
+  /* Component renders inside */
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
 /* RESPONSIVE                                                                   */
 /* ═══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 1200px) {
-  .main {
-    grid-template-columns: 1fr 1fr;
+  .sidebar {
+    width: 56px;
   }
   
-  .decks-column {
-    grid-column: span 2;
+  .sidebar .logo span,
+  .sidebar .sidebar-label,
+  .sidebar .phase-label,
+  .sidebar .sidebar-btn span,
+  .sidebar .sidebar-section:not(.phase-nav):has(.sidebar-label),
+  .sidebar .game-info,
+  .sidebar .matchup-info,
+  .sidebar .pool-stats {
+    display: none;
   }
   
-  .decks-body {
-    flex-direction: row;
-    flex-wrap: wrap;
+  .sidebar .phase-btn {
+    justify-content: center;
+    padding: 0;
   }
   
-  .deck-card {
-    flex: 1;
-    min-width: 280px;
+  .sidebar .sidebar-btn {
+    justify-content: center;
+    padding: 0;
+  }
+  
+  .workspace-grid {
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-areas: 
+      "spirits board"
+      "decks decks" !important;
   }
 }
 
-@media (max-width: 768px) {
-  .main {
-    grid-template-columns: 1fr;
+@media (max-width: 900px) {
+  .workspace-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: 
+      "spirits"
+      "board"
+      "decks" !important;
   }
   
-  .decks-column {
-    grid-column: span 1;
-  }
-  
-  .status-bar {
-    flex-wrap: wrap;
-    gap: var(--sp-4);
-  }
-  
-  .header-center {
+  .topbar-center {
     display: none;
   }
 }

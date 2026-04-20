@@ -10,12 +10,6 @@ import { fetchSpiritAffinity, type SpiritAffinityMap, type SpiritAffinityEntry }
  * Projects the upcoming invader stack forward and flags when the same terrain
  * appears in ≥2 phases the same turn (doubling) — a concentration event the
  * modelling layer needs to treat specially.
- *
- * Per-spirit impact assessment cross-references data/spirit-terrain-affinity.json
- * to indicate whether each concentration event helps or hurts the spirit.
- * Example: Shadows-flicker-like-flame has a positive concentration factor → a
- * Jungle double-up in T3/T4 is net-favorable. Mud-of-the-Swamp, in contrast,
- * has negative concentration → the same event is net-unfavorable.
  */
 
 const props = defineProps<{ state: GameState }>()
@@ -44,17 +38,11 @@ function affinityForSpirit(slug: string): SpiritAffinityEntry | null {
 
 interface ImpactForSpirit {
   slug: string
-  score: number      // > 0 = good for spirit; < 0 = bad
+  score: number
   concentration: number
   rationale: string
 }
 
-/**
- * Compute a per-spirit impact score for a given turn's exposure. Considers:
- *   - terrain_affinity averaged across touched terrains
- *   - concentration modifier multiplied by (doubled + 2*tripled) terrain count
- * Scores capped to roughly [-1, 1] for display.
- */
 function impactForTurn(exposure: TurnExposure): ImpactForSpirit[] {
   if (!affinityMap.value) return []
   const spirits = Object.keys(props.state.spirits ?? {})
@@ -90,19 +78,20 @@ function clamp(n: number, lo: number, hi: number): number {
 function scoreLabel(s: number): string {
   if (s > 0.3) return '++'
   if (s > 0.1) return '+'
-  if (s < -0.3) return '−−'
-  if (s < -0.1) return '−'
-  return '·'
-}
-function scoreClass(s: number): string {
-  if (s > 0.1) return 'pos'
-  if (s < -0.1) return 'neg'
-  return 'neu'
+  if (s < -0.3) return '--'
+  if (s < -0.1) return '-'
+  return ''
 }
 
-function terrainChipClass(t: string): string {
+function scoreClass(s: number): string {
+  if (s > 0.1) return 'positive'
+  if (s < -0.1) return 'negative'
+  return 'neutral'
+}
+
+function terrainClass(t: string): string {
   const slug = t.toLowerCase().replace(/\s+/g, '-')
-  return `terrain-chip t-${slug}`
+  return `terrain-${slug}`
 }
 
 const hasDoubles = computed(() => timeline.value.some(t => t.doubled.length + t.tripled.length > 0))
@@ -113,69 +102,66 @@ function humanSlug(slug: string): string {
 </script>
 
 <template>
-  <div class="terrain-timeline card">
-    <div class="hdr">
-      <h3>Terrain Exposure Timeline</h3>
-      <span class="subtle">
-        next {{ TURNS_TO_PROJECT }} turns · flags terrain doublings that bend win-probability modelling
-      </span>
+  <div class="terrain-timeline">
+    <div class="timeline-intro">
+      <span class="timeline-hint">Next {{ TURNS_TO_PROJECT }} turns - flags terrain doublings</span>
     </div>
 
-    <div v-if="affinityError" class="banner error">Affinity data unavailable: {{ affinityError }}</div>
+    <div v-if="affinityError" class="error-msg">Affinity data unavailable: {{ affinityError }}</div>
 
-    <div v-if="!hasDoubles" class="empty">
-      No terrain doublings in the next {{ TURNS_TO_PROJECT }} turns. Straight progression expected.
+    <div v-if="!hasDoubles" class="empty-msg">
+      No terrain doublings in the next {{ TURNS_TO_PROJECT }} turns.
     </div>
 
-    <div class="timeline">
+    <div class="timeline-grid">
       <div
         v-for="t in timeline"
         :key="t.turn"
         class="turn-row"
         :class="{ 'has-double': t.doubled.length, 'has-triple': t.tripled.length }"
       >
-        <div class="turn-num mono">T{{ t.turn }}</div>
+        <div class="turn-num">T{{ t.turn }}</div>
 
-        <div class="phases">
+        <div class="phases-row">
           <div class="phase ravage">
             <span class="phase-label">Rav</span>
             <span v-if="t.ravaged.length" class="terrain-chips">
-              <span v-for="terr in t.ravaged" :key="terr" :class="terrainChipClass(terr)">{{ labelFor(terr) }}</span>
+              <span v-for="terr in t.ravaged" :key="terr" class="terrain-chip" :class="terrainClass(terr)">{{ labelFor(terr) }}</span>
             </span>
-            <span v-else class="empty-phase">—</span>
+            <span v-else class="empty-phase">-</span>
           </div>
           <div class="phase build">
             <span class="phase-label">Bld</span>
             <span v-if="t.built.length" class="terrain-chips">
-              <span v-for="terr in t.built" :key="terr" :class="terrainChipClass(terr)">{{ labelFor(terr) }}</span>
+              <span v-for="terr in t.built" :key="terr" class="terrain-chip" :class="terrainClass(terr)">{{ labelFor(terr) }}</span>
             </span>
-            <span v-else class="empty-phase">—</span>
+            <span v-else class="empty-phase">-</span>
           </div>
           <div class="phase explore">
             <span class="phase-label">Exp</span>
             <span v-if="t.explored.length" class="terrain-chips">
-              <span v-for="terr in t.explored" :key="terr" :class="terrainChipClass(terr)">{{ labelFor(terr) }}</span>
+              <span v-for="terr in t.explored" :key="terr" class="terrain-chip" :class="terrainClass(terr)">{{ labelFor(terr) }}</span>
             </span>
-            <span v-else class="empty-phase">—</span>
+            <span v-else class="empty-phase">-</span>
           </div>
         </div>
 
-        <div class="flags">
-          <span v-for="terr in t.tripled" :key="`trip-${terr}`" class="double-flag triple">
-            TRIPLE {{ labelFor(terr) }}
+        <div class="flags-row">
+          <span v-for="terr in t.tripled" :key="`trip-${terr}`" class="flag-badge triple">
+            3x {{ labelFor(terr) }}
           </span>
-          <span v-for="terr in t.doubled" :key="`dbl-${terr}`" class="double-flag">
-            DOUBLE {{ labelFor(terr) }}
+          <span v-for="terr in t.doubled" :key="`dbl-${terr}`" class="flag-badge double">
+            2x {{ labelFor(terr) }}
           </span>
         </div>
 
-        <div class="spirit-impact" v-if="affinityMap">
+        <div class="impact-row" v-if="affinityMap">
           <span
             v-for="sp in impactForTurn(t)"
             :key="sp.slug"
-            class="impact-pill"
+            class="impact-badge"
             :class="scoreClass(sp.score)"
-            :title="`${humanSlug(sp.slug)}: score ${sp.score.toFixed(2)}\n${sp.rationale}`"
+            :title="`${humanSlug(sp.slug)}: ${sp.score.toFixed(2)}\n${sp.rationale}`"
           >
             {{ humanSlug(sp.slug).split(' ')[0] }} {{ scoreLabel(sp.score) }}
           </span>
@@ -186,123 +172,197 @@ function humanSlug(slug: string): string {
 </template>
 
 <style scoped>
-.terrain-timeline { display: flex; flex-direction: column; gap: var(--sp-3); }
+.terrain-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+}
 
-.hdr { display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap; }
-.hdr h3 { color: var(--text-white); margin: 0; }
-.hdr .subtle { font-size: var(--fs-xs); color: var(--text-muted); font-style: italic; }
+.timeline-intro {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
 
-.empty {
-  padding: var(--sp-2) var(--sp-3);
-  font-size: var(--fs-xs);
+.timeline-hint {
+  font-size: var(--text-xs);
   color: var(--text-muted);
   font-style: italic;
 }
-.banner.error {
-  padding: var(--sp-2) var(--sp-3);
-  font-size: var(--fs-xs);
-  color: var(--status-danger);
-  background: rgba(184, 113, 106, 0.1);
-  border-radius: var(--r-sm);
+
+.empty-msg {
+  padding: var(--sp-3);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
 }
 
-.timeline { display: flex; flex-direction: column; gap: 4px; }
+.error-msg {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--text-xs);
+  color: var(--color-danger);
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: var(--radius-sm);
+}
+
+.timeline-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
 
 .turn-row {
   display: grid;
-  grid-template-columns: 2.5rem 1fr auto;
-  gap: var(--sp-2);
+  grid-template-columns: 40px 1fr auto auto;
+  gap: var(--sp-3);
   align-items: center;
   padding: var(--sp-2) var(--sp-3);
-  background: var(--bg-inset);
+  background: var(--bg-muted);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--r-md);
-  font-size: var(--fs-sm);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
 }
-.turn-row.has-double { border-left: 3px solid var(--accent-amber); }
-.turn-row.has-triple { border-left: 3px solid var(--status-danger); }
+
+.turn-row.has-double {
+  border-left: 3px solid var(--color-warning);
+}
+
+.turn-row.has-triple {
+  border-left: 3px solid var(--color-danger);
+}
 
 .turn-num {
-  color: var(--accent-amber);
-  font-weight: var(--fw-bold);
   font-family: var(--font-mono);
+  font-weight: var(--weight-bold);
+  color: var(--color-warning);
 }
 
-.phases {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--sp-1);
+.phases-row {
+  display: flex;
+  gap: var(--sp-4);
 }
-@media (max-width: 680px) { .phases { grid-template-columns: 1fr; } }
 
 .phase {
-  display: grid;
-  grid-template-columns: 2rem 1fr;
-  gap: var(--sp-1);
+  display: flex;
   align-items: center;
-  font-size: var(--fs-xs);
+  gap: var(--sp-2);
+  font-size: var(--text-xs);
 }
+
 .phase-label {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   color: var(--text-muted);
-  font-weight: var(--fw-medium);
+  font-weight: var(--weight-medium);
+  width: 28px;
 }
-.phase.ravage .phase-label  { color: var(--accent-red); }
-.phase.build .phase-label   { color: var(--accent-amber); }
-.phase.explore .phase-label { color: var(--accent-blue); }
 
-.terrain-chips { display: inline-flex; gap: 4px; flex-wrap: wrap; }
-.empty-phase { color: var(--text-muted); }
+.phase.ravage .phase-label { color: var(--color-danger); }
+.phase.build .phase-label { color: var(--color-warning); }
+.phase.explore .phase-label { color: var(--color-accent); }
+
+.terrain-chips {
+  display: flex;
+  gap: var(--sp-1);
+  flex-wrap: wrap;
+}
+
+.empty-phase {
+  color: var(--text-faint);
+}
 
 .terrain-chip {
   display: inline-block;
-  padding: 1px 6px;
-  font-size: 0.68rem;
-  border-radius: var(--r-sm);
-  font-weight: var(--fw-medium);
+  padding: 2px var(--sp-2);
+  font-size: 10px;
+  border-radius: var(--radius-sm);
+  font-weight: var(--weight-medium);
   border: 1px solid var(--border-subtle);
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
 }
-.terrain-chip.t-mountain { background: rgba(184, 134, 11, 0.12); color: #d4a444; }
-.terrain-chip.t-jungle   { background: rgba(82, 183, 136, 0.15); color: #52b788; }
-.terrain-chip.t-sands    { background: rgba(233, 196, 106, 0.15); color: #e9c46a; }
-.terrain-chip.t-wetland  { background: rgba(123, 184, 245, 0.15); color: #7bb8f5; }
-.terrain-chip.t-coastal-lands { background: rgba(0, 184, 212, 0.15); color: #00b8d4; }
 
-.flags { display: inline-flex; gap: 4px; flex-wrap: wrap; grid-column: 2 / 3; }
-.double-flag {
-  padding: 1px 6px;
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
+.terrain-chip.terrain-mountain { background: rgba(184, 134, 11, 0.15); color: #d4a444; }
+.terrain-chip.terrain-jungle { background: rgba(82, 183, 136, 0.15); color: #52b788; }
+.terrain-chip.terrain-sands { background: rgba(233, 196, 106, 0.15); color: #e9c46a; }
+.terrain-chip.terrain-wetland { background: rgba(123, 184, 245, 0.15); color: #7bb8f5; }
+.terrain-chip.terrain-coastal-lands { background: rgba(0, 184, 212, 0.15); color: #00b8d4; }
+
+.flags-row {
+  display: flex;
+  gap: var(--sp-1);
+  flex-wrap: wrap;
+}
+
+.flag-badge {
+  padding: 2px var(--sp-2);
+  font-size: 10px;
+  letter-spacing: 0.05em;
   font-family: var(--font-mono);
-  font-weight: var(--fw-bold);
-  border-radius: var(--r-sm);
-  background: rgba(233, 196, 106, 0.15);
-  color: var(--accent-amber);
-  border: 1px solid rgba(233, 196, 106, 0.4);
-}
-.double-flag.triple {
-  background: rgba(220, 47, 2, 0.2);
-  color: var(--accent-red);
-  border-color: rgba(220, 47, 2, 0.5);
+  font-weight: var(--weight-bold);
+  border-radius: var(--radius-sm);
 }
 
-.spirit-impact {
-  grid-column: 3 / 4;
-  display: inline-flex; flex-wrap: wrap; gap: 4px;
+.flag-badge.double {
+  background: rgba(234, 179, 8, 0.15);
+  color: var(--color-warning);
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+.flag-badge.triple {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-danger);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.impact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
   justify-content: flex-end;
 }
-.impact-pill {
+
+.impact-badge {
   display: inline-flex;
-  padding: 1px 6px;
-  font-size: 0.66rem;
+  padding: 2px var(--sp-2);
+  font-size: 10px;
   font-family: var(--font-mono);
-  border-radius: var(--r-full);
+  border-radius: 10px;
   border: 1px solid var(--border-subtle);
+  background: var(--bg-subtle);
+  color: var(--text-muted);
 }
-.impact-pill.pos { color: var(--status-success); background: rgba(82, 183, 136, 0.1); border-color: rgba(82, 183, 136, 0.3); }
-.impact-pill.neg { color: var(--status-danger); background: rgba(220, 47, 2, 0.12); border-color: rgba(220, 47, 2, 0.4); }
-.impact-pill.neu { color: var(--text-muted); }
+
+.impact-badge.positive {
+  color: var(--color-success);
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.impact-badge.negative {
+  color: var(--color-danger);
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+@media (max-width: 700px) {
+  .turn-row {
+    grid-template-columns: 40px 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  
+  .flags-row,
+  .impact-row {
+    grid-column: 2;
+  }
+  
+  .phases-row {
+    flex-direction: column;
+    gap: var(--sp-1);
+  }
+}
 </style>

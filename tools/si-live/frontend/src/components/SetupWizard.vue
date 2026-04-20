@@ -16,15 +16,14 @@ interface RegistryResponse {
   boards: BoardSummary[]
 }
 
-const emit = defineEmits<{ 'game-started': [state: GameState]; close: [] }>()
-defineProps<{ show: boolean }>()
+const emit = defineEmits<{ started: [state: GameState]; close: [] }>()
 
 const registry = ref<RegistryResponse | null>(null)
 const error = ref<string | null>(null)
 
 const adversary = ref<string>('england')
 const level = ref<number>(3)
-const scenario = ref<string>('')  // empty = no scenario
+const scenario = ref<string>('')
 const selectedSpirits = ref<string[]>(['shadows-flicker-like-flame'])
 const selectedBoards = ref<string[]>(['A'])
 const expansions = ref<string[]>(['base'])
@@ -122,7 +121,7 @@ async function startGame() {
       throw new Error(`POST /api/new-game → ${res.status}: ${txt}`)
     }
     const state = await res.json()
-    emit('game-started', state)
+    emit('started', state)
     emit('close')
   } catch (e) {
     error.value = (e as Error).message
@@ -131,34 +130,47 @@ async function startGame() {
 </script>
 
 <template>
-  <div v-if="show" class="modal-bg" @click.self="emit('close')">
+  <div class="modal-overlay" @click.self="emit('close')">
     <div class="modal">
-      <header>
+      <header class="modal-header">
         <h2>New Game Setup</h2>
-        <button class="close" @click="emit('close')" aria-label="close">×</button>
+        <button class="close-btn" @click="emit('close')" aria-label="close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
       </header>
 
-      <div v-if="error" class="error">{{ error }}</div>
-      <div v-else-if="!registry" class="loading">Loading…</div>
-      <div v-else class="form">
-        <section>
-          <label>Adversary
-            <select v-model="adversary">
-              <option value="">(none)</option>
-              <option v-for="a in registry.adversaries.adversaries" :key="a.slug" :value="a.slug">
-                {{ a.name }}
-              </option>
-            </select>
-          </label>
-          <label>Level
-            <select v-model.number="level">
-              <option v-for="l in availableLevels" :key="l.level" :value="l.level">{{ l.label }}</option>
-            </select>
-          </label>
+      <div v-if="error" class="error-banner">{{ error }}</div>
+      <div v-else-if="!registry" class="loading-state">Loading...</div>
+      
+      <div v-else class="modal-body">
+        <!-- Adversary & Level -->
+        <section class="form-section">
+          <div class="form-row">
+            <label class="form-field">
+              <span class="field-label">Adversary</span>
+              <select v-model="adversary">
+                <option value="">(none)</option>
+                <option v-for="a in registry.adversaries.adversaries" :key="a.slug" :value="a.slug">
+                  {{ a.name }}
+                </option>
+              </select>
+            </label>
+            <label class="form-field">
+              <span class="field-label">Level</span>
+              <select v-model.number="level">
+                <option v-for="l in availableLevels" :key="l.level" :value="l.level">{{ l.label }}</option>
+              </select>
+            </label>
+          </div>
         </section>
 
-        <section>
-          <label>Scenario
+        <!-- Scenario -->
+        <section class="form-section">
+          <label class="form-field">
+            <span class="field-label">Scenario</span>
             <select v-model="scenario">
               <option value="">(none)</option>
               <option v-for="s in registry.scenarios.scenarios" :key="s.slug" :value="s.slug">
@@ -168,96 +180,287 @@ async function startGame() {
           </label>
         </section>
 
-        <section>
-          <div class="hdr">Spirits</div>
-          <div class="chips">
-            <label v-for="s in registry.spirits.spirits" :key="s.slug" class="chip">
+        <!-- Spirits -->
+        <section class="form-section">
+          <div class="section-header">Spirits</div>
+          <div class="chip-grid">
+            <label v-for="s in registry.spirits.spirits" :key="s.slug" class="chip" :class="{ selected: selectedSpirits.includes(s.slug) }">
               <input type="checkbox" :checked="selectedSpirits.includes(s.slug)" @change="toggleSpirit(s.slug)" />
-              {{ s.name }}
-              <span class="muted">({{ s.complexity || '?' }})</span>
+              <span class="chip-name">{{ s.name }}</span>
+              <span class="chip-meta">{{ s.complexity || '?' }}</span>
             </label>
           </div>
         </section>
 
-        <section>
-          <div class="hdr">Boards</div>
-          <div class="chips">
-            <label v-for="b in availableBoards" :key="b.board_id" class="chip">
+        <!-- Boards -->
+        <section class="form-section">
+          <div class="section-header">Boards</div>
+          <div class="chip-grid">
+            <label v-for="b in availableBoards" :key="b.board_id" class="chip" :class="{ selected: selectedBoards.includes(b.board_id) }">
               <input type="checkbox" :checked="selectedBoards.includes(b.board_id)" @change="toggleBoard(b.board_id)" />
-              {{ b.board_id }}
-              <span class="muted">({{ b.expansion }})</span>
+              <span class="chip-name">{{ b.board_id }}</span>
+              <span class="chip-meta">{{ b.expansion }}</span>
             </label>
           </div>
           <div class="variant-row">
             <span class="variant-label">Variant</span>
-            <div class="variant-picker">
-              <label class="variant-opt">
+            <div class="variant-options">
+              <label class="variant-option">
                 <input type="radio" v-model="boardVariant" value="balanced" :disabled="!variantAvailableForAllSelected.balanced" />
-                Balanced
+                <span>Balanced</span>
               </label>
-              <label class="variant-opt">
+              <label class="variant-option">
                 <input type="radio" v-model="boardVariant" value="thematic" :disabled="!variantAvailableForAllSelected.thematic" />
-                Thematic
-                <span v-if="!variantAvailableForAllSelected.thematic" class="muted">(not available for some selected boards)</span>
+                <span>Thematic</span>
+                <span v-if="!variantAvailableForAllSelected.thematic" class="variant-note">(unavailable)</span>
               </label>
             </div>
           </div>
         </section>
 
-        <section>
-          <div class="hdr">Expansions active</div>
-          <div class="chips">
-            <label v-for="e in ['base', 'branch-and-claw', 'jagged-earth', 'nature-incarnate', 'promo-2']" :key="e" class="chip">
+        <!-- Expansions -->
+        <section class="form-section">
+          <div class="section-header">Expansions Active</div>
+          <div class="chip-grid">
+            <label v-for="e in ['base', 'branch-and-claw', 'jagged-earth', 'nature-incarnate', 'promo-2']" :key="e" class="chip" :class="{ selected: expansions.includes(e) }">
               <input type="checkbox" :checked="expansions.includes(e)" @change="toggleExpansion(e)" />
-              {{ e }}
+              <span class="chip-name">{{ e }}</span>
             </label>
           </div>
         </section>
+      </div>
 
-        <footer>
-          <label class="archive-toggle" title="Save the current game to data/games/ before overwriting">
-            <input type="checkbox" v-model="archiveCurrent" />
-            <span>Archive current game first</span>
-          </label>
-          <div class="spacer" />
+      <footer class="modal-footer">
+        <label class="archive-toggle">
+          <input type="checkbox" v-model="archiveCurrent" />
+          <span>Archive current game first</span>
+        </label>
+        <div class="footer-actions">
+          <button @click="emit('close')">Cancel</button>
           <button class="primary" :disabled="!selectedSpirits.length || !selectedBoards.length" @click="startGame">
             Start Game
           </button>
-          <button @click="emit('close')">Cancel</button>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </div>
   </div>
 </template>
 
 <style scoped>
-.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.65); display: flex; align-items: center; justify-content: center; z-index: 100; }
-.modal { background: #1a1a1e; border: 1px solid #444; border-radius: 8px; padding: 1rem; width: min(90vw, 720px); max-height: 90vh; overflow-y: auto; }
-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem; border-bottom: 1px solid #333; padding-bottom: .5rem; }
-h2 { margin: 0; font-size: 1.1rem; }
-.close { background: transparent; border: none; color: #ccc; font-size: 1.5rem; cursor: pointer; }
-.close:hover { color: #fff; }
-.error { background: #522; color: #fcc; padding: .5rem; border-radius: 4px; margin-bottom: .5rem; }
-.loading { text-align: center; color: #aaa; padding: 2rem; }
-section { margin-bottom: .75rem; }
-.hdr { font-size: .85rem; color: #ccc; margin-bottom: .35rem; text-transform: uppercase; letter-spacing: 0.5px; }
-label { display: inline-flex; align-items: center; gap: .35rem; font-size: .9rem; margin-right: 1rem; }
-select { padding: .15rem .3rem; }
-.chips { display: flex; flex-wrap: wrap; gap: .4rem; }
-.chip { font-size: .85rem; background: #2a2a30; padding: .25rem .5rem; border-radius: 4px; border: 1px solid #444; cursor: pointer; margin: 0; }
-.chip:has(input:checked) { background: #3a3a48; border-color: #888; }
-.chip .muted { color: #888; font-size: .75rem; }
-footer { display: flex; gap: .5rem; align-items: center; margin-top: 1rem; border-top: 1px solid var(--border-subtle); padding-top: .75rem; }
-.archive-toggle { display: inline-flex; align-items: center; gap: .3rem; font-size: var(--fs-xs); color: var(--text-secondary); cursor: pointer; }
-.spacer { flex: 1; }
-.variant-row { display: flex; align-items: center; gap: .5rem; margin-top: .5rem; }
-.variant-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
-.variant-picker { display: inline-flex; gap: .75rem; }
-.variant-opt { display: inline-flex; align-items: center; gap: .25rem; font-size: var(--fs-xs); color: var(--text-secondary); cursor: pointer; }
-.variant-opt:has(input:disabled) { color: var(--text-faint); cursor: not-allowed; }
-button { background: #2a2a30; border: 1px solid #444; color: #eee; padding: .35rem .75rem; border-radius: 4px; cursor: pointer; font-size: .9rem; }
-button:hover:not(:disabled) { background: #383840; }
-button.primary { background: #3a5a3a; border-color: #5a8a5a; }
-button.primary:hover:not(:disabled) { background: #4a6a4a; }
-button:disabled { opacity: 0.5; cursor: not-allowed; }
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  width: min(90vw, 720px);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-5);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+}
+
+.close-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.error-banner {
+  margin: var(--sp-4);
+  padding: var(--sp-3);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-md);
+  color: var(--color-danger);
+  font-size: var(--text-sm);
+}
+
+.loading-state {
+  padding: var(--sp-10);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.section-header {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.field-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+.chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg-muted);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  transition: all var(--duration-base) var(--ease);
+}
+
+.chip:hover {
+  border-color: var(--border-strong);
+}
+
+.chip.selected {
+  background: var(--bg-hover);
+  border-color: var(--color-accent);
+}
+
+.chip input {
+  display: none;
+}
+
+.chip-name {
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.chip-meta {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.variant-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-2);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.variant-label {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.variant-options {
+  display: flex;
+  gap: var(--sp-4);
+}
+
+.variant-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.variant-option:has(input:disabled) {
+  color: var(--text-faint);
+  cursor: not-allowed;
+}
+
+.variant-note {
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-4) var(--sp-5);
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.archive-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.footer-actions {
+  display: flex;
+  gap: var(--sp-2);
+}
 </style>

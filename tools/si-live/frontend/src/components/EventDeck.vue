@@ -118,31 +118,23 @@ function stageText(entry: EventCardEntry): string[] {
 </script>
 
 <template>
-  <div class="event-deck card">
-    <div class="hdr">
-      <div class="hdr-left">
-        <h3>Event Deck</h3>
-        <span class="rule-tag" title="The first Event card is face-up on Turn 1 but does NOT resolve until Turn 2">
-          T1 previews T2 · first event doesn't resolve on T1
-        </span>
-        <span class="counts">
-          <span class="count-chip previewed">{{ deck.previewed.length }} previewed</span>
-          <span class="count-chip resolved">{{ deck.resolved.length }} resolved</span>
-          <span class="count-chip unseen">{{ deck.unseen }} unseen</span>
-        </span>
+  <div class="event-deck">
+    <div class="deck-intro">
+      <span class="rule-hint">T1 previews T2 - first event doesn&apos;t resolve on T1</span>
+      <div class="deck-stats">
+        <span class="stat previewed">{{ deck.previewed.length }} previewed</span>
+        <span class="stat resolved">{{ deck.resolved.length }} resolved</span>
+        <span class="stat unseen">{{ deck.unseen }} unseen</span>
       </div>
-      <div class="tools">
-        <button class="ghost" @click="clearAll" title="Clear all tracked events">Reset</button>
-      </div>
+      <button class="reset-btn" @click="clearAll">Reset</button>
     </div>
 
     <div class="preview-input">
-      <label class="field-label">Preview next event (reveal face-up):</label>
       <div class="autocomplete">
         <input
           type="text"
           v-model="filterQ"
-          placeholder="start typing an event card name…"
+          placeholder="Type event card name..."
           @keyup.enter="previewCard(filterQ)"
         />
         <div v-if="filterQ && suggestions.length" class="suggestions">
@@ -158,25 +150,25 @@ function stageText(entry: EventCardEntry): string[] {
           </button>
         </div>
       </div>
-      <button class="primary" @click="previewCard(filterQ)" :disabled="!filterQ.trim()">
-        🔎 Preview (face-up)
+      <button class="preview-btn" @click="previewCard(filterQ)" :disabled="!filterQ.trim()">
+        Preview
       </button>
     </div>
 
-    <div v-if="loading" class="loading">Loading event deck data…</div>
-    <div v-else-if="loadError" class="banner error">Couldn't load event.json: {{ loadError }}</div>
+    <div v-if="loading" class="loading-msg">Loading event deck data...</div>
+    <div v-else-if="loadError" class="error-msg">Couldn&apos;t load event.json: {{ loadError }}</div>
 
     <!-- Previewed cards (face-up; will resolve next turn) -->
     <div v-if="deck.previewed.length" class="preview-list">
-      <div class="col-label">Previewed — resolves on Turn {{ round + 1 }}</div>
+      <div class="list-label">Previewed - resolves on Turn {{ round + 1 }}</div>
       <div v-for="(e, i) in deck.previewed" :key="i" class="preview-card">
-        <div class="preview-hdr">
+        <div class="preview-header">
           <span class="preview-name">{{ e.name }}</span>
-          <span class="preview-turn mono">previewed T{{ e.previewed_on_turn }}</span>
-          <div class="row-actions">
-            <button class="ghost tiny" @click="resolvePreview(i)" title="Mark this event resolved (played during this turn's Invader phase)">Resolve now →</button>
-            <button class="ghost tiny" @click="removePreview(i)" title="Remove this preview (mistake)">×</button>
-          </div>
+          <span class="preview-turn">T{{ e.previewed_on_turn }}</span>
+        </div>
+        <div class="preview-actions">
+          <button @click="resolvePreview(i)">Resolve</button>
+          <button class="ghost" @click="removePreview(i)">Remove</button>
         </div>
         <ul v-if="stageText(e).length" class="stage-lines">
           <li v-for="(line, li) in stageText(e)" :key="li">{{ line }}</li>
@@ -185,12 +177,12 @@ function stageText(entry: EventCardEntry): string[] {
     </div>
 
     <!-- Resolved (history) -->
-    <details v-if="deck.resolved.length" class="resolved">
+    <details v-if="deck.resolved.length" class="resolved-section">
       <summary>Resolved events ({{ deck.resolved.length }})</summary>
       <ul>
         <li v-for="(r, i) in deck.resolved" :key="i" class="resolved-item">
-          <span class="row-name">{{ r.name }}</span>
-          <span class="row-turn mono">previewed T{{ r.previewed_on_turn }} · resolved T{{ r.resolved_on_turn }}</span>
+          <span class="item-name">{{ r.name }}</span>
+          <span class="item-turn">T{{ r.previewed_on_turn }} → T{{ r.resolved_on_turn }}</span>
         </li>
       </ul>
     </details>
@@ -198,144 +190,259 @@ function stageText(entry: EventCardEntry): string[] {
 </template>
 
 <style scoped>
-.event-deck { display: flex; flex-direction: column; gap: var(--sp-3); }
-
-.hdr {
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: var(--sp-3);
+.event-deck {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
 }
-.hdr-left { display: inline-flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
-.hdr h3 { color: var(--text-white); margin: 0; }
-.tools { display: inline-flex; gap: var(--sp-2); }
 
-.rule-tag {
-  font-size: 0.7rem;
-  padding: 2px var(--sp-2);
-  border-radius: var(--r-sm);
-  background: rgba(199, 125, 255, 0.12);
-  color: var(--accent-purple);
-  border: 1px solid rgba(199, 125, 255, 0.3);
+.deck-intro {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.rule-hint {
+  font-size: var(--text-xs);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--radius-sm);
+  background: rgba(168, 85, 247, 0.1);
+  color: var(--color-blight);
+  border: 1px solid rgba(168, 85, 247, 0.2);
   font-style: italic;
 }
 
-.counts { display: inline-flex; gap: 4px; }
-.count-chip {
-  display: inline-flex; padding: 1px 6px;
-  font-size: 0.68rem;
-  font-family: var(--font-mono);
-  border-radius: var(--r-full);
-  border: 1px solid var(--border-subtle);
-  font-weight: var(--fw-medium);
+.deck-stats {
+  display: flex;
+  gap: var(--sp-2);
 }
-.count-chip.previewed { color: var(--accent-purple); background: rgba(199, 125, 255, 0.1); }
-.count-chip.resolved  { color: var(--accent-green); background: rgba(82, 183, 136, 0.1); }
-.count-chip.unseen    { color: var(--text-muted); }
+
+.stat {
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  padding: 2px var(--sp-2);
+  border-radius: 10px;
+  background: var(--bg-muted);
+}
+
+.stat.previewed { color: var(--color-blight); background: rgba(168, 85, 247, 0.1); }
+.stat.resolved { color: var(--color-success); background: rgba(34, 197, 94, 0.1); }
+.stat.unseen { color: var(--text-muted); }
+
+.reset-btn {
+  margin-left: auto;
+  height: 28px;
+  padding: 0 var(--sp-3);
+  font-size: var(--text-xs);
+  background: transparent;
+  border: 1px solid var(--border-default);
+  color: var(--text-muted);
+}
+
+.reset-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
 
 .preview-input {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   gap: var(--sp-2);
-  align-items: center;
-  padding: var(--sp-2);
-  background: var(--bg-inset);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--r-md);
 }
-.field-label {
-  font-size: var(--fs-xs);
+
+.autocomplete {
+  flex: 1;
+  position: relative;
+}
+
+.autocomplete input {
+  width: 100%;
+}
+
+.suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.suggestion {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  border-radius: 0;
+  font-size: var(--text-sm);
+  height: auto;
+}
+
+.suggestion:hover {
+  background: var(--bg-hover);
+}
+
+.sug-name {
+  font-weight: var(--weight-medium);
+}
+
+.sug-expansion {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-style: italic;
+}
+
+.preview-btn {
+  background: var(--color-blight);
+  color: white;
+  border-color: var(--color-blight);
+}
+
+.preview-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.loading-msg,
+.error-msg {
+  padding: var(--sp-2);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.error-msg {
+  color: var(--color-danger);
+}
+
+.list-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-muted);
-  font-weight: var(--fw-medium);
+  margin-bottom: var(--sp-2);
 }
 
-.autocomplete { position: relative; }
-.autocomplete input { width: 100%; }
-.suggestions {
-  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
-  z-index: 30;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--r-md);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-  max-height: 18rem; overflow-y: auto;
+.preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
 }
-.suggestion {
-  width: 100%;
-  display: flex; justify-content: space-between; gap: var(--sp-2);
-  padding: var(--sp-1) var(--sp-2);
-  text-align: left;
-  border: none; background: transparent; color: inherit;
-  cursor: pointer;
-  border-radius: 0;
-  font-size: var(--fs-xs);
-}
-.suggestion:hover { background: var(--bg-muted); }
-.sug-name { font-weight: var(--fw-medium); }
-.sug-expansion { color: var(--text-muted); font-size: 0.68rem; font-style: italic; }
 
-.loading, .banner.error {
-  padding: var(--sp-2); font-size: var(--fs-xs);
+.preview-card {
+  background: var(--bg-muted);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-left: 3px solid var(--color-blight);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3);
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--sp-2);
+}
+
+.preview-name {
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.preview-turn {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
   color: var(--text-muted);
 }
-.banner.error { color: var(--status-danger); }
 
-.col-label {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: var(--fw-bold);
-  color: var(--text-secondary);
-}
-
-.preview-list { display: flex; flex-direction: column; gap: var(--sp-2); }
-.preview-card {
-  background: var(--bg-inset);
-  border: 1px solid rgba(199, 125, 255, 0.3);
-  border-left: 3px solid var(--accent-purple);
-  border-radius: var(--r-md);
-  padding: var(--sp-2) var(--sp-3);
-}
-.preview-hdr {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
+.preview-actions {
+  display: flex;
   gap: var(--sp-2);
-  align-items: center;
-  font-size: var(--fs-sm);
 }
-.preview-name { font-weight: var(--fw-semibold); color: var(--text-primary); }
-.preview-turn { font-size: var(--fs-xs); color: var(--text-muted); }
-.row-actions { display: inline-flex; gap: var(--sp-1); }
-.tiny { padding: 2px var(--sp-1); font-size: var(--fs-xs); }
+
+.preview-actions button {
+  height: 28px;
+  padding: 0 var(--sp-3);
+  font-size: var(--text-xs);
+}
+
+.preview-actions button.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-muted);
+}
 
 .stage-lines {
-  list-style: none; padding: 0; margin: var(--sp-2) 0 0;
-  font-size: var(--fs-xs);
+  list-style: none;
+  padding: 0;
+  margin: var(--sp-3) 0 0;
+  font-size: var(--text-xs);
   color: var(--text-secondary);
-  display: flex; flex-direction: column; gap: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
   border-top: 1px dashed var(--border-subtle);
   padding-top: var(--sp-2);
 }
-.stage-lines li { line-height: 1.4; }
 
-.resolved summary {
-  list-style: none; cursor: pointer; color: var(--text-secondary);
-  padding: var(--sp-1) 0; font-size: var(--fs-sm);
+.resolved-section summary {
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: var(--sp-2) 0;
+  font-size: var(--text-sm);
+  list-style: none;
 }
-.resolved summary::-webkit-details-marker { display: none; }
-.resolved summary::before {
-  content: '▸'; margin-right: var(--sp-2); color: var(--text-muted);
+
+.resolved-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.resolved-section summary::before {
+  content: '▸';
+  margin-right: var(--sp-2);
+  color: var(--text-muted);
   display: inline-block;
-  transition: transform var(--motion-fast);
+  transition: transform var(--duration-base) var(--ease);
 }
-.resolved[open] summary::before { transform: rotate(90deg); }
-.resolved ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
+
+.resolved-section[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.resolved-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .resolved-item {
-  display: flex; gap: var(--sp-2); align-items: baseline;
-  padding: 2px var(--sp-2);
-  font-size: var(--fs-xs);
-  opacity: 0.75;
+  display: flex;
+  justify-content: space-between;
+  padding: var(--sp-1) var(--sp-2);
+  font-size: var(--text-xs);
+  opacity: 0.7;
 }
-.row-name { font-weight: var(--fw-medium); }
-.row-turn { color: var(--text-muted); font-size: 0.68rem; }
+
+.item-name {
+  font-weight: var(--weight-medium);
+}
+
+.item-turn {
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
 </style>
