@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, computed } from 'vue'
 import type { GameState } from './types'
 import { fetchState, saveState } from './api'
 import Board from './components/Board.vue'
@@ -40,62 +40,222 @@ watch(state, (s) => {
     }
   }, 400)
 }, { deep: true })
+
+const matchupTag = computed(() => {
+  if (!state.value) return ''
+  const setup = state.value.setup
+  const parts: string[] = []
+  if (setup.adversary) {
+    const advName = setup.adversary.replace(/-/g, ' ')
+    parts.push(`${advName}${setup.level != null ? ` L${setup.level}` : ''}`)
+  }
+  if (setup.scenario) parts.push(setup.scenario.replace(/-/g, ' '))
+  return parts.join(' · ')
+})
+
+function humanSlug(slug: string): string {
+  return slug
+    .split('-')
+    .map(p => p.charAt(0).toUpperCase() + p.slice(1))
+    .join(' ')
+}
 </script>
 
 <template>
-  <div v-if="error" class="banner error">Error: {{ error }}</div>
+  <div v-if="error" class="banner error">{{ error }}</div>
   <div v-else-if="!state" class="banner">Loading…</div>
   <main v-else>
-    <header>
-      <h1>si-live</h1>
-      <div class="meta">
-        Round {{ state.round }} — Phase
-        <select v-model="state.phase">
-          <option value="setup">Setup</option>
-          <option value="growth">Growth</option>
-          <option value="fast">Fast</option>
-          <option value="invader">Invader</option>
-          <option value="slow">Slow</option>
-          <option value="timepasses">Time Passes</option>
-          <option value="end">End</option>
-        </select>
-        <button class="new-game" @click="showWizard = true">New Game</button>
-        <span v-if="saving" class="saving">saving…</span>
+    <header class="app-header">
+      <div class="brand">
+        <h1>si-live</h1>
+        <span v-if="matchupTag" class="matchup-tag">{{ matchupTag }}</span>
+      </div>
+
+      <div class="app-meta">
+        <div class="turn-indicator">
+          <span class="turn-label">Round</span>
+          <span class="turn-value">{{ state.round }}</span>
+        </div>
+        <label class="phase-select">
+          <span class="field-label">Phase</span>
+          <select v-model="state.phase">
+            <option value="setup">Setup</option>
+            <option value="growth">Growth</option>
+            <option value="fast">Fast</option>
+            <option value="invader">Invader</option>
+            <option value="slow">Slow</option>
+            <option value="timepasses">Time Passes</option>
+            <option value="end">End</option>
+          </select>
+        </label>
+        <button class="primary new-game-btn" @click="showWizard = true">New Game</button>
+        <span v-if="saving" class="saving" aria-live="polite">saving…</span>
       </div>
     </header>
 
     <SetupWizard :show="showWizard" @close="showWizard = false" @game-started="onGameStarted" />
 
-    <Pools v-model="state.pools" />
+    <section class="section pools-section">
+      <Pools v-model="state.pools" />
+    </section>
 
-    <section class="stats-section">
-      <h2>Stats</h2>
+    <section class="section">
+      <div class="section-hdr">
+        <h2>Stats</h2>
+      </div>
       <StatsPanel :state="state" />
     </section>
 
-    <section v-for="bid in Object.keys(state.board_state)" :key="bid" class="board-section">
-      <h2>Board {{ bid }}</h2>
+    <section v-for="bid in Object.keys(state.board_state)" :key="bid" class="section">
+      <div class="section-hdr">
+        <h2>Board {{ bid }}</h2>
+      </div>
       <Board v-model="state.board_state[bid]" :board-id="bid" />
     </section>
 
-    <section v-for="slug in Object.keys(state.spirits)" :key="slug" class="spirit-section">
-      <h2>{{ slug }}</h2>
+    <section v-for="slug in Object.keys(state.spirits)" :key="slug" class="section">
+      <div class="section-hdr">
+        <h2>{{ humanSlug(slug) }}</h2>
+        <span class="subtle mono">{{ slug }}</span>
+      </div>
       <SpiritPanel v-model="state.spirits[slug]" />
     </section>
   </main>
 </template>
 
 <style scoped>
-main { max-width: 1100px; margin: 0 auto; padding: 1rem; }
-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding-bottom: .5rem; margin-bottom: 1rem; }
-h1 { margin: 0; font-size: 1.4rem; }
-.meta { display: flex; gap: .75rem; align-items: center; font-size: .9rem; }
-.banner { padding: 1rem; text-align: center; }
-.banner.error { background: #522; color: #fcc; }
-.saving { color: #8a8; font-style: italic; }
-.new-game { background: #3a5a3a; border: 1px solid #5a8a5a; color: #eee; padding: .15rem .6rem; border-radius: 4px; cursor: pointer; font-size: .85rem; }
-.new-game:hover { background: #4a6a4a; }
-.stats-section { margin-top: 1rem; }
-.board-section, .spirit-section { margin-top: 1.5rem; }
-h2 { font-size: 1.1rem; margin: 0 0 .5rem; }
+main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: var(--sp-5) var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.banner {
+  padding: var(--sp-6);
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+}
+
+.banner.error {
+  background: rgba(184, 113, 106, 0.12);
+  color: var(--status-danger);
+  border-radius: var(--r-md);
+  margin: var(--sp-4);
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+}
+
+h1 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-semibold);
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+
+.matchup-tag {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  text-transform: capitalize;
+  font-weight: var(--fw-regular);
+  padding: 2px var(--sp-2);
+  background: var(--bg-muted);
+  border-radius: var(--r-full);
+}
+
+.app-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.turn-indicator {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-3);
+  background: var(--bg-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+}
+
+.turn-label {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.turn-value {
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+}
+
+.phase-select {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.field-label {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.phase-select select {
+  text-transform: capitalize;
+}
+
+.saving {
+  font-size: var(--fs-xs);
+  color: var(--status-success);
+  font-style: italic;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.section-hdr {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+h2 {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  font-weight: var(--fw-semibold);
+  margin: 0;
+}
+
+.pools-section .section-hdr { display: none; }
 </style>

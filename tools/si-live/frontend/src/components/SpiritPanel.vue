@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Spirit } from '../types'
+import Icon from './Icon.vue'
 
 const props = defineProps<{ modelValue: Spirit }>()
 
@@ -12,6 +13,7 @@ const elements = computed(() => {
 const handCount = computed(() => props.modelValue.hand?.length ?? 0)
 const discardCount = computed(() => props.modelValue.discard?.length ?? 0)
 const playedCount = computed(() => props.modelValue.played_this_turn?.length ?? 0)
+const forgottenCount = computed(() => props.modelValue.forgotten?.length ?? 0)
 
 function moveCard(card: string, from: keyof Spirit, to: keyof Spirit) {
   const src = (props.modelValue[from] as string[] | undefined) ?? []
@@ -23,58 +25,115 @@ function moveCard(card: string, from: keyof Spirit, to: keyof Spirit) {
   ;(props.modelValue[from] as unknown) = src
   ;(props.modelValue[to] as unknown) = dst
 }
+
+const ELEMENT_ICONS: Record<string, string> = {
+  sun: 'element-sun',
+  moon: 'element-moon',
+  fire: 'element-fire',
+  air: 'element-air',
+  water: 'element-water',
+  earth: 'element-earth',
+  plant: 'element-plant',
+  animal: 'element-animal',
+}
 </script>
 
 <template>
   <div class="panel">
-    <div class="row">
-      <label>Energy <input type="number" v-model.number="modelValue.energy" /></label>
-      <label>Card Plays <input type="number" min="0" v-model.number="modelValue.card_plays" /></label>
+    <div class="top">
+      <div class="resources">
+        <label class="res">
+          <span class="res-label">Energy</span>
+          <input type="number" v-model.number="modelValue.energy" />
+        </label>
+        <label class="res">
+          <span class="res-label">Card Plays</span>
+          <input type="number" min="0" v-model.number="modelValue.card_plays" />
+        </label>
+      </div>
+
       <div class="elements">
-        <span v-for="[el, n] in elements" :key="el" class="elem" :data-el="el">{{ el }}×{{ n }}</span>
-        <span v-if="!elements.length" class="muted">no elements this turn</span>
+        <span class="section-label">Elements this turn</span>
+        <div class="element-chips">
+          <span v-for="[el, n] in elements" :key="el" class="element-chip" :title="el">
+            <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="14" decorative />
+            <span class="el-name">{{ el }}</span>
+            <span class="el-count">×{{ n }}</span>
+          </span>
+          <span v-if="!elements.length" class="muted">no elements tallied</span>
+        </div>
       </div>
     </div>
 
-    <div class="row tracks">
-      <div>
-        <div class="track-label">Energy track (remaining):</div>
+    <div class="tracks">
+      <div class="track">
+        <span class="track-label">Energy track (remaining covered slots)</span>
         <code>{{ (modelValue.presence_on_track_energy ?? []).join(' · ') || '—' }}</code>
       </div>
-      <div>
-        <div class="track-label">Card-play track (remaining):</div>
+      <div class="track">
+        <span class="track-label">Card-play track (remaining covered slots)</span>
         <code>{{ (modelValue.presence_on_track_cardplay ?? []).join(' · ') || '—' }}</code>
       </div>
     </div>
 
-    <div class="cards">
+    <div class="piles">
       <div class="pile">
-        <h3>Hand ({{ handCount }})</h3>
+        <div class="pile-hdr">
+          <span class="pile-name">Hand</span>
+          <span class="pile-count">{{ handCount }}</span>
+        </div>
         <ul>
           <li v-for="c in modelValue.hand ?? []" :key="c">
-            {{ c }}
-            <button @click="moveCard(c, 'hand', 'played_this_turn')">play</button>
-            <button @click="moveCard(c, 'hand', 'discard')">discard</button>
+            <span class="card-name">{{ c }}</span>
+            <div class="card-actions">
+              <button class="ghost" @click="moveCard(c, 'hand', 'played_this_turn')">Play</button>
+              <button class="ghost" @click="moveCard(c, 'hand', 'discard')">Discard</button>
+            </div>
           </li>
+          <li v-if="!(modelValue.hand ?? []).length" class="empty">hand is empty</li>
         </ul>
       </div>
+
       <div class="pile">
-        <h3>Played ({{ playedCount }})</h3>
+        <div class="pile-hdr">
+          <span class="pile-name">Played this turn</span>
+          <span class="pile-count">{{ playedCount }}</span>
+        </div>
         <ul>
           <li v-for="c in modelValue.played_this_turn ?? []" :key="c">
-            {{ c }}
-            <button @click="moveCard(c, 'played_this_turn', 'discard')">→ discard</button>
-            <button @click="moveCard(c, 'played_this_turn', 'hand')">↩ hand</button>
+            <span class="card-name">{{ c }}</span>
+            <div class="card-actions">
+              <button class="ghost" @click="moveCard(c, 'played_this_turn', 'discard')">→ Discard</button>
+              <button class="ghost" @click="moveCard(c, 'played_this_turn', 'hand')">↩ Hand</button>
+            </div>
           </li>
+          <li v-if="!(modelValue.played_this_turn ?? []).length" class="empty">no plays yet this turn</li>
         </ul>
       </div>
+
       <div class="pile">
-        <h3>Discard ({{ discardCount }})</h3>
+        <div class="pile-hdr">
+          <span class="pile-name">Discard</span>
+          <span class="pile-count">{{ discardCount }}</span>
+        </div>
         <ul>
           <li v-for="c in modelValue.discard ?? []" :key="c">
-            {{ c }}
-            <button @click="moveCard(c, 'discard', 'hand')">↩ hand</button>
+            <span class="card-name">{{ c }}</span>
+            <div class="card-actions">
+              <button class="ghost" @click="moveCard(c, 'discard', 'hand')">↩ Hand</button>
+            </div>
           </li>
+          <li v-if="!(modelValue.discard ?? []).length" class="empty">discard empty</li>
+        </ul>
+      </div>
+
+      <div v-if="forgottenCount > 0" class="pile forgotten">
+        <div class="pile-hdr">
+          <span class="pile-name">Forgotten</span>
+          <span class="pile-count">{{ forgottenCount }}</span>
+        </div>
+        <ul>
+          <li v-for="c in modelValue.forgotten ?? []" :key="c" class="empty">{{ c }}</li>
         </ul>
       </div>
     </div>
@@ -82,19 +141,167 @@ function moveCard(card: string, from: keyof Spirit, to: keyof Spirit) {
 </template>
 
 <style scoped>
-.panel { background: #1a1a1e; border: 1px solid #333; border-radius: 6px; padding: .75rem; }
-.row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: .5rem; }
-.row.tracks { flex-direction: column; align-items: flex-start; gap: .25rem; }
-.track-label { font-size: .8rem; color: #999; }
-code { font-size: .85rem; color: #cfa; }
-input[type=number] { width: 3.5rem; }
-.elements { display: flex; gap: .4rem; flex-wrap: wrap; }
-.elem { padding: .1rem .35rem; background: #2a2a35; border-radius: 4px; font-size: .8rem; font-family: monospace; }
-.muted { color: #666; font-style: italic; font-size: .85rem; }
-.cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .75rem; margin-top: .5rem; }
-.pile h3 { font-size: .9rem; margin: 0 0 .25rem; color: #ccc; }
-.pile ul { list-style: none; padding: 0; margin: 0; font-size: .85rem; }
-.pile li { display: flex; justify-content: space-between; align-items: center; padding: .15rem 0; border-bottom: 1px solid #2a2a2a; gap: .25rem; }
-.pile button { background: #2a2a30; border: 1px solid #444; color: #ccc; cursor: pointer; font-size: .7rem; padding: 0 .3rem; border-radius: 3px; }
-.pile button:hover { background: #383840; }
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+}
+
+.top {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--sp-4);
+  align-items: start;
+}
+
+.resources {
+  display: inline-flex;
+  gap: var(--sp-3);
+}
+
+.res {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.res-label, .section-label, .track-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: var(--fw-medium);
+}
+
+.elements {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.element-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  align-items: center;
+  min-height: 1.75rem;
+}
+
+.element-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px var(--sp-2);
+  background: var(--bg-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-full);
+  font-size: var(--fs-xs);
+}
+
+.el-name {
+  text-transform: capitalize;
+  color: var(--text-secondary);
+}
+
+.el-count {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+}
+
+.tracks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--sp-3);
+  padding: var(--sp-2) 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.track {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.track code {
+  font-size: var(--fs-xs);
+  padding: var(--sp-1) var(--sp-2);
+  background: var(--bg-muted);
+}
+
+.piles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--sp-3);
+}
+
+.pile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.pile.forgotten { opacity: 0.6; }
+
+.pile-hdr {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: var(--sp-1);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.pile-name {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+}
+
+.pile-count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.pile ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pile li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1);
+  font-size: var(--fs-xs);
+  border-radius: var(--r-sm);
+  transition: background var(--motion-fast);
+}
+
+.pile li:hover:not(.empty) { background: var(--bg-muted); }
+
+.card-name { color: var(--text-primary); flex: 1; }
+.empty { color: var(--text-faint); font-style: italic; justify-content: center; }
+
+.card-actions {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.card-actions button {
+  font-size: 0.68rem;
+  padding: 1px var(--sp-1);
+}
+
+.muted { color: var(--text-muted); font-style: italic; font-size: var(--fs-xs); }
 </style>

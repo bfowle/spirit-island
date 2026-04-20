@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Land } from '../types'
 import { UNIT_KEYS, type UnitKey, TERRAINS } from '../types'
+import Icon from './Icon.vue'
 
 const props = defineProps<{ modelValue: Land }>()
 
@@ -10,59 +11,138 @@ function bump(key: UnitKey, delta: number) {
   props.modelValue[key] = next as never
 }
 
-const LABELS: Record<UnitKey, string> = {
-  explorers: 'Explorer',
-  towns: 'Town',
-  cities: 'City',
-  dahan: 'Dahan',
-  blight: 'Blight',
-}
-
-const SHORT: Record<UnitKey, string> = {
-  explorers: 'E',
-  towns: 'T',
-  cities: 'C',
-  dahan: 'D',
-  blight: '⌧',
+const UNIT_META: Record<UnitKey, { label: string; icon?: string; symbol?: string }> = {
+  explorers: { label: 'Explorer', icon: 'unit-explorer' },
+  towns: { label: 'Town', icon: 'unit-town' },
+  cities: { label: 'City', icon: 'unit-city' },
+  dahan: { label: 'Dahan', icon: 'unit-dahan' },
+  blight: { label: 'Blight', icon: 'resource-blight' },
 }
 </script>
 
 <template>
   <div class="editor">
     <div class="geometry">
-      <label class="terrain-edit" :title="`Change terrain of this land`">
+      <label class="geo-field" title="Change terrain of this land">
         <span class="geo-label">Terrain</span>
         <select v-model="modelValue.terrain">
           <option v-for="t in TERRAINS" :key="t" :value="t">{{ t }}</option>
         </select>
       </label>
-      <label class="coast-edit" :title="`Coastal lands are ocean-adjacent`">
+      <label class="geo-field coast-field" title="Ocean-adjacent?">
         <input type="checkbox" v-model="modelValue.coastal" />
         <span class="geo-label">Coastal</span>
       </label>
     </div>
+
     <div class="units">
-      <div v-for="k in UNIT_KEYS" :key="k" class="row" :title="LABELS[k]">
-        <button @click="bump(k, -1)" aria-label="decrement">−</button>
-        <span class="label">{{ SHORT[k] }}<span class="full-label">{{ LABELS[k].slice(1) }}</span></span>
-        <span class="val">{{ (modelValue[k] as number) ?? 0 }}</span>
-        <button @click="bump(k, 1)" aria-label="increment">+</button>
+      <div v-for="k in UNIT_KEYS" :key="k" class="unit-row" :title="UNIT_META[k].label">
+        <Icon
+          v-if="UNIT_META[k].icon"
+          :name="UNIT_META[k].icon!"
+          :label="UNIT_META[k].label"
+          :size="18"
+          class="unit-icon"
+        />
+        <span class="unit-name">{{ UNIT_META[k].label }}</span>
+        <div class="stepper">
+          <button class="step" @click="bump(k, -1)" aria-label="decrement">−</button>
+          <span class="val">{{ (modelValue[k] as number) ?? 0 }}</span>
+          <button class="step" @click="bump(k, 1)" aria-label="increment">+</button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.editor { margin-top: .35rem; }
-.geometry { display: flex; gap: .5rem; align-items: center; font-size: .75rem; margin-bottom: .35rem; padding-bottom: .35rem; border-bottom: 1px dashed #333; }
-.geo-label { color: #888; }
-.terrain-edit, .coast-edit { display: flex; align-items: center; gap: .25rem; cursor: pointer; }
-.terrain-edit select { font-size: .8rem; padding: 0 .15rem; }
-.units { display: grid; grid-template-columns: repeat(5, 1fr); gap: .15rem; }
-.row { display: flex; flex-direction: column; align-items: center; font-size: .8rem; }
-button { background: #2a2a30; border: 1px solid #444; color: #eee; cursor: pointer; padding: 0 .35rem; border-radius: 3px; }
-button:hover { background: #383840; }
-.label { color: #888; display: flex; flex-direction: column; align-items: center; line-height: 1; }
-.full-label { font-size: .55rem; opacity: 0.7; }
-.val { font-family: monospace; font-weight: bold; }
+.editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.geometry {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px dashed var(--border-subtle);
+}
+
+.geo-field {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.geo-label {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-weight: var(--fw-medium);
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.geo-field select {
+  text-transform: capitalize;
+}
+
+.coast-field { gap: var(--sp-2); }
+
+.units {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.unit-row {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr auto;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 2px var(--sp-1);
+  border-radius: var(--r-sm);
+  transition: background var(--motion-fast);
+}
+
+.unit-row:hover { background: var(--bg-muted); }
+
+.unit-icon {
+  justify-self: center;
+}
+
+.unit-name {
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.step {
+  width: 1.35rem;
+  height: 1.35rem;
+  padding: 0;
+  line-height: 1;
+  font-size: var(--fs-sm);
+  border-radius: var(--r-sm);
+}
+
+.val {
+  min-width: 1.2rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  color: var(--text-primary);
+}
 </style>

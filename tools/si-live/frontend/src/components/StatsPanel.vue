@@ -5,6 +5,7 @@ import { Line } from 'vue-chartjs'
 import type { GameState } from '../types'
 import type { StatsResponse, DrawProbabilityResponse } from '../stats'
 import { fetchStats, fetchDrawProbability } from '../stats'
+import Icon from './Icon.vue'
 
 Chart.register(...registerables)
 
@@ -17,7 +18,6 @@ const drawProbs = ref<Record<string, DrawProbabilityResponse>>({})
 async function refresh() {
   try {
     stats.value = await fetchStats()
-    // Also refresh the draw-probability ticker for key elements
     const elems = ['moon', 'fire', 'air']
     const results = await Promise.all(
       elems.flatMap(el => [
@@ -45,10 +45,8 @@ async function refresh() {
 onMounted(refresh)
 watch(() => props.state, refresh, { deep: true })
 
-// Fear-over-rounds chart config
 const fearChartData = computed(() => {
   if (!stats.value) return { labels: [], datasets: [] }
-  // Build a running total series
   const byRound = [...stats.value.fear_by_round].sort((a, b) => a.round - b.round)
   const labels: string[] = []
   const perTurn: number[] = []
@@ -66,20 +64,22 @@ const fearChartData = computed(() => {
     labels,
     datasets: [
       {
-        label: 'Fear generated this turn',
+        label: 'Per-turn fear',
         data: perTurn,
-        borderColor: 'rgba(220, 120, 50, 0.8)',
-        backgroundColor: 'rgba(220, 120, 50, 0.25)',
-        borderDash: [4, 4],
+        borderColor: 'rgba(217, 119, 87, 0.8)',
+        backgroundColor: 'rgba(217, 119, 87, 0.15)',
+        borderDash: [5, 5],
         tension: 0,
+        pointRadius: 2,
       },
       {
-        label: 'Cumulative fear',
+        label: 'Cumulative',
         data: cumulative,
-        borderColor: '#da8',
-        backgroundColor: 'rgba(220, 170, 136, 0.2)',
-        tension: 0.3,
+        borderColor: '#d4a373',
+        backgroundColor: 'rgba(212, 163, 115, 0.15)',
+        tension: 0.35,
         fill: true,
+        pointRadius: 3,
       },
     ],
   }
@@ -89,15 +89,24 @@ const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
   scales: {
-    y: { beginAtZero: true, ticks: { color: '#aaa' }, grid: { color: '#333' } },
-    x: { ticks: { color: '#aaa' }, grid: { color: '#333' } },
+    y: {
+      beginAtZero: true,
+      ticks: { color: '#a3a3a8', font: { size: 11 } },
+      grid: { color: 'rgba(52, 52, 58, 0.4)' },
+    },
+    x: {
+      ticks: { color: '#a3a3a8', font: { size: 11 } },
+      grid: { color: 'rgba(52, 52, 58, 0.4)' },
+    },
   },
   plugins: {
-    legend: { labels: { color: '#ccc' } },
+    legend: {
+      labels: { color: '#a3a3a8', font: { size: 11 } },
+      position: 'bottom' as const,
+    },
   },
 }
 
-// Pool progress bars
 const fearPct = computed(() =>
   !stats.value || stats.value.fear_threshold === 0
     ? 0
@@ -109,7 +118,17 @@ const blightPct = computed(() =>
     : Math.min(100, (stats.value.blight_current / stats.value.blight_cap) * 100),
 )
 
-// Per-spirit element display
+const ELEMENT_ICONS: Record<string, string> = {
+  moon: 'element-moon',
+  fire: 'element-fire',
+  air: 'element-air',
+  sun: 'element-sun',
+  water: 'element-water',
+  earth: 'element-earth',
+  plant: 'element-plant',
+  animal: 'element-animal',
+}
+
 const spiritElements = computed(() => {
   if (!stats.value) return [] as { slug: string; elements: [string, number][] }[]
   return Object.entries(stats.value.elements_per_spirit).map(([slug, elems]) => ({
@@ -123,80 +142,269 @@ const spiritElements = computed(() => {
   <div class="stats-panel">
     <div v-if="error" class="error">Error: {{ error }}</div>
 
-    <div class="pools">
-      <div class="pool">
-        <div class="pool-hdr">
-          Fear — {{ stats?.fear_current ?? 0 }} / {{ stats?.fear_threshold ?? 0 }}
-          <span class="terror">(Terror {{ stats?.terror_level ?? 1 }})</span>
+    <div class="bars">
+      <div class="bar-group">
+        <div class="bar-hdr">
+          <Icon name="resource-fear" :size="14" decorative />
+          <span>Fear</span>
+          <span class="bar-count">{{ stats?.fear_current ?? 0 }} / {{ stats?.fear_threshold ?? 0 }}</span>
+          <span class="tl">Terror {{ stats?.terror_level ?? 1 }}</span>
         </div>
         <div class="bar"><div class="fill fear" :style="{ width: fearPct + '%' }" /></div>
       </div>
-      <div class="pool">
-        <div class="pool-hdr">
-          Blight — {{ stats?.blight_current ?? 0 }} / {{ stats?.blight_cap ?? 0 }}
+      <div class="bar-group">
+        <div class="bar-hdr">
+          <Icon name="resource-blight" :size="14" decorative />
+          <span>Blight</span>
+          <span class="bar-count">{{ stats?.blight_current ?? 0 }} / {{ stats?.blight_cap ?? 0 }}</span>
         </div>
         <div class="bar"><div class="fill blight" :style="{ width: blightPct + '%' }" /></div>
       </div>
     </div>
 
-    <div class="chart-wrap">
-      <h3>Fear over rounds</h3>
+    <div class="section">
+      <div class="section-hdr">
+        <h3>Fear over rounds</h3>
+        <span class="subtle">Populated from log entries tagged <code>fear_generated</code>.</span>
+      </div>
       <div class="chart-box">
         <Line :data="fearChartData" :options="chartOptions" />
       </div>
-      <p class="hint">Fear events must be written into <code>log</code> with <code>event: "fear_generated"</code> and <code>details.amount: N</code> to appear here.</p>
     </div>
 
-    <div class="draw-probs">
+    <div class="section">
       <h3>Next-draw probability</h3>
-      <table>
-        <thead>
-          <tr><th>Pool</th><th>Element</th><th>Success count</th><th>P(next draw)</th><th>Wilson 95%</th></tr>
-        </thead>
-        <tbody>
-          <tr v-for="(r, key) in drawProbs" :key="key">
-            <td>{{ r.deck }}</td>
-            <td>{{ r.element }}</td>
-            <td>{{ r.successes }} / {{ r.population }}</td>
-            <td><strong>{{ (r.probability * 100).toFixed(1) }}%</strong></td>
-            <td>({{ (r.wilson_95[0] * 100).toFixed(0) }}–{{ (r.wilson_95[1] * 100).toFixed(0) }}%)</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="probs-grid">
+        <div v-for="(r, key) in drawProbs" :key="key" class="prob-card">
+          <div class="prob-hdr">
+            <Icon v-if="ELEMENT_ICONS[r.element]" :name="ELEMENT_ICONS[r.element]" :size="14" decorative />
+            <span class="deck">{{ r.deck }}</span>
+            <span class="element">{{ r.element }}</span>
+          </div>
+          <div class="prob-value">
+            <span class="prob-num">{{ (r.probability * 100).toFixed(1) }}%</span>
+            <span class="prob-ci">({{ (r.wilson_95[0] * 100).toFixed(0) }}–{{ (r.wilson_95[1] * 100).toFixed(0) }}%)</span>
+          </div>
+          <div class="prob-basis">{{ r.successes }} of {{ r.population }} cards</div>
+        </div>
+      </div>
     </div>
 
-    <div class="spirit-elements">
-      <h3>Elements this turn (per spirit)</h3>
-      <div v-for="s in spiritElements" :key="s.slug" class="spirit-row">
-        <strong>{{ s.slug }}</strong>:
-        <span v-if="!s.elements.length" class="muted">no elements tallied this turn</span>
-        <span v-for="[el, n] in s.elements" :key="el" class="elem">{{ el }}×{{ n }}</span>
+    <div class="section">
+      <h3>Elements this turn</h3>
+      <div class="spirit-elements">
+        <div v-for="s in spiritElements" :key="s.slug" class="spirit-row">
+          <span class="spirit-slug">{{ s.slug }}</span>
+          <div v-if="s.elements.length" class="chips">
+            <span v-for="[el, n] in s.elements" :key="el" class="element-chip">
+              <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="12" decorative />
+              <span class="el-name">{{ el }}</span>
+              <span class="el-count">×{{ n }}</span>
+            </span>
+          </div>
+          <span v-else class="subtle">no elements tallied</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.stats-panel { background: #1a1a1e; border: 1px solid #333; border-radius: 6px; padding: .75rem; }
-.error { background: #522; color: #fcc; padding: .5rem; border-radius: 4px; margin-bottom: .5rem; }
-h3 { font-size: .95rem; margin: .5rem 0 .25rem; color: #eee; }
-.pools { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: .75rem; }
-.pool { flex: 1 1 200px; }
-.pool-hdr { font-size: .85rem; color: #ccc; margin-bottom: .25rem; }
-.terror { color: #a86; font-size: .8rem; margin-left: .3rem; }
-.bar { background: #2a2a30; height: 8px; border-radius: 4px; overflow: hidden; }
-.fill { height: 100%; transition: width .3s; }
-.fill.fear { background: #da8; }
-.fill.blight { background: #8d4; }
-.chart-wrap { margin: .75rem 0; }
-.chart-box { height: 200px; }
-.hint { font-size: .75rem; color: #777; font-style: italic; margin-top: .25rem; }
-.draw-probs table { width: 100%; border-collapse: collapse; font-size: .85rem; }
-.draw-probs th, .draw-probs td { padding: .25rem .5rem; border-bottom: 1px solid #2a2a2a; text-align: left; }
-.draw-probs th { color: #999; font-weight: normal; }
-.draw-probs td strong { color: #fca; }
-.spirit-elements { margin-top: .75rem; }
-.spirit-row { font-size: .85rem; margin: .25rem 0; }
-.spirit-row .elem { padding: .1rem .35rem; background: #2a2a35; border-radius: 3px; font-family: monospace; margin-left: .4rem; font-size: .8rem; }
-.muted { color: #666; font-style: italic; margin-left: .5rem; }
+.stats-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.error {
+  background: rgba(184, 113, 106, 0.15);
+  color: var(--status-danger);
+  padding: var(--sp-2);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-sm);
+}
+
+.bars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--sp-3);
+}
+
+.bar-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.bar-hdr {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+}
+
+.bar-hdr span { white-space: nowrap; }
+
+.bar-count {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.tl {
+  margin-left: auto;
+  font-size: 0.68rem;
+  padding: 1px var(--sp-2);
+  background: var(--accent-soft);
+  color: var(--pool-fear);
+  border-radius: var(--r-full);
+}
+
+.bar {
+  background: var(--bg-muted);
+  height: 6px;
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  transition: width var(--motion-base);
+  border-radius: var(--r-full);
+}
+
+.fill.fear { background: var(--pool-fear); }
+.fill.blight { background: var(--pool-blight); }
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.section-hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+h3 {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  margin: 0;
+}
+
+.chart-box {
+  height: 200px;
+  padding: var(--sp-2);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+}
+
+.probs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--sp-2);
+}
+
+.prob-card {
+  background: var(--bg-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: var(--sp-2) var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.prob-hdr {
+  display: flex;
+  gap: var(--sp-1);
+  align-items: center;
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+}
+
+.deck { text-transform: capitalize; font-weight: var(--fw-medium); color: var(--text-primary); }
+.element { text-transform: capitalize; }
+
+.prob-value {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-1);
+}
+
+.prob-num {
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--pool-fear);
+}
+
+.prob-ci {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.prob-basis {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.spirit-elements {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.spirit-row {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  padding: var(--sp-1) 0;
+}
+
+.spirit-slug {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  min-width: 10rem;
+}
+
+.chips {
+  display: flex;
+  gap: var(--sp-1);
+  flex-wrap: wrap;
+}
+
+.element-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px var(--sp-2);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-full);
+  font-size: var(--fs-xs);
+}
+
+.el-name { text-transform: capitalize; color: var(--text-secondary); }
+.el-count { font-family: var(--font-mono); font-weight: var(--fw-semibold); color: var(--text-primary); }
+
+.subtle {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: var(--fs-xs);
+}
 </style>
