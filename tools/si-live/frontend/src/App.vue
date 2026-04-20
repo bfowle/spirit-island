@@ -16,9 +16,6 @@ import Retrospective from './components/Retrospective.vue'
 import PhaseStepper from './components/PhaseStepper.vue'
 import TerrainTimeline from './components/TerrainTimeline.vue'
 import StickyStatus from './components/StickyStatus.vue'
-import AnalyticsZone from './components/AnalyticsZone.vue'
-import SpiritTabs from './components/SpiritTabs.vue'
-import DeckStation from './components/DeckStation.vue'
 
 const state = ref<GameState | null>(null)
 const error = ref<string | null>(null)
@@ -31,7 +28,10 @@ let saveTimer: number | null = null
 const activeSpiritTab = ref<string | null>(null)
 
 // Stats drawer state
-const statsDrawerOpen = ref(false)
+const statsDrawerOpen = ref(true)
+
+// Active main tab
+const activeMainTab = ref<'game' | 'analytics' | 'log'>('game')
 
 function onGameStarted(newState: GameState) {
   state.value = newState
@@ -45,7 +45,7 @@ async function archiveCurrentGame() {
   try {
     const res = await fetch('/api/saved-games/archive', { method: 'POST' })
     if (!res.ok) throw new Error(`archive failed: ${res.status}`)
-    alert('Game archived to data/games/ — visible under Saved Games')
+    alert('Game archived to data/games/')
   } catch (e) {
     error.value = (e as Error).message
   } finally {
@@ -236,7 +236,7 @@ const matchupTag = computed(() => {
     parts.push(`${advName}${setup.level != null ? ` L${setup.level}` : ''}`)
   }
   if (setup.scenario) parts.push(setup.scenario.replace(/-/g, ' '))
-  return parts.join(' · ')
+  return parts.join(' / ')
 })
 
 function humanSlug(slug: string): string {
@@ -246,495 +246,304 @@ function humanSlug(slug: string): string {
     .join(' ')
 }
 
-// Density preference
-const density = ref<'compact' | 'comfortable'>('comfortable')
-watch(density, (d) => {
-  document.documentElement.dataset.density = d
-}, { immediate: true })
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Phase transition animation state
-// ─────────────────────────────────────────────────────────────────────────────
-const phaseTransitioning = ref(false)
-const previousPhase = ref<Phase | null>(null)
-
-watch(
-  () => state.value?.phase,
-  (newPhase, oldPhase) => {
-    if (newPhase && oldPhase && newPhase !== oldPhase) {
-      previousPhase.value = oldPhase
-      phaseTransitioning.value = true
-      // Reset after animation completes
-      setTimeout(() => {
-        phaseTransitioning.value = false
-      }, 300)
-    }
-  }
-)
-
-// Deck expansion state (for DeckStation compact/expanded toggle)
-const expandedDecks = ref<Set<string>>(new Set())
-
-function toggleDeckExpansion(deck: string) {
-  if (expandedDecks.value.has(deck)) {
-    expandedDecks.value.delete(deck)
-  } else {
-    expandedDecks.value.add(deck)
-  }
-  expandedDecks.value = new Set(expandedDecks.value) // trigger reactivity
-}
-
-// Auto-expand decks when their phase is primary
-watch(
-  () => state.value?.phase,
-  (phase) => {
-    if (!phase) return
-    const newExpanded = new Set<string>()
-    if (phase === 'invader') newExpanded.add('invader')
-    if (phase === 'fear') newExpanded.add('fear')
-    if (phase === 'event') newExpanded.add('event')
-    expandedDecks.value = newExpanded
-  },
-  { immediate: true }
-)
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SESSION 2: Phase-based grid area mapping
-// ─────────────────────────────────────────────────────────────────────────────
-// Each phase defines which sections are PRIMARY (get the biggest space) and
-// which are SECONDARY (collapsible strips or hidden). The grid dynamically
-// switches layouts.
-
-type GridLayout = {
-  columns: string
-  rows: string
-  areas: string
-}
-
-const PHASE_LAYOUTS: Record<Phase, GridLayout> = {
-  setup: {
-    columns: '1fr 1fr',
-    rows: '1fr 1fr',
-    areas: '"board decks" "board decks"',
-  },
-  growth: {
-    columns: '2fr 1fr',
-    rows: '1fr auto',
-    areas: '"spirits decks" "spirits stats"',
-  },
-  fast: {
-    columns: '1fr 1.2fr',
-    rows: '1fr',
-    areas: '"spirits board"',
-  },
-  event: {
-    columns: '1fr 1.5fr',
-    rows: '2fr 1fr',
-    areas: '"decks board" "stats board"',
-  },
-  fear: {
-    columns: '1fr 1.5fr',
-    rows: '2fr 1fr',
-    areas: '"decks board" "stats board"',
-  },
-  invader: {
-    columns: '1fr 1.5fr',
-    rows: '1fr',
-    areas: '"decks board"',
-  },
-  slow: {
-    columns: '1fr 1.2fr',
-    rows: '1fr',
-    areas: '"spirits board"',
-  },
-  timepasses: {
-    columns: '1.5fr 1fr',
-    rows: '1fr',
-    areas: '"retro stats"',
-  },
-  end: {
-    columns: '1.5fr 1fr',
-    rows: '1fr',
-    areas: '"retro stats"',
-  },
-}
-
-const currentLayout = computed(() => {
-  const phase = state.value?.phase ?? 'setup'
-  return PHASE_LAYOUTS[phase]
-})
-
-// Determine which sections are visible (primary) for current phase
-const PHASE_PRIMARY: Record<Phase, string[]> = {
-  setup:      ['board', 'decks'],
-  growth:     ['spirits', 'decks', 'stats'],
-  fast:       ['spirits', 'board'],
-  event:      ['decks', 'board', 'stats'],
-  fear:       ['decks', 'board', 'stats'],
-  invader:    ['decks', 'board'],
-  slow:       ['spirits', 'board'],
-  timepasses: ['retro', 'stats'],
-  end:        ['retro', 'stats'],
-}
-
-function isPrimary(section: string): boolean {
-  const phase = state.value?.phase ?? 'setup'
-  return PHASE_PRIMARY[phase].includes(section)
-}
-
 // Spirit slugs for tabs
 const spiritSlugs = computed(() => Object.keys(state.value?.spirits ?? {}))
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SESSION 3: Spirit multi-panel with tabs + pinned mini-view
-// ─────────────────────────────────────────────────────────────────────────────
-// When multiple spirits exist, show a tab bar. The active spirit gets the full
-// panel. Other spirits show a "pinned mini" strip with key stats (energy,
-// card plays, elements) so the player can see all spirits at a glance.
-
-const showMiniPanels = computed(() => spiritSlugs.value.length > 1)
-
-// Mini-panel data for non-active spirits
-function getMiniData(slug: string) {
-  const spirit = state.value?.spirits?.[slug]
-  if (!spirit) return null
-  return {
-    slug,
-    name: humanSlug(slug).split(' ').slice(0, 2).join(' '),
-    energy: spirit.energy ?? 0,
-    cardPlays: spirit.card_plays ?? 1,
-    handCount: spirit.hand?.length ?? 0,
-    discardCount: spirit.discard?.length ?? 0,
-    elements: spirit.elements_this_turn ?? {},
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SESSION 4: Win-prob sparkline data for stats drawer
-// ─────────────────────────────────────────────────────────────────────────────
-// Track win probability over rounds for a sparkline. Derived from log's
-// `turn_advanced` entries.
-
-const winProbHistory = computed(() => {
-  if (!state.value) return []
-  const log = (state.value.log ?? []) as Array<{ round: number; event: string; details: Record<string, unknown> }>
-  const history: number[] = []
-  
-  for (let r = 1; r <= state.value.round; r++) {
-    const turnAdvance = log.find(e => e.event === 'turn_advanced' && e.round === r)
-    if (turnAdvance) {
-      // Simple heuristic estimation for historical rounds
-      const fearCurr = (turnAdvance.details.fear_current as number) ?? 0
-      const blightCurr = (turnAdvance.details.blight_current as number) ?? 0
-      const threshold = state.value.pools.fear_threshold || 4
-      const cap = state.value.pools.blight_cap || 3
-      const fearRatio = threshold > 0 ? fearCurr / threshold : 0
-      const blightRatio = cap > 0 ? blightCurr / cap : 0
-      const m = 0.5 + fearRatio * 0.2 - blightRatio * 0.3 - Math.max(0, r - 6) * 0.05
-      history.push(Math.max(0, Math.min(1, m)))
-    } else if (r === state.value.round) {
-      // Current round: use live calculation
-      const wp = computeWinProb(state.value, affinityMap.value)
-      history.push(wp.mean)
-    }
-  }
-  return history
-})
-
-// Current win probability for display
+// Win probability for display
 const currentWinProb = computed(() => {
   if (!state.value) return { mean: 0.5, lo: 0.3, hi: 0.7 }
   return computeWinProb(state.value, affinityMap.value)
 })
 
-// Generate SVG sparkline path
-const sparklinePath = computed(() => {
-  const data = winProbHistory.value
-  if (data.length < 2) return ''
-  const width = 80
-  const height = 24
-  const padding = 2
-  const step = (width - padding * 2) / (data.length - 1)
-  
-  let path = ''
-  data.forEach((v, i) => {
-    const x = padding + i * step
-    const y = height - padding - (v * (height - padding * 2))
-    path += i === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`
-  })
-  return path
+// Phase display name
+const phaseDisplayName = computed(() => {
+  const p = state.value?.phase
+  if (!p) return ''
+  const names: Record<Phase, string> = {
+    setup: 'Setup',
+    growth: 'Spirit Growth',
+    fast: 'Fast Powers',
+    event: 'Event',
+    fear: 'Fear',
+    invader: 'Invader',
+    slow: 'Slow Powers',
+    timepasses: 'Time Passes',
+    end: 'Game End',
+  }
+  return names[p] || p
 })
 </script>
 
 <template>
-  <div v-if="error" class="banner error">{{ error }}</div>
-  <div v-else-if="!state" class="banner">Loading...</div>
+  <div v-if="error" class="error-page">
+    <div class="error-card">
+      <div class="error-icon">!</div>
+      <h2>Error Loading Game</h2>
+      <p>{{ error }}</p>
+      <button class="btn-primary" @click="error = null; showWizard = true">Start New Game</button>
+    </div>
+  </div>
 
-  <div v-else class="dashboard" :class="{ 'phase-transitioning': phaseTransitioning }" :data-phase="state.phase">
-    <!-- HEADER: brand + stepper + controls -->
-    <header class="dash-header">
-      <div class="header-top">
-        <div class="brand">
-          <h1>si-live</h1>
-          <span v-if="matchupTag" class="matchup-tag">{{ matchupTag }}</span>
-        </div>
-        <div class="header-controls">
-          <button class="ghost" @click="archiveCurrentGame" :disabled="archiving">
-            {{ archiving ? 'Archiving...' : 'Archive' }}
-          </button>
-          <button class="ghost" @click="exportCurrentGame">Export</button>
-          <button class="ghost" @click="showSavedGames = true">Saved</button>
-          <button class="primary" @click="showWizard = true">New Game</button>
-          <span v-if="saving" class="saving">saving...</span>
-        </div>
+  <div v-else-if="!state" class="loading-page">
+    <div class="loading-spinner"></div>
+    <p>Loading game state...</p>
+  </div>
+
+  <div v-else class="app-shell" :data-phase="state.phase">
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SIDEBAR NAVIGATION (Aegis-style)                                        -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">SI</div>
+        <span class="brand-text">Spirit Island</span>
       </div>
-      <PhaseStepper v-model="state.phase" :round="state.round" />
-    </header>
 
-    <!-- STICKY STATUS BAR -->
-    <StickyStatus :state="state" class="dash-status" />
+      <nav class="sidebar-nav">
+        <button 
+          class="nav-item" 
+          :class="{ active: activeMainTab === 'game' }"
+          @click="activeMainTab = 'game'"
+        >
+          <span class="nav-icon">&#9654;</span>
+          <span class="nav-label">Game</span>
+        </button>
+        <button 
+          class="nav-item" 
+          :class="{ active: activeMainTab === 'analytics' }"
+          @click="activeMainTab = 'analytics'"
+        >
+          <span class="nav-icon">&#9733;</span>
+          <span class="nav-label">Analytics</span>
+        </button>
+        <button 
+          class="nav-item" 
+          :class="{ active: activeMainTab === 'log' }"
+          @click="activeMainTab = 'log'"
+        >
+          <span class="nav-icon">&#9776;</span>
+          <span class="nav-label">Log</span>
+        </button>
+      </nav>
 
-    <!-- END GAME BANNER -->
-    <div v-if="endBanner === 'won'" class="end-banner won">
-      <span class="end-icon">Victory</span>
-      <span class="end-detail">Fear deck exhausted at Terror {{ state.pools.terror_level }}</span>
-      <button class="ghost" @click="gameOverBannerDismissed = true">Dismiss</button>
-    </div>
-    <div v-else-if="endBanner === 'lost'" class="end-banner lost">
-      <span class="end-icon">Defeat</span>
-      <span class="end-detail">Blighted Island capped</span>
-      <button class="ghost" @click="gameOverBannerDismissed = true">Dismiss</button>
-    </div>
-    <div v-else-if="endBanner === 'imminent'" class="end-banner imminent">
-      <span class="end-icon">Imminent Victory</span>
-      <span class="end-detail">Fear deck drawn — finish the phase</span>
-      <button class="ghost" @click="gameOverBannerDismissed = true">Dismiss</button>
-    </div>
+      <div class="sidebar-spacer"></div>
 
-    <!-- MAIN DASHBOARD GRID -->
-    <main
-      class="dash-main"
-      :style="{
-        gridTemplateColumns: currentLayout.columns,
-        gridTemplateRows: currentLayout.rows,
-        gridTemplateAreas: currentLayout.areas,
-      }"
-    >
-      <!-- ═══════════════════════════════════════════════════════════════════ -->
-      <!-- SESSION 3: SPIRITS AREA with tabs + mini-panels -->
-      <!-- ═══════════════════════════════════════════════════════════════════ -->
-      <section class="grid-spirits" :class="{ hidden: !isPrimary('spirits') }">
-        <div class="area-header">
-          <h2>Spirits</h2>
-          <!-- Tab bar for multi-spirit -->
-          <div v-if="showMiniPanels" class="spirit-tabs">
-            <button
-              v-for="slug in spiritSlugs"
-              :key="slug"
-              type="button"
-              class="spirit-tab"
-              :class="{ active: activeSpiritTab === slug }"
-              @click="activeSpiritTab = slug"
-            >
-              <span class="tab-name">{{ humanSlug(slug).split(' ').slice(0, 2).join(' ') }}</span>
-              <span class="tab-stats">
-                <span class="tab-energy">{{ state.spirits[slug]?.energy ?? 0 }}E</span>
-                <span class="tab-cards">{{ state.spirits[slug]?.hand?.length ?? 0 }}H</span>
-              </span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Mini-panels strip for non-active spirits -->
-        <div v-if="showMiniPanels" class="spirit-minis">
-          <div
-            v-for="slug in spiritSlugs.filter(s => s !== activeSpiritTab)"
-            :key="slug"
-            class="mini-panel"
-            @click="activeSpiritTab = slug"
-          >
-            <span class="mini-name">{{ humanSlug(slug).split(' ')[0] }}</span>
-            <div class="mini-stats">
-              <span class="mini-stat energy">{{ state.spirits[slug]?.energy ?? 0 }}E</span>
-              <span class="mini-stat plays">{{ state.spirits[slug]?.card_plays ?? 1 }}CP</span>
-              <span class="mini-stat hand">{{ state.spirits[slug]?.hand?.length ?? 0 }}H</span>
-            </div>
-            <div class="mini-elements">
-              <span
-                v-for="(count, el) in (state.spirits[slug]?.elements_this_turn ?? {})"
-                :key="el"
-                class="mini-el"
-                :class="`el-${el}`"
-              >{{ count }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Active spirit full panel -->
-        <div class="spirit-content">
-          <SpiritPanel
-            v-for="slug in spiritSlugs"
-            v-show="activeSpiritTab === slug || spiritSlugs.length === 1"
-            :key="slug"
-            v-model="state.spirits[slug]"
-            :slug="slug"
-            :round="state.round"
-            @log-event="(event, details) => appendLog(event, details)"
-          />
-        </div>
-      </section>
-
-      <!-- BOARD AREA -->
-      <section class="grid-board" :class="{ hidden: !isPrimary('board') }">
-        <div class="area-header">
-          <h2>Board</h2>
-          <div v-if="Object.keys(state.board_state).length > 1" class="board-chips">
-            <span v-for="bid in Object.keys(state.board_state)" :key="bid" class="chip">{{ bid }}</span>
-          </div>
-        </div>
-        <div class="board-content">
-          <Board
-            v-for="bid in Object.keys(state.board_state)"
-            :key="bid"
-            v-model="state.board_state[bid]"
-            :board-id="bid"
-            :spirits="state.spirits"
-            @bump-pool="(pool, delta) => bumpPool(pool, delta)"
-          />
-        </div>
-      </section>
-
-      <!-- DECKS AREA (Invader + Fear + Event + Pools) -->
-      <section class="grid-decks" :class="{ hidden: !isPrimary('decks') }">
-        <div class="area-header"><h2>Decks &amp; Pools</h2></div>
-        <div class="decks-grid">
-          <div class="deck-card">
-            <h3>Pools</h3>
-            <Pools
-              v-model="state.pools"
-              :player-count="Object.keys(state.spirits ?? {}).length"
-            />
-          </div>
-          <div class="deck-card">
-            <h3>Invader Deck</h3>
-            <InvaderDeck
-              v-model="state.invader_deck"
-              :adversary="state.setup.adversary"
-              :level="state.setup.level"
-            />
-          </div>
-          <div class="deck-card">
-            <h3>Fear Deck</h3>
-            <FearDeck
-              v-model="state.fear_deck"
-              :round="state.round"
-              :terror-level="state.pools.terror_level"
-              :fear-threshold="state.pools.fear_threshold"
-              @log-event="(event, details) => appendLog(event, details)"
-              @reset-fear-pool="resetFearPool"
-            />
-          </div>
-          <div class="deck-card">
-            <h3>Event Deck</h3>
-            <EventDeck
-              v-model="state.event_deck"
-              :round="state.round"
-            />
-          </div>
-          <div class="deck-card terrain-card">
-            <h3>Terrain Timeline</h3>
-            <TerrainTimeline :state="state" />
-          </div>
-        </div>
-      </section>
-
-      <!-- STATS AREA (with AnalyticsZone for quick view) -->
-      <section class="grid-stats" :class="{ hidden: !isPrimary('stats') }">
-        <div class="area-header">
-          <h2>Analytics</h2>
-          <button class="ghost" @click="statsDrawerOpen = !statsDrawerOpen">
-            {{ statsDrawerOpen ? 'Hide Details' : 'Full Stats' }}
-          </button>
-        </div>
-        <AnalyticsZone
-          :state="state"
-          :win-prob="currentWinProb"
-          :win-prob-history="winProbHistory"
-        />
-        <div class="stats-detail" v-if="statsDrawerOpen">
-          <StatsPanel :state="state" />
-        </div>
-      </section>
-
-      <!-- RETROSPECTIVE AREA -->
-      <section class="grid-retro" :class="{ hidden: !isPrimary('retro') }">
-        <div class="area-header"><h2>Retrospective</h2></div>
-        <Retrospective :state="state" />
-      </section>
-    </main>
-
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- SESSION 4: STATS DRAWER (collapsible right edge) -->
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <aside class="stats-drawer" :class="{ open: statsDrawerOpen }">
-      <button class="drawer-toggle" @click="statsDrawerOpen = !statsDrawerOpen">
-        <span class="toggle-icon">{{ statsDrawerOpen ? '›' : '‹' }}</span>
-        <span class="toggle-label">Stats</span>
-      </button>
-      <div class="drawer-content">
-        <!-- Win probability sparkline -->
-        <div class="drawer-section">
-          <div class="drawer-label">Win Probability</div>
-          <div class="win-prob-row">
-            <span class="wp-value">{{ (currentWinProb.mean * 100).toFixed(0) }}%</span>
-            <svg class="sparkline" viewBox="0 0 80 24" preserveAspectRatio="none">
-              <path :d="sparklinePath" fill="none" stroke="var(--accent-green)" stroke-width="1.5" />
-            </svg>
-          </div>
-          <div class="wp-ci">{{ (currentWinProb.lo * 100).toFixed(0) }}–{{ (currentWinProb.hi * 100).toFixed(0) }}% CI</div>
-        </div>
-
-        <!-- Quick pool bars -->
-        <div class="drawer-section">
-          <div class="drawer-label">Fear</div>
-          <div class="mini-bar">
-            <div
-              class="mini-fill fear"
-              :style="{ width: (state.pools.fear_threshold ? (state.pools.fear_current / state.pools.fear_threshold) * 100 : 0) + '%' }"
-            ></div>
-          </div>
-          <div class="mini-stat-row">
-            <span>{{ state.pools.fear_current }}/{{ state.pools.fear_threshold }}</span>
-            <span class="terror-badge">T{{ state.pools.terror_level }}</span>
-          </div>
-        </div>
-
-        <div class="drawer-section">
-          <div class="drawer-label">Blight</div>
-          <div class="mini-bar">
-            <div
-              class="mini-fill blight"
-              :style="{ width: (state.pools.blight_cap ? (state.pools.blight_current / state.pools.blight_cap) * 100 : 0) + '%' }"
-            ></div>
-          </div>
-          <div class="mini-stat-row">
-            <span>{{ state.pools.blight_current }}/{{ state.pools.blight_cap }}</span>
-          </div>
-        </div>
-
-        <!-- Round + Phase quick view -->
-        <div class="drawer-section">
-          <div class="drawer-label">Round</div>
-          <div class="round-display">{{ state.round }}</div>
-          <div class="phase-display">{{ state.phase }}</div>
-        </div>
+      <div class="sidebar-actions">
+        <button class="nav-item" @click="showSavedGames = true">
+          <span class="nav-icon">&#128193;</span>
+          <span class="nav-label">Saved</span>
+        </button>
+        <button class="nav-item" @click="showWizard = true">
+          <span class="nav-icon">+</span>
+          <span class="nav-label">New</span>
+        </button>
       </div>
     </aside>
 
-    <!-- FOOTER: Turn Controller -->
-    <footer class="dash-footer">
-      <TurnController v-model="state" />
-    </footer>
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- MAIN CONTENT AREA                                                       -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <main class="main-content">
+      <!-- HEADER BAR -->
+      <header class="content-header">
+        <div class="header-left">
+          <h1 class="page-title">{{ phaseDisplayName }}</h1>
+          <div class="matchup-badge" v-if="matchupTag">{{ matchupTag }}</div>
+        </div>
+
+        <div class="header-center">
+          <PhaseStepper v-model="state.phase" :round="state.round" />
+        </div>
+
+        <div class="header-right">
+          <div class="quick-stats">
+            <div class="quick-stat">
+              <span class="stat-label">Round</span>
+              <span class="stat-value">{{ state.round }}</span>
+            </div>
+            <div class="quick-stat fear">
+              <span class="stat-label">Fear</span>
+              <span class="stat-value">{{ state.pools.fear_current }}/{{ state.pools.fear_threshold }}</span>
+            </div>
+            <div class="quick-stat blight">
+              <span class="stat-label">Blight</span>
+              <span class="stat-value">{{ state.pools.blight_current }}/{{ state.pools.blight_cap }}</span>
+            </div>
+            <div class="quick-stat terror">
+              <span class="stat-label">Terror</span>
+              <span class="stat-value">{{ state.pools.terror_level }}</span>
+            </div>
+          </div>
+
+          <div class="header-actions">
+            <button class="btn-ghost" @click="archiveCurrentGame" :disabled="archiving">
+              {{ archiving ? 'Saving...' : 'Archive' }}
+            </button>
+            <button class="btn-ghost" @click="exportCurrentGame">Export</button>
+            <span v-if="saving" class="save-indicator">Saving...</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- END GAME BANNERS -->
+      <div v-if="endBanner === 'won'" class="game-banner won">
+        <span class="banner-icon">&#10003;</span>
+        <div class="banner-content">
+          <strong>Victory!</strong>
+          <span>Fear deck exhausted at Terror Level {{ state.pools.terror_level }}</span>
+        </div>
+        <button class="btn-ghost" @click="gameOverBannerDismissed = true">Dismiss</button>
+      </div>
+      <div v-else-if="endBanner === 'lost'" class="game-banner lost">
+        <span class="banner-icon">&#10007;</span>
+        <div class="banner-content">
+          <strong>Defeat</strong>
+          <span>The island has been blighted beyond recovery</span>
+        </div>
+        <button class="btn-ghost" @click="gameOverBannerDismissed = true">Dismiss</button>
+      </div>
+
+      <!-- MAIN DASHBOARD GRID -->
+      <div class="dashboard-grid" v-if="activeMainTab === 'game'">
+        <!-- LEFT COLUMN: Spirits -->
+        <section class="panel spirits-panel">
+          <div class="panel-header">
+            <h2>Spirits</h2>
+            <div class="spirit-tabs" v-if="spiritSlugs.length > 1">
+              <button
+                v-for="slug in spiritSlugs"
+                :key="slug"
+                class="spirit-tab"
+                :class="{ active: activeSpiritTab === slug }"
+                @click="activeSpiritTab = slug"
+              >
+                {{ humanSlug(slug).split(' ').slice(0, 2).join(' ') }}
+              </button>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <SpiritPanel
+              v-for="slug in spiritSlugs"
+              v-show="activeSpiritTab === slug || spiritSlugs.length === 1"
+              :key="slug"
+              v-model="state.spirits[slug]"
+              :slug="slug"
+              :round="state.round"
+              @log-event="(event, details) => appendLog(event, details)"
+            />
+          </div>
+        </section>
+
+        <!-- CENTER COLUMN: Board + Decks -->
+        <section class="panel board-panel">
+          <div class="panel-header">
+            <h2>Island</h2>
+            <div class="board-tabs">
+              <span class="chip" v-for="b in (state.setup.boards ?? ['A'])" :key="b">Board {{ b }}</span>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <Board
+              v-model="state.board"
+              :boards="state.setup.boards ?? ['A']"
+              :spirits="state.spirits"
+              @log-event="(event, details) => appendLog(event, details)"
+            />
+          </div>
+        </section>
+
+        <!-- RIGHT COLUMN: Decks -->
+        <section class="panel decks-panel">
+          <div class="panel-header">
+            <h2>Decks</h2>
+          </div>
+
+          <div class="panel-body decks-stack">
+            <div class="deck-card invader-accent">
+              <h3>Invader Deck</h3>
+              <InvaderDeck v-model="state.invader_deck" @log-event="(event, details) => appendLog(event, details)" />
+            </div>
+
+            <div class="deck-card fear-accent">
+              <h3>Fear Deck</h3>
+              <FearDeck v-model="state.fear_deck" :terror-level="state.pools.terror_level" @log-event="(event, details) => appendLog(event, details)" />
+            </div>
+
+            <div class="deck-card event-accent" v-if="state.setup.scenario">
+              <h3>Event Deck</h3>
+              <EventDeck v-model="state.event_deck" @log-event="(event, details) => appendLog(event, details)" />
+            </div>
+
+            <div class="deck-card terrain-accent">
+              <h3>Terrain Timeline</h3>
+              <TerrainTimeline v-model="state.terrain_deck" :round="state.round" />
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ANALYTICS VIEW -->
+      <div class="analytics-grid" v-if="activeMainTab === 'analytics'">
+        <section class="panel analytics-panel">
+          <div class="panel-header">
+            <h2>Win Probability</h2>
+          </div>
+          <div class="panel-body">
+            <div class="big-stat">
+              <span class="big-value" :class="currentWinProb.mean > 0.5 ? 'positive' : 'negative'">
+                {{ Math.round(currentWinProb.mean * 100) }}%
+              </span>
+              <span class="big-label">Estimated Win Rate</span>
+            </div>
+            <div class="confidence-interval">
+              <span>{{ Math.round(currentWinProb.lo * 100) }}%</span>
+              <div class="ci-bar">
+                <div class="ci-fill" :style="{ left: (currentWinProb.lo * 100) + '%', width: ((currentWinProb.hi - currentWinProb.lo) * 100) + '%' }"></div>
+                <div class="ci-marker" :style="{ left: (currentWinProb.mean * 100) + '%' }"></div>
+              </div>
+              <span>{{ Math.round(currentWinProb.hi * 100) }}%</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel analytics-panel">
+          <div class="panel-header">
+            <h2>Game Statistics</h2>
+          </div>
+          <div class="panel-body">
+            <StatsPanel :state="state" />
+          </div>
+        </section>
+
+        <section class="panel analytics-panel wide">
+          <div class="panel-header">
+            <h2>Pools</h2>
+          </div>
+          <div class="panel-body">
+            <Pools v-model="state.pools" @reset-fear="resetFearPool" @bump-pool="bumpPool" />
+          </div>
+        </section>
+      </div>
+
+      <!-- LOG VIEW -->
+      <div class="log-grid" v-if="activeMainTab === 'log'">
+        <section class="panel log-panel">
+          <div class="panel-header">
+            <h2>Game Retrospective</h2>
+          </div>
+          <div class="panel-body">
+            <Retrospective :state="state" />
+          </div>
+        </section>
+      </div>
+
+      <!-- FOOTER: Turn Controller -->
+      <footer class="content-footer">
+        <TurnController v-model="state" />
+      </footer>
+    </main>
 
     <!-- Modals -->
     <SetupWizard :show="showWizard" @close="showWizard = false" @game-started="onGameStarted" />
@@ -743,607 +552,603 @@ const sparklinePath = computed(() => {
 </template>
 
 <style scoped>
-/* ─── DASHBOARD SHELL ─── */
-.dashboard {
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* AEGIS-INSPIRED LAYOUT SHELL                                                  */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+.app-shell {
   display: grid;
-  grid-template-rows: auto auto auto 1fr auto;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 220px 1fr;
   height: 100vh;
-  max-height: 100vh;
-  overflow: hidden;
   background: var(--bg-canvas);
+  overflow: hidden;
 }
 
-.dash-header,
-.dash-status,
-.end-banner,
-.dash-footer {
-  grid-column: 1 / -1;
+/* ─── ERROR & LOADING STATES ─── */
+.error-page,
+.loading-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: var(--sp-4);
+  color: var(--text-secondary);
 }
 
-.banner {
+.error-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--status-danger);
+  border-radius: var(--r-lg);
   padding: var(--sp-6);
   text-align: center;
+  max-width: 400px;
+}
+
+.error-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-full);
+  background: rgba(220, 47, 2, 0.15);
+  color: var(--status-danger);
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--sp-4);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-subtle);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* SIDEBAR                                                                      */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+.sidebar {
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-4) 0;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 0 var(--sp-4) var(--sp-4);
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: var(--sp-4);
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-violet));
+  border-radius: var(--r-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  color: white;
+}
+
+.brand-text {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-md);
+  color: var(--text-white);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: 0 var(--sp-2);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  background: transparent;
+  border: none;
+  border-radius: var(--r-md);
   color: var(--text-secondary);
   font-size: var(--fs-sm);
+  cursor: pointer;
+  transition: all var(--motion-fast);
+  text-align: left;
 }
-.banner.error {
-  background: rgba(184, 113, 106, 0.12);
-  color: var(--status-danger);
-  border-radius: var(--r-md);
-  margin: var(--sp-4);
+
+.nav-item:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.nav-item.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: var(--fs-base);
+}
+
+.sidebar-spacer {
+  flex: 1;
+}
+
+.sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-4) var(--sp-2) 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* MAIN CONTENT                                                                 */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* ─── HEADER ─── */
-.dash-header {
+.content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
-  padding: var(--sp-2) var(--sp-4);
+  flex-shrink: 0;
 }
 
-.header-top {
+.header-left {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: var(--sp-3);
-  margin-bottom: var(--sp-2);
 }
 
-.brand {
-  display: flex;
-  align-items: baseline;
-  gap: var(--sp-3);
-}
-
-h1 {
-  font-family: var(--font-mono);
+.page-title {
   font-size: var(--fs-lg);
   font-weight: var(--fw-semibold);
-  color: var(--accent);
-  letter-spacing: -0.01em;
+  color: var(--text-white);
   margin: 0;
 }
 
-.matchup-tag {
+.matchup-badge {
   font-size: var(--fs-xs);
-  color: var(--text-secondary);
-  text-transform: capitalize;
-  padding: 2px var(--sp-2);
+  padding: 4px var(--sp-2);
   background: var(--bg-muted);
   border-radius: var(--r-full);
+  color: var(--text-secondary);
+  text-transform: capitalize;
 }
 
-.header-controls {
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.quick-stats {
+  display: flex;
+  gap: var(--sp-3);
+}
+
+.quick-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-1) var(--sp-2);
+  background: var(--bg-inset);
+  border-radius: var(--r-md);
+  min-width: 60px;
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+}
+
+.quick-stat.fear .stat-value { color: var(--accent-amber); }
+.quick-stat.blight .stat-value { color: var(--accent-green); }
+.quick-stat.terror .stat-value { color: var(--accent-coral); }
+
+.header-actions {
   display: flex;
   align-items: center;
   gap: var(--sp-2);
 }
 
-.saving {
+.save-indicator {
   font-size: var(--fs-xs);
   color: var(--status-success);
   font-style: italic;
 }
 
-/* ─── STICKY STATUS ─── */
-.dash-status {
-  position: relative;
-  z-index: 50;
-}
-
-/* ─── END BANNERS ─── */
-.end-banner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-3);
+/* ─── BUTTONS ─── */
+.btn-primary {
+  background: var(--accent-violet);
+  color: white;
+  border: none;
   padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-md);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: filter var(--motion-fast);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.15);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--r-md);
   font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
-}
-.end-banner.won { background: rgba(82, 183, 136, 0.15); color: var(--status-success); }
-.end-banner.lost { background: rgba(184, 113, 106, 0.15); color: var(--status-danger); }
-.end-banner.imminent { background: rgba(82, 183, 136, 0.08); color: var(--status-success); border-style: dashed; }
-.end-icon { font-weight: var(--fw-bold); }
-.end-detail { font-weight: var(--fw-regular); color: var(--text-secondary); }
-
-/* ─── MAIN GRID ─── */
-.dash-main {
-  display: grid;
-  gap: var(--sp-3);
-  padding: var(--sp-3);
-  overflow: hidden;
-  min-height: 0;
-  transition: grid-template-columns var(--motion-base), grid-template-rows var(--motion-base);
+  cursor: pointer;
+  transition: all var(--motion-fast);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════ */
-/* PHASE TRANSITION ANIMATIONS                                                  */
-/* ═══════════════════════════════════════════════════════════════════════════ */
-.dashboard.phase-transitioning .dash-main {
-  animation: grid-reflow 300ms ease-out;
+.btn-ghost:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
-@keyframes grid-reflow {
-  0% {
-    opacity: 0.8;
-    transform: scale(0.995);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Phase-specific accent colors on the dashboard */
-.dashboard[data-phase="setup"] { --phase-accent: var(--accent-blue); }
-.dashboard[data-phase="growth"] { --phase-accent: var(--accent-green); }
-.dashboard[data-phase="fast"] { --phase-accent: var(--accent-purple); }
-.dashboard[data-phase="event"] { --phase-accent: var(--accent-violet); }
-.dashboard[data-phase="fear"] { --phase-accent: var(--accent-amber); }
-.dashboard[data-phase="invader"] { --phase-accent: var(--accent-red); }
-.dashboard[data-phase="slow"] { --phase-accent: var(--accent-teal); }
-.dashboard[data-phase="timepasses"] { --phase-accent: var(--accent-blue); }
-.dashboard[data-phase="end"] { --phase-accent: var(--accent-green); }
-
-/* Sections entering view animate in */
-.grid-spirits,
-.grid-board,
-.grid-decks,
-.grid-stats,
-.grid-retro {
-  animation: section-enter 250ms ease-out;
-}
-
-@keyframes section-enter {
-  0% {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Stats detail toggle */
-.stats-detail {
-  margin-top: var(--sp-3);
-  padding-top: var(--sp-3);
-  border-top: 1px solid var(--border-subtle);
-  animation: fade-in 200ms ease-out;
-}
-
-@keyframes fade-in {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-.grid-spirits { grid-area: spirits; }
-.grid-board   { grid-area: board; }
-.grid-decks   { grid-area: decks; }
-.grid-stats   { grid-area: stats; }
-.grid-retro   { grid-area: retro; }
-
-/* Hidden sections (not primary for current phase) */
-.grid-spirits.hidden,
-.grid-board.hidden,
-.grid-decks.hidden,
-.grid-stats.hidden,
-.grid-retro.hidden {
-  display: none;
-}
-
-/* ─── AREA CARDS ─── */
-.grid-spirits,
-.grid-board,
-.grid-decks,
-.grid-stats,
-.grid-retro {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--r-lg);
-  padding: var(--sp-3);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.area-header {
+/* ─── GAME BANNERS ─── */
+.game-banner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-2);
-  margin-bottom: var(--sp-2);
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  margin: var(--sp-3) var(--sp-4) 0;
+  border-radius: var(--r-lg);
   flex-shrink: 0;
 }
 
-.area-header h2 {
-  font-size: var(--fs-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+.game-banner.won {
+  background: rgba(82, 183, 136, 0.12);
+  border: 1px solid var(--status-success);
+}
+
+.game-banner.lost {
+  background: rgba(220, 47, 2, 0.12);
+  border: 1px solid var(--status-danger);
+}
+
+.banner-icon {
+  font-size: var(--fs-xl);
+}
+
+.game-banner.won .banner-icon { color: var(--status-success); }
+.game-banner.lost .banner-icon { color: var(--status-danger); }
+
+.banner-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.banner-content strong {
+  color: var(--text-white);
+}
+
+.banner-content span {
+  font-size: var(--fs-sm);
   color: var(--text-secondary);
-  font-weight: var(--fw-semibold);
-  margin: 0;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
-/* SESSION 3: SPIRIT TABS + MINI PANELS                                        */
+/* DASHBOARD GRID                                                               */
 /* ═══════════════════════════════════════════════════════════════════════════ */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 280px;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  flex: 1;
+  overflow: auto;
+}
+
+.log-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ─── PANEL CARDS ─── */
+.panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.panel.wide {
+  grid-column: span 2;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.panel-header h2 {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-white);
+  margin: 0;
+}
+
+.panel-body {
+  flex: 1;
+  overflow: auto;
+  padding: var(--sp-3);
+  min-height: 0;
+}
+
+/* ─── SPIRIT TABS ─── */
 .spirit-tabs {
   display: flex;
   gap: 4px;
 }
 
 .spirit-tab {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   padding: 4px var(--sp-2);
   font-size: var(--fs-xs);
-  border: 1px solid var(--border-subtle);
   background: var(--bg-inset);
-  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-sm);
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--motion-fast);
-  min-width: 80px;
 }
+
 .spirit-tab:hover {
-  background: var(--bg-muted);
-  color: var(--text-primary);
-}
-.spirit-tab.active {
-  background: var(--accent-soft);
-  border-color: var(--accent-blue);
-  color: var(--text-white);
-}
-
-.tab-name {
-  font-weight: var(--fw-semibold);
-  white-space: nowrap;
-}
-.tab-stats {
-  display: flex;
-  gap: var(--sp-2);
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-}
-.spirit-tab.active .tab-stats { color: var(--text-secondary); }
-
-.tab-energy { color: var(--pool-energy); }
-.tab-cards { color: var(--text-muted); }
-
-/* Mini-panel strip for non-active spirits */
-.spirit-minis {
-  display: flex;
-  gap: var(--sp-2);
-  margin-bottom: var(--sp-2);
-  flex-shrink: 0;
-}
-
-.mini-panel {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  padding: var(--sp-1) var(--sp-2);
-  background: var(--bg-inset);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--r-sm);
-  cursor: pointer;
-  transition: all var(--motion-fast);
-}
-.mini-panel:hover {
-  background: var(--bg-muted);
-  border-color: var(--border-default);
-}
-
-.mini-name {
-  font-size: var(--fs-xs);
-  font-weight: var(--fw-semibold);
-  color: var(--text-secondary);
-  min-width: 60px;
-}
-
-.mini-stats {
-  display: flex;
-  gap: var(--sp-1);
-  font-size: 0.68rem;
-  font-family: var(--font-mono);
-}
-
-.mini-stat {
-  padding: 1px 4px;
-  border-radius: var(--r-sm);
-  background: var(--bg-muted);
-}
-.mini-stat.energy { color: var(--pool-energy); }
-.mini-stat.plays { color: var(--accent-purple); }
-.mini-stat.hand { color: var(--text-muted); }
-
-.mini-elements {
-  display: flex;
-  gap: 2px;
-  margin-left: auto;
-}
-
-.mini-el {
-  width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.6rem;
-  font-weight: var(--fw-bold);
-  border-radius: var(--r-full);
-  background: var(--bg-muted);
-  color: var(--text-primary);
-}
-.mini-el.el-sun { background: #d9a45e33; color: #d9a45e; }
-.mini-el.el-moon { background: #7bb8f533; color: #7bb8f5; }
-.mini-el.el-fire { background: #dc2f0233; color: #dc2f02; }
-.mini-el.el-air { background: #c77dff33; color: #c77dff; }
-.mini-el.el-water { background: #2a9d8f33; color: #2a9d8f; }
-.mini-el.el-earth { background: #b85c6433; color: #b85c64; }
-.mini-el.el-plant { background: #6fa66133; color: #6fa661; }
-.mini-el.el-animal { background: #e9c46a33; color: #e9c46a; }
-
-.spirit-content {
-  flex: 1;
-  overflow: auto;
-  min-height: 0;
-}
-
-/* ─── BOARD AREA ─── */
-.board-chips {
-  display: flex;
-  gap: 4px;
-}
-
-.board-content {
-  flex: 1;
-  overflow: auto;
-  min-height: 0;
-}
-
-/* ─── DECKS GRID ─── */
-.decks-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--sp-3);
-  flex: 1;
-  overflow: auto;
-  min-height: 0;
-}
-
-.deck-card {
-  background: var(--bg-inset);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--r-md);
-  padding: var(--sp-2);
-}
-
-.deck-card h3 {
-  font-size: var(--fs-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  margin: 0 0 var(--sp-2) 0;
-  font-weight: var(--fw-semibold);
-}
-
-.terrain-card {
-  grid-column: span 2;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════ */
-/* SESSION 4: STATS DRAWER                                                     */
-/* ═══════════════════════════════════════════════════════════════════════════ */
-.stats-drawer {
-  grid-row: 4;
-  grid-column: 2;
-  width: 48px;
-  background: var(--bg-surface);
-  border-left: 1px solid var(--border-subtle);
-  display: flex;
-  flex-direction: column;
-  transition: width var(--motion-base);
-  overflow: hidden;
-}
-
-.stats-drawer.open {
-  width: 180px;
-}
-
-.drawer-toggle {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: var(--sp-2) var(--sp-1);
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all var(--motion-fast);
-}
-.drawer-toggle:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
 }
 
-.toggle-icon {
-  font-size: var(--fs-lg);
-  font-weight: var(--fw-bold);
+.spirit-tab.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
   color: var(--accent);
 }
 
-.toggle-label {
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  writing-mode: vertical-lr;
-  text-orientation: mixed;
-}
-.stats-drawer.open .toggle-label {
-  writing-mode: horizontal-tb;
-}
-
-.drawer-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: var(--sp-2);
+/* ─── BOARD TABS ─── */
+.board-tabs {
   display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--motion-fast);
-}
-
-.stats-drawer.open .drawer-content {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.drawer-section {
-  display: flex;
-  flex-direction: column;
   gap: 4px;
 }
 
-.drawer-label {
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  font-weight: var(--fw-semibold);
-}
-
-.win-prob-row {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-}
-
-.wp-value {
-  font-family: var(--font-mono);
-  font-size: var(--fs-lg);
-  font-weight: var(--fw-bold);
-  color: var(--accent-green);
-}
-
-.sparkline {
-  flex: 1;
-  height: 24px;
-  max-width: 80px;
-}
-
-.wp-ci {
-  font-size: 0.6rem;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-}
-
-.mini-bar {
-  height: 6px;
-  background: var(--bg-canvas);
-  border-radius: var(--r-full);
-  overflow: hidden;
-}
-
-.mini-fill {
-  height: 100%;
-  border-radius: var(--r-full);
-  transition: width var(--motion-fast);
-}
-.mini-fill.fear { background: linear-gradient(90deg, #d4a373, #d9771f); }
-.mini-fill.blight { background: linear-gradient(90deg, #52b788, #2a9d8f); }
-
-.mini-stat-row {
-  display: flex;
-  justify-content: space-between;
+.chip {
+  padding: 2px var(--sp-2);
   font-size: var(--fs-xs);
+  background: var(--bg-muted);
+  border-radius: var(--r-full);
   color: var(--text-secondary);
-  font-family: var(--font-mono);
 }
 
-.terror-badge {
-  padding: 1px 4px;
-  background: var(--accent-amber);
-  color: var(--bg-canvas);
-  font-size: 0.6rem;
-  font-weight: var(--fw-bold);
-  border-radius: var(--r-sm);
+/* ─── DECKS STACK ─── */
+.decks-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
 }
 
-.round-display {
+.deck-card {
+  background: var(--bg-inset);
+  border-radius: var(--r-md);
+  padding: var(--sp-3);
+  border-left: 3px solid var(--border-subtle);
+}
+
+.deck-card h3 {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 var(--sp-2) 0;
+}
+
+.deck-card.invader-accent { border-left-color: var(--accent-red); }
+.deck-card.fear-accent { border-left-color: var(--accent-amber); }
+.deck-card.event-accent { border-left-color: var(--accent-violet); }
+.deck-card.terrain-accent { border-left-color: var(--accent-teal); }
+
+/* ─── ANALYTICS PANEL ─── */
+.big-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-4);
+}
+
+.big-value {
   font-family: var(--font-mono);
-  font-size: var(--fs-xl);
+  font-size: 48px;
   font-weight: var(--fw-bold);
-  color: var(--text-primary);
   line-height: 1;
 }
 
-.phase-display {
-  font-size: var(--fs-xs);
+.big-value.positive { color: var(--status-success); }
+.big-value.negative { color: var(--status-danger); }
+
+.big-label {
+  font-size: var(--fs-sm);
   color: var(--text-secondary);
-  text-transform: capitalize;
+  margin-top: var(--sp-2);
+}
+
+.confidence-interval {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.ci-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-canvas);
+  border-radius: var(--r-full);
+  position: relative;
+}
+
+.ci-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: var(--accent-soft);
+  border-radius: var(--r-full);
+}
+
+.ci-marker {
+  position: absolute;
+  top: -2px;
+  width: 4px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 2px;
+  transform: translateX(-50%);
 }
 
 /* ─── FOOTER ─── */
-.dash-footer {
+.content-footer {
+  padding: var(--sp-2) var(--sp-4);
   background: var(--bg-surface);
   border-top: 1px solid var(--border-subtle);
-  padding: var(--sp-2) var(--sp-4);
+  flex-shrink: 0;
 }
 
-/* ─── RESPONSIVE: single column below 1100px ─── */
-@media (max-width: 1100px) {
-  .dashboard {
-    grid-template-columns: 1fr;
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* RESPONSIVE                                                                   */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .dash-main {
-    grid-template-columns: 1fr !important;
-    grid-template-rows: auto !important;
-    grid-template-areas:
-      "spirits"
-      "board"
-      "decks"
-      "stats"
-      "retro" !important;
-    overflow-y: auto;
+  .decks-panel {
+    grid-column: span 2;
   }
 
-  .grid-spirits.hidden,
-  .grid-board.hidden,
-  .grid-decks.hidden,
-  .grid-stats.hidden,
-  .grid-retro.hidden {
-    display: flex;
-    opacity: 0.6;
-  }
-
-  .terrain-card {
-    grid-column: span 1;
-  }
-
-  .stats-drawer {
-    display: none;
-  }
-
-  .spirit-minis {
+  .decks-stack {
+    flex-direction: row;
     flex-wrap: wrap;
   }
 
-  .mini-panel {
-    flex: 1 1 calc(50% - var(--sp-1));
-    min-width: 140px;
+  .deck-card {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .brand-text,
+  .nav-label {
+    display: none;
+  }
+
+  .sidebar-brand {
+    justify-content: center;
+    padding: 0 var(--sp-2) var(--sp-4);
+  }
+
+  .nav-item {
+    justify-content: center;
+    padding: var(--sp-2);
+  }
+
+  .nav-icon {
+    width: auto;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .decks-panel {
+    grid-column: span 1;
+  }
+
+  .header-center {
+    display: none;
+  }
+
+  .quick-stats {
+    display: none;
   }
 }
 </style>
