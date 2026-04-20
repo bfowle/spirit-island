@@ -297,9 +297,44 @@ function getTerrainColor(terrain: string): string {
         @error="onImageError"
       />
       
-      <!-- Fallback gradient background if image fails -->
-      <div v-if="imageError || !imageLoaded" class="board-fallback">
-        <div class="fallback-label">Board {{ activeBoard }}</div>
+      <!-- Schematic fallback when no PNG loaded -->
+      <div v-if="imageError || !imageLoaded" class="board-schematic">
+        <!-- Terrain region backgrounds based on land positions -->
+        <svg class="schematic-regions" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="mountainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#6b7280;stop-opacity:0.15" />
+              <stop offset="100%" style="stop-color:#9ca3af;stop-opacity:0.08" />
+            </linearGradient>
+            <linearGradient id="wetlandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:0.12" />
+              <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0.06" />
+            </linearGradient>
+            <linearGradient id="jungleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#22c55e;stop-opacity:0.12" />
+              <stop offset="100%" style="stop-color:#16a34a;stop-opacity:0.06" />
+            </linearGradient>
+            <linearGradient id="sandsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.12" />
+              <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.06" />
+            </linearGradient>
+          </defs>
+          <!-- Draw organic terrain blobs for each land -->
+          <ellipse 
+            v-for="landId in sortedLandIds()" 
+            :key="landId"
+            :cx="layout.positions[landId]?.x ?? 50"
+            :cy="layout.positions[landId]?.y ?? 50"
+            rx="18"
+            ry="16"
+            :fill="`url(#${(currentBoard?.lands[landId]?.terrain ?? 'mountain').toLowerCase()}Grad)`"
+            :style="{ transform: `rotate(${(Number(landId) * 23) % 45 - 22}deg)`, transformOrigin: `${layout.positions[landId]?.x ?? 50}% ${layout.positions[landId]?.y ?? 50}%` }"
+          />
+        </svg>
+        <div class="schematic-label">
+          <span class="board-letter">{{ activeBoard }}</span>
+          <span class="board-variant">{{ currentBoard?.variant_name || 'Balanced' }}</span>
+        </div>
       </div>
 
       <!-- Ocean indicator strip -->
@@ -534,20 +569,50 @@ function getTerrainColor(terrain: string): string {
   opacity: 0.85;
 }
 
-.board-fallback {
+.board-schematic {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-elevated) 100%);
+  background: linear-gradient(
+    135deg, 
+    var(--bg-surface) 0%, 
+    rgba(var(--color-accent-rgb, 99, 102, 241), 0.02) 50%,
+    var(--bg-elevated) 100%
+  );
 }
 
-.fallback-label {
+.schematic-regions {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.schematic-label {
+  position: absolute;
+  bottom: var(--sp-4);
+  right: var(--sp-4);
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.board-letter {
+  font-family: var(--font-mono);
   font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
-  color: var(--text-faint);
-  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.board-variant {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-transform: capitalize;
 }
 
 /* ─── OCEAN STRIP ─── */
