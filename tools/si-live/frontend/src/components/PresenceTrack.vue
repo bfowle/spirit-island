@@ -87,7 +87,7 @@ const discCssVars = computed(() => ({
   <div class="presence-track" :style="discCssVars">
     <div class="track-hdr">
       <span class="track-label">{{ label }} Track</span>
-      <span class="placed">{{ Math.max(0, placedCount) }} presence placed · {{ fullTrack.length }} total</span>
+      <span class="placed">{{ Math.max(0, placedCount) }} placed / {{ fullTrack.length }} total</span>
     </div>
     <div class="bowls">
       <button
@@ -123,20 +123,20 @@ const discCssVars = computed(() => ({
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: var(--fs-xs);
+  font-size: var(--text-xs);
 }
 
 .track-label {
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   color: var(--text-muted);
-  font-weight: var(--fw-medium);
+  font-weight: var(--weight-medium);
 }
 
 .placed {
   font-family: var(--font-mono);
-  font-size: var(--fs-xs);
+  font-size: var(--text-xs);
   color: var(--text-secondary);
 }
 
@@ -144,8 +144,8 @@ const discCssVars = computed(() => ({
   display: flex;
   gap: var(--sp-2);
   padding: var(--sp-2);
-  background: linear-gradient(180deg, var(--bg-canvas), var(--bg-muted));
-  border-radius: var(--r-md);
+  background: linear-gradient(180deg, var(--bg-base), var(--bg-muted));
+  border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   overflow-x: auto;
 }
@@ -160,14 +160,14 @@ const discCssVars = computed(() => ({
   justify-content: center;
   background: radial-gradient(circle at 50% 45%, #0a0a0c 0%, #141418 60%, #1a1a1e 100%);
   border: 1px solid var(--border-default);
-  border-radius: var(--r-full);
+  border-radius: 50%;
   padding: 0;
   font-family: var(--font-mono);
   font-size: 1.05rem;
-  font-weight: var(--fw-bold);
+  font-weight: var(--weight-bold);
   color: var(--text-primary);
   cursor: default;
-  transition: transform var(--motion-fast), box-shadow var(--motion-fast);
+  transition: transform var(--duration-fast), box-shadow var(--duration-fast);
   /* inset shadow to make the bowl look recessed */
   box-shadow:
     inset 0 3px 5px rgba(0, 0, 0, 0.65),
@@ -207,7 +207,7 @@ const discCssVars = computed(() => ({
   z-index: 1;
   color: var(--disc-primary);
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
-  transition: opacity var(--motion-fast);
+  transition: opacity var(--duration-fast);
 }
 
 .bowl-suffix {
@@ -219,7 +219,7 @@ const discCssVars = computed(() => ({
   text-transform: uppercase;
   letter-spacing: 0.05em;
   z-index: 2;
-  font-weight: var(--fw-medium);
+  font-weight: var(--weight-medium);
 }
 
 /* ============ DISC STYLES ============ */
@@ -231,10 +231,10 @@ const discCssVars = computed(() => ({
   transform: translate(-50%, -50%);
   width: 1.9rem;
   height: 1.9rem;
-  border-radius: var(--r-full);
+  border-radius: 50%;
   z-index: 2;
   pointer-events: none;
-  transition: all var(--motion-base);
+  transition: all var(--duration-base);
 }
 
 /* --- Glass disc (etsy custom): translucent, with refractive highlight --- */
