@@ -11,7 +11,7 @@ const fullEnergyTrack = ref<string[]>([])
 const fullCardplayTrack = ref<string[]>([])
 const wikiError = ref<string | null>(null)
 
-async function loadWiki(slug: string | undefined) {
+async function loadSpiritMeta(slug: string | undefined) {
   if (!slug) return
   try {
     const res = await fetch(`/api/spirit/${encodeURIComponent(slug)}`)
@@ -20,12 +20,12 @@ async function loadWiki(slug: string | undefined) {
     fullEnergyTrack.value = data.presence_energy_track || []
     fullCardplayTrack.value = data.presence_cardplay_track || []
   } catch (e) {
-    wikiError.value = `wiki lookup failed: ${(e as Error).message}`
+    wikiError.value = `spirit metadata lookup failed: ${(e as Error).message}`
   }
 }
 
-onMounted(() => loadWiki(props.slug))
-watch(() => props.slug, loadWiki)
+onMounted(() => loadSpiritMeta(props.slug))
+watch(() => props.slug, loadSpiritMeta)
 
 function updateEnergyCovered(next: string[]) {
   props.modelValue.presence_on_track_energy = next

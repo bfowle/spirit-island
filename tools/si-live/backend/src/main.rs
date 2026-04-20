@@ -70,9 +70,9 @@ async fn main() -> anyhow::Result<()> {
         .route("/api/save-board-geometry", axum::routing::post(post_save_board_geometry))
         .route("/api/saved-games", get(get_saved_games))
         .route("/api/saved-games/archive", axum::routing::post(post_archive_current_game))
-        .route("/api/saved-games/{id}/load", axum::routing::post(post_load_saved_game))
-        .route("/api/saved-games/{id}", axum::routing::delete(delete_saved_game))
-        .route("/api/spirit/{slug}", get(get_spirit_wiki))
+        .route("/api/saved-games/:id/load", axum::routing::post(post_load_saved_game))
+        .route("/api/saved-games/:id", axum::routing::delete(delete_saved_game))
+        .route("/api/spirit/:slug", get(get_spirit_wiki))
         .fallback_service(ServeDir::new(&frontend_dist).append_index_html_on_directories(true))
         .layer(CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any))
         .with_state(app_state);
