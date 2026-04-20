@@ -81,9 +81,9 @@
           "blight": 0,
           "tokens": []
         },
-        "3": {
-          "terrain": "jungle",
-          "coastal": true,
+        "7": {
+          "terrain": "sands",
+          "coastal": false,
           "explorers": 0,
           "towns": 0,
           "cities": 0,
@@ -91,9 +91,31 @@
           "blight": 0,
           "tokens": []
         },
-        "7": {
-          "terrain": "sands",
+        "6": {
+          "terrain": "mountain",
           "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 1,
+          "blight": 0,
+          "tokens": []
+        },
+        "1": {
+          "terrain": "mountain",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": [
+            "beast"
+          ]
+        },
+        "3": {
+          "terrain": "jungle",
+          "coastal": true,
           "explorers": 0,
           "towns": 0,
           "cities": 0,
@@ -118,28 +140,6 @@
           "towns": 0,
           "cities": 0,
           "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
-        "1": {
-          "terrain": "mountain",
-          "coastal": true,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": [
-            "beast"
-          ]
-        },
-        "6": {
-          "terrain": "mountain",
-          "coastal": false,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 1,
           "blight": 0,
           "tokens": []
         }

@@ -1,0 +1,119 @@
+/*
+ * Inline SI iconography for mdbook prose.
+ * Usage: <img class="si" src="../theme/icons/resource-fear.svg" alt="Fear">
+ *
+ * The .si class sizes to match surrounding text (1em height, vertically
+ * centered with a small negative margin). In dark mode, monochrome SVGs
+ * (units, resources, terrain, speed) are inverted so they stay legible.
+ * Element PNGs are pre-colored and never get filter treatment.
+ */
+
+.si {
+  display: inline-block;
+  height: 1em;
+  width: auto;
+  vertical-align: -0.15em;
+  margin: 0 0.1em;
+  user-select: none;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* In mdbook-gruvbox-dark theme + browser dark-mode, invert monochrome SVGs. */
+html.ayu .si[src$=".svg"],
+html.navy .si[src$=".svg"],
+html.coal .si[src$=".svg"],
+html.gruvbox .si[src$=".svg"] {
+  filter: invert(0.92) brightness(1.05);
+}
+
+/* Slightly bigger icons for opener "snapshot" blocks */
+.si.si-lg {
+  height: 1.35em;
+  vertical-align: -0.3em;
+}
+
+/* A container used in opener Turn snapshots — compact board/spirit state. */
+.si-snapshot {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 0.75rem;
+  background: var(--code-bg, #f4f3ec);
+  border: 1px solid var(--border, #e5e4e7);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0;
+  font-size: 0.9em;
+}
+
+.si-snapshot dt {
+  font-size: 0.72em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text, #6b6375);
+  font-weight: 500;
+  align-self: center;
+  white-space: nowrap;
+}
+
+.si-snapshot dd {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.si-snapshot .si-lands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+}
+
+.si-snapshot .si-land {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.1rem 0.4rem;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 999px;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+.si-snapshot .si-land-id {
+  font-family: var(--mono, ui-monospace, monospace);
+  font-weight: 700;
+  margin-right: 0.1rem;
+}
+
+.si-snapshot .si-pool {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 999px;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 0.9em;
+}
+
+.si-snapshot .si-pool strong { color: var(--accent, #aa3bff); }
+
+/* Dark mode polish for the snapshot block */
+html.ayu .si-snapshot,
+html.navy .si-snapshot,
+html.coal .si-snapshot,
+html.gruvbox .si-snapshot {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+html.ayu .si-snapshot .si-land,
+html.ayu .si-snapshot .si-pool,
+html.navy .si-snapshot .si-land,
+html.navy .si-snapshot .si-pool,
+html.coal .si-snapshot .si-land,
+html.coal .si-snapshot .si-pool,
+html.gruvbox .si-snapshot .si-land,
+html.gruvbox .si-snapshot .si-pool {
+  background: rgba(255, 255, 255, 0.05);
+}

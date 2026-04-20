@@ -72,6 +72,40 @@ const discardCount = computed(() => props.modelValue.discard?.length ?? 0)
 const playedCount = computed(() => props.modelValue.played_this_turn?.length ?? 0)
 const forgottenCount = computed(() => props.modelValue.forgotten?.length ?? 0)
 
+// Placed counts = full track length minus what's still covered
+const placedEnergy = computed(
+  () => Math.max(0, fullEnergyTrack.value.length - (props.modelValue.presence_on_track_energy?.length ?? 0)),
+)
+const placedCardplay = computed(
+  () => Math.max(0, fullCardplayTrack.value.length - (props.modelValue.presence_on_track_cardplay?.length ?? 0)),
+)
+
+function parseTokenValue(token: string | undefined): string {
+  if (!token) return '?'
+  const m = token.match(/^[a-z]+(\d+)/i)
+  return m ? m[1] : token
+}
+
+// Income next turn = value of the rightmost uncovered slot. Track convention:
+// covered tokens are the RIGHT side of the array (everything except the
+// left-most `placed` slots). So the most-recently-uncovered is at
+// fullTrack[placed - 1] (when placed > 0); otherwise the first-uncovered
+// leftmost (index 0).
+const nextEnergyIncome = computed(() => {
+  const full = fullEnergyTrack.value
+  if (!full.length) return props.modelValue.energy ?? 0
+  const placed = placedEnergy.value
+  const idx = Math.max(0, placed - 1)
+  return parseTokenValue(full[idx])
+})
+const nextCardplayIncome = computed(() => {
+  const full = fullCardplayTrack.value
+  if (!full.length) return props.modelValue.card_plays ?? 1
+  const placed = placedCardplay.value
+  const idx = Math.max(0, placed - 1)
+  return parseTokenValue(full[idx])
+})
+
 function moveCard(card: string, from: keyof Spirit, to: keyof Spirit) {
   const src = (props.modelValue[from] as string[] | undefined) ?? []
   const dst = (props.modelValue[to] as string[] | undefined) ?? []
@@ -143,13 +177,40 @@ function cardInfo(name: string): CardDetail | undefined {
       </div>
     </div>
 
-    <!-- Collapsible presence-tracks + disc panel -->
-    <details class="presence-section" :open="presenceExpanded" @toggle="presenceExpanded = ($event.target as HTMLDetailsElement).open">
-      <summary class="presence-summary">
-        <span class="presence-summary-label">Presence Tracks + Disc</span>
-        <span class="presence-summary-hint">{{ presenceExpanded ? 'click to collapse' : 'click to expand' }}</span>
-      </summary>
-      <div class="tracks">
+    <!-- Presence tracks: numeric summary always visible; the bowl visualization
+         is collapsible via the toggle button. -->
+    <div class="presence-block">
+      <div class="presence-hdr">
+        <div class="presence-stats">
+          <div class="presence-stat">
+            <span class="stat-label">Energy track</span>
+            <div class="stat-detail">
+              <span class="stat-placed">
+                <strong>{{ placedEnergy }}</strong> / {{ fullEnergyTrack.length || '?' }} placed
+              </span>
+              <span class="stat-income">
+                Income next turn: <strong>{{ nextEnergyIncome }}E</strong>
+              </span>
+            </div>
+          </div>
+          <div class="presence-stat">
+            <span class="stat-label">Card Play track</span>
+            <div class="stat-detail">
+              <span class="stat-placed">
+                <strong>{{ placedCardplay }}</strong> / {{ fullCardplayTrack.length || '?' }} placed
+              </span>
+              <span class="stat-income">
+                Card plays next turn: <strong>{{ nextCardplayIncome }}</strong>
+              </span>
+            </div>
+          </div>
+        </div>
+        <button class="bowl-toggle" @click="presenceExpanded = !presenceExpanded">
+          {{ presenceExpanded ? 'Hide bowls' : 'Show bowls' }}
+        </button>
+      </div>
+
+      <div v-if="presenceExpanded" class="tracks">
         <div class="disc-controls">
           <span class="disc-label">Disc color</span>
           <div class="swatches">
@@ -199,7 +260,7 @@ function cardInfo(name: string): CardDetail | undefined {
         <div v-if="!fullEnergyTrack.length && !wikiError" class="track-loading">Loading presence tracks…</div>
         <div v-if="wikiError" class="track-error">{{ wikiError }}</div>
       </div>
-    </details>
+    </div>
 
     <!-- Card piles with rich detail -->
     <div class="piles">
@@ -331,33 +392,52 @@ function cardInfo(name: string): CardDetail | undefined {
 .el-name { text-transform: capitalize; color: var(--text-secondary); }
 .el-count { font-family: var(--font-mono); font-weight: var(--fw-semibold); color: var(--text-primary); }
 
-/* Collapsible presence section */
-.presence-section {
-  background: var(--bg-muted);
+/* Presence block — numeric summary always visible; bowl visuals toggle */
+.presence-block {
+  background: var(--bg-inset);
   border: 1px solid var(--border-subtle);
   border-radius: var(--r-md);
+  padding: var(--sp-3);
 }
-.presence-summary {
-  list-style: none;
-  padding: var(--sp-2) var(--sp-3);
-  cursor: pointer;
-  display: flex; justify-content: space-between; align-items: center;
+.presence-hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--sp-3);
+}
+.presence-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3) var(--sp-5);
+  flex: 1;
+}
+.presence-stat { display: flex; flex-direction: column; gap: 2px; }
+.stat-label {
+  font-size: var(--fs-xxs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: var(--fw-medium);
+}
+.stat-detail {
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
   font-size: var(--fs-sm);
   color: var(--text-secondary);
 }
-.presence-summary::-webkit-details-marker { display: none; }
-.presence-summary::before {
-  content: '▸';
-  margin-right: var(--sp-2);
-  transition: transform var(--motion-fast);
+.stat-placed strong { color: var(--text-primary); font-family: var(--font-mono); }
+.stat-income strong { color: var(--accent-amber); font-family: var(--font-mono); }
+.bowl-toggle {
+  font-size: var(--fs-xs);
+  padding: var(--sp-1) var(--sp-3);
+  white-space: nowrap;
 }
-details[open] > .presence-summary::before { transform: rotate(90deg); }
-.presence-summary-label { font-weight: var(--fw-medium); color: var(--text-primary); flex: 1; }
-.presence-summary-hint { font-size: var(--fs-xs); color: var(--text-muted); font-style: italic; }
 
 .tracks {
   display: flex; flex-direction: column; gap: var(--sp-3);
-  padding: var(--sp-3);
+  padding: var(--sp-3) 0 0;
+  margin-top: var(--sp-3);
   border-top: 1px solid var(--border-subtle);
 }
 

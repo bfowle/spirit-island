@@ -24,6 +24,7 @@ additional-css = [
   "theme/css/variables.css",
   "theme/highlight.css",
   "theme/mdbook-admonish.css",
+  "theme/si-icons.css",
 ]
 additional-js = [
   "theme/gruvbox.js",
