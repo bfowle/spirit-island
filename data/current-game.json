@@ -1,10 +1,10 @@
 {
   "version": "1.0",
   "round": 1,
-  "phase": "growth",
+  "phase": "setup",
   "setup": {
-    "adversary": "england",
-    "level": 3,
+    "adversary": "brandenburg-prussia",
+    "level": 10,
     "scenario": null,
     "spirits": [
       "shadows-flicker-like-flame"
@@ -13,7 +13,11 @@
       "A"
     ],
     "expansions_active": [
-      "base"
+      "base",
+      "branch-and-claw",
+      "jagged-earth",
+      "nature-incarnate",
+      "promo-2"
     ]
   },
   "pools": {
@@ -28,10 +32,7 @@
     "shadows-flicker-like-flame": {
       "energy": 0,
       "card_plays": 1,
-      "presence_on_board": {
-        "A.5": 1,
-        "A.6": 2
-      },
+      "presence_on_board": {},
       "presence_on_track_energy": [
         "energy0",
         "energy1",
@@ -64,16 +65,6 @@
   "board_state": {
     "A": {
       "lands": {
-        "1": {
-          "terrain": "wetland",
-          "coastal": false,
-          "explorers": 1,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 1,
-          "blight": 0,
-          "tokens": []
-        },
         "3": {
           "terrain": "jungle",
           "coastal": true,
@@ -84,8 +75,38 @@
           "blight": 0,
           "tokens": []
         },
+        "5": {
+          "terrain": "wetland",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "1": {
+          "terrain": "wetland",
+          "coastal": false,
+          "explorers": 1,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 1,
+          "blight": 0,
+          "tokens": []
+        },
         "4": {
           "terrain": "sands",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "8": {
+          "terrain": "mountain",
           "coastal": true,
           "explorers": 0,
           "towns": 0,
@@ -104,19 +125,9 @@
           "blight": 0,
           "tokens": []
         },
-        "8": {
-          "terrain": "mountain",
+        "7": {
+          "terrain": "sands",
           "coastal": true,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
-        "5": {
-          "terrain": "wetland",
-          "coastal": false,
           "explorers": 0,
           "towns": 0,
           "cities": 0,
@@ -129,16 +140,6 @@
           "coastal": false,
           "explorers": 0,
           "towns": 1,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
-        "7": {
-          "terrain": "sands",
-          "coastal": true,
-          "explorers": 0,
-          "towns": 0,
           "cities": 0,
           "dahan": 0,
           "blight": 0,

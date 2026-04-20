@@ -67,6 +67,7 @@ async fn main() -> anyhow::Result<()> {
         .route("/api/draw-probability", get(get_draw_probability))
         .route("/api/registry", get(get_registry))
         .route("/api/new-game", axum::routing::post(post_new_game))
+        .route("/api/save-board-geometry", axum::routing::post(post_save_board_geometry))
         .fallback_service(ServeDir::new(&frontend_dist).append_index_html_on_directories(true))
         .layer(CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any))
         .with_state(app_state);
@@ -462,6 +463,110 @@ async fn post_new_game(
         return (StatusCode::INTERNAL_SERVER_ERROR, format!("persist error: {e}")).into_response();
     }
     Json(parsed).into_response()
+}
+
+#[derive(Deserialize)]
+struct SaveBoardGeometryRequest {
+    board_id: String,
+    /// Map of land_id → {terrain, coastal, …}. Only `terrain` and `coastal`
+    /// are persisted back to the static geometry; unit counts stay in live state.
+    lands: serde_json::Map<String, serde_json::Value>,
+}
+
+async fn post_save_board_geometry(
+    axum::extract::State(state): axum::extract::State<AppState>,
+    Json(req): Json<SaveBoardGeometryRequest>,
+) -> impl IntoResponse {
+    // Map board_id (e.g., "A", "B", "E") to the on-disk file (base_A.json / je_E.json).
+    let boards_dir = state.data_dir.join("boards");
+    let candidates = [
+        format!("base_{}.json", req.board_id),
+        format!("je_{}.json", req.board_id),
+    ];
+    let mut found: Option<(PathBuf, serde_json::Value)> = None;
+    for cand in &candidates {
+        let p = boards_dir.join(cand);
+        if p.exists() {
+            let raw = match std::fs::read_to_string(&p) {
+                Ok(s) => s,
+                Err(e) => {
+                    return (StatusCode::INTERNAL_SERVER_ERROR, format!("read error {p:?}: {e}")).into_response()
+                }
+            };
+            let json: serde_json::Value = match serde_json::from_str(&raw) {
+                Ok(v) => v,
+                Err(e) => {
+                    return (StatusCode::INTERNAL_SERVER_ERROR, format!("parse error {p:?}: {e}")).into_response()
+                }
+            };
+            found = Some((p, json));
+            break;
+        }
+    }
+    let Some((path, mut board_json)) = found else {
+        return (
+            StatusCode::NOT_FOUND,
+            format!("board {} not found in {boards_dir:?}", req.board_id),
+        )
+            .into_response();
+    };
+
+    // Update each matching land's `terrain` + `coastal`. Keep `starting_dahan`
+    // and any other metadata already on disk. Preserve the ocean (land 0)
+    // untouched.
+    if let Some(lands_obj) = board_json
+        .get_mut("lands")
+        .and_then(|v| v.as_object_mut())
+    {
+        for (land_id, incoming) in &req.lands {
+            if land_id == "0" {
+                continue;
+            }
+            let Some(existing) = lands_obj.get_mut(land_id) else {
+                continue;
+            };
+            let Some(existing_obj) = existing.as_object_mut() else {
+                continue;
+            };
+            if let Some(terrain) = incoming.get("terrain").and_then(|v| v.as_str()) {
+                existing_obj.insert(
+                    "terrain".to_string(),
+                    serde_json::Value::String(terrain.to_string()),
+                );
+            }
+            if let Some(coastal) = incoming.get("coastal").and_then(|v| v.as_bool()) {
+                existing_obj.insert(
+                    "coastal".to_string(),
+                    serde_json::Value::Bool(coastal),
+                );
+            }
+        }
+    }
+
+    // Mark the source field to show it's been corrected by the user
+    board_json["source"] = serde_json::Value::String(format!(
+        "corrected via si-live UI {}",
+        chrono_like_ts()
+    ));
+
+    let json_out = match serde_json::to_string_pretty(&board_json) {
+        Ok(s) => s,
+        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("serialize error: {e}")).into_response(),
+    };
+    if let Err(e) = std::fs::write(&path, json_out + "\n") {
+        return (StatusCode::INTERNAL_SERVER_ERROR, format!("write error {path:?}: {e}")).into_response();
+    }
+    Json(serde_json::json!({ "status": "saved", "path": path.display().to_string() })).into_response()
+}
+
+fn chrono_like_ts() -> String {
+    // Avoid pulling chrono for one timestamp. Use SystemTime + manual format.
+    use std::time::{SystemTime, UNIX_EPOCH};
+    let secs = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0);
+    format!("(epoch {secs})")
 }
 
 async fn get_draw_probability(

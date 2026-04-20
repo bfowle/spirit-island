@@ -75,7 +75,7 @@ watch(state, (s) => {
 
     <section v-for="bid in Object.keys(state.board_state)" :key="bid" class="board-section">
       <h2>Board {{ bid }}</h2>
-      <Board v-model="state.board_state[bid]" />
+      <Board v-model="state.board_state[bid]" :board-id="bid" />
     </section>
 
     <section v-for="slug in Object.keys(state.spirits)" :key="slug" class="spirit-section">
