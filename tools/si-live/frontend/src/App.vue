@@ -15,9 +15,7 @@ import EventDeck from './components/EventDeck.vue'
 import Retrospective from './components/Retrospective.vue'
 import PhaseStepper from './components/PhaseStepper.vue'
 import TerrainTimeline from './components/TerrainTimeline.vue'
-import SectionNav from './components/SectionNav.vue'
 import StickyStatus from './components/StickyStatus.vue'
-import SectionStrip from './components/SectionStrip.vue'
 
 const state = ref<GameState | null>(null)
 const error = ref<string | null>(null)
@@ -26,14 +24,17 @@ const showWizard = ref(false)
 const showSavedGames = ref(false)
 let saveTimer: number | null = null
 
-// "focus" determines which sections are prominent vs. collapsed. Default auto-follows
-// the active phase; user can pin focus to a specific view via the side tabs to
-// temporarily override.
-type FocusMode = 'auto' | 'board' | 'decks' | 'spirits' | 'stats' | 'retro' | 'all'
-const focusOverride = ref<FocusMode>('auto')
+// Sidebar collapse state
+const sidebarCollapsed = ref(false)
+
+// Active spirit tab for multi-spirit games
+const activeSpiritTab = ref<string | null>(null)
 
 function onGameStarted(newState: GameState) {
   state.value = newState
+  // Set first spirit as active tab
+  const slugs = Object.keys(newState.spirits ?? {})
+  activeSpiritTab.value = slugs[0] ?? null
 }
 
 const archiving = ref(false)
@@ -55,7 +56,7 @@ function exportCurrentGame() {
   const payload = {
     exported_at: new Date().toISOString(),
     schema_version: state.value.version,
-    outcome: endResult.value,  // 'won' | 'lost' | null
+    outcome: endResult.value,
     ...state.value,
   }
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
@@ -80,15 +81,9 @@ function appendLog(event: string, details: Record<string, unknown>) {
 function resetFearPool() {
   if (!state.value) return
   state.value.pools.fear_current = 0
-  // Prime the auto-log watcher's cache so the reset itself doesn't generate
-  // a spurious "blight_removed / fear_generated" delta next tick.
   lastFear = 0
 }
 
-/** Invoked by Board → LandEditor when the user adjusts a per-land value that
- *  mirrors a board-level pool. Currently only blight uses this — placing/removing
- *  blight on a land must sync with `pools.blight_current`. The pool watcher will
- *  auto-log the delta as blight_added / blight_removed. */
 function bumpPool(pool: 'blight', delta: number) {
   if (!state.value) return
   if (pool === 'blight') {
@@ -97,11 +92,7 @@ function bumpPool(pool: 'blight', delta: number) {
   }
 }
 
-// Dedicated fear-deck watcher: advances terror level + resyncs unseen based
-// on total consumed (resolved + earned) regardless of how the cards got there.
-// The pool watcher only catches bank-time crossings; direct resolve/earn
-// manipulation via the FearDeck UI needs its own trigger so terror keeps up
-// with reality. unseen resync prevents drift from tier-count edits.
+// Fear deck watcher
 watch(
   () => state.value?.fear_deck,
   (fd) => {
@@ -116,7 +107,6 @@ watch(
       state.value.pools.terror_level = nextLvl
       appendLog('terror_advanced', { to_level: nextLvl })
     }
-    // Keep unseen in sync with the authoritative card lists
     const expectedUnseen = Math.max(0, fd.deck_size - total)
     if (fd.unseen !== expectedUnseen) {
       fd.unseen = expectedUnseen
@@ -125,9 +115,7 @@ watch(
   { deep: true },
 )
 
-// --- Game-end detection ----------------------------------------------------
-// Delegated to the shared lib so the status bar, charts, and banner all use
-// one source of truth. `endState` returns 'won' | 'lost' | 'imminent' | 'in-progress'.
+// Game-end detection
 import { computeWinProb } from './lib/winprob'
 import { fetchSpiritAffinity, type SpiritAffinityMap } from './api'
 
@@ -151,14 +139,10 @@ const endBanner = computed(() => {
   return endResult.value
 })
 
-// Auto-log fear/blight deltas regardless of whether they came from Quick-fear
-// buttons, direct input editing, or any other path. The retrospective chart
-// derives from these log entries, so we need *every* change captured.
-// ALSO auto-banks fear cards when the pool crosses threshold — moved here
-// from TurnController so direct input edits trigger banking too.
+// Auto-log fear/blight deltas + auto-bank fear cards
 let lastFear = 0
 let lastBlight = 0
-let lastSuppressRound = -1  // prevent loops during round resets
+let lastSuppressRound = -1
 watch(
   () => state.value?.pools,
   (pools) => {
@@ -181,9 +165,6 @@ watch(
       appendLog('blight_removed', { amount: -blightDelta })
     }
 
-    // Auto-bank fear cards if pool crosses threshold. Applies regardless of
-    // how fear was bumped (Quick buttons, input edit, watcher-injected). Each
-    // crossing banks one face-down card; overflow carries forward.
     const thr = pools.fear_threshold
     if (thr > 0 && pools.fear_current >= thr) {
       let remaining = pools.fear_current
@@ -199,7 +180,6 @@ watch(
       }
       pools.fear_current = remaining
 
-      // Terror advance based on total consumed (resolved + earned) vs deck thirds
       const fd2 = state.value.fear_deck
       if (fd2) {
         const total = fd2.resolved.length + fd2.earned.length
@@ -223,6 +203,9 @@ watch(
 onMounted(async () => {
   try {
     state.value = await fetchState()
+    // Initialize active spirit tab
+    const slugs = Object.keys(state.value?.spirits ?? {})
+    activeSpiritTab.value = slugs[0] ?? null
   } catch (e) {
     error.value = (e as Error).message
   }
@@ -262,378 +245,224 @@ function humanSlug(slug: string): string {
     .join(' ')
 }
 
-// Density preference — 'comfortable' adds extra padding for normal-zoom use.
-// Stored on the html element so CSS custom props cascade everywhere.
+// Density preference
 const density = ref<'compact' | 'comfortable'>('comfortable')
 watch(density, (d) => {
   document.documentElement.dataset.density = d
 }, { immediate: true })
 
-// Each section declares which phases it's "primary" vs "secondary" in. The auto
-// focus mode renders primary sections prominently and fades secondary sections;
-// the user can pin a specific view via the side controls.
-const PHASE_FOCUS: Record<Phase, { primary: FocusMode[]; secondary: FocusMode[] }> = {
-  setup:      { primary: ['board', 'decks'],           secondary: ['spirits', 'stats', 'retro'] },
-  growth:     { primary: ['spirits'],                  secondary: ['board', 'stats', 'decks', 'retro'] },
-  // Fast & Slow phases — spirits play cards that target LAND; both views
-  // are load-bearing. Decks / stats / retro step aside.
-  fast:       { primary: ['spirits', 'board'],         secondary: ['decks', 'stats', 'retro'] },
-  event:      { primary: ['decks'],                    secondary: ['board', 'stats', 'spirits', 'retro'] },
-  fear:       { primary: ['decks'],                    secondary: ['board', 'stats', 'spirits', 'retro'] },
-  invader:    { primary: ['decks', 'board'],           secondary: ['spirits', 'stats', 'retro'] },
-  slow:       { primary: ['spirits', 'board'],         secondary: ['decks', 'stats', 'retro'] },
-  timepasses: { primary: ['retro', 'stats'],           secondary: ['spirits', 'board', 'decks'] },
-  end:        { primary: ['retro', 'stats'],           secondary: ['spirits', 'board', 'decks'] },
+// Phase-based grid area mapping
+const PHASE_GRID: Record<Phase, string> = {
+  setup:      '"board decks" "board decks"',
+  growth:     '"spirits decks" "spirits stats"',
+  fast:       '"spirits board" "spirits board"',
+  event:      '"decks board" "decks stats"',
+  fear:       '"decks board" "decks stats"',
+  invader:    '"decks board" "decks board"',
+  slow:       '"spirits board" "spirits board"',
+  timepasses: '"retro stats" "retro stats"',
+  end:        '"retro stats" "retro stats"',
 }
 
-function focusClass(section: FocusMode): string {
-  if (focusOverride.value !== 'auto') {
-    return focusOverride.value === section || focusOverride.value === 'all' ? 'focus-primary' : 'focus-faded'
-  }
+const gridAreas = computed(() => {
   const phase = state.value?.phase ?? 'setup'
-  const meta = PHASE_FOCUS[phase]
-  if (meta.primary.includes(section)) return 'focus-primary'
-  if (meta.secondary.includes(section)) return 'focus-secondary'
-  return ''
-}
-
-/** Whether a section should be collapsed to a strip right now.
- *  Collapsed = not primary for the active phase, unless the user has pinned a
- *  different focus via the Focus tabs or explicitly wants everything ('all'). */
-function isSectionCollapsed(section: FocusMode): boolean {
-  if (focusOverride.value === 'all') return false
-  if (focusOverride.value !== 'auto') return focusOverride.value !== section
-  const phase = state.value?.phase ?? 'setup'
-  const meta = PHASE_FOCUS[phase]
-  return !meta.primary.includes(section)
-}
-
-/** Short metric string shown on each section's collapsed strip. */
-function sectionMetric(section: FocusMode): string {
-  if (!state.value) return ''
-  const s = state.value
-  switch (section) {
-    case 'board': {
-      const boards = s.board_state ?? {}
-      let invaders = 0, blight = 0
-      for (const b of Object.values(boards)) {
-        for (const land of Object.values(b.lands ?? {})) {
-          invaders += (land.explorers ?? 0) + (land.towns ?? 0) + (land.cities ?? 0)
-          blight += land.blight ?? 0
-        }
-      }
-      return `${Object.keys(boards).length} board(s) · ${invaders} invaders · ${blight} blight`
-    }
-    case 'decks': {
-      const inv = s.invader_deck
-      const fd = s.fear_deck
-      const ev = s.event_deck
-      const invExp = inv?.explore?.terrain ?? '—'
-      const fearLeft = fd ? Math.max(0, fd.deck_size - (fd.resolved.length + fd.earned.length)) : 0
-      const evPrev = ev?.previewed.length ? '1 previewed' : 'no preview'
-      return `Explore: ${invExp} · Fear ${fearLeft} left · ${evPrev}`
-    }
-    case 'spirits': {
-      const count = Object.keys(s.spirits ?? {}).length
-      return `${count} spirit${count === 1 ? '' : 's'}`
-    }
-    case 'stats':
-      return `Round ${s.round}`
-    case 'retro': {
-      const log = (s.log ?? []) as Array<{ event: string }>
-      const snaps = log.filter(e => e.event === 'phase_snapshot').length
-      return `${snaps} snapshot(s)`
-    }
-    default:
-      return ''
-  }
-}
-
-const focusTabs: { key: FocusMode; label: string }[] = [
-  { key: 'auto', label: 'Auto (phase-driven)' },
-  { key: 'board', label: 'Board' },
-  { key: 'decks', label: 'Decks' },
-  { key: 'spirits', label: 'Spirits' },
-  { key: 'stats', label: 'Stats' },
-  { key: 'retro', label: 'Retrospective' },
-  { key: 'all', label: 'Show all' },
-]
-
-// Quick-nav items — each anchor matches an id= on a section below. Board and
-// spirit entries are generated dynamically from the game state.
-const navItems = computed(() => {
-  const items: Array<{ id: string; label: string; icon: string }> = [
-    { id: 'sec-turn',     label: 'Turn Log',      icon: '⟳' },
-    { id: 'sec-pools',    label: 'Pools · Blight', icon: '◯' },
-    { id: 'sec-events',   label: 'Event Deck',    icon: '📜' },
-    { id: 'sec-fear',     label: 'Fear Deck',     icon: '😱' },
-    { id: 'sec-invader',  label: 'Invader Deck',  icon: '⚔' },
-    { id: 'sec-terrain',  label: 'Terrain Timeline', icon: '📊' },
-    { id: 'sec-stats',    label: 'Stats',         icon: '%' },
-    { id: 'sec-retro',    label: 'Retrospective', icon: '🔍' },
-  ]
-  if (state.value) {
-    for (const bid of Object.keys(state.value.board_state)) {
-      items.push({ id: `sec-board-${bid}`, label: `Board ${bid}`, icon: '▦' })
-    }
-    for (const slug of Object.keys(state.value.spirits)) {
-      items.push({ id: `sec-spirit-${slug}`, label: humanSlug(slug).split(' ').slice(0, 2).join(' '), icon: '✦' })
-    }
-  }
-  return items
+  return PHASE_GRID[phase]
 })
+
+// Determine which sections are visible (primary) for current phase
+const PHASE_PRIMARY: Record<Phase, string[]> = {
+  setup:      ['board', 'decks'],
+  growth:     ['spirits', 'decks', 'stats'],
+  fast:       ['spirits', 'board'],
+  event:      ['decks', 'board', 'stats'],
+  fear:       ['decks', 'board', 'stats'],
+  invader:    ['decks', 'board'],
+  slow:       ['spirits', 'board'],
+  timepasses: ['retro', 'stats'],
+  end:        ['retro', 'stats'],
+}
+
+function isPrimary(section: string): boolean {
+  const phase = state.value?.phase ?? 'setup'
+  return PHASE_PRIMARY[phase].includes(section)
+}
+
+// Spirit slugs for tabs
+const spiritSlugs = computed(() => Object.keys(state.value?.spirits ?? {}))
 </script>
 
 <template>
   <div v-if="error" class="banner error">{{ error }}</div>
-  <div v-else-if="!state" class="banner">Loading…</div>
-  <main v-else>
-    <header class="app-header">
-      <div class="brand">
-        <h1>si-live</h1>
-        <span v-if="matchupTag" class="matchup-tag">{{ matchupTag }}</span>
-      </div>
+  <div v-else-if="!state" class="banner">Loading...</div>
 
-      <div class="app-meta">
-        <button
-          class="ghost"
-          @click="archiveCurrentGame"
-          :disabled="archiving"
-          title="Save a snapshot of this game to the archive (data/games/) — for later review or statistical aggregation"
-        >{{ archiving ? 'Archiving…' : '💾 Archive' }}</button>
-        <button class="ghost" @click="exportCurrentGame" title="Download this game's full state as a JSON file">⬇ Export JSON</button>
-        <button class="ghost" @click="showSavedGames = true" title="Browse archived games">Saved Games</button>
-        <button class="primary new-game-btn" @click="showWizard = true">New Game</button>
-        <span v-if="saving" class="saving" aria-live="polite">saving…</span>
-      </div>
-    </header>
-
-    <SetupWizard :show="showWizard" @close="showWizard = false" @game-started="onGameStarted" />
-    <SavedGames :show="showSavedGames" @close="showSavedGames = false" @game-loaded="onGameStarted" />
-
-    <PhaseStepper v-model="state.phase" :round="state.round" />
-
-    <StickyStatus :state="state" />
-
-    <!-- Game-end banner — WIN (fear deck resolved + T3), LOST (blight cap flipped),
-         or IMMINENT WIN (deck drawn, awaiting Terror 3 or Fear phase resolution). -->
-    <div v-if="endBanner === 'won'" class="end-banner won">
-      <div class="end-main">
-        <span class="end-icon">🏆</span>
-        <div>
-          <div class="end-title">Victory — Fear deck exhausted</div>
-          <div class="end-sub">All {{ state.fear_deck?.deck_size ?? 9 }} fear cards resolved at Terror {{ state.pools.terror_level }} · Round {{ state.round }}</div>
+  <div v-else class="dashboard">
+    <!-- HEADER: brand + stepper + controls -->
+    <header class="dash-header">
+      <div class="header-top">
+        <div class="brand">
+          <h1>si-live</h1>
+          <span v-if="matchupTag" class="matchup-tag">{{ matchupTag }}</span>
+        </div>
+        <div class="header-controls">
+          <button class="ghost" @click="archiveCurrentGame" :disabled="archiving">
+            {{ archiving ? 'Archiving...' : 'Archive' }}
+          </button>
+          <button class="ghost" @click="exportCurrentGame">Export</button>
+          <button class="ghost" @click="showSavedGames = true">Saved</button>
+          <button class="primary" @click="showWizard = true">New Game</button>
+          <span v-if="saving" class="saving">saving...</span>
         </div>
       </div>
+      <PhaseStepper v-model="state.phase" :round="state.round" />
+    </header>
+
+    <!-- STICKY STATUS BAR -->
+    <StickyStatus :state="state" class="dash-status" />
+
+    <!-- END GAME BANNER -->
+    <div v-if="endBanner === 'won'" class="end-banner won">
+      <span class="end-icon">Victory</span>
+      <span class="end-detail">Fear deck exhausted at Terror {{ state.pools.terror_level }}</span>
       <button class="ghost" @click="gameOverBannerDismissed = true">Dismiss</button>
     </div>
     <div v-else-if="endBanner === 'lost'" class="end-banner lost">
-      <div class="end-main">
-        <span class="end-icon">💀</span>
-        <div>
-          <div class="end-title">Defeat — Blighted Island capped</div>
-          <div class="end-sub">Blight {{ state.pools.blight_current }} / {{ state.pools.blight_cap }} after flip · Round {{ state.round }}</div>
-        </div>
-      </div>
+      <span class="end-icon">Defeat</span>
+      <span class="end-detail">Blighted Island capped</span>
       <button class="ghost" @click="gameOverBannerDismissed = true">Dismiss</button>
     </div>
     <div v-else-if="endBanner === 'imminent'" class="end-banner imminent">
-      <div class="end-main">
-        <span class="end-icon">🎯</span>
-        <div>
-          <div class="end-title">Imminent Victory — Fear deck drawn</div>
-          <div class="end-sub">Finish the current Invader phase without a total loss. Once Terror {{ state.pools.terror_level === 3 ? '3 holds through the phase' : '3 is reached' }}, the win is locked in.</div>
-        </div>
-      </div>
+      <span class="end-icon">Imminent Victory</span>
+      <span class="end-detail">Fear deck drawn — finish the phase</span>
       <button class="ghost" @click="gameOverBannerDismissed = true">Dismiss</button>
     </div>
 
-    <!-- Side-tabs to pin focus (overrides phase-driven auto focus) -->
-    <div class="focus-tabs-row">
-      <div class="focus-tabs">
-        <button
-          v-for="t in focusTabs"
-          :key="t.key"
-          type="button"
-          class="focus-tab"
-          :class="{ active: focusOverride === t.key }"
-          @click="focusOverride = t.key"
-        >{{ t.label }}</button>
-      </div>
-      <div class="density-toggle">
-        <span class="density-label">Density:</span>
-        <button
-          type="button"
-          class="density-btn"
-          :class="{ active: density === 'compact' }"
-          @click="density = 'compact'"
-        >Compact</button>
-        <button
-          type="button"
-          class="density-btn"
-          :class="{ active: density === 'comfortable' }"
-          @click="density = 'comfortable'"
-        >Comfortable</button>
-      </div>
-    </div>
-
-    <section id="sec-turn" class="section always-visible">
-      <TurnController v-model="state" />
-    </section>
-
-    <section id="sec-pools" class="section pools-section always-visible">
-      <Pools
-        v-model="state.pools"
-        :player-count="Object.keys(state.spirits ?? {}).length"
-      />
-    </section>
-
-    <section id="sec-events" class="section" :class="focusClass('decks')">
-      <SectionStrip
-        title="Event Deck"
-        icon="📜"
-        :collapsed="isSectionCollapsed('decks')"
-        :metric="sectionMetric('decks')"
-      >
-        <div class="section-hdr"><h2>Event Deck</h2></div>
-        <EventDeck
-          v-model="state.event_deck"
-          :round="state.round"
-        />
-      </SectionStrip>
-    </section>
-
-    <section id="sec-fear" class="section" :class="focusClass('decks')">
-      <SectionStrip
-        title="Fear Deck"
-        icon="😱"
-        :collapsed="isSectionCollapsed('decks')"
-        :metric="`${state.fear_deck?.resolved.length ?? 0}r + ${state.fear_deck?.earned.length ?? 0}e / ${state.fear_deck?.deck_size ?? 9} · T${state.pools.terror_level}`"
-      >
-        <div class="section-hdr"><h2>Fear Deck</h2></div>
-        <FearDeck
-          v-model="state.fear_deck"
-          :round="state.round"
-          :terror-level="state.pools.terror_level"
-          :fear-threshold="state.pools.fear_threshold"
-          @log-event="(event, details) => appendLog(event, details)"
-          @reset-fear-pool="resetFearPool"
-        />
-      </SectionStrip>
-    </section>
-
-    <section id="sec-invader" class="section" :class="focusClass('decks')">
-      <SectionStrip
-        title="Invader Deck"
-        icon="⚔"
-        :collapsed="isSectionCollapsed('decks')"
-        :metric="`R: ${state.invader_deck?.ravage?.terrain ?? '—'} · B: ${state.invader_deck?.build?.terrain ?? '—'} · E: ${state.invader_deck?.explore?.terrain ?? '—'}`"
-      >
-        <div class="section-hdr"><h2>Invader Deck</h2></div>
-        <InvaderDeck
-          v-model="state.invader_deck"
-          :adversary="state.setup.adversary"
-          :level="state.setup.level"
-        />
-      </SectionStrip>
-    </section>
-
-    <section id="sec-terrain" class="section" :class="focusClass('decks')">
-      <SectionStrip
-        title="Terrain Timeline"
-        icon="📊"
-        :collapsed="isSectionCollapsed('decks')"
-      >
-        <div class="section-hdr"><h2>Terrain Exposure</h2></div>
-        <TerrainTimeline :state="state" />
-      </SectionStrip>
-    </section>
-
-    <section id="sec-stats" class="section" :class="focusClass('stats')">
-      <SectionStrip
-        title="Stats"
-        icon="%"
-        :collapsed="isSectionCollapsed('stats')"
-        :metric="sectionMetric('stats')"
-      >
-        <div class="section-hdr"><h2>Stats</h2></div>
-        <StatsPanel :state="state" />
-      </SectionStrip>
-    </section>
-
-    <section id="sec-retro" class="section" :class="focusClass('retro')">
-      <SectionStrip
-        title="Retrospective"
-        icon="🔍"
-        :collapsed="isSectionCollapsed('retro')"
-        :metric="sectionMetric('retro')"
-      >
-        <div class="section-hdr"><h2>Retrospective</h2></div>
-        <Retrospective :state="state" />
-      </SectionStrip>
-    </section>
-
-    <section
-      v-for="bid in Object.keys(state.board_state)"
-      :id="`sec-board-${bid}`"
-      :key="bid"
-      class="section"
-      :class="focusClass('board')"
-    >
-      <SectionStrip
-        :title="`Board ${bid}`"
-        icon="▦"
-        :collapsed="isSectionCollapsed('board')"
-        :metric="sectionMetric('board')"
-      >
-        <div class="section-hdr"><h2>Board {{ bid }}</h2></div>
-        <Board
-          v-model="state.board_state[bid]"
-          :board-id="bid"
-          :spirits="state.spirits"
-          @bump-pool="(pool, delta) => bumpPool(pool, delta)"
-        />
-      </SectionStrip>
-    </section>
-
-    <section
-      v-for="slug in Object.keys(state.spirits)"
-      :id="`sec-spirit-${slug}`"
-      :key="slug"
-      class="section"
-      :class="focusClass('spirits')"
-    >
-      <SectionStrip
-        :title="humanSlug(slug)"
-        icon="✦"
-        :collapsed="isSectionCollapsed('spirits')"
-        :metric="`${state.spirits[slug]?.energy ?? 0}E · ${state.spirits[slug]?.card_plays ?? 0}CP · ${state.spirits[slug]?.hand?.length ?? 0} hand`"
-      >
-        <div class="section-hdr">
-          <h2>{{ humanSlug(slug) }}</h2>
-          <span class="subtle mono">{{ slug }}</span>
+    <!-- MAIN DASHBOARD GRID -->
+    <main class="dash-main" :style="{ gridTemplateAreas: gridAreas }">
+      <!-- SPIRITS AREA (with tabs for multi-spirit) -->
+      <section class="grid-spirits" :class="{ hidden: !isPrimary('spirits') }">
+        <div class="area-header">
+          <h2>Spirits</h2>
+          <div v-if="spiritSlugs.length > 1" class="spirit-tabs">
+            <button
+              v-for="slug in spiritSlugs"
+              :key="slug"
+              type="button"
+              class="spirit-tab"
+              :class="{ active: activeSpiritTab === slug }"
+              @click="activeSpiritTab = slug"
+            >{{ humanSlug(slug).split(' ').slice(0, 2).join(' ') }}</button>
+          </div>
         </div>
-        <SpiritPanel
-          v-model="state.spirits[slug]"
-          :slug="slug"
-          :round="state.round"
-          @log-event="(event, details) => appendLog(event, details)"
-        />
-      </SectionStrip>
-    </section>
+        <div class="spirit-content">
+          <SpiritPanel
+            v-for="slug in spiritSlugs"
+            v-show="activeSpiritTab === slug || spiritSlugs.length === 1"
+            :key="slug"
+            v-model="state.spirits[slug]"
+            :slug="slug"
+            :round="state.round"
+            @log-event="(event, details) => appendLog(event, details)"
+          />
+        </div>
+      </section>
 
-    <SectionNav :items="navItems" />
-  </main>
+      <!-- BOARD AREA -->
+      <section class="grid-board" :class="{ hidden: !isPrimary('board') }">
+        <div class="area-header">
+          <h2>Board</h2>
+          <div v-if="Object.keys(state.board_state).length > 1" class="board-chips">
+            <span v-for="bid in Object.keys(state.board_state)" :key="bid" class="chip">{{ bid }}</span>
+          </div>
+        </div>
+        <div class="board-content">
+          <Board
+            v-for="bid in Object.keys(state.board_state)"
+            :key="bid"
+            v-model="state.board_state[bid]"
+            :board-id="bid"
+            :spirits="state.spirits"
+            @bump-pool="(pool, delta) => bumpPool(pool, delta)"
+          />
+        </div>
+      </section>
+
+      <!-- DECKS AREA (Invader + Fear + Event + Pools) -->
+      <section class="grid-decks" :class="{ hidden: !isPrimary('decks') }">
+        <div class="area-header"><h2>Decks &amp; Pools</h2></div>
+        <div class="decks-grid">
+          <div class="deck-card">
+            <h3>Pools</h3>
+            <Pools
+              v-model="state.pools"
+              :player-count="Object.keys(state.spirits ?? {}).length"
+            />
+          </div>
+          <div class="deck-card">
+            <h3>Invader Deck</h3>
+            <InvaderDeck
+              v-model="state.invader_deck"
+              :adversary="state.setup.adversary"
+              :level="state.setup.level"
+            />
+          </div>
+          <div class="deck-card">
+            <h3>Fear Deck</h3>
+            <FearDeck
+              v-model="state.fear_deck"
+              :round="state.round"
+              :terror-level="state.pools.terror_level"
+              :fear-threshold="state.pools.fear_threshold"
+              @log-event="(event, details) => appendLog(event, details)"
+              @reset-fear-pool="resetFearPool"
+            />
+          </div>
+          <div class="deck-card">
+            <h3>Event Deck</h3>
+            <EventDeck
+              v-model="state.event_deck"
+              :round="state.round"
+            />
+          </div>
+          <div class="deck-card terrain-card">
+            <h3>Terrain Timeline</h3>
+            <TerrainTimeline :state="state" />
+          </div>
+        </div>
+      </section>
+
+      <!-- STATS AREA -->
+      <section class="grid-stats" :class="{ hidden: !isPrimary('stats') }">
+        <div class="area-header"><h2>Stats</h2></div>
+        <StatsPanel :state="state" />
+      </section>
+
+      <!-- RETROSPECTIVE AREA -->
+      <section class="grid-retro" :class="{ hidden: !isPrimary('retro') }">
+        <div class="area-header"><h2>Retrospective</h2></div>
+        <Retrospective :state="state" />
+      </section>
+    </main>
+
+    <!-- FOOTER: Turn Controller -->
+    <footer class="dash-footer">
+      <TurnController v-model="state" />
+    </footer>
+
+    <!-- Modals -->
+    <SetupWizard :show="showWizard" @close="showWizard = false" @game-started="onGameStarted" />
+    <SavedGames :show="showSavedGames" @close="showSavedGames = false" @game-loaded="onGameStarted" />
+  </div>
 </template>
 
 <style scoped>
-main {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: var(--sp-5) var(--sp-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-5);
+/* ─── DASHBOARD SHELL ─── */
+.dashboard {
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  background: var(--bg-canvas);
 }
 
 .banner {
@@ -642,7 +471,6 @@ main {
   color: var(--text-secondary);
   font-size: var(--fs-sm);
 }
-
 .banner.error {
   background: rgba(184, 113, 106, 0.12);
   color: var(--status-danger);
@@ -650,14 +478,19 @@ main {
   margin: var(--sp-4);
 }
 
-.app-header {
+/* ─── HEADER ─── */
+.dash-header {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--sp-2) var(--sp-4);
+}
+
+.header-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
   gap: var(--sp-3);
-  padding-bottom: var(--sp-3);
-  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: var(--sp-2);
 }
 
 .brand {
@@ -668,27 +501,26 @@ main {
 
 h1 {
   font-family: var(--font-mono);
-  font-size: var(--fs-xl);
+  font-size: var(--fs-lg);
   font-weight: var(--fw-semibold);
   color: var(--accent);
   letter-spacing: -0.01em;
+  margin: 0;
 }
 
 .matchup-tag {
-  font-size: var(--fs-sm);
+  font-size: var(--fs-xs);
   color: var(--text-secondary);
   text-transform: capitalize;
-  font-weight: var(--fw-regular);
   padding: 2px var(--sp-2);
   background: var(--bg-muted);
   border-radius: var(--r-full);
 }
 
-.app-meta {
-  display: inline-flex;
+.header-controls {
+  display: flex;
   align-items: center;
-  gap: var(--sp-3);
-  flex-wrap: wrap;
+  gap: var(--sp-2);
 }
 
 .saving {
@@ -697,149 +529,81 @@ h1 {
   font-style: italic;
 }
 
+/* ─── STICKY STATUS ─── */
+.dash-status {
+  position: relative;
+  z-index: 50;
+}
+
+/* ─── END BANNERS ─── */
 .end-banner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: var(--sp-3);
-  padding: var(--sp-3) var(--sp-4);
-  border-radius: var(--r-lg);
-  border: 2px solid;
-  animation: pulse 2s ease-in-out infinite;
-}
-.end-banner.won {
-  background: rgba(82, 183, 136, 0.15);
-  border-color: var(--status-success);
-}
-.end-banner.lost {
-  background: rgba(184, 113, 106, 0.15);
-  border-color: var(--status-danger);
-}
-.end-banner.imminent {
-  background: rgba(82, 183, 136, 0.08);
-  border-color: rgba(82, 183, 136, 0.6);
-  border-style: dashed;
-  animation: none;  /* imminent is quieter than full win */
-}
-.end-main { display: inline-flex; align-items: center; gap: var(--sp-3); }
-.end-icon { font-size: 2rem; }
-.end-title {
-  font-size: 1.1rem;
-  font-weight: var(--fw-bold);
-  color: var(--text-white);
-}
-.end-sub {
+  padding: var(--sp-2) var(--sp-4);
   font-size: var(--fs-sm);
-  color: var(--text-secondary);
-  margin-top: 2px;
+  font-weight: var(--fw-semibold);
 }
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(82, 183, 136, 0.4); }
-  50% { box-shadow: 0 0 0 6px rgba(82, 183, 136, 0); }
-}
-.end-banner.lost { animation: pulse-red 2s ease-in-out infinite; }
-@keyframes pulse-red {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(184, 113, 106, 0.4); }
-  50% { box-shadow: 0 0 0 6px rgba(184, 113, 106, 0); }
-}
+.end-banner.won { background: rgba(82, 183, 136, 0.15); color: var(--status-success); }
+.end-banner.lost { background: rgba(184, 113, 106, 0.15); color: var(--status-danger); }
+.end-banner.imminent { background: rgba(82, 183, 136, 0.08); color: var(--status-success); border-style: dashed; }
+.end-icon { font-weight: var(--fw-bold); }
+.end-detail { font-weight: var(--fw-regular); color: var(--text-secondary); }
 
-.focus-tabs-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* ─── MAIN GRID ─── */
+.dash-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: var(--sp-3);
-  flex-wrap: wrap;
-}
-.focus-tabs {
-  display: inline-flex; flex-wrap: wrap; gap: 4px;
-  padding: var(--sp-1) var(--sp-2);
-  background: var(--bg-inset);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--r-md);
-}
-.density-toggle {
-  display: inline-flex; align-items: center; gap: var(--sp-2);
-  padding: var(--sp-1) var(--sp-2);
-  background: var(--bg-inset);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--r-md);
-}
-.density-label {
-  font-size: var(--fs-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-}
-.density-btn {
-  padding: 3px var(--sp-2);
-  font-size: var(--fs-xs);
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--text-secondary);
-  border-radius: var(--r-sm);
-  cursor: pointer;
-}
-.density-btn.active {
-  background: var(--bg-muted);
-  color: var(--text-white);
-  border-color: var(--accent-blue);
-}
-.focus-tab {
-  padding: 4px var(--sp-2);
-  font-size: var(--fs-xs);
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--text-secondary);
-  cursor: pointer;
-  border-radius: var(--r-sm);
-  transition: all var(--motion-fast);
-}
-.focus-tab:hover { background: var(--bg-muted); color: var(--text-primary); }
-.focus-tab.active {
-  background: var(--bg-muted);
-  border-color: var(--accent-blue);
-  color: var(--text-white);
+  padding: var(--sp-3);
+  overflow: hidden;
+  min-height: 0;
 }
 
-.section {
+.grid-spirits { grid-area: spirits; }
+.grid-board   { grid-area: board; }
+.grid-decks   { grid-area: decks; }
+.grid-stats   { grid-area: stats; }
+.grid-retro   { grid-area: retro; }
+
+/* Hidden sections (not primary for current phase) */
+.grid-spirits.hidden,
+.grid-board.hidden,
+.grid-decks.hidden,
+.grid-stats.hidden,
+.grid-retro.hidden {
+  display: none;
+}
+
+/* ─── AREA CARDS ─── */
+.grid-spirits,
+.grid-board,
+.grid-decks,
+.grid-stats,
+.grid-retro {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  padding: var(--sp-3);
+  overflow: auto;
   display: flex;
   flex-direction: column;
-  gap: var(--sp-3);
-  transition: opacity var(--motion-fast), transform var(--motion-fast);
+  min-height: 0;
 }
 
-/* Focus states — primary is emphasized, secondary is readable but de-emphasized,
- * unmatched is collapsed. Always-visible sections ignore focus classes. */
-.section.focus-primary {
-  /* no-op — default appearance IS the primary state */
-}
-.section.focus-secondary {
-  opacity: 0.72;
-}
-.section.focus-secondary:hover {
-  opacity: 1;
-}
-.section:not(.focus-primary):not(.focus-secondary):not(.always-visible) {
-  /* Fully faded — still navigable via focus tabs but de-emphasized */
-  opacity: 0.42;
-}
-.section:not(.focus-primary):not(.focus-secondary):not(.always-visible):hover {
-  opacity: 0.9;
-}
-.section.focus-faded {
-  opacity: 0.42;
-}
-.section.focus-faded:hover { opacity: 0.9; }
-
-.section-hdr {
+.area-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+  flex-shrink: 0;
 }
 
-h2 {
-  font-size: 0.82rem;
+.area-header h2 {
+  font-size: var(--fs-xs);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-secondary);
@@ -847,5 +611,112 @@ h2 {
   margin: 0;
 }
 
-.pools-section .section-hdr { display: none; }
+/* ─── SPIRIT TABS ─── */
+.spirit-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.spirit-tab {
+  padding: 3px var(--sp-2);
+  font-size: var(--fs-xs);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-inset);
+  color: var(--text-secondary);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all var(--motion-fast);
+}
+.spirit-tab:hover {
+  background: var(--bg-muted);
+  color: var(--text-primary);
+}
+.spirit-tab.active {
+  background: var(--accent-soft);
+  border-color: var(--accent-blue);
+  color: var(--text-white);
+}
+
+.spirit-content {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+
+/* ─── BOARD AREA ─── */
+.board-chips {
+  display: flex;
+  gap: 4px;
+}
+
+.board-content {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+
+/* ─── DECKS GRID ─── */
+.decks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--sp-3);
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+
+.deck-card {
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: var(--sp-2);
+}
+
+.deck-card h3 {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 0 0 var(--sp-2) 0;
+  font-weight: var(--fw-semibold);
+}
+
+.terrain-card {
+  grid-column: span 2;
+}
+
+/* ─── FOOTER ─── */
+.dash-footer {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  padding: var(--sp-2) var(--sp-4);
+}
+
+/* ─── RESPONSIVE: single column below 1100px ─── */
+@media (max-width: 1100px) {
+  .dash-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "spirits"
+      "board"
+      "decks"
+      "stats"
+      "retro" !important;
+    overflow-y: auto;
+  }
+
+  .grid-spirits.hidden,
+  .grid-board.hidden,
+  .grid-decks.hidden,
+  .grid-stats.hidden,
+  .grid-retro.hidden {
+    display: flex;
+    opacity: 0.6;
+  }
+
+  .terrain-card {
+    grid-column: span 1;
+  }
+}
 </style>
