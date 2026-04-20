@@ -29,10 +29,19 @@ export interface DrawProbabilityResponse {
   wilson_95: [number, number]
 }
 
+// v0-mode: mock all stats fetches with empty/default data.
 export async function fetchStats(): Promise<StatsResponse> {
-  const res = await fetch('/api/stats')
-  if (!res.ok) throw new Error(`GET /api/stats → ${res.status}`)
-  return res.json()
+  return {
+    round: 1,
+    fear_current: 0,
+    fear_threshold: 4,
+    terror_level: 1,
+    blight_current: 0,
+    blight_cap: 4,
+    elements_per_spirit: {},
+    pile_counts: {},
+    fear_by_round: [],
+  }
 }
 
 export async function fetchDrawProbability(
@@ -40,16 +49,16 @@ export async function fetchDrawProbability(
   element: string,
   draws = 1,
   atLeast = 1,
-  drawn = 0,
+  _drawn = 0,
 ): Promise<DrawProbabilityResponse> {
-  const params = new URLSearchParams({
+  return {
     deck,
     element: element.toLowerCase(),
-    draws: String(draws),
-    at_least: String(atLeast),
-    drawn: String(drawn),
-  })
-  const res = await fetch(`/api/draw-probability?${params}`)
-  if (!res.ok) throw new Error(`GET /api/draw-probability → ${res.status}`)
-  return res.json()
+    population: 0,
+    successes: 0,
+    draws,
+    at_least: atLeast,
+    probability: 0,
+    wilson_95: [0, 0],
+  }
 }
