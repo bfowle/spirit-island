@@ -1,33 +1,343 @@
 {
-  "source": "best-guess layout — user confirmed #1 is Mountain. Correct any remaining errors via si-live UI + Save Geometry.",
+  "source": "spiritislandwiki.com/index.php?title=Island_Boards",
   "board_id": "A",
   "expansion": "base",
-  "lands": {
-    "0": {"terrain": "ocean", "coastal": false, "notes": "Ocean - adjacent to coastal lands"},
-    "1": {"terrain": "mountain", "coastal": false, "starting_dahan": 0},
-    "2": {"terrain": "sands", "coastal": true, "starting_dahan": 0},
-    "3": {"terrain": "jungle", "coastal": true, "starting_dahan": 1},
-    "4": {"terrain": "wetland", "coastal": true, "starting_dahan": 1},
-    "5": {"terrain": "jungle", "coastal": false, "starting_dahan": 0},
-    "6": {"terrain": "wetland", "coastal": false, "starting_dahan": 1},
-    "7": {"terrain": "mountain", "coastal": false, "starting_dahan": 0},
-    "8": {"terrain": "sands", "coastal": true, "starting_dahan": 1}
-  },
-  "adjacencies": {
-    "0": ["3", "4", "7", "8"],
-    "1": ["2", "3", "5", "7"],
-    "2": ["1", "3", "4"],
-    "3": ["0", "1", "2", "4", "5"],
-    "4": ["0", "2", "3", "5", "6", "8"],
-    "5": ["1", "3", "4", "6", "7"],
-    "6": ["4", "5", "7", "8"],
-    "7": ["1", "5", "6", "8"],
-    "8": ["0", "4", "6", "7"]
-  },
-  "base_invader_setup": {
-    "1_explorer": "1",
-    "2_town":     "2",
-    "3_city":     "3"
-  },
-  "notes": "Highest-numbered jungle = #5 (used for Shadows starting placement per panel). Land #0 is the ocean. Adjacencies are approximate — correct via UI if the physical panel differs."
+  "variants": {
+    "balanced": {
+      "name": "Board A",
+      "lands": {
+        "1": {
+          "terrain": "mountain",
+          "coastal": true,
+          "setup_raw": [],
+          "starting_dahan": 0,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": [
+            "beast"
+          ]
+        },
+        "2": {
+          "terrain": "wetland",
+          "coastal": true,
+          "setup_raw": [
+            "city",
+            "dahan"
+          ],
+          "starting_dahan": 1,
+          "starting_town": 0,
+          "starting_city": 1,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": [
+            "disease"
+          ]
+        },
+        "3": {
+          "terrain": "jungle",
+          "coastal": true,
+          "setup_raw": [
+            "dahan",
+            "dahan"
+          ],
+          "starting_dahan": 2,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "4": {
+          "terrain": "sands",
+          "coastal": false,
+          "setup_raw": [
+            "blight"
+          ],
+          "starting_dahan": 0,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 1,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "5": {
+          "terrain": "wetland",
+          "coastal": false,
+          "setup_raw": [],
+          "starting_dahan": 0,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "6": {
+          "terrain": "mountain",
+          "coastal": false,
+          "setup_raw": [
+            "dahan"
+          ],
+          "starting_dahan": 1,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "7": {
+          "terrain": "sands",
+          "coastal": false,
+          "setup_raw": [
+            "dahan",
+            "dahan"
+          ],
+          "starting_dahan": 2,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "8": {
+          "terrain": "jungle",
+          "coastal": false,
+          "setup_raw": [
+            "town"
+          ],
+          "starting_dahan": 0,
+          "starting_town": 1,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        }
+      },
+      "adjacencies": {
+        "1": [
+          "2",
+          "4",
+          "5",
+          "6"
+        ],
+        "2": [
+          "1",
+          "3",
+          "4"
+        ],
+        "3": [
+          "2",
+          "4"
+        ],
+        "4": [
+          "1",
+          "2",
+          "3",
+          "5"
+        ],
+        "5": [
+          "1",
+          "4",
+          "6",
+          "7",
+          "8"
+        ],
+        "6": [
+          "1",
+          "5",
+          "8"
+        ],
+        "7": [
+          "5",
+          "8"
+        ],
+        "8": [
+          "5",
+          "6",
+          "7"
+        ]
+      }
+    },
+    "thematic": {
+      "name": "North East",
+      "lands": {
+        "1": {
+          "terrain": "sands",
+          "coastal": true,
+          "setup_raw": [
+            "city"
+          ],
+          "starting_dahan": 0,
+          "starting_town": 0,
+          "starting_city": 1,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "2": {
+          "terrain": "jungle",
+          "coastal": true,
+          "setup_raw": [
+            "wilds"
+          ],
+          "starting_dahan": 0,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": [
+            "wilds"
+          ]
+        },
+        "3": {
+          "terrain": "jungle",
+          "coastal": true,
+          "setup_raw": [
+            "dahan"
+          ],
+          "starting_dahan": 1,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "4": {
+          "terrain": "wetland",
+          "coastal": true,
+          "setup_raw": [
+            "dahan"
+          ],
+          "starting_dahan": 1,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "5": {
+          "terrain": "jungle",
+          "coastal": false,
+          "setup_raw": [
+            "town"
+          ],
+          "starting_dahan": 0,
+          "starting_town": 1,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "6": {
+          "terrain": "mountain",
+          "coastal": false,
+          "setup_raw": [
+            "dahan",
+            "dahan"
+          ],
+          "starting_dahan": 2,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "7": {
+          "terrain": "mountain",
+          "coastal": false,
+          "setup_raw": [
+            "explorer",
+            "explorer",
+            "explorer",
+            "dahan",
+            "dahan",
+            "dahan"
+          ],
+          "starting_dahan": 3,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 3,
+          "tokens": []
+        },
+        "8": {
+          "terrain": "sands",
+          "coastal": false,
+          "setup_raw": [],
+          "starting_dahan": 0,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "9": {
+          "terrain": "wetland",
+          "coastal": false,
+          "setup_raw": [
+            "beast",
+            "disease"
+          ],
+          "starting_dahan": 0,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": [
+            "beast",
+            "disease"
+          ]
+        }
+      },
+      "adjacencies": {
+        "1": [
+          "2",
+          "5"
+        ],
+        "2": [
+          "1",
+          "3",
+          "5"
+        ],
+        "3": [
+          "2",
+          "4",
+          "5",
+          "7"
+        ],
+        "4": [
+          "3",
+          "7"
+        ],
+        "5": [
+          "1",
+          "2",
+          "3",
+          "7",
+          "8",
+          "9"
+        ],
+        "6": [
+          "7"
+        ],
+        "7": [
+          "3",
+          "4",
+          "5",
+          "6",
+          "8"
+        ],
+        "8": [
+          "5",
+          "7",
+          "9"
+        ],
+        "9": [
+          "5",
+          "8"
+        ]
+      }
+    }
+  }
 }

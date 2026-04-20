@@ -93,6 +93,12 @@ pub struct Spirit {
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Board {
     pub lands: HashMap<String, Land>,
+    /// Variant key chosen at New Game (e.g., "balanced" or "thematic").
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub variant: Option<String>,
+    /// Human-readable variant name (e.g., "Board A" or "North East").
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub variant_name: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

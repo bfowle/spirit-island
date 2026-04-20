@@ -1,0 +1,166 @@
+{
+  "source": "spiritislandwiki.com/index.php?title=Island_Boards",
+  "board_id": "G",
+  "expansion": "horizons-of-spirit-island",
+  "variants": {
+    "balanced": {
+      "name": "Board G",
+      "lands": {
+        "1": {
+          "terrain": "mountain",
+          "coastal": true,
+          "setup_raw": [
+            "dahan",
+            "dahan"
+          ],
+          "starting_dahan": 2,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "2": {
+          "terrain": "wetland",
+          "coastal": true,
+          "setup_raw": [
+            "city"
+          ],
+          "starting_dahan": 0,
+          "starting_town": 0,
+          "starting_city": 1,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": [
+            "disease"
+          ]
+        },
+        "3": {
+          "terrain": "sands",
+          "coastal": true,
+          "setup_raw": [
+            "dahan"
+          ],
+          "starting_dahan": 1,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "4": {
+          "terrain": "wetland",
+          "coastal": false,
+          "setup_raw": [
+            "dahan"
+          ],
+          "starting_dahan": 1,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "5": {
+          "terrain": "sands",
+          "coastal": false,
+          "setup_raw": [
+            "blight"
+          ],
+          "starting_dahan": 0,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 1,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "6": {
+          "terrain": "jungle",
+          "coastal": false,
+          "setup_raw": [],
+          "starting_dahan": 0,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": [
+            "beast"
+          ]
+        },
+        "7": {
+          "terrain": "jungle",
+          "coastal": false,
+          "setup_raw": [
+            "dahan",
+            "dahan"
+          ],
+          "starting_dahan": 2,
+          "starting_town": 0,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        },
+        "8": {
+          "terrain": "mountain",
+          "coastal": false,
+          "setup_raw": [
+            "town"
+          ],
+          "starting_dahan": 0,
+          "starting_town": 1,
+          "starting_city": 0,
+          "starting_blight": 0,
+          "starting_explorer": 0,
+          "tokens": []
+        }
+      },
+      "adjacencies": {
+        "1": [
+          "2",
+          "6"
+        ],
+        "2": [
+          "1",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "3": [
+          "2",
+          "4"
+        ],
+        "4": [
+          "2",
+          "3",
+          "5",
+          "7"
+        ],
+        "5": [
+          "2",
+          "4",
+          "6",
+          "7",
+          "8"
+        ],
+        "6": [
+          "1",
+          "2",
+          "5",
+          "8"
+        ],
+        "7": [
+          "4",
+          "5",
+          "8"
+        ],
+        "8": [
+          "5",
+          "6",
+          "7"
+        ]
+      }
+    }
+  }
+}

@@ -3,8 +3,8 @@
   "round": 1,
   "phase": "setup",
   "setup": {
-    "adversary": "brandenburg-prussia",
-    "level": 10,
+    "adversary": "england",
+    "level": 3,
     "scenario": null,
     "spirits": [
       "shadows-flicker-like-flame"
@@ -13,11 +13,7 @@
       "A"
     ],
     "expansions_active": [
-      "base",
-      "branch-and-claw",
-      "jagged-earth",
-      "nature-incarnate",
-      "promo-2"
+      "base"
     ]
   },
   "pools": {
@@ -34,7 +30,6 @@
       "card_plays": 1,
       "presence_on_board": {},
       "presence_on_track_energy": [
-        "energy0",
         "energy1",
         "energy3",
         "energy4",
@@ -42,7 +37,6 @@
         "energy6"
       ],
       "presence_on_track_cardplay": [
-        "card1",
         "card2",
         "card3",
         "card3",
@@ -65,66 +59,6 @@
   "board_state": {
     "A": {
       "lands": {
-        "3": {
-          "terrain": "jungle",
-          "coastal": true,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 1,
-          "dahan": 1,
-          "blight": 0,
-          "tokens": []
-        },
-        "7": {
-          "terrain": "sands",
-          "coastal": true,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
-        "1": {
-          "terrain": "wetland",
-          "coastal": false,
-          "explorers": 1,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 1,
-          "blight": 0,
-          "tokens": []
-        },
-        "2": {
-          "terrain": "mountain",
-          "coastal": false,
-          "explorers": 0,
-          "towns": 1,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
-        "8": {
-          "terrain": "mountain",
-          "coastal": true,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
-        "4": {
-          "terrain": "sands",
-          "coastal": true,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
         "5": {
           "terrain": "wetland",
           "coastal": false,
@@ -135,8 +69,60 @@
           "blight": 0,
           "tokens": []
         },
-        "6": {
+        "7": {
+          "terrain": "sands",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 2,
+          "blight": 0,
+          "tokens": []
+        },
+        "8": {
           "terrain": "jungle",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 1,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "1": {
+          "terrain": "mountain",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": [
+            "beast"
+          ]
+        },
+        "3": {
+          "terrain": "jungle",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 2,
+          "blight": 0,
+          "tokens": []
+        },
+        "4": {
+          "terrain": "sands",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 1,
+          "tokens": []
+        },
+        "6": {
+          "terrain": "mountain",
           "coastal": false,
           "explorers": 0,
           "towns": 0,
@@ -144,6 +130,18 @@
           "dahan": 1,
           "blight": 0,
           "tokens": []
+        },
+        "2": {
+          "terrain": "wetland",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 1,
+          "dahan": 1,
+          "blight": 0,
+          "tokens": [
+            "disease"
+          ]
         }
       }
     }

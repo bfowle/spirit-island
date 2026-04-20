@@ -13,6 +13,10 @@ export interface Land {
 
 export interface Board {
   lands: Record<string, Land>
+  /** Variant key when game was created via New Game: "balanced" | "thematic". */
+  variant?: string
+  /** Human-readable variant name (e.g., "Board A" or "North East"). */
+  variant_name?: string
 }
 
 export interface Spirit {

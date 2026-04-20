@@ -2,11 +2,18 @@
 import { computed, onMounted, ref } from 'vue'
 import type { GameState } from '../types'
 
+interface BoardSummary {
+  file: string
+  board_id: string
+  expansion: string
+  variants: { key: string; name: string }[]
+}
+
 interface RegistryResponse {
   spirits: { spirits: { slug: string; name: string; expansion: string; complexity?: string }[] }
   adversaries: { adversaries: { slug: string; name: string; expansion: string; difficulty_levels: number[] }[] }
   scenarios: { scenarios: { slug: string; name: string; expansion: string }[] }
-  boards: { file: string; data: { board_id: string; expansion: string } }[]
+  boards: BoardSummary[]
 }
 
 const emit = defineEmits<{ 'game-started': [state: GameState]; close: [] }>()
@@ -22,6 +29,7 @@ const selectedSpirits = ref<string[]>(['shadows-flicker-like-flame'])
 const selectedBoards = ref<string[]>(['A'])
 const expansions = ref<string[]>(['base'])
 const archiveCurrent = ref<boolean>(true)
+const boardVariant = ref<'balanced' | 'thematic'>('balanced')
 
 onMounted(async () => {
   try {
@@ -53,9 +61,19 @@ const availableLevels = computed((): LevelOption[] => {
   return out
 })
 
-const availableBoards = computed(() => {
+const availableBoards = computed((): BoardSummary[] => {
   if (!registry.value) return []
-  return registry.value.boards.map(b => b.data.board_id).sort()
+  return [...registry.value.boards].sort((a, b) => a.board_id.localeCompare(b.board_id))
+})
+
+const variantAvailableForAllSelected = computed(() => {
+  if (!registry.value) return { balanced: true, thematic: true }
+  const hasVariant = (key: string) =>
+    selectedBoards.value.every(bid => {
+      const b = registry.value!.boards.find(x => x.board_id === bid)
+      return !b || b.variants.some(v => v.key === key)
+    })
+  return { balanced: hasVariant('balanced'), thematic: hasVariant('thematic') }
 })
 
 function toggleSpirit(slug: string) {
@@ -90,6 +108,7 @@ async function startGame() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        board_variant: boardVariant.value,
         adversary: adversary.value || null,
         level: level.value,
         scenario: scenario.value || null,
@@ -163,10 +182,25 @@ async function startGame() {
         <section>
           <div class="hdr">Boards</div>
           <div class="chips">
-            <label v-for="b in availableBoards" :key="b" class="chip">
-              <input type="checkbox" :checked="selectedBoards.includes(b)" @change="toggleBoard(b)" />
-              {{ b }}
+            <label v-for="b in availableBoards" :key="b.board_id" class="chip">
+              <input type="checkbox" :checked="selectedBoards.includes(b.board_id)" @change="toggleBoard(b.board_id)" />
+              {{ b.board_id }}
+              <span class="muted">({{ b.expansion }})</span>
             </label>
+          </div>
+          <div class="variant-row">
+            <span class="variant-label">Variant</span>
+            <div class="variant-picker">
+              <label class="variant-opt">
+                <input type="radio" v-model="boardVariant" value="balanced" :disabled="!variantAvailableForAllSelected.balanced" />
+                Balanced
+              </label>
+              <label class="variant-opt">
+                <input type="radio" v-model="boardVariant" value="thematic" :disabled="!variantAvailableForAllSelected.thematic" />
+                Thematic
+                <span v-if="!variantAvailableForAllSelected.thematic" class="muted">(not available for some selected boards)</span>
+              </label>
+            </div>
           </div>
         </section>
 
@@ -216,6 +250,11 @@ select { padding: .15rem .3rem; }
 footer { display: flex; gap: .5rem; align-items: center; margin-top: 1rem; border-top: 1px solid var(--border-subtle); padding-top: .75rem; }
 .archive-toggle { display: inline-flex; align-items: center; gap: .3rem; font-size: var(--fs-xs); color: var(--text-secondary); cursor: pointer; }
 .spacer { flex: 1; }
+.variant-row { display: flex; align-items: center; gap: .5rem; margin-top: .5rem; }
+.variant-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+.variant-picker { display: inline-flex; gap: .75rem; }
+.variant-opt { display: inline-flex; align-items: center; gap: .25rem; font-size: var(--fs-xs); color: var(--text-secondary); cursor: pointer; }
+.variant-opt:has(input:disabled) { color: var(--text-faint); cursor: not-allowed; }
 button { background: #2a2a30; border: 1px solid #444; color: #eee; padding: .35rem .75rem; border-radius: 4px; cursor: pointer; font-size: .9rem; }
 button:hover:not(:disabled) { background: #383840; }
 button.primary { background: #3a5a3a; border-color: #5a8a5a; }

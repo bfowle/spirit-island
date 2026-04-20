@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { Land } from '../types'
-import { UNIT_KEYS, type UnitKey, TERRAINS } from '../types'
+import { UNIT_KEYS, type UnitKey } from '../types'
 import Icon from './Icon.vue'
 
 const props = defineProps<{ modelValue: Land }>()
@@ -11,28 +12,22 @@ function bump(key: UnitKey, delta: number) {
   props.modelValue[key] = next as never
 }
 
-const UNIT_META: Record<UnitKey, { label: string; icon?: string; symbol?: string }> = {
+const UNIT_META: Record<UnitKey, { label: string; icon?: string }> = {
   explorers: { label: 'Explorer', icon: 'unit-explorer' },
   towns: { label: 'Town', icon: 'unit-town' },
   cities: { label: 'City', icon: 'unit-city' },
   dahan: { label: 'Dahan', icon: 'unit-dahan' },
   blight: { label: 'Blight', icon: 'resource-blight' },
 }
+
+const tokens = computed(() => props.modelValue.tokens ?? [])
 </script>
 
 <template>
   <div class="editor">
-    <div class="geometry">
-      <label class="geo-field" title="Change terrain of this land">
-        <span class="geo-label">Terrain</span>
-        <select v-model="modelValue.terrain">
-          <option v-for="t in TERRAINS" :key="t" :value="t">{{ t }}</option>
-        </select>
-      </label>
-      <label class="geo-field coast-field" title="Ocean-adjacent?">
-        <input type="checkbox" v-model="modelValue.coastal" />
-        <span class="geo-label">Coastal</span>
-      </label>
+    <div v-if="tokens.length" class="tokens-row">
+      <span class="tokens-label">Setup tokens</span>
+      <span v-for="t in tokens" :key="t" class="token-chip" :title="t">{{ t }}</span>
     </div>
 
     <div class="units">
@@ -63,37 +58,35 @@ const UNIT_META: Record<UnitKey, { label: string; icon?: string; symbol?: string
   margin-top: var(--sp-2);
 }
 
-.geometry {
+.tokens-row {
   display: flex;
-  gap: var(--sp-3);
-  align-items: center;
   flex-wrap: wrap;
+  gap: var(--sp-1);
+  align-items: center;
   padding-bottom: var(--sp-2);
   border-bottom: 1px dashed var(--border-subtle);
 }
 
-.geo-field {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-1);
-  font-size: var(--fs-xs);
-  color: var(--text-secondary);
-  cursor: pointer;
-}
-
-.geo-label {
+.tokens-label {
+  font-size: 0.65rem;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  font-weight: var(--fw-medium);
+  letter-spacing: 0.06em;
   color: var(--text-muted);
-  font-size: 0.7rem;
+  font-weight: var(--fw-medium);
+  margin-right: var(--sp-1);
 }
 
-.geo-field select {
+.token-chip {
+  display: inline-flex;
+  padding: 1px var(--sp-2);
+  font-size: 0.68rem;
+  background: var(--bg-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-full);
+  color: var(--text-secondary);
   text-transform: capitalize;
+  font-weight: var(--fw-medium);
 }
-
-.coast-field { gap: var(--sp-2); }
 
 .units {
   display: flex;

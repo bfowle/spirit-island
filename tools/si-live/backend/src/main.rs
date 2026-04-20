@@ -243,7 +243,8 @@ async fn get_registry(
     let adversaries = read_json(state.data_dir.join("adversaries.json"));
     let scenarios = read_json(state.data_dir.join("scenarios.json"));
 
-    // List all board files
+    // List all board files. Expose only the summary needed by the UI:
+    // board_id, expansion, available variants.
     let boards_dir = state.data_dir.join("boards");
     let mut boards = Vec::new();
     if let Ok(entries) = std::fs::read_dir(&boards_dir) {
@@ -261,7 +262,36 @@ async fn get_registry(
         names.sort();
         for name in names {
             if let Some(json) = read_json(boards_dir.join(format!("{name}.json"))) {
-                boards.push(serde_json::json!({ "file": name, "data": json }));
+                let board_id = json
+                    .get("board_id")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("?")
+                    .to_string();
+                let expansion = json
+                    .get("expansion")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("?")
+                    .to_string();
+                let variants: Vec<serde_json::Value> = json
+                    .get("variants")
+                    .and_then(|v| v.as_object())
+                    .map(|obj| {
+                        obj.iter()
+                            .map(|(k, v)| {
+                                serde_json::json!({
+                                    "key": k,
+                                    "name": v.get("name").cloned().unwrap_or_default(),
+                                })
+                            })
+                            .collect()
+                    })
+                    .unwrap_or_default();
+                boards.push(serde_json::json!({
+                    "file": name,
+                    "board_id": board_id,
+                    "expansion": expansion,
+                    "variants": variants,
+                }));
             }
         }
     }
@@ -282,21 +312,31 @@ struct NewGameRequest {
     spirits: Vec<String>,
     boards: Vec<String>,
     expansions_active: Vec<String>,
+    /// "balanced" or "thematic" — which side of the physical board to use.
+    /// Applied globally to all selected boards. Defaults to "balanced".
+    #[serde(default = "default_variant")]
+    board_variant: String,
+}
+
+fn default_variant() -> String {
+    "balanced".to_string()
 }
 
 async fn post_new_game(
     axum::extract::State(state): axum::extract::State<AppState>,
     Json(req): Json<NewGameRequest>,
 ) -> impl IntoResponse {
-    // Load each board file and seed board_state + initial invader placement.
+    // Load each board file and seed board_state + initial setup per the
+    // selected variant (balanced or thematic).
     let boards_dir = state.data_dir.join("boards");
+    let variant_key = req.board_variant.as_str();
     let mut board_state: std::collections::HashMap<String, serde_json::Value> =
         std::collections::HashMap::new();
     for board_letter in &req.boards {
-        // Try matching base_<L> or je_<L> file by searching for _{letter}.json
         let file_candidates = [
             format!("base_{board_letter}.json"),
             format!("je_{board_letter}.json"),
+            format!("hosi_{board_letter}.json"),
         ];
         let mut found = None;
         for cand in &file_candidates {
@@ -323,47 +363,62 @@ async fn post_new_game(
                     .into_response();
             }
         };
-        // Build lands: take land.terrain/coastal + base_invader_setup for units
-        let setup = board_json.get("base_invader_setup").cloned().unwrap_or(serde_json::json!({}));
+
+        // Pick the variant. Fall back to "balanced" if the requested one
+        // doesn't exist (e.g., HoSI boards only have one side).
+        let variant = board_json
+            .get("variants")
+            .and_then(|v| v.get(variant_key))
+            .or_else(|| {
+                board_json
+                    .get("variants")
+                    .and_then(|v| v.get("balanced"))
+            });
+        let Some(variant) = variant else {
+            return (
+                StatusCode::BAD_REQUEST,
+                format!("board {board_letter}: no usable variant"),
+            )
+                .into_response();
+        };
+
         let mut lands_out = serde_json::Map::new();
-        if let Some(lands) = board_json.get("lands").and_then(|v| v.as_object()) {
+        if let Some(lands) = variant.get("lands").and_then(|v| v.as_object()) {
             for (land_id, meta) in lands {
                 if land_id == "0" {
-                    continue; // skip ocean
+                    continue;
                 }
                 let terrain = meta.get("terrain").and_then(|v| v.as_str()).unwrap_or("?");
                 let coastal = meta.get("coastal").and_then(|v| v.as_bool()).unwrap_or(false);
                 let starting_dahan = meta.get("starting_dahan").and_then(|v| v.as_u64()).unwrap_or(0);
-                let mut explorers = 0u64;
-                let mut towns = 0u64;
-                let mut cities = 0u64;
-                if setup.get("1_explorer").and_then(|v| v.as_str()) == Some(land_id.as_str()) {
-                    explorers = 1;
-                }
-                if setup.get("2_town").and_then(|v| v.as_str()) == Some(land_id.as_str()) {
-                    towns = 1;
-                }
-                if setup.get("3_city").and_then(|v| v.as_str()) == Some(land_id.as_str()) {
-                    cities = 1;
-                }
+                let starting_town = meta.get("starting_town").and_then(|v| v.as_u64()).unwrap_or(0);
+                let starting_city = meta.get("starting_city").and_then(|v| v.as_u64()).unwrap_or(0);
+                let starting_blight = meta.get("starting_blight").and_then(|v| v.as_u64()).unwrap_or(0);
+                let starting_explorer = meta.get("starting_explorer").and_then(|v| v.as_u64()).unwrap_or(0);
+                let tokens = meta.get("tokens").cloned().unwrap_or_else(|| serde_json::json!([]));
+
                 lands_out.insert(
                     land_id.clone(),
                     serde_json::json!({
                         "terrain": terrain,
                         "coastal": coastal,
-                        "explorers": explorers,
-                        "towns": towns,
-                        "cities": cities,
+                        "explorers": starting_explorer,
+                        "towns": starting_town,
+                        "cities": starting_city,
                         "dahan": starting_dahan,
-                        "blight": 0,
-                        "tokens": [],
+                        "blight": starting_blight,
+                        "tokens": tokens,
                     }),
                 );
             }
         }
         board_state.insert(
             board_letter.clone(),
-            serde_json::json!({ "lands": serde_json::Value::Object(lands_out) }),
+            serde_json::json!({
+                "lands": serde_json::Value::Object(lands_out),
+                "variant": variant_key,
+                "variant_name": variant.get("name").cloned().unwrap_or_default(),
+            }),
         );
     }
 
@@ -390,7 +445,9 @@ async fn post_new_game(
             .cloned()
             .unwrap_or_else(|| serde_json::json!([]));
 
-        // Extract starting income from first slot of each track
+        // Extract starting income from the first slot of each track. That slot
+        // is already uncovered at setup (its value is visible without removing
+        // a disc — it's where the spirit's starting income comes from).
         let start_e = energy_track
             .get(0)
             .and_then(|v| v.as_str())
@@ -404,14 +461,24 @@ async fn post_new_game(
             .and_then(|s| s.parse::<u8>().ok())
             .unwrap_or(1);
 
+        // The "covered" array is slots [1..] — slot 0 starts revealed.
+        let covered_energy: Vec<serde_json::Value> = energy_track
+            .as_array()
+            .map(|a| a.iter().skip(1).cloned().collect())
+            .unwrap_or_default();
+        let covered_cp: Vec<serde_json::Value> = cp_track
+            .as_array()
+            .map(|a| a.iter().skip(1).cloned().collect())
+            .unwrap_or_default();
+
         spirits_out.insert(
             slug.clone(),
             serde_json::json!({
                 "energy": start_e,
                 "card_plays": start_cp,
                 "presence_on_board": {},
-                "presence_on_track_energy": energy_track,
-                "presence_on_track_cardplay": cp_track,
+                "presence_on_track_energy": covered_energy,
+                "presence_on_track_cardplay": covered_cp,
                 "elements_this_turn": {},
                 "hand": uniques,
                 "discard": [],

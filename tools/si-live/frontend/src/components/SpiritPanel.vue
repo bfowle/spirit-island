@@ -3,6 +3,12 @@ import { computed, onMounted, ref, watch } from 'vue'
 import type { Spirit } from '../types'
 import Icon from './Icon.vue'
 import PresenceTrack from './PresenceTrack.vue'
+import {
+  STOCK_COLORS,
+  SPIRIT_DEFAULT_COLOR,
+  getPaletteForSpirit,
+  type DiscStyle,
+} from '../spiritColors'
 
 const props = defineProps<{ modelValue: Spirit; slug?: string }>()
 
@@ -32,6 +38,40 @@ function updateEnergyCovered(next: string[]) {
 }
 function updateCardplayCovered(next: string[]) {
   props.modelValue.presence_on_track_cardplay = next
+}
+
+// --- Disc color + style pickers --------------------------------------------
+
+const discColor = computed({
+  get: () =>
+    (props.modelValue as unknown as { disc_color?: string }).disc_color ||
+    SPIRIT_DEFAULT_COLOR[props.slug || ''] ||
+    STOCK_COLORS.indigo,
+  set: (v: string) => {
+    (props.modelValue as unknown as { disc_color?: string }).disc_color = v
+  },
+})
+
+const discStyle = computed({
+  get: () =>
+    (props.modelValue as unknown as { disc_style?: DiscStyle }).disc_style || 'glass',
+  set: (v: DiscStyle) => {
+    (props.modelValue as unknown as { disc_style?: DiscStyle }).disc_style = v
+  },
+})
+
+const palette = computed(() => getPaletteForSpirit(props.slug || '', discColor.value))
+
+const styleOptions: { value: DiscStyle; label: string }[] = [
+  { value: 'glass', label: 'Glass' },
+  { value: 'wood', label: 'Wood' },
+  { value: 'solid', label: 'Solid' },
+]
+
+const stockColorEntries = Object.entries(STOCK_COLORS)
+
+function resetToDefault() {
+  discColor.value = SPIRIT_DEFAULT_COLOR[props.slug || ''] || STOCK_COLORS.indigo
 }
 
 const elements = computed(() => {
@@ -95,11 +135,41 @@ const ELEMENT_ICONS: Record<string, string> = {
     </div>
 
     <div class="tracks">
+      <div class="disc-controls">
+        <span class="disc-label">Presence disc</span>
+        <div class="swatches">
+          <button
+            v-for="[name, hex] in stockColorEntries"
+            :key="name"
+            class="swatch"
+            :class="{ active: discColor === hex }"
+            :style="{ '--s': hex }"
+            :title="name"
+            @click="discColor = hex"
+          />
+          <label class="swatch-custom" title="custom color">
+            <input type="color" v-model="discColor" />
+          </label>
+          <button class="reset-color" @click="resetToDefault" title="Reset to spirit's canonical color">↺</button>
+        </div>
+        <div class="style-picker">
+          <button
+            v-for="opt in styleOptions"
+            :key="opt.value"
+            class="style-btn"
+            :class="{ active: discStyle === opt.value }"
+            @click="discStyle = opt.value"
+          >{{ opt.label }}</button>
+        </div>
+      </div>
+
       <PresenceTrack
         v-if="fullEnergyTrack.length"
         label="Energy"
         :full-track="fullEnergyTrack"
         :covered-tokens="modelValue.presence_on_track_energy ?? []"
+        :palette="palette"
+        :disc-style="discStyle"
         @update:covered-tokens="updateEnergyCovered"
       />
       <PresenceTrack
@@ -107,6 +177,8 @@ const ELEMENT_ICONS: Record<string, string> = {
         label="Card Plays"
         :full-track="fullCardplayTrack"
         :covered-tokens="modelValue.presence_on_track_cardplay ?? []"
+        :palette="palette"
+        :disc-style="discStyle"
         @update:covered-tokens="updateCardplayCovered"
       />
       <div v-if="!fullEnergyTrack.length && !wikiError" class="track-loading">Loading presence tracks…</div>
@@ -265,6 +337,102 @@ const ELEMENT_ICONS: Record<string, string> = {
   font-style: italic;
 }
 .track-error { color: var(--status-danger); font-style: normal; }
+
+.disc-controls {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px dashed var(--border-subtle);
+}
+
+.disc-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: var(--fw-medium);
+}
+
+.swatches {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.swatch {
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  border-radius: var(--r-full);
+  border: 2px solid transparent;
+  background: var(--s);
+  cursor: pointer;
+  transition: transform var(--motion-fast), border-color var(--motion-fast);
+  flex-shrink: 0;
+}
+
+.swatch:hover { transform: scale(1.15); }
+.swatch.active {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 1px var(--bg-canvas);
+}
+
+.swatch-custom {
+  position: relative;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: var(--r-full);
+  border: 1px dashed var(--border-strong);
+  cursor: pointer;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+.swatch-custom::before { content: '+'; font-size: 0.85rem; line-height: 1; }
+.swatch-custom input[type="color"] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; padding: 0; border: 0;
+}
+
+.reset-color {
+  padding: 0 var(--sp-1);
+  font-size: var(--fs-xs);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.reset-color:hover { color: var(--text-primary); background: transparent; border: none; }
+
+.style-picker {
+  display: inline-flex;
+  gap: 2px;
+  margin-left: auto;
+  padding: 2px;
+  background: var(--bg-muted);
+  border-radius: var(--r-sm);
+}
+
+.style-btn {
+  font-size: var(--fs-xs);
+  padding: 2px var(--sp-2);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.style-btn:hover { background: var(--bg-hover); }
+.style-btn.active {
+  background: var(--bg-raised);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}
 
 .piles {
   display: grid;

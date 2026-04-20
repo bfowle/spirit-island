@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import type { Board, Land } from '../types'
 import LandEditor from './LandEditor.vue'
 import Icon from './Icon.vue'
 
-const props = defineProps<{ modelValue: Board; boardId: string }>()
+defineProps<{ modelValue: Board; boardId: string }>()
 defineEmits<{ 'update:modelValue': [value: Board] }>()
-
-const saveStatus = ref<string>('')
 
 function sortedKeys(b: Board): string[] {
   return Object.keys(b.lands).sort((a, z) => Number(a) - Number(z))
@@ -28,28 +25,6 @@ function summaryChips(l: Land): SummaryChip[] {
   if (l.blight) chips.push({ count: l.blight, icon: 'resource-blight', label: 'Blight' })
   return chips
 }
-
-async function saveGeometry() {
-  saveStatus.value = 'saving…'
-  try {
-    const res = await fetch('/api/save-board-geometry', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        board_id: props.boardId,
-        lands: props.modelValue.lands,
-      }),
-    })
-    if (!res.ok) {
-      const txt = await res.text()
-      throw new Error(`${res.status}: ${txt}`)
-    }
-    saveStatus.value = 'Saved ✓'
-    setTimeout(() => { saveStatus.value = '' }, 3000)
-  } catch (e) {
-    saveStatus.value = `Error: ${(e as Error).message}`
-  }
-}
 </script>
 
 <template>
@@ -65,18 +40,7 @@ async function saveGeometry() {
           <Icon name="resource-blight" :size="14" decorative /> Blight
         </span>
       </div>
-      <div class="actions">
-        <button
-          class="save-geo"
-          @click="saveGeometry"
-          title="Persist corrected terrain/coastal back to data/boards/*.json so future New Games use your corrections"
-        >
-          Save Geometry
-        </button>
-        <span class="save-status" :class="{ error: saveStatus.startsWith('Error') }">
-          {{ saveStatus }}
-        </span>
-      </div>
+      <span v-if="modelValue.variant_name" class="variant-tag">{{ modelValue.variant_name }}</span>
     </div>
 
     <div class="grid">
@@ -151,18 +115,16 @@ async function saveGeometry() {
   flex-wrap: wrap;
 }
 
-.actions {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-2);
-}
-
-.save-status {
+.variant-tag {
   font-size: var(--fs-xs);
-  color: var(--status-success);
-  font-style: italic;
+  color: var(--text-secondary);
+  padding: 2px var(--sp-2);
+  background: var(--bg-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-full);
+  text-transform: capitalize;
+  font-weight: var(--fw-medium);
 }
-.save-status.error { color: var(--status-danger); font-style: normal; }
 
 .grid {
   display: grid;
