@@ -1,0 +1,2850 @@
+{
+  "version": "1.0",
+  "round": 8,
+  "phase": "fast",
+  "setup": {
+    "adversary": "brandenburg-prussia",
+    "level": 6,
+    "scenario": null,
+    "spirits": [
+      "shadows-flicker-like-flame"
+    ],
+    "boards": [
+      "A"
+    ],
+    "expansions_active": [
+      "base",
+      "branch-and-claw",
+      "jagged-earth",
+      "nature-incarnate",
+      "promo-2"
+    ]
+  },
+  "pools": {
+    "fear_current": 0,
+    "fear_threshold": 4,
+    "terror_level": 3,
+    "blight_current": 2,
+    "blight_cap": 3,
+    "island_blighted": true
+  },
+  "spirits": {
+    "shadows-flicker-like-flame": {
+      "energy": 0,
+      "card_plays": 4,
+      "presence_on_board": {
+        "A.5": 2,
+        "A.3": 1
+      },
+      "presence_on_track_energy": [
+        "energy4",
+        "energy5",
+        "energy6"
+      ],
+      "presence_on_track_cardplay": [
+        "card5"
+      ],
+      "elements_this_turn": {},
+      "hand": [
+        "Purifying Flame"
+      ],
+      "discard": [
+        "Portents of Disaster",
+        "Favors Called Due",
+        "Elemental Boon",
+        "Twisted Flowers Murmur Ultimatums",
+        "Mantle of Dread",
+        "Crops Wither and Fade"
+      ],
+      "forgotten": [
+        "Territorial Strife",
+        "Concealing Shadows"
+      ],
+      "played_this_turn": [],
+      "growth_options": []
+    }
+  },
+  "board_state": {
+    "A": {
+      "lands": {
+        "4": {
+          "terrain": "sands",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "7": {
+          "terrain": "sands",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "3": {
+          "terrain": "jungle",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "6": {
+          "terrain": "mountain",
+          "coastal": false,
+          "explorers": 2,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 1,
+          "blight": 0,
+          "tokens": [
+            "disease"
+          ]
+        },
+        "8": {
+          "terrain": "jungle",
+          "coastal": false,
+          "explorers": 2,
+          "towns": 3,
+          "cities": 1,
+          "dahan": 0,
+          "blight": 2,
+          "tokens": []
+        },
+        "5": {
+          "terrain": "wetland",
+          "coastal": false,
+          "explorers": 1,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 4,
+          "blight": 0,
+          "tokens": []
+        },
+        "2": {
+          "terrain": "wetland",
+          "coastal": true,
+          "explorers": 6,
+          "towns": 4,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 2,
+          "tokens": [
+            "strife"
+          ]
+        },
+        "1": {
+          "terrain": "mountain",
+          "coastal": true,
+          "explorers": 1,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 1,
+          "tokens": []
+        }
+      },
+      "variant": "balanced",
+      "variant_name": "Board A"
+    }
+  },
+  "log": [
+    {
+      "round": 1,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 0,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 1,
+              "dahan": 6,
+              "explorers": 4,
+              "towns": 1
+            }
+          },
+          "fear_current": 1,
+          "phase": "growth",
+          "round": 1,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 2,
+              "discard": 0,
+              "energy": 2,
+              "hand": 2,
+              "played": 2,
+              "presence_on_board": 4
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "setup",
+        "phase": "growth",
+        "summary": "Fear 1·T1 · Blight 0 · Invaders 6 · Presence 4"
+      }
+    },
+    {
+      "round": 1,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 0,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 1,
+              "dahan": 6,
+              "explorers": 4,
+              "towns": 1
+            }
+          },
+          "fear_current": 1,
+          "phase": "setup",
+          "round": 1,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 2,
+              "discard": 0,
+              "energy": 2,
+              "hand": 2,
+              "played": 2,
+              "presence_on_board": 4
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "growth",
+        "phase": "setup",
+        "summary": "Fear 1·T1 · Blight 0 · Invaders 6 · Presence 4"
+      }
+    },
+    {
+      "round": 1,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 0,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 1,
+              "dahan": 6,
+              "explorers": 4,
+              "towns": 1
+            }
+          },
+          "fear_current": 1,
+          "phase": "fast",
+          "round": 1,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 2,
+              "discard": 0,
+              "energy": 2,
+              "hand": 2,
+              "played": 2,
+              "presence_on_board": 4
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "growth",
+        "phase": "fast",
+        "summary": "Fear 1·T1 · Blight 0 · Invaders 6 · Presence 4"
+      }
+    },
+    {
+      "round": 1,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 0,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 1,
+              "dahan": 6,
+              "explorers": 4,
+              "towns": 1
+            }
+          },
+          "fear_current": 1,
+          "phase": "invader",
+          "round": 1,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 2,
+              "discard": 0,
+              "energy": 2,
+              "hand": 2,
+              "played": 2,
+              "presence_on_board": 4
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "fast",
+        "phase": "invader",
+        "summary": "Fear 1·T1 · Blight 0 · Invaders 6 · Presence 4"
+      }
+    },
+    {
+      "round": 1,
+      "event": "event_card",
+      "details": {
+        "card": "Wave of Reconnaissance"
+      }
+    },
+    {
+      "round": 1,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 0,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 2,
+              "dahan": 6,
+              "explorers": 7,
+              "towns": 4
+            }
+          },
+          "fear_current": 1,
+          "phase": "slow",
+          "round": 1,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 2,
+              "discard": 0,
+              "energy": 2,
+              "hand": 2,
+              "played": 2,
+              "presence_on_board": 4
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "invader",
+        "phase": "slow",
+        "summary": "Fear 1·T1 · Blight 0 · Invaders 13 · Presence 4"
+      }
+    },
+    {
+      "round": 1,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 0,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 2,
+              "dahan": 6,
+              "explorers": 7,
+              "towns": 4
+            }
+          },
+          "fear_current": 3,
+          "phase": "timepasses",
+          "round": 1,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 2,
+              "discard": 0,
+              "energy": 2,
+              "hand": 2,
+              "played": 2,
+              "presence_on_board": 4
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "slow",
+        "phase": "timepasses",
+        "summary": "Fear 3·T1 · Blight 0 · Invaders 13 · Presence 4"
+      }
+    },
+    {
+      "round": 1,
+      "event": "event_resolved",
+      "details": {
+        "card": "Wave of Reconnaissance",
+        "previewed_on_turn": 1
+      }
+    },
+    {
+      "round": 1,
+      "event": "turn_advanced",
+      "details": {
+        "blight_current": 0,
+        "fear_current": 3,
+        "from_round": 1
+      }
+    },
+    {
+      "round": 2,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 0,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 2,
+              "dahan": 6,
+              "explorers": 7,
+              "towns": 4
+            }
+          },
+          "fear_current": 3,
+          "phase": "growth",
+          "round": 2,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 2,
+              "discard": 2,
+              "energy": 2,
+              "hand": 2,
+              "played": 0,
+              "presence_on_board": 4
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "timepasses",
+        "phase": "growth",
+        "summary": "Fear 3·T1 · Blight 0 · Invaders 13 · Presence 4"
+      }
+    },
+    {
+      "round": 2,
+      "event": "card_drafted",
+      "details": {
+        "card": "Territorial Strife",
+        "deck": "minor",
+        "spirit": "shadows-flicker-like-flame"
+      }
+    },
+    {
+      "round": 2,
+      "event": "card_seen",
+      "details": {
+        "card": "Call to Migrate",
+        "deck": "minor"
+      }
+    },
+    {
+      "round": 2,
+      "event": "card_seen",
+      "details": {
+        "card": "Uncanny Melting",
+        "deck": "minor"
+      }
+    },
+    {
+      "round": 2,
+      "event": "card_seen",
+      "details": {
+        "card": "Sky Stretches to Shore",
+        "deck": "minor"
+      }
+    },
+    {
+      "round": 2,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 0,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 2,
+              "dahan": 6,
+              "explorers": 7,
+              "towns": 4
+            }
+          },
+          "fear_current": 3,
+          "phase": "fast",
+          "round": 2,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 2,
+              "discard": 2,
+              "energy": 2,
+              "hand": 1,
+              "played": 2,
+              "presence_on_board": 4
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "growth",
+        "phase": "fast",
+        "summary": "Fear 3·T1 · Blight 0 · Invaders 13 · Presence 4"
+      }
+    },
+    {
+      "round": 2,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 2,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 2,
+              "dahan": 5,
+              "explorers": 6,
+              "towns": 4
+            }
+          },
+          "fear_current": 4,
+          "phase": "invader",
+          "round": 2,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 2,
+              "discard": 2,
+              "energy": 2,
+              "hand": 1,
+              "played": 2,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "slow",
+        "phase": "invader",
+        "summary": "Fear 4·T1 · Blight 2 · Invaders 12 · Presence 3"
+      }
+    },
+    {
+      "round": 2,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 2,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 2,
+              "dahan": 5,
+              "explorers": 6,
+              "towns": 4
+            }
+          },
+          "fear_current": 0,
+          "phase": "slow",
+          "round": 2,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 2,
+              "discard": 2,
+              "energy": 2,
+              "hand": 1,
+              "played": 2,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "invader",
+        "phase": "slow",
+        "summary": "Fear 0·T1 · Blight 2 · Invaders 12 · Presence 3"
+      }
+    },
+    {
+      "round": 2,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 2,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 2,
+              "dahan": 5,
+              "explorers": 6,
+              "towns": 4
+            }
+          },
+          "fear_current": 0,
+          "phase": "timepasses",
+          "round": 2,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 2,
+              "discard": 2,
+              "energy": 2,
+              "hand": 1,
+              "played": 2,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "slow",
+        "phase": "timepasses",
+        "summary": "Fear 0·T1 · Blight 2 · Invaders 12 · Presence 3"
+      }
+    },
+    {
+      "round": 2,
+      "event": "invader_rotated",
+      "details": {
+        "ravaged_stage": 3,
+        "ravaged_terrain": "Jungle + Mountain"
+      }
+    },
+    {
+      "round": 2,
+      "event": "turn_advanced",
+      "details": {
+        "blight_current": 2,
+        "fear_current": 0,
+        "from_round": 2
+      }
+    },
+    {
+      "round": 3,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 2,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 2,
+              "dahan": 5,
+              "explorers": 6,
+              "towns": 4
+            }
+          },
+          "fear_current": 0,
+          "phase": "growth",
+          "round": 3,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 2,
+              "discard": 4,
+              "energy": 2,
+              "hand": 1,
+              "played": 0,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "timepasses",
+        "phase": "growth",
+        "summary": "Fear 0·T1 · Blight 2 · Invaders 12 · Presence 3"
+      }
+    },
+    {
+      "round": 3,
+      "event": "card_drafted",
+      "details": {
+        "card": "Purifying Flame",
+        "deck": "minor",
+        "spirit": "shadows-flicker-like-flame"
+      }
+    },
+    {
+      "round": 3,
+      "event": "card_seen",
+      "details": {
+        "card": "Treacherous Waterways",
+        "deck": "minor"
+      }
+    },
+    {
+      "round": 3,
+      "event": "card_seen",
+      "details": {
+        "card": "Infested Aquifers",
+        "deck": "minor"
+      }
+    },
+    {
+      "round": 3,
+      "event": "card_seen",
+      "details": {
+        "card": "Desiccating Winds",
+        "deck": "minor"
+      }
+    },
+    {
+      "round": 3,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 2,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 2,
+              "dahan": 5,
+              "explorers": 6,
+              "towns": 4
+            }
+          },
+          "fear_current": 0,
+          "phase": "fast",
+          "round": 3,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 4,
+              "energy": 1,
+              "hand": 0,
+              "played": 2,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "growth",
+        "phase": "fast",
+        "summary": "Fear 0·T1 · Blight 2 · Invaders 12 · Presence 3"
+      }
+    },
+    {
+      "round": 3,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 3,
+          "boards": {
+            "A": {
+              "blight": 2,
+              "cities": 4,
+              "dahan": 6,
+              "explorers": 6,
+              "towns": 4
+            }
+          },
+          "fear_current": 0,
+          "phase": "invader",
+          "round": 3,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 4,
+              "energy": 1,
+              "hand": 0,
+              "played": 2,
+              "presence_on_board": 5
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "slow",
+        "phase": "invader",
+        "summary": "Fear 0·T1 · Blight 3 · Invaders 14 · Presence 5"
+      }
+    },
+    {
+      "round": 3,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 3,
+          "boards": {
+            "A": {
+              "blight": 2,
+              "cities": 4,
+              "dahan": 6,
+              "explorers": 9,
+              "towns": 4
+            }
+          },
+          "fear_current": 0,
+          "phase": "slow",
+          "round": 3,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 4,
+              "energy": 1,
+              "hand": 0,
+              "played": 2,
+              "presence_on_board": 5
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "invader",
+        "phase": "slow",
+        "summary": "Fear 0·T1 · Blight 3 · Invaders 17 · Presence 5"
+      }
+    },
+    {
+      "round": 3,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 3,
+              "dahan": 6,
+              "explorers": 9,
+              "towns": 5
+            }
+          },
+          "fear_current": 0,
+          "phase": "timepasses",
+          "round": 3,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 4,
+              "energy": 1,
+              "hand": 0,
+              "played": 2,
+              "presence_on_board": 5
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "slow",
+        "phase": "timepasses",
+        "summary": "Fear 0·T1 · Blight 4 · Invaders 17 · Presence 5"
+      }
+    },
+    {
+      "round": 3,
+      "event": "invader_rotated",
+      "details": {
+        "ravaged_stage": 2,
+        "ravaged_terrain": "Jungle"
+      }
+    },
+    {
+      "round": 3,
+      "event": "turn_advanced",
+      "details": {
+        "blight_current": 4,
+        "fear_current": 0,
+        "from_round": 3
+      }
+    },
+    {
+      "round": 4,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 3,
+              "dahan": 6,
+              "explorers": 9,
+              "towns": 5
+            }
+          },
+          "fear_current": 0,
+          "phase": "growth",
+          "round": 4,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 6,
+              "energy": 1,
+              "hand": 0,
+              "played": 0,
+              "presence_on_board": 5
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "timepasses",
+        "phase": "growth",
+        "summary": "Fear 0·T1 · Blight 4 · Invaders 17 · Presence 5"
+      }
+    },
+    {
+      "round": 4,
+      "event": "card_drafted",
+      "details": {
+        "card": "Twisted Flowers Murmur Ultimatums",
+        "deck": "major",
+        "spirit": "shadows-flicker-like-flame"
+      }
+    },
+    {
+      "round": 4,
+      "event": "card_seen",
+      "details": {
+        "card": "Accelerated Rot",
+        "deck": "major"
+      }
+    },
+    {
+      "round": 4,
+      "event": "card_seen",
+      "details": {
+        "card": "Rumbling Earthquakes",
+        "deck": "major"
+      }
+    },
+    {
+      "round": 4,
+      "event": "card_seen",
+      "details": {
+        "card": "Settle Into Hunting-Grounds",
+        "deck": "major"
+      }
+    },
+    {
+      "round": 4,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 4,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 4,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 3,
+              "dahan": 6,
+              "explorers": 7,
+              "towns": 5
+            }
+          },
+          "fear_current": 2,
+          "phase": "fast",
+          "round": 4,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 0,
+              "energy": 1,
+              "hand": 3,
+              "played": 3,
+              "presence_on_board": 5
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "growth",
+        "phase": "fast",
+        "summary": "Fear 2·T1 · Blight 4 · Invaders 15 · Presence 5"
+      }
+    },
+    {
+      "round": 4,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 3,
+              "dahan": 6,
+              "explorers": 7,
+              "towns": 5
+            }
+          },
+          "fear_current": 2,
+          "phase": "invader",
+          "round": 4,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 0,
+              "energy": 1,
+              "hand": 3,
+              "played": 3,
+              "presence_on_board": 5
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "fast",
+        "phase": "invader",
+        "summary": "Fear 2·T1 · Blight 4 · Invaders 15 · Presence 5"
+      }
+    },
+    {
+      "round": 4,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 4,
+              "dahan": 6,
+              "explorers": 11,
+              "towns": 6
+            }
+          },
+          "fear_current": 2,
+          "phase": "slow",
+          "round": 4,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 0,
+              "energy": 1,
+              "hand": 3,
+              "played": 3,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "invader",
+        "phase": "slow",
+        "summary": "Fear 2·T1 · Blight 4 · Invaders 21 · Presence 3"
+      }
+    },
+    {
+      "round": 4,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 4,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 4,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 4,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 4,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 4,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 4,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 4,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 4,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 3,
+              "dahan": 6,
+              "explorers": 11,
+              "towns": 7
+            }
+          },
+          "fear_current": 1,
+          "phase": "timepasses",
+          "round": 4,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 0,
+              "energy": 1,
+              "hand": 3,
+              "played": 3,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "slow",
+        "phase": "timepasses",
+        "summary": "Fear 1·T1 · Blight 4 · Invaders 21 · Presence 3"
+      }
+    },
+    {
+      "round": 4,
+      "event": "invader_rotated",
+      "details": {
+        "ravaged_stage": 2,
+        "ravaged_terrain": "Sands"
+      }
+    },
+    {
+      "round": 4,
+      "event": "turn_advanced",
+      "details": {
+        "blight_current": 4,
+        "fear_current": 1,
+        "from_round": 4
+      }
+    },
+    {
+      "round": 5,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 1,
+              "cities": 3,
+              "dahan": 6,
+              "explorers": 11,
+              "towns": 7
+            }
+          },
+          "fear_current": 1,
+          "phase": "growth",
+          "round": 5,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 3,
+              "energy": 1,
+              "hand": 3,
+              "played": 0,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "timepasses",
+        "phase": "growth",
+        "summary": "Fear 1·T1 · Blight 4 · Invaders 21 · Presence 3"
+      }
+    },
+    {
+      "round": 5,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 3,
+              "dahan": 6,
+              "explorers": 11,
+              "towns": 7
+            }
+          },
+          "fear_current": 1,
+          "phase": "fast",
+          "round": 5,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 3,
+              "energy": 2,
+              "hand": 0,
+              "played": 3,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "growth",
+        "phase": "fast",
+        "summary": "Fear 1·T1 · Blight 4 · Invaders 21 · Presence 3"
+      }
+    },
+    {
+      "round": 5,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 3,
+              "dahan": 6,
+              "explorers": 11,
+              "towns": 7
+            }
+          },
+          "fear_current": 1,
+          "phase": "invader",
+          "round": 5,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 3,
+              "energy": 2,
+              "hand": 0,
+              "played": 3,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "fast",
+        "phase": "invader",
+        "summary": "Fear 1·T1 · Blight 4 · Invaders 21 · Presence 3"
+      }
+    },
+    {
+      "round": 5,
+      "event": "fear_generated",
+      "details": {
+        "amount": 4,
+        "source": "Manual bank (face-down)"
+      }
+    },
+    {
+      "round": 5,
+      "event": "fear_card_earned",
+      "details": {
+        "manual": true,
+        "round": 5,
+        "terror_level": 1
+      }
+    },
+    {
+      "round": 5,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 4,
+              "cities": 2,
+              "dahan": 6,
+              "explorers": 14,
+              "towns": 9
+            }
+          },
+          "fear_current": 1,
+          "phase": "slow",
+          "round": 5,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 3,
+              "energy": 2,
+              "hand": 0,
+              "played": 3,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "invader",
+        "phase": "slow",
+        "summary": "Fear 1·T1 · Blight 4 · Invaders 25 · Presence 3"
+      }
+    },
+    {
+      "round": 5,
+      "event": "fear_generated",
+      "details": {
+        "amount": 4,
+        "source": "Manual bank (face-down)"
+      }
+    },
+    {
+      "round": 5,
+      "event": "fear_card_earned",
+      "details": {
+        "manual": true,
+        "round": 5,
+        "terror_level": 1
+      }
+    },
+    {
+      "round": 5,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 2,
+              "dahan": 6,
+              "explorers": 12,
+              "towns": 9
+            }
+          },
+          "fear_current": 1,
+          "phase": "timepasses",
+          "round": 5,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 3,
+              "energy": 2,
+              "hand": 0,
+              "played": 3,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "slow",
+        "phase": "timepasses",
+        "summary": "Fear 1·T1 · Blight 4 · Invaders 23 · Presence 3"
+      }
+    },
+    {
+      "round": 5,
+      "event": "invader_rotated",
+      "details": {
+        "ravaged_stage": 2,
+        "ravaged_terrain": "Coastal Lands"
+      }
+    },
+    {
+      "round": 5,
+      "event": "turn_advanced",
+      "details": {
+        "blight_current": 4,
+        "fear_current": 1,
+        "from_round": 5
+      }
+    },
+    {
+      "round": 6,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 2,
+              "dahan": 6,
+              "explorers": 12,
+              "towns": 9
+            }
+          },
+          "fear_current": 1,
+          "phase": "growth",
+          "round": 6,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 6,
+              "energy": 2,
+              "hand": 0,
+              "played": 0,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "timepasses",
+        "phase": "growth",
+        "summary": "Fear 1·T1 · Blight 4 · Invaders 23 · Presence 3"
+      }
+    },
+    {
+      "round": 6,
+      "event": "card_drafted",
+      "details": {
+        "card": "Portents of Disaster",
+        "deck": "minor",
+        "spirit": "shadows-flicker-like-flame"
+      }
+    },
+    {
+      "round": 6,
+      "event": "card_seen",
+      "details": {
+        "card": "Gift of Constancy",
+        "deck": "minor"
+      }
+    },
+    {
+      "round": 6,
+      "event": "card_seen",
+      "details": {
+        "card": "Prowling Panthers",
+        "deck": "minor"
+      }
+    },
+    {
+      "round": 6,
+      "event": "card_seen",
+      "details": {
+        "card": "Bats Scout for Raids by Darkness",
+        "deck": "minor"
+      }
+    },
+    {
+      "round": 6,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 2,
+              "dahan": 6,
+              "explorers": 12,
+              "towns": 9
+            }
+          },
+          "fear_current": 1,
+          "phase": "fast",
+          "round": 6,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 0,
+              "energy": 4,
+              "hand": 4,
+              "played": 3,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "growth",
+        "phase": "fast",
+        "summary": "Fear 1·T1 · Blight 4 · Invaders 23 · Presence 3"
+      }
+    },
+    {
+      "round": 6,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 6,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 2,
+              "dahan": 6,
+              "explorers": 12,
+              "towns": 9
+            }
+          },
+          "fear_current": 3,
+          "phase": "event",
+          "round": 6,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 0,
+              "energy": 4,
+              "hand": 4,
+              "played": 3,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "fast",
+        "phase": "event",
+        "summary": "Fear 3·T1 · Blight 4 · Invaders 23 · Presence 3"
+      }
+    },
+    {
+      "round": 6,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 2,
+              "dahan": 6,
+              "explorers": 12,
+              "towns": 9
+            }
+          },
+          "fear_current": 3,
+          "phase": "fear",
+          "round": 6,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 0,
+              "energy": 4,
+              "hand": 4,
+              "played": 3,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "event",
+        "phase": "fear",
+        "summary": "Fear 3·T1 · Blight 4 · Invaders 23 · Presence 3"
+      }
+    },
+    {
+      "round": 6,
+      "event": "fear_generated",
+      "details": {
+        "amount": 4,
+        "source": "Manual bank (face-down)"
+      }
+    },
+    {
+      "round": 6,
+      "event": "fear_card_earned",
+      "details": {
+        "manual": true,
+        "round": 6,
+        "terror_level": 1
+      }
+    },
+    {
+      "round": 6,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 6,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 2,
+              "dahan": 6,
+              "explorers": 11,
+              "towns": 8
+            }
+          },
+          "fear_current": 1,
+          "phase": "invader",
+          "round": 6,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 0,
+              "energy": 4,
+              "hand": 4,
+              "played": 3,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "fear",
+        "phase": "invader",
+        "summary": "Fear 1·T1 · Blight 4 · Invaders 21 · Presence 3"
+      }
+    },
+    {
+      "round": 6,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 6,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 6,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 3,
+              "dahan": 6,
+              "explorers": 9,
+              "towns": 7
+            }
+          },
+          "fear_current": 3,
+          "phase": "slow",
+          "round": 6,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 0,
+              "energy": 4,
+              "hand": 4,
+              "played": 3,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "invader",
+        "phase": "slow",
+        "summary": "Fear 3·T1 · Blight 4 · Invaders 19 · Presence 3"
+      }
+    },
+    {
+      "round": 6,
+      "event": "fear_generated",
+      "details": {
+        "amount": 4,
+        "source": "Manual bank (face-down)"
+      }
+    },
+    {
+      "round": 6,
+      "event": "fear_card_earned",
+      "details": {
+        "manual": true,
+        "round": 6,
+        "terror_level": 1
+      }
+    },
+    {
+      "round": 6,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 3,
+              "dahan": 5,
+              "explorers": 9,
+              "towns": 7
+            }
+          },
+          "fear_current": 2,
+          "phase": "timepasses",
+          "round": 6,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 0,
+              "energy": 4,
+              "hand": 4,
+              "played": 3,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "slow",
+        "phase": "timepasses",
+        "summary": "Fear 2·T1 · Blight 4 · Invaders 19 · Presence 3"
+      }
+    },
+    {
+      "round": 6,
+      "event": "invader_rotated",
+      "details": {
+        "ravaged_stage": 3,
+        "ravaged_terrain": "Mountain + Sands"
+      }
+    },
+    {
+      "round": 6,
+      "event": "turn_advanced",
+      "details": {
+        "blight_current": 4,
+        "fear_current": 2,
+        "from_round": 6
+      }
+    },
+    {
+      "round": 7,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 3,
+              "dahan": 5,
+              "explorers": 9,
+              "towns": 7
+            }
+          },
+          "fear_current": 2,
+          "phase": "growth",
+          "round": 7,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 3,
+              "discard": 3,
+              "energy": 4,
+              "hand": 4,
+              "played": 0,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "timepasses",
+        "phase": "growth",
+        "summary": "Fear 2·T1 · Blight 4 · Invaders 19 · Presence 3"
+      }
+    },
+    {
+      "round": 7,
+      "event": "card_drafted",
+      "details": {
+        "card": "Elemental Boon",
+        "deck": "minor",
+        "spirit": "shadows-flicker-like-flame"
+      }
+    },
+    {
+      "round": 7,
+      "event": "card_seen",
+      "details": {
+        "card": "Call to Isolation",
+        "deck": "minor"
+      }
+    },
+    {
+      "round": 7,
+      "event": "card_seen",
+      "details": {
+        "card": "Call to Tend",
+        "deck": "minor"
+      }
+    },
+    {
+      "round": 7,
+      "event": "card_seen",
+      "details": {
+        "card": "Shadows of the Burning Forest",
+        "deck": "minor"
+      }
+    },
+    {
+      "round": 7,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 3,
+              "dahan": 5,
+              "explorers": 9,
+              "towns": 7
+            }
+          },
+          "fear_current": 2,
+          "phase": "fast",
+          "round": 7,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 4,
+              "discard": 3,
+              "energy": 0,
+              "hand": 1,
+              "played": 4,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "growth",
+        "phase": "fast",
+        "summary": "Fear 2·T1 · Blight 4 · Invaders 19 · Presence 3"
+      }
+    },
+    {
+      "round": 7,
+      "event": "fear_generated",
+      "details": {
+        "amount": 4,
+        "source": "Manual bank (face-down)"
+      }
+    },
+    {
+      "round": 7,
+      "event": "fear_card_earned",
+      "details": {
+        "manual": true,
+        "round": 7,
+        "terror_level": 1
+      }
+    },
+    {
+      "round": 7,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 3,
+              "dahan": 5,
+              "explorers": 9,
+              "towns": 7
+            }
+          },
+          "fear_current": 0,
+          "phase": "event",
+          "round": 7,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 4,
+              "discard": 3,
+              "energy": 0,
+              "hand": 1,
+              "played": 4,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "fast",
+        "phase": "event",
+        "summary": "Fear 0·T1 · Blight 4 · Invaders 19 · Presence 3"
+      }
+    },
+    {
+      "round": 7,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 3,
+              "dahan": 5,
+              "explorers": 9,
+              "towns": 7
+            }
+          },
+          "fear_current": 0,
+          "phase": "fear",
+          "round": 7,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 4,
+              "discard": 2,
+              "energy": 0,
+              "hand": 1,
+              "played": 4,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "event",
+        "phase": "fear",
+        "summary": "Fear 0·T1 · Blight 4 · Invaders 19 · Presence 3"
+      }
+    },
+    {
+      "round": 7,
+      "event": "fear_generated",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 7,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 4,
+          "boards": {
+            "A": {
+              "blight": 3,
+              "cities": 3,
+              "dahan": 5,
+              "explorers": 8,
+              "towns": 6
+            }
+          },
+          "fear_current": 1,
+          "phase": "invader",
+          "round": 7,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 4,
+              "discard": 2,
+              "energy": 0,
+              "hand": 1,
+              "played": 4,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 1
+        },
+        "from_phase": "fear",
+        "phase": "invader",
+        "summary": "Fear 1·T1 · Blight 4 · Invaders 17 · Presence 3"
+      }
+    },
+    {
+      "round": 7,
+      "event": "blight_removed",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 7,
+      "event": "blight_removed",
+      "details": {
+        "amount": 1
+      }
+    },
+    {
+      "round": 7,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 2,
+          "boards": {
+            "A": {
+              "blight": 5,
+              "cities": 1,
+              "dahan": 5,
+              "explorers": 12,
+              "towns": 7
+            }
+          },
+          "decks": {
+            "event": {
+              "previewed": [],
+              "resolved": [
+                {
+                  "name": "Wave of Reconnaissance",
+                  "previewed_on_turn": 1,
+                  "resolved_on_turn": 1
+                },
+                {
+                  "name": "Invaders Surge Inland",
+                  "previewed_on_turn": 2,
+                  "resolved_on_turn": 2
+                },
+                {
+                  "name": "Interesting Discoveries",
+                  "previewed_on_turn": 3,
+                  "resolved_on_turn": 3
+                },
+                {
+                  "name": "Wounded Lands Attract Explorers",
+                  "previewed_on_turn": 4,
+                  "resolved_on_turn": 4
+                },
+                {
+                  "name": "Terror Spikes Upwards",
+                  "previewed_on_turn": 5,
+                  "resolved_on_turn": 5
+                },
+                {
+                  "name": "Relentless Optimism",
+                  "previewed_on_turn": 6,
+                  "resolved_on_turn": 6
+                },
+                {
+                  "name": "Focused Farming",
+                  "previewed_on_turn": 7,
+                  "resolved_on_turn": 7
+                }
+              ],
+              "unseen": 55
+            },
+            "fear": {
+              "deck_size": 12,
+              "earned": [
+                {
+                  "name": "",
+                  "round": 7,
+                  "terror_level": 1
+                },
+                {
+                  "name": "",
+                  "round": 7,
+                  "terror_level": 1
+                }
+              ],
+              "resolved": [
+                {
+                  "name": "Flee the Pestilent Land",
+                  "round": 2,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Seek Company",
+                  "round": 2,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Tall Tales of Savagery",
+                  "round": 3,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Plan for Departure",
+                  "round": 4,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Discord",
+                  "round": 4,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Daunted by the Dahan",
+                  "round": 5,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Unrest",
+                  "round": 5,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Theological Strife",
+                  "round": 6,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Panicked by Wild Beasts",
+                  "round": 6,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Depart the Dangerous Land",
+                  "round": 7,
+                  "terror_level": 1
+                }
+              ],
+              "tier_counts": [
+                4,
+                4,
+                4
+              ],
+              "unseen": 0
+            },
+            "invader": {
+              "discarded": [
+                {
+                  "stage": 3,
+                  "terrain": "Jungle + Mountain"
+                },
+                {
+                  "stage": 2,
+                  "terrain": "Jungle"
+                },
+                {
+                  "stage": 2,
+                  "terrain": "Sands"
+                },
+                {
+                  "stage": 2,
+                  "terrain": "Coastal Lands"
+                },
+                {
+                  "stage": 3,
+                  "terrain": "Mountain + Sands"
+                },
+                {
+                  "stage": 3,
+                  "terrain": "Sands + Wetland"
+                },
+                {
+                  "stage": 3,
+                  "terrain": "Jungle + Wetland"
+                }
+              ],
+              "notation": "3 · 2·2·2 · 3·3·3·3 (Stage III on top)",
+              "ravage": {
+                "stage": 3,
+                "terrain": "Mountain + Wetland"
+              },
+              "upcoming": []
+            }
+          },
+          "fear_current": 0,
+          "phase": "slow",
+          "round": 7,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 4,
+              "discard": 6,
+              "energy": 0,
+              "hand": 1,
+              "played": 0,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 3
+        },
+        "from_phase": "timepasses",
+        "phase": "slow",
+        "summary": "Fear 0·T3 · Blight 2 · Invaders 20 · Presence 3"
+      }
+    },
+    {
+      "round": 7,
+      "event": "fear_generated",
+      "details": {
+        "amount": 4,
+        "source": "Manual bank (face-down)"
+      }
+    },
+    {
+      "round": 7,
+      "event": "fear_card_earned",
+      "details": {
+        "manual": true,
+        "round": 7,
+        "terror_level": 1
+      }
+    },
+    {
+      "round": 7,
+      "event": "fear_generated",
+      "details": {
+        "amount": 4,
+        "source": "Manual bank (face-down)"
+      }
+    },
+    {
+      "round": 7,
+      "event": "fear_card_earned",
+      "details": {
+        "manual": true,
+        "round": 7,
+        "terror_level": 1
+      }
+    },
+    {
+      "round": 7,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 2,
+          "boards": {
+            "A": {
+              "blight": 5,
+              "cities": 1,
+              "dahan": 5,
+              "explorers": 12,
+              "towns": 7
+            }
+          },
+          "decks": {
+            "event": {
+              "previewed": [],
+              "resolved": [
+                {
+                  "name": "Wave of Reconnaissance",
+                  "previewed_on_turn": 1,
+                  "resolved_on_turn": 1
+                },
+                {
+                  "name": "Invaders Surge Inland",
+                  "previewed_on_turn": 2,
+                  "resolved_on_turn": 2
+                },
+                {
+                  "name": "Interesting Discoveries",
+                  "previewed_on_turn": 3,
+                  "resolved_on_turn": 3
+                },
+                {
+                  "name": "Wounded Lands Attract Explorers",
+                  "previewed_on_turn": 4,
+                  "resolved_on_turn": 4
+                },
+                {
+                  "name": "Terror Spikes Upwards",
+                  "previewed_on_turn": 5,
+                  "resolved_on_turn": 5
+                },
+                {
+                  "name": "Relentless Optimism",
+                  "previewed_on_turn": 6,
+                  "resolved_on_turn": 6
+                },
+                {
+                  "name": "Focused Farming",
+                  "previewed_on_turn": 7,
+                  "resolved_on_turn": 7
+                }
+              ],
+              "unseen": 55
+            },
+            "fear": {
+              "deck_size": 12,
+              "earned": [
+                {
+                  "name": "",
+                  "round": 7,
+                  "terror_level": 1
+                },
+                {
+                  "name": "",
+                  "round": 7,
+                  "terror_level": 1
+                }
+              ],
+              "resolved": [
+                {
+                  "name": "Flee the Pestilent Land",
+                  "round": 2,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Seek Company",
+                  "round": 2,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Tall Tales of Savagery",
+                  "round": 3,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Plan for Departure",
+                  "round": 4,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Discord",
+                  "round": 4,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Daunted by the Dahan",
+                  "round": 5,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Unrest",
+                  "round": 5,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Theological Strife",
+                  "round": 6,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Panicked by Wild Beasts",
+                  "round": 6,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Depart the Dangerous Land",
+                  "round": 7,
+                  "terror_level": 1
+                }
+              ],
+              "tier_counts": [
+                4,
+                4,
+                4
+              ],
+              "unseen": 0
+            },
+            "invader": {
+              "discarded": [
+                {
+                  "stage": 3,
+                  "terrain": "Jungle + Mountain"
+                },
+                {
+                  "stage": 2,
+                  "terrain": "Jungle"
+                },
+                {
+                  "stage": 2,
+                  "terrain": "Sands"
+                },
+                {
+                  "stage": 2,
+                  "terrain": "Coastal Lands"
+                },
+                {
+                  "stage": 3,
+                  "terrain": "Mountain + Sands"
+                },
+                {
+                  "stage": 3,
+                  "terrain": "Sands + Wetland"
+                },
+                {
+                  "stage": 3,
+                  "terrain": "Jungle + Wetland"
+                }
+              ],
+              "notation": "3 · 2·2·2 · 3·3·3·3 (Stage III on top)",
+              "ravage": {
+                "stage": 3,
+                "terrain": "Mountain + Wetland"
+              },
+              "upcoming": []
+            }
+          },
+          "fear_current": 0,
+          "phase": "timepasses",
+          "round": 7,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 4,
+              "discard": 6,
+              "energy": 0,
+              "hand": 1,
+              "played": 0,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 3
+        },
+        "from_phase": "slow",
+        "phase": "timepasses",
+        "summary": "Fear 0·T3 · Blight 2 · Invaders 20 · Presence 3"
+      }
+    },
+    {
+      "round": 7,
+      "event": "invader_rotated",
+      "details": {
+        "ravaged_stage": 3,
+        "ravaged_terrain": "Sands + Wetland"
+      }
+    },
+    {
+      "round": 7,
+      "event": "turn_advanced",
+      "details": {
+        "blight_current": 2,
+        "fear_current": 0,
+        "from_round": 7
+      }
+    },
+    {
+      "round": 8,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 2,
+          "boards": {
+            "A": {
+              "blight": 5,
+              "cities": 1,
+              "dahan": 5,
+              "explorers": 12,
+              "towns": 7
+            }
+          },
+          "fear_current": 0,
+          "phase": "growth",
+          "round": 8,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 4,
+              "discard": 6,
+              "energy": 0,
+              "hand": 1,
+              "played": 0,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 3
+        },
+        "from_phase": "timepasses",
+        "phase": "growth",
+        "summary": "Fear 0·T3 · Blight 2 · Invaders 20 · Presence 3"
+      }
+    },
+    {
+      "round": 8,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 2,
+          "boards": {
+            "A": {
+              "blight": 5,
+              "cities": 1,
+              "dahan": 5,
+              "explorers": 12,
+              "towns": 7
+            }
+          },
+          "fear_current": 0,
+          "phase": "setup",
+          "round": 8,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 4,
+              "discard": 6,
+              "energy": 0,
+              "hand": 1,
+              "played": 0,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 3
+        },
+        "from_phase": "growth",
+        "phase": "setup",
+        "summary": "Fear 0·T3 · Blight 2 · Invaders 20 · Presence 3"
+      }
+    },
+    {
+      "round": 8,
+      "event": "phase_snapshot",
+      "details": {
+        "data": {
+          "blight_current": 2,
+          "boards": {
+            "A": {
+              "blight": 5,
+              "cities": 1,
+              "dahan": 5,
+              "explorers": 12,
+              "towns": 7
+            }
+          },
+          "decks": {
+            "event": {
+              "previewed": [],
+              "resolved": [
+                {
+                  "name": "Wave of Reconnaissance",
+                  "previewed_on_turn": 1,
+                  "resolved_on_turn": 1
+                },
+                {
+                  "name": "Invaders Surge Inland",
+                  "previewed_on_turn": 2,
+                  "resolved_on_turn": 2
+                },
+                {
+                  "name": "Interesting Discoveries",
+                  "previewed_on_turn": 3,
+                  "resolved_on_turn": 3
+                },
+                {
+                  "name": "Wounded Lands Attract Explorers",
+                  "previewed_on_turn": 4,
+                  "resolved_on_turn": 4
+                },
+                {
+                  "name": "Terror Spikes Upwards",
+                  "previewed_on_turn": 5,
+                  "resolved_on_turn": 5
+                },
+                {
+                  "name": "Relentless Optimism",
+                  "previewed_on_turn": 6,
+                  "resolved_on_turn": 6
+                },
+                {
+                  "name": "Focused Farming",
+                  "previewed_on_turn": 7,
+                  "resolved_on_turn": 7
+                }
+              ],
+              "unseen": 55
+            },
+            "fear": {
+              "deck_size": 12,
+              "earned": [
+                {
+                  "name": "",
+                  "round": 7,
+                  "terror_level": 1
+                },
+                {
+                  "name": "",
+                  "round": 7,
+                  "terror_level": 1
+                }
+              ],
+              "resolved": [
+                {
+                  "name": "Flee the Pestilent Land",
+                  "round": 2,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Seek Company",
+                  "round": 2,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Tall Tales of Savagery",
+                  "round": 3,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Plan for Departure",
+                  "round": 4,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Discord",
+                  "round": 4,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Daunted by the Dahan",
+                  "round": 5,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Unrest",
+                  "round": 5,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Theological Strife",
+                  "round": 6,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Panicked by Wild Beasts",
+                  "round": 6,
+                  "terror_level": 1
+                },
+                {
+                  "name": "Depart the Dangerous Land",
+                  "round": 7,
+                  "terror_level": 1
+                }
+              ],
+              "tier_counts": [
+                4,
+                4,
+                4
+              ],
+              "unseen": 0
+            },
+            "invader": {
+              "discarded": [
+                {
+                  "stage": 3,
+                  "terrain": "Jungle + Mountain"
+                },
+                {
+                  "stage": 2,
+                  "terrain": "Jungle"
+                },
+                {
+                  "stage": 2,
+                  "terrain": "Sands"
+                },
+                {
+                  "stage": 2,
+                  "terrain": "Coastal Lands"
+                },
+                {
+                  "stage": 3,
+                  "terrain": "Mountain + Sands"
+                },
+                {
+                  "stage": 3,
+                  "terrain": "Sands + Wetland"
+                },
+                {
+                  "stage": 3,
+                  "terrain": "Jungle + Wetland"
+                }
+              ],
+              "notation": "3 · 2·2·2 · 3·3·3·3 (Stage III on top)",
+              "ravage": {
+                "stage": 3,
+                "terrain": "Mountain + Wetland"
+              },
+              "upcoming": []
+            }
+          },
+          "fear_current": 0,
+          "phase": "fast",
+          "round": 8,
+          "spirits": {
+            "shadows-flicker-like-flame": {
+              "card_plays": 4,
+              "discard": 6,
+              "energy": 0,
+              "hand": 1,
+              "played": 0,
+              "presence_on_board": 3
+            }
+          },
+          "terror_level": 3
+        },
+        "from_phase": "timepasses",
+        "phase": "fast",
+        "summary": "Fear 0·T3 · Blight 2 · Invaders 20 · Presence 3"
+      }
+    },
+    {
+      "round": 7,
+      "event": "invader_rotated",
+      "details": {
+        "ravaged_stage": 3,
+        "ravaged_terrain": "Jungle + Wetland"
+      }
+    },
+    {
+      "round": 7,
+      "event": "turn_advanced",
+      "details": {
+        "blight_current": 2,
+        "fear_current": 0,
+        "from_round": 7
+      }
+    },
+    {
+      "round": 8,
+      "event": "fear_generated",
+      "details": {
+        "amount": 4,
+        "source": "Manual bank (face-down)"
+      }
+    },
+    {
+      "round": 8,
+      "event": "fear_card_earned",
+      "details": {
+        "manual": true,
+        "round": 8,
+        "terror_level": 1
+      }
+    },
+    {
+      "round": 8,
+      "event": "terror_advanced",
+      "details": {
+        "to_level": 3
+      }
+    }
+  ],
+  "invader_deck": {
+    "ravage": {
+      "stage": 3,
+      "terrain": "Mountain + Wetland"
+    },
+    "upcoming": [],
+    "discarded": [
+      {
+        "stage": 3,
+        "terrain": "Jungle + Mountain"
+      },
+      {
+        "stage": 2,
+        "terrain": "Jungle"
+      },
+      {
+        "stage": 2,
+        "terrain": "Sands"
+      },
+      {
+        "stage": 2,
+        "terrain": "Coastal Lands"
+      },
+      {
+        "stage": 3,
+        "terrain": "Mountain + Sands"
+      },
+      {
+        "stage": 3,
+        "terrain": "Sands + Wetland"
+      },
+      {
+        "stage": 3,
+        "terrain": "Jungle + Wetland"
+      }
+    ],
+    "notation": "3 · 2·2·2 · 3·3·3·3 (Stage III on top)"
+  },
+  "fear_deck": {
+    "deck_size": 12,
+    "tier_counts": [
+      4,
+      4,
+      4
+    ],
+    "earned": [
+      {
+        "name": "",
+        "terror_level": 1,
+        "round": 7
+      },
+      {
+        "name": "",
+        "terror_level": 1,
+        "round": 7
+      }
+    ],
+    "resolved": [
+      {
+        "name": "Flee the Pestilent Land",
+        "terror_level": 1,
+        "round": 2
+      },
+      {
+        "name": "Seek Company",
+        "terror_level": 1,
+        "round": 2
+      },
+      {
+        "name": "Tall Tales of Savagery",
+        "terror_level": 1,
+        "round": 3
+      },
+      {
+        "name": "Plan for Departure",
+        "terror_level": 1,
+        "round": 4
+      },
+      {
+        "name": "Discord",
+        "terror_level": 1,
+        "round": 4
+      },
+      {
+        "name": "Daunted by the Dahan",
+        "terror_level": 1,
+        "round": 5
+      },
+      {
+        "name": "Unrest",
+        "terror_level": 1,
+        "round": 5
+      },
+      {
+        "name": "Theological Strife",
+        "terror_level": 1,
+        "round": 6
+      },
+      {
+        "name": "Panicked by Wild Beasts",
+        "terror_level": 1,
+        "round": 6
+      },
+      {
+        "name": "Depart the Dangerous Land",
+        "terror_level": 1,
+        "round": 7
+      }
+    ],
+    "unseen": 0
+  },
+  "event_deck": {
+    "previewed": [],
+    "resolved": [
+      {
+        "name": "Wave of Reconnaissance",
+        "previewed_on_turn": 1,
+        "resolved_on_turn": 1
+      },
+      {
+        "name": "Invaders Surge Inland",
+        "previewed_on_turn": 2,
+        "resolved_on_turn": 2
+      },
+      {
+        "name": "Interesting Discoveries",
+        "previewed_on_turn": 3,
+        "resolved_on_turn": 3
+      },
+      {
+        "name": "Wounded Lands Attract Explorers",
+        "previewed_on_turn": 4,
+        "resolved_on_turn": 4
+      },
+      {
+        "name": "Terror Spikes Upwards",
+        "previewed_on_turn": 5,
+        "resolved_on_turn": 5
+      },
+      {
+        "name": "Relentless Optimism",
+        "previewed_on_turn": 6,
+        "resolved_on_turn": 6
+      },
+      {
+        "name": "Focused Farming",
+        "previewed_on_turn": 7,
+        "resolved_on_turn": 7
+      }
+    ],
+    "unseen": 55
+  }
+}
