@@ -16,6 +16,9 @@ import Retrospective from './components/Retrospective.vue'
 import PhaseStepper from './components/PhaseStepper.vue'
 import TerrainTimeline from './components/TerrainTimeline.vue'
 import StickyStatus from './components/StickyStatus.vue'
+import AnalyticsZone from './components/AnalyticsZone.vue'
+import SpiritTabs from './components/SpiritTabs.vue'
+import DeckStation from './components/DeckStation.vue'
 
 const state = ref<GameState | null>(null)
 const error = ref<string | null>(null)
@@ -250,6 +253,52 @@ watch(density, (d) => {
 }, { immediate: true })
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Phase transition animation state
+// ─────────────────────────────────────────────────────────────────────────────
+const phaseTransitioning = ref(false)
+const previousPhase = ref<Phase | null>(null)
+
+watch(
+  () => state.value?.phase,
+  (newPhase, oldPhase) => {
+    if (newPhase && oldPhase && newPhase !== oldPhase) {
+      previousPhase.value = oldPhase
+      phaseTransitioning.value = true
+      // Reset after animation completes
+      setTimeout(() => {
+        phaseTransitioning.value = false
+      }, 300)
+    }
+  }
+)
+
+// Deck expansion state (for DeckStation compact/expanded toggle)
+const expandedDecks = ref<Set<string>>(new Set())
+
+function toggleDeckExpansion(deck: string) {
+  if (expandedDecks.value.has(deck)) {
+    expandedDecks.value.delete(deck)
+  } else {
+    expandedDecks.value.add(deck)
+  }
+  expandedDecks.value = new Set(expandedDecks.value) // trigger reactivity
+}
+
+// Auto-expand decks when their phase is primary
+watch(
+  () => state.value?.phase,
+  (phase) => {
+    if (!phase) return
+    const newExpanded = new Set<string>()
+    if (phase === 'invader') newExpanded.add('invader')
+    if (phase === 'fear') newExpanded.add('fear')
+    if (phase === 'event') newExpanded.add('event')
+    expandedDecks.value = newExpanded
+  },
+  { immediate: true }
+)
+
+// ─────────────────────────────────────────────────────────────────────────────
 // SESSION 2: Phase-based grid area mapping
 // ─────────────────────────────────────────────────────────────────────────────
 // Each phase defines which sections are PRIMARY (get the biggest space) and
@@ -421,7 +470,7 @@ const sparklinePath = computed(() => {
   <div v-if="error" class="banner error">{{ error }}</div>
   <div v-else-if="!state" class="banner">Loading...</div>
 
-  <div v-else class="dashboard">
+  <div v-else class="dashboard" :class="{ 'phase-transitioning': phaseTransitioning }" :data-phase="state.phase">
     <!-- HEADER: brand + stepper + controls -->
     <header class="dash-header">
       <div class="header-top">
@@ -599,10 +648,22 @@ const sparklinePath = computed(() => {
         </div>
       </section>
 
-      <!-- STATS AREA -->
+      <!-- STATS AREA (with AnalyticsZone for quick view) -->
       <section class="grid-stats" :class="{ hidden: !isPrimary('stats') }">
-        <div class="area-header"><h2>Stats</h2></div>
-        <StatsPanel :state="state" />
+        <div class="area-header">
+          <h2>Analytics</h2>
+          <button class="ghost" @click="statsDrawerOpen = !statsDrawerOpen">
+            {{ statsDrawerOpen ? 'Hide Details' : 'Full Stats' }}
+          </button>
+        </div>
+        <AnalyticsZone
+          :state="state"
+          :win-prob="currentWinProb"
+          :win-prob-history="winProbHistory"
+        />
+        <div class="stats-detail" v-if="statsDrawerOpen">
+          <StatsPanel :state="state" />
+        </div>
       </section>
 
       <!-- RETROSPECTIVE AREA -->
@@ -793,6 +854,69 @@ h1 {
   padding: var(--sp-3);
   overflow: hidden;
   min-height: 0;
+  transition: grid-template-columns var(--motion-base), grid-template-rows var(--motion-base);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* PHASE TRANSITION ANIMATIONS                                                  */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+.dashboard.phase-transitioning .dash-main {
+  animation: grid-reflow 300ms ease-out;
+}
+
+@keyframes grid-reflow {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Phase-specific accent colors on the dashboard */
+.dashboard[data-phase="setup"] { --phase-accent: var(--accent-blue); }
+.dashboard[data-phase="growth"] { --phase-accent: var(--accent-green); }
+.dashboard[data-phase="fast"] { --phase-accent: var(--accent-purple); }
+.dashboard[data-phase="event"] { --phase-accent: var(--accent-violet); }
+.dashboard[data-phase="fear"] { --phase-accent: var(--accent-amber); }
+.dashboard[data-phase="invader"] { --phase-accent: var(--accent-red); }
+.dashboard[data-phase="slow"] { --phase-accent: var(--accent-teal); }
+.dashboard[data-phase="timepasses"] { --phase-accent: var(--accent-blue); }
+.dashboard[data-phase="end"] { --phase-accent: var(--accent-green); }
+
+/* Sections entering view animate in */
+.grid-spirits,
+.grid-board,
+.grid-decks,
+.grid-stats,
+.grid-retro {
+  animation: section-enter 250ms ease-out;
+}
+
+@keyframes section-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stats detail toggle */
+.stats-detail {
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border-subtle);
+  animation: fade-in 200ms ease-out;
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .grid-spirits { grid-area: spirits; }
