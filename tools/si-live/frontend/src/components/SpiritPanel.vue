@@ -12,10 +12,23 @@ import {
 
 const props = defineProps<{ modelValue: Spirit; slug?: string }>()
 
-// Full track data (immutable, from Wiki). Fetched once per slug.
+interface CardDetail {
+  name?: string
+  cost?: string | number
+  speed?: string
+  range?: string
+  target?: string
+  elements?: string[]
+  text?: string
+  card_type?: string
+}
+
+// Spirit wiki data (immutable, from data/references/wiki/<slug>.json).
 const fullEnergyTrack = ref<string[]>([])
 const fullCardplayTrack = ref<string[]>([])
+const cardDetailsByName = ref<Record<string, CardDetail>>({})
 const wikiError = ref<string | null>(null)
+const presenceExpanded = ref<boolean>(false)
 
 async function loadSpiritMeta(slug: string | undefined) {
   if (!slug) return
@@ -25,6 +38,15 @@ async function loadSpiritMeta(slug: string | undefined) {
     const data = await res.json()
     fullEnergyTrack.value = data.presence_energy_track || []
     fullCardplayTrack.value = data.presence_cardplay_track || []
+    // Collect card lookups from both unique + suggested detail arrays
+    const lookup: Record<string, CardDetail> = {}
+    for (const c of data.unique_card_details || []) {
+      if (c.name) lookup[c.name] = c
+    }
+    for (const c of data.suggested_card_details || []) {
+      if (c.name) lookup[c.name] = c
+    }
+    cardDetailsByName.value = lookup
   } catch (e) {
     wikiError.value = `spirit metadata lookup failed: ${(e as Error).message}`
   }
@@ -40,45 +62,11 @@ function updateCardplayCovered(next: string[]) {
   props.modelValue.presence_on_track_cardplay = next
 }
 
-// --- Disc color + style pickers --------------------------------------------
-
-const discColor = computed({
-  get: () =>
-    (props.modelValue as unknown as { disc_color?: string }).disc_color ||
-    SPIRIT_DEFAULT_COLOR[props.slug || ''] ||
-    STOCK_COLORS.indigo,
-  set: (v: string) => {
-    (props.modelValue as unknown as { disc_color?: string }).disc_color = v
-  },
-})
-
-const discStyle = computed({
-  get: () =>
-    (props.modelValue as unknown as { disc_style?: DiscStyle }).disc_style || 'glass',
-  set: (v: DiscStyle) => {
-    (props.modelValue as unknown as { disc_style?: DiscStyle }).disc_style = v
-  },
-})
-
-const palette = computed(() => getPaletteForSpirit(props.slug || '', discColor.value))
-
-const styleOptions: { value: DiscStyle; label: string }[] = [
-  { value: 'glass', label: 'Glass' },
-  { value: 'wood', label: 'Wood' },
-  { value: 'solid', label: 'Solid' },
-]
-
-const stockColorEntries = Object.entries(STOCK_COLORS)
-
-function resetToDefault() {
-  discColor.value = SPIRIT_DEFAULT_COLOR[props.slug || ''] || STOCK_COLORS.indigo
-}
-
+// --- Elements + pile computations ------------------------------------------
 const elements = computed(() => {
   const e = props.modelValue.elements_this_turn ?? {}
   return Object.entries(e).filter(([, n]) => (n as number) > 0)
 })
-
 const handCount = computed(() => props.modelValue.hand?.length ?? 0)
 const discardCount = computed(() => props.modelValue.discard?.length ?? 0)
 const playedCount = computed(() => props.modelValue.played_this_turn?.length ?? 0)
@@ -96,14 +84,35 @@ function moveCard(card: string, from: keyof Spirit, to: keyof Spirit) {
 }
 
 const ELEMENT_ICONS: Record<string, string> = {
-  sun: 'element-sun',
-  moon: 'element-moon',
-  fire: 'element-fire',
-  air: 'element-air',
-  water: 'element-water',
-  earth: 'element-earth',
-  plant: 'element-plant',
-  animal: 'element-animal',
+  sun: 'element-sun', moon: 'element-moon', fire: 'element-fire', air: 'element-air',
+  water: 'element-water', earth: 'element-earth', plant: 'element-plant', animal: 'element-animal',
+}
+
+// --- Disc color + style ----------------------------------------------------
+const discColor = computed({
+  get: () =>
+    (props.modelValue as unknown as { disc_color?: string }).disc_color ||
+    SPIRIT_DEFAULT_COLOR[props.slug || ''] ||
+    STOCK_COLORS.indigo,
+  set: (v: string) => { (props.modelValue as unknown as { disc_color?: string }).disc_color = v },
+})
+const discStyle = computed({
+  get: () => (props.modelValue as unknown as { disc_style?: DiscStyle }).disc_style || 'glass',
+  set: (v: DiscStyle) => { (props.modelValue as unknown as { disc_style?: DiscStyle }).disc_style = v },
+})
+const palette = computed(() => getPaletteForSpirit(props.slug || '', discColor.value))
+const styleOptions: { value: DiscStyle; label: string }[] = [
+  { value: 'glass', label: 'Glass' },
+  { value: 'wood', label: 'Wood' },
+  { value: 'solid', label: 'Solid' },
+]
+const stockColorEntries = Object.entries(STOCK_COLORS)
+function resetToDefault() {
+  discColor.value = SPIRIT_DEFAULT_COLOR[props.slug || ''] || STOCK_COLORS.indigo
+}
+
+function cardInfo(name: string): CardDetail | undefined {
+  return cardDetailsByName.value[name]
 }
 </script>
 
@@ -134,57 +143,65 @@ const ELEMENT_ICONS: Record<string, string> = {
       </div>
     </div>
 
-    <div class="tracks">
-      <div class="disc-controls">
-        <span class="disc-label">Presence disc</span>
-        <div class="swatches">
-          <button
-            v-for="[name, hex] in stockColorEntries"
-            :key="name"
-            class="swatch"
-            :class="{ active: discColor === hex }"
-            :style="{ '--s': hex }"
-            :title="name"
-            @click="discColor = hex"
-          />
-          <label class="swatch-custom" title="custom color">
-            <input type="color" v-model="discColor" />
-          </label>
-          <button class="reset-color" @click="resetToDefault" title="Reset to spirit's canonical color">↺</button>
+    <!-- Collapsible presence-tracks + disc panel -->
+    <details class="presence-section" :open="presenceExpanded" @toggle="presenceExpanded = ($event.target as HTMLDetailsElement).open">
+      <summary class="presence-summary">
+        <span class="presence-summary-label">Presence Tracks + Disc</span>
+        <span class="presence-summary-hint">{{ presenceExpanded ? 'click to collapse' : 'click to expand' }}</span>
+      </summary>
+      <div class="tracks">
+        <div class="disc-controls">
+          <span class="disc-label">Disc color</span>
+          <div class="swatches">
+            <button
+              v-for="[name, hex] in stockColorEntries"
+              :key="name"
+              class="swatch"
+              :class="{ active: discColor === hex }"
+              :style="{ '--s': hex }"
+              :title="name"
+              @click="discColor = hex"
+            />
+            <label class="swatch-custom" title="custom color">
+              <input type="color" v-model="discColor" />
+            </label>
+            <button class="reset-color" @click="resetToDefault" title="Reset to canonical color">↺</button>
+          </div>
+          <div class="style-picker">
+            <button
+              v-for="opt in styleOptions"
+              :key="opt.value"
+              class="style-btn"
+              :class="{ active: discStyle === opt.value }"
+              @click="discStyle = opt.value"
+            >{{ opt.label }}</button>
+          </div>
         </div>
-        <div class="style-picker">
-          <button
-            v-for="opt in styleOptions"
-            :key="opt.value"
-            class="style-btn"
-            :class="{ active: discStyle === opt.value }"
-            @click="discStyle = opt.value"
-          >{{ opt.label }}</button>
-        </div>
+
+        <PresenceTrack
+          v-if="fullEnergyTrack.length"
+          label="Energy"
+          :full-track="fullEnergyTrack"
+          :covered-tokens="modelValue.presence_on_track_energy ?? []"
+          :palette="palette"
+          :disc-style="discStyle"
+          @update:covered-tokens="updateEnergyCovered"
+        />
+        <PresenceTrack
+          v-if="fullCardplayTrack.length"
+          label="Card Plays"
+          :full-track="fullCardplayTrack"
+          :covered-tokens="modelValue.presence_on_track_cardplay ?? []"
+          :palette="palette"
+          :disc-style="discStyle"
+          @update:covered-tokens="updateCardplayCovered"
+        />
+        <div v-if="!fullEnergyTrack.length && !wikiError" class="track-loading">Loading presence tracks…</div>
+        <div v-if="wikiError" class="track-error">{{ wikiError }}</div>
       </div>
+    </details>
 
-      <PresenceTrack
-        v-if="fullEnergyTrack.length"
-        label="Energy"
-        :full-track="fullEnergyTrack"
-        :covered-tokens="modelValue.presence_on_track_energy ?? []"
-        :palette="palette"
-        :disc-style="discStyle"
-        @update:covered-tokens="updateEnergyCovered"
-      />
-      <PresenceTrack
-        v-if="fullCardplayTrack.length"
-        label="Card Plays"
-        :full-track="fullCardplayTrack"
-        :covered-tokens="modelValue.presence_on_track_cardplay ?? []"
-        :palette="palette"
-        :disc-style="discStyle"
-        @update:covered-tokens="updateCardplayCovered"
-      />
-      <div v-if="!fullEnergyTrack.length && !wikiError" class="track-loading">Loading presence tracks…</div>
-      <div v-if="wikiError" class="track-error">{{ wikiError }}</div>
-    </div>
-
+    <!-- Card piles with rich detail -->
     <div class="piles">
       <div class="pile">
         <div class="pile-hdr">
@@ -192,8 +209,27 @@ const ELEMENT_ICONS: Record<string, string> = {
           <span class="pile-count">{{ handCount }}</span>
         </div>
         <ul>
-          <li v-for="c in modelValue.hand ?? []" :key="c">
-            <span class="card-name">{{ c }}</span>
+          <li v-for="c in modelValue.hand ?? []" :key="c" class="card-row">
+            <div class="card-main">
+              <div class="card-title">{{ c }}</div>
+              <div v-if="cardInfo(c)" class="card-meta">
+                <span v-if="cardInfo(c)?.cost !== undefined" class="meta-chip cost" :title="'Energy cost'">{{ cardInfo(c)?.cost }}E</span>
+                <span v-if="cardInfo(c)?.speed" class="meta-chip speed">
+                  <Icon v-if="cardInfo(c)?.speed?.toLowerCase() === 'fast'" name="speed-fast" :size="12" decorative />
+                  <Icon v-else-if="cardInfo(c)?.speed?.toLowerCase() === 'slow'" name="speed-slow" :size="12" decorative />
+                  {{ cardInfo(c)?.speed }}
+                </span>
+                <span v-if="cardInfo(c)?.range" class="meta-chip" :title="'Range'">R{{ cardInfo(c)?.range }}</span>
+                <span
+                  v-for="el in cardInfo(c)?.elements ?? []"
+                  :key="el"
+                  class="meta-chip elem"
+                >
+                  <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="12" decorative />
+                </span>
+              </div>
+              <div v-if="cardInfo(c)?.text" class="card-text">{{ cardInfo(c)?.text }}</div>
+            </div>
             <div class="card-actions">
               <button class="ghost" @click="moveCard(c, 'hand', 'played_this_turn')">Play</button>
               <button class="ghost" @click="moveCard(c, 'hand', 'discard')">Discard</button>
@@ -209,8 +245,25 @@ const ELEMENT_ICONS: Record<string, string> = {
           <span class="pile-count">{{ playedCount }}</span>
         </div>
         <ul>
-          <li v-for="c in modelValue.played_this_turn ?? []" :key="c">
-            <span class="card-name">{{ c }}</span>
+          <li v-for="c in modelValue.played_this_turn ?? []" :key="c" class="card-row slim">
+            <div class="card-main">
+              <div class="card-title">{{ c }}</div>
+              <div v-if="cardInfo(c)" class="card-meta">
+                <span v-if="cardInfo(c)?.cost !== undefined" class="meta-chip cost">{{ cardInfo(c)?.cost }}E</span>
+                <span v-if="cardInfo(c)?.speed" class="meta-chip speed">
+                  <Icon v-if="cardInfo(c)?.speed?.toLowerCase() === 'fast'" name="speed-fast" :size="12" decorative />
+                  <Icon v-else-if="cardInfo(c)?.speed?.toLowerCase() === 'slow'" name="speed-slow" :size="12" decorative />
+                  {{ cardInfo(c)?.speed }}
+                </span>
+                <span
+                  v-for="el in cardInfo(c)?.elements ?? []"
+                  :key="el"
+                  class="meta-chip elem"
+                >
+                  <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="12" decorative />
+                </span>
+              </div>
+            </div>
             <div class="card-actions">
               <button class="ghost" @click="moveCard(c, 'played_this_turn', 'discard')">→ Discard</button>
               <button class="ghost" @click="moveCard(c, 'played_this_turn', 'hand')">↩ Hand</button>
@@ -226,8 +279,10 @@ const ELEMENT_ICONS: Record<string, string> = {
           <span class="pile-count">{{ discardCount }}</span>
         </div>
         <ul>
-          <li v-for="c in modelValue.discard ?? []" :key="c">
-            <span class="card-name">{{ c }}</span>
+          <li v-for="c in modelValue.discard ?? []" :key="c" class="card-row slim">
+            <div class="card-main">
+              <div class="card-title">{{ c }}</div>
+            </div>
             <div class="card-actions">
               <button class="ghost" @click="moveCard(c, 'discard', 'hand')">↩ Hand</button>
             </div>
@@ -251,257 +306,172 @@ const ELEMENT_ICONS: Record<string, string> = {
 
 <style scoped>
 .panel {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--r-lg);
-  padding: var(--sp-4);
+  display: flex; flex-direction: column; gap: var(--sp-3);
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg); padding: var(--sp-4);
+  box-shadow: var(--shadow-sm);
 }
 
-.top {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--sp-4);
-  align-items: start;
+.top { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-4); align-items: start; }
+.resources { display: inline-flex; gap: var(--sp-3); }
+.res { display: flex; flex-direction: column; gap: var(--sp-1); }
+.res-label, .section-label {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-muted); font-weight: var(--fw-medium);
 }
 
-.resources {
-  display: inline-flex;
-  gap: var(--sp-3);
-}
-
-.res {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-1);
-}
-
-.res-label, .section-label, .track-label {
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  font-weight: var(--fw-medium);
-}
-
-.elements {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-1);
-}
-
-.element-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-1);
-  align-items: center;
-  min-height: 1.75rem;
-}
-
+.elements { display: flex; flex-direction: column; gap: var(--sp-1); }
+.element-chips { display: flex; flex-wrap: wrap; gap: var(--sp-1); align-items: center; min-height: 1.75rem; }
 .element-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  display: inline-flex; align-items: center; gap: 4px;
   padding: 2px var(--sp-2);
+  background: var(--bg-muted); border: 1px solid var(--border-subtle);
+  border-radius: var(--r-full); font-size: var(--fs-xs);
+}
+.el-name { text-transform: capitalize; color: var(--text-secondary); }
+.el-count { font-family: var(--font-mono); font-weight: var(--fw-semibold); color: var(--text-primary); }
+
+/* Collapsible presence section */
+.presence-section {
   background: var(--bg-muted);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--r-full);
-  font-size: var(--fs-xs);
+  border-radius: var(--r-md);
 }
-
-.el-name {
-  text-transform: capitalize;
+.presence-summary {
+  list-style: none;
+  padding: var(--sp-2) var(--sp-3);
+  cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: var(--fs-sm);
   color: var(--text-secondary);
 }
-
-.el-count {
-  font-family: var(--font-mono);
-  font-weight: var(--fw-semibold);
-  color: var(--text-primary);
+.presence-summary::-webkit-details-marker { display: none; }
+.presence-summary::before {
+  content: '▸';
+  margin-right: var(--sp-2);
+  transition: transform var(--motion-fast);
 }
+details[open] > .presence-summary::before { transform: rotate(90deg); }
+.presence-summary-label { font-weight: var(--fw-medium); color: var(--text-primary); flex: 1; }
+.presence-summary-hint { font-size: var(--fs-xs); color: var(--text-muted); font-style: italic; }
 
 .tracks {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-  padding: var(--sp-3) 0;
+  display: flex; flex-direction: column; gap: var(--sp-3);
+  padding: var(--sp-3);
   border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
 }
 
-.track-loading, .track-error {
-  font-size: var(--fs-xs);
-  color: var(--text-muted);
-  font-style: italic;
-}
+.track-loading, .track-error { font-size: var(--fs-xs); color: var(--text-muted); font-style: italic; }
 .track-error { color: var(--status-danger); font-style: normal; }
 
 .disc-controls {
-  display: flex;
-  gap: var(--sp-3);
-  align-items: center;
-  flex-wrap: wrap;
-  padding-bottom: var(--sp-2);
-  border-bottom: 1px dashed var(--border-subtle);
+  display: flex; gap: var(--sp-3); align-items: center; flex-wrap: wrap;
+  padding-bottom: var(--sp-2); border-bottom: 1px dashed var(--border-subtle);
 }
-
 .disc-label {
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  font-weight: var(--fw-medium);
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-muted); font-weight: var(--fw-medium);
 }
-
-.swatches {
-  display: inline-flex;
-  gap: 3px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
+.swatches { display: inline-flex; gap: 3px; align-items: center; flex-wrap: wrap; }
 .swatch {
-  width: 1.15rem;
-  height: 1.15rem;
-  padding: 0;
-  border-radius: var(--r-full);
-  border: 2px solid transparent;
-  background: var(--s);
-  cursor: pointer;
+  width: 1.15rem; height: 1.15rem; padding: 0;
+  border-radius: var(--r-full); border: 2px solid transparent;
+  background: var(--s); cursor: pointer;
   transition: transform var(--motion-fast), border-color var(--motion-fast);
   flex-shrink: 0;
 }
-
 .swatch:hover { transform: scale(1.15); }
-.swatch.active {
-  border-color: var(--text-primary);
-  box-shadow: 0 0 0 1px var(--bg-canvas);
-}
-
+.swatch.active { border-color: var(--text-primary); box-shadow: 0 0 0 1px var(--bg-canvas); }
 .swatch-custom {
-  position: relative;
-  width: 1.15rem;
-  height: 1.15rem;
-  border-radius: var(--r-full);
-  border: 1px dashed var(--border-strong);
-  cursor: pointer;
-  overflow: hidden;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.65rem;
-  color: var(--text-muted);
+  position: relative; width: 1.15rem; height: 1.15rem;
+  border-radius: var(--r-full); border: 1px dashed var(--border-strong);
+  cursor: pointer; overflow: hidden; display: inline-flex;
+  align-items: center; justify-content: center; font-size: 0.65rem; color: var(--text-muted);
 }
 .swatch-custom::before { content: '+'; font-size: 0.85rem; line-height: 1; }
 .swatch-custom input[type="color"] {
   position: absolute; inset: 0; opacity: 0; cursor: pointer; padding: 0; border: 0;
 }
-
 .reset-color {
-  padding: 0 var(--sp-1);
-  font-size: var(--fs-xs);
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
+  padding: 0 var(--sp-1); font-size: var(--fs-xs);
+  background: transparent; border: none; color: var(--text-muted); cursor: pointer;
 }
 .reset-color:hover { color: var(--text-primary); background: transparent; border: none; }
-
 .style-picker {
-  display: inline-flex;
-  gap: 2px;
-  margin-left: auto;
-  padding: 2px;
-  background: var(--bg-muted);
-  border-radius: var(--r-sm);
+  display: inline-flex; gap: 2px; margin-left: auto;
+  padding: 2px; background: var(--bg-canvas); border-radius: var(--r-sm);
 }
-
 .style-btn {
-  font-size: var(--fs-xs);
-  padding: 2px var(--sp-2);
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  border-radius: var(--r-sm);
-  cursor: pointer;
+  font-size: var(--fs-xs); padding: 2px var(--sp-2);
+  background: transparent; border: none; color: var(--text-secondary);
+  border-radius: var(--r-sm); cursor: pointer;
 }
 .style-btn:hover { background: var(--bg-hover); }
 .style-btn.active {
-  background: var(--bg-raised);
-  color: var(--text-primary);
+  background: var(--bg-surface); color: var(--text-primary);
   border: 1px solid var(--border-default);
 }
 
+/* Card piles */
 .piles {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--sp-3);
 }
-
-.pile {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-1);
-}
-
+.pile { display: flex; flex-direction: column; gap: var(--sp-1); }
 .pile.forgotten { opacity: 0.6; }
-
 .pile-hdr {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding-bottom: var(--sp-1);
-  border-bottom: 1px solid var(--border-subtle);
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding-bottom: var(--sp-1); border-bottom: 1px solid var(--border-subtle);
 }
+.pile-name { font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--text-primary); }
+.pile-count { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-muted); }
 
-.pile-name {
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
+.pile ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--sp-1); }
+
+.card-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--sp-2);
+  padding: var(--sp-2);
+  border-radius: var(--r-md);
+  background: var(--bg-muted);
+  border: 1px solid var(--border-subtle);
+  align-items: start;
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast);
+}
+.card-row:hover { border-color: var(--accent-border); box-shadow: var(--shadow-sm); }
+.card-row.slim { padding: var(--sp-1) var(--sp-2); }
+
+.card-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.card-title {
+  font-size: var(--fs-sm); font-weight: var(--fw-semibold);
   color: var(--text-primary);
 }
-
-.pile-count {
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  color: var(--text-muted);
-}
-
-.pile ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.pile li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--sp-2);
-  padding: var(--sp-1);
-  font-size: var(--fs-xs);
-  border-radius: var(--r-sm);
-  transition: background var(--motion-fast);
-}
-
-.pile li:hover:not(.empty) { background: var(--bg-muted); }
-
-.card-name { color: var(--text-primary); flex: 1; }
-.empty { color: var(--text-faint); font-style: italic; justify-content: center; }
-
-.card-actions {
-  display: inline-flex;
-  gap: 2px;
-}
-
-.card-actions button {
+.card-meta {
+  display: flex; flex-wrap: wrap; gap: 3px;
   font-size: 0.68rem;
-  padding: 1px var(--sp-1);
+}
+.meta-chip {
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 1px 5px;
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--r-sm);
+  color: var(--text-secondary);
+}
+.meta-chip.cost { font-family: var(--font-mono); color: var(--text-primary); font-weight: var(--fw-semibold); }
+.meta-chip.speed { text-transform: capitalize; }
+.meta-chip.elem { padding: 1px 3px; }
+.card-text {
+  font-size: var(--fs-xs); color: var(--text-secondary);
+  line-height: 1.35; margin-top: 2px;
 }
 
+.card-actions { display: inline-flex; flex-direction: column; gap: 2px; align-self: center; }
+.card-actions button {
+  font-size: 0.68rem; padding: 2px var(--sp-1); white-space: nowrap;
+}
+
+.empty { color: var(--text-faint); font-style: italic; text-align: center; padding: var(--sp-2); font-size: var(--fs-xs); }
 .muted { color: var(--text-muted); font-style: italic; font-size: var(--fs-xs); }
 </style>

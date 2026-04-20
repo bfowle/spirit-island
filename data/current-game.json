@@ -59,25 +59,17 @@
   "board_state": {
     "A": {
       "lands": {
-        "5": {
+        "2": {
           "terrain": "wetland",
-          "coastal": false,
+          "coastal": true,
           "explorers": 0,
           "towns": 0,
-          "cities": 0,
-          "dahan": 0,
+          "cities": 1,
+          "dahan": 1,
           "blight": 0,
-          "tokens": []
-        },
-        "7": {
-          "terrain": "sands",
-          "coastal": false,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 2,
-          "blight": 0,
-          "tokens": []
+          "tokens": [
+            "disease"
+          ]
         },
         "8": {
           "terrain": "jungle",
@@ -89,21 +81,19 @@
           "blight": 0,
           "tokens": []
         },
-        "1": {
-          "terrain": "mountain",
+        "3": {
+          "terrain": "jungle",
           "coastal": true,
           "explorers": 0,
           "towns": 0,
           "cities": 0,
-          "dahan": 0,
+          "dahan": 2,
           "blight": 0,
-          "tokens": [
-            "beast"
-          ]
+          "tokens": []
         },
-        "3": {
-          "terrain": "jungle",
-          "coastal": true,
+        "7": {
+          "terrain": "sands",
+          "coastal": false,
           "explorers": 0,
           "towns": 0,
           "cities": 0,
@@ -121,6 +111,28 @@
           "blight": 1,
           "tokens": []
         },
+        "5": {
+          "terrain": "wetland",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "1": {
+          "terrain": "mountain",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": [
+            "beast"
+          ]
+        },
         "6": {
           "terrain": "mountain",
           "coastal": false,
@@ -130,18 +142,6 @@
           "dahan": 1,
           "blight": 0,
           "tokens": []
-        },
-        "2": {
-          "terrain": "wetland",
-          "coastal": true,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 1,
-          "dahan": 1,
-          "blight": 0,
-          "tokens": [
-            "disease"
-          ]
         }
       }
     }

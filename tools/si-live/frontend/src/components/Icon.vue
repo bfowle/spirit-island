@@ -45,6 +45,10 @@ const altText = computed(() => {
 })
 </script>
 
+<script lang="ts">
+// extra block so we can compute an SVG class; keeps the component tidy
+</script>
+
 <template>
   <img
     v-if="src"
@@ -55,6 +59,7 @@ const altText = computed(() => {
     :width="dim"
     :height="dim"
     class="si-icon"
+    :class="{ 'si-icon-mono': src.endsWith('.svg') }"
   />
   <span v-else class="si-icon-missing" :title="`missing icon: ${name}`">?</span>
 </template>
@@ -66,6 +71,11 @@ const altText = computed(() => {
   object-fit: contain;
   user-select: none;
   flex-shrink: 0;
+}
+/* Black silhouette SVGs from the Wiki need to flip polarity in dark mode so
+   they stay visible. PNG element icons (colored) skip this. */
+.si-icon-mono {
+  filter: var(--icon-svg-filter);
 }
 .si-icon-missing {
   display: inline-flex;
