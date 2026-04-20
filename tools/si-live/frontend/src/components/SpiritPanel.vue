@@ -1,9 +1,38 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import type { Spirit } from '../types'
 import Icon from './Icon.vue'
+import PresenceTrack from './PresenceTrack.vue'
 
-const props = defineProps<{ modelValue: Spirit }>()
+const props = defineProps<{ modelValue: Spirit; slug?: string }>()
+
+// Full track data (immutable, from Wiki). Fetched once per slug.
+const fullEnergyTrack = ref<string[]>([])
+const fullCardplayTrack = ref<string[]>([])
+const wikiError = ref<string | null>(null)
+
+async function loadWiki(slug: string | undefined) {
+  if (!slug) return
+  try {
+    const res = await fetch(`/api/spirit/${encodeURIComponent(slug)}`)
+    if (!res.ok) throw new Error(`${res.status}`)
+    const data = await res.json()
+    fullEnergyTrack.value = data.presence_energy_track || []
+    fullCardplayTrack.value = data.presence_cardplay_track || []
+  } catch (e) {
+    wikiError.value = `wiki lookup failed: ${(e as Error).message}`
+  }
+}
+
+onMounted(() => loadWiki(props.slug))
+watch(() => props.slug, loadWiki)
+
+function updateEnergyCovered(next: string[]) {
+  props.modelValue.presence_on_track_energy = next
+}
+function updateCardplayCovered(next: string[]) {
+  props.modelValue.presence_on_track_cardplay = next
+}
 
 const elements = computed(() => {
   const e = props.modelValue.elements_this_turn ?? {}
@@ -66,14 +95,22 @@ const ELEMENT_ICONS: Record<string, string> = {
     </div>
 
     <div class="tracks">
-      <div class="track">
-        <span class="track-label">Energy track (remaining covered slots)</span>
-        <code>{{ (modelValue.presence_on_track_energy ?? []).join(' · ') || '—' }}</code>
-      </div>
-      <div class="track">
-        <span class="track-label">Card-play track (remaining covered slots)</span>
-        <code>{{ (modelValue.presence_on_track_cardplay ?? []).join(' · ') || '—' }}</code>
-      </div>
+      <PresenceTrack
+        v-if="fullEnergyTrack.length"
+        label="Energy"
+        :full-track="fullEnergyTrack"
+        :covered-tokens="modelValue.presence_on_track_energy ?? []"
+        @update:covered-tokens="updateEnergyCovered"
+      />
+      <PresenceTrack
+        v-if="fullCardplayTrack.length"
+        label="Card Plays"
+        :full-track="fullCardplayTrack"
+        :covered-tokens="modelValue.presence_on_track_cardplay ?? []"
+        @update:covered-tokens="updateCardplayCovered"
+      />
+      <div v-if="!fullEnergyTrack.length && !wikiError" class="track-loading">Loading presence tracks…</div>
+      <div v-if="wikiError" class="track-error">{{ wikiError }}</div>
     </div>
 
     <div class="piles">
@@ -214,25 +251,20 @@ const ELEMENT_ICONS: Record<string, string> = {
 }
 
 .tracks {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: var(--sp-3);
-  padding: var(--sp-2) 0;
+  padding: var(--sp-3) 0;
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
 }
 
-.track {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-1);
-}
-
-.track code {
+.track-loading, .track-error {
   font-size: var(--fs-xs);
-  padding: var(--sp-1) var(--sp-2);
-  background: var(--bg-muted);
+  color: var(--text-muted);
+  font-style: italic;
 }
+.track-error { color: var(--status-danger); font-style: normal; }
 
 .piles {
   display: grid;

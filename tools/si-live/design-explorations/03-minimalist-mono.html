@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design 03 — Minimalist Mono (zen grayscale)</title>
+  <style>
+    :root {
+      --bg-canvas: #0f0f10; --bg-surface: #181819; --bg-raised: #202022;
+      --bg-muted: #28282a; --bg-hover: #303032;
+      --border-subtle: #2a2a2c; --border-default: #3a3a3c; --border-strong: #555;
+      --text-primary: #ededef; --text-secondary: #9d9da0; --text-muted: #666668; --text-faint: #444446;
+      --accent: #ededef;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+      --font-mono: 'SF Mono', Menlo, monospace;
+      color: var(--text-primary); background: var(--bg-canvas); font-family: var(--font-sans); font-size: 13px; line-height: 1.55; font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+    body { margin: 0; padding: 48px 40px; }
+    .container { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
+    header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+    h1 { font-family: var(--font-mono); font-size: 1rem; font-weight: 500; margin: 0; letter-spacing: -0.01em; color: var(--text-primary); }
+    .matchup { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-left: 16px; }
+    .meta { display: inline-flex; gap: 20px; align-items: center; }
+    .turn { display: inline-flex; gap: 8px; align-items: baseline; }
+    .turn-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); }
+    .turn-val { font-family: var(--font-mono); font-size: 1rem; font-weight: 500; color: var(--text-primary); }
+    button { font-family: inherit; background: transparent; color: var(--text-secondary); border: none; padding: 4px 0; font-size: 0.82rem; font-weight: 400; cursor: pointer; border-bottom: 1px solid transparent; transition: all 120ms; }
+    button:hover { color: var(--text-primary); border-bottom-color: var(--border-strong); }
+    button.primary { color: var(--text-primary); border-bottom: 1px solid var(--text-primary); padding-bottom: 3px; }
+    select { background: transparent; color: var(--text-primary); border: none; border-bottom: 1px solid var(--border-default); padding: 2px 0; font-family: inherit; font-size: 0.82rem; text-transform: capitalize; }
+    h2 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); font-weight: 500; margin: 0 0 16px; }
+    .pools { display: flex; gap: 48px; }
+    .pool { display: flex; flex-direction: column; gap: 8px; min-width: 140px; }
+    .pool-hdr { display: flex; align-items: baseline; gap: 8px; font-size: 0.78rem; }
+    .pool-name { color: var(--text-secondary); }
+    .tag { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-left: 8px; }
+    .bar { background: var(--bg-raised); height: 2px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--text-primary); }
+    .bar-fill.fear { width: 45%; }
+    .bar-fill.blight { width: 22%; }
+    .pool-count { font-family: var(--font-mono); font-size: 1.3rem; font-weight: 300; letter-spacing: -0.02em; }
+    .pool-max { color: var(--text-muted); font-weight: 300; }
+    .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2px; background: var(--border-subtle); border: 1px solid var(--border-subtle); }
+    .land { background: var(--bg-canvas); padding: 18px; }
+    .land-hdr { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+    .land-id { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 400; }
+    .land-terrain { font-size: 0.72rem; color: var(--text-muted); text-transform: lowercase; letter-spacing: 0.05em; }
+    .land-terrain::before { content: '· '; }
+    .chips { display: flex; gap: 12px; flex-wrap: wrap; margin: 8px 0 16px; font-family: var(--font-mono); font-size: 0.85rem; }
+    .chip { display: inline-flex; gap: 4px; align-items: baseline; }
+    .chip-label { color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
+    .chip-count { color: var(--text-primary); font-weight: 500; }
+    .stepper-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; padding: 4px 0; font-size: 0.78rem; color: var(--text-muted); border-bottom: 1px solid var(--border-subtle); }
+    .stepper-row:last-child { border-bottom: none; }
+    .stepper { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-mono); }
+    .step { width: auto; padding: 0 4px; font-size: 0.9rem; color: var(--text-muted); }
+    .step:hover { color: var(--text-primary); background: transparent; border-bottom: none; }
+    .step-val { min-width: 20px; text-align: center; color: var(--text-primary); }
+    .bowls { display: flex; gap: 8px; }
+    .bowl { position: relative; width: 38px; height: 38px; border-radius: 99px; background: transparent; border: 1px solid var(--border-default); display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-weight: 400; font-size: 0.9rem; }
+    .bowl.uncovered { border-color: var(--text-primary); color: var(--text-primary); }
+    .bowl.covered { color: var(--text-faint); }
+    .disc { position: absolute; inset: 4px; border-radius: 99px; background: var(--text-secondary); }
+    .panel { display: flex; flex-direction: column; gap: 28px; }
+    .resources { display: inline-flex; gap: 48px; }
+    .res { display: flex; flex-direction: column; gap: 4px; }
+    .res-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); }
+    .res-val { font-family: var(--font-mono); font-size: 2rem; font-weight: 300; letter-spacing: -0.03em; }
+    .section-sub { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 10px; font-weight: 500; }
+    .tag-muted { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>si-live</h1>
+        <span class="matchup">shadows · england · level 3</span>
+      </div>
+      <div class="meta">
+        <div class="turn"><span class="turn-label">Round</span><span class="turn-val">03</span></div>
+        <select><option>fast phase</option></select>
+        <button>saved games</button>
+        <button class="primary">new game</button>
+      </div>
+    </header>
+
+    <section class="pools">
+      <div class="pool">
+        <div class="pool-hdr"><span class="pool-name">Fear</span><span class="tag">T1</span></div>
+        <div class="pool-count">04 <span class="pool-max">/ 09</span></div>
+        <div class="bar"><div class="bar-fill fear"></div></div>
+      </div>
+      <div class="pool">
+        <div class="pool-hdr"><span class="pool-name">Blight</span></div>
+        <div class="pool-count">01 <span class="pool-max">/ 05</span></div>
+        <div class="bar"><div class="bar-fill blight"></div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Board A</h2>
+      <div class="board">
+        <div class="land">
+          <div class="land-hdr"><span class="land-id">01</span><span class="land-terrain">mountain</span></div>
+          <div class="chips"><span class="chip"><span class="chip-label">E</span><span class="chip-count">1</span></span></div>
+          <div class="stepper-row"><span>explorer</span><div class="stepper"><button class="step">−</button><span class="step-val">1</span><button class="step">+</button></div></div>
+          <div class="stepper-row"><span>town</span><div class="stepper"><button class="step">−</button><span class="step-val">0</span><button class="step">+</button></div></div>
+        </div>
+        <div class="land">
+          <div class="land-hdr"><span class="land-id">03</span><span class="land-terrain">jungle · coast</span></div>
+          <div class="chips"><span class="chip"><span class="chip-label">T</span><span class="chip-count">1</span></span><span class="chip"><span class="chip-label">C</span><span class="chip-count">1</span></span><span class="chip"><span class="chip-label">D</span><span class="chip-count">1</span></span></div>
+          <div class="stepper-row"><span>dahan</span><div class="stepper"><button class="step">−</button><span class="step-val">1</span><button class="step">+</button></div></div>
+        </div>
+        <div class="land">
+          <div class="land-hdr"><span class="land-id">05</span><span class="land-terrain">wetland</span></div>
+          <div class="chips"><span class="tag-muted">empty</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Shadows Flicker Like Flame</h2>
+      <div class="panel">
+        <div class="resources">
+          <div class="res"><span class="res-label">Energy</span><span class="res-val">2</span></div>
+          <div class="res"><span class="res-label">Card Plays</span><span class="res-val">2</span></div>
+        </div>
+        <div>
+          <div class="section-sub">Energy Track — 1 of 6 placed</div>
+          <div class="bowls">
+            <div class="bowl uncovered">0</div>
+            <div class="bowl covered">1<div class="disc"></div></div>
+            <div class="bowl covered">3<div class="disc"></div></div>
+            <div class="bowl covered">4<div class="disc"></div></div>
+            <div class="bowl covered">5<div class="disc"></div></div>
+            <div class="bowl covered">6<div class="disc"></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="section-sub">Card-Play Track — 1 of 6 placed</div>
+          <div class="bowls">
+            <div class="bowl uncovered">1</div>
+            <div class="bowl covered">2<div class="disc"></div></div>
+            <div class="bowl covered">3<div class="disc"></div></div>
+            <div class="bowl covered">3<div class="disc"></div></div>
+            <div class="bowl covered">4<div class="disc"></div></div>
+            <div class="bowl covered">5<div class="disc"></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="section-sub">Elements</div>
+          <div class="chips"><span class="chip"><span class="chip-label">moon</span><span class="chip-count">2</span></span><span class="chip"><span class="chip-label">fire</span><span class="chip-count">1</span></span><span class="chip"><span class="chip-label">air</span><span class="chip-count">1</span></span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

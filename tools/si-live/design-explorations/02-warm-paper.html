@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design 02 — Warm Paper (light, parchment)</title>
+  <style>
+    :root {
+      --bg-canvas: #f4efe4; --bg-surface: #fbf8ef; --bg-raised: #efe7d4;
+      --bg-muted: #e7dec6; --bg-hover: #ddd2b5;
+      --border-subtle: #d6cab0; --border-default: #bba98a;
+      --text-primary: #2e2a1f; --text-secondary: #5c5444; --text-muted: #8a7f66; --text-faint: #b5ab91;
+      --accent: #8a4a2e; --accent-soft: rgba(138,74,46,0.12); --accent-border: rgba(138,74,46,0.35);
+      --pool-fear: #a16041; --pool-blight: #6b7c55;
+      --terrain-mountain: #786460; --terrain-wetland: #5f7873; --terrain-jungle: #607155; --terrain-sands: #a98b5d;
+      --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Georgia', serif;
+      --font-sans: ui-sans-serif, system-ui, sans-serif;
+      --font-mono: ui-monospace, Menlo, monospace;
+      color: var(--text-primary); background: var(--bg-canvas); font-family: var(--font-sans); font-size: 14px; line-height: 1.55;
+    }
+    body { margin: 0; padding: 32px;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(138,74,46,0.04), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(107,124,85,0.04), transparent 40%);
+    }
+    .container { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+    header { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 16px; border-bottom: 2px solid var(--accent); flex-wrap: wrap; gap: 16px; }
+    h1 { font-family: var(--font-serif); font-style: italic; font-size: 1.8rem; color: var(--accent); margin: 0; letter-spacing: 0.01em; }
+    .matchup { font-family: var(--font-serif); font-style: italic; font-size: 0.95rem; color: var(--text-secondary); margin-left: 12px; }
+    .meta { display: inline-flex; gap: 12px; align-items: center; }
+    .turn { padding: 6px 14px; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 4px; display: inline-flex; gap: 10px; align-items: baseline; box-shadow: 1px 1px 0 var(--border-subtle); }
+    .turn-label { font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; }
+    .turn-val { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 600; color: var(--accent); }
+    button { font-family: var(--font-sans); background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-default); border-radius: 3px; padding: 5px 14px; font-size: 0.82rem; font-weight: 500; cursor: pointer; box-shadow: 1px 1px 0 var(--border-subtle); }
+    button.primary { background: var(--accent); color: var(--bg-canvas); border-color: var(--accent); }
+    select { background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-default); padding: 5px 10px; font-size: 0.82rem; text-transform: capitalize; font-family: inherit; }
+    h2 { font-family: var(--font-serif); font-size: 1.1rem; color: var(--accent); font-weight: 600; margin: 0 0 12px; border-bottom: 1px dashed var(--border-default); padding-bottom: 4px; }
+    .pools { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .pool { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: 6px; padding: 14px; display: flex; flex-direction: column; gap: 8px; box-shadow: 2px 2px 0 rgba(138,74,46,0.08); }
+    .pool-hdr { display: flex; align-items: center; gap: 8px; font-family: var(--font-serif); font-size: 1rem; }
+    .pool-name { font-weight: 600; }
+    .tag { margin-left: auto; font-size: 0.72rem; padding: 2px 10px; background: var(--accent-soft); color: var(--pool-fear); border: 1px solid var(--accent-border); border-radius: 99px; font-style: italic; }
+    .bar { background: var(--bg-muted); height: 8px; border-radius: 99px; overflow: hidden; border: 1px solid var(--border-subtle); }
+    .bar-fill { height: 100%; border-radius: 99px; }
+    .bar-fill.fear { background: var(--pool-fear); width: 45%; }
+    .bar-fill.blight { background: var(--pool-blight); width: 22%; }
+    .pool-count { font-family: var(--font-mono); font-size: 0.85rem; }
+    .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+    .land { position: relative; background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: 6px; padding: 14px; box-shadow: 2px 2px 0 rgba(138,74,46,0.08); }
+    .land::before { content: ''; position: absolute; top: -1px; left: -1px; bottom: -1px; width: 6px; border-radius: 6px 0 0 6px; }
+    .land.mountain::before { background: var(--terrain-mountain); }
+    .land.wetland::before { background: var(--terrain-wetland); }
+    .land.jungle::before { background: var(--terrain-jungle); }
+    .land.sands::before { background: var(--terrain-sands); }
+    .land-hdr { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; padding-left: 8px; }
+    .land-id { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; color: var(--accent); }
+    .land-terrain { font-family: var(--font-serif); font-style: italic; font-size: 0.85rem; color: var(--text-secondary); }
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 10px; padding-left: 8px; }
+    .chip { display: inline-flex; gap: 4px; padding: 2px 10px; background: var(--bg-muted); border: 1px solid var(--border-subtle); border-radius: 99px; font-size: 0.78rem; color: var(--text-secondary); }
+    .chip-count { font-family: var(--font-mono); font-weight: 700; color: var(--text-primary); }
+    .stepper-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; padding: 3px 8px; font-size: 0.78rem; color: var(--text-secondary); border-radius: 3px; }
+    .stepper-row:hover { background: var(--bg-muted); }
+    .stepper { display: inline-flex; align-items: center; gap: 3px; }
+    .step { width: 24px; height: 24px; padding: 0; font-size: 0.9rem; border-radius: 3px; }
+    .step-val { font-family: var(--font-mono); font-weight: 700; min-width: 22px; text-align: center; }
+    .bowls { display: flex; gap: 6px; padding: 8px; background: var(--bg-muted); border: 1px solid var(--border-subtle); border-radius: 6px; }
+    .bowl { position: relative; width: 42px; height: 42px; border-radius: 99px; background: var(--bg-surface); border: 1.5px solid var(--border-default); display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-weight: 700; font-size: 1.1rem; }
+    .bowl.uncovered { background: #fff5e2; color: var(--accent); border-color: var(--accent-border); box-shadow: inset 1px 2px 4px rgba(138,74,46,0.15); }
+    .bowl.covered .bowl-val { opacity: 0.1; }
+    .disc { position: absolute; inset: 6px; border-radius: 99px; background: radial-gradient(circle at 30% 25%, #7a6a55, #4a3f30 60%, #302820); box-shadow: 0 2px 3px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.1); }
+    .panel { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 14px; box-shadow: 2px 2px 0 rgba(138,74,46,0.08); }
+    .resources { display: inline-flex; gap: 16px; }
+    .res { display: flex; flex-direction: column; gap: 2px; }
+    .res-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+    .res-val { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+    .section-sub { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; font-family: var(--font-sans); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Si-Live</h1>
+        <span class="matchup">— Shadows vs. England, level III</span>
+      </div>
+      <div class="meta">
+        <div class="turn"><span class="turn-label">Round</span><span class="turn-val">III</span></div>
+        <select><option>Fast Phase</option></select>
+        <button>Saved Games</button>
+        <button class="primary">New Game</button>
+      </div>
+    </header>
+
+    <section class="pools">
+      <div class="pool">
+        <div class="pool-hdr"><span>🔥</span><span class="pool-name">Fear</span><span class="tag">Terror I</span></div>
+        <div class="bar"><div class="bar-fill fear"></div></div>
+        <div class="pool-count">4 / 9</div>
+      </div>
+      <div class="pool">
+        <div class="pool-hdr"><span>🌿</span><span class="pool-name">Blight</span></div>
+        <div class="bar"><div class="bar-fill blight"></div></div>
+        <div class="pool-count">1 / 5</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Board A</h2>
+      <div class="board">
+        <div class="land mountain">
+          <div class="land-hdr"><span class="land-id">№ 1</span><span class="land-terrain">mountain</span></div>
+          <div class="chips"><span class="chip">E <span class="chip-count">1</span></span></div>
+          <div class="stepper-row"><span>Explorer</span><div class="stepper"><button class="step">−</button><span class="step-val">1</span><button class="step">+</button></div></div>
+          <div class="stepper-row"><span>Town</span><div class="stepper"><button class="step">−</button><span class="step-val">0</span><button class="step">+</button></div></div>
+        </div>
+        <div class="land jungle">
+          <div class="land-hdr"><span class="land-id">№ 3</span><span class="land-terrain">jungle, coastal</span></div>
+          <div class="chips"><span class="chip">T <span class="chip-count">1</span></span><span class="chip">C <span class="chip-count">1</span></span><span class="chip">D <span class="chip-count">1</span></span></div>
+          <div class="stepper-row"><span>Dahan</span><div class="stepper"><button class="step">−</button><span class="step-val">1</span><button class="step">+</button></div></div>
+        </div>
+        <div class="land wetland">
+          <div class="land-hdr"><span class="land-id">№ 5</span><span class="land-terrain">wetland</span></div>
+          <div class="chips"><span style="color:var(--text-faint); font-style:italic">— quiet —</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Shadows Flicker Like Flame</h2>
+      <div class="panel">
+        <div class="resources">
+          <div class="res"><span class="res-label">Energy</span><span class="res-val">2</span></div>
+          <div class="res"><span class="res-label">Card Plays</span><span class="res-val">2</span></div>
+        </div>
+        <div>
+          <div class="section-sub">Energy Track · 1 / 6 placed</div>
+          <div class="bowls">
+            <div class="bowl uncovered"><span class="bowl-val">0</span></div>
+            <div class="bowl covered"><span class="bowl-val">1</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">3</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">4</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">5</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">6</span><div class="disc"></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="section-sub">Card-Play Track · 1 / 6 placed</div>
+          <div class="bowls">
+            <div class="bowl uncovered"><span class="bowl-val">1</span></div>
+            <div class="bowl covered"><span class="bowl-val">2</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">3</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">3</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">4</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">5</span><div class="disc"></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="section-sub">Elements this turn</div>
+          <div class="chips">
+            <span class="chip">moon <span class="chip-count">2</span></span>
+            <span class="chip">fire <span class="chip-count">1</span></span>
+            <span class="chip">air <span class="chip-count">1</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

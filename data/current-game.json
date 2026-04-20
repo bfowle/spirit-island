@@ -65,6 +65,26 @@
   "board_state": {
     "A": {
       "lands": {
+        "2": {
+          "terrain": "mountain",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 1,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "7": {
+          "terrain": "sands",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
         "3": {
           "terrain": "jungle",
           "coastal": true,
@@ -75,6 +95,16 @@
           "blight": 0,
           "tokens": []
         },
+        "8": {
+          "terrain": "mountain",
+          "coastal": true,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
         "5": {
           "terrain": "wetland",
           "coastal": false,
@@ -82,6 +112,16 @@
           "towns": 0,
           "cities": 0,
           "dahan": 0,
+          "blight": 0,
+          "tokens": []
+        },
+        "6": {
+          "terrain": "jungle",
+          "coastal": false,
+          "explorers": 0,
+          "towns": 0,
+          "cities": 0,
+          "dahan": 1,
           "blight": 0,
           "tokens": []
         },
@@ -100,46 +140,6 @@
           "coastal": true,
           "explorers": 0,
           "towns": 0,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
-        "8": {
-          "terrain": "mountain",
-          "coastal": true,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
-        "6": {
-          "terrain": "jungle",
-          "coastal": false,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 1,
-          "blight": 0,
-          "tokens": []
-        },
-        "7": {
-          "terrain": "sands",
-          "coastal": true,
-          "explorers": 0,
-          "towns": 0,
-          "cities": 0,
-          "dahan": 0,
-          "blight": 0,
-          "tokens": []
-        },
-        "2": {
-          "terrain": "mountain",
-          "coastal": false,
-          "explorers": 0,
-          "towns": 1,
           "cities": 0,
           "dahan": 0,
           "blight": 0,

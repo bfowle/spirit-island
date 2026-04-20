@@ -21,6 +21,7 @@ const scenario = ref<string>('')  // empty = no scenario
 const selectedSpirits = ref<string[]>(['shadows-flicker-like-flame'])
 const selectedBoards = ref<string[]>(['A'])
 const expansions = ref<string[]>(['base'])
+const archiveCurrent = ref<boolean>(true)
 
 onMounted(async () => {
   try {
@@ -32,10 +33,24 @@ onMounted(async () => {
   }
 })
 
-const availableLevels = computed(() => {
-  if (!registry.value) return [0, 1, 2, 3, 4, 5, 6]
-  const adv = registry.value.adversaries.adversaries.find(a => a.slug === adversary.value)
-  return adv ? [0, ...adv.difficulty_levels] : [0, 1, 2, 3, 4, 5, 6]
+interface LevelOption {
+  level: number
+  rating: number
+  label: string
+}
+
+const availableLevels = computed((): LevelOption[] => {
+  const adv = registry.value?.adversaries.adversaries.find(a => a.slug === adversary.value)
+  const ratings = adv?.difficulty_levels ?? []
+  const out: LevelOption[] = [{ level: 0, rating: 0, label: 'L0 (base, difficulty 0)' }]
+  for (let i = 0; i < Math.min(ratings.length, 6); i++) {
+    out.push({
+      level: i + 1,
+      rating: ratings[i],
+      label: `L${i + 1} (difficulty ${ratings[i]})`,
+    })
+  }
+  return out
 })
 
 const availableBoards = computed(() => {
@@ -64,6 +79,13 @@ function toggleExpansion(e: string) {
 async function startGame() {
   error.value = null
   try {
+    if (archiveCurrent.value) {
+      try {
+        await fetch('/api/saved-games/archive', { method: 'POST' })
+      } catch (e) {
+        console.warn('archive current game failed', e)
+      }
+    }
     const res = await fetch('/api/new-game', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -111,7 +133,7 @@ async function startGame() {
           </label>
           <label>Level
             <select v-model.number="level">
-              <option v-for="l in availableLevels" :key="l" :value="l">L{{ l }}</option>
+              <option v-for="l in availableLevels" :key="l.level" :value="l.level">{{ l.label }}</option>
             </select>
           </label>
         </section>
@@ -159,6 +181,11 @@ async function startGame() {
         </section>
 
         <footer>
+          <label class="archive-toggle" title="Save the current game to data/games/ before overwriting">
+            <input type="checkbox" v-model="archiveCurrent" />
+            <span>Archive current game first</span>
+          </label>
+          <div class="spacer" />
           <button class="primary" :disabled="!selectedSpirits.length || !selectedBoards.length" @click="startGame">
             Start Game
           </button>
@@ -186,7 +213,9 @@ select { padding: .15rem .3rem; }
 .chip { font-size: .85rem; background: #2a2a30; padding: .25rem .5rem; border-radius: 4px; border: 1px solid #444; cursor: pointer; margin: 0; }
 .chip:has(input:checked) { background: #3a3a48; border-color: #888; }
 .chip .muted { color: #888; font-size: .75rem; }
-footer { display: flex; gap: .5rem; justify-content: flex-end; margin-top: 1rem; border-top: 1px solid #333; padding-top: .75rem; }
+footer { display: flex; gap: .5rem; align-items: center; margin-top: 1rem; border-top: 1px solid var(--border-subtle); padding-top: .75rem; }
+.archive-toggle { display: inline-flex; align-items: center; gap: .3rem; font-size: var(--fs-xs); color: var(--text-secondary); cursor: pointer; }
+.spacer { flex: 1; }
 button { background: #2a2a30; border: 1px solid #444; color: #eee; padding: .35rem .75rem; border-radius: 4px; cursor: pointer; font-size: .9rem; }
 button:hover:not(:disabled) { background: #383840; }
 button.primary { background: #3a5a3a; border-color: #5a8a5a; }

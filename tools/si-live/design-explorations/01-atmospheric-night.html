@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design 01 — Atmospheric Night (current baseline)</title>
+  <style>
+    :root {
+      --bg-canvas: #0c0c0d; --bg-surface: #17171a; --bg-raised: #1e1e22;
+      --bg-muted: #242429; --bg-hover: #2c2c32;
+      --border-subtle: #26262b; --border-default: #34343a;
+      --text-primary: #e9e9ea; --text-secondary: #a3a3a8; --text-muted: #6e6e74; --text-faint: #4a4a52;
+      --accent: #d97757; --accent-soft: rgba(217,119,87,0.12); --accent-border: rgba(217,119,87,0.35);
+      --pool-fear: #d4a373; --pool-blight: #708a68;
+      --terrain-mountain: #8a6c6f; --terrain-wetland: #6b8a86; --terrain-jungle: #708a68; --terrain-sands: #b8956c;
+      --font-sans: ui-sans-serif, system-ui, sans-serif; --font-mono: ui-monospace, Menlo, monospace;
+      color: var(--text-primary); background: var(--bg-canvas); font-family: var(--font-sans); font-size: 14px; line-height: 1.5;
+    }
+    body { margin: 0; padding: 32px; }
+    .container { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+    header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 16px; }
+    h1 { font-family: var(--font-mono); font-size: 1.4rem; color: var(--accent); margin: 0; letter-spacing: -0.01em; }
+    .matchup { font-size: 0.82rem; color: var(--text-secondary); padding: 2px 10px; background: var(--bg-muted); border-radius: 99px; margin-left: 12px; }
+    .meta { display: inline-flex; gap: 12px; align-items: center; }
+    .turn { padding: 4px 12px; background: var(--bg-muted); border: 1px solid var(--border-subtle); border-radius: 6px; display: inline-flex; gap: 8px; align-items: baseline; }
+    .turn-label { font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
+    .turn-val { font-family: var(--font-mono); font-size: 1.15rem; font-weight: 700; }
+    button { font-family: inherit; background: var(--bg-raised); color: var(--text-primary); border: 1px solid var(--border-default); border-radius: 6px; padding: 4px 12px; font-size: 0.82rem; font-weight: 500; cursor: pointer; }
+    button.primary { background: var(--accent); color: #1a1a1c; border-color: var(--accent); }
+    select { background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-default); border-radius: 3px; padding: 4px 8px; font-size: 0.82rem; text-transform: capitalize; }
+    h2 { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); font-weight: 600; margin: 0 0 12px; }
+    .pools { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+    .pool { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .pool-hdr { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; }
+    .pool-name { font-weight: 600; }
+    .tag { margin-left: auto; font-size: 0.72rem; padding: 1px 8px; background: var(--accent-soft); color: var(--pool-fear); border-radius: 99px; }
+    .bar { background: var(--bg-muted); height: 6px; border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; }
+    .bar-fill.fear { background: var(--pool-fear); width: 45%; }
+    .bar-fill.blight { background: var(--pool-blight); width: 22%; }
+    .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+    .land { position: relative; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 12px; }
+    .land::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; border-radius: 10px 0 0 10px; }
+    .land.mountain::before { background: var(--terrain-mountain); }
+    .land.wetland::before { background: var(--terrain-wetland); }
+    .land.jungle::before { background: var(--terrain-jungle); }
+    .land.sands::before { background: var(--terrain-sands); }
+    .land-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .land-id { font-family: var(--font-mono); font-weight: 700; }
+    .land-terrain { font-size: 0.72rem; color: var(--text-secondary); text-transform: capitalize; }
+    .chips { display: flex; gap: 4px; flex-wrap: wrap; margin: 4px 0 8px; }
+    .chip { display: inline-flex; gap: 3px; padding: 1px 8px; background: var(--bg-muted); border: 1px solid var(--border-subtle); border-radius: 99px; font-size: 0.72rem; }
+    .chip-count { font-family: var(--font-mono); font-weight: 600; }
+    .stepper-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; padding: 2px 4px; font-size: 0.72rem; color: var(--text-secondary); }
+    .stepper-row:hover { background: var(--bg-muted); border-radius: 3px; }
+    .stepper { display: inline-flex; align-items: center; gap: 2px; }
+    .step { width: 22px; height: 22px; padding: 0; font-size: 0.82rem; }
+    .step-val { font-family: var(--font-mono); font-weight: 600; min-width: 20px; text-align: center; }
+    .bowls { display: flex; gap: 4px; padding: 6px; background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: 6px; }
+    .bowl { position: relative; width: 40px; height: 40px; border-radius: 99px; background: var(--bg-surface); border: 1px solid var(--border-subtle); display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-weight: 700; }
+    .bowl.uncovered { background: var(--bg-muted); color: var(--pool-fear); border-color: var(--accent-border); box-shadow: inset 0 2px 6px rgba(0,0,0,0.3); }
+    .bowl.covered .bowl-val { opacity: 0.15; }
+    .disc { position: absolute; inset: 6px; border-radius: 99px; background: radial-gradient(circle at 35% 30%, #4a4f5a, #2a2e36 60%, #1a1d23); box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.08); }
+    .panel { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .resources { display: inline-flex; gap: 12px; }
+    .res { display: flex; flex-direction: column; gap: 2px; }
+    .res-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+    .res-val { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; }
+    code { font-family: var(--font-mono); font-size: 0.8rem; background: var(--bg-muted); padding: 2px 6px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>si-live</h1>
+        <span class="matchup">england L3</span>
+      </div>
+      <div class="meta">
+        <div class="turn"><span class="turn-label">Round</span><span class="turn-val">3</span></div>
+        <select><option>Fast</option></select>
+        <button>Saved Games</button>
+        <button class="primary">New Game</button>
+      </div>
+    </header>
+
+    <section class="pools">
+      <div class="pool">
+        <div class="pool-hdr"><span>🔥</span><span class="pool-name">Fear</span><span class="tag">Terror 1</span></div>
+        <div class="bar"><div class="bar-fill fear"></div></div>
+        <div style="font-family:var(--font-mono); font-size:0.8rem">4 / 9</div>
+      </div>
+      <div class="pool">
+        <div class="pool-hdr"><span>🌿</span><span class="pool-name">Blight</span></div>
+        <div class="bar"><div class="bar-fill blight"></div></div>
+        <div style="font-family:var(--font-mono); font-size:0.8rem">1 / 5</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Board A</h2>
+      <div class="board">
+        <div class="land mountain">
+          <div class="land-hdr"><span class="land-id">#1</span><span class="land-terrain">mountain</span></div>
+          <div class="chips"><span class="chip">E <span class="chip-count">1</span></span></div>
+          <div class="stepper-row"><span>Explorer</span><div class="stepper"><button class="step">−</button><span class="step-val">1</span><button class="step">+</button></div></div>
+          <div class="stepper-row"><span>Town</span><div class="stepper"><button class="step">−</button><span class="step-val">0</span><button class="step">+</button></div></div>
+        </div>
+        <div class="land jungle">
+          <div class="land-hdr"><span class="land-id">#3</span><span class="land-terrain">jungle · coast</span></div>
+          <div class="chips"><span class="chip">T <span class="chip-count">1</span></span><span class="chip">C <span class="chip-count">1</span></span><span class="chip">D <span class="chip-count">1</span></span></div>
+          <div class="stepper-row"><span>Dahan</span><div class="stepper"><button class="step">−</button><span class="step-val">1</span><button class="step">+</button></div></div>
+        </div>
+        <div class="land wetland">
+          <div class="land-hdr"><span class="land-id">#5</span><span class="land-terrain">wetland</span></div>
+          <div class="chips"><span style="color:var(--text-faint); font-style:italic">—</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Shadows Flicker Like Flame</h2>
+      <div class="panel">
+        <div class="resources">
+          <div class="res"><span class="res-label">Energy</span><span class="res-val">2</span></div>
+          <div class="res"><span class="res-label">Card Plays</span><span class="res-val">2</span></div>
+        </div>
+        <div>
+          <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin-bottom:4px">Energy Track · 1 / 6 placed</div>
+          <div class="bowls">
+            <div class="bowl uncovered"><span class="bowl-val">0</span></div>
+            <div class="bowl covered"><span class="bowl-val">1</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">3</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">4</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">5</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">6</span><div class="disc"></div></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin-bottom:4px">Card-Play Track · 1 / 6 placed</div>
+          <div class="bowls">
+            <div class="bowl uncovered"><span class="bowl-val">1</span></div>
+            <div class="bowl covered"><span class="bowl-val">2</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">3</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">3</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">4</span><div class="disc"></div></div>
+            <div class="bowl covered"><span class="bowl-val">5</span><div class="disc"></div></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin-bottom:4px">Elements this turn</div>
+          <div class="chips">
+            <span class="chip">moon <span class="chip-count">2</span></span>
+            <span class="chip">fire <span class="chip-count">1</span></span>
+            <span class="chip">air <span class="chip-count">1</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

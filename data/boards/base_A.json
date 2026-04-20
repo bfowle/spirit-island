@@ -1,33 +1,33 @@
 {
-  "source": "hand-seeded from base-game board A, verify against physical board",
+  "source": "best-guess layout — user confirmed #1 is Mountain. Correct any remaining errors via si-live UI + Save Geometry.",
   "board_id": "A",
   "expansion": "base",
   "lands": {
     "0": {"terrain": "ocean", "coastal": false, "notes": "Ocean - adjacent to coastal lands"},
-    "1": {"terrain": "wetland", "coastal": false, "starting_dahan": 1},
-    "2": {"terrain": "mountain", "coastal": false, "starting_dahan": 0},
+    "1": {"terrain": "mountain", "coastal": false, "starting_dahan": 0},
+    "2": {"terrain": "sands", "coastal": true, "starting_dahan": 0},
     "3": {"terrain": "jungle", "coastal": true, "starting_dahan": 1},
-    "4": {"terrain": "sands", "coastal": true, "starting_dahan": 0},
-    "5": {"terrain": "wetland", "coastal": false, "starting_dahan": 0},
-    "6": {"terrain": "jungle", "coastal": false, "starting_dahan": 1},
-    "7": {"terrain": "sands", "coastal": true, "starting_dahan": 0},
-    "8": {"terrain": "mountain", "coastal": true, "starting_dahan": 0}
+    "4": {"terrain": "wetland", "coastal": true, "starting_dahan": 1},
+    "5": {"terrain": "jungle", "coastal": false, "starting_dahan": 0},
+    "6": {"terrain": "wetland", "coastal": false, "starting_dahan": 1},
+    "7": {"terrain": "mountain", "coastal": false, "starting_dahan": 0},
+    "8": {"terrain": "sands", "coastal": true, "starting_dahan": 1}
   },
   "adjacencies": {
     "0": ["3", "4", "7", "8"],
-    "1": ["2", "3", "5", "6"],
-    "2": ["1", "3", "6"],
-    "3": ["0", "1", "2", "4"],
-    "4": ["0", "3", "5", "7"],
-    "5": ["1", "4", "6", "7"],
-    "6": ["1", "2", "5", "8"],
-    "7": ["0", "4", "5", "8"],
-    "8": ["0", "6", "7"]
+    "1": ["2", "3", "5", "7"],
+    "2": ["1", "3", "4"],
+    "3": ["0", "1", "2", "4", "5"],
+    "4": ["0", "2", "3", "5", "6", "8"],
+    "5": ["1", "3", "4", "6", "7"],
+    "6": ["4", "5", "7", "8"],
+    "7": ["1", "5", "6", "8"],
+    "8": ["0", "4", "6", "7"]
   },
   "base_invader_setup": {
     "1_explorer": "1",
     "2_town":     "2",
     "3_city":     "3"
   },
-  "notes": "highest-numbered jungle = #6 (used for Shadows starting placement). Land #0 is the ocean."
+  "notes": "Highest-numbered jungle = #5 (used for Shadows starting placement per panel). Land #0 is the ocean. Adjacencies are approximate — correct via UI if the physical panel differs."
 }

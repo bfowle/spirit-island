@@ -68,6 +68,11 @@ async fn main() -> anyhow::Result<()> {
         .route("/api/registry", get(get_registry))
         .route("/api/new-game", axum::routing::post(post_new_game))
         .route("/api/save-board-geometry", axum::routing::post(post_save_board_geometry))
+        .route("/api/saved-games", get(get_saved_games))
+        .route("/api/saved-games/archive", axum::routing::post(post_archive_current_game))
+        .route("/api/saved-games/{id}/load", axum::routing::post(post_load_saved_game))
+        .route("/api/saved-games/{id}", axum::routing::delete(delete_saved_game))
+        .route("/api/spirit/{slug}", get(get_spirit_wiki))
         .fallback_service(ServeDir::new(&frontend_dist).append_index_html_on_directories(true))
         .layer(CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any))
         .with_state(app_state);
@@ -464,6 +469,182 @@ async fn post_new_game(
     }
     Json(parsed).into_response()
 }
+
+// --- Saved Games --- -------------------------------------------------------
+
+fn saved_games_dir(data_dir: &PathBuf) -> PathBuf {
+    data_dir.join("games")
+}
+
+#[derive(serde::Serialize)]
+struct SavedGameSummary {
+    id: String,
+    filename: String,
+    created_at: u64,
+    round: u8,
+    phase: String,
+    adversary: Option<String>,
+    level: Option<u8>,
+    scenario: Option<String>,
+    spirits: Vec<String>,
+    boards: Vec<String>,
+}
+
+fn build_summary(id: &str, filename: &str, path: &PathBuf) -> Option<SavedGameSummary> {
+    let raw = std::fs::read_to_string(path).ok()?;
+    let state: GameState = serde_json::from_str(&raw).ok()?;
+    let metadata = std::fs::metadata(path).ok()?;
+    let created = metadata
+        .created()
+        .or_else(|_| metadata.modified())
+        .ok()?
+        .duration_since(std::time::UNIX_EPOCH)
+        .ok()?
+        .as_secs();
+    Some(SavedGameSummary {
+        id: id.to_string(),
+        filename: filename.to_string(),
+        created_at: created,
+        round: state.round,
+        phase: format!("{:?}", state.phase).to_lowercase(),
+        adversary: state.setup.adversary,
+        level: state.setup.level,
+        scenario: state.setup.scenario,
+        spirits: state.setup.spirits,
+        boards: state.setup.boards,
+    })
+}
+
+async fn get_saved_games(
+    axum::extract::State(state): axum::extract::State<AppState>,
+) -> impl IntoResponse {
+    let dir = saved_games_dir(&state.data_dir);
+    let mut out: Vec<SavedGameSummary> = Vec::new();
+    if dir.exists() {
+        if let Ok(entries) = std::fs::read_dir(&dir) {
+            for entry in entries.flatten() {
+                let p = entry.path();
+                if p.extension().and_then(|s| s.to_str()) != Some("json") {
+                    continue;
+                }
+                let Some(filename) = p.file_name().and_then(|s| s.to_str()).map(String::from)
+                else {
+                    continue;
+                };
+                let id = filename.trim_end_matches(".json").to_string();
+                if let Some(sum) = build_summary(&id, &filename, &p) {
+                    out.push(sum);
+                }
+            }
+        }
+    }
+    out.sort_by(|a, b| b.created_at.cmp(&a.created_at));
+    Json(serde_json::json!({ "games": out }))
+}
+
+async fn post_archive_current_game(
+    axum::extract::State(state): axum::extract::State<AppState>,
+) -> impl IntoResponse {
+    let snapshot = state.state.read().await.clone();
+    let dir = saved_games_dir(&state.data_dir);
+    if let Err(e) = std::fs::create_dir_all(&dir) {
+        return (StatusCode::INTERNAL_SERVER_ERROR, format!("mkdir {dir:?}: {e}")).into_response();
+    }
+    // Build filename: {timestamp}-r{round}-{adversary-level}-{spirits-joined}.json
+    let ts = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0);
+    let adv = snapshot.setup.adversary.as_deref().unwrap_or("solo");
+    let lvl = snapshot
+        .setup
+        .level
+        .map(|l| format!("-l{l}"))
+        .unwrap_or_default();
+    let spirits = snapshot
+        .setup
+        .spirits
+        .iter()
+        .map(|s| s.split('-').next().unwrap_or(s).to_string())
+        .collect::<Vec<_>>()
+        .join(",");
+    let spirits = if spirits.is_empty() { "solo".to_string() } else { spirits };
+    let id = format!("{ts}-r{}-{adv}{lvl}-{spirits}", snapshot.round);
+    let filename = format!("{id}.json");
+    let path = dir.join(&filename);
+    let json = match serde_json::to_string_pretty(&snapshot) {
+        Ok(s) => s,
+        Err(e) => {
+            return (StatusCode::INTERNAL_SERVER_ERROR, format!("serialize: {e}")).into_response()
+        }
+    };
+    if let Err(e) = std::fs::write(&path, json) {
+        return (StatusCode::INTERNAL_SERVER_ERROR, format!("write {path:?}: {e}")).into_response();
+    }
+    Json(serde_json::json!({ "status": "archived", "id": id, "filename": filename })).into_response()
+}
+
+async fn post_load_saved_game(
+    axum::extract::State(state): axum::extract::State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<String>,
+) -> impl IntoResponse {
+    let dir = saved_games_dir(&state.data_dir);
+    let path = dir.join(format!("{id}.json"));
+    if !path.exists() {
+        return (StatusCode::NOT_FOUND, format!("no saved game {id}")).into_response();
+    }
+    let raw = match std::fs::read_to_string(&path) {
+        Ok(s) => s,
+        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("read: {e}")).into_response(),
+    };
+    let parsed: GameState = match serde_json::from_str(&raw) {
+        Ok(s) => s,
+        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("parse: {e}")).into_response(),
+    };
+    {
+        let mut guard = state.state.write().await;
+        *guard = parsed.clone();
+    }
+    if let Err(e) = persist(&state.state_path, &parsed).await {
+        return (StatusCode::INTERNAL_SERVER_ERROR, format!("persist: {e}")).into_response();
+    }
+    Json(parsed).into_response()
+}
+
+async fn delete_saved_game(
+    axum::extract::State(state): axum::extract::State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<String>,
+) -> impl IntoResponse {
+    let dir = saved_games_dir(&state.data_dir);
+    let path = dir.join(format!("{id}.json"));
+    if !path.exists() {
+        return (StatusCode::NOT_FOUND, format!("no saved game {id}")).into_response();
+    }
+    if let Err(e) = std::fs::remove_file(&path) {
+        return (StatusCode::INTERNAL_SERVER_ERROR, format!("remove: {e}")).into_response();
+    }
+    Json(serde_json::json!({ "status": "deleted", "id": id })).into_response()
+}
+
+async fn get_spirit_wiki(
+    axum::extract::State(state): axum::extract::State<AppState>,
+    axum::extract::Path(slug): axum::extract::Path<String>,
+) -> impl IntoResponse {
+    // Guard against path traversal
+    if slug.contains('/') || slug.contains("..") {
+        return (StatusCode::BAD_REQUEST, "invalid slug".to_string()).into_response();
+    }
+    let path = state.data_dir.join("references/wiki").join(format!("{slug}.json"));
+    let Ok(raw) = std::fs::read_to_string(&path) else {
+        return (StatusCode::NOT_FOUND, format!("no wiki data for {slug}")).into_response();
+    };
+    match serde_json::from_str::<serde_json::Value>(&raw) {
+        Ok(v) => Json(v).into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, format!("parse: {e}")).into_response(),
+    }
+}
+
+// --- Board geometry --------------------------------------------------------
 
 #[derive(Deserialize)]
 struct SaveBoardGeometryRequest {

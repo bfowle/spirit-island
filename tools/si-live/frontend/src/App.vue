@@ -7,11 +7,13 @@ import SpiritPanel from './components/SpiritPanel.vue'
 import Pools from './components/Pools.vue'
 import StatsPanel from './components/StatsPanel.vue'
 import SetupWizard from './components/SetupWizard.vue'
+import SavedGames from './components/SavedGames.vue'
 
 const state = ref<GameState | null>(null)
 const error = ref<string | null>(null)
 const saving = ref(false)
 const showWizard = ref(false)
+const showSavedGames = ref(false)
 let saveTimer: number | null = null
 
 function onGameStarted(newState: GameState) {
@@ -88,12 +90,14 @@ function humanSlug(slug: string): string {
             <option value="end">End</option>
           </select>
         </label>
+        <button class="ghost" @click="showSavedGames = true" title="Browse archived games">Saved Games</button>
         <button class="primary new-game-btn" @click="showWizard = true">New Game</button>
         <span v-if="saving" class="saving" aria-live="polite">saving…</span>
       </div>
     </header>
 
     <SetupWizard :show="showWizard" @close="showWizard = false" @game-started="onGameStarted" />
+    <SavedGames :show="showSavedGames" @close="showSavedGames = false" @game-loaded="onGameStarted" />
 
     <section class="section pools-section">
       <Pools v-model="state.pools" />
@@ -118,7 +122,7 @@ function humanSlug(slug: string): string {
         <h2>{{ humanSlug(slug) }}</h2>
         <span class="subtle mono">{{ slug }}</span>
       </div>
-      <SpiritPanel v-model="state.spirits[slug]" />
+      <SpiritPanel v-model="state.spirits[slug]" :slug="slug" />
     </section>
   </main>
 </template>

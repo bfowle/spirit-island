@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design 04 — Data-First Terminal (info density)</title>
+  <style>
+    :root {
+      --bg-canvas: #0a0c10; --bg-surface: #121519; --bg-raised: #1a1e24;
+      --bg-muted: #242a32; --bg-hover: #2e3540;
+      --border-subtle: #1e2430; --border-default: #2a3240;
+      --text-primary: #c8d0dc; --text-secondary: #8892a0; --text-muted: #555e6c;
+      --accent-cyan: #7dcfcf; --accent-amber: #d9b86b; --accent-rose: #c58b84; --accent-sage: #90a68e;
+      --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+      --font-sans: ui-sans-serif, system-ui, sans-serif;
+      color: var(--text-primary); background: var(--bg-canvas); font-family: var(--font-mono); font-size: 12px; line-height: 1.45;
+    }
+    body { margin: 0; padding: 12px; }
+    .container { max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+    header { background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 6px 12px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    h1 { font-size: 0.85rem; color: var(--accent-cyan); margin: 0; font-weight: 600; }
+    .matchup { color: var(--text-secondary); font-size: 0.75rem; }
+    .meta { display: inline-flex; gap: 10px; align-items: center; font-size: 0.72rem; }
+    .meta-kv { color: var(--text-muted); }
+    .meta-kv b { color: var(--text-primary); font-weight: 500; }
+    button { font-family: inherit; background: var(--bg-raised); color: var(--text-secondary); border: 1px solid var(--border-default); padding: 2px 8px; font-size: 0.7rem; cursor: pointer; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+    button:hover { color: var(--accent-cyan); border-color: var(--accent-cyan); }
+    button.primary { background: var(--accent-cyan); color: var(--bg-canvas); border-color: var(--accent-cyan); font-weight: 600; }
+    select { font-family: inherit; background: var(--bg-raised); color: var(--text-primary); border: 1px solid var(--border-default); padding: 2px 6px; font-size: 0.7rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .panel { background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 8px 12px; }
+    .panel-hdr { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); padding-bottom: 4px; border-bottom: 1px dashed var(--border-subtle); margin-bottom: 8px; }
+    .panel-hdr .hdr-meta { color: var(--text-secondary); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
+    td, th { padding: 2px 6px; text-align: right; border-bottom: 1px solid var(--border-subtle); }
+    th { font-weight: 400; color: var(--text-muted); text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.08em; }
+    td:first-child, th:first-child { text-align: left; }
+    .pools-panel { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0; }
+    .pool-cell { padding: 4px 12px; border-right: 1px solid var(--border-subtle); }
+    .pool-cell:last-child { border-right: none; }
+    .pool-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+    .pool-val { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.02em; margin-top: 2px; }
+    .pool-val.fear { color: var(--accent-amber); }
+    .pool-val.blight { color: var(--accent-sage); }
+    .pool-val.terror { color: var(--accent-rose); }
+    .pool-val.round { color: var(--accent-cyan); }
+    .bar { background: var(--bg-muted); height: 3px; margin-top: 4px; }
+    .bar-fill { height: 100%; }
+    .bar-fill.fear { background: var(--accent-amber); width: 45%; }
+    .bar-fill.blight { background: var(--accent-sage); width: 22%; }
+    .board-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border-subtle); }
+    .land-cell { background: var(--bg-surface); padding: 6px 10px; }
+    .land-cell.active { background: var(--bg-raised); }
+    .land-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.75rem; margin-bottom: 4px; }
+    .land-id { color: var(--accent-cyan); font-weight: 600; }
+    .land-t { color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .unit-row { display: grid; grid-template-columns: 1fr repeat(5, 22px); gap: 2px; align-items: center; font-size: 0.68rem; }
+    .unit-hdr { color: var(--text-muted); text-align: center; }
+    .unit-hdr:first-child { text-align: left; }
+    .unit-val { text-align: center; font-family: var(--font-mono); color: var(--text-primary); }
+    .unit-val.zero { color: var(--text-muted); }
+    .track-row { display: flex; gap: 2px; align-items: center; margin: 4px 0; }
+    .track-label-inline { font-size: 0.65rem; color: var(--text-muted); min-width: 110px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .slot { width: 22px; height: 22px; border: 1px solid var(--border-default); display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem; position: relative; }
+    .slot.uncovered { background: var(--bg-raised); color: var(--accent-amber); border-color: var(--accent-amber); font-weight: 600; }
+    .slot.covered { color: var(--text-muted); }
+    .slot .disc { position: absolute; inset: 3px; background: var(--text-muted); }
+    .elements-row { display: inline-flex; gap: 2px; font-size: 0.7rem; }
+    .elem-pill { padding: 0 5px; background: var(--bg-muted); color: var(--text-secondary); }
+    .elem-pill b { color: var(--accent-cyan); font-weight: 600; }
+    .resources-row { display: inline-flex; gap: 16px; align-items: baseline; }
+    .res-inline { display: inline-flex; gap: 6px; align-items: baseline; }
+    .res-inline-label { color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .res-inline-val { color: var(--accent-cyan); font-size: 1.1rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <div>
+        <h1>SI-LIVE</h1> <span class="matchup">· shadows-flicker-like-flame · england L3 · board A</span>
+      </div>
+      <div class="meta">
+        <span class="meta-kv">RND <b>03</b></span>
+        <span class="meta-kv">PHASE <b>fast</b></span>
+        <select><option>fast</option></select>
+        <button>saved</button>
+        <button class="primary">new</button>
+      </div>
+    </header>
+
+    <div class="panel pools-panel">
+      <div class="pool-cell">
+        <div class="pool-label">ROUND</div>
+        <div class="pool-val round">03</div>
+      </div>
+      <div class="pool-cell">
+        <div class="pool-label">FEAR</div>
+        <div class="pool-val fear">04 <span style="color:var(--text-muted); font-size:0.75rem">/ 09</span></div>
+        <div class="bar"><div class="bar-fill fear"></div></div>
+      </div>
+      <div class="pool-cell">
+        <div class="pool-label">BLIGHT</div>
+        <div class="pool-val blight">01 <span style="color:var(--text-muted); font-size:0.75rem">/ 05</span></div>
+        <div class="bar"><div class="bar-fill blight"></div></div>
+      </div>
+      <div class="pool-cell">
+        <div class="pool-label">TERROR</div>
+        <div class="pool-val terror">L1</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="panel">
+        <div class="panel-hdr">BOARD A <span class="hdr-meta">8 lands · edited T3</span></div>
+        <div class="board-grid">
+          <div class="land-cell active">
+            <div class="land-head"><span class="land-id">L1</span><span class="land-t">mtn</span></div>
+            <div class="unit-row unit-hdr"><span></span><span>E</span><span>T</span><span>C</span><span>D</span><span>⌧</span></div>
+            <div class="unit-row"><span>count</span><span class="unit-val">1</span><span class="unit-val zero">0</span><span class="unit-val zero">0</span><span class="unit-val zero">0</span><span class="unit-val zero">0</span></div>
+          </div>
+          <div class="land-cell">
+            <div class="land-head"><span class="land-id">L2</span><span class="land-t">snd·c</span></div>
+            <div class="unit-row unit-hdr"><span></span><span>E</span><span>T</span><span>C</span><span>D</span><span>⌧</span></div>
+            <div class="unit-row"><span>count</span><span class="unit-val zero">0</span><span class="unit-val">1</span><span class="unit-val zero">0</span><span class="unit-val zero">0</span><span class="unit-val zero">0</span></div>
+          </div>
+          <div class="land-cell">
+            <div class="land-head"><span class="land-id">L3</span><span class="land-t">jng·c</span></div>
+            <div class="unit-row unit-hdr"><span></span><span>E</span><span>T</span><span>C</span><span>D</span><span>⌧</span></div>
+            <div class="unit-row"><span>count</span><span class="unit-val zero">0</span><span class="unit-val">1</span><span class="unit-val">1</span><span class="unit-val">1</span><span class="unit-val zero">0</span></div>
+          </div>
+          <div class="land-cell">
+            <div class="land-head"><span class="land-id">L5</span><span class="land-t">jng</span></div>
+            <div class="unit-row unit-hdr"><span></span><span>E</span><span>T</span><span>C</span><span>D</span><span>⌧</span></div>
+            <div class="unit-row"><span>count</span><span class="unit-val zero">0</span><span class="unit-val zero">0</span><span class="unit-val zero">0</span><span class="unit-val zero">0</span><span class="unit-val zero">0</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-hdr">SHADOWS FLICKER LIKE FLAME <span class="hdr-meta">energy 2 · cp 2</span></div>
+
+        <div class="resources-row" style="margin-bottom: 12px;">
+          <div class="res-inline"><span class="res-inline-label">E</span><span class="res-inline-val">2</span></div>
+          <div class="res-inline"><span class="res-inline-label">CP</span><span class="res-inline-val">2</span></div>
+          <div class="res-inline"><span class="res-inline-label">Presence</span><span class="res-inline-val">5 / 13</span></div>
+        </div>
+
+        <div class="track-row">
+          <span class="track-label-inline">Energy · 1/6</span>
+          <div class="slot uncovered">0</div>
+          <div class="slot covered">1<div class="disc"></div></div>
+          <div class="slot covered">3<div class="disc"></div></div>
+          <div class="slot covered">4<div class="disc"></div></div>
+          <div class="slot covered">5<div class="disc"></div></div>
+          <div class="slot covered">6<div class="disc"></div></div>
+        </div>
+        <div class="track-row">
+          <span class="track-label-inline">Card Plays · 1/6</span>
+          <div class="slot uncovered">1</div>
+          <div class="slot covered">2<div class="disc"></div></div>
+          <div class="slot covered">3<div class="disc"></div></div>
+          <div class="slot covered">3<div class="disc"></div></div>
+          <div class="slot covered">4<div class="disc"></div></div>
+          <div class="slot covered">5<div class="disc"></div></div>
+        </div>
+
+        <div style="margin-top: 12px;">
+          <div class="panel-hdr" style="border: none; margin: 0 0 4px; padding: 0;">ELEMENTS THIS TURN</div>
+          <div class="elements-row">
+            <span class="elem-pill">moon <b>2</b></span>
+            <span class="elem-pill">fire <b>1</b></span>
+            <span class="elem-pill">air <b>1</b></span>
+          </div>
+        </div>
+
+        <div style="margin-top: 12px;">
+          <div class="panel-hdr" style="border: none; margin: 0 0 4px; padding: 0;">DRAW PROBABILITY · NEXT MINOR</div>
+          <table>
+            <tr><th>element</th><th>P</th><th>95% CI</th></tr>
+            <tr><td>moon</td><td>37.7%</td><td>(29-47%)</td></tr>
+            <tr><td>fire</td><td>28.9%</td><td>(22-38%)</td></tr>
+            <tr><td>air</td><td>21.1%</td><td>(15-30%)</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
