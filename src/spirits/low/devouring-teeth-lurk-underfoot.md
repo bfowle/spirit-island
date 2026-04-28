@@ -1,311 +1,178 @@
 # Devouring Teeth Lurk Underfoot
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text parsed via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing from [taurunti's obsidian-spiritisland notes](https://thetaurunti.github.io/obsidian-spiritisland/Spirits/Devouring-Teeth-Lurk-Underfoot) + [BGG thread 2924043](https://boardgamegeek.com/thread/2924043). No Rei / latentoctopus / Phantaskippy coverage.
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Horizons of Spirit Island                                        |
-| Complexity            | Low                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 5 · Control 2 · Fear 2 · Defense 1 · Utility 1             |
-| Primary Elements      | Fire, Animal, Earth (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Horizons of Spirit Island                          |
+| Complexity            | Low                                                |
+| Play Difficulty       | `[VERIFY]`                                         |
+| Growth type           | "one" — pick one growth per turn                   |
+| Power summary (1–5)   | **Offense 5** · Control 2 · Fear 2 · Defense 1 · Utility 1 |
+| Primary Elements      | **Fire** · **Animal** (both innate all tiers) · Earth (L2+) |
+| Special Rules         | Territorial Aggression (+1 Damage to every damage-dealing Power — including Minors/Majors) |
+| Aspects               | None                                               |
+| HoSI                  | Yes — pairs with Base Minors + Majors              |
+| Wiki Guides           | None official; [taurunti community notes](https://thetaurunti.github.io/obsidian-spiritisland/Guides/Teeth---Standard) |
 ```
 
 ## Spirit Overview — Framing
 
+Devouring Teeth is a **territorial ambush predator** — Range-0 offensive spirit that walks itself to threats via its innate's Gather threshold. Territorial Aggression gives +1 Damage to every damage-dealing Power, weaponizing the *whole draft pool*.
+
 **Wiki-printed playstyle note**:
 
-> Likes being in the same lands as Invaders, so it can use Range 0 offensive and defensive Powers. The first of its Innate Power can give some mobility, if needed. Has a poor Plays track and potent but expensive Unique Powers, so can be better at handling fewer large threats than lots of little ones.
+> Range-0 aggressor. Innate Gathers the spirit into Invader lands; Territorial Aggression amplifies all damage.
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+**Teaching role**: demonstrates range-0 + mobility; small damage bumps compound.
+
+**Complexity signal**: Low — appropriate for an onboarding spirit.
 
 ## Starting Setup
 
-> Put 1 Presence on your starting board, in land #5. You start with your 4 Unique Power Cards and 0 Energy.
+> Put **1 Presence** on your starting board, in **land #5**. You start with your **4 Unique Power Cards and 0 Energy**.
 
-## Growth Options (one)
+## Growth Options (growthtype: "one" — pick one per turn)
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=reclaim, second=addpresence0 |
-| G2 | first=gain1p, second=addpresence1 |
-| G3 | first=addpresence2, second=energy3 |
-
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+| Growth | Effects                                       | Best when                                              |
+|--------|-----------------------------------------------|--------------------------------------------------------|
+| **G1** | Reclaim + Add Presence (R0)                   | Reclaim + stack                                        |
+| **G2** | Gain 1 Power Card + Add Presence (R1)         | Card + close spread                                    |
+| **G3** | Add Presence (R2) + +3 Energy                 | Spread + energy                                        |
 
 ## Presence Tracks
 
-As Presence leaves each track, these values are revealed:
+- **Energy**: `energy2 → fire → energy3 → energy4 → animal → energy6 → energy7`
+- **CP**: `card1 → card2 → animalX → fireX → card3 → earthX → card4`
 
-- **Energy track**: energy2, fire, energy3, energy4, animal, energy6, energy7
-- **Card-play track**: card1, card2, animalX, fireX, card3, earthX, card4
+**Starting income**: 2 Energy, 1 Card Play.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: Territorial Aggression
 
-TERRITORIAL AGGRESSION Your Damage-Dealing Powers do +1 Damage. (This adds +1 Damage total for the Power, even if the Power Damages multiple Invaders or "each Invader". It can boost Minor/Major Power Cards, too, not just your Uniques + Innate.)
+> Your Damage-Dealing Powers do +1 Damage. (This adds +1 Damage total for the Power, even if the Power Damages multiple Invaders or "each Invader". It can boost Minor/Major Power Cards, too, not just your Uniques + Innate.)
 
-### Innate: DEATH APPROACHES FROM BENEATH THE SURFACE
+**+1 Damage to every damage Power**. A 1-damage Minor becomes 2-damage; a 3-damage City-killer becomes 4.
 
-- **Speed**: slow · **Range**: 1 · **Target**: invaders
+### Innate: Death Approaches from Beneath the Surface
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | If you don't have Presence in target land, Gather 1 of your Presence. (This is required.) |
-| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Damage. (+1 for your "Territorial Aggression" Special Rule) |
-| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 2 Damage. |
-| 4 | 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 5 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 4 Damage. |
+- **Speed**: Slow · **Range**: 1 · **Target**: Invaders
 
+| Level | Thresholds                              | Effect                                                                 |
+|-------|-----------------------------------------|------------------------------------------------------------------------|
+| 1     | 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | If you don't have Presence in target land, Gather 1 of your Presence. (Required.) |
+| 2     | 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Damage. (+1 from Territorial Aggression) |
+| 3     | 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 2 Damage. |
+| 4     | 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 5 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 2 Fear. 4 Damage. |
 
-## Unique Cards (all, Wiki-verified)
+L1 is the mobility lever: Gather moves Teeth into the target land (required). L2+ adds damage with the +1 Territorial bonus.
 
-## Card Priority Ratings
+## Unique Cards (all 4, Wiki-verified)
 
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Devouring Teeth Lurk Underfoot's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/devouring-teeth-lurk-underfoot.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/devouring-teeth-lurk-underfoot.json) for full scoring + reasons.
+`[VERIFY cost/text via physical copy]`:
 
-- **Primary elements (innate-weighted)**: **Animal** (wt 4.5), **Fire** (wt 4.2), **Earth** (wt 1.5)
-- **Mid-game energy estimate (T3–T5 avg)**: 5.67E
-- **Power summary**: Offense 5 · Control 2 · Fear 2 · Defense 1 · Utility 1
-```
-
-### Uniques
-
-*No Unique cards listed.*
-
-### Top 10 Minor Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Gold's Allure** | 0 | Slow | Fire, Earth, Animal | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. Add 1 Strife. | elements animal+earth+fire → 10.2 |
-| 2 | **Quicken the Earth's Struggles** | 1 | Fast | Moon, Fire, Earth, Animal | 1 Damage to each Town/City. **OR** Defend 10. | elements animal+earth+fire → 10.2 |
-| 3 | **Savage Mawbeasts** | 0 | Slow | Fire, Animal | If target land is a Jungle or Wetland, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. | elements animal+fire → 8.7 |
-| 4 | **Territorial Strife** | 0 | Slow | Sun, Fire, Animal | 3 Damage to Explorers/Towns. **OR** Add 1 Strife. | elements animal+fire → 8.7 |
-| 5 | **Call to Bloodshed** | 1 | Slow | Sun, Fire, Animal | 1 Damage per Dahan. **OR** Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements animal+fire → 8.7 |
-| 6 | **Prowling Panthers** | 1 | Slow | Moon, Fire, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Beasts. **OR** If target land has Beasts, Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. | elements animal+fire → 8.7 |
-| 7 | **Weep for What is Lost** | 0 | Slow | Fire, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per type of Invader present. Push up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Blight. | elements animal+fire → 8.7 |
-| 8 | **Blood Draws Predators** | 1 | Fast | Sun, Fire, Water, Animal | After the next time Invaders are Destroyed in target land: Add 1 Beasts, then 1 Damage pe… | elements animal+fire → 8.7 |
-| 9 | **Call to Migrate** | 1 | Slow | Fire, Air, Animal | Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Push up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements animal+fire → 8.7 |
-| 10 | **Fleshrot Fever** | 1 | Slow | Fire, Air, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Disease. | elements animal+fire → 8.7 |
-
-### Top 5 Major Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Pent-Up Calamity** | 3 | Fast | Moon, Fire, Earth, Plant, Animal | Add 1 Disease and 1 Strife. **OR** Remove any number of Beasts/Disease/Strife/Wilds. For … | elements animal+earth+fire → 10.2 |
-| 2 | **Unearth a Beast of Wrathful Stone** | 5 | Fast | Moon, Fire, Earth, Animal | After the next Invader Phase (on any turn) with no Ravage/Build Actions in target land:</… | elements animal+earth+fire → 10.2 |
-| 3 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements animal+earth+fire → 10.2 |
-| 4 | **Angry Bears** | 3 | Slow | Sun, Fire, Animal | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 2 Damage. If no Beasts are present, add 1 Beasts. Otherwise, +2 Damage, and Push … | elements animal+fire → 8.7 |
-| 5 | **The Wounded Wild Turns on its Assailants** | 4 | Slow | Fire, Plant, Animal | Add 2 Badlands. Gather up to 2 Beasts. 1 Damage per Blight/Beasts/Wilds. | elements animal+fire → 8.7 |
-
-### HoSI Beginner Deck Bundle — for reference only
-
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with Devouring Teeth Lurk Underfoot in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
-
-| Card | Type | Cost | Speed | Elements | Effect (truncated) |
-|------|------|------|-------|----------|--------------------|
-| **Devouring Ants** | Minor | 1 | Slow | Sun, Earth, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. Destroy 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. If target land is a Jungle or Sands, +1 Damage. |
-| **Gnawing Rootbiters** | Minor | 0 | Slow | Earth, Animal | Push up to 2 Towns <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. |
-| Quicken the Earth\'s Struggles | — | — | — | — | (fetch error: Wiki API error for 'Quicken_the_Earth\'s_Struggles': {'code': 'missingtitle', 'info': "The page you specified doesn't exist.", 'docref': 'See https://spiritislandwiki.com/api.php for API usage. Subscribe to the mediawiki-api-announce mailing list at &lt;https://lists.wikimedia.org/mailman/listinfo/mediawiki-api-announce&gt; for notice of API deprecations and breaking changes.'}) |
-| **Pillar of Living Flame** | Major | 5 | Slow | Fire | 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 5 Damage. If target land is a Jungle or Wetland, add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. |
-| **Rouse the Trees and Stones** | Minor | 1 | Slow | Fire, Earth, Plant | 2 Damage. Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. |
-| **Poisoned Land** | Major | 3 | Slow | Earth, Plant, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 7 Damage. Add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. Destroy all Dahan. |
-| **Savage Mawbeasts** | Minor | 0 | Slow | Fire, Animal | If target land is a Jungle or Wetland, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. |
-
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Devouring Ants** | destroys Dahan |
-| **Land of Haunts and Embers** | adds Blight |
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Scour the Land** | adds Blight |
-| **Renewing Boon** | destroys Presence |
-| **Pyroclastic Flow** | adds Blight |
-| **Blazing Renewal** | destroys Presence |
-| **Pillar of Living Flame** | adds Blight |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **Poisoned Land** | destroys Dahan, adds Blight |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
-| **Tsunami** | destroys Dahan |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Draw Towards a Consuming Void** | destroys Presence |
-| **The Jungle Hungers** | destroys Dahan |
+- **Herd Towards the Lurking Maw** — push Dahan; Defend utility.
+- **Ferocious Rampage** — multi-Invader damage.
+- **Mark Territory with Scars and Teeth** — Fast multi-Invader.
+- **Gift of Furious Might** (shared HoSI unique) — partner-amp or self-cast for easy City-kill.
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+1. **Fire + Animal** — draft priority.
+2. **Territorial Aggression multiplies drafts.** Gold's Allure, Quicken the Earth's Struggles, Call to Guard are standouts per taurunti.
+3. **Gather tier is required**, not optional — this is the whole point of the innate.
+4. **Gift of Furious Might** is arguably the easiest City-killer in HoSI thanks to Territorial Aggression turning "3 Damage" into 4.
+5. **Don't draft Moon/Water out of excitement** — they don't fire the innate.
 
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+## Possible Openings
 
-## Opener Mechanics — starter reference
+### Shared starting state
 
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/devouring-teeth-lurk-underfoot.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
-```
+- **1 Presence** on land #5.
+- **4 Uniques** in hand.
+- **2 Energy**, 1 Card Play.
 
-### Starting state
+### Opening A — taurunti Standard 🟨
 
-- **Setup**: Put 1 Presence on your starting board, in land #5. You start with your 4 Unique Power Cards and 0 Energy.
-- **Starting income** (from `presence_energy_track[0]` = `energy2`, `presence_cardplay_track[0]` = `card1`): **2 Energy · 1 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `one` — pick **one** growth option per turn
+**T1 · Growth**: G3 bot (+Presence 0, +Presence 1, +3E → 3E).
+**T1 · Play**: **Herd Towards the Lurking Maw + Ferocious Rampage**. Clears a freshly-explored land; Herd's Defend-9-style utility is massive on a board with a Disease land or early T1 Build risk.
 
-### Growth options
+**T2 · Growth**: G2 top (Reclaim one + Gain Minor).
+**T2 · Play**: **Mark Territory + Furious Rampage** — hits L2 innate (2F+1E+2A) for 2 Damage + Gather 1, and Rampage deletes a Town.
 
-- **G1**: reclaim (Reclaim all discarded+played Power Cards); addpresence0 (Place 1 Presence from a track (Range 0))
-- **G2**: gain1p (Gain 1 Power Card (Minor unless otherwise noted)); addpresence1 (Place 1 Presence from a track (Range 1))
-- **G3**: addpresence2 (Place 1 Presence from a track (Range 2)); energy3 ((+3 Energy this turn — growth effect, not track reveal))
+**T3+**: Aim for 3rd card play (bottom-track presence removal). **Gift of Furious Might** for City-kill.
 
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
+### Opening B — Reclaim Loop 🟥
 
-### Energy track
+Cycle Herd+Rampage every 2 turns — simple but repetitive.
 
-`energy2 · fire · energy3 · energy4 · animal · energy6 · energy7` — income as slots reveal: 2 → fire → 3 → 4 → animal → 6 → 7
+### Opening Decision
 
-### Card-play track
+- **Default Opening A** — broad draft pool.
+- **Opening B** when learning the spirit; more predictable.
 
-`card1 · card2 · animalX · fireX · card3 · earthX · card4` — CP as slots reveal: 1 → 2 → animalX → fireX → 3 → earthX → 4
+## Card Priority Ratings
 
-### Innate Powers
+### Top 10 Minor Draft Picks (Fire + Animal)
 
-- **DEATH APPROACHES FROM BENEATH THE SURFACE** (Speed: Slow · Range: 1 · Target: invaders)
-  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: If you don't have Presence in target land, Gather 1 of your Presence. (This is required.)
-  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 1 Damage. (+1 for your "Territorial Aggression" Special Rule)
-  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 2 Damage.
-  - **L4** — 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 5 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 4 Damage.
+| # | Card | Why |
+|---|------|-----|
+| 1 | **Gold's Allure** | taurunti's top flag |
+| 2 | **Quicken the Earth's Struggles** | Fast, Sacred-Site, destroys a Town before Ravage (amplified by Territorial Aggression) |
+| 3 | **Call to Guard** | cancels Build AND Escalation Town (BGG 2924043) |
+| 4 | **Predatory Nightmares** | 0-cost Animal |
+| 5 | **Call to Bloodshed** | 0-cost Animal |
+| 6 | **Pyroclastic Friction** | Fire + Earth |
+| 7 | **Visions of Fiery Doom** | Fire-feeder |
+| 8 | **Call to Migrate** | Air + Animal |
+| 9 | **Rain of Blood** | Fire + multi-element |
+| 10 | **Dry Wood** | 0-cost Fire |
 
-### Fast-phase element ceiling from Uniques
+### Top 5 Major Draft Picks
 
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
-
-- Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-
-### Unique Power Cards
-
-*No Unique cards parsed.*
-
-### Invader phase by turn (base deck)
-
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
-
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
-
-### Pause-point before writing T1 prose
-
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
+| # | Card | Why |
+|---|------|-----|
+| 1 | **Tigers Hunting** | Cheap Fire + Animal |
+| 2 | **Angry Bears** | Fire + Animal + Fear |
+| 3 | **Pillar of Living Flame** | Fire + board-wide |
+| 4 | **Insatiable Hunger of the Swarm** | Animal + multi-land |
+| 5 | **Instruments of Their Own Ruin** | Fire + Animal multi-land |
 
 ## Adversary Matchup Matrix
 
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
-
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
-
-
-### Strategy Cliffs — per-adversary-level shifts that change Devouring Teeth Lurk Underfoot's math
-
-```admonish warning title="Cliffs to watch"
-Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Devouring Teeth Lurk Underfoot's profile (Fear 2, Offense 5, Control 2, Defense 1, Utility 1).
-```
-
-#### England L5 — Buildings +1 HP
-
-**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
-
-**Mitigation for Devouring Teeth Lurk Underfoot**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
-
-#### England L3 — Coastal Lands build faster
-
-**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
-
-**Mitigation for Devouring Teeth Lurk Underfoot**: Front-load coastal defense or disruption before T3's first Ravage.
-
-#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
-
-**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
-
-**Mitigation for Devouring Teeth Lurk Underfoot**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
+| Adversary               | Rating | Note                                                     |
+|-------------------------|--------|----------------------------------------------------------|
+| Brandenburg-Prussia     | ★★★★☆  | +1 Damage helps kill extra T1 Town                       |
+| England                 | ★★★☆☆  | Gather chases Coastal Land 1 Builds without range crutch |
+| Sweden                  | ★★★☆☆  | `[VERIFY]`                                               |
+| Habsburg                | ★★★☆☆  | `[VERIFY]`                                               |
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
-
-## Game-Phase Strategy
-
-`[VERIFY: needs play data]`.
-
-## Synergy Partners (Multiplayer)
-
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+Land #5 placement is fine on boards G and H (both have usable interior #5s).
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
-
-## Tempo Profile
-
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
+```admonish failure title="Named mistakes"
+1. **Treating Herd as pure Defend** — it's push-Dahan, closer to Year of Perfect Stillness than real Defend.
+2. **Ignoring the Gather-tier clause** ("if you don't have presence in target land") — the whole point of the innate.
+3. **Drafting Moon/Water Minors** — don't fire the innate.
 ```
+
+## Synergy Partners (Multiplayer)
+
+- **Rising Heat of Stone and Sand** — shared Fire (BGG reports T1 interior wipe via Gift of Furious Might + Blistering Heat -1 HP).
+- **Lightning** — grants Fast so Teeth's Slow innate fires pre-Ravage.
+- **Shadows Flicker Like Flame** — shared Fire, quiet fear synergies.
+- **Avoid Volcano** if boards are tight (both want to be in Invader lands).
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/devouring-teeth-lurk-underfoot.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Devouring Teeth Lurk Underfoot](https://spiritislandwiki.com/index.php?title=Devouring_Teeth_Lurk_Underfoot).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/devouring-teeth-lurk-underfoot.json` (Wiki-parsed 2026-04-23).
+- **Openings**: [taurunti Guides](https://thetaurunti.github.io/obsidian-spiritisland/Guides/Teeth---Standard) + [BGG 2924043](https://boardgamegeek.com/thread/2924043).

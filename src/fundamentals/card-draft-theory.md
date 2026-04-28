@@ -26,6 +26,19 @@ Does the card's **elements**, **cost**, and **effect type** fit your spirit?
 
 A 0-cost Moon Minor for Shadows is A+. A 3-cost Fire-only Minor for Shadows is D because the cost breaks the curve.
 
+### Minors-feed-innates — invert the draft framing
+
+A Phantaskippy-coined re-framing: the best Minors for most spirits aren't "the strongest Minors" — they're **the Minors that unlock your Innate thresholds**. Shadows wants Moon/Fire-feeders more than it wants "good Minors in general"; Lightning wants Air/Fire feeders; Keeper wants Plant/Sun/Earth/Animal feeders because its Innate wants four elements simultaneously.
+
+The framing inversion:
+
+- **Wrong question**: "Is this the best Minor in the offer?"
+- **Right question**: "Does this Minor give me an element I need to unlock an Innate I actually plan to fire?"
+
+The right question often downgrades a "stronger" card and upgrades a "weak" utility card. A 0-cost Minor that adds Moon to Shadows's T2 is a 10/10 pick even if the card's base effect is unremarkable — the Innate it unlocks does the real work.
+
+**When the inversion doesn't apply**: spirits whose Innates are damage-incidental (Ocean, Vital Strength early-game) or whose closing win condition is Fear-card effects. There, the Minor's own effect dominates.
+
 ### 2. Offer variance
 
 What are the *other* 3 cards? If all 4 are weak fits, the best of 4 may still be worth taking. If 1 is a perfect fit and 3 are irrelevant, take the fit.
@@ -80,6 +93,18 @@ Majors require a Forget. Evaluate:
 - **Which card am I forgetting?** The weakest Unique, typically. Check the spirit chapter for your "forget-candidate."
 - **Is the forget candidate still useful?** Some Uniques degrade in the matchup (Wildfire's Flash-Fires vs. England), making them free Forgets. Others are load-bearing (Earth's Guard the Healing Land), making the Forget painful.
 - **Net value**: Major gained − forgotten card utility. If negative, the Major isn't worth it.
+
+## Opening-Track archetypes
+
+latentoctopus's glossary names three opening taxonomies around presence-track usage, which correlate tightly with draft shape:
+
+- **Full top / Full bottom**: you empty one presence track before meaningfully starting the other. Produces extreme curves — heavy energy early + slow CP scaling (Full top) or heavy CP early + slow energy (Full bottom). Draft consequence: Full top → fewer-but-bigger cards (Majors earlier); Full bottom → more-but-cheaper (Minor-heavy).
+- **Top / Bottom**: you mostly work one track, occasionally pulling from the other. The default for most spirits; moderate curve. Draft consequence: Mixed archetype.
+- **Hybrid**: you pull from both tracks roughly equally. Produces a balanced curve; often the answer when the adversary's pressure shape is split across turns. Draft consequence: flexible — often the right answer when the matchup is ambiguous pre-game.
+
+Pick the opening track **before** T1 growth based on your spirit's archetype (see [Major vs. Minor](major-vs-minor.md)) and adversary pressure (see [Tempo](tempo.md)). Drafting Minor-heavy on a Full-top opening pinches your CP; drafting Major-heavy on a Full-bottom opening starves energy. The archetype, opening, and draft are one joint decision, not three.
+
+Source: [latentoctopus Glossary](https://latentoctopus.github.io/glossary/).
 
 ## Draft cadence
 

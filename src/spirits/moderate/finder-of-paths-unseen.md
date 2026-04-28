@@ -117,6 +117,18 @@ Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE +
 | 4 | **Terrifying Nightmares** | 4 | Fast | Moon, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 4 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns. | elements air+moon → 6.6 |
 | 5 | **Sleep and Never Waken** | 3 | Fast | Moon, Air, Earth, Animal | Invaders skip all Actions in target land. 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> this Power Removes. Remo… | elements air+moon → 6.6 |
 
+```admonish tip title="Remove ≠ Destroy — Finder-specific draft priority"
+Element-affinity scoring can undersell Powers that use the **Remove** keyword. Finder's **Responsibilities to the Dead** penalty triggers on *your Actions that Destroy* (or move-to-destruction) Dahan/Invaders — it does **not** trigger on *Remove*. So Remove-based clears sidestep Finder's structural downside entirely (no presence destroyed, no energy lost).
+
+Tradeoff: Remove doesn't generate Fear on its own (only Destroy does). You're trading Fear for board-state without the self-damage tax — pair with a fear-generating teammate when possible.
+
+**Flag as "better than the element-score suggests" for Finder drafts:**
+- **Vanish Softly Away, Forgotten by All** (Major, 3, Slow, Range 2, Moon/Air, JE) — *"Remove 1 Invader and 1 Explorer/Town. OR Remove all Damaged Invaders. Adversary or Scenario rules that prevent or alter Removal do not affect this Power."* Threshold 3 Moon / 3 Air: in any 2 lands with 4+ Invaders, Remove 1 Invader. Moon/air aligns with Finder's track; the adversary-proof clause is a bonus against Removal-blocking rules.
+- **Sleep and Never Waken** (already listed above; its Explorer/Town Remove half is the same interaction).
+
+Any Major that says "Remove" instead of "Destroy" deserves a second look in a Finder draft.
+```
+
 ### HoSI Beginner Deck Bundle — for reference only
 
 ```admonish note title="Not a draft-priority list"
@@ -149,11 +161,11 @@ These are the cards shipped with Finder of Paths Unseen in the **Horizons of Spi
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
-
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+1. **Remove, don't Destroy.** Responsibilities to the Dead penalises Destruction, not Removal. Prefer Powers whose text says *Remove* — Vanish Softly Away, Sleep and Never Waken's Explorer/Town half, Push-to-ocean/off-board effects — when you need to clear a land. Save Destroy-based clears for when a teammate can cover the fear gap.
+2. **Push is your native offense.** Lay Paths They Cannot Help But Walk and Close the Ways are both Push-centric. Pushing Invaders into teammate lands, into ocean, or into Dahan counter-attacks kills without tripping the penalty.
+3. **Open the Ways is a range multiplier.** Connecting two of your lands as adjacent stretches every Range-1/Range-2 Power — including drafted Majors. Plan the adjacency *before* you commit your Actions for the turn (you can change it once between Actions).
+4. **Element thresholds gate the innates** — moon/air is the primary axis (Lay Paths L1, Close the Ways, and Vanish Softly all key off it). Draft to stack moon + air first; sun and water are secondary.
+5. **Don't sit on the starting board alone.** Setup puts presence on two separate boards; Open the Ways wants you bridging them. Fold early presence into the "bridge" land pair so adjacency has reach.
 
 ## Opener Mechanics — starter reference
 

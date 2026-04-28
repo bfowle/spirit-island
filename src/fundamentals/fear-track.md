@@ -87,6 +87,24 @@ These spirits produce fear even without kills. They're also often worse at strai
 
 **Heuristic**: match your opening to your spirit's shape. Don't try to fear-rush Fangs; don't try to board-wipe with Bringer.
 
+## Damage ↔ fear exchange rate
+
+A community heuristic from Phantaskippy's Discord-originated guides: when a Power offers you a *choice* between damage and fear, you can price the tradeoff. The rough rates that hold in most mid-game situations:
+
+| Offer | Equivalent |
+|---|---|
+| +3 Fear | ≈ Push 1 Town out of a dangerous land (Town is 2 damage next Ravage + future Build participation) |
+| +1 Fear | ≈ 1 damage to an Explorer (Destroy = 0 Fear by default; small Fear is about cheap board-state-change) |
+| +2 Fear per Dahan retained | ≈ keeping a Dahan alive on a Ravage land (Dahan counter = 2 dmg + its next-Ravage 2 dmg) |
+| Destroy a Town | = **2 Fear** (baseline) + whatever board-state payoff |
+| Destroy a City | = **3 Fear** (baseline) + significant board-state payoff |
+
+Use this to price choices like "2 Fear **or** 1 Damage": near the Terror-2 threshold on a low-damage turn, take the Fear; on a high-damage turn where the 1 damage finishes a Town (= 2 Fear automatic), take the Damage. The exchange rate is a sanity check, not a solve.
+
+**Note**: per the [Explorer FAQ](https://spiritislandwiki.com/index.php?title=Explorer), destroying an Explorer produces 0 Fear by default — that's why +1 Fear is "priced" above a naked Explorer-destroy. Powers that say "1 Fear per Explorer destroyed this Power" are *bonus* to the 0 baseline.
+
+Source: Phantaskippy's [Rampant Green](https://spiritislandwiki.com/index.php?title=A_Spread_of_Rampant_Green/Phantaskippy%27s_Guide) and [Bringer](https://spiritislandwiki.com/index.php?title=Bringer_of_Dreams_and_Nightmares/Phantaskippy%27s_Guide) guides.
+
 ## The timing question
 
 When does fear you generate "count"? It enters the pool immediately. The Terror flip happens at **Time Passes**, after Slow powers. This means:

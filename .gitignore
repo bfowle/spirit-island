@@ -8,6 +8,7 @@ target/
 node_modules/
 .wiki-cache/
 __pycache__/
+.claude/
 
 # si-live — user state + copyrighted third-party assets
 # Live in-progress game state, user-private

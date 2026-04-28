@@ -33,6 +33,15 @@ Current (2025-Q4) tier list for all 42 spirits + aspects.
 
 - [Tier list + beginner guide](https://thecardboardcrew.com/spirit-island-spirits/)
 
+### Phantaskippy — per-spirit community guides (Discord-originated, Wiki-hosted)
+
+Named teaching frameworks that originated in the Spirit of the Island Discord and were curated onto the Wiki. Notable idioms lifted into this book: *juggle the invaders*, *don't chase thresholds you won't reach*, *damage-to-fear exchange rate*, *minors-feed-innates*, *multi-tasking card plays across lands*.
+
+- [A Spread of Rampant Green — Phantaskippy's Guide](https://spiritislandwiki.com/index.php?title=A_Spread_of_Rampant_Green/Phantaskippy%27s_Guide)
+- [Thunderspeaker — Phantaskippy's Guide](https://spiritislandwiki.com/index.php?title=Thunderspeaker/Phantaskippy%27s_Guide)
+- [Bringer of Dreams and Nightmares — Phantaskippy's Guide](https://spiritislandwiki.com/index.php?title=Bringer_of_Dreams_and_Nightmares/Phantaskippy%27s_Guide)
+- Pattern: additional per-spirit guides linked from each spirit's Wiki page.
+
 ### Spirited Discussion podcast — ongoing analysis
 
 Weekly podcast with Alex + Thomas covering strategy, adversaries, and guest-interview spirit deep-dives (including Rei on Vengeance).
@@ -41,6 +50,18 @@ Weekly podcast with Alex + Thomas covering strategy, adversaries, and guest-inte
 - [Spotify](https://open.spotify.com/show/062EGsaVNmng8SnMOIHxey)
 - [YouTube](https://www.youtube.com/@SpiritedDiscussion)
 
+### The Kindred Spirit Podcast — SI-dedicated
+
+Ryan Grenier's weekly Spirit Island podcast. Uses community survey methodology (e.g., "best/worst spirit for Guard the Isle's Heart") and multi-player battle reports.
+
+- [Spotify](https://open.spotify.com/show/3qKqYV13B5rS4HC7Hyd12s)
+
+### The Thoughtful Gamer — strategy essays
+
+Widely-cited long-form posts that formalize several community heuristics (prevent-Builds priority, narrative-arc mindset shift, cut-your-losses framing).
+
+- [7 Strategy Tips for Spirit Island](https://thethoughtfulgamer.com/2019/05/15/7-strategy-tips-for-spirit-island/)
+
 ## Statistical datasets
 
 ### mindwanderer — digital win-rate project
@@ -48,10 +69,39 @@ Weekly podcast with Alex + Thomas covering strategy, adversaries, and guest-inte
 Continuously-updated win-rate stats from Spirit Island Digital play logs.
 
 - [Stats dashboard](https://mindwanderer.net/si/stats.html)
+- [Site root — 100+ detail pages](https://mindwanderer.net/si/) (per-spirit, per-adversary, per-scenario, per-layout sub-pages with blight-flip rate, avg score, and difficulty model)
 - [BGG project announcement](https://boardgamegeek.com/thread/2852025/spirit-island-digital-statistics-project)
-- [Methodology updates thread](https://boardgamegeek.com/thread/3555502/an-update-on-the-spirit-island-digital-statistics)
+- [Methodology updates thread](https://boardgamegeek.com/thread/3555502/an-update-on-the-spirit-island-digital-statistics) — cite this when quoting mindwanderer numbers; the Handelabra analytics migration changed collection methodology mid-stream.
 
 *Credit*: per-spirit, per-adversary, per-level win rates; digital-vs-tabletop discussion; card-frequency data.
+
+### SI Digital Data Analysis Series (BGG) — mined 2.27M games
+
+Thirteen-entry community series mining Spirit Island Digital play data for setup preferences, spirit win rates per adversary, scenario difficulty rankings, aspect performance.
+
+- [Series index / entry #5 — "How does each spirit perform vs. each adversary?"](https://boardgamegeek.com/thread/3617445/si-digital-data-analysis-series-5-how-does-each-sp)
+- Entries 1–13 linked from series index.
+
+### Handelabra Tableau — two-spirit combo dashboard (Heidi Kalbe)
+
+Pairwise win-rate visualization for two-player synergies, built on Digital stats.
+
+- [TeamSpiritIsland Tableau dashboard](https://public.tableau.com/app/profile/heidi.kalbe/viz/TeamSpiritIsland/TeamSpirit)
+
+### BGG quantitative threads
+
+- [Draws: Odds Calculations (hypergeometric, card-draft)](https://boardgamegeek.com/thread/2605598)
+- [Card Stats / Power BI analysis](https://boardgamegeek.com/thread/2575753)
+- [Fear & Event Card composition stats](https://boardgamegeek.com/thread/2692815)
+- [Event Card Analysis (JE)](https://boardgamegeek.com/thread/2508897)
+- [Fear evaluation thought experiment](https://boardgamegeek.com/thread/2926489)
+- [Complete Difficulty Chart (BGG filepage 262410)](https://boardgamegeek.com/filepage/262410) — supersedes thread 2483958; covers NI content.
+- [Spirits ranked by difficulty (community, post-NI)](https://boardgamegeek.com/thread/3146165)
+
+### Open-source tools
+
+- [talshorer/spirit-island-144p-lair](https://github.com/talshorer/spirit-island-144p-lair) — Lure-of-the-Deep-Wilderness optimizer (action-sequence solver)
+- [2cjenn/spirit_island (R/Shiny)](https://github.com/2cjenn/spirit_island) — personal score tracker with CSV export
 
 ### PlayTracker + SteamSpy (general aggregate stats)
 
@@ -108,12 +158,19 @@ Unofficial but comprehensive card database with element + effect filtering.
 ### BGG — strategic discussion
 
 - [Strategy forum root](https://boardgamegeek.com/forum/1543090/spirit-island/strategy)
-- [Combined Difficulty Chart](https://boardgamegeek.com/thread/2483958/)
+- [Combined Difficulty Chart](https://boardgamegeek.com/thread/2483958/) — legacy; prefer filepage 262410 above for current content.
+- [Updated Match-Up Axis v2.0 + guide archive](https://boardgamegeek.com/thread/3035670) — community's canonical spirit × adversary rating framework. Basis for the Matchup Axis appendix.
 - [Introducing Spirit Island Guides (hub)](https://boardgamegeek.com/thread/2947193/)
 - [Improving at Spirit Island](https://boardgamegeek.com/thread/2743972/)
 - [Tier list thread (BGG)](https://boardgamegeek.com/thread/2514174/)
 - [Board Theory with Rei](https://boardgamegeek.com/thread/3306462/)
 - [Stats-Based True Solo Tier List](https://boardgamegeek.com/thread/2938959/)
+- [Lightning Reclaim Loop discussion](https://boardgamegeek.com/thread/2652960) — canonical community thread on Reclaim-loop economics.
+
+### Greater Than Games forums — canonical strategy threads
+
+- [Cut Your Losses — Blight and Presence](https://forums.greaterthangames.com/t/strategy-blight-and-presence-when-to-cut-your-losses/16920)
+- [Overcoming Alpha-Player Blues](https://forums.greaterthangames.com/t/overcoming-alpha-player-blues/17796)
 
 ### Spirit of the Island Discord
 

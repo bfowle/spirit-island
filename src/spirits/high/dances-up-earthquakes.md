@@ -1,314 +1,227 @@
 # Dances Up Earthquakes
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text parsed via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing from **Steve Haas's "Turn 4 Megaquake" BGG guide (thread 3107804)** — dominant canonical opening.
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Nature Incarnate                                        |
-| Complexity            | Very High                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 5 · Control 2 · Fear 2 · Defense 3 · Utility 4             |
-| Primary Elements      | Earth, Moon (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Nature Incarnate                                   |
+| Complexity            | Very High                                          |
+| Play Difficulty       | `[VERIFY]`                                         |
+| Growth type           | "one" — pick one growth per turn                   |
+| Power summary (1–5)   | **Offense 5** · Control 2 · Fear 2 · Defense 3 · Utility 4 |
+| Primary Elements      | **Earth** (both innates) · **Fire** (Earth Shudders) · Moon (Land Creaks) · Air (expensive) |
+| Special Rules         | Begin a Dance of Decades (impend Power Cards by paying Energy; cards sit aside for future turns) |
+| Aspects               | None                                               |
+| Rei's Guide           | Not covered                                        |
+| latentoctopus         | Not listed                                         |
+| BGG Guide             | [Steve Haas T4 Megaquake — thread 3107804](https://boardgamegeek.com/thread/3107804) |
 ```
 
 ## Spirit Overview — Framing
 
+Dances Up Earthquakes is the **tempo/impending spirit** — banks cards into a future turn via Begin a Dance of Decades, then detonates them simultaneously. The community meta is dominated by Steve Haas's **Turn 4 Megaquake opening** — so dominant one commenter admitted:
+
+> Hardly feels like we're playing a game.
+
 **Wiki-printed playstyle note**:
 
-> Very much about tempo and timing: Can play high-cost Powers extremely easily, but they won't take effect until later in the game. Faces a constant tension between solving problems now and carefully planning ahead for big turns in the future - neglecting either one can be disastrous. Despite starting with 6 Unique Powers, benefits greatly from gaining more.
+> Impend cards for a future crescendo. Quake tokens + Fire + Earth scaling for board-wide damage + fear.
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+**Complexity signal**: Very High is correct — impending-energy timing, quake-token management, and T4 threshold-stacking all need rehearsal.
 
 ## Starting Setup
 
-> Put 1 Presence on your starting board in the highest-numbered land with Dahan. You start with your 6 Unique Power Cards and 0 Energy. Set the Quake Tokens ({{quake}}) nearby.
+> Put **1 Presence** on your starting board in the highest-numbered land with Dahan. You start with your **6 Unique Power Cards and 0 Energy**. Set the Quake Tokens nearby.
 
-## Growth Options (one)
+**6 Uniques in hand** (not 4) — unusually deep starting kit.
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=reclaim, second=addpresence2orgainmajorwoforgetting |
-| G2 | first=gain1p, second=addpresence1 |
-| G3 | first=addpresence3, second=energyimpend, third=reclaim1 |
+## Growth Options (growthtype: "one" — pick one per turn)
 
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+| Growth | Effects                                                          | Best when                                              |
+|--------|------------------------------------------------------------------|--------------------------------------------------------|
+| **G1** | Reclaim + Add Presence (R2) OR Gain Major without Forgetting     | Mid-game Reclaim                                       |
+| **G2** | Gain 1 Power Card + Add Presence (R1)                            | Default opening move                                   |
+| **G3** | Add Presence (R3) + Impend Energy + Reclaim-1                    | Energy-spike into impending                            |
 
 ## Presence Tracks
 
-As Presence leaves each track, these values are revealed:
+- **Energy**: `energy1+impendenergy1 → movepresence1 → energy2 → impend1 → energy3 → impendenergy2 → energy4any`
+- **CP**: `card2 → gather1dahan1land → moonfire → impend1 → earthX → card3 → card4`
 
-- **Energy track**: energy1impendenergy1, movepresence1energytrack, energy2, impend1, energy3, impendenergy2, energy4any
-- **Card-play track**: card2, gather1dahan1land, moonfire, impend1, earthX, card3, card4
+**Starting income**: 1 Energy (+ 1 Impending Energy — bonus for impended cards), 2 Card Plays.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: Begin a Dance of Decades
 
-BEGIN A DANCE OF DECADES</br>Whenever you would play a Power Card, you may instead pay any amount of Energy onto the card to make it an impending card ({{impendingcard}}), setting it aside out of play for use on a future turn. (It doesn't provide Elements. It's still your Power Card, so it can be forgotten while it's impending.) RHYTHMIC POWER BUILDS TO A CATACLYSMIC CRESCENDO</br>When you gain Energy from your Presence Track, also gain {{impendingenergyblank}} Energy onto each Power Card made {{impendingcard}} on a previous turn. If any {{impendingcard}} now have Energy on them at least equal to their cost, discard that Energy and play them. (This costs no card plays.)
+> Whenever you would play a Power Card, you may instead pay any amount of Energy onto the card to make it an impending card, setting it aside out of play for use on a future turn. (It doesn't provide Elements. It's still your Power Card, so it can be forgotten while it's impending.)
 
-### Innate: LAND CREAKS WITH TENSION
+**Impend = bank the card for later**. Energy paid sits on the card until resolution; multiple cards can impend in parallel.
 
-- **Speed**: fast · **Range**: None · **Target**: you
+### Innate: Land Creaks With Tension
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | If you have at least 1 {{impendingcard}}, Add 1 {{quake}} in one of your lands. |
-| 2 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In one of your lands, Defend 1 per {{impendingcard}} (max. 3). |
-| 3 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | If you have at least 3 {{impendingcard}}, Add 1 {{quake}} in one of your lands. |
-| 4 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In one of your lands, Defend 1 per {{impendingcard}} (max. 3). |
+- **Speed**: Fast · **Target**: You
 
+| Level | Thresholds                              | Effect                                                                |
+|-------|-----------------------------------------|------------------------------------------------------------------------|
+| 1     | 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | If you have ≥1 impending card, add 1 Quake in one of your lands. |
+| 2     | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In one of your lands, Defend 1 per impending card (max 3). |
+| 3     | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | If ≥3 impending cards, add 1 Quake. |
+| 4     | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In one of your lands, Defend 1 per impending card (max 3). |
 
-### Innate: EARTH SHUDDERS, BUILDINGS FALL
+### Innate: Earth Shudders, Buildings Fall
 
-- **Speed**: slow · **Range**: 0 · **Target**: quake
+- **Speed**: Slow · **Range**: 0 · **Target**: Quake
 
-_(no thresholds listed in Wiki)_
+Text: X Damage (where X = Quake tokens), plus element-scaling Fear and fire damage. `[VERIFY exact threshold math]`. T4 fully-threshold state: **4 Fire + 5 Earth + 7 cards played = 2-damage-per-quake + Invader damage + 2 Fear**.
 
+## Unique Cards (6, Wiki-verified names)
 
-## Unique Cards (all, Wiki-verified)
+- Inspire a Winding Dance
+- Resounding Footfalls Sow Dismay
+- Radiating Tremors
+- Rumblings Portend a Greater Quake
+- Gift of Seismic Energy
+- Exaltation of Echoed Steps
+
+`[VERIFY exact costs/text — fetch parse incomplete; cross-check physical copy before opener play.]`
+
+## Key Strategic Principles (Steve Haas's T4 Megaquake framework)
+
+1. **T4 is the target turn** — Earth Shudders fully threshold with 7 cards played.
+2. **Impend expensive Uniques on T1–T2.** Gift of Constancy (3-cost), Resounding Footfalls (3-cost) are the high-cost candidates.
+3. **Two cheaper Majors > one expensive Major.** Steve: *"two cheaper majors is going to be better than one major costing 5 or 6, since you can so easily threshold majors."*
+4. **Minor drafts must secure Fire+Earth.** Left innate demands both.
+5. **Don't impend 0-cost Minors** — no Energy-discount benefit.
+6. **Don't impend T3 and do nothing real** — still place Quakes + Defend in the interim.
+
+## Possible Openings
+
+### Shared starting state
+
+- **1 Presence** on highest-Dahan land.
+- **6 Uniques** in hand.
+- **0 Energy**, 2 Card Plays.
+
+### Opening A — Steve Haas T4 Megaquake 🟨🟩 (dominant)
+
+**T1 · Growth**: G2 (top: +2 presence).
+**T1 · Play**: Draft Minor (Fire or Earth priority). **Impend most expensive Uniques** (Gift of Constancy + Resounding Footfalls — both 3-cost). Pay 0 or small energy onto them.
+
+**T2 · Growth**: G2.
+**T2 · Play**: Draft second Minor. Impend **Radiating Tremors** (2-cost). Actually play **Rumblings of Discontent** (places quake + defends). Hits Land Creaks L1 → +1 Quake.
+
+**T3 · Growth**: G2.
+**T3 · Play**: Draft **Major**; Forget Rumblings. Impend two Minors, play Exaltation or Inspire. One Quake from innate.
+
+**T4 · Growth**: G2.
+**T4 · Play**: Draft **second Major**, Forget unique played T3. All impended cards crash in: **Gift + Resounding + Radiating + 2 Minors + both Majors**. **7+ cards in play, 5 Quake tokens, right innate fully thresholded.**
+
+Steve: *"Clear your board on turn 4 straight up wins"* solo.
+
+### Opening B — Slow-burn / multiplayer (940202 variant) 🟥
+
+**T5 megaquake with ravage-skip looping** for multi-board or England.
+
+### Opening C — G3 early (vs. France 6) 🟥
+
+Switch to **G3** (+1 impending energy) to fire the quake *one turn earlier* vs France 6 when town-limit pressure is too high.
+
+### Opening Decision
+
+- **Default Opening A** (T4 Megaquake) — solo, Prussia, Scotland, Russia, HME.
+- **Opening B** (T5 variant) — England, Sweden L5+, multi-board.
+- **Opening C** (G3 early) — France 6 only.
 
 ## Card Priority Ratings
 
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Dances Up Earthquakes's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/dances-up-earthquakes.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/dances-up-earthquakes.json) for full scoring + reasons.
+### Top 10 Minor Draft Picks (Fire + Earth)
 
-- **Primary elements (innate-weighted)**: **Earth** (wt 3.0), **Moon** (wt 1.5)
-- **Mid-game energy estimate (T3–T5 avg)**: 3.5E
-- **Power summary**: Offense 5 · Control 2 · Fear 2 · Defense 3 · Utility 4
-```
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Pyroclastic Friction** | 1 | Fast | Fire, Earth | Fire + Earth prime |
+| 2 | **Call of the Dahan Ways** | 1 | Slow | Moon, Earth | Moon + Earth |
+| 3 | **Visions of Fiery Doom** | 1 | Slow | Moon, Fire | Fire + Moon |
+| 4 | **Rain of Blood** | 1 | Slow | Moon, Fire, Water | Multi-element Fire |
+| 5 | **Quicken the Earth's Struggles** | 0 | Slow | Earth, Plant, Animal | 0-cost Earth |
+| 6 | **Pull Beneath the Hungry Earth** | 0 | Slow | Moon, Earth | 0-cost Earth |
+| 7 | **Gift of Power** | 1 | Fast | Moon | Moon-feeder |
+| 8 | **Elemental Boon** | 0 | Fast | Sun, Moon, Fire, Air | 0-cost Fire |
+| 9 | **Predatory Nightmares** | 0 | Fast | Moon, Animal | 0-cost Moon |
+| 10 | **Sap Their Strength** | 1 | Fast | Moon, Earth, Plant | Earth + Moon |
 
-### Uniques
+### Top 5 Major Draft Picks
 
-*No Unique cards listed.*
+| # | Card | Cost | Why |
+|---|------|------|-----|
+| 1 | **Cast Down into the Briny Deep** | 5 | Fire + Earth threshold |
+| 2 | **Pyroclastic Flow** | 6 | Fire + Earth multi-land |
+| 3 | **Volcanic Eruption** | 8 | Late-game closer |
+| 4 | **Infinite Vitality** | 4 | Fire + Plant |
+| 5 | **Tigers Hunting** | 3 | Cheap Fire |
 
-### Top 10 Minor Draft Picks (from full pool)
+## Adversary Matchup Matrix (Steve Haas's solo L6)
 
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Quicken the Earth's Struggles** | 1 | Fast | Moon, Fire, Earth, Animal | 1 Damage to each Town/City. **OR** Defend 10. | elements earth+moon → 4.5 |
-| 2 | **Sucking Ooze** | 0 | Fast | Moon, Water, Earth | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if Invaders are present. Isolate target land. | elements earth+moon → 4.5 |
-| 3 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | elements earth+moon → 4.5 |
-| 4 | **Infested Aquifers** | 1 | Slow | Moon, Water, Earth, Animal | If target land has any Disease, 1 Damage to each Invader. **OR** If target land is a Moun… | elements earth+moon → 4.5 |
-| 5 | **Pull Beneath the Hungry Earth** | 1 | Slow | Moon, Water, Earth | If your Presence is present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. If target land is a Sands or Wetland, 1… | elements earth+moon → 4.5 |
-| 6 | **Unquenchable Flames** | 1 | Slow | Moon, Fire, Earth | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage to Towns/Cities. Invaders do not heal Damage at end of turn. | elements earth+moon → 4.5 |
-| 7 | **Dark and Tangled Woods** | 1 | Fast | Moon, Earth, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Defend 3. | elements earth+moon → 4.5 |
-| 8 | **Guardian Serpents** | 1 | Fast | Sun, Moon, Earth, Animal | Add 1 Beasts in one of target Spirit's lands. If target Spirit has a Sacred Site in that … | elements earth+moon → 4.5 |
-| 9 | **Haunted by Primal Memories** | 1 | Fast | Moon, Air, Earth | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Defend 3. If Beasts are present, +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements earth+moon → 4.5 |
-| 10 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements earth → 3.0 |
-
-### Top 5 Major Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Melt Earth Into Quicksand** | 4 | Fast | Moon, Water, Earth | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 2 Damage. Isolate target land. After Invaders/Dahan are Moved into target land, D… | elements earth+moon → 4.5 |
-| 2 | **The Land Thrashes in Furious Pain** | 4 | Slow | Moon, Fire, Earth | 2 Damage per Blight. For each Blight in adjacent lands, 1 Damage (in target land). | elements earth+moon → 4.5 |
-| 3 | **Pent-Up Calamity** | 3 | Fast | Moon, Fire, Earth, Plant, Animal | Add 1 Disease and 1 Strife. **OR** Remove any number of Beasts/Disease/Strife/Wilds. For … | elements earth+moon → 4.5 |
-| 4 | **Unearth a Beast of Wrathful Stone** | 5 | Fast | Moon, Fire, Earth, Animal | After the next Invader Phase (on any turn) with no Ravage/Build Actions in target land:</… | elements earth+moon → 4.5 |
-| 5 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements earth+moon → 4.5 |
-
-### HoSI Beginner Deck Bundle — for reference only
-
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with Dances Up Earthquakes in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
-
-
-*No HoSI beginner-deck bundle for this spirit.*
-
-
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Scour the Land** | adds Blight |
-| **Land of Haunts and Embers** | adds Blight |
-| **Renewing Boon** | destroys Presence |
-| **Devouring Ants** | destroys Dahan |
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Pyroclastic Flow** | adds Blight |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Blazing Renewal** | destroys Presence |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **Tsunami** | destroys Dahan |
-| **Pillar of Living Flame** | adds Blight |
-| **Poisoned Land** | destroys Dahan, adds Blight |
-| **The Jungle Hungers** | destroys Dahan |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
-| **Draw Towards a Consuming Void** | destroys Presence |
-
-## Key Strategic Principles
-
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
-
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
-
-## Opener Mechanics — starter reference
-
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/dances-up-earthquakes.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
-```
-
-### Starting state
-
-- **Setup**: Put 1 Presence on your starting board in the highest-numbered land with Dahan. You start with your 6 Unique Power Cards and 0 Energy. Set the Quake Tokens ({{quake}}) nearby.
-- **Starting income** (from `presence_energy_track[0]` = `energy1impendenergy1`, `presence_cardplay_track[0]` = `card2`): **1 Energy · 2 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `one` — pick **one** growth option per turn
-
-### Growth options
-
-- **G1**: reclaim (Reclaim all discarded+played Power Cards); addpresence2orgainmajorwoforgetting ((spirit-specific: `addpresence2orgainmajorwoforgetting` — consult spirit panel))
-- **G2**: gain1p (Gain 1 Power Card (Minor unless otherwise noted)); addpresence1 (Place 1 Presence from a track (Range 1))
-- **G3**: addpresence3 (Place 1 Presence from a track (Range 3)); energyimpend ((spirit-specific: `energyimpend` — consult spirit panel)); reclaim1 (Reclaim 1 Power Card (of your choice))
-
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
-
-### Energy track
-
-`energy1impendenergy1 · movepresence1energytrack · energy2 · impend1 · energy3 · impendenergy2 · energy4any` — income as slots reveal: 1 → movepresence1energytrack → 2 → impend1 → 3 → impendenergy2 → 4
-
-### Card-play track
-
-`card2 · gather1dahan1land · moonfire · impend1 · earthX · card3 · card4` — CP as slots reveal: 2 → gather1dahan1land → moonfire → impend1 → earthX → 3 → 4
-
-### Innate Powers
-
-- **LAND CREAKS WITH TENSION** (Speed: Fast · Range: ? · Target: you)
-  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: If you have at least 1 {{impendingcard}}, Add 1 {{quake}} in one of your lands.
-  - **L2** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: In one of your lands, Defend 1 per {{impendingcard}} (max. 3).
-  - **L3** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: If you have at least 3 {{impendingcard}}, Add 1 {{quake}} in one of your lands.
-  - **L4** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: In one of your lands, Defend 1 per {{impendingcard}} (max. 3).
-- **EARTH SHUDDERS, BUILDINGS FALL** (Speed: Slow · Range: 0 · Target: quake)
-
-### Fast-phase element ceiling from Uniques
-
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
-
-- Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
-
-### Unique Power Cards
-
-*No Unique cards parsed.*
-
-### Invader phase by turn (base deck)
-
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
-
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
-
-### Pause-point before writing T1 prose
-
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
-
-## Adversary Matchup Matrix
-
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
-
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
-
-
-### Strategy Cliffs — per-adversary-level shifts that change Dances Up Earthquakes's math
-
-```admonish warning title="Cliffs to watch"
-Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Dances Up Earthquakes's profile (Fear 2, Offense 5, Control 2, Defense 3, Utility 4).
-```
-
-#### England L5 — Buildings +1 HP
-
-**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
-
-**Mitigation for Dances Up Earthquakes**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
-
-#### England L3 — Coastal Lands build faster
-
-**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
-
-**Mitigation for Dances Up Earthquakes**: Front-load coastal defense or disruption before T3's first Ravage.
-
-#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
-
-**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
-
-**Mitigation for Dances Up Earthquakes**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
+| Adversary               | Rating | Note                                           |
+|-------------------------|--------|------------------------------------------------|
+| Brandenburg-Prussia     | ★★★★★  | 100% (Steve's data)                             |
+| Scotland                | ★★★★★  | 100%                                           |
+| Russia                  | ★★★★★  | 100%                                           |
+| Habsburg Mining         | ★★★★★  | 100%                                           |
+| Sweden                  | ★★★★☆  | 90–95%                                         |
+| England                 | ★★★☆☆  | 80%+ (needs T5 variant)                         |
+| France-Plantation       | ★★★☆☆  | 80% (town-limit risk; needs G3 early)          |
+| Habsburg Livestock      | ★★★★☆  | 80%                                            |
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+Board D + Scotland + Wetlands early is Steve's named edge-case (extra attention required).
 
 ## Game-Phase Strategy
 
-`[VERIFY: needs play data]`.
+### Early (T1–T3)
+- Impend cadence per Opening A.
+- Still place Quake tokens + Defend in interim.
+
+### Mid (T4–T5)
+- **T4 Megaquake**.
+- Board-clear or significant damage.
+
+### Late (T6+)
+- Reclaim cycle with impending-again.
+- Second Megaquake around T8.
 
 ## Synergy Partners (Multiplayer)
 
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+- **Consistent early-presence partners** (Ocean, Shadows, Lightning) while DUE ramps.
+- **Set-piece-Turn-4 partners** (Behemoth, Stone).
+- **Avoid** partners who need T1–T3 help (Shadows vs England).
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
+```admonish failure title="Named mistakes"
+1. **Impending every play** — still need Quake placement + Defend in interim.
+2. **Impending 0-cost Minors** — no Energy-discount benefit.
+3. **Drafting expensive T3 Major (5–6 cost)** — blocks second Major T4.
+4. **Not securing Fire+Earth** on T1–T2 Minor drafts.
+```
 
 ## Tempo Profile
 
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
-```
+| Turn | Target state                                              |
+|------|-----------------------------------------------------------|
+| 1    | G2 + Impend Gift of Constancy + Resounding Footfalls; draft Fire/Earth Minor |
+| 2    | G2 + Impend Radiating; play Rumblings; Land Creaks L1     |
+| 3    | G2 + Draft Major; impend 2 Minors; play Exaltation/Inspire |
+| 4    | **MEGAQUAKE**: 7+ cards + 5 Quakes + Earth Shudders full threshold |
+| 5+   | Reclaim cycle; Quake Megaquake cadence every 4 turns      |
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/dances-up-earthquakes.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Dances Up Earthquakes](https://spiritislandwiki.com/index.php?title=Dances_Up_Earthquakes).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/dances-up-earthquakes.json` (Wiki-parsed 2026-04-23).
+- **Primary guide**: [Steve Haas BGG 3107804](https://boardgamegeek.com/thread/3107804).

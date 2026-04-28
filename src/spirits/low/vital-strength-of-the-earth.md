@@ -1,334 +1,270 @@
 # Vital Strength of the Earth
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text parsed via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing paraphrased from [Phantaskippy's BGG openings thread 1974592](https://boardgamegeek.com/thread/1974592/openings-vital-strength-earth) + Kamahl variant (BGG 1748964).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Base Game                                        |
-| Complexity            | Low                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 2 · Control 3 · Fear 1 · Defense 5 · Utility 3             |
-| Primary Elements      | Earth, Plant, Sun, Animal (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Base Game                                          |
+| Complexity            | Low                                                |
+| Play Difficulty       | 1 `[VERIFY physical spirit panel]`                 |
+| Growth type           | "one" — pick one growth per turn                   |
+| Power summary (1–5)   | Offense 2 · Control 3 · Fear 1 · **Defense 5** · Utility 3 |
+| Primary Elements      | **Earth** (Gift of Strength all tiers) · **Plant** (all tiers) · Sun (all tiers) |
+| Special Rules         | Earth's Vitality (Defend 3 at every Sacred Site)   |
+| Aspects (JE)          | Might · Resilience `[VERIFY]`                      |
+| Rei's Guide           | Not covered                                        |
+| latentoctopus         | Not listed                                         |
+| BGG                   | [Phantaskippy thread 1974592](https://boardgamegeek.com/thread/1974592) |
 ```
 
 ## Spirit Overview — Framing
 
+Vital is the **opportunistic tempo tank** of the base box — plays fewer cards per turn but that's a feature. Phantaskippy:
+
+> You have more real options, because you're not going to burn through your whole hand in 2 turns.
+
 **Wiki-printed playstyle note**:
 
-> Powerful but slow: has potent Power Cards and an excellent Energy income, but starts wtih only one card play per turn, and Growth is limited to adding one Presence per turn. Also slow to change: learning new Powers carries slightly more cost than reclaiming played Power Cards
+> Sacred sites provide passive defense; three of four starting cards cost 3. Situational 3-cost cards act as minor-majors when conditions line up.
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+**The puzzle-piece approach**: no single canonical opener. Growth choice depends on where invaders explored during setup — Vital reads the board and picks the right tool.
+
+**Complexity signal**: Low is correct for mechanics; Moderate for decision-load (3-cost card timing is where Vital is won or lost).
 
 ## Starting Setup
 
-> Put 3 Presence on your starting board: 2 in the highest-numbered Mountain, 1 in the highest-numbered Jungle.
+> Put **3 Presence** on your starting board: **2 in the highest-numbered Mountain, 1 in the highest-numbered Jungle**.
 
-## Growth Options (one)
+Starting Mountain land is already a sacred site (2 presence) — Earth's Vitality gives free Defend 3.
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=reclaim, second=addpresence2 |
-| G2 | first=gain1p, second=addpresence0 |
-| G3 | first=addpresence1, second=energy2 |
+## Growth Options (growthtype: "one" — pick one per turn)
 
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+| Growth | Effects                                          | Best when                                              |
+|--------|--------------------------------------------------|--------------------------------------------------------|
+| **G1** | Reclaim + Add Presence (Range 2)                 | Hand depleted + wide-range placement                   |
+| **G2** | Gain 1 Power Card + Add Presence (Range 0)       | Card + sacred-site stack                               |
+| **G3** | Add Presence (Range 1) + +2 Energy               | Spread + energy (the "save for 3-cost card" default)   |
 
 ## Presence Tracks
 
-As Presence leaves each track, these values are revealed:
+- **Energy track** (6 slots): `energy2 → energy3 → energy4 → energy6 → energy7 → energy8`
+- **Card-play track** (6 slots): `card1 → card1 → card2 → card2 → card3 → card4`
 
-- **Energy track**: energy2, energy3, energy4, energy6, energy7, energy8
-- **Card-play track**: card1, card1, card2, card2, card3, card4
+**Starting income**: 2 Energy, 1 Card Play. High starting energy — built for 3-cost starters from turn 1.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: Earth's Vitality
 
-EARTH'S VITALITY Defend 3 in every land where you have Sacred Site.
+> Defend 3 in every land where you have Sacred Site.
 
-### Innate: GIFT OF STRENGTH
+Passive Defend 3 per sacred site. Two presence in a land = automatic Defend 3 ravage mitigation.
 
-- **Speed**: fast · **Range**: None · **Target**: anyspirit
+### Innate: Gift of Strength
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Once this turn, Target Spirit may Repeat 1 Power Card with Energy cost of 1 or less. |
-| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Instead, the Energy cost limit is 3 or less. |
-| 3 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 4 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Instead, the Energy cost limit is 6 or less. |
+- **Speed**: Fast · **Target**: Any Spirit
 
+| Level | Thresholds                              | Effect                                                |
+|-------|-----------------------------------------|--------------------------------------------------------|
+| 1     | 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Once this turn, Target Spirit may Repeat 1 Power Card with Energy cost of 1 or less. |
+| 2     | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Instead, Energy cost limit 3 or less. |
+| 3     | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 4 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Instead, Energy cost limit 6 or less. |
 
-## Unique Cards (all, Wiki-verified)
+Repeat-a-Power innate — at L2 any starter Repeats; at L3 even Majors Repeat. **Optional**, not build-defining.
 
-#### A Year of Perfect Stillness
+## Unique Cards (all 4, Wiki-verified)
 
+### A Year of Perfect Stillness
 - **3 Energy · Fast · Range 1 · Any Land · Sun, Earth**
 - *Invaders skip all Actions in target land this turn.*
 
-#### Draw of the Fruitful Earth
+Nuclear option — skip all Invader actions in a land. Expensive but game-saving.
 
+### Draw of the Fruitful Earth
 - **1 Energy · Slow · Range 1 · Any Land · Earth, Plant, Animal**
-- *Gather up to 2 [[Explorers]]. Gather up to 2 [[Dahan]].*
+- *Gather up to 2 Explorers. Gather up to 2 Dahan.*
 
-#### Guard the Healing Land
+1-cost Gather. The only sub-3-cost starter. Primary use: pull Dahan into Rituals targets; pull Explorers out of Build lands.
 
-- **3 Energy · Fast · Range 1, from your Sacred Site · Any Land · Water, Earth, Plant**
-- *Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. Defend 4.*
+### Guard the Healing Land
+- **3 Energy · Fast · Range 1 from Sacred Site · Any Land · Water, Earth, Plant**
+- *Remove 1 Blight. Defend 4.*
 
-#### Rituals of Destruction
+Blight-removal + Defend. Only fires at full value when target land needs both clauses.
 
-- **3 Energy · Slow · Range 1, from your Sacred Site · Land with Dahan · Sun, Moon, Fire, Earth, Plant**
-- *2 Damage. If target land has at least 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">, +3 Damage and 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.*
+### Rituals of Destruction
+- **3 Energy · Slow · Range 1 from Sacred Site · Land with Dahan · Sun, Moon, Fire, Earth, Plant**
+- *2 Damage. If target land has at least 3 Dahan, +3 Damage and 2 Fear.*
 
-## Card Priority Ratings
-
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Vital Strength of the Earth's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/vital-strength-of-the-earth.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/vital-strength-of-the-earth.json) for full scoring + reasons.
-
-- **Primary elements (innate-weighted)**: **Earth** (wt 4.8), **Plant** (wt 3.9), **Sun** (wt 2.7)
-- **Mid-game energy estimate (T3–T5 avg)**: 5.67E
-- **Power summary**: Offense 2 · Control 3 · Fear 1 · Defense 5 · Utility 3
-```
-
-### Uniques
-
-The spirit's own 4 Unique Power cards (always in hand; always A-tier by default — see Uniques section above for full text):
-
-- **A Year of Perfect Stillness**
-- **Draw of the Fruitful Earth**
-- **Guard the Healing Land**
-- **Rituals of Destruction**
-
-### Top 10 Minor Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Absorb Corruption** | 1 | Slow | Sun, Earth, Plant | Gather 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. **OR** Pay 1 Energy to Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements earth+plant+sun → 11.4 |
-| 2 | **Carapaced Land** | 0 | Fast | Earth, Plant, Animal | If targeting a land with Beasts, this Power has +1 Range. Defend 3. | elements earth+plant → 8.7 |
-| 3 | **Drift Down into Slumber** | 0 | Fast | Air, Earth, Plant | Defend 1. If target land is a Jungle or Sands, instead Defend 4. | elements earth+plant → 8.7 |
-| 4 | **Entrap the Forces of Corruption** | 1 | Fast | Earth, Plant, Animal | Gather up to 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. Isolate target land. When Blight is added to target land, it doesn… | elements earth+plant → 8.7 |
-| 5 | **Dark and Tangled Woods** | 1 | Fast | Moon, Earth, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Defend 3. | elements earth+plant → 8.7 |
-| 6 | **Nature's Resilience** | 1 | Fast | Earth, Plant, Animal | Defend 6. | elements earth+plant → 8.7 |
-| 7 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements earth+sun → 7.5 |
-| 8 | **Hazards Spread Across the Island** | 0 | Fast | Fire, Air, Earth, Plant | Choose a type of token from Badlands/Beasts/Disease/Strife/Wilds that exists in an adjace… | elements earth+plant → 8.7 |
-| 9 | **Call to Trade** | 1 | Fast | Air, Water, Earth, Plant | You may Gather 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. If the Terror Level is 2 or lower, Gather 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> and the first Ra… | elements earth+plant → 8.7 |
-| 10 | **Renewing Boon** | 1 | Slow | Sun, Earth, Plant | Choose a land where you and target Spirit both have Presence. In that land: Remove 1 Blig… | elements earth+plant+sun → 11.4 |
-
-### Top 5 Major Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **The Trees and Stones Speak of War** | 2 | Fast | Sun, Earth, Plant | For each Dahan, 1 Damage and Defend 2. | elements earth+plant+sun → 11.4 |
-| 2 | **Walls of Rock and Thorn** | 4 | Fast | Sun, Earth, Plant | 2 Damage. Defend 8. Add 1 Wilds. Isolate target land. | elements earth+plant+sun → 11.4 |
-| 3 | **Forests of Living Obsidian** | 4 | Slow | Sun, Fire, Earth, Plant | Add 1 Badlands. Push all Dahan. 1 Damage to each Invader. If the origin land is your Sacr… | elements earth+plant+sun → 11.4 |
-| 4 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements earth+plant+sun → 11.4 |
-| 5 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements earth+plant+sun → 11.4 |
-
-### HoSI Beginner Deck Bundle — for reference only
-
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with Vital Strength of the Earth in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
-
-| Card | Type | Cost | Speed | Elements | Effect (truncated) |
-|------|------|------|-------|----------|--------------------|
-| **Rouse the Trees and Stones** | Minor | 1 | Slow | Fire, Earth, Plant | 2 Damage. Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. |
-| **Call to Migrate** | Minor | 1 | Slow | Fire, Air, Animal | Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Push up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
-| **Poisoned Land** | Major | 3 | Slow | Earth, Plant, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 7 Damage. Add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. Destroy all Dahan. |
-| **Devouring Ants** | Minor | 1 | Slow | Sun, Earth, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. Destroy 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. If target land is a Jungle or Sands, +1 Damage. |
-| **Vigor of the Breaking Dawn** | Major | 3 | Fast | Sun, Animal | 2 Damage per Dahan. |
-| **Voracious Growth** | Minor | 1 | Slow | Water, Plant | 2 Damage. **OR** Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. |
-| **Savage Mawbeasts** | Minor | 0 | Slow | Fire, Animal | If target land is a Jungle or Wetland, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. |
-
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Renewing Boon** | destroys Presence |
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Devouring Ants** | destroys Dahan |
-| **Scour the Land** | adds Blight |
-| **Land of Haunts and Embers** | adds Blight |
-| **Blazing Renewal** | destroys Presence |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Poisoned Land** | destroys Dahan, adds Blight |
-| **Pyroclastic Flow** | adds Blight |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **Tsunami** | destroys Dahan |
-| **The Jungle Hungers** | destroys Dahan |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
-| **Pillar of Living Flame** | adds Blight |
-| **Draw Towards a Consuming Void** | destroys Presence |
+Dahan-scaling damage. With 3+ Dahan: 5 damage + 2 Fear. Five elements = innate-threshold workhorse.
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+1. **Don't pay 3 for a Minor.** Every 3-cost starter becomes a bad Minor in unfavorable conditions. Only play if: Guard *both* clears AND prevents, Year is *stopping* a disaster, Rituals has *≥3* Dahan.
+2. **Minor-first drafts.** Phantaskippy: *"With only 1 starting power that costs less than 3, it's very hard to reach a point where you can sustain playing a large number of cards."* 2 Minors before Majors (BGG #1943226).
+3. **Sacred-site defense is free.** Don't play Guard where Earth's Vitality already covers.
+4. **Situational-tool mindset.** VSE's 3-cost starters are already Major-like — don't double-dip on Majors.
+5. **Gift of Strength is a bonus**, not a plan.
 
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+## Possible Openings
 
-## Opener Mechanics — starter reference
+### Shared starting state
 
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/vital-strength-of-the-earth.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
-```
+- **3 Presence** on Mountain/Jungle start (sacred site + lone).
+- **4 Uniques in hand**: A Year of Perfect Stillness (3E Fast, Sun/Earth), Draw of the Fruitful Earth (1E Slow, Earth/Plant/Animal), Guard the Healing Land (3E Fast, Water/Earth/Plant), Rituals of Destruction (3E Slow, Sun/Moon/Fire/Earth/Plant).
+- **Starting income**: 2 Energy, 1 Card Play.
 
-### Starting state
+### Opening A — Jungle Explore ("learn on T1") 🟨
 
-- **Setup**: Put 3 Presence on your starting board: 2 in the highest-numbered Mountain, 1 in the highest-numbered Jungle.
-- **Starting income** (from `presence_energy_track[0]` = `energy2`, `presence_cardplay_track[0]` = `card1`): **2 Energy · 1 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `one` — pick **one** growth option per turn
+Phantaskippy's Jungle-explore branch.
 
-### Growth options
+**T1 · Growth**: G2 — Gain 1 Power Card + Add Presence Range 0.
+- Place at Range 0 to upgrade the starting Jungle presence into a sacred site (free Defend 3 on T2 ravage).
 
-- **G1**: reclaim (Reclaim all discarded+played Power Cards); addpresence2 (Place 1 Presence from a track (Range 2))
-- **G2**: gain1p (Gain 1 Power Card (Minor unless otherwise noted)); addpresence0 (Place 1 Presence from a track (Range 0))
-- **G3**: addpresence1 (Place 1 Presence from a track (Range 1)); energy2 ((track slot showing 2 Energy))
+**T1 · Play** (2E, 1 CP): **Draw of the Fruitful Earth** (or new Minor if its effect fits).
 
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
+**T2 · Growth**: G3 — +2 Energy + Presence Range 1.
+- Income: 2E (track) + 2E (G3) = 4E — need for 2 card plays.
 
-### Energy track
+**T2 · Play** (4E, 1 CP → need +1 CP; actually T2 CP stays 1 on track, so plan carefully): **Rituals of Destruction** + a Minor, **OR** Guard if it cleans a starting blight AND prevents a new one.
 
-`energy2 · energy3 · energy4 · energy6 · energy7 · energy8` — income as slots reveal: 2 → 3 → 4 → 6 → 7 → 8
+### Opening B — Non-jungle Explore (energy on T1) 🟨
 
-### Card-play track
+**T1 · Growth**: G3 — +2 Energy + Presence (place in newly-explored land).
 
-`card1 · card1 · card2 · card2 · card3 · card4` — CP as slots reveal: 1 → 1 → 2 → 2 → 3 → 4
+**T1 · Play** (4E): **Draw of the Fruitful Earth** — gather Dahan to the threatened land; if geometry allows, pull lone Explorers from 2 adjacent lands simultaneously to abort 2 Builds.
 
-### Innate Powers
+**T2 · Growth**: Presence matures to sacred site before Ravage.
+**T2 · Play**: **Rituals of Destruction** (with Dahan stacked = 5 damage + 2 fear).
 
-- **GIFT OF STRENGTH** (Speed: Fast · Range: ? · Target: anyspirit)
-  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Once this turn, Target Spirit may Repeat 1 Power Card with Energy cost of 1 or less.
-  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Instead, the Energy cost limit is 3 or less.
-  - **L3** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 4 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Instead, the Energy cost limit is 6 or less.
+### Opening C — Kamahl's Rituals T2 max-value 🟨
 
-### Fast-phase element ceiling from Uniques
+**T1**: +2E / presence to defend optimally; play Draw (or the right tool).
+**T2**: +2E / presence matures to sacred site; play **Rituals + Draw (repeated via Gift-of-Strength L1)**. "Typically smash something to smithereens." (Kamahl)
 
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
+### Opening D — Building-already-in-starting-land (forced) 🟥
 
-- Fast-phase Unique elements: **Sun** ×1, **Water** ×1, **Earth** ×2, **Plant** ×1
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant, Uniques give 1. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+Free defense won't stop Town + City. T1 must be **A Year of Perfect Stillness** (forced +2E growth). Card-efficient it is not, but the board remains intact.
 
-### Unique Power Cards
+### Opening Decision
 
-| Card | Cost | Speed | Range | Target | Elements | Effect |
-|------|------|-------|-------|--------|----------|--------|
-| **A Year of Perfect Stillness** | 3 | Fast | 1 | Any Land | sun, earth | Invaders skip all Actions in target land this turn. |
-| **Draw of the Fruitful Earth** | 1 | Slow | 1 | Any Land | earth, plant, animal | Gather up to 2 [[Explorers]]. Gather up to 2 [[Dahan]]. |
-| **Guard the Healing Land** | 3 | Fast | 1, from your Sacred Site | Any Land | water, earth, plant | Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. Defend 4. |
-| **Rituals of Destruction** | 3 | Slow | 1, from your Sacred Site | Land with Dahan | sun, moon, fire, earth, plant | 2 Damage. If target land has at least 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">, +3 Damage and 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
+- **Opening A** when Jungle explores.
+- **Opening B** when non-Jungle explores.
+- **Opening C** for max-value Rituals T2 turn.
+- **Opening D** when start-land buildings force the Year.
 
-### Invader phase by turn (base deck)
+## Card Priority Ratings
 
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
+### Uniques — VSE-specific ranking
 
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
+1. **Rituals of Destruction** — 5-damage + 2 Fear Dahan-scaled.
+2. **Draw of the Fruitful Earth** — 1-cost the sustainability.
+3. **Guard the Healing Land** — Blight-cleanse + Defend when both clauses fire.
+4. **A Year of Perfect Stillness** — emergency lock-out.
 
-### Pause-point before writing T1 prose
+### Top 10 Minor Draft Picks (Earth + Animal prime)
 
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Call to Bloodshed** | 0 | Slow | Moon, Animal | 0-cost Animal for Rituals |
+| 2 | **Quicken the Earth's Struggles** | 0 | Slow | Earth, Plant, Animal | 0-cost triple-prime |
+| 3 | **Call of the Dahan Ways** | 1 | Slow | Moon, Earth | Earth-feeder |
+| 4 | **Pull Beneath the Hungry Earth** | 0 | Slow | Moon, Earth | 0-cost Earth |
+| 5 | **Gift of Power** | 1 | Fast | Moon | Utility |
+| 6 | **Drift Down to Rest** | 0 | Slow | Sun, Air, Plant | 0-cost Sun |
+| 7 | **Sap Their Strength** | 1 | Fast | Moon, Earth, Plant | Earth + Plant |
+| 8 | **Elemental Boon** | 0 | Fast | Sun, Moon, Fire, Air | Four-element 0-cost |
+| 9 | **Song of Sanctity** | 0 | Slow | Sun, Plant, Animal | 0-cost Sun + Plant |
+| 10 | **Unrelenting Growth** | 0 | Slow | Sun, Plant | 0-cost Plant |
+
+### Top 5 Major Draft Picks (T5+ ambition)
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Trees Radiate Ancient Sanctity** | 3 | Fast | Moon, Sun, Plant, Earth | Earth + Plant + multi-land Defend |
+| 2 | **Settling into Hunting Grounds** | 3 | Slow | Moon, Earth, Plant, Animal | Four-element flex |
+| 3 | **Land of Haunts and Embers** | 4 | Slow | Moon, Fire, Earth | Earth + multi-land |
+| 4 | **Vigor of the Breaking Dawn** | 4 | Fast | Sun, Plant | Sun + Plant |
+| 5 | **Tigers Hunting** | 3 | Fast | Fire, Animal | Cheap Animal |
+
+### Cards to Avoid
+
+| Card | Reason |
+|------|--------|
+| 3-cost Minors | Already have 3 3-cost starters |
+| Presence-destroyer Majors | VSE's sacred-site defense is structural |
 
 ## Adversary Matchup Matrix
 
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
-
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
-
-
-### Strategy Cliffs — per-adversary-level shifts that change Vital Strength of the Earth's math
-
-```admonish warning title="Cliffs to watch"
-Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Vital Strength of the Earth's profile (Fear 1, Offense 2, Control 3, Defense 5, Utility 3).
-```
-
-#### England L3 — Coastal Lands build faster
-
-**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
-
-**Mitigation for Vital Strength of the Earth**: Front-load coastal defense or disruption before T3's first Ravage.
-
-#### France (Plantation) — Dahan capture threatens your Dahan engine
-
-**What changes**: France's plantation rules convert Dahan to colonists, and Invaders occupy lands with Dahan. **Spirits whose innate/card math counts on Dahan density (Shadows-of-the-Dahan, Favors, Thunderspeaker) are downgraded.**
-
-**Mitigation for Vital Strength of the Earth**: Play Defend Powers on Dahan lands; accept loss of range-extension budget.
+| Adversary               | Opening | Rating | Matchup note                                                 |
+|-------------------------|---------|--------|--------------------------------------------------------------|
+| Brandenburg-Prussia     | A / B   | ★★★☆☆  | Build pressure punishes slow setup                           |
+| England                 | C       | ★★★☆☆  | Rituals + Guard cycle against coastal City builds            |
+| Sweden                  | A / B   | ★★★☆☆  | Build-spam fights maintenance role                           |
+| France-Plantation       | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Russia                  | A / B   | ★★★☆☆  | `[VERIFY]`                                                   |
+| Scotland                | A / B   | ★★★☆☆  | `[VERIFY]`                                                   |
+| Habsburg Mining         | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Habsburg Livestock      | A       | ★★☆☆☆  | `[VERIFY]`                                                   |
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+Per Phantaskippy:
+
+| Board / Start | Rating | Note |
+|---------------|--------|------|
+| Board C + Mountain explore | ★★☆☆☆ | No Mountains at Range 1 outside starting sacred site |
+| Board D + Mountain explore (2nd Mountain blighted) | ★★★☆☆ | Guard-the-Healing-Land T2 priority |
+| Board A + Sands explore | ★★★☆☆ | Don't place in land 7; go to 1 or 5, range into 4 |
+| Others | ★★★★☆ | Workable |
 
 ## Game-Phase Strategy
 
-`[VERIFY: needs play data]`.
+### Early (T1–3)
+- Puzzle-piece turn selection: match growth to the Explore.
+- Rituals T2/T3 at a Dahan-stacked land.
+- Draw T1 to enable Rituals T2.
+
+### Mid (T4–6)
+- 2 card plays sustained (bottom-track maturation).
+- Major-power hunting.
+- Gift of Strength L1/L2 for ally Repeats.
+
+### Late (T7+)
+- +3 Energy growth lane; Major integration.
+- Gift of Strength L3 for ally Major Repeats.
 
 ## Synergy Partners (Multiplayer)
 
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+- **Dahan-movers**: Thunderspeaker, Keeper, Fractured Days — fuel Rituals targets.
+- **City-softeners**: Lightning, Shadows, Green's Stem — so Rituals can finish.
+- **Bringer of Dreams**: VSE's slow damage + fear conversion.
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
+```admonish failure title="Phantaskippy named mistakes"
+1. **Paying 3 for a Minor.** Every 3-cost starter becomes a bad Minor under unfavorable conditions.
+2. **Reclaiming on T3 with 3 cards in discard.** Tempting because cheap. Loses tempo unless set up for Rituals+Draw next turn.
+3. **Skipping Draw T1 to pre-set Rituals T2** (BGG #1943226 warning): costs you Dahan-gather in a land that Ravages undefended T2.
+4. **Going Major on the power track.** 3-cost starters are already Major-like.
+```
 
 ## Tempo Profile
 
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
-```
+| Turn | Target state                                              |
+|------|-----------------------------------------------------------|
+| 1    | G2/G3 + Draw; tool-match the Explore                      |
+| 2    | Rituals T2 at Dahan-stacked land (5 dmg + 2 Fear)         |
+| 3    | Reclaim or G3 (depending on hand); sacred-site stack      |
+| 4    | 2 CP sustained; one major turn banked                     |
+| 5+   | Major-hunt; Gift of Strength L2/L3                         |
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/vital-strength-of-the-earth.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Vital Strength of the Earth](https://spiritislandwiki.com/index.php?title=Vital_Strength_of_the_Earth).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/vital-strength-of-the-earth.json` (Wiki-parsed 2026-04-23).
+- **Openings**: [Phantaskippy BGG 1974592](https://boardgamegeek.com/thread/1974592/openings-vital-strength-earth) + Kamahl variant.

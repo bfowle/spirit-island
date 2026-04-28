@@ -169,6 +169,24 @@ Banking 2+ E over curve means you missed a play; the extra energy doesn't make u
 - **Scenario-specific**: some scenarios (Powers Long Forgotten) forbid certain cards, forcing banking.
 - **Emergency defend**: burning 2E on A Year of Perfect Stillness saves a game; worth spiking out-of-curve for one turn.
 
+## Repeat-a-Power — the hidden energy multiplier
+
+Repeat effects (Gift of Strength, Powerstorm, many Innates with a "Repeat this Power" line, Heart of the Wildfire's Fire-Consume-Fire pattern) don't show up on your curve — but they double a turn's effective card-play economy when they fire. Treat them as a separate axis:
+
+- **Per-play value**: a 2-cost Minor with an effect worth ~X is normally X per play. Repeated, it's 2X for the same 2 energy. The energy-per-effect rate halves.
+- **CP cost**: Repeat costs one CP (you played the Power) but generates two effects. On a 2-CP turn, that's half your effect-generation pipeline doubled.
+- **Element count**: Repeating a Power re-counts its elements *for threshold purposes*? **No** — elements are counted per-card-played, not per-instance-resolved. Check specific text: some Repeats explicitly re-count elements; most do not.
+
+Strategic implications:
+
+- A Repeat-capable spirit (Lightning natively via Powerstorm; Keeper via Innate; anyone holding Gift of Strength) prices its Majors differently. A 4-cost Major that Repeats is ~2-cost-per-effect. This is why Lightning over-performs in Major-heavy builds despite its thin CP pool.
+- Repeat-on-Innate (Lay Paths They Cannot Help But Walk's Level-3 "Repeat this Power") is the element-thresholds-matter-most kind of Repeat. Draft minors that feed the threshold; the Innate pays back twice.
+- **Not every repetition is a Repeat**: some Powers say "double this effect" which resolves in-instance, not as a full re-play. Check text.
+
+Draft heuristic: if your spirit has native Repeat access, add roughly **20–30% to the effective value** of any Power that would be Repeat-target legal. This often flips a borderline Minor into a pick.
+
+Source: community discussion at [BGG thread 3061696 — Repeating Slow Power Card with Fast Innate](https://boardgamegeek.com/thread/3061696/repeating-slow-power-card-with-fast-innate-power); rules detail at [Wiki — Repeat](https://spiritislandwiki.com/index.php?title=Repeat).
+
 ## Cross-references
 
 - [Tempo](./tempo.md) — energy is one axis of tempo.

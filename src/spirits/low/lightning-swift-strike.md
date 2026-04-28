@@ -1,329 +1,265 @@
 # Lightning's Swift Strike
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing paraphrased from [Antistone / Jeremy Lennert's BGG openings thread 1969985](https://boardgamegeek.com/thread/1969985/openings-lightnings-swift-strike).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Base Game                                        |
-| Complexity            | Low                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 5 · Control 2 · Fear 3 · Defense 1 · Utility 2             |
-| Primary Elements      | Fire, Air, Water (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Base Game                                          |
+| Complexity            | Low                                                |
+| Play Difficulty       | 1 `[VERIFY physical spirit panel]`                 |
+| Growth type           | "one" — pick one growth per turn (bundled)         |
+| Power summary (1–5)   | **Offense 5** · Control 2 · Fear 3 · Defense 1 · Utility 2 |
+| Primary Elements      | **Fire** · **Air** (Thundering Destruction all tiers + Swiftness) · Water (L3/L4) |
+| Special Rules         | Swiftness of Lightning (1 Air → 1 Slow used as Fast) |
+| Aspects (JE)          | Pandemonium · Immense · Wind `[VERIFY]`            |
+| Rei's Guide           | Not covered                                        |
+| latentoctopus         | Not listed                                         |
+| BGG                   | [Antistone thread 1969985](https://boardgamegeek.com/thread/1969985) |
 ```
 
 ## Spirit Overview — Framing
 
+Lightning is a **fast-burst damage spirit** whose identity is inverted from most spirits — abundant card plays and scarce cards. Antistone:
+
+> Lightning has a very easy time getting lots of card plays and a hard time getting lots of cards to spend them on.
+
 **Wiki-printed playstyle note**:
 
-> Virtually all offense to start with: without a more defensive teammate, Blight may become a problem. Excellent at destroying buildings, less good at containing Explorers. Using Thundering Destruction tends to be a burst affair: a turn or two of position and build up Energy, followed by a really big turn. Starting Powers are extremely focused on Air and Fire: good for Thundering Destruction, bad for Major Power versatility.
+> Deals damage quickly with support from allies. Air-innate amplifier for the whole team via Lightning's Boon.
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+**Identity in one line**: fast Town-killer on T1–T2, team amplifier via Air, card-play surplus looking for cards.
+
+**Complexity signal**: Low is correct. 4 Uniques, 1 innate, 1 Special Rule (Air → Slow-as-Fast). Decision-load: *when to Reclaim* and *which Minor* to draft.
 
 ## Starting Setup
 
-> Put 2 Presence on your starting board in the highest-numbered Sands.
+> Put **2 Presence** on your starting board in the **highest-numbered Sands**.
 
-## Growth Options (one)
+## Growth Options (growthtype: "one" — pick one per turn)
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=reclaim, second=gain1p, third=energy1 |
-| G2 | first=addpresence2, second=addpresence0 |
-| G3 | first=addpresence1, second=energy3 |
-
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+| Growth | Effects                                              | Best when                                                 |
+|--------|------------------------------------------------------|-----------------------------------------------------------|
+| **G1** | Reclaim + Gain 1 Power Card + +1 Energy              | Default Reclaim turn                                      |
+| **G2** | Add Presence (R2) + Add Presence (R0)                | Spread + starting-land density                            |
+| **G3** | Add Presence (R1) + +3 Energy                        | Big energy spike turn                                     |
 
 ## Presence Tracks
 
-As Presence leaves each track, these values are revealed:
+- **Energy track** (8 slots): `energy1 → energy1 → energy2 → energy2 → energy3 → energy4 → energy4 → energy5`
+- **Card-play track** (5 slots): `card2 → card3 → card4 → card5 → card6`
 
-- **Energy track**: energy1, energy1, energy2, energy2, energy3, energy4, energy4, energy5
-- **Card-play track**: card2, card3, card4, card5, card6
+**Starting income**: 1 Energy, 2 Card Plays. The CP ceiling (up to 6) is huge — the problem is finding enough cards to spend them on.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: Swiftness of Lightning
 
-SWIFTNESS OF LIGHTNING For every Air you have, you may use 1 Slow Power as if it were Fast. (Power Cards or your Innate Powers.)
+> For every Air you have, you may use 1 Slow Power as if it were Fast. (Power Cards or your Innate Powers.)
 
-### Innate: THUNDERING DESTRUCTION
+**Air-driven Slow→Fast conversion**. 1 Air = 1 Slow-as-Fast. 2 Air = 2 Slow-as-Fast. The identity-shaping rule.
 
-- **Speed**: slow · **Range**: 1 (optionally from a sacred site) · **Target**: any
+### Innate: Thundering Destruction
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. |
-| 2 | 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | You may instead destroy 1 City <img class="si" src="/spirit-island/theme/icons/unit-city.svg" alt="City">. |
-| 3 | 5 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Also, Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> / City. |
-| 4 | 5 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 5 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Also, Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> / City. |
+- **Speed**: Slow · **Range**: 1 · **Target**: Any
 
+| Level | Thresholds                                     | Effect                              |
+|-------|------------------------------------------------|-------------------------------------|
+| 1     | 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Destroy 1 Town. |
+| 2     | 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | You may instead destroy 1 City. |
+| 3     | 5 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Also, Destroy 1 Town / City. |
+| 4     | 5 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 5 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Also, Destroy 1 Town / City. |
 
-## Unique Cards (all, Wiki-verified)
+Town-killer innate. L1 (3 Fire + 2 Air) reachable T1–T2. L2 upgrades to City-kill.
 
-## Card Priority Ratings
+## Unique Cards (all 4, Wiki-verified)
 
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Lightning's Swift Strike's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/lightning-swift-strike.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/lightning-swift-strike.json) for full scoring + reasons.
+### Raging Storm
+- **3 Energy · Slow · Range 1 · Any Land · Fire, Air, Water**
+- *1 Damage to each Invader.*
 
-- **Primary elements (innate-weighted)**: **Fire** (wt 8.1), **Air** (wt 6.3), **Water** (wt 0.9)
-- **Mid-game energy estimate (T3–T5 avg)**: 2.33E
-- **Power summary**: Offense 5 · Control 2 · Fear 3 · Defense 1 · Utility 2
-```
+AOE. Antistone: inefficient; better as Explore-prevention than raw damage.
 
-### Uniques
+### Shatter Homesteads
+- **2 Energy · Slow · Range 2 from Sacred Site · Any Land · Fire, Air**
+- *1 Fear. Destroy 1 Town.*
 
-*No Unique cards listed.*
+The signature Town-killer. Range 2 from sacred site + Swiftness makes it a Fast Town-destroy.
 
-### Top 10 Minor Draft Picks (from full pool)
+### Lightning's Boon
+- **1 Energy · Fast · No Range · Any Spirit · Fire, Air**
+- *Target Spirit may use up to 2 Slow Powers as if they were Fast Powers this turn.*
 
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Steam Vents** | 1 | Fast | Fire, Air, Water, Earth | Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+fire+water → 15.3 |
-| 2 | **Dry Wood Explodes in Smoldering Splinters** | 1 | Slow | Fire, Air, Plant | You may spend 1 Energy to make this Power Fast. 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. | elements air+fire → 14.4 |
-| 3 | **Fleshrot Fever** | 1 | Slow | Fire, Air, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Disease. | elements air+fire+water → 15.3 |
-| 4 | **Desiccating Winds** | 1 | Slow | Fire, Air, Earth | If target land has Badlands, 1 Damage. Add 1 Badlands. | elements air+fire → 14.4 |
-| 5 | **Purifying Flame** | 1 | Slow | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blig… | elements air+fire → 14.4 |
-| 6 | **Call to Migrate** | 1 | Slow | Fire, Air, Animal | Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Push up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+fire → 14.4 |
-| 7 | **Hazards Spread Across the Island** | 0 | Fast | Fire, Air, Earth, Plant | Choose a type of token from Badlands/Beasts/Disease/Strife/Wilds that exists in an adjace… | elements air+fire → 14.4 |
-| 8 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. | elements air+fire → 14.4 |
-| 9 | **Swarming Wasps** | 0 | Fast | Fire, Air, Animal | Add 1 Beasts. **OR** If target land has Beasts, Push up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+fire → 14.4 |
-| 10 | **Fire in the Sky** | 1 | Fast | Sun, Fire, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. | elements air+fire → 14.4 |
+**Team amplifier**. Gift to any Slow-heavy partner. Antistone: in solo, *"play for elements only"* — the Slow→Fast effect doubles on Lightning itself (with Swiftness native).
 
-### Top 5 Major Draft Picks (from full pool)
+### Harbingers of the Lightning
+- **0 Energy · Slow · Range 1 · Any Land · Fire, Air**
+- *Push up to 2 Dahan. 1 Fear if you pushed any Dahan into a land with Towns/Cities.*
 
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Storm-Swath** | 3 | Slow | Fire, Air, Water | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. In both origin land and target land: 1 Damage to each Invader. | elements air+fire+water → 15.3 |
-| 2 | **Plague Ships Sail to Distant Ports** | 4 | Fast | Fire, Air, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 4 Disease among Coastal lands (on any boards) other than target land. | elements air+fire+water → 15.3 |
-| 3 | **Transform to a Murderous Darkness** | 6 | Slow | Moon, Fire, Air, Water, Plant | Target Spirit may choose one of their Sacred Site. In that land: Replace all their Presen… | elements air+fire+water → 15.3 |
-| 4 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+fire+water → 15.3 |
-| 5 | **Exaltation of the Incandescent Sky** | 7 | Fast | Sun, Fire, Air, Water | Target Spirit may play 1 Power Card by paying its cost, make up to 2 of their Powers Fast… | elements air+fire+water → 15.3 |
-
-### HoSI Beginner Deck Bundle — for reference only
-
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with Lightning's Swift Strike in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
-
-| Card | Type | Cost | Speed | Elements | Effect (truncated) |
-|------|------|------|-------|----------|--------------------|
-| **Delusions of Danger** | Minor | 1 | Fast | Sun, Moon, Air | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
-| **Call to Bloodshed** | Minor | 1 | Slow | Sun, Fire, Animal | 1 Damage per Dahan. **OR** Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
-| **Powerstorm** | Major | 3 | Fast | Sun, Fire, Air | Target Spirit gains 3 Energy. Once this turn, target Spirit may Repeat a Power Card by pa… |
-| **Purifying Flame** | Minor | 1 | Slow | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blig… |
-| **Pillar of Living Flame** | Major | 5 | Slow | Fire | 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 5 Damage. If target land is a Jungle or Wetland, add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. |
-| **Entrancing Apparitions** | Minor | 1 | Fast | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. |
-| **Call to Isolation** | Minor | 0 | Fast | Sun, Air, Animal | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Dahan. **OR** Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
-
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Land of Haunts and Embers** | adds Blight |
-| **Scour the Land** | adds Blight |
-| **Devouring Ants** | destroys Dahan |
-| **Renewing Boon** | destroys Presence |
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Pyroclastic Flow** | adds Blight |
-| **Pillar of Living Flame** | adds Blight |
-| **Blazing Renewal** | destroys Presence |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
-| **Tsunami** | destroys Dahan |
-| **The Jungle Hungers** | destroys Dahan |
-| **Draw Towards a Consuming Void** | destroys Presence |
-| **Poisoned Land** | destroys Dahan, adds Blight |
+0-cost Fire/Air — the threshold-filler. Used every turn to stack innate elements.
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+1. **Air = Slow-as-Fast.** Draft Air minors aggressively.
+2. **Fire for Thundering Destruction.** Every turn wants Fire + Air in hand.
+3. **Card-plays exceed cards.** Minor-draft over Major.
+4. **Swiftness timing is not reflexive.** Antistone: if destroying a starting Town creates out-of-range lands after future Builds, make Shatter *Fast*; otherwise play Slow to hit a Town about to Ravage.
+5. **Reclaim every turn is a tempo-loss** — it costs presence growth.
+6. **Lightning's Boon solo = elements only.** The ally-benefit wastes.
 
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+## Possible Openings
 
-## Opener Mechanics — starter reference
+### Shared starting state
 
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/lightning-swift-strike.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
-```
+- **2 Presence** on highest-numbered Sands.
+- **4 Uniques in hand**: Raging Storm (3E Slow, Fire/Air/Water), Shatter Homesteads (2E Slow, Fire/Air), Lightning's Boon (1E Fast, Fire/Air), Harbingers of the Lightning (0E Slow, Fire/Air).
+- **Starting income**: 1 Energy, 2 Card Plays.
 
-### Starting state
+### Opening A — Antistone's Presence-first (slow-ramp, multiplayer) 🟨 (default)
 
-- **Setup**: Put 2 Presence on your starting board in the highest-numbered Sands.
-- **Starting income** (from `presence_energy_track[0]` = `energy1`, `presence_cardplay_track[0]` = `card2`): **1 Energy · 2 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `one` — pick **one** growth option per turn
+**T1 · Growth**: G2 (2 presence from top-track). Extra presence = range + 2nd sacred site.
+**T1 · Play** (1E, 2 CP): **Shatter Homesteads only**. Skip 2nd card play — save for T2 innate trigger.
 
-### Growth options
+**T2 · Growth**: G2 (+3E from G3 misread — actually G3: R1 presence + 3E). Correction: T2 G3 for +3E + presence.
+**T2 · Play** (4E, 2 CP): **Lightning's Boon + Raging Storm + Harbingers** — triggers Thundering Destruction L1 (3 Fire + 2 Air), destroys 2nd Town.
 
-- **G1**: reclaim (Reclaim all discarded+played Power Cards); gain1p (Gain 1 Power Card (Minor unless otherwise noted)); energy1 ((track slot showing 1 Energy))
-- **G2**: addpresence2 (Place 1 Presence from a track (Range 2)); addpresence0 (Place 1 Presence from a track (Range 0))
-- **G3**: addpresence1 (Place 1 Presence from a track (Range 1)); energy3 ((+3 Energy this turn — growth effect, not track reveal))
+**T3 · Growth**: G1 (Reclaim + Gain Minor + 1E). Card-starved relief.
 
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
+**T4 target**: sustained 3 card plays per turn with innate fires; Reclaim loops every 3 turns.
 
-### Energy track
+### Opening B — Ruduen's Aggressive (solo / fast adversaries) 🟨
 
-`energy1 · energy1 · energy2 · energy2 · energy3 · energy4 · energy4 · energy5` — income as slots reveal: 1 → 1 → 2 → 2 → 3 → 4 → 4 → 5
+**T1 · Growth**: G1 (+1E + Reclaim, but only empty to reclaim) — **Variant**: G3 (R1 presence + 3E) = 4E.
+**T1 · Play** (4E): **Shatter Homesteads + Lightning's Boon + Harbingers** → innate L1 T1, up to 4 Fear immediately.
 
-### Card-play track
+**T2 · Growth**: G1 Reclaim + Minor + 1E.
+**T2 · Play**: Repeat Town-clear if needed.
 
-`card2 · card3 · card4 · card5 · card6` — CP as slots reveal: 2 → 3 → 4 → 5 → 6
+**T3 · Growth**: G2 or G1 for 3E.
+**T3 · Play**: Everything unplayed except maybe Raging Storm.
 
-### Innate Powers
+**T4 · Growth**: G1 Reclaim + Minor + 1E.
 
-- **THUNDERING DESTRUCTION** (Speed: Slow · Range: 1 · Target: any)
-  - **L1** — 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">.
-  - **L2** — 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: You may instead destroy 1 City <img class="si" src="/spirit-island/theme/icons/unit-city.svg" alt="City">.
-  - **L3** — 5 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: Also, Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> / City.
-  - **L4** — 5 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 5 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: Also, Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> / City.
+**Trade-off**: destroys fewer total Towns across T1–T3 but earlier; prevents inland explores Opening A can't. Higher-risk, higher-reward vs. aggressive adversaries.
 
-### Fast-phase element ceiling from Uniques
+### Opening C — Ocean-partner Variant 🟥
 
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
+With Ocean's Tidal Boon (+2E gift): play 0 cards T1, G2 bottom T2, play all 4 starters T2 — but lack Air to Fast everything. Niche.
 
-- Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
+### Opening Decision
 
-### Unique Power Cards
+- **Default Opening A** in 2P+ multiplayer.
+- **Opening B** solo or vs. fast-cliff adversaries.
+- **Opening C** when paired with Ocean.
 
-*No Unique cards parsed.*
+## Card Priority Ratings
 
-### Invader phase by turn (base deck)
+### Uniques — Lightning-specific ranking
 
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
+1. **Shatter Homesteads** — the Town-killer; 2E Fire/Air.
+2. **Lightning's Boon** — team amplifier (or solo elements).
+3. **Harbingers of the Lightning** — 0-cost Fire/Air threshold-filler.
+4. **Raging Storm** — AOE; situational Explore-prevention.
 
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
+### Top 10 Minor Draft Picks (Air > Fire)
 
-### Pause-point before writing T1 prose
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Call to Migrate** | 0 | Fast | Air, Animal | 0-cost Air |
+| 2 | **Strange Tales of the Sky** | 1 | Fast | Moon, Air | Air-feeder |
+| 3 | **Drift Down to Rest** | 0 | Slow | Sun, Air, Plant | 0-cost Air |
+| 4 | **Bats Scout for Raids by Darkness** | 1 | Fast | Moon, Air, Animal | Air |
+| 5 | **Visions of Fiery Doom** | 1 | Slow | Moon, Fire | Fire-feeder |
+| 6 | **Pyroclastic Friction** | 1 | Fast | Fire, Earth | Fire + Earth |
+| 7 | **Rain of Blood** | 1 | Slow | Moon, Fire, Water | Fire + multi-element |
+| 8 | **Entrancing Apparitions** | 1 | Fast | Moon, Air | Air-feeder |
+| 9 | **Elemental Boon** | 0 | Fast | Sun, Moon, Fire, Air | Four-element flex |
+| 10 | **Travel Unsuspected** | 1 | Fast | Air, Water | Air + Water (L3/L4) |
 
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
+### Top 5 Major Draft Picks
+
+Rare for Lightning — drafts only situationally. Prefer:
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Powerstorm** | 3 | Fast | Sun, Fire, Air | Fire+Air double-prime |
+| 2 | **Instruments of Their Own Ruin** | 3 | Fast | Fire, Air, Animal | Fire+Air multi-land |
+| 3 | **Pillar of Living Flame** | 4 | Fast | Sun, Fire, Air | Fire+Air element-wide |
+| 4 | **Entwined Power** | 4 | Slow | Fire, Air | Expensive but dual-prime |
+| 5 | **Bargains of Power and Protection** | 3 | Fast | Sun, Moon, Fire, Air | Four-element utility |
+
+### Cards to Avoid
+
+| Card | Reason |
+|------|--------|
+| Defense-heavy Minors | Lightning is offense, not defense |
+| Earth-only Minors | Off-axis elements |
+| Single-land non-Town-destroy Majors | Shatter Homesteads already fills slot |
 
 ## Adversary Matchup Matrix
 
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
-
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
-
-
-### Strategy Cliffs — per-adversary-level shifts that change Lightning's Swift Strike's math
-
-```admonish warning title="Cliffs to watch"
-Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Lightning's Swift Strike's profile (Fear 3, Offense 5, Control 2, Defense 1, Utility 2).
-```
-
-#### England L5 — Buildings +1 HP
-
-**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
-
-**Mitigation for Lightning's Swift Strike**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
-
-#### England L3 — Coastal Lands build faster
-
-**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
-
-**Mitigation for Lightning's Swift Strike**: Front-load coastal defense or disruption before T3's first Ravage.
-
-#### Russia L3+ — Dahan under pressure + fear suppression
-
-**What changes**: Russia's L3 escalation targets Dahan directly and suppresses Fear. **Spirits reliant on Dahan density (Shadows of the Dahan, Favors Called Due, Thunderspeaker synergies) lose a key engine.**
-
-**Mitigation for Lightning's Swift Strike**: Pre-empt Dahan loss with Defend-heavy Minors (Dahan/Village-fortify cards); lean on Push/Gather Majors to offset Fear deficit.
-
-#### Habsburg Mining L5+ — Explorer/Town scaling
-
-**What changes**: Habsburg Mining L5+ adds extra Explorers and faster builds. **Aggressive fear-rush openers can get outpaced by raw Invader accumulation.**
-
-**Mitigation for Lightning's Swift Strike**: Favor Major Powers with mass destruction (Jungle Hungers, Cleansing Floods, etc.) over Minor-heavy drafts.
-
-#### France (Plantation) — Dahan capture threatens your Dahan engine
-
-**What changes**: France's plantation rules convert Dahan to colonists, and Invaders occupy lands with Dahan. **Spirits whose innate/card math counts on Dahan density (Shadows-of-the-Dahan, Favors, Thunderspeaker) are downgraded.**
-
-**Mitigation for Lightning's Swift Strike**: Play Defend Powers on Dahan lands; accept loss of range-extension budget.
-
-#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
-
-**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
-
-**Mitigation for Lightning's Swift Strike**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
+| Adversary               | Opening | Rating | Matchup note                                                 |
+|-------------------------|---------|--------|--------------------------------------------------------------|
+| Brandenburg-Prussia     | A       | ★★★★☆  | Town-kill pace matches Prussia ramp                          |
+| England                 | A       | ★★★☆☆  | Late-stage Cities need L2+ innate                            |
+| Sweden                  | A / B   | ★★★☆☆  | Build-spam fights Lightning's card economy                   |
+| France-Plantation       | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Scotland                | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Russia                  | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Habsburg Mining         | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Habsburg Livestock      | A       | ★★☆☆☆  | `[VERIFY]`                                                   |
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+Board A matters most (Ruduen): 2 coastal lands unreachable without presence-heavy start — use Opening A variant with top-track. Boards B/C/D let Shatter Homesteads reach all but one land, so the G3 energy-start is viable.
 
 ## Game-Phase Strategy
 
-`[VERIFY: needs play data]`.
+### Early (T1–3)
+- Shatter Homesteads T1 + T2 Town-kills.
+- Thundering Destruction L1 online T2.
+- Card-draft Air/Fire aggressively.
+
+### Mid (T4–6)
+- Thundering Destruction L2 (4 Fire + 3 Air) for City-kills.
+- Reclaim cycles every 3 turns.
+
+### Late (T7+)
+- Thundering Destruction L3/L4 for multi-Town/City destroy.
+- Major integration (if drafted).
 
 ## Synergy Partners (Multiplayer)
 
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+- **Keeper of the Forbidden Wilds** — slow card economy, benefits from Lightning's Boon Fast conversion.
+- **Serpent Slumbering Beneath the Island** — Gift of Flowing Power card-play acceleration.
+- **Ocean** — Tidal Boon energy gift; shared coastal presence.
+- **Green** — Gift of Proliferation for early presence acceleration.
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
+```admonish failure title="Antistone's named mistakes"
+1. **Trying to play all 4 starters T1 without Reclaim planning.** Hand runs out fast.
+2. **Lightning's Boon solo for stated effect.** Only take for elements.
+3. **Reflexive Swiftness.** Some turns Shatter should be Slow to hit a Town *about to Ravage*.
+4. **Raging Storm as a premium pick.** It's inefficient; better as Explore-prevention.
+5. **Reclaim every turn.** Costs presence growth.
+```
 
 ## Tempo Profile
 
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
-```
+| Turn | Target state                                              |
+|------|-----------------------------------------------------------|
+| 1    | G2/G3 + Shatter Homesteads; save plays                   |
+| 2    | G3 + Boon + Raging Storm + Harbingers; Thundering L1 fires |
+| 3    | G1 Reclaim + Minor; card relief                           |
+| 4    | Sustained 3 plays; Thundering L2 reachable                |
+| 5+   | Thundering L2/L3/L4 cycles                                |
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/lightnings-swift-strike.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Lightning's Swift Strike](https://spiritislandwiki.com/index.php?title=Lightning's_Swift_Strike).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/lightning-swift-strike.json` (Wiki-parsed 2026-04-23).
+- **Openings**: [Antistone BGG 1969985](https://boardgamegeek.com/thread/1969985/openings-lightnings-swift-strike).

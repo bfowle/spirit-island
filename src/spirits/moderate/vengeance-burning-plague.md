@@ -1,332 +1,330 @@
 # Vengeance as a Burning Plague
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing from **[Rei's BGG guide (thread 2709070)](https://boardgamegeek.com/thread/2709070/guide-vengeance-as-a-burning-plague)** + [Rei on Spirited Discussion podcast](https://spiriteddiscussion.substack.com/p/vengeance-as-a-burning-plague-with) + [jyonker13 openings thread 2484534](https://boardgamegeek.com/thread/2484534/openings-vengeance-burning-plague).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Jagged Earth                                        |
-| Complexity            | High                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 5 · Control 2 · Fear 3 · Defense 1 · Utility 1             |
-| Primary Elements      | Fire, Animal, Air (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Jagged Earth                                       |
+| Complexity            | High                                               |
+| Play Difficulty       | `[VERIFY physical spirit panel]`                   |
+| Growth type           | "many" — pick multiple growth options per turn     |
+| Power summary (1–5)   | **Offense 5** · Control 2 · Fear 3 · Defense 1 · Utility 1 |
+| Primary Elements      | **Animal** (Epidemics) · **Fire** (Savage Revenge) · Plant (Disease-seeding) · Air (Savage Revenge L1/L3) |
+| Special Rules         | Terror of a Slowly Unfolding Plague (let Build pass → 1 Fear) + Lingering Pestilence (destroyed Presence = 1 Disease) + Wreak Vengeance (Blight counts as Badlands) |
+| Aspects               | None                                               |
+| Rei's Guide           | **[Yes — thread 2709070](https://boardgamegeek.com/thread/2709070)** |
+| latentoctopus         | Not covered                                        |
+| BGG openings          | [jyonker13 thread 2484534](https://boardgamegeek.com/thread/2484534) |
 ```
 
 ## Spirit Overview — Framing
 
+Vengeance is a **destruction-triggered scaling spirit** — its whole kit is inverted: *letting* Invaders Ravage your lands and destroy your presence unleashes the plague. Rei's identity thesis:
+
+> I think of them as a sleepy spirit that needs to get woken up by invader's destructive tendencies to unleash its revenge.
+
 **Wiki-printed playstyle note**:
 
-> Not so powerful early, but can be a late-game juggernaut, especially if things are going badly: Blight adds to its Damage and its Presence being Destroyed adds Disease. It may even want to engineer these situations, which can make other Spirits nervous (and be risky if things go poorly).
+> Wants Invaders (and itself) to take Damage — Blight is fuel via the Badlands rule, Destroyed Presence becomes Disease, and the innate scales with Damage dealt.
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+**jlrothe's framing** (BGG):
+
+> Decide early where your kill zones will be, get presence there, get killed, get a bunch of disease in there, get to the second level of your first innate... that's all she wrote.
+
+**Rei's power-spike benchmark** (canonical):
+
+> 3 energy / 3 card plays unlocks Tier-2 innates and energy sustainability — anything beyond that is gravy. Scaling is much stronger than cards for Vengeance.
+
+**Complexity signal**: High is correct. The psychological inversion is the hard part — most spirit-island instincts say "prevent Ravages, preserve Presence." Vengeance wants the opposite, and choosing *which* Ravages/destruction to accept is decision-dense.
 
 ## Starting Setup
 
-> 1 of your Presence starts the game already Destroyed. Put 2 Presence on your starting board: 1 in a land with Blight, 1 in a Wetland without Dahan.
+> **1 of your Presence starts the game already Destroyed.** Put **2 Presence** on your starting board: **1 in a land with Blight, 1 in a Wetland without Dahan**.
 
-## Growth Options (one)
+Yes — one Presence starts already Destroyed. That starting-Destroyed triggers Lingering Pestilence: **1 Disease seeded at setup** on whatever land you designate.
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=reclaim, second=gain1p, third=energy1 |
-| G2 | first=Vengeance, second=Vengeance |
-| G3 | first=gain1p, second=addpresencedisease1, third=energy1 |
+## Growth Options (growthtype: "many" — pick multiple)
 
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+| Growth | Effects                                                | Best when                                                   |
+|--------|--------------------------------------------------------|-------------------------------------------------------------|
+| **G1** | Reclaim + Gain 1 Power Card + +1 Energy                | Full Reclaim cycle                                          |
+| **G2** | Vengeance (special token/placement) + Vengeance (again) | The Disease-multiplier growth; picked twice-per-turn in the Fast Tempo opening |
+| **G3** | Gain 1 Power Card + Add Presence (Range 1, Disease-seeded) + +1 Energy | Card-gain + Disease placement + energy                |
 
 ## Presence Tracks
 
-As Presence leaves each track, these values are revealed:
+- **Energy track** (5 slots): `energy1 → energy2 → animal → energy3 → energy4`
+  - 1E → 2E → +Animal marker → 3E → 4E
+- **Card-play track** (7 slots): `card1 → card2 → fireX → card2 → card3 → card3 → card4`
+  - 1 CP → 2 CP → Fire scaling → 2 CP → 3 CP → 3 CP → 4 CP
 
-- **Energy track**: energy1, energy2, animal, energy3, energy4
-- **Card-play track**: card1, card2, fireX, card2, card3, card3, card4
+**Starting income**: 1 Energy, 1 Card Play.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: Terror of a Slowly Unfolding Plague
 
-THE TERROR OF A SLOWLY UNFOLDING PLAGUE When Disease would prevent a Build on a board with your Presence, you may let the Build happen (removing no Disease). If you do, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. LINGERING PESTILENCE When your Presence is destroyed by anything except a Spirit action, add 1 Disease where each destroyed Presence was. WREAK VENGEANCE FOR THE LAND'S CORRUPTION Your actions treat Blight on the island as also being Badlands.
+> When Disease would prevent a Build on a board with your Presence, you may let the Build happen (removing no Disease). If you do, 1 Fear.
 
-### Innate: EPIDEMICS RUN RAMPANT
+Free 1 Fear per turn if you **don't** use your Disease to prevent a Build. The token stays — use it to seed the next Ravage-farm instead. **Rei clarifies**: the Presence needs to be *anywhere on the board*, not in the specific Disease land.
 
-- **Speed**: fast · **Range**: 1 · **Target**: disease
+### Special Rule: Lingering Pestilence
 
-_(no thresholds listed in Wiki)_
+> When your Presence is destroyed by anything except a Spirit action, add 1 Disease where each destroyed Presence was.
 
+Every Ravage that destroys your Presence = 1 Disease on that land. This is why Vengeance *wants* to be Ravaged.
 
-### Innate: SAVAGE REVENGE
+### Special Rule: Wreak Vengeance for the Land's Corruption
 
-- **Speed**: slow · **Range**: 0 · **Target**: building
+> Your actions treat Blight on the island as also being Badlands.
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | This Power has Range +1. |
-| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Damage. |
-| 3 | 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | +2 Damage. |
-| 4 | 5 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | +3 Damage. |
+Every Blight token is a Badlands for your damage-scaling — Plaguebearers, Savage Revenge, and any Badlands-scaling Minor triple-dips.
 
+### Innate: Epidemics Run Rampant
 
-## Unique Cards (all, Wiki-verified)
+- **Speed**: Fast · **Range**: 1 · **Target**: Disease
 
-## Card Priority Ratings
+Text: (Disease cascade — check Wiki for exact text; the tool parse didn't surface thresholds. Known effect structure: Disease in the target land spreads/multiplies, with element-gated tiers.)
 
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Vengeance as a Burning Plague's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/vengeance-burning-plague.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/vengeance-burning-plague.json) for full scoring + reasons.
+Wiki page has fuller thresholds; cross-reference your physical panel or the [Wiki Vengeance page](https://spiritislandwiki.com/index.php?title=Vengeance_as_a_Burning_Plague).
 
-- **Primary elements (innate-weighted)**: **Fire** (wt 4.5), **Air** (wt 3.3), **Animal** (wt 1.8)
-- **Mid-game energy estimate (T3–T5 avg)**: 3.5E
-- **Power summary**: Offense 5 · Control 2 · Fear 3 · Defense 1 · Utility 1
-```
+### Innate: Savage Revenge
 
-### Uniques
+- **Speed**: Slow · **Range**: 0 · **Target**: Building
 
-*No Unique cards listed.*
+| Level | Thresholds                                    | Effect                        |
+|-------|-----------------------------------------------|-------------------------------|
+| 1     | 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | This Power has Range +1. |
+| 2     | 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Damage. |
+| 3     | 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | +2 Damage. |
+| 4     | 5 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | +3 Damage. |
 
-### Top 10 Minor Draft Picks (from full pool)
+Cumulative at L2+L3+L4 = 1+2+3 = 6 Damage to a Building at Range 0. Rei: *"Scaling is much stronger than cards for Vengeance."* — this is why.
 
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Swarming Wasps** | 0 | Fast | Fire, Air, Animal | Add 1 Beasts. **OR** If target land has Beasts, Push up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+animal+fire → 9.6 |
-| 2 | **Fleshrot Fever** | 1 | Slow | Fire, Air, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Disease. | elements air+animal+fire → 9.6 |
-| 3 | **Call to Migrate** | 1 | Slow | Fire, Air, Animal | Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Push up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+animal+fire → 9.6 |
-| 4 | **Steam Vents** | 1 | Fast | Fire, Air, Water, Earth | Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+fire → 7.8 |
-| 5 | **Dry Wood Explodes in Smoldering Splinters** | 1 | Slow | Fire, Air, Plant | You may spend 1 Energy to make this Power Fast. 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. | elements air+fire → 7.8 |
-| 6 | **Hazards Spread Across the Island** | 0 | Fast | Fire, Air, Earth, Plant | Choose a type of token from Badlands/Beasts/Disease/Strife/Wilds that exists in an adjace… | elements air+fire → 7.8 |
-| 7 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. | elements air+fire → 7.8 |
-| 8 | **Desiccating Winds** | 1 | Slow | Fire, Air, Earth | If target land has Badlands, 1 Damage. Add 1 Badlands. | elements air+fire → 7.8 |
-| 9 | **Purifying Flame** | 1 | Slow | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blig… | elements air+fire → 7.8 |
-| 10 | **Fire in the Sky** | 1 | Fast | Sun, Fire, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. | elements air+fire → 7.8 |
+## Unique Cards (all 4, Wiki-verified)
 
-### Top 5 Major Draft Picks (from full pool)
+### Fetid Breath Spreads Infection
+- **2 Energy · Slow · Range 1 · Land with 1+ Invaders · Air, Water, Animal**
+- *1 Fear. Add 1 Disease.*
 
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Plague Ships Sail to Distant Ports** | 4 | Fast | Fire, Air, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 4 Disease among Coastal lands (on any boards) other than target land. | elements air+animal+fire → 9.6 |
-| 2 | **Instruments of Their Own Ruin** | 4 | Fast | Sun, Fire, Air, Animal | Add 1 Strife. Each Invader with Strife deals Damage to other Invaders in target land. | elements air+animal+fire → 9.6 |
-| 3 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+animal+fire → 9.6 |
-| 4 | **Talons of Lightning** | 6 | Fast | Fire, Air | 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 5 Damage. | elements air+fire → 7.8 |
-| 5 | **Storm-Swath** | 3 | Slow | Fire, Air, Water | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. In both origin land and target land: 1 Damage to each Invader. | elements air+fire → 7.8 |
+The Disease-seeder. 2E Slow is expensive, but Disease-placement is the whole game setup. Drafted into Majors, Fetid Breath is the first Forget candidate — specialization into other Disease-adding Minors takes over.
 
-### HoSI Beginner Deck Bundle — for reference only
+### Strike Low with Sudden Fevers
+- **2 Energy · Fast · Range 1 · Land with 1+ Disease tokens · Fire, Air, Earth, Animal**
+- *1 Fear. Invaders skip Ravage Actions.*
 
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with Vengeance as a Burning Plague in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
+Ravage-skip at Disease lands. The conservation play — skips a whole Ravage in a land where you've pre-seeded Disease. Rei: never cast this "just because you can or for hitting a Tier-1 innate" — only when there's a *specific* Ravage worth skipping.
 
+### Fiery Vengeance
+- **0 Energy · Fast · No Range · Any Spirit · Sun, Fire**
+- *Cost to Use: Target Spirit Removes 1 of their Destroyed Presence from the game. 1 Fear and 1 Damage in one of target Spirit's lands.*
 
-*No HoSI beginner-deck bundle for this spirit.*
+0-cost self-fueling damage. The Destroyed-Presence cost is *your* resource — 1 Destroyed Presence per cast. Carries Fire → helps Savage Revenge thresholds.
 
+### Plaguebearers
+- **1 Energy · Slow · Range 2 · Land with 1+ Disease tokens · Fire, Water, Animal**
+- *1 Fear if Invaders are present. For each Disease, Push 2 Explorer/Town/Dahan. 1 Disease may move with each Pushed piece.*
 
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Land of Haunts and Embers** | adds Blight |
-| **Scour the Land** | adds Blight |
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Devouring Ants** | destroys Dahan |
-| **Renewing Boon** | destroys Presence |
-| **Pyroclastic Flow** | adds Blight |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **Pillar of Living Flame** | adds Blight |
-| **Blazing Renewal** | destroys Presence |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
-| **Poisoned Land** | destroys Dahan, adds Blight |
-| **Draw Towards a Consuming Void** | destroys Presence |
-| **Tsunami** | destroys Dahan |
-| **The Jungle Hungers** | destroys Dahan |
+Disease-push + Disease-relocation. **The signature Vengeance card**: moves Invaders into your kill zones + relocates Disease to where you want it next turn.
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+1. **Let Ravages happen in your farmed lands.** Destroyed Presence = Disease; Ravaged Blight counts as Badlands.
+2. **Rei's power spike is 3E / 3 CP.** Target this by T4. Don't chase beyond it.
+3. **Decide kill zones early.** jlrothe: *"Decide early where your kill zones will be, get presence there, get killed, get a bunch of disease in there."*
+4. **Specialize elements — don't straddle Fire vs. Animal.** Rei picks Fire by default (Savage Revenge L2 without Disease concentration).
+5. **Terror of a Slowly Unfolding Plague gives 1 Fear per turn for free.** Presence *anywhere* on the board, not the specific Disease land.
+6. **Forget Fetid Breath when you draft Majors** — specialization takes over. Exception: if the Major synergizes with Fetid (Flow Like Water, Sea Monsters), forget Fiery Vengeance instead (especially vs England).
+7. **Monitor presence-destruction Blight cards** (Tipping Point, Pall, Erosion of Will) — in solo keep 2+ presence banked.
 
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+## Possible Openings
 
-## Opener Mechanics — starter reference
+### Shared starting state
 
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/vengeance-burning-plague.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
-```
+- **2 Presence + 1 Destroyed Presence + 1 Disease** on board (Disease seeded via Lingering Pestilence from Destroyed setup).
+- **4 Uniques in hand**: Fetid Breath Spreads Infection (2E Slow, Air/Water/Animal), Strike Low with Sudden Fevers (2E Fast, Fire/Air/Earth/Animal), Fiery Vengeance (0E Fast, Sun/Fire), Plaguebearers (1E Slow, Fire/Water/Animal).
+- **Starting income**: 1 Energy, 1 Card Play.
 
-### Starting state
+### Opening A — Fast-Tempo Minors (Rei's "bread & butter") 🟨 (default)
 
-- **Setup**: 1 of your Presence starts the game already Destroyed. Put 2 Presence on your starting board: 1 in a land with Blight, 1 in a Wetland without Dahan.
-- **Starting income** (from `presence_energy_track[0]` = `energy1`, `presence_cardplay_track[0]` = `card1`): **1 Energy · 1 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `one` — pick **one** growth option per turn
+Above-tempo with Invaders; farms Blight for scaling.
 
-### Growth options
+**T1 · Growth**: G3 (Minor + top-track presence + 1E).
+**T1 · Play**: **Fetid Breath** — seed Disease at range, prep T2 Plaguebearers target.
 
-- **G1**: reclaim (Reclaim all discarded+played Power Cards); gain1p (Gain 1 Power Card (Minor unless otherwise noted)); energy1 ((track slot showing 1 Energy))
-- **G2**: Vengeance ((spirit-specific: `Vengeance` — consult spirit panel)); Vengeance ((spirit-specific: `Vengeance` — consult spirit panel))
-- **G3**: gain1p (Gain 1 Power Card (Minor unless otherwise noted)); addpresencedisease1 ((spirit-specific: `addpresencedisease1` — consult spirit panel)); energy1 ((track slot showing 1 Energy))
+**T2 · Growth**: G2 × 2 (two bottom-track).
+**T2 · Play**: **Plaguebearers** + flex (Fiery Vengeance or Minor). Push Explorer+Town from setup land to create "sacrificial altars" (jlrothe's phrasing).
 
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
+**T3 · Growth**: G2 × 2 (two bottom, Disease-seed Ravaging / Dahan lands).
+**T3 · Play**: **Strike Low with Sudden Fevers** + Minor + flex.
 
-### Energy track
+**T4 · Target**: 3/3 CP pre-Reclaim. If Invader cards "doubled up" (Stage-1→Stage-2 same terrain), skip T3 Strike Low. Otherwise Reclaim loop is expected.
 
-`energy1 · energy2 · animal · energy3 · energy4` — income as slots reveal: 1 → 2 → animal → 3 → 4
+### Opening B — Minus-Tempo Minors 🟨
 
-### Card-play track
+On-tempo with Invaders; patient growth.
 
-`card1 · card2 · fireX · card2 · card3 · card3 · card4` — CP as slots reveal: 1 → 2 → fireX → 2 → 3 → 3 → 4
+**T1**: Same as Opening A.
+**T2**: G2 (single) — preserve flex into Fast Tempo if T3 demands Strike Low.
+**T3**: If no Strike Low pressure → grab a Minor; set up T4 for 7–8E + 3 plays + Strike Low ravage-skip.
 
-### Innate Powers
+### Opening C — Early Major (Rei-preferred) 🟥
 
-- **EPIDEMICS RUN RAMPANT** (Speed: Fast · Range: 1 · Target: disease)
-- **SAVAGE REVENGE** (Speed: Slow · Range: 0 · Target: building)
-  - **L1** — 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: This Power has Range +1.
-  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 1 Damage.
-  - **L3** — 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: +2 Damage.
-  - **L4** — 5 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 2 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: +3 Damage.
+**T1 · G2** (top × 2) + Fetid Breath (~1E left).
+**T2 · G2** (top + bottom into Ravaging/Dahan lands) + **Plaguebearers + Fiery Vengeance** (flex).
+**T3 · G3** — gain Major + top-or-bottom presence (priority: Sacred Site for Major > range > Ravaging land). 6–7E pool. Flex Strike Low if needed.
 
-### Fast-phase element ceiling from Uniques
+**Fire-vs-4E decision**: Fire if Major is 2–3 cost OR Strike Low must skip T3; 4E if saving Strike Low for T4 or aiming at 4–6 cost Major.
 
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
+### Opening D — jyonker13 simplified 🟨
 
-- Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-- **Fast-phase L1 ceiling from Uniques alone is sufficient** — you can fire L1 T1 without drafting (play enough Fast Uniques to meet the threshold).
+For teaching / new players.
 
-### Unique Power Cards
+**T1 · G2** (+1E, Minor, presence from energy). Play Fetid Breath.
+**T2 · G3** (2 presence). Play Plaguebearers + new Minor.
+**T3 · G2** (2 presence). Play Strike Low + Fiery Vengeance.
+**T4**: Reclaim.
 
-*No Unique cards parsed.*
+jyonker13 prefers Fire over Animal Minors: *"your second innate scales better than your first without requiring Disease to be concentrated in one land."*
 
-### Invader phase by turn (base deck)
+### Opening Decision
 
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
+- **Default Opening A (Fast-Tempo Minors)** for most matchups — Prussia, Russia, Scotland, Sweden, Habsburg.
+- **Opening B (Minus-Tempo)** when board-state is fragile T2.
+- **Opening C (Early Major)** when the Major draft lands Fire or Water at ≤4E.
+- **Opening D** for teaching or low-L play.
 
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
+## Card Priority Ratings
 
-### Pause-point before writing T1 prose
+### Uniques — Vengeance-specific ranking
 
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
+1. **Plaguebearers** — Disease-push + relocation engine.
+2. **Fiery Vengeance** — 0E Fast self-fueling damage.
+3. **Strike Low with Sudden Fevers** — Ravage-skip (conservation).
+4. **Fetid Breath Spreads Infection** — Disease-seeder; first Forget candidate for Major drafts.
 
-## Adversary Matchup Matrix
+### Top 10 Minor Draft Picks (Fire > Animal > Plant)
 
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Pyroclastic Friction** | 1 | Fast | Fire, Earth | Fire-feeder |
+| 2 | **Visions of Fiery Doom** | 1 | Slow | Moon, Fire | Fire-feeder |
+| 3 | **Rain of Blood** | 1 | Slow | Moon, Fire, Water | Fire + multi-element |
+| 4 | **Call to Bloodshed** | 0 | Slow | Moon, Animal | 0-cost Animal |
+| 5 | **Call to Migrate** | 0 | Fast | Air, Animal | 0-cost Animal |
+| 6 | **Predatory Nightmares** | 0 | Fast | Moon, Animal | 0-cost Animal |
+| 7 | **Infested Aquifers** | 1 | Slow | Water, Animal | Disease-compatible utility |
+| 8 | **Poisoned Dew** | 1 | Slow | Water, Plant | Russia-killer flex |
+| 9 | **Quicken the Earth's Struggles** | 0 | Slow | Earth, Plant, Animal | 0-cost triple-element |
+| 10 | **Dry Wood** | 0 | Slow | Fire, Plant | Fire-seeder (rare useful Plant) |
 
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
+### Top 5 Major Draft Picks (Rei's favorites)
 
+| # | Card | Cost | Speed | Elements | Why (Rei) |
+|---|------|------|-------|----------|-----------|
+| 1 | **Flow Like Water, Reach Like Air** | 2 | Fast | Sun, Air, Water | Gather + Blight-pile |
+| 2 | **Unleash a Torrent of the Deep** | 5 | Slow | Moon, Water, Earth, Animal | Energy battery with Fiery |
+| 3 | **Settling Into Hunting Grounds** | 3 | Slow | Moon, Earth, Plant, Animal | Beast/Disease synergy |
+| 4 | **Angry Bears** | 3 | Fast | Moon, Fire, Animal | Beast + Fire |
+| 5 | **Dissolve the Bonds of Kinship** | 3 | Fast | Sun, Moon, Air, Water | Invader-vs-Invader damage |
 
-### Strategy Cliffs — per-adversary-level shifts that change Vengeance as a Burning Plague's math
+Also Rei-favored: Infestation of Venomous Spiders, Bloodwrack Plague, Utter a Curse, Pillar of Living Flame, Focus the Land's Anguish.
 
-```admonish warning title="Cliffs to watch"
-Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Vengeance as a Burning Plague's profile (Fear 3, Offense 5, Control 2, Defense 1, Utility 1).
-```
+### Cards to Avoid (Rei's almost-never list)
 
-#### England L5 — Buildings +1 HP
+| Card | Reason |
+|------|--------|
+| Cast Down into the Briny Deep | Wrong profile |
+| Volcanic Eruption | — |
+| Draw Towards a Consuming Void | — |
+| Fire and Flood | — |
+| Transform into Murderous Darkness | — |
+| Tsunami | — |
+| Twisted Flowers Murmur | — |
+| Accelerated Rot | — |
+| Grant Hatred | — |
 
-**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
+Rei's minor-avoid list: Renewing Boon, Dry Wood (contradicts above — flag variant: drafting context matters), Reaching Grasp, Haunted by Primal, Encompassing Ward, Call to Migrate/Ferocity, Prowling Panthers.
 
-**Mitigation for Vengeance as a Burning Plague**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
+## Adversary Matchup Matrix (Rei-documented)
 
-#### England L3 — Coastal Lands build faster
-
-**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
-
-**Mitigation for Vengeance as a Burning Plague**: Front-load coastal defense or disruption before T3's first Ravage.
-
-#### Russia L3+ — Dahan under pressure + fear suppression
-
-**What changes**: Russia's L3 escalation targets Dahan directly and suppresses Fear. **Spirits reliant on Dahan density (Shadows of the Dahan, Favors Called Due, Thunderspeaker synergies) lose a key engine.**
-
-**Mitigation for Vengeance as a Burning Plague**: Pre-empt Dahan loss with Defend-heavy Minors (Dahan/Village-fortify cards); lean on Push/Gather Majors to offset Fear deficit.
-
-#### Habsburg Mining L5+ — Explorer/Town scaling
-
-**What changes**: Habsburg Mining L5+ adds extra Explorers and faster builds. **Aggressive fear-rush openers can get outpaced by raw Invader accumulation.**
-
-**Mitigation for Vengeance as a Burning Plague**: Favor Major Powers with mass destruction (Jungle Hungers, Cleansing Floods, etc.) over Minor-heavy drafts.
-
-#### France (Plantation) — Dahan capture threatens your Dahan engine
-
-**What changes**: France's plantation rules convert Dahan to colonists, and Invaders occupy lands with Dahan. **Spirits whose innate/card math counts on Dahan density (Shadows-of-the-Dahan, Favors, Thunderspeaker) are downgraded.**
-
-**Mitigation for Vengeance as a Burning Plague**: Play Defend Powers on Dahan lands; accept loss of range-extension budget.
-
-#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
-
-**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
-
-**Mitigation for Vengeance as a Burning Plague**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
+| Adversary               | Opening                          | Rating | Matchup note                                 |
+|-------------------------|----------------------------------|--------|----------------------------------------------|
+| Brandenburg-Prussia     | Fast-Tempo Minors (A)            | ★★★★☆  | Rei: Prussia 4/6 validated                   |
+| England                 | Fast-Tempo Majors w/ Fire (C)    | ★★★★☆  | Rei: England 5                               |
+| France-Plantation       | Minus-Tempo Minors w/ Animal (B) | ★★★☆☆  | Rei: France 5                                |
+| Habsburg Mining         | Minus-Tempo Majors (B/C)         | ★★★☆☆  | Rei: Habsburg 4                              |
+| Russia                  | Fast-Tempo Majors w/ Fire (C)    | ★★★☆☆  | Rei: Russia 4; flex Poisoned Dew             |
+| Scotland                | Fast-Tempo Majors w/ Fire (C)    | ★★★☆☆  | Rei: Scotland 4                              |
+| Sweden                  | Fast-Tempo Majors w/ 4-Energy (C)| ★★★★☆  | Rei: Sweden 5                                |
+| Habsburg Livestock      | Minus-Tempo                      | ★★★☆☆  | `[VERIFY]`                                   |
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+Per Rei:
+
+| Board | Rating | Reason |
+|-------|--------|--------|
+| **C** | ★★★★★ | **"Fin."** (Rei). 2 Dahan in blighted starting land; 1-range to all except coastal 3; central 2-range Plaguebearers reach; 6 lands for Bloodwrack AOE. |
+| **F** | ★★★★☆ | Similar central range to C |
+| **B** | ★★★★☆ | Slight N/S split |
+| **E** | ★★★☆☆ | Only vs Sweden (Blight-move synergy) |
+| Others | ★★★☆☆ | Workable |
 
 ## Game-Phase Strategy
 
-`[VERIFY: needs play data]`.
+### Early (T1–3)
+- Fetid Breath → Plaguebearers → Strike Low (flex) cadence.
+- 3 CP / 3E power spike by T4.
+- Savage Revenge L1 (3 Air) online via Air-minor draft.
+
+### Mid (T4–6)
+- Savage Revenge L2/L3 — multi-Damage destroy cycles.
+- Major-integration (if Opening C).
+- Presence destruction accepted as Disease-fuel.
+
+### Late (T7+)
+- Savage Revenge L4 (6 damage cumulative).
+- Plaguebearers multi-Disease cycles.
+- Major board-wide closes (Bloodwrack, Focus).
 
 ## Synergy Partners (Multiplayer)
 
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+- **Energy-donors** — Rei: Vengeance should almost always get first board-pick; Energy/card gifts reward the destruction engine.
+- **Water spirits** (Downpour, Ocean) — Board A/C coordination for water access.
+- **Defend-providing partners** — unlock Vengeance's aggressive mode.
+- aaroncstevens93: *"If a Spirit gives Vengeance a Gift, then Vengeance can exact revenge on that Spirit's behalf as well."*
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
+```admonish failure title="Rei's named mistakes"
+1. **Strike Low without a Ravage worth skipping.** "Just because you can" is a tempo-loss.
+2. **Playing a weak Minor when doing nothing sets up Tier-2 innates next turn.**
+3. **Reclaiming preemptively with Strike Low still in hand.**
+4. **Straddling Fire + Animal Minor drafts** — neuters damage.
+5. **Forgetting Vengeance only needs 1 presence anywhere on the island to let a Build pass for 1 Fear.** Widely missed; German-JE card is misprinted on this.
+6. **Ignoring presence-destruction Blight cards** — keep 2+ presence banked in solo.
+```
 
 ## Tempo Profile
 
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
-```
+| Turn | Target state                                              |
+|------|-----------------------------------------------------------|
+| 1    | G3 + Fetid Breath; Disease seeded                         |
+| 2    | G2×2 + Plaguebearers + flex; push-to-kill-zone            |
+| 3    | G2×2 + Strike Low + Minor; 3E income                      |
+| 4    | Reclaim; 3/3 CP power spike                                |
+| 5–7  | Savage Revenge L2/L3 cycles; Major-integration (Opening C) |
+| 8+   | Savage Revenge L4; Bloodwrack AOE                          |
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/vengeance-as-a-burning-plague.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Vengeance as a Burning Plague](https://spiritislandwiki.com/index.php?title=Vengeance_as_a_Burning_Plague).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/vengeance-burning-plague.json` (Wiki-parsed 2026-04-23).
+- **Primary strategy**: [Rei's BGG Guide 2709070](https://boardgamegeek.com/thread/2709070/guide-vengeance-as-a-burning-plague).
+- **Openings**: [jyonker13 thread 2484534](https://boardgamegeek.com/thread/2484534/openings-vengeance-burning-plague).
+- **Podcast**: [Rei on Spirited Discussion](https://spiriteddiscussion.substack.com/p/vengeance-as-a-burning-plague-with).

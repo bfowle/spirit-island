@@ -1,357 +1,306 @@
 # Grinning Trickster Stirs Up Trouble
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing paraphrased from [latentoctopus Trickster Openings 1–3](https://latentoctopus.github.io/guide/trickster-opening1/) + [jyonker13's BGG thread 2502216](https://boardgamegeek.com/thread/2502216/openings-grinning-trickster-stirs-trouble).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Jagged Earth                                        |
-| Complexity            | Moderate                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "two" — see Growth Options below         |
-| Power summary (1–5)   | Offense 4 · Control 3 · Fear 2 · Defense 5 · Utility 4             |
-| Primary Elements      | Fire, Air, Moon, Animal (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Jagged Earth                                       |
+| Complexity            | Moderate                                           |
+| Play Difficulty       | `[VERIFY physical spirit panel]`                   |
+| Growth type           | "many" — pick multiple growth options per turn (bundled) |
+| Power summary (1–5)   | **Offense 4** · Control 3 · Fear 2 · **Defense 5** · Utility 4 |
+| Primary Elements      | **Air** (Let's See What Happens) · Moon (starter-dense) · Fire (Arson/Fight) |
+| Special Rules         | A Real Flair for Discord (+1 Strife at 1 Energy after Strife-add) + Cleaning Up Messes Is a Drag (Blight removal destroys Presence) |
+| Aspects               | None                                               |
+| Rei's Guide           | Not covered                                        |
+| latentoctopus         | [Openings 1–3](https://latentoctopus.github.io/guide/trickster-opening1/) |
+| BGG                   | [jyonker13 thread 2502216](https://boardgamegeek.com/thread/2502216) |
 ```
 
 ## Spirit Overview — Framing
 
-**Wiki-printed playstyle note**:
+Trickster is the **statistical-disruption spirit** — its kit weaponizes Strife tokens and the Minor Power deck's expected distribution. Let's See What Happens is the signature innate: you discard Minors until one has a land-targeting effect, then apply that effect immediately. It looks like a coin flip; it's actually a calibrated bet with specific probabilities.
 
-> Requires some comfort with risk: both Overenthusiastic Arson and Let's See What Will Happen involve uncertainty about how the Fast Powers phase will pan out. Can be effective from the get-go, but benefits greatly from not working too hard, instead improving its capacity for mischief by adding Presence and gaining Power Cards. Bonus Energy from Let's See What Will Happen can be extremely helpful in avoiding the distraction of gaining Energy elsewhere.
+**Wiki-printed playstyle note** (verbatim):
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+> Trickster isn't as wanton as it's made out to be — Strife is a very reliable token, and any extra income can easily translate to more of it if you like.
+
+**Designer intent** (R. Eric Reuss / "darker", Discord):
+
+> Trickster is designed to support/reward/encourage somewhat improvisational/seat-of-the-pants play.
+
+**Identity capture** (jyonker13):
+
+> Around 40% of the deck will deal with a lone Explorer. Pushing an Invader is about twice as likely as Gathering one (23% vs 10%). Around a third of the cards provide Fear.
+
+**Complexity signal**: Moderate. Surface complexity is medium (3 innates, 2 special rules, 4 Uniques) but mastery requires *card-counting the Minor discard*. Reclaim loops are *reliable* but not *optimal* — designer says "the best Trickster play I've seen involves as little Reclaiming as they can get away with."
 
 ## Starting Setup
 
-> Put 2 Presence on your starting board: 1 in the highest-numbered land with Dahan, and 1 in land #4.
+> Put **2 Presence** on your starting board: **1 in the highest-numbered land with Dahan, and 1 in land #4**.
 
-## Growth Options (two)
+## Growth Options (growthtype: "many" — pick multiple)
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=Sharp1, second=movepresence1 |
-| G2 | first=addpresence2 |
-| G3 | first=gain1p |
-| G4 | first=energycardplays |
+| Growth | Effects                                                   | Best when                                                      |
+|--------|-----------------------------------------------------------|----------------------------------------------------------------|
+| **G1** | Sharp1 (Thunder-style token) + Move 1 Presence (Range 1)  | Pair with G2/G3 for placement combos                           |
+| **G2** | Add 1 Presence (Range 2)                                   | Board spread                                                   |
+| **G3** | Gain 1 Power Card                                          | Card economy                                                   |
+| **G4** | Energy + Card Plays (energycardplays = 1E + 1 extra CP)    | Energy spike turn                                              |
 
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+Trickster picks **multiple** growth options per turn. Opening cadence uses 2–3 per turn.
 
 ## Presence Tracks
 
-As Presence leaves each track, these values are revealed:
+- **Energy track** (6 slots): `energy1 → moon → energy2 → any → fire → energy3`
+  - 1E → +Moon marker → 2E → +Any element → +Fire → 3E
+- **Card-play track** (7 slots): `card2 → pushdahan → card3 → card3 → card4 → airX → card5`
+  - 2 CP → Push Dahan (free) → 3 CP → 3 CP → 4 CP → Air scaling → 5 CP
 
-- **Energy track**: energy1, moon, energy2, any, fire, energy3
-- **Card-play track**: card2, pushdahan, card3, card3, card4, airX, card5
+**Starting income**: 1 Energy, 2 Card Plays. **"Any" element slot** on the energy track is unique — reveal to gain a Minor-like any-element marker.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: A Real Flair for Discord
 
-A REAL FLAIR FOR DISCORD After one of your Powers adds Strife in a land, you may pay 1 Energy to add 1 Strife within Range 1 of that land. CLEANING UP MESSES IS A DRAG After one of your Powers Removes Blight, Destroy 1 of your Presence. Ignore this rule for Let's See What Happens.
+> After one of your Powers adds Strife in a land, you may pay 1 Energy to add 1 Strife within Range 1 of that land.
 
-### Innate: LET'S SEE WHAT HAPPENS
+Per-action Strife multiplier. Each Strife-adding Power is a potential 2-Strife turn if you have 1E.
 
-- **Speed**: fast · **Range**: 1 · **Target**: invaders
+### Special Rule: Cleaning Up Messes Is a Drag
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Discard Minor Powers from the deck until you get one that targets a land. Use its text effects on target land immediately, ignoring normal Range/Targeting restrictions. All "up to" instructions must be used at max. value. Treat all "OR"s as "AND"s. (It is not considered a card of yours or a card in play. Its effects are treated as performed by this Power, as if its text were copied here.) |
-| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | You may Forget a Power Card to gain the just-used Power Card (to hand) and 1 Energy. |
+> After one of your Powers Removes Blight, Destroy 1 of your Presence. Ignore this rule for Let's See What Happens.
 
+Blight-removal *costs* a Presence. Trickster is *not* a Blight-remover by design — avoid drafting Blight-removal Minors and never Blight-remove outside emergency.
 
-### Innate: WHY DON'T YOU AND THEM FIGHT
+### Innate: Let's See What Happens
 
-- **Speed**: fast · **Range**: 0 · **Target**: invaders
+- **Speed**: Fast · **Range**: 1 · **Target**: Invaders
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon | This Power may be Slow. |
-| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Add 1 Strife. |
-| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire | 1 Invader and 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> deal Damage to each other. |
-| 4 | 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | If target land has Beast, 2 Damage. Otherwise, you may Gather 1 Beast. |
+| 1     | 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Discard Minor Powers from the deck until you get one that targets a land. Use its text effects on target land immediately. |
+| 2     | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | You may Forget a Power Card to gain the just-used Power Card (to hand) and 1 Energy. |
 
+The signature innate. L1 is the "deck-roulette" effect; L2 lets you keep a card that proved useful. Air-threshold (2 Air) is load-bearing.
 
-## Unique Cards (all, Wiki-verified)
+### Innate: Why Don't You and Them Fight
 
-#### Impersonate Authority
+- **Speed**: Fast · **Range**: 0 · **Target**: Invaders
 
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1     | 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon | This Power may be Slow. |
+| 2     | 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Add 1 Strife. |
+| 3     | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire | 1 Invader and 1 Dahan deal Damage to each other. |
+| 4     | 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | If target land has Beast, 2 Damage. Otherwise, you may Gather 1 Beast. |
+
+The 3-Fire + 3-Sun tier (fynikz's winning pattern on BGG) stops both Build and Ravage: *"often capable of both stopping a build chain and a ravage every turn."*
+
+## Unique Cards (all 4, Wiki-verified)
+
+### Impersonate Authority
 - **0 Energy · Slow · Range 1 · Any Land · Sun, Air, Animal**
 - *Add 1 Strife.*
 
-#### Incite the Mob
+0-cost Strife-adder. A Real Flair for Discord adds a 2nd Strife for 1E. Combined with Incite the Mob, one of Trickster's opening two plays.
 
-- **1 Energy · Slow · Range 1 · Land with 1 or more Invaders · Moon, Fire, Air, Animal**
-- *1 Invader with Strife deals Damage to other Invaders (not to each Invader). 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Invader this Power Destroyed.*
+### Incite the Mob
+- **1 Energy · Slow · Range 1 · Land with 1+ Invaders · Moon, Fire, Air, Animal**
+- *1 Invader with Strife deals Damage to other Invaders (not to each Invader). 1 Fear per Invader this Power Destroyed.*
 
-#### Overenthusiastic Arson
+Strife-payoff + Fear. Requires Strife pre-set; Impersonate Authority seeds, Incite the Mob collects.
 
+### Overenthusiastic Arson
 - **1 Energy · Fast · Range 1 · Any Land · Fire, Air**
-- *Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. Discard the top card of the Minor Power Deck. If it provides Fire: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">, 2 Damage, and add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">.*
+- *Destroy 1 Town. Discard the top card of the Minor Power Deck. If it provides Fire: 1 Fear, 2 Damage, and add 1 Blight.*
 
-#### Unexpected Tigers
+Town-destroy with ~38% chance of Fire-bonus (from Minor deck composition). The Blight-add on Fire-hit is risk-tolerable because of Trickster's non-Blight-remover identity.
 
+### Unexpected Tigers
 - **0 Energy · Slow · Range 1 · Any Land · Moon, Fire, Animal**
-- *1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if Invaders are present. If you can gather 1 Beasts, do so, then push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Otherwise, add 1 Beasts.*
+- *1 Fear if Invaders are present. If you can gather 1 Beasts, do so, then push 1 Explorer. Otherwise, add 1 Beasts.*
 
-## Card Priority Ratings
-
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Grinning Trickster Stirs Up Trouble's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/grinning-trickster.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/grinning-trickster.json) for full scoring + reasons.
-
-- **Primary elements (innate-weighted)**: **Air** (wt 4.8), **Moon** (wt 4.8), **Fire** (wt 2.4)
-- **Mid-game energy estimate (T3–T5 avg)**: 3.0E
-- **Power summary**: Offense 4 · Control 3 · Fear 2 · Defense 5 · Utility 4
-```
-
-### Uniques
-
-The spirit's own 4 Unique Power cards (always in hand; always A-tier by default — see Uniques section above for full text):
-
-- **Impersonate Authority**
-- **Incite the Mob**
-- **Overenthusiastic Arson**
-- **Unexpected Tigers**
-
-### Top 10 Minor Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. | elements air+fire+moon → 12.0 |
-| 2 | **Land of Haunts and Embers** | 0 | Fast | Moon, Fire, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns. If Blight is present, 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Push up to 2 Explo… | elements air+fire+moon → 12.0 |
-| 3 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | elements air+moon+sun → 10.5 |
-| 4 | **Veil the Night's Hunt** | 1 | Fast | Moon, Air, Animal | For each Dahan present, choose a different Invader. 1 Damage to each of those Invaders. *… | elements air+animal+moon → 10.5 |
-| 5 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. The next time an Invader is Destroyed in target land this turn, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon+sun → 10.5 |
-| 6 | **Bats Scout for Raids by Darkness** | 1 | Slow | Moon, Air, Animal | For each [[Dahan]], 1 Damage to [[Towns]]/[[Cities]]. **OR** 1 [[Fear]]. [[Gather]] up to… | elements air+animal+moon → 10.5 |
-| 7 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon+sun → 10.5 |
-| 8 | **Entrancing Apparitions** | 1 | Fast | Moon, Air, Water | Defend 2. If no Invaders are present, Gather up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. | elements air+moon → 9.6 |
-| 9 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town/Dahan. 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land has any Beasts, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+animal+moon → 10.5 |
-| 10 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | elements air+animal+moon → 10.5 |
-
-### Top 5 Major Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+animal+fire+moon+sun → 13.8 |
-| 2 | **Transform to a Murderous Darkness** | 6 | Slow | Moon, Fire, Air, Water, Plant | Target Spirit may choose one of their Sacred Site. In that land: Replace all their Presen… | elements air+fire+moon → 12.0 |
-| 3 | **Weave Together the Fabric of Place** | 4 | Fast | Sun, Moon, Air, Water, Earth | Target land and a land adjacent to it become a single land for this turn. (It has the ter… | elements air+moon+sun → 10.5 |
-| 4 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+moon+sun → 10.5 |
-| 5 | **Sleep and Never Waken** | 3 | Fast | Moon, Air, Earth, Animal | Invaders skip all Actions in target land. 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> this Power Removes. Remo… | elements air+animal+moon → 10.5 |
-
-### HoSI Beginner Deck Bundle — for reference only
-
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with Grinning Trickster Stirs Up Trouble in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
-
-
-*No HoSI beginner-deck bundle for this spirit.*
-
-
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Land of Haunts and Embers** | adds Blight |
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Scour the Land** | adds Blight |
-| **Devouring Ants** | destroys Dahan |
-| **Renewing Boon** | destroys Presence |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Pyroclastic Flow** | adds Blight |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **The Jungle Hungers** | destroys Dahan |
-| **Pillar of Living Flame** | adds Blight |
-| **Blazing Renewal** | destroys Presence |
-| **Poisoned Land** | destroys Dahan, adds Blight |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
-| **Draw Towards a Consuming Void** | destroys Presence |
-| **Tsunami** | destroys Dahan |
+Beast-toolkit; situational utility. First Forget candidate for most matchups (keep longer vs. Russia for loss-condition hedging).
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+1. **Air is the load-bearing element** — 2 Air unlocks Let's See What Happens. Draft Air Minors aggressively.
+2. **Don't blight-remove.** Cleaning Up Messes destroys Presence. This is not an emergency kit.
+3. **Reclaim loops are reliable but not optimal.** Designer intent is improvisational play; Reclaim every turn is conservative but Trickster-off-design.
+4. **Trickster LOVES Energy** (jyonker13): *"Even 1 or 2 can get you more Strife, more cards, or a painless Reclaim."*
+5. **Count the Minor discard** before Let's See What Happens — 40% lone-Explorer-dealing, 23% push, 10% gather, 33% fear.
+6. **Unexpected Tigers is first Forget** — unless playing Russia (loss-condition hedge).
+7. **Arson's 38% Fire-rate** is the correct per-use bet: *"every other use... that mentality keeps me from getting too Overenthusiastic."* (jyonker13)
 
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+## Possible Openings
 
-## Opener Mechanics — starter reference
+### Shared starting state
 
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/grinning-trickster.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
-```
+- **2 Presence on board**: highest-Dahan land + land #4.
+- **4 Uniques in hand**: Impersonate Authority (0E Slow, Sun/Air/Animal), Incite the Mob (1E Slow, Moon/Fire/Air/Animal), Overenthusiastic Arson (1E Fast, Fire/Air), Unexpected Tigers (0E Slow, Moon/Fire/Animal).
+- **Starting income**: 1 Energy, 2 Card Plays.
 
-### Starting state
+### Opening A — Hybrid Minor 🟨 (default)
 
-- **Setup**: Put 2 Presence on your starting board: 1 in the highest-numbered land with Dahan, and 1 in land #4.
-- **Starting income** (from `presence_energy_track[0]` = `energy1`, `presence_cardplay_track[0]` = `card2`): **1 Energy · 2 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `two` — (see spirit panel)
+From [latentoctopus Opening 1](https://latentoctopus.github.io/guide/trickster-opening1/).
 
-### Growth options
+**T1 · Growth**: G3 + G2 top — Gain Minor + Presence.
+**T1 · Play**: **Impersonate Authority + Incite the Mob** (prime Strife chain). Moon + Air priority on drafted Minor.
+- If Arson-compatible draw: 0-cost Minor + Overenthusiastic Arson.
 
-- **G1**: Sharp1 ((spirit-specific: `Sharp1` — consult spirit panel)); movepresence1 (Move 1 Presence (Range 1))
-- **G2**: addpresence2 (Place 1 Presence from a track (Range 2))
-- **G3**: gain1p (Gain 1 Power Card (Minor unless otherwise noted))
-- **G4**: energycardplays ((spirit-specific: `energycardplays` — consult spirit panel))
+**T2 · Growth**: G2 top + G3 Minor.
+**T2 · Play**: 3 plays hitting 1 Moon + 1 Fire + 2 Air (Let's See What Happens L1 unlock + fire).
 
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
+**T3 · Growth**: G2 bottom + Reclaim.
+**T3 · Play**: Impersonate + Incite + extra card.
 
-### Energy track
+**T4 · Growth**: G2 bottom + G4 (Energy+CP).
+**T4 · Play**: 3 plays.
 
-`energy1 · moon · energy2 · any · fire · energy3` — income as slots reveal: 1 → moon → 2 → any → fire → 3
+**T5 · Growth**: Reclaim; 3 plays.
+**T6 · Growth**: G2 bottom + G3 Minor; 4 plays.
 
-### Card-play track
+Goal: unlock LSWH tier 2 **without** a reclaim loop; Major-capable by T7.
 
-`card2 · pushdahan · card3 · card3 · card4 · airX · card5` — CP as slots reveal: 2 → pushdahan → 3 → 3 → 4 → airX → 5
+### Opening B — Bottom Track Minor 🟨
 
-### Innate Powers
+From [Opening 2](https://latentoctopus.github.io/guide/trickster-opening2/).
 
-- **LET'S SEE WHAT HAPPENS** (Speed: Fast · Range: 1 · Target: invaders)
-  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: Discard Minor Powers from the deck until you get one that targets a land. Use its text effects on target land immediately, ignoring normal Range/Targeting restrictions. All "up to" instructions must be used at max. value. Treat all "OR"s as "AND"s. (It is not considered a card of yours or a card in play. Its effects are treated as performed by this Power, as if its text were copied here.)
-  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: You may Forget a Power Card to gain the just-used Power Card (to hand) and 1 Energy.
-- **WHY DON'T YOU AND THEM FIGHT** (Speed: Fast · Range: 0 · Target: invaders)
-  - **L1** — 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon: This Power may be Slow.
-  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: Add 1 Strife.
-  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire: 1 Invader and 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> deal Damage to each other.
-  - **L4** — 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: If target land has Beast, 2 Damage. Otherwise, you may Gather 1 Beast.
+**T1**: G3 + G2 bottom; Impersonate + Incite (Moon + Air priority).
+**T2**: G2 bottom + G3; 3 plays at 2 Moon / 1 Fire / 2 Air. Forget from discard to unlock LSWH tier 2.
+**T3**: Reclaim + G2 bottom; 3 plays.
+**T4**: G2 top + G3 Minor; 3 plays.
+**T5+**: Reclaim loop with G4 for energy.
 
-### Fast-phase element ceiling from Uniques
+**Critical constraint** (latentoctopus): *"This opening cannot reliably sustain a hand whose overall cost is more than 3."* **Never Forget Incite or Impersonate.**
 
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
+### Opening C — Top Track Hybrid / Majors 🟥
 
-- Fast-phase Unique elements: **Fire** ×1, **Air** ×1
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon, Uniques give 0; need 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air, Uniques give 1. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+From [Opening 3](https://latentoctopus.github.io/guide/trickster-opening3/).
 
-### Unique Power Cards
+**T1**: G3 + G2 top; Impersonate + Arson (if Air drawn) else Unexpected Tigers swap.
+**T2**: G2 bottom + G3; Incite + Air card for LSWH L2; 4 cards, 2 Moon.
+**T3**: Reclaim + G2 bottom; 2 plays hitting 2 Moon / 1 Fire / 2 Air.
+**T4**: G2 bottom + G3 Major (forget from discard to keep 5 in hand); 3 plays.
+**T5**: G2 top + G3 Minor; 3 plays.
 
-| Card | Cost | Speed | Range | Target | Elements | Effect |
-|------|------|-------|-------|--------|----------|--------|
-| **Impersonate Authority** | 0 | Slow | 1 | Any Land | sun, air, animal | Add 1 Strife. |
-| **Incite the Mob** | 1 | Slow | 1 | Land with 1 or more Invaders | moon, fire, air, animal | 1 Invader with Strife deals Damage to other Invaders (not to each Invader). 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per Invader this… |
-| **Overenthusiastic Arson** | 1 | Fast | 1 | Any Land | fire, air | Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. Discard the top card of the Minor Power Deck. If it provides Fire: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">, 2 Damage… |
-| **Unexpected Tigers** | 0 | Slow | 1 | Any Land | moon, fire, animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if Invaders are present. If you can gather 1 Beasts, do so, then push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Otherwise,… |
+jyonker13 guidance: go Top when draws are favorable (Dahan-movement for Strife trades), Plays-track when mixed.
 
-### Invader phase by turn (base deck)
+### Opening Decision
 
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
+- **Default Opening A** — balanced, hits LSWH L2 by T2.
+- **Opening B** when card-volume over card-quality matters.
+- **Opening C** only with Energy-donor partner (River/Downpour/Starlight).
 
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
+## Card Priority Ratings
 
-### Pause-point before writing T1 prose
+### Uniques — Trickster-specific ranking
 
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
+1. **Impersonate Authority** — Strife-seeder, 0-cost every turn.
+2. **Incite the Mob** — Strife-collector + fear.
+3. **Overenthusiastic Arson** — Town-destroy with 38% upside.
+4. **Unexpected Tigers** — situational, first Forget candidate.
+
+### Top 10 Minor Draft Picks (Air > Moon > Fire)
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Strange Tales of the Sky** | 1 | Fast | Moon, Air | Moon + Air flex |
+| 2 | **Call to Migrate** | 0 | Fast | Air, Animal | 0-cost Air |
+| 3 | **Travel Unsuspected** | 1 | Fast | Air, Water | Air + Water |
+| 4 | **Predatory Nightmares** | 0 | Fast | Moon, Animal | 0-cost Moon |
+| 5 | **Bats Scout for Raids by Darkness** | 1 | Fast | Moon, Air, Animal | Moon + Air + Animal |
+| 6 | **Entrancing Apparitions** | 1 | Fast | Moon, Air | Moon + Air flex |
+| 7 | **Gift of Power** | 1 | Fast | Moon | Moon utility |
+| 8 | **Visions of Fiery Doom** | 1 | Slow | Moon, Fire | Moon + Fire |
+| 9 | **Elemental Boon** | 0 | Fast | Sun, Moon, Fire, Air | Four-element flex 0-cost |
+| 10 | **Call of the Dahan Ways** | 1 | Slow | Moon, Earth | Moon flex |
+
+### Top 5 Major Draft Picks (Opening C only)
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Instruments of Their Own Ruin** | 3 | Fast | Fire, Air, Animal | Multi-element + Strife-synergy |
+| 2 | **Strife-dealing Majors in general** | — | — | — | Multiplies A Real Flair for Discord |
+| 3 | **Powerstorm** | 3 | Fast | Sun, Fire, Air | Air + cheap |
+| 4 | **Tigers Hunting** | 3 | Fast | Fire, Animal | Animal + Fire (Fight L3) |
+| 5 | **Bargains of Power and Protection** | 3 | Fast | Sun, Moon, Fire, Air | Multi-element flex |
+
+### Cards to Avoid
+
+| Card | Reason |
+|------|--------|
+| Blight-removal Minors | Cleaning Up Messes destroys Presence |
+| Pure-damage without Strife synergy | Trickster's offense is Strife-chained, not raw damage |
+| Presence-destruction Majors | Non-combo with Trickster's baseline presence-sparse play |
 
 ## Adversary Matchup Matrix
 
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
-
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
-
-
-### Strategy Cliffs — per-adversary-level shifts that change Grinning Trickster Stirs Up Trouble's math
-
-```admonish warning title="Cliffs to watch"
-Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Grinning Trickster Stirs Up Trouble's profile (Fear 2, Offense 4, Control 3, Defense 5, Utility 4).
-```
-
-#### England L5 — Buildings +1 HP
-
-**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
-
-**Mitigation for Grinning Trickster Stirs Up Trouble**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
-
-#### England L3 — Coastal Lands build faster
-
-**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
-
-**Mitigation for Grinning Trickster Stirs Up Trouble**: Front-load coastal defense or disruption before T3's first Ravage.
-
-#### France (Plantation) — Dahan capture threatens your Dahan engine
-
-**What changes**: France's plantation rules convert Dahan to colonists, and Invaders occupy lands with Dahan. **Spirits whose innate/card math counts on Dahan density (Shadows-of-the-Dahan, Favors, Thunderspeaker) are downgraded.**
-
-**Mitigation for Grinning Trickster Stirs Up Trouble**: Play Defend Powers on Dahan lands; accept loss of range-extension budget.
-
-#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
-
-**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
-
-**Mitigation for Grinning Trickster Stirs Up Trouble**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
+| Adversary               | Opening | Rating | Matchup note                                                 |
+|-------------------------|---------|--------|--------------------------------------------------------------|
+| Brandenburg-Prussia     | A       | ★★★★☆  | Strife-chain disables Ravage                                 |
+| Sweden                  | A / B   | ★★★☆☆  | Build-density rewards Incite the Mob cycles                  |
+| France-Plantation       | A       | ★★★☆☆  | Dahan-attract + Strife disruption                            |
+| Russia                  | B       | ★★★☆☆  | **Keep Unexpected Tigers** (loss-condition hedge)            |
+| Scotland                | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| England                 | B       | ★★★☆☆  | Raw card-volume + Strife-drip                                |
+| Habsburg Mining         | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Habsburg Livestock      | A       | ★★☆☆☆  | `[VERIFY]`                                                   |
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+`[VERIFY — latentoctopus no per-board ratings]`. Solo: break Reclaim cycle earlier (City targets dry up faster on one board). Fear generation is outsized on a single board.
 
 ## Game-Phase Strategy
 
-`[VERIFY: needs play data]`.
+### Early (T1–3)
+- Impersonate + Incite loop. Seed Strife, collect Fear.
+- LSWH L2 unlock by T2–T3 via Minor-draft Air.
+
+### Mid (T4–6)
+- 3+ plays per turn; Reclaim cycles stabilize.
+- Overenthusiastic Arson selectively for Town-destroy.
+- Why Don't You and Them Fight L2 (3 Air) for per-turn Strife spam.
+
+### Late (T7+)
+- Major integration (Opening C lines).
+- Fight L3/L4 for board-wide Invader vs. Invader damage.
 
 ## Synergy Partners (Multiplayer)
 
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+- **River** (Sunshine aspect especially) — energy donor; fynikz: *"absolutely makes his game and turns him into a major powerhouse."*
+- **Downpour** — Gift of Abundance or Pour Down repeats.
+- **Starlight** — element-targeting supports Trickster's LSWH reach.
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
+```admonish failure title="Patterns to watch for"
+1. **Over-committing to Reclaim loops.** Designer: improvisational play is the design intent.
+2. **Fearing Arson's Blight risk.** 38% Fire-rate; the damage clause is usually worth the Blight.
+3. **Ignoring the Minor discard** before Let's See What Happens.
+4. **Trying to Blight-remove.** Cleaning Up Messes cascades Presence loss.
+5. **Forgetting Incite or Impersonate.** These are the engine — forget Tigers / Arson instead.
+```
 
 ## Tempo Profile
 
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
-```
+| Turn | Target state                                              |
+|------|-----------------------------------------------------------|
+| 1    | Impersonate + Incite + Air-Minor drafted                  |
+| 2    | LSWH L1 live; 3 plays                                     |
+| 3    | Reclaim + G2 bottom; LSWH L2 unlocked via Forget          |
+| 4    | G4 burst; 3 plays                                         |
+| 5–7  | Reclaim cycles; Fight L2/L3 on ravage lands                |
+| 8+   | Major integration (if Opening C); Fight L4 via Animal draft |
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/grinning-trickster-stirs-up-trouble.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Grinning Trickster Stirs Up Trouble](https://spiritislandwiki.com/index.php?title=Grinning_Trickster_Stirs_Up_Trouble).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/grinning-trickster.json` (Wiki-parsed 2026-04-23).
+- **Openings**: latentoctopus Opening 1/2/3.
+- **BGG**: [jyonker13 thread 2502216](https://boardgamegeek.com/thread/2502216/openings-grinning-trickster-stirs-trouble).

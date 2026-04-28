@@ -1,321 +1,225 @@
 # Hearth-Vigil
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text parsed via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing from [BGG thread 3137164](https://boardgamegeek.com/thread/3137164). Thinnest NI coverage — physical-copy verify is especially important.
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Nature Incarnate                                        |
-| Complexity            | Moderate                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 3 · Control 1 · Fear 2 · Defense 4 · Utility 4             |
-| Primary Elements      | Sun, Earth, Animal, Air (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Nature Incarnate                                   |
+| Complexity            | Moderate                                           |
+| Play Difficulty       | `[VERIFY]`                                         |
+| Growth type           | "one" — pick one growth per turn                   |
+| Power summary (1–5)   | Offense 3 · Control 1 · Fear 2 · **Defense 4** · **Utility 4** |
+| Primary Elements      | **Sun** (both innates backbone) · **Animal** (Keep Watch) · Earth (Warn L2) · Air (Keep Watch L3) |
+| Special Rules         | Rooted in the Community (Blight doesn't destroy Presence when Dahan present) + Fortify Heart and Hearth (Dahan +4 HP in your lands; Event/Blight immunity) |
+| Aspects               | None                                               |
+| Rei's Guide           | Not covered                                        |
+| latentoctopus         | Not listed                                         |
+| BGG                   | [thread 3137164](https://boardgamegeek.com/thread/3137164) |
 ```
 
 ## Spirit Overview — Framing
 
+Hearth-Vigil is a **reactive Dahan-protector** — Dahan in your lands get +4 HP and Event/Blight-Card immunity. Not a Blight-stopper — very good *during* Ravages, poor against established Cities that aren't Ravaging.
+
 **Wiki-printed playstyle note**:
 
-> Very good at protecting Dahan in its lands, not so great at stopping Blight. In keeping with its nature, largely brings Dahan to its Presence (or vice versa); getting Dahan elsewhere may require a bit of forethought with Keep Watch for New Incursions. Very reactive, with reliable ways to deal with Invaders as they Ravage and Build, but has trouble handling established City that aren't Ravaging.
+> Dahan-protection spirit. Reactive defense; Dahan first-strike on Ravages.
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+**Identity in one line** (Steve496 BGG — different user):
+
+> I've found it very strong (broken, really) to just loop Favors of Story and Season. That's all you need to hit the first tier of your innates, move a ton of Dahan around, and probably clear both ravaging lands without losing any Dahan.
+
+**Complexity signal**: Moderate — easiest of the NI Incarna spirits.
 
 ## Starting Setup
 
-> Put 3 Presence on your starting board: 1 in the highest-numbered land with Dahan and 2 in the lowest-numbered land with at least 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Add 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> in each of those lands (additional survivors of the Invaders' diseases). You start with your 4 Unique Power Cards and 1 Energy.
+> Put **3 Presence** on your starting board: 1 in the highest-numbered land with Dahan and 2 in the lowest-numbered land with at least 2 Dahan. Add **1 Dahan** in each of those lands (additional survivors of the Invaders' diseases).
 
-## Growth Options (one)
+## Growth Options (growthtype: "one" — pick one per turn)
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=reclaim, second=addpresence0 |
-| G2 | first=gain1p, second=addpresence3dahan |
-| G3 | first=addpresence2, second=energy3 |
-
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+| Growth | Effects                                                   | Best when                                              |
+|--------|-----------------------------------------------------------|--------------------------------------------------------|
+| **G1** | Reclaim + Add Presence (R0)                               | Reclaim + density                                      |
+| **G2** | Gain 1 Power Card + Add Presence (R3 Dahan-land)          | Card + Dahan-adjacent spread                           |
+| **G3** | Add Presence (R2) + +3 Energy                             | Spread + energy                                        |
 
 ## Presence Tracks
 
-As Presence leaves each track, these values are revealed:
+- **Energy**: `gather1dahan1land → ...` (energy track is unusual; specifics `[VERIFY]`)
+- **CP**: `energy0 → energy1sun → energy2 → energy3animal → energy4 → energy5sun`
 
-- **Energy track**: gather1dahan1land
-- **Card-play track**: energy0, energy1sun, energy2, energy3animal, energy4, energy5sun
+**Starting income**: 0 Energy, 1 Card Play (with Dahan-gather on first track-reveal).
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: Rooted in the Community
 
-ROOTED IN THE COMMUNITY Blight added in your lands does not Destroy your Presence if Dahan are present. (Ravage Actions Destroy Dahan before added Blight destroys Presence and cascades.) FORTIFY HEART AND HEARTH Dahan have +4 Health (each) while in your lands. Event and Blight Card Actions don't damage, destroy, or replace Dahan in your lands. (Ravages are not Event Actions even if caused by Events.) LOYAL GUARDIAN When all Dahan leave one of your lands, your Presence may Move with those Dahan. (Each Dahan can Bring any number of Presence.)
+> Blight added in your lands does not Destroy your Presence if Dahan are present. (Ravage Actions Destroy Dahan before added Blight destroys Presence and cascades.)
 
-### Innate: WARN OF IMPENDING CONFLICT
+Dahan-presence pairing = Blight-cascade immunity. The identity-shaping rule.
 
-- **Speed**: fast · **Range**:  · **Target**: yourself
+### Special Rule: Fortify Heart and Hearth
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In one of your lands, 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> deals Damage before Invaders during Ravages. (Choose a land when Invaders Ravage there.) |
-| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In that land, another Dahan deals Damage before Invaders during Ravages. |
-| 3 | 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In that land, all Dahan deal Damage before Invaders during Ravages. |
-| 4 | 5 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | Instead, all Dahan in all of your lands deal Damage before Invaders during Ravages. |
+> Dahan have +4 Health (each) while in your lands. Event and Blight Card Actions don't damage, destroy, or replace Dahan in your lands.
 
+**Dahan tanks**. Event/Blight-Card immunity covers half the punishing events for free.
 
-### Innate: KEEP WATCH FOR NEW INCURSIONS
+### Innate: Warn of Impending Conflict
 
-- **Speed**: fast · **Range**: 1 (optionally from a sacredsitedahan site) · **Target**: any
+- **Speed**: Fast · **Target**: Yourself
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">, from your lands only. |
-| 2 | 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Once this turn after Invaders are added or moved into target land, 1 Damage per Dahan in target land, to those added/moved Invaders only. |
-| 3 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Repeat this Power. |
+| Level | Thresholds                            | Effect                                                                |
+|-------|---------------------------------------|------------------------------------------------------------------------|
+| 1     | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In one of your lands, 1 Dahan deals Damage before Invaders during Ravages. |
+| 2     | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In that land, another Dahan deals Damage before Invaders. |
+| 3     | 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | In that land, all Dahan deal Damage before Invaders. |
+| 4     | 5 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | Instead, all Dahan in all of your lands deal Damage before Invaders. |
 
+Dahan first-strike escalating from 1 Dahan → all Dahan in 1 land → all Dahan in all lands.
 
-## Unique Cards (all, Wiki-verified)
+### Innate: Keep Watch for New Incursions
 
-## Card Priority Ratings
+- **Speed**: Fast · **Range**: 1 · **Target**: Any
 
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Hearth-Vigil's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/hearth-vigil.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/hearth-vigil.json) for full scoring + reasons.
+| Level | Thresholds                              | Effect                                                                 |
+|-------|-----------------------------------------|------------------------------------------------------------------------|
+| 1     | 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Gather up to 2 Dahan, from your lands only. |
+| 2     | 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Once this turn after Invaders are added/moved into target land, 1 Damage per Dahan. |
+| 3     | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Repeat this Power. |
 
-- **Primary elements (innate-weighted)**: **Sun** (wt 7.5), **Animal** (wt 3.9), **Earth** (wt 3.0)
-- **Mid-game energy estimate (T3–T5 avg)**: 0.0E
-- **Power summary**: Offense 3 · Control 1 · Fear 2 · Defense 4 · Utility 4
-```
+## Unique Cards (all 4, Wiki-verified names)
 
-### Uniques
+- **Coordinated Raid**
+- **Surrounded by the Dahan**
+- **Favors of Story and Season** (the signature reclaim-loop card per Steve496)
+- **Call to Vigilance**
 
-*No Unique cards listed.*
-
-### Top 10 Minor Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Promises of Protection** | 0 | Fast | Sun, Earth, Animal | Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Dahan have +2 Health while in target land. | elements animal+earth+sun → 14.4 |
-| 2 | **Guardian Serpents** | 1 | Fast | Sun, Moon, Earth, Animal | Add 1 Beasts in one of target Spirit's lands. If target Spirit has a Sacred Site in that … | elements animal+earth+sun → 14.4 |
-| 3 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+earth+sun → 12.6 |
-| 4 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Dahan. **OR** Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+animal+sun → 13.5 |
-| 5 | **Birds Cry Warning** | 1 | Fast | Sun, Air, Animal | The next time Dahan would be Destroyed in target land, Destroy 2 fewer Dahan. **OR** Push… | elements air+animal+sun → 13.5 |
-| 6 | **Sky Stretches to Shore** | 1 | Fast | Sun, Air, Water, Earth | This turn, target Spirit may use 1 Slow Power as if it were Fast, or vice versa. Target S… | elements air+earth+sun → 12.6 |
-| 7 | **Territorial Strife** | 0 | Slow | Sun, Fire, Animal | 3 Damage to Explorers/Towns. **OR** Add 1 Strife. | elements animal+sun → 11.4 |
-| 8 | **Gift of Constancy** | 0 | Fast | Sun, Earth | Target Spirit gains 2 Energy. At end of turn, target Spirit may Reclaim 1 Power Card inst… | elements earth+sun → 10.5 |
-| 9 | **Blood Draws Predators** | 1 | Fast | Sun, Fire, Water, Animal | After the next time Invaders are Destroyed in target land: Add 1 Beasts, then 1 Damage pe… | elements animal+sun → 11.4 |
-| 10 | **Strong and Constant Currents** | 0 | Fast | Sun, Water, Earth | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town to an adjacent Coastal land. **OR** Move up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> between targe… | elements earth+sun → 10.5 |
-
-### Top 5 Major Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+animal+earth+sun → 16.5 |
-| 2 | **Bargains of Power and Protection** | 2 | Fast | Sun, Water, Earth, Animal | Remove 1 of your Presence on the island from the game, setting it on the Reminder Card. F… | elements animal+earth+sun → 14.4 |
-| 3 | **Wrap in Wings of Sunlight** | 3 | Fast | Sun, Air, Animal | Move up to 5 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> to any land (including back into target land). If you moved at least 1… | elements air+animal+sun → 13.5 |
-| 4 | **Instruments of Their Own Ruin** | 4 | Fast | Sun, Fire, Air, Animal | Add 1 Strife. Each Invader with Strife deals Damage to other Invaders in target land. | elements air+animal+sun → 13.5 |
-| 5 | **Manifest Incarnation** | 6 | Slow | Sun, Moon, Earth, Animal | 6 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> for each Town/City and for each of your Presence in target land. Remove 1… | elements animal+earth+sun → 14.4 |
-
-### HoSI Beginner Deck Bundle — for reference only
-
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with Hearth-Vigil in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
-
-
-*No HoSI beginner-deck bundle for this spirit.*
-
-
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Devouring Ants** | destroys Dahan |
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Renewing Boon** | destroys Presence |
-| **Scour the Land** | adds Blight |
-| **Land of Haunts and Embers** | adds Blight |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **Pyroclastic Flow** | adds Blight |
-| **Poisoned Land** | destroys Dahan, adds Blight |
-| **Blazing Renewal** | destroys Presence |
-| **Tsunami** | destroys Dahan |
-| **Pillar of Living Flame** | adds Blight |
-| **The Jungle Hungers** | destroys Dahan |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
-| **Draw Towards a Consuming Void** | destroys Presence |
+`[VERIFY exact costs/text.]`
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+1. **Loop Favors of Story and Season** — Steve496's core strat. Clears both Ravages without losing Dahan.
+2. **Rush the 1/Sun top-track spot.** kyren_vos: *"my most important takeaway was that I should have gone for the 1/Sun top track spot earlier. I waited to take it until turn 4... which meant I wasn't reliably hitting the second level of my left innate early on, resulting in taking some blight I shouldn't have."*
+3. **Sun is the backbone.** Both innates key off Sun.
+4. **Dahan preservation is non-negotiable.** Rooted only fires when Dahan are present.
+5. **Watch for Loyal Guardian** — your anti-cascade relocation tool when Dahan leave a land.
 
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+## Possible Openings
 
-## Opener Mechanics — starter reference
+### Shared starting state
 
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/hearth-vigil.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
-```
+- **3 Presence + 2 Dahan added** on starting board.
+- **4 Uniques** in hand.
+- **0 Energy**, 1 Card Play.
 
-### Starting state
+### Opening A — Community-default (Favors loop) 🟨
 
-- **Setup**: Put 3 Presence on your starting board: 1 in the highest-numbered land with Dahan and 2 in the lowest-numbered land with at least 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Add 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> in each of those lands (additional survivors of the Invaders' diseases). You start with your 4 Unique Power Cards and 1 Energy.
-- **Starting income** (from `presence_energy_track[0]` = `gather1dahan1land`, `presence_cardplay_track[0]` = `energy0`): **0 Energy · 0 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `one` — pick **one** growth option per turn
+**T1 · Growth**: G2 top (+1 presence, +Gain Power Card).
+**T1 · Play**: Draft Minor. Play **Favors of Story and Season** (reclaim-looped every turn if solo — can't target self in team games).
 
-### Growth options
+**T2 · Growth**: Move to bottom track — 1/Sun spot is critical (kyren_vos).
 
-- **G1**: reclaim (Reclaim all discarded+played Power Cards); addpresence0 (Place 1 Presence from a track (Range 0))
-- **G2**: gain1p (Gain 1 Power Card (Minor unless otherwise noted)); addpresence3dahan ((spirit-specific: `addpresence3dahan` — consult spirit panel))
-- **G3**: addpresence2 (Place 1 Presence from a track (Range 2)); energy3 ((+3 Energy this turn — growth effect, not track reveal))
+**T3 · Growth**: G2 bottom for continued presence placement into Ravage-threatened lands with Dahan. Play Favors again if reclaimed.
+- **First Ravage under innate** should have Dahan striking first.
 
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
+**T4+ · Growth**: G2 bottom for reclaim/energy. Draft Air and Animal for L3 of both innates.
 
-### Energy track
+### Opening Decision
 
-`gather1dahan1land` — income as slots reveal: gather1dahan1land
+- **Default Opening A** — Favors loop + Sun-rush.
 
-### Card-play track
+## Card Priority Ratings
 
-`energy0 · energy1sun · energy2 · energy3animal · energy4 · energy5sun` — CP as slots reveal: energy0 → energy1sun → energy2 → energy3animal → energy4 → energy5sun
+### Top 10 Minor Draft Picks (Sun + Animal + Air + Earth)
 
-### Innate Powers
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Call to Migrate** | 0 | Fast | Air, Animal | 0-cost Air + Animal |
+| 2 | **Call to Bloodshed** | 0 | Slow | Moon, Animal | 0-cost Animal |
+| 3 | **Gift of Constancy** | 0 | Fast | Sun, Plant, Animal | 0-cost Sun + Animal |
+| 4 | **Song of Sanctity** | 0 | Slow | Sun, Plant, Animal | 0-cost Sun + Animal |
+| 5 | **Drift Down to Rest** | 0 | Slow | Sun, Air, Plant | 0-cost Sun + Air |
+| 6 | **Call of the Dahan Ways** | 1 | Slow | Moon, Earth | Earth-feeder |
+| 7 | **Bats Scout for Raids** | 1 | Fast | Moon, Air, Animal | Air + Animal |
+| 8 | **Quicken the Earth's Struggles** | 0 | Slow | Earth, Plant, Animal | 0-cost Earth + Animal |
+| 9 | **Unrelenting Growth** | 0 | Slow | Sun, Plant | 0-cost Sun |
+| 10 | **Pull Beneath the Hungry Earth** | 0 | Slow | Moon, Earth | 0-cost Earth |
 
-- **WARN OF IMPENDING CONFLICT** (Speed: Fast · Range: ? · Target: yourself)
-  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: In one of your lands, 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> deals Damage before Invaders during Ravages. (Choose a land when Invaders Ravage there.)
-  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: In that land, another Dahan deals Damage before Invaders during Ravages.
-  - **L3** — 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: In that land, all Dahan deal Damage before Invaders during Ravages.
-  - **L4** — 5 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: Instead, all Dahan in all of your lands deal Damage before Invaders during Ravages.
-- **KEEP WATCH FOR NEW INCURSIONS** (Speed: Fast · Range: 1 · Target: any)
-  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">, from your lands only.
-  - **L2** — 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Once this turn after Invaders are added or moved into target land, 1 Damage per Dahan in target land, to those added/moved Invaders only.
-  - **L3** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 4 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Repeat this Power.
+### Top 5 Major Draft Picks
 
-### Fast-phase element ceiling from Uniques
-
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
-
-- Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun, Uniques give 0; need 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
-
-### Unique Power Cards
-
-*No Unique cards parsed.*
-
-### Invader phase by turn (base deck)
-
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
-
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
-
-### Pause-point before writing T1 prose
-
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
+| # | Card | Why |
+|---|------|-----|
+| 1 | **Settling into Hunting Grounds** | Earth + Animal + Plant |
+| 2 | **Instruments of Their Own Ruin** | Animal + multi-land |
+| 3 | **Tigers Hunting** | Cheap Animal |
+| 4 | **Angry Bears** | Animal + Fear |
+| 5 | **Vigor of the Breaking Dawn** | Sun + Plant |
 
 ## Adversary Matchup Matrix
 
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
+| Adversary               | Rating | Note                                                        |
+|-------------------------|--------|-------------------------------------------------------------|
+| Brandenburg-Prussia     | ★★★★☆  | Dahan first-strike destroys Prussia Build stacks             |
+| Sweden                  | ★★★★☆  | `[VERIFY]`                                                  |
+| France-Plantation       | ★★★★☆  | Dahan-attract synergy; Dahan tanks Ravages                   |
+| **England**             | ★★☆☆☆  | **Weak** — established non-Ravaging Cities bypass Rooted     |
+| **Habsburg Mining**     | ★★☆☆☆  | **Weak** — Blight-without-Ravaging                           |
+| Russia                  | ★★★☆☆  | Pogrom events break Dahan pockets                             |
+| Scotland                | ★★★☆☆  | `[VERIFY]`                                                  |
+| Habsburg Livestock      | ★★★☆☆  | `[VERIFY]`                                                  |
 
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
-
-
-### Strategy Cliffs — per-adversary-level shifts that change Hearth-Vigil's math
-
-```admonish warning title="Cliffs to watch"
-Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Hearth-Vigil's profile (Fear 2, Offense 3, Control 1, Defense 4, Utility 4).
-```
-
-#### England L5 — Buildings +1 HP
-
-**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
-
-**Mitigation for Hearth-Vigil**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
-
-#### England L3 — Coastal Lands build faster
-
-**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
-
-**Mitigation for Hearth-Vigil**: Front-load coastal defense or disruption before T3's first Ravage.
-
-#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
-
-**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
-
-**Mitigation for Hearth-Vigil**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
+kyren_vos's Prussia 5 loss report: *"events that add building HP neuter first-strike; events that force Dahan movement break your pockets."*
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+Boards with **dense starting Dahan clusters** — standard Dahan-scalers prefer B, C, F.
 
 ## Game-Phase Strategy
 
-`[VERIFY: needs play data]`.
+### Early (T1–T3)
+- Favors of Story and Season reclaim loop.
+- Rush 1/Sun top-track spot (kyren_vos).
+- Warn of Impending Conflict L1 online by T2–T3.
+
+### Mid (T4–T6)
+- Warn L2/L3 — multi-Dahan first-strike.
+- Keep Watch L1 for Gather-2-Dahan per cast.
+
+### Late (T7+)
+- Warn L4 — all Dahan in all your lands first-strike.
+- Keep Watch L3 — Repeat for double-damage.
 
 ## Synergy Partners (Multiplayer)
 
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+- **Dahan-scalers**: Sharp Fangs, River Surges, Lure, Finder.
+- **Avoid**: Dahan-destroyer spirits (Bringer of Dreams, Volcano, Wounded Waters Roiling).
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
+```admonish failure title="Named mistakes"
+1. **Delaying the 1/Sun spot.** kyren_vos's named lesson.
+2. **Abandoning lands** — Hearth-Vigil's protections are lands-with-your-presence-scoped.
+3. **Forgetting Loyal Guardian.** Your anti-cascade relocation tool.
+4. **Ignoring Event-Card Dahan immunity.** Fortify Heart eats half the punishing events for free.
+```
 
 ## Tempo Profile
 
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
-```
+| Turn | Target state                                              |
+|------|-----------------------------------------------------------|
+| 1    | G2 top + Favors + Minor; Sun track begun                  |
+| 2    | Bottom-track 1/Sun spot critical                          |
+| 3    | G2 + Favors reclaim + Minor; Warn L1 online               |
+| 4+   | Warn L2 reliably; Keep Watch Gather-2-Dahan               |
+| 7+   | Warn L4 board-wide first-strike                            |
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/hearth-vigil.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Hearth-Vigil](https://spiritislandwiki.com/index.php?title=Hearth-Vigil).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/hearth-vigil.json` (Wiki-parsed 2026-04-23).
+- **Openings**: [BGG thread 3137164](https://boardgamegeek.com/thread/3137164).
+- **Coverage note**: Only 3 BGG posts in the analysis thread; latentoctopus + Dahan-Codex no content. **Thinnest coverage of the NI spirits — physical-copy playtesting is especially important.**

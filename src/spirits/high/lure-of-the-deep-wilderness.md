@@ -1,360 +1,316 @@
 # Lure of the Deep Wilderness
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing paraphrased from [latentoctopus Lure Openings 1–2](https://latentoctopus.github.io/guide/lure-opening1/) + [jyonker13's BGG openings thread 2510069](https://boardgamegeek.com/thread/2510069/openings-lure-deep-wilderness).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Jagged Earth                                        |
-| Complexity            | Moderate                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "oneandone" — see Growth Options below         |
-| Power summary (1–5)   | Offense 4 · Control 4 · Fear 4 · Defense 2 · Utility 1             |
-| Primary Elements      | Moon, Air, Plant, Fire (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Jagged Earth                                       |
+| Complexity            | High                                               |
+| Play Difficulty       | `[VERIFY physical spirit panel]`                   |
+| Growth type           | "oneandone" — pick **one growth from G1–G3 AND one from G4** per turn |
+| Power summary (1–5)   | **Offense 4** · **Control 4** · **Fear 4** · Defense 2 · Utility 1 |
+| Primary Elements      | **Moon** (Forsake Society all tiers) · **Plant** (Never Heard From L2/L3/L4) · Air (Forsake L2 + L4) |
+| Special Rules         | Home of the Island's Heart (Inland-only placement) + Enthrall the Foreign Explorers (2 Explorers/Presence don't Ravage) |
+| Aspects               | None                                               |
+| Rei's Guide           | Not covered                                        |
+| latentoctopus         | [Openings 1–2](https://latentoctopus.github.io/guide/lure-opening1/) |
+| BGG                   | [jyonker13 thread 2510069](https://boardgamegeek.com/thread/2510069) |
 ```
 
 ## Spirit Overview — Framing
 
+Lure is a **token-blender centralizer** — spread thin across the middle of the island, then pull Invaders into a token-stacked killbox. Every Unique seeds a token or pulls pieces inland; every innate tier converts centralized tokens + Invaders into Fear + damage.
+
 **Wiki-printed playstyle note**:
 
-> Very focused on the interior - its best options for coastal lands are "draw the Invaders inland" or "turn Town/City into Explorer, then draw them inland". Likes the interior to be dangerous, full of Badlands, Beast, Disease, and Wilds, ideally where its Presence is. Has better-than-average potential for containing Invaders and setting up a zone safe from Explores, but the coasts may get messy while doing so.
+> Controls inland space by forbidding its own placement near coasts — then draws pieces into that deep interior to be ground down by stacked tokens.
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+**Identity capture** (jyonker13, BGG):
+
+> A moderate complexity Spirit with a powerful built-in nuke whose Starters alone have all the Elements and effects you require to activate your strong innates? Hail, the Tokenspeaker!
+
+**The non-obvious constraint** (Sh0rtz, BGG): starter uniques are so strong that Majors must *compete* with Swallowed by the Wilderness, not supplement it: *"you can reasonably expect it to deal 3–7 damage (2–5 before badlands), which is major power level for just 1 energy."*
+
+**Complexity signal**: High. The Inland-only placement rule and "oneandone" growth pattern make Lure a planning-heavy spirit. Killbox topology must be designed on board-select, then held across 4+ turns.
 
 ## Starting Setup
 
-> Put 3 Presence on your starting board: 2 in land #8, and 1 in land #7. Add 1 Beast to land #8.
+> Put **3 Presence** on your starting board: **2 in land #8, and 1 in land #7**. Add **1 Beast to land #8**.
 
-## Growth Options (oneandone)
+Three presences starting, pre-seeded with a Beast for immediate Swallowed by the Wilderness damage.
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=reclaim, second=energy1 |
-| G2 | first=addpresence4inland |
-| G3 | first=moonairplant, second=energy2 |
-| G4 | first=gain1p |
+## Growth Options (growthtype: "oneandone" — pick one from G1–G3 + one from G4)
 
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+| Growth | Effects                                                     | Best when                                                |
+|--------|-------------------------------------------------------------|----------------------------------------------------------|
+| **G1** | Reclaim + +1 Energy                                         | Hand depleted; Reclaim turn                              |
+| **G2** | Add 1 Presence (Range 4, Inland only)                       | Deep-interior spread                                     |
+| **G3** | Prepare 1 Moon/Air/Plant marker + +2 Energy                 | Threshold-boost + energy spike                           |
+| **G4** | Gain 1 Power Card (**Minor OR Major**)                      | Always picked as second growth                           |
+
+**"oneandone" is distinctive**: every turn is a card-gain turn (G4) *plus* a main-effect growth from G1/G2/G3. This is why Lure's deck fills up fast and why the 3-plays-loop variant works.
 
 ## Presence Tracks
 
-As Presence leaves each track, these values are revealed:
+- **Energy track** (6 slots): `energy1 → energy2 → moon → energy3plant → energy4air → energy5reclaim`
+  - 1E → 2E → +Moon marker → 3E + Plant → 4E + Air → 5E + Reclaim
+- **Card-play track** (6 slots): `card1 → card2 → animalX → card3 → card4 → card5reclaim1`
+  - 1 CP → 2 CP → Animal scaling → 3 CP → 4 CP → 5 CP + Reclaim 1
 
-- **Energy track**: energy1, energy2, moon, energy3plant, energy4air, energy5reclaim
-- **Card-play track**: card1, card2, animalX, card3, card4, card5reclaim1
+**Starting income**: 1 Energy, 1 Card Play. Energy curves smoothly without spikes — Lure's economy is planned, not improvised.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: Home of the Island's Heart
 
-HOME OF THE ISLAND'S HEART Your Presence may only be added/moved to lands that are Inland. ENTHRALL THE FOREIGN EXPLORERS For each of your Presence in a land, up to 2 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> do not participate in Ravage.
+> Your Presence may only be added/moved to lands that are Inland.
 
-### Innate: FORSAKE SOCIETY TO CHASE AFTER DREAMS
+**Hard placement constraint**. Lure cannot place on coastal lands, ever. Board selection is existential — a board where most interior lands are distant from each other guts Lure's killbox.
 
-- **Speed**: slow · **Range**: 1 · **Target**: invaders
+### Special Rule: Enthrall the Foreign Explorers
 
-_(no thresholds listed in Wiki)_
+> For each of your Presence in a land, up to 2 Explorer do not participate in Ravage.
 
+Passive Explorer-cancel. 2 Presence = up to 4 Explorers skip Ravage. Key defensive clause — preserves interior lands without spending Powers.
 
-### Innate: NEVER HEARD FROM AGAIN
+### Innate: Forsake Society to Chase After Dreams
 
-- **Speed**: slow · **Range**: 0 · **Target**: inland
+- **Speed**: Slow · **Range**: 1 · **Target**: Invaders
 
-_(no thresholds listed in Wiki)_
+Text (per Wiki): *After this Power replaces pieces with Explorer: Gather any number of those Explorer into your lands. If target land has any Town/City remaining, 1 Fear.*
 
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1     | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon | Replace 1 Explorer with 1 Explorer. |
+| 2     | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | *Instead*, replace 1 Town with 2 Explorers. |
+| 3     | 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | *Instead*, replace 1 City with 3 Explorers. |
+| 4     | 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Repeat this Power. |
 
-## Unique Cards (all, Wiki-verified)
+**Forsake's genius**: downgrade-to-Explorer then Gather the new Explorers into your killbox. L3 takes a coastal City and turns it into 3 Explorers in your Inland killbox for Never Heard From to grind.
 
-#### Gift of the Untamed Wild
+### Innate: Never Heard From Again
 
-- **0 Energy · Slow · Range No Range · Any Spirit · Moon, Fire, Air, Plant**
-- *Target Spirit chooses to either: Add 1 Wilds to one of their lands. **OR** Replace 1 of their Presence with 1 Disease.*
+- **Speed**: Slow · **Range**: 0 · **Target**: Inland
 
-#### Perils of the Deepest Island
+Text: *If this Power destroys any Explorer, 1 Fear. If this Power destroys 5 or more Explorer, +1 Fear.*
 
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1     | 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Add 1 Badlands. |
+| 2     | 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Destroy up to 2 Explorers per Badlands/Beast/Disease/Wilds token. |
+| 3     | 4 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 2 Damage. |
+| 4     | 6 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Repeat this Power. |
+
+The killbox-cash-out innate. L2 scales with tokens — 3 Badlands + 2 Beasts + 1 Wilds = 12 Explorers destroyed in one cast.
+
+## Unique Cards (all 4, Wiki-verified)
+
+### Gift of the Untamed Wild
+- **0 Energy · Slow · No Range · Any Spirit · Moon, Fire, Air, Plant**
+- *Target Spirit chooses to either: Add 1 Wilds to one of their lands.* **OR** *Replace 1 of their Presence with 1 Disease.*
+
+Ally-token-gift. Lure can self-target (since the target is "Any Spirit") to seed Wilds/Disease on its own killbox, but the gift flows cleaner to a partner whose kit benefits from tokens.
+
+### Perils of the Deepest Island
 - **1 Energy · Slow · Range 0 · Inland Land · Moon, Plant, Animal**
-- *1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Badlands. Add 1 Beasts within 1 Range. Push up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.*
+- *1 Fear. Add 1 Badlands. Add 1 Beast within 1 Range. Push up to 2 Dahan.*
 
-#### Softly Beckon Ever Inward
+The killbox-seeder. 1 Badlands + 1 Beast + Dahan-push per play. Carries Moon + Plant + Animal — three of Lure's four primary elements.
 
+### Softly Beckon Ever Inward
 - **2 Energy · Slow · Range 0 · Inland Land · Moon, Air**
-- *Gather up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Gather up to 2 Towns <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. Gather up to 2 Beasts. Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.*
+- *Gather up to 2 Explorers. Gather up to 2 Towns. Gather up to 2 Beasts. Gather up to 2 Dahan.*
 
-#### Swallowed by the Wilderness
+**The magnet.** Gathers *everything* — up to 8 pieces. Combined with Forsake's downgrade-then-Gather, Softly Beckon pulls the entire adjacent board into one land for Swallowed's AOE.
 
+### Swallowed by the Wilderness
 - **1 Energy · Fast · Range 0 · Inland Land · Fire, Air, Plant, Animal**
-- *2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage per Beasts/Disease/Wilds/Badlands. (Count max. 5 tokens.)*
+- *2 Fear. 1 Damage per Beast/Disease/Wilds/Badlands. (Count max. 5 tokens.)*
 
-## Card Priority Ratings
-
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Lure of the Deep Wilderness's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/lure-of-the-deep-wilderness.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/lure-of-the-deep-wilderness.json) for full scoring + reasons.
-
-- **Primary elements (innate-weighted)**: —
-- **Mid-game energy estimate (T3–T5 avg)**: 4.0E
-- **Power summary**: Offense 4 · Control 4 · Fear 4 · Defense 2 · Utility 1
-```
-
-### Uniques
-
-The spirit's own 4 Unique Power cards (always in hand; always A-tier by default — see Uniques section above for full text):
-
-- **Gift of the Untamed Wild**
-- **Perils of the Deepest Island**
-- **Softly Beckon Ever Inward**
-- **Swallowed by the Wilderness**
-
-### Top 10 Minor Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Bats Scout for Raids by Darkness** | 1 | Slow | Moon, Air, Animal | For each [[Dahan]], 1 Damage to [[Towns]]/[[Cities]]. **OR** 1 [[Fear]]. [[Gather]] up to… | Slow speed matches innate |
-| 2 | **Animated Wrackroot** | 0 | Slow | Moon, Fire, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** Add 1 Wilds. | 0-cost (always affordable) |
-| 3 | **Call to Ferocity** | 0 | Slow | Sun, Fire, Earth | Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. **OR** If target land has Dahan, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 T… | 0-cost (always affordable) |
-| 4 | **Here There Be Monsters** | 0 | Slow | Moon, Air, Animal | You may Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town/Dahan. 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land has any Beasts, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | 0-cost (always affordable) |
-| 5 | **Savage Mawbeasts** | 0 | Slow | Fire, Animal | If target land is a Jungle or Wetland, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. | 0-cost (always affordable) |
-| 6 | **Sear Anger Into the Wild Lands** | 0 | Slow | Sun, Fire, Plant | Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. | 0-cost (always affordable) |
-| 7 | **Shadows of the Burning Forest** | 0 | Slow | Moon, Fire, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Mountain or Jungle, Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. | 0-cost (always affordable) |
-| 8 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | 0-cost (always affordable) |
-| 9 | **Weep for What is Lost** | 0 | Slow | Fire, Water, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> per type of Invader present. Push up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Blight. | 0-cost (always affordable) |
-| 10 | **Call to Bloodshed** | 1 | Slow | Sun, Fire, Animal | 1 Damage per Dahan. **OR** Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | Slow speed matches innate |
-
-### Top 5 Major Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Angry Bears** | 3 | Slow | Sun, Fire, Animal | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 2 Damage. If no Beasts are present, add 1 Beasts. Otherwise, +2 Damage, and Push … | Slow speed matches innate |
-| 2 | **Focus the Land's Anguish** | 5 | Slow | Sun | If this Power Destroys any Towns/Cities, 5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Gather up to 5 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. 1 Damage per Blig… | Slow speed matches innate |
-| 3 | **Ravaged Undergrowth Slithers Back to Life** | 3 | Slow | Water, Plant, Animal | Replace 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> with 1 Wilds.</br>1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 3 Damage.</br>Push that Wilds. | Slow speed matches innate |
-| 4 | **The Wounded Wild Turns on its Assailants** | 4 | Slow | Fire, Plant, Animal | Add 2 Badlands. Gather up to 2 Beasts. 1 Damage per Blight/Beasts/Wilds. | Slow speed matches innate |
-| 5 | **Transform to a Murderous Darkness** | 6 | Slow | Moon, Fire, Air, Water, Plant | Target Spirit may choose one of their Sacred Site. In that land: Replace all their Presen… | Slow speed matches innate |
-
-### HoSI Beginner Deck Bundle — for reference only
-
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with Lure of the Deep Wilderness in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
-
-
-*No HoSI beginner-deck bundle for this spirit.*
-
-
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Land of Haunts and Embers** | adds Blight |
-| **Scour the Land** | adds Blight |
-| **Devouring Ants** | destroys Dahan |
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Renewing Boon** | destroys Presence |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **Pillar of Living Flame** | adds Blight |
-| **Pyroclastic Flow** | adds Blight |
-| **Draw Towards a Consuming Void** | destroys Presence |
-| **Tsunami** | destroys Dahan |
-| **Blazing Renewal** | destroys Presence |
-| **The Jungle Hungers** | destroys Dahan |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Poisoned Land** | destroys Dahan, adds Blight |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
+**The payoff.** 1 Fear + 1 damage per token, capped at 5 tokens = 5 damage + 2 Fear at 1E Fast. jyonker13: *"major power level for just 1 energy."* This is the card Majors must out-compete.
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+1. **Spread thin across interior lands, then pull.** Lure doesn't clear adjacent lands — it *makes* adjacent lands pull into its killbox.
+2. **Moon is primary, Plant secondary, Air tertiary.** Animal falls out of good drafts but is the "least important" (bmartin2009 flags: Animal is easy to hit *in isolation* but hard *while also* hitting Moon+Air).
+3. **Any Major must out-value Swallowed at 1E.** Most don't.
+4. **Coastal problems are Forsake Society's job.** L2 downgrades coastal Towns into Explorers that Gather inland.
+5. **3-plays loop** works vs Prussia but fails vs England/Scotland (build volumes overwhelm token economy).
+6. **Don't lose Perils.** It seeds the killbox; "basically sets up a new blender single handedly" (jyonker13).
+7. **Dahan Moving Out** — Perils + Softly Beckon shuffle Dahan into and out of the killbox for counterattacks.
 
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+## Possible Openings
 
-## Opener Mechanics — starter reference
+### Shared starting state
 
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/lure-of-the-deep-wilderness.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
-```
+- **3 Presence + 1 Beast** on land #8 / #7 starting.
+- **4 Uniques in hand**: Gift of the Untamed Wild (0E Slow, Moon/Fire/Air/Plant), Perils of the Deepest Island (1E Slow, Moon/Plant/Animal), Softly Beckon Ever Inward (2E Slow, Moon/Air), Swallowed by the Wilderness (1E Fast, Fire/Air/Plant/Animal).
+- **Starting income**: 1 Energy, 1 Card Play.
 
-### Starting state
+### Opening A — Full Bottom Track / Minors 🟨 (default)
 
-- **Setup**: Put 3 Presence on your starting board: 2 in land #8, and 1 in land #7. Add 1 Beast to land #8.
-- **Starting income** (from `presence_energy_track[0]` = `energy1`, `presence_cardplay_track[0]` = `card1`): **1 Energy · 1 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `oneandone` — (see spirit panel)
+From [latentoctopus Opening 1](https://latentoctopus.github.io/guide/lure-opening1/).
 
-### Growth options
+**T1 · Growth**: G2 bottom (+ G4 Minor) — Add Presence + Gain Minor (Moon/Air priority).
+**T1 · Play** (1E, 1 CP): **Gift of the Untamed Wild + Perils of the Deepest Wild**.
+- Forsake L2 and Never Heard From L2 both live. 5 cards, 1 play.
 
-- **G1**: reclaim (Reclaim all discarded+played Power Cards); energy1 ((track slot showing 1 Energy))
-- **G2**: addpresence4inland ((spirit-specific: `addpresence4inland` — consult spirit panel))
-- **G3**: moonairplant ((spirit-specific: `moonairplant` — consult spirit panel)); energy2 ((track slot showing 2 Energy))
-- **G4**: gain1p (Gain 1 Power Card (Minor unless otherwise noted))
+Wait — Gift + Perils = 1 Plant + 1 Animal + 1 Moon + 1 Air + 1 Moon; enough for Forsake L1 / L2 and Never Heard From L1. 0E + 1E = 1E spent.
 
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
+**T2 · Growth**: G2 bottom + G3 Moon; **Softly Beckon + Swallowed**.
+- Forsake L2; 3 cards, 4E.
 
-### Energy track
+**T3 · Growth**: Reclaim (G1) + G3 Moon (or G4 if City needs pressure); 2 plays, 5–6 cards, 8E.
 
-`energy1 · energy2 · moon · energy3plant · energy4air · energy5reclaim` — income as slots reveal: 1 → 2 → moon → 3 → 4 → 5
+**T4 · Growth**: G2 bottom + G3 Moon/Plant or G4.
+- 3 plays, 4 cards, 9E.
 
-### Card-play track
+**Caveat**: "Playing 1-cost Minors will often require not playing one of your 1- or 2-cost Uniques, so it's generally recommended to pick 0-cost."
 
-`card1 · card2 · animalX · card3 · card4 · card5reclaim1` — CP as slots reveal: 1 → 2 → animalX → 3 → 4 → 5
+### Opening B — Hybrid Majors (jyonker13 canonical) 🟨
 
-### Innate Powers
+From [Opening 2](https://latentoctopus.github.io/guide/lure-opening2/).
 
-- **FORSAKE SOCIETY TO CHASE AFTER DREAMS** (Speed: Slow · Range: 1 · Target: invaders)
-- **NEVER HEARD FROM AGAIN** (Speed: Slow · Range: 0 · Target: inland)
+**T1 · Growth**: G2 bottom + G3 Plant.
+**T1 · Play**: Gift + Perils. Left innate L2, right innate L1+L2. 4 cards, 3E.
 
-### Fast-phase element ceiling from Uniques
+**T2 · Growth**: G2 top + G4 Major (target ≤4E, Moon or Plant elements).
+**T2 · Play**: Softly Beckon + Swallowed (or Major if 2–3 cost hit).
+- 3 cards, 5E.
 
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
+**T3 · Growth**: Reclaim (G1) + G4 Major (replacing) or Minor.
+**T3 · Play**: Major + Gift. 5 cards, 8E.
 
-- Fast-phase Unique elements: **Fire** ×1, **Air** ×1, **Plant** ×1, **Animal** ×1
+**T4 · Growth**: G2 bottom + G3 Moon/Plant.
+**T4 · Play**: Softly Beckon + Swallowed.
 
-### Unique Power Cards
+Core idea (jyonker13): *"Gain an early Major and alternate playing it with playing Softly Beckon Ever Inward every reclaim cycle."*
 
-| Card | Cost | Speed | Range | Target | Elements | Effect |
-|------|------|-------|-------|--------|----------|--------|
-| **Gift of the Untamed Wild** | 0 | Slow | No Range | Any Spirit | moon, fire, air, plant | Target Spirit chooses to either: Add 1 Wilds to one of their lands. **OR** Replace 1 of their Prese… |
-| **Perils of the Deepest Island** | 1 | Slow | 0 | Inland Land | moon, plant, animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Badlands. Add 1 Beasts within 1 Range. Push up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
-| **Softly Beckon Ever Inward** | 2 | Slow | 0 | Inland Land | moon, air | Gather up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Gather up to 2 Towns <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. Gather up to 2 Beasts. Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
-| **Swallowed by the Wilderness** | 1 | Fast | 0 | Inland Land | fire, air, plant, animal | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage per Beasts/Disease/Wilds/Badlands. (Count max. 5 tokens.) |
+### Opening C — 3-Plays Loop (BGG bizenboat, doolee-validated) 🟥
 
-### Invader phase by turn (base deck)
+**T1**: Plays-track + Plant; Softly Beckon + Perils.
+**T2**: Plays-track + Moon; Swallowed + Gift.
+**T3**: Reclaim + Moon Minor; Softly Beckon + Perils + Forsake.
+**T4**: Plays-track + Moon; Swallowed + Gift + Minor.
+**T5+**: Reclaim loop at 3 plays.
 
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
+doolee: validated 3/3 at L6 two-spirit. **Trade-off** (Sh0rtz, gpope): fragile to presence-destroying Events and to Scotland/England build volumes — *"really struggles to keep up against the likes of Scotland or England where you're contending with 4+ new buildings per turn."*
 
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
+### Opening Decision
 
-### Pause-point before writing T1 prose
+- **Default Opening A** (Full Bottom Minors) — reliable across Prussia / Sweden / France / Russia.
+- **Opening B** (Hybrid Majors) when the Major draft lands with Moon or Plant at ≤4E.
+- **Opening C** (3-Plays Loop) vs Prussia with partner cover; avoid vs England/Scotland.
 
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
+## Card Priority Ratings
+
+### Uniques — Lure-specific ranking
+
+1. **Swallowed by the Wilderness** — the payoff; 5-damage 1E Fast.
+2. **Softly Beckon Ever Inward** — the magnet; gathers everything.
+3. **Perils of the Deepest Island** — the seeder; 1 Badlands + 1 Beast per play.
+4. **Gift of the Untamed Wild** — ally gift + self-target Wilds/Disease.
+
+### Top 10 Minor Draft Picks (Moon > Plant > Air)
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Predatory Nightmares** | 0 | Fast | Moon, Animal | 0-cost Moon |
+| 2 | **Drifting Into Stillness** | 1 | Slow | Moon, Plant | Moon + Plant |
+| 3 | **Pull Beneath the Hungry Earth** | 0 | Slow | Moon, Earth | 0-cost Moon |
+| 4 | **Call to Isolation** | 0 | Slow | Water, Animal | Isolate helps killbox |
+| 5 | **Strange Tales of the Sky** | 1 | Fast | Moon, Air | Moon + Air |
+| 6 | **Unrelenting Growth** | 0 | Slow | Sun, Plant | 0-cost Plant |
+| 7 | **Quicken the Earth's Struggles** | 0 | Slow | Earth, Plant, Animal | 0-cost Plant + Animal |
+| 8 | **Song of Sanctity** | 0 | Slow | Sun, Plant, Animal | 0-cost Plant |
+| 9 | **Call to Bloodshed** | 0 | Slow | Moon, Animal | 0-cost Moon |
+| 10 | **Rain of Blood** | 1 | Slow | Moon, Fire, Water | Moon + Fire (Never Heard From L1) |
+
+### Top 5 Major Draft Picks (Opening B)
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Insatiable Hunger of the Swarm** | 3 | Fast | Animal, Plant | Plant + Animal multi-land |
+| 2 | **Melt Earthen Flesh** | 0 | Slow | Moon, Earth, Plant | Moon + Plant at 0E (!) |
+| 3 | **Trees Radiate Ancient Sanctity** | 3 | Fast | Moon, Sun, Plant, Earth | Moon + Plant board-wide |
+| 4 | **Dream of the Untouched Land** | 4 | Fast | Moon, Sun, Plant | Moon + Plant |
+| 5 | **Tigers Hunting** | 3 | Fast | Fire, Animal | Cheap damage |
+
+### Cards to Avoid
+
+| Card | Reason |
+|------|--------|
+| Coastal-only Powers | Inland-only placement makes them deadweight |
+| Single-Animal Minors that miss Moon/Air | Bmartin2009's warning |
+| Presence-destroying effects | Lure's kit is Presence-thin |
 
 ## Adversary Matchup Matrix
 
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
-
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
-
-
-### Strategy Cliffs — per-adversary-level shifts that change Lure of the Deep Wilderness's math
-
-```admonish warning title="Cliffs to watch"
-Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Lure of the Deep Wilderness's profile (Fear 4, Offense 4, Control 4, Defense 2, Utility 1).
-```
-
-#### England L5 — Buildings +1 HP
-
-**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
-
-**Mitigation for Lure of the Deep Wilderness**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
-
-#### England L3 — Coastal Lands build faster
-
-**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
-
-**Mitigation for Lure of the Deep Wilderness**: Front-load coastal defense or disruption before T3's first Ravage.
-
-#### Sweden L2+ — Fear-card effects reduced
-
-**What changes**: Sweden's escalation reduces the impact of Fear cards. **Spirits that win by riding Fear cards to Terror-level flips are meaningfully slower.**
-
-**Mitigation for Lure of the Deep Wilderness**: Shift from fear-rush to board-control: favor Damage/Push Majors over more Fear; accept Terror 2 flip ~2 rounds later.
-
-#### Russia L3+ — Dahan under pressure + fear suppression
-
-**What changes**: Russia's L3 escalation targets Dahan directly and suppresses Fear. **Spirits reliant on Dahan density (Shadows of the Dahan, Favors Called Due, Thunderspeaker synergies) lose a key engine.**
-
-**Mitigation for Lure of the Deep Wilderness**: Pre-empt Dahan loss with Defend-heavy Minors (Dahan/Village-fortify cards); lean on Push/Gather Majors to offset Fear deficit.
-
-#### Habsburg Mining L5+ — Explorer/Town scaling
-
-**What changes**: Habsburg Mining L5+ adds extra Explorers and faster builds. **Aggressive fear-rush openers can get outpaced by raw Invader accumulation.**
-
-**Mitigation for Lure of the Deep Wilderness**: Favor Major Powers with mass destruction (Jungle Hungers, Cleansing Floods, etc.) over Minor-heavy drafts.
-
-#### France (Plantation) — Dahan capture threatens your Dahan engine
-
-**What changes**: France's plantation rules convert Dahan to colonists, and Invaders occupy lands with Dahan. **Spirits whose innate/card math counts on Dahan density (Shadows-of-the-Dahan, Favors, Thunderspeaker) are downgraded.**
-
-**Mitigation for Lure of the Deep Wilderness**: Play Defend Powers on Dahan lands; accept loss of range-extension budget.
-
-#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
-
-**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
-
-**Mitigation for Lure of the Deep Wilderness**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
+| Adversary               | Opening | Rating | Matchup note                                                 |
+|-------------------------|---------|--------|--------------------------------------------------------------|
+| Brandenburg-Prussia     | A / C   | ★★★★☆  | Strong matchup; 3-plays loop viable                          |
+| Sweden                  | A / B   | ★★★☆☆  | Build-spam still survivable                                  |
+| France-Plantation       | A       | ★★★☆☆  | Dahan synergy via Perils push                                |
+| Russia                  | A / B   | ★★★☆☆  | `[VERIFY]` — Pogrom events stress presence                    |
+| **England**             | A / B   | ★★☆☆☆  | **Weak matchup** — coastal Cities bypass Inland-only placement |
+| **Scotland**            | A       | ★★☆☆☆  | **Weak matchup** — build volumes overwhelm token economy     |
+| Habsburg Mining         | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Habsburg Livestock      | A       | ★★☆☆☆  | `[VERIFY]`                                                   |
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+`[VERIFY — latentoctopus no per-board ratings]`. Heuristic: favor boards where **interior lands are densely adjacent** (enables Softly Beckon magnet reach). Boards with scattered interior lands (widely-spaced #7/#8) gut Lure's killbox topology.
 
 ## Game-Phase Strategy
 
-`[VERIFY: needs play data]`.
+### Early (T1–3)
+- Seed killbox: Perils (Badlands + Beast), Gift (Wilds).
+- Forsake L1/L2 every Slow phase.
+- Swallowed T1–T2 builds Fear + damage.
+
+### Mid (T4–6)
+- Softly Beckon on coastal-adjacent killbox.
+- Never Heard From L2 (2 Plant) scales with token count.
+- Major-integration (Opening B).
+
+### Late (T7+)
+- Forsake L3 (3 Moon + 2 Air + 1 Animal) converts Cities to 3 Explorers.
+- Never Heard From L3/L4 = Repeat Power for multi-land grinding.
 
 ## Synergy Partners (Multiplayer)
 
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+- **Coastal-focused partners** — Ocean, Serpent coast-clear what Lure can't reach.
+- **Invader-push partners** — any partner who funnels Invaders into Lure's lands.
+- **Gift of the Untamed Wild targets** — partners whose kit wants extra Wilds/Disease tokens.
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
+```admonish failure title="Patterns to watch for"
+1. **Letting Majors replace Swallowed.** Most Majors don't exceed its per-energy value.
+2. **Drafting Animal-heavy Minors that miss Moon+Air.** Animal is easy to hit *in isolation* but doesn't stack with Moon/Air threshold paths.
+3. **Committing to 3-plays loop against high-build adversaries.** Scotland/England overwhelm the token economy.
+4. **Forgetting Perils.** jyonker13: *"Perils basically sets up a new blender single handedly."*
+5. **Ignoring Inland-only placement at board select.** Widely-spaced interior lands = dead Lure game.
+```
 
 ## Tempo Profile
 
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
-```
+| Turn | Target state                                              |
+|------|-----------------------------------------------------------|
+| 1    | G2 + G4 Minor; Gift + Perils; Forsake L2 unlocked         |
+| 2    | G2 + G3 Moon; Softly Beckon + Swallowed                   |
+| 3    | Reclaim + G3 Moon or G4 Major (Opening B)                 |
+| 4    | 3 plays; killbox active (3+ tokens)                       |
+| 5–7  | Softly Beckon → Never Heard From L2 cycle                 |
+| 8+   | Forsake L3 downgrades Cities; Repeat via L4                |
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/lure-of-the-deep-wilderness.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Lure of the Deep Wilderness](https://spiritislandwiki.com/index.php?title=Lure_of_the_Deep_Wilderness).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/lure-of-the-deep-wilderness.json` (Wiki-parsed 2026-04-23).
+- **Openings**: latentoctopus Opening 1 + Opening 2.
+- **BGG**: [jyonker13 thread 2510069](https://boardgamegeek.com/thread/2510069/openings-lure-deep-wilderness).

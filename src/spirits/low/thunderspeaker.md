@@ -1,364 +1,303 @@
 # Thunderspeaker
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing paraphrased from [latentoctopus Thunderspeaker Openings 1–3](https://latentoctopus.github.io/guide/thunderspeaker-opening1/) + [Phantaskippy's Wiki Guide](https://spiritislandwiki.com/index.php?title=Thunderspeaker/Phantaskippy%27s_Guide) + [BGG thread 1966212](https://boardgamegeek.com/thread/1966212/openings-thunderspeaker).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Base Game                                        |
-| Complexity            | Moderate                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 4 · Control 5 · Fear 3 · Defense 2 · Utility 1             |
-| Primary Elements      | Air, Sun, Fire, Animal (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Base Game                                          |
+| Complexity            | Moderate                                           |
+| Play Difficulty       | 3 `[VERIFY physical spirit panel]`                 |
+| Growth type           | "one" — pick one growth per turn (bundled effects) |
+| Power summary (1–5)   | **Offense 4** · **Control 5** · Fear 3 · Defense 2 · Utility 1 |
+| Primary Elements      | **Sun** (Lead the Furious Assault) · **Fire** (Lead) · Air (Gather the Warriors + innate-fast) · Animal (Gather) |
+| Special Rules         | Ally of the Dahan (Presence moves with Dahan) + Sworn to Victory (destroyed Dahan destroy Presence) |
+| Aspects (JE)          | Tactician · Warrior `[VERIFY]`                     |
+| Rei's Guide           | Not covered                                        |
+| latentoctopus         | [Openings 1–3](https://latentoctopus.github.io/guide/thunderspeaker-opening1/) |
+| Phantaskippy's Guide  | [Wiki page](https://spiritislandwiki.com/index.php?title=Thunderspeaker/Phantaskippy%27s_Guide) |
 ```
 
 ## Spirit Overview — Framing
 
+Thunderspeaker is the game's strongest **single-land "hammer"** — a mobile, Dahan-leveraging spirit that marches a concentrated war-band across the island rather than holding a home territory. Community consensus (BGG 375755): *"Thunderspeaker is probably the strongest 'Hammer' spirit in the game… delivers the strongest blow to single lands… faster than most other spirits and not dependent on RNG Major power draw."*
+
 **Wiki-printed playstyle note**:
 
-> Has a keen interest in where the Dahan are - partly because so many of its starting powers work through them partly because its Presence can move along with them. When picking new Power Cards, it will often want to take good Dahan-centric Powers, but it can also branch out into other areas.
+> Dahan-centric; requires Dahan density to do most of its work. Mobile — Ally of the Dahan moves Presence with Dahan for free.
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+**Identity capture** (Phantaskippy, Wiki):
+
+> You are not built for holding a small territory, you are built to march into battle and drive out the invaders.
+
+**The non-obvious trait**: Manifestation of Power and Glory scales with `presence × Dahan` — your real growth curve is measured not in presence count but in **how often you can fire Manifestation**. Every drafting and placement decision is downstream of that.
+
+**Opening cost math**: Starting hand costs ~6 Energy total. Starting income is 1E. You cannot plush-start; T1 demands compressing plays or deferring one.
 
 ## Starting Setup
 
-> Put 2 Presence on your starting board: 1 in each of the 2 lands with the most Dahan.
+> Put **2 Presence** on your starting board: **1 in each of the 2 lands with the most Dahan**.
 
-## Growth Options (one)
+## Growth Options (growthtype: "one" — pick one per turn)
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=reclaim, second=gain1p, third=gain1p |
-| G2 | first=Thunder2, second=Thunder1 |
-| G3 | first=addpresence1, second=energy4 |
+| Growth | Effects                                                       | Best when                                              |
+|--------|---------------------------------------------------------------|--------------------------------------------------------|
+| **G1** | Reclaim + Gain 1 Power Card + Gain 1 Power Card               | Hand depleted + draft two Minors in one turn           |
+| **G2** | Thunder2 (add 2 Thunder tokens) + Thunder1 (add 1 Thunder)    | Dahan-positioning turn; Thunder is the "march" token   |
+| **G3** | Add Presence (Range 1) + +4 Energy                            | Opening-track acceleration + big energy spike          |
 
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+G3 is the default opening move: **+4E is the biggest single-turn energy gain of any base-game spirit**, which is why Phantaskippy and latentoctopus both open with it.
 
 ## Presence Tracks
 
-As Presence leaves each track, these values are revealed:
+- **Energy track** (6 slots): `energy1 → air → energy2 → fire → sun → energy3`
+  - 1E → +Air → 2E → +Fire → +Sun → 3E
+- **Card-play track** (7 slots): `card1 → card2 → card2 → card3 → reclaim1 → card3 → card4`
+  - 1 CP → 2 CP → 2 CP → 3 CP → Reclaim 1 → 3 CP → 4 CP
 
-- **Energy track**: energy1, air, energy2, fire, sun, energy3
-- **Card-play track**: card1, card2, card2, card3, reclaim1, card3, card4
+**Starting income**: 1 Energy, 1 Card Play.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: Ally of the Dahan
 
-ALLY OF THE DAHAN Your Presence may move with Dahan. (Whenever a Dahan moves from 1 of your lands to another land, you may move 1 Presence along with it.) SWORN TO VICTORY After a Ravage Action destroys 1 or more Dahan, for each Dahan Destroyed, Destroy 1 of your Presence within Range 1.
+> Your Presence may move with Dahan. (Whenever a Dahan moves from 1 of your lands to another land, you may move 1 Presence along with it.)
 
-### Innate: GATHER THE WARRIORS
+Free presence mobility tied to Dahan movement. Voice of Thunder's Push-4-Dahan moves your presence too — the core of the "march" identity.
 
-- **Speed**: slow · **Range**: 1 · **Target**: any
+### Special Rule: Sworn to Victory
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | This Power may be Fast. |
-| 2 | 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> per Air you have. Push up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> per Sun you have. |
+> After a Ravage Action destroys 1 or more Dahan, for each Dahan Destroyed, Destroy 1 of your Presence within Range 1.
 
+Every Dahan lost during Ravage = 1 Presence lost. Preserving Dahan is *existential* — Thunderspeaker games end when your presence runs out.
 
-### Innate: LEAD THE FURIOUS ASSAULT
+### Innate: Gather the Warriors
 
-- **Speed**: slow · **Range**: 0 · **Target**: any
+- **Speed**: Slow · **Range**: 1 · **Target**: Any
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | This Power may be Fast. |
-| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire | Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> for every 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> in target land. |
-| 3 | 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire | Destroy 1 City <img class="si" src="/spirit-island/theme/icons/unit-city.svg" alt="City"> for every 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> in target land. |
+| 1     | 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | This Power may be Fast. |
+| 2     | 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | Gather up to 1 Dahan per Air you have. Push up to 1 Dahan per Sun you have. |
 
+Dahan herder. Animal 1 (trivial) + Air-scaling gather.
 
-## Unique Cards (all, Wiki-verified)
+### Innate: Lead the Furious Assault
 
-#### Manifestation of Power and Glory
+- **Speed**: Slow · **Range**: 0 · **Target**: Any
 
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1     | 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | This Power may be Fast. |
+| 2     | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire | Destroy 1 Town for every 2 Dahan in target land. |
+| 3     | 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire | Destroy 1 City for every 3 Dahan in target land. |
+
+The hammer innate. L2 at 2 Sun + 1 Fire is reachable from starting hand (starters carry 3 Sun + 2 Fire — Lennert's thread math). L3 requires +2 Sun from track/Minors.
+
+## Unique Cards (all 4, Wiki-verified)
+
+### Manifestation of Power and Glory
 - **3 Energy · Slow · Range 0 · Land with Dahan · Sun, Fire, Air**
-- *1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Each Dahan deals Damage equal to the number of your Presence in target land.*
+- *1 Fear. Each Dahan deals Damage equal to the number of your Presence in target land.*
 
-#### Sudden Ambush
+The big hammer. Scales with `Dahan × Presence`. Classic play: 2 Dahan, 2 Presence → 4 damage. 3E is steep — this card requires G3 energy or mid-game accumulation. Lennert (BGG): *"even on beginner, there's a 5/6 chance per board of a city ravage before the slow phase of turn 3"* — don't hold Manifestation; fire it early and often.
 
+### Sudden Ambush
 - **2 Energy · Fast · Range 1 · Any Land · Fire, Air, Animal**
-- *You may Gather 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each Dahan Destroys 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">.*
+- *You may Gather 1 Dahan. Each Dahan Destroys 1 Explorer.*
 
-#### Voice of Thunder
+Explorer-killer scaling with Dahan. 2E Fast = pair with Manifestation on the same land for double-impact turn. Phantaskippy warns: high cost — forget after 1–2 reclaims.
 
+### Voice of Thunder
 - **0 Energy · Slow · Range 1 · Any Land · Sun, Air**
-- *Push up to 4 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. **OR** If Invaders are present, 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">.*
+- *Push up to 4 Dahan.* **OR** *If Invaders are present, 2 Fear.*
 
-#### Words of Warning
+0-cost Dahan-push. Combined with Ally of the Dahan, this is also up to 4 Presence-moves per play — the "march" primitive.
 
+### Words of Warning
 - **1 Energy · Fast · Range 1 · Land with Dahan · Sun, Air, Animal**
 - *Defend 3. During Ravage, Dahan in target land deal Damage simultaneously with Invaders.*
 
-## Card Priority Ratings
-
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Thunderspeaker's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/thunderspeaker.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/thunderspeaker.json) for full scoring + reasons.
-
-- **Primary elements (innate-weighted)**: **Air** (wt 7.2), **Sun** (wt 2.4), **Fire** (wt 1.5)
-- **Mid-game energy estimate (T3–T5 avg)**: 3.0E
-- **Power summary**: Offense 4 · Control 5 · Fear 3 · Defense 2 · Utility 1
-```
-
-### Uniques
-
-The spirit's own 4 Unique Power cards (always in hand; always A-tier by default — see Uniques section above for full text):
-
-- **Manifestation of Power and Glory**
-- **Sudden Ambush**
-- **Voice of Thunder**
-- **Words of Warning**
-
-### Top 10 Minor Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Purifying Flame** | 1 | Slow | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blig… | elements air+fire+sun → 11.1 |
-| 2 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | elements air+sun → 9.6 |
-| 3 | **Birds Cry Warning** | 1 | Fast | Sun, Air, Animal | The next time Dahan would be Destroyed in target land, Destroy 2 fewer Dahan. **OR** Push… | elements air+animal+sun → 10.2 |
-| 4 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | elements air+sun → 9.6 |
-| 5 | **Call to Isolation** | 0 | Fast | Sun, Air, Animal | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town per Dahan. **OR** Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+animal+sun → 10.2 |
-| 6 | **Fire in the Sky** | 1 | Fast | Sun, Fire, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. | elements air+fire+sun → 11.1 |
-| 7 | **Spur on with Words of Fire** | 1 | Fast | Sun, Fire, Air | If you target a Spirit other than yourself, they gain +1 Energy. Target Spirit may immedi… | elements air+fire+sun → 11.1 |
-| 8 | **Enticing Splendor** | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. **OR** Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+sun → 9.6 |
-| 9 | **Delusions of Danger** | 1 | Fast | Sun, Moon, Air | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+sun → 9.6 |
-| 10 | **Call to Migrate** | 1 | Slow | Fire, Air, Animal | Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Push up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+animal+fire → 9.3 |
-
-### Top 5 Major Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Instruments of Their Own Ruin** | 4 | Fast | Sun, Fire, Air, Animal | Add 1 Strife. Each Invader with Strife deals Damage to other Invaders in target land. | elements air+animal+fire+sun → 11.7 |
-| 2 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+animal+fire+sun → 11.7 |
-| 3 | **Sweep into the Sea** | 4 | Slow | Sun, Air, Water | Push all Explorers and Towns one land towards the nearest Ocean. **OR** If target land is… | elements air+sun → 9.6 |
-| 4 | **Powerstorm** | 3 | Fast | Sun, Fire, Air | Target Spirit gains 3 Energy. Once this turn, target Spirit may Repeat a Power Card by pa… | elements air+fire+sun → 11.1 |
-| 5 | **Voice of Command** | 3 | Fast | Sun, Air | 1 Damage per Dahan/Explorer, to Towns/Cities only. Defend 2. During Ravage Actions, Explo… | elements air+sun → 9.6 |
-
-### HoSI Beginner Deck Bundle — for reference only
-
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with Thunderspeaker in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
-
-
-*No HoSI beginner-deck bundle for this spirit.*
-
-
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Land of Haunts and Embers** | adds Blight |
-| **Scour the Land** | adds Blight |
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Devouring Ants** | destroys Dahan |
-| **Renewing Boon** | destroys Presence |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **Pyroclastic Flow** | adds Blight |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Pillar of Living Flame** | adds Blight |
-| **Blazing Renewal** | destroys Presence |
-| **Draw Towards a Consuming Void** | destroys Presence |
-| **The Jungle Hungers** | destroys Dahan |
-| **Poisoned Land** | destroys Dahan, adds Blight |
-| **Tsunami** | destroys Dahan |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
+Defend + Dahan-fight-first. The Dahan-simultaneous clause is huge — Dahan damage lands *before* Invader damage, potentially killing attackers before they harm Dahan/land.
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+1. **Manifestation every turn from T3 onward is the goal** — your fear/damage ceiling.
+2. **March, don't hold.** Ally of the Dahan makes your presence mobile — concentrate force, don't defend territory.
+3. **Sun + Fire = load-bearing.** Lead the Furious Assault L2 opens the destroyer toolkit. 4 Air (both innates Fast) is valuable but not at cost-of-effect.
+4. **Preserve Dahan aggressively.** Sworn to Victory punishes Dahan loss with Presence loss — Words of Warning + Defend-minor stacking is existential.
+5. **Minors > Majors by default** (Phantaskippy). Focus on push/gather/defense minors that don't kill Dahan.
+6. **Sudden Ambush is high-cost** — forget after 1–2 reclaims.
 
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
-
-## Opener Mechanics — starter reference
-
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/thunderspeaker.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
+```admonish tip title="Phantaskippy's timing rule"
+*"Making your innates fast isn't so great that you should sacrifice effects for it."* — don't over-draft Air at the cost of Sun+Fire damage thresholds.
 ```
 
-### Starting state
+## Possible Openings
 
-- **Setup**: Put 2 Presence on your starting board: 1 in each of the 2 lands with the most Dahan.
-- **Starting income** (from `presence_energy_track[0]` = `energy1`, `presence_cardplay_track[0]` = `card1`): **1 Energy · 1 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `one` — pick **one** growth option per turn
+### Shared starting state
 
-### Growth options
+- **2 Presence** on the 2 Dahan-densest starting-board lands.
+- **4 Uniques in hand**: Manifestation of Power and Glory (3E Slow, Sun/Fire/Air), Sudden Ambush (2E Fast, Fire/Air/Animal), Voice of Thunder (0E Slow, Sun/Air), Words of Warning (1E Fast, Sun/Air/Animal).
+- **Starting income**: 1 Energy, 1 Card Play.
 
-- **G1**: reclaim (Reclaim all discarded+played Power Cards); gain1p (Gain 1 Power Card (Minor unless otherwise noted)); gain1p (Gain 1 Power Card (Minor unless otherwise noted))
-- **G2**: Thunder2 ((spirit-specific: `Thunder2` — consult spirit panel)); Thunder1 ((spirit-specific: `Thunder1` — consult spirit panel))
-- **G3**: addpresence1 (Place 1 Presence from a track (Range 1)); energy4 (+4 Energy this turn (growth effect))
+### Opening A — Hybrid / Minor-focused 🟨 (default)
 
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
+From [latentoctopus Opening 1](https://latentoctopus.github.io/guide/thunderspeaker-opening1/).
 
-### Energy track
+**T1 · Growth**: G3 bottom (+4E, place presence from plays). Income: 1E (track) + 4E (G3) = 5E. 4 CP from starters.
 
-`energy1 · air · energy2 · fire · sun · energy3` — income as slots reveal: 1 → air → 2 → fire → sun → 3
+**T1 · Play** (5E, 1 CP): **Sudden Ambush + Manifestation** (if vs. BP or strong Dahan-dense start).
+- Alternative: Manifestation + Voice of Thunder (unlock Lead the Furious Assault L2 with 2 Sun + 1 Fire from starters).
 
-### Card-play track
+**T2 · Growth**: G2 top. Income: 1E (track) + base = 2E.
 
-`card1 · card2 · card2 · card3 · reclaim1 · card3 · card4` — CP as slots reveal: 1 → 2 → 2 → 3 → reclaim1 → 3 → 4
+**T2 · Play** (2E, 4 CP available): **Words of Warning + Voice of Thunder**.
 
-### Innate Powers
+**T3 · Growth**: G1 — Reclaim + Gain 1 Minor + Gain 1 Minor.
 
-- **GATHER THE WARRIORS** (Speed: Slow · Range: 1 · Target: any)
-  - **L1** — 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: This Power may be Fast.
-  - **L2** — 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> per Air you have. Push up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> per Sun you have.
-- **LEAD THE FURIOUS ASSAULT** (Speed: Slow · Range: 0 · Target: any)
-  - **L1** — 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: This Power may be Fast.
-  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire: Destroy 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> for every 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> in target land.
-  - **L3** — 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire: Destroy 1 City <img class="si" src="/spirit-island/theme/icons/unit-city.svg" alt="City"> for every 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> in target land.
+**T3 · Play** (income + remaining, 4 CP): Manifestation + Sudden Ambush repeat; start drafted Minor integration.
 
-### Fast-phase element ceiling from Uniques
+**T4 end state**:
+- 12E accumulated (CE).
+- 3 plays baseline.
+- Both innates reliably active.
+- **Lead the Furious Assault L2** online on most turns.
 
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
+### Opening B — Full Bottom Track 🟨
 
-- Fast-phase Unique elements: **Sun** ×1, **Fire** ×1, **Air** ×2, **Animal** ×2
+From [Opening 2](https://latentoctopus.github.io/guide/thunderspeaker-opening2/).
 
-### Unique Power Cards
+**T1**: G3 bottom; play 2 starters.
+**T2**: G3 bottom again (Words of Warning + 1 card).
+**T3**: Reclaim + 2 minors.
+**T4**: G2 bottom, 3 plays.
 
-| Card | Cost | Speed | Range | Target | Elements | Effect |
-|------|------|-------|-------|--------|----------|--------|
-| **Manifestation of Power and Glory** | 3 | Slow | 0 | Land with Dahan | sun, fire, air | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Each Dahan deals Damage equal to the number of your Presence in target land. |
-| **Sudden Ambush** | 2 | Fast | 1 | Any Land | fire, air, animal | You may Gather 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each Dahan Destroys 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. |
-| **Voice of Thunder** | 0 | Slow | 1 | Any Land | sun, air | Push up to 4 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. **OR** If Invaders are present, 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. |
-| **Words of Warning** | 1 | Fast | 1 | Land with Dahan | sun, air, animal | Defend 3. During Ravage, Dahan in target land deal Damage simultaneously with Invaders. |
+Rationale (latentoctopus): "Highest CP while still having the Energy to play all the Uniques." Pays in late Sun/Air element spikes.
 
-### Invader phase by turn (base deck)
+### Opening C — Top Track 🟥
 
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
+From [Opening 3](https://latentoctopus.github.io/guide/thunderspeaker-opening3/).
 
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
+**T1**: G2 top; play Sudden Ambush *or* Voice of Thunder. 2E / 4 cards / 1 Air unlocked.
+**T2**: G2 top again; Words of Warning. 4E, 1 Air/1 Fire/1 Sun.
+**T3**: G3 bottom; Voice of Thunder or Ambush + Manifestation. 10E, 2 Air/1 Fire/1 Sun — right innate live.
+**T4**: Reclaim + 2 minors. 12E, ~6 cards.
 
-### Pause-point before writing T1 prose
+Latentoctopus: "Drop Sudden Ambush vs England (cost vs. value)."
 
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
+### Opening Decision
+
+- **Default Opening A** for Prussia, Sweden, France, Scotland, Russia.
+- **Opening B** when card-volume matters more than energy spikes.
+- **Opening C** top-track only when scenario/adversary demands late-turn Sun thresholds.
+
+## Card Priority Ratings
+
+### Uniques — Thunderspeaker-specific ranking
+
+1. **Manifestation of Power and Glory** — the hammer; preserve reclaim cycles for this.
+2. **Words of Warning** — Defend 3 + Dahan-first fight; existential for Dahan preservation.
+3. **Voice of Thunder** — 0-cost Push 4 Dahan + Presence movement.
+4. **Sudden Ambush** — situational; forget after 1–2 reclaims.
+
+### Top 10 Minor Draft Picks (Sun/Fire/Air-prime)
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Call of the Dahan Ways** | 1 | Slow | Moon, Earth | Dahan-scaling Push |
+| 2 | **Gift of Constancy** | 0 | Fast | Sun, Plant, Animal | 0-cost Sun + Animal |
+| 3 | **Elemental Boon** | 0 | Fast | Sun, Moon, Fire, Air | Four-element flex 0-cost |
+| 4 | **Call to Bloodshed** | 0 | Slow | Moon, Animal | 0-cost Animal (Gather) |
+| 5 | **Tigers Hunting** | 3 | Fast | Fire, Animal | Cheap Major-adjacent; Fire + Animal |
+| 6 | **Drift Down to Rest** | 0 | Slow | Sun, Air, Plant | 0-cost Sun + Air |
+| 7 | **Visions of Fiery Doom** | 1 | Slow | Moon, Fire | Fire-feeder for Lead |
+| 8 | **Strange Tales of the Sky** | 1 | Fast | Moon, Air | Moon + Air flex |
+| 9 | **Gift of Power** | 1 | Fast | Moon | Moon utility |
+| 10 | **Entrancing Apparitions** | 1 | Fast | Moon, Air | Air-feeder |
+
+### Top 5 Major Draft Picks
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Powerstorm** | 3 | Fast | Sun, Fire, Air | All three Thunderspeaker-prime elements |
+| 2 | **Instruments of Their Own Ruin** | 3 | Fast | Fire, Air, Animal | Multi-land Dahan synergy |
+| 3 | **Vigor of the Breaking Dawn** | 4 | Fast | Sun, Plant | Cheap multi-land offense |
+| 4 | **Wrap in Wings of Sunlight** | 2 | Slow | Sun, Air | Sun + defensive utility |
+| 5 | **Trees Radiate Ancient Sanctity** | 3 | Fast | Moon, Sun, Plant, Earth | Board-wide Defend + Sun |
+
+### Cards to Avoid
+
+| Card | Reason |
+|------|--------|
+| Dahan-destroying Minors | Sworn to Victory compounds loss |
+| Blight-adding Majors | Dahan proximity = Presence risk |
+| Single-land single-target Majors without Dahan scaling | Manifestation already fills this slot |
 
 ## Adversary Matchup Matrix
 
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
-
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
-
-
-### Strategy Cliffs — per-adversary-level shifts that change Thunderspeaker's math
-
-```admonish warning title="Cliffs to watch"
-Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Thunderspeaker's profile (Fear 3, Offense 4, Control 5, Defense 2, Utility 1).
-```
-
-#### England L5 — Buildings +1 HP
-
-**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
-
-**Mitigation for Thunderspeaker**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
-
-#### England L3 — Coastal Lands build faster
-
-**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
-
-**Mitigation for Thunderspeaker**: Front-load coastal defense or disruption before T3's first Ravage.
-
-#### Russia L3+ — Dahan under pressure + fear suppression
-
-**What changes**: Russia's L3 escalation targets Dahan directly and suppresses Fear. **Spirits reliant on Dahan density (Shadows of the Dahan, Favors Called Due, Thunderspeaker synergies) lose a key engine.**
-
-**Mitigation for Thunderspeaker**: Pre-empt Dahan loss with Defend-heavy Minors (Dahan/Village-fortify cards); lean on Push/Gather Majors to offset Fear deficit.
-
-#### Habsburg Mining L5+ — Explorer/Town scaling
-
-**What changes**: Habsburg Mining L5+ adds extra Explorers and faster builds. **Aggressive fear-rush openers can get outpaced by raw Invader accumulation.**
-
-**Mitigation for Thunderspeaker**: Favor Major Powers with mass destruction (Jungle Hungers, Cleansing Floods, etc.) over Minor-heavy drafts.
-
-#### France (Plantation) — Dahan capture threatens your Dahan engine
-
-**What changes**: France's plantation rules convert Dahan to colonists, and Invaders occupy lands with Dahan. **Spirits whose innate/card math counts on Dahan density (Shadows-of-the-Dahan, Favors, Thunderspeaker) are downgraded.**
-
-**Mitigation for Thunderspeaker**: Play Defend Powers on Dahan lands; accept loss of range-extension budget.
-
-#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
-
-**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
-
-**Mitigation for Thunderspeaker**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
+| Adversary               | Opening | Rating | Matchup note                                                 |
+|-------------------------|---------|--------|--------------------------------------------------------------|
+| Brandenburg-Prussia     | A       | ★★★★☆  | Sudden Ambush + Manifestation is the Prussia-opener sigil    |
+| Sweden                  | A / B   | ★★★☆☆  | Build-spam punishes Dahan-dense lands                        |
+| France-Plantation       | A       | ★★★☆☆  | Dahan attract — Sworn to Victory risk elevated               |
+| Scotland                | A       | ★★★☆☆  | Coastal Cities are hard Dahan-counter targets                |
+| Russia                  | A       | ★★☆☆☆  | Pogrom events destroy Dahan → destroy Presence               |
+| England                 | B / C   | ★★★☆☆  | Drop Sudden Ambush; Opening C top-track                      |
+| Habsburg Mining         | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Habsburg Livestock      | A       | ★★☆☆☆  | `[VERIFY]`                                                   |
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+Prefer boards with **dense starting Dahan placement** (natural 2+ Dahan lands at start). Phantaskippy's board ratings not published; heuristic is "follow the Dahan."
 
 ## Game-Phase Strategy
 
-`[VERIFY: needs play data]`.
+### Early (T1–3)
+- G3 → G2 → G1 cadence. Manifestation on T1 if energy allows.
+- Words of Warning every Ravage turn.
+
+### Mid (T4–6)
+- Lead the Furious Assault L2 reliable.
+- Minor-draft integration; drift toward Powerstorm or Instruments Major.
+
+### Late (T7+)
+- L3 Lead (4 Sun + 3 Fire) for City-destruction.
+- Manifestation multi-cast via Reclaim cycles.
 
 ## Synergy Partners (Multiplayer)
 
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+Per BGG "Favorite Hammer" opening — **River preferred** (energy boon enables Manifestation every turn from T3), **Ocean secondary**.
+
+Also strong: **any energy-donor spirit** (Thunderspeaker is tight on energy through T2).
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
+```admonish failure title="Patterns to watch for"
+1. **Trying to stop every Build.** Thunderspeaker is a hammer, not a wall — concentrate force.
+2. **Rooting out small threats instead of concentrating force.** 2 Dahan × 2 Presence = Manifestation for 4 damage; split into two 1-Presence lands and you get 2 × 1 = 2.
+3. **Prioritizing innate-speed over positioning.** 4 Air is nice-to-have, not a priority draft.
+4. **Sloppy Dahan preservation.** Sworn to Victory cascades.
+5. **Treating Sudden Ambush as a keeper.** High cost, weed out after 1–2 reclaims.
+```
 
 ## Tempo Profile
 
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
-```
+| Turn | Target state                                              |
+|------|-----------------------------------------------------------|
+| 1    | G3 + Sudden Ambush + Manifestation (BP) or + Voice of Thunder |
+| 2    | G2 top + Words of Warning + Voice of Thunder              |
+| 3    | Reclaim + 2 Minors; Manifestation on best target          |
+| 4    | G2 + 3 plays; Lead the Furious Assault L2 reliable        |
+| 5–7  | Multi-Manifestation cycles via Reclaim + G1 bundle         |
+| 8+   | Lead L3 vs. City-heavy boards                              |
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/thunderspeaker.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Thunderspeaker](https://spiritislandwiki.com/index.php?title=Thunderspeaker).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/thunderspeaker.json` (Wiki-parsed 2026-04-23).
+- **Openings**: latentoctopus Opening 1/2/3 + Phantaskippy's Wiki guide.
+- **BGG**: [thread 1966212](https://boardgamegeek.com/thread/1966212/openings-thunderspeaker).

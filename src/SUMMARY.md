@@ -17,6 +17,10 @@
 - [Deliberate Play](fundamentals/deliberate-play.md)
 - [Terrain](fundamentals/terrain.md)
 - [Adjacency & Range](fundamentals/adjacency-and-range.md)
+- [Board Shaping: Push, Kill Zones, and Explore Lockout](fundamentals/board-shaping.md)
+- [Invader Lifecycle: Prevent Builds, Not Ravages](fundamentals/invader-lifecycle.md)
+- [Token Economies](fundamentals/token-economies.md)
+- [Reclaim Economy](fundamentals/reclaim-economy.md)
 - [Tempo](fundamentals/tempo.md)
 - [Presence Economy](fundamentals/presence-economy.md)
 - [Major vs. Minor: A Stats-Backed Framework](fundamentals/major-vs-minor.md)
@@ -125,6 +129,7 @@
 
 - [Statistics: Why and How](statistics/index.md)
 - [Reading mindwanderer](statistics/reading-mindwanderer.md)
+- [Reading Two-Spirit Synergy Data](statistics/reading-two-spirit-synergy.md)
 - [Digital vs. Tabletop](statistics/digital-vs-tabletop.md)
 - [Fear Card Expected Value](statistics/fear-card-expected-value.md)
 - [Event Deck Risk Profiles](statistics/event-deck-risk-profiles.md)
@@ -142,6 +147,8 @@
 
 - [Curated Card Reference](appendices/card-reference.md)
 - [Fear, Blight & Event Decks](appendices/fear-blight-event-decks.md)
+- [Matchup Axis Reference](appendices/matchup-axis.md)
+- [Adversary Hidden Loss Conditions](appendices/adversary-hidden-losses.md)
 - [Glossary](appendices/glossary.md)
 - [Sources & Citations](appendices/sources.md)
 - [Meta Changelog](appendices/changelog-of-meta.md)

@@ -1,44 +1,721 @@
 {
   "schema_version": "0.1",
-  "last_updated": "2026-04-19",
+  "last_updated": "2026-04-23",
   "spirits": [
-    {"slug": "river-surges-in-sunlight", "name": "River Surges in Sunlight", "expansion": "base", "complexity": "low", "play_difficulty": 0, "archetypes": ["board-control", "push-gather"], "primary_elements": ["water", "sun", "earth"], "draft_bias": "mixed", "chapter_path": "spirits/low/river-surges-in-sunlight.md", "brett_priority": false, "chapter_status": "stub"},
-    {"slug": "lightning-swift-strike", "name": "Lightning's Swift Strike", "expansion": "base", "complexity": "low", "play_difficulty": 0, "archetypes": ["direct-damage", "energy-heavy"], "primary_elements": ["air", "fire"], "draft_bias": "minor-heavy", "chapter_path": "spirits/low/lightning-swift-strike.md", "brett_priority": false, "chapter_status": "stub"},
-    {"slug": "shadows-flicker-like-flame", "name": "Shadows Flicker Like Flame", "expansion": "base", "complexity": "low", "play_difficulty": 1, "archetypes": ["fear-farm", "strife", "stealth"], "primary_elements": ["moon", "fire", "air"], "draft_bias": "mixed", "chapter_path": "spirits/low/shadows-flicker-like-flame.md", "brett_priority": true, "chapter_status": "full"},
-    {"slug": "vital-strength-of-the-earth", "name": "Vital Strength of the Earth", "expansion": "base", "complexity": "low", "play_difficulty": 0, "archetypes": ["defend-and-outlast", "direct-damage"], "primary_elements": ["earth", "plant"], "draft_bias": "major-heavy", "chapter_path": "spirits/low/vital-strength-of-the-earth.md", "brett_priority": false, "chapter_status": "stub"},
-    {"slug": "ocean-hungry-grasp", "name": "Ocean's Hungry Grasp", "expansion": "base", "complexity": "low", "play_difficulty": 1, "archetypes": ["coastal", "drown"], "primary_elements": ["water", "moon", "air"], "draft_bias": "mixed", "chapter_path": "spirits/low/ocean-hungry-grasp.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "a-spread-of-rampant-green", "name": "A Spread of Rampant Green", "expansion": "base", "complexity": "low", "play_difficulty": 1, "archetypes": ["terrain-control", "spread"], "primary_elements": ["plant", "water"], "draft_bias": "major-heavy", "chapter_path": "spirits/low/a-spread-of-rampant-green.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "thunderspeaker", "name": "Thunderspeaker", "expansion": "base", "complexity": "low", "play_difficulty": 1, "archetypes": ["dahan-multiplier", "fear-generation"], "primary_elements": ["sun", "air", "fire"], "draft_bias": "mixed", "chapter_path": "spirits/low/thunderspeaker.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "bringer-of-dreams-and-nightmares", "name": "Bringer of Dreams and Nightmares", "expansion": "base", "complexity": "low", "play_difficulty": 2, "archetypes": ["fear-farm", "dahan-interaction"], "primary_elements": ["moon", "air"], "draft_bias": "mixed", "chapter_path": "spirits/low/bringer-of-dreams-and-nightmares.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "sharp-fangs-behind-the-leaves", "name": "Sharp Fangs Behind the Leaves", "expansion": "branch-and-claw", "complexity": "moderate", "play_difficulty": 1, "archetypes": ["beast-scaling", "direct-damage"], "primary_elements": ["plant", "animal"], "draft_bias": "minor-heavy", "chapter_path": "spirits/moderate/sharp-fangs-behind-the-leaves.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "keeper-of-the-forbidden-wilds", "name": "Keeper of the Forbidden Wilds", "expansion": "branch-and-claw", "complexity": "moderate", "play_difficulty": 2, "archetypes": ["major-heavy", "defend"], "primary_elements": ["plant", "earth", "sun"], "draft_bias": "major-heavy", "chapter_path": "spirits/moderate/keeper-of-the-forbidden-wilds.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "heart-of-the-wildfire", "name": "Heart of the Wildfire", "expansion": "promo-1", "complexity": "moderate", "play_difficulty": 2, "archetypes": ["direct-damage", "blight-positive"], "primary_elements": ["fire", "plant"], "draft_bias": "flexible", "chapter_path": "spirits/moderate/heart-of-the-wildfire.md", "brett_priority": false, "chapter_status": "stub"},
-    {"slug": "serpent-slumbering-beneath-the-island", "name": "Serpent Slumbering Beneath the Island", "expansion": "promo-1", "complexity": "moderate", "play_difficulty": 3, "archetypes": ["slow-build", "major-heavy"], "primary_elements": ["fire", "earth", "water", "animal"], "draft_bias": "mixed", "chapter_path": "spirits/moderate/serpent-slumbering-beneath-the-island.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "downpour-drenches-the-world", "name": "Downpour Drenches the World", "expansion": "promo-2", "complexity": "moderate", "play_difficulty": 2, "archetypes": ["isolate", "building-damage"], "primary_elements": ["water", "plant"], "draft_bias": "minor-heavy", "chapter_path": "spirits/moderate/downpour-drenches-the-world.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "finder-of-paths-unseen", "name": "Finder of Paths Unseen", "expansion": "promo-2", "complexity": "moderate", "play_difficulty": 3, "archetypes": ["mobility", "vision"], "primary_elements": ["moon", "air", "water"], "draft_bias": "mixed", "chapter_path": "spirits/moderate/finder-of-paths-unseen.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "devouring-teeth-lurk-underfoot", "name": "Devouring Teeth Lurk Underfoot", "expansion": "horizons", "complexity": "low", "play_difficulty": 0, "archetypes": ["simple-damage"], "primary_elements": ["earth", "plant"], "draft_bias": "mixed", "chapter_path": "spirits/moderate/devouring-teeth-lurk-underfoot.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "eyes-watch-from-the-trees", "name": "Eyes Watch from the Trees", "expansion": "horizons", "complexity": "low", "play_difficulty": 0, "archetypes": ["support"], "primary_elements": ["plant", "air"], "draft_bias": "mixed", "chapter_path": "spirits/moderate/eyes-watch-from-the-trees.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "fathomless-mud-of-the-swamp", "name": "Fathomless Mud of the Swamp", "expansion": "horizons", "complexity": "low", "play_difficulty": 0, "archetypes": ["defend"], "primary_elements": ["earth", "water"], "draft_bias": "mixed", "chapter_path": "spirits/moderate/fathomless-mud-of-the-swamp.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "rising-heat-of-stone-and-sand", "name": "Rising Heat of Stone and Sand", "expansion": "horizons", "complexity": "low", "play_difficulty": 1, "archetypes": ["direct-damage"], "primary_elements": ["fire", "earth"], "draft_bias": "mixed", "chapter_path": "spirits/moderate/rising-heat-of-stone-and-sand.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "sun-bright-whirlwind", "name": "Sun-Bright Whirlwind", "expansion": "horizons", "complexity": "low", "play_difficulty": 1, "archetypes": ["mobility"], "primary_elements": ["sun", "air"], "draft_bias": "mixed", "chapter_path": "spirits/moderate/sun-bright-whirlwind.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "shifting-memory-of-ages", "name": "Shifting Memory of Ages", "expansion": "jagged-earth", "complexity": "moderate", "play_difficulty": 2, "archetypes": ["card-focused", "scaling"], "primary_elements": ["earth", "moon", "air"], "draft_bias": "mixed", "chapter_path": "spirits/moderate/shifting-memory-of-ages.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "grinning-trickster", "name": "Grinning Trickster Stirs Up Trouble", "expansion": "jagged-earth", "complexity": "moderate", "play_difficulty": 2, "archetypes": ["disruption", "random"], "primary_elements": ["moon", "fire", "air"], "draft_bias": "minor-heavy", "chapter_path": "spirits/moderate/grinning-trickster.md", "brett_priority": false, "chapter_status": "stub"},
-    {"slug": "many-minds-move-as-one", "name": "Many Minds Move as One", "expansion": "jagged-earth", "complexity": "moderate", "play_difficulty": 2, "archetypes": ["fear-farm", "beast-scaling"], "primary_elements": ["air", "animal"], "draft_bias": "minor-heavy", "chapter_path": "spirits/moderate/many-minds-move-as-one.md", "brett_priority": true, "chapter_status": "stub", "rei_guide": "https://boardgamegeek.com/thread/2774198/guide-many-minds-move-as-one"},
-    {"slug": "shroud-of-silent-mist", "name": "Shroud of Silent Mist", "expansion": "jagged-earth", "complexity": "moderate", "play_difficulty": 3, "archetypes": ["fear-farm", "damaged-invader"], "primary_elements": ["moon", "air", "water"], "draft_bias": "minor-heavy", "chapter_path": "spirits/moderate/shroud-of-silent-mist.md", "brett_priority": true, "chapter_status": "stub", "rei_guide": "https://boardgamegeek.com/thread/2722115/guide-shroud-of-silent-mist"},
-    {"slug": "vengeance-burning-plague", "name": "Vengeance as a Burning Plague", "expansion": "jagged-earth", "complexity": "moderate", "play_difficulty": 2, "archetypes": ["disease", "blight-positive", "late-game-juggernaut"], "primary_elements": ["fire", "water", "animal"], "draft_bias": "mixed", "chapter_path": "spirits/moderate/vengeance-burning-plague.md", "brett_priority": true, "chapter_status": "stub", "rei_guide": "https://boardgamegeek.com/thread/2709070/guide-vengeance-as-a-burning-plague"},
-    {"slug": "volcano-looming-high", "name": "Volcano Looming High", "expansion": "jagged-earth", "complexity": "moderate", "play_difficulty": 3, "archetypes": ["eruption", "self-destroy"], "primary_elements": ["fire", "earth"], "draft_bias": "mixed", "chapter_path": "spirits/moderate/volcano-looming-high.md", "brett_priority": false, "chapter_status": "stub"},
-    {"slug": "stone-unyielding-defiance", "name": "Stone's Unyielding Defiance", "expansion": "jagged-earth", "complexity": "high", "play_difficulty": 2, "archetypes": ["defend", "major-heavy", "sacred-site"], "primary_elements": ["earth", "fire"], "draft_bias": "major-heavy", "chapter_path": "spirits/high/stone-unyielding-defiance.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "lure-of-the-deep-wilderness", "name": "Lure of the Deep Wilderness", "expansion": "jagged-earth", "complexity": "high", "play_difficulty": 2, "archetypes": ["lure", "isolate"], "primary_elements": ["moon", "air", "plant"], "draft_bias": "mixed", "chapter_path": "spirits/high/lure-of-the-deep-wilderness.md", "brett_priority": false, "chapter_status": "stub"},
-    {"slug": "fractured-days-split-the-sky", "name": "Fractured Days Split the Sky", "expansion": "jagged-earth", "complexity": "high", "play_difficulty": 3, "archetypes": ["time-manipulation", "major-heavy"], "primary_elements": ["moon", "air", "sun"], "draft_bias": "mixed", "chapter_path": "spirits/high/fractured-days-split-the-sky.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "starlight-seeks-its-form", "name": "Starlight Seeks Its Form", "expansion": "jagged-earth", "complexity": "high", "play_difficulty": 3, "archetypes": ["transformation", "flexible"], "primary_elements": ["any"], "draft_bias": "mixed", "chapter_path": "spirits/high/starlight-seeks-its-form.md", "brett_priority": false, "chapter_status": "stub"},
-    {"slug": "wounded-waters-bleeding", "name": "Wounded Waters Bleeding", "expansion": "nature-incarnate", "complexity": "high", "play_difficulty": 2, "archetypes": ["incarna", "water"], "primary_elements": ["water"], "draft_bias": "mixed", "chapter_path": "spirits/high/wounded-waters-bleeding.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "dances-up-earthquakes", "name": "Dances Up Earthquakes", "expansion": "nature-incarnate", "complexity": "high", "play_difficulty": 3, "archetypes": ["incarna", "earth"], "primary_elements": ["earth"], "draft_bias": "mixed", "chapter_path": "spirits/high/dances-up-earthquakes.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "ember-eyed-behemoth", "name": "Ember-Eyed Behemoth", "expansion": "nature-incarnate", "complexity": "high", "play_difficulty": 3, "archetypes": ["incarna", "fire"], "primary_elements": ["fire", "plant"], "draft_bias": "flexible", "chapter_path": "spirits/high/ember-eyed-behemoth.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "relentless-gaze-of-the-sun", "name": "Relentless Gaze of the Sun", "expansion": "nature-incarnate", "complexity": "high", "play_difficulty": 3, "archetypes": ["incarna", "sun"], "primary_elements": ["sun"], "draft_bias": "mixed", "chapter_path": "spirits/high/relentless-gaze-of-the-sun.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "towering-roots-of-the-jungle", "name": "Towering Roots of the Jungle", "expansion": "nature-incarnate", "complexity": "high", "play_difficulty": 3, "archetypes": ["incarna", "plant"], "primary_elements": ["plant", "earth"], "draft_bias": "mixed", "chapter_path": "spirits/high/towering-roots-of-the-jungle.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "hearth-vigil", "name": "Hearth-Vigil", "expansion": "nature-incarnate", "complexity": "high", "play_difficulty": 2, "archetypes": ["incarna", "dahan-protection"], "primary_elements": ["fire", "sun"], "draft_bias": "mixed", "chapter_path": "spirits/high/hearth-vigil.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "breath-of-darkness", "name": "Breath of Darkness Down Your Spine", "expansion": "nature-incarnate", "complexity": "high", "play_difficulty": 3, "archetypes": ["incarna", "fear"], "primary_elements": ["moon", "air"], "draft_bias": "mixed", "chapter_path": "spirits/high/breath-of-darkness.md", "brett_priority": true, "chapter_status": "stub"},
-    {"slug": "wandering-voice", "name": "Wandering Voice Keens Delirium", "expansion": "nature-incarnate", "complexity": "very-high", "play_difficulty": 3, "archetypes": ["incarna", "strife"], "primary_elements": ["air", "moon"], "draft_bias": "mixed", "chapter_path": "spirits/very-high/wandering-voice.md", "brett_priority": true, "chapter_status": "stub"}
+    {
+      "slug": "river-surges-in-sunlight",
+      "name": "River Surges in Sunlight",
+      "expansion": "base",
+      "complexity": "low",
+      "play_difficulty": 0,
+      "archetypes": [
+        "board-control",
+        "push-gather"
+      ],
+      "primary_elements": [
+        "water",
+        "sun",
+        "earth"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/low/river-surges-in-sunlight.md",
+      "brett_priority": false,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "lightning-swift-strike",
+      "name": "Lightning's Swift Strike",
+      "expansion": "base",
+      "complexity": "low",
+      "play_difficulty": 0,
+      "archetypes": [
+        "direct-damage",
+        "energy-heavy"
+      ],
+      "primary_elements": [
+        "air",
+        "fire"
+      ],
+      "draft_bias": "minor-heavy",
+      "chapter_path": "spirits/low/lightning-swift-strike.md",
+      "brett_priority": false,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "shadows-flicker-like-flame",
+      "name": "Shadows Flicker Like Flame",
+      "expansion": "base",
+      "complexity": "low",
+      "play_difficulty": 1,
+      "archetypes": [
+        "fear-farm",
+        "strife",
+        "stealth"
+      ],
+      "primary_elements": [
+        "moon",
+        "fire",
+        "air"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/low/shadows-flicker-like-flame.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "vital-strength-of-the-earth",
+      "name": "Vital Strength of the Earth",
+      "expansion": "base",
+      "complexity": "low",
+      "play_difficulty": 0,
+      "archetypes": [
+        "defend-and-outlast",
+        "direct-damage"
+      ],
+      "primary_elements": [
+        "earth",
+        "plant"
+      ],
+      "draft_bias": "major-heavy",
+      "chapter_path": "spirits/low/vital-strength-of-the-earth.md",
+      "brett_priority": false,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "ocean-hungry-grasp",
+      "name": "Ocean's Hungry Grasp",
+      "expansion": "base",
+      "complexity": "low",
+      "play_difficulty": 1,
+      "archetypes": [
+        "coastal",
+        "drown"
+      ],
+      "primary_elements": [
+        "water",
+        "moon",
+        "air"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/low/ocean-hungry-grasp.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "a-spread-of-rampant-green",
+      "name": "A Spread of Rampant Green",
+      "expansion": "base",
+      "complexity": "low",
+      "play_difficulty": 1,
+      "archetypes": [
+        "terrain-control",
+        "spread"
+      ],
+      "primary_elements": [
+        "plant",
+        "water"
+      ],
+      "draft_bias": "major-heavy",
+      "chapter_path": "spirits/low/a-spread-of-rampant-green.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "thunderspeaker",
+      "name": "Thunderspeaker",
+      "expansion": "base",
+      "complexity": "low",
+      "play_difficulty": 1,
+      "archetypes": [
+        "dahan-multiplier",
+        "fear-generation"
+      ],
+      "primary_elements": [
+        "sun",
+        "air",
+        "fire"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/low/thunderspeaker.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "bringer-of-dreams-and-nightmares",
+      "name": "Bringer of Dreams and Nightmares",
+      "expansion": "base",
+      "complexity": "low",
+      "play_difficulty": 2,
+      "archetypes": [
+        "fear-farm",
+        "dahan-interaction"
+      ],
+      "primary_elements": [
+        "moon",
+        "air"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/low/bringer-of-dreams-and-nightmares.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "sharp-fangs-behind-the-leaves",
+      "name": "Sharp Fangs Behind the Leaves",
+      "expansion": "branch-and-claw",
+      "complexity": "moderate",
+      "play_difficulty": 1,
+      "archetypes": [
+        "beast-scaling",
+        "direct-damage"
+      ],
+      "primary_elements": [
+        "plant",
+        "animal"
+      ],
+      "draft_bias": "minor-heavy",
+      "chapter_path": "spirits/moderate/sharp-fangs-behind-the-leaves.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "keeper-of-the-forbidden-wilds",
+      "name": "Keeper of the Forbidden Wilds",
+      "expansion": "branch-and-claw",
+      "complexity": "moderate",
+      "play_difficulty": 2,
+      "archetypes": [
+        "major-heavy",
+        "defend"
+      ],
+      "primary_elements": [
+        "plant",
+        "earth",
+        "sun"
+      ],
+      "draft_bias": "major-heavy",
+      "chapter_path": "spirits/moderate/keeper-of-the-forbidden-wilds.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "heart-of-the-wildfire",
+      "name": "Heart of the Wildfire",
+      "expansion": "promo-1",
+      "complexity": "moderate",
+      "play_difficulty": 2,
+      "archetypes": [
+        "direct-damage",
+        "blight-positive"
+      ],
+      "primary_elements": [
+        "fire",
+        "plant"
+      ],
+      "draft_bias": "flexible",
+      "chapter_path": "spirits/moderate/heart-of-the-wildfire.md",
+      "brett_priority": false,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "serpent-slumbering-beneath-the-island",
+      "name": "Serpent Slumbering Beneath the Island",
+      "expansion": "promo-1",
+      "complexity": "moderate",
+      "play_difficulty": 3,
+      "archetypes": [
+        "slow-build",
+        "major-heavy"
+      ],
+      "primary_elements": [
+        "fire",
+        "earth",
+        "water",
+        "animal"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/moderate/serpent-slumbering-beneath-the-island.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "downpour-drenches-the-world",
+      "name": "Downpour Drenches the World",
+      "expansion": "promo-2",
+      "complexity": "moderate",
+      "play_difficulty": 2,
+      "archetypes": [
+        "isolate",
+        "building-damage"
+      ],
+      "primary_elements": [
+        "water",
+        "plant"
+      ],
+      "draft_bias": "minor-heavy",
+      "chapter_path": "spirits/moderate/downpour-drenches-the-world.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "finder-of-paths-unseen",
+      "name": "Finder of Paths Unseen",
+      "expansion": "promo-2",
+      "complexity": "moderate",
+      "play_difficulty": 3,
+      "archetypes": [
+        "mobility",
+        "vision"
+      ],
+      "primary_elements": [
+        "moon",
+        "air",
+        "water"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/moderate/finder-of-paths-unseen.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "devouring-teeth-lurk-underfoot",
+      "name": "Devouring Teeth Lurk Underfoot",
+      "expansion": "horizons",
+      "complexity": "low",
+      "play_difficulty": 0,
+      "archetypes": [
+        "simple-damage"
+      ],
+      "primary_elements": [
+        "earth",
+        "plant"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/moderate/devouring-teeth-lurk-underfoot.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "eyes-watch-from-the-trees",
+      "name": "Eyes Watch from the Trees",
+      "expansion": "horizons",
+      "complexity": "low",
+      "play_difficulty": 0,
+      "archetypes": [
+        "support"
+      ],
+      "primary_elements": [
+        "plant",
+        "air"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/moderate/eyes-watch-from-the-trees.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "fathomless-mud-of-the-swamp",
+      "name": "Fathomless Mud of the Swamp",
+      "expansion": "horizons",
+      "complexity": "low",
+      "play_difficulty": 0,
+      "archetypes": [
+        "defend"
+      ],
+      "primary_elements": [
+        "earth",
+        "water"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/moderate/fathomless-mud-of-the-swamp.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "rising-heat-of-stone-and-sand",
+      "name": "Rising Heat of Stone and Sand",
+      "expansion": "horizons",
+      "complexity": "low",
+      "play_difficulty": 1,
+      "archetypes": [
+        "direct-damage"
+      ],
+      "primary_elements": [
+        "fire",
+        "earth"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/moderate/rising-heat-of-stone-and-sand.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "sun-bright-whirlwind",
+      "name": "Sun-Bright Whirlwind",
+      "expansion": "horizons",
+      "complexity": "low",
+      "play_difficulty": 1,
+      "archetypes": [
+        "mobility"
+      ],
+      "primary_elements": [
+        "sun",
+        "air"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/moderate/sun-bright-whirlwind.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "shifting-memory-of-ages",
+      "name": "Shifting Memory of Ages",
+      "expansion": "jagged-earth",
+      "complexity": "moderate",
+      "play_difficulty": 2,
+      "archetypes": [
+        "card-focused",
+        "scaling"
+      ],
+      "primary_elements": [
+        "earth",
+        "moon",
+        "air"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/moderate/shifting-memory-of-ages.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "grinning-trickster",
+      "name": "Grinning Trickster Stirs Up Trouble",
+      "expansion": "jagged-earth",
+      "complexity": "moderate",
+      "play_difficulty": 2,
+      "archetypes": [
+        "disruption",
+        "random"
+      ],
+      "primary_elements": [
+        "moon",
+        "fire",
+        "air"
+      ],
+      "draft_bias": "minor-heavy",
+      "chapter_path": "spirits/moderate/grinning-trickster.md",
+      "brett_priority": false,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "many-minds-move-as-one",
+      "name": "Many Minds Move as One",
+      "expansion": "jagged-earth",
+      "complexity": "moderate",
+      "play_difficulty": 2,
+      "archetypes": [
+        "fear-farm",
+        "beast-scaling"
+      ],
+      "primary_elements": [
+        "air",
+        "animal"
+      ],
+      "draft_bias": "minor-heavy",
+      "chapter_path": "spirits/moderate/many-minds-move-as-one.md",
+      "brett_priority": true,
+      "chapter_status": "full",
+      "rei_guide": "https://boardgamegeek.com/thread/2774198/guide-many-minds-move-as-one"
+    },
+    {
+      "slug": "shroud-of-silent-mist",
+      "name": "Shroud of Silent Mist",
+      "expansion": "jagged-earth",
+      "complexity": "moderate",
+      "play_difficulty": 3,
+      "archetypes": [
+        "fear-farm",
+        "damaged-invader"
+      ],
+      "primary_elements": [
+        "moon",
+        "air",
+        "water"
+      ],
+      "draft_bias": "minor-heavy",
+      "chapter_path": "spirits/moderate/shroud-of-silent-mist.md",
+      "brett_priority": true,
+      "chapter_status": "full",
+      "rei_guide": "https://boardgamegeek.com/thread/2722115/guide-shroud-of-silent-mist"
+    },
+    {
+      "slug": "vengeance-burning-plague",
+      "name": "Vengeance as a Burning Plague",
+      "expansion": "jagged-earth",
+      "complexity": "moderate",
+      "play_difficulty": 2,
+      "archetypes": [
+        "disease",
+        "blight-positive",
+        "late-game-juggernaut"
+      ],
+      "primary_elements": [
+        "fire",
+        "water",
+        "animal"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/moderate/vengeance-burning-plague.md",
+      "brett_priority": true,
+      "chapter_status": "full",
+      "rei_guide": "https://boardgamegeek.com/thread/2709070/guide-vengeance-as-a-burning-plague"
+    },
+    {
+      "slug": "volcano-looming-high",
+      "name": "Volcano Looming High",
+      "expansion": "jagged-earth",
+      "complexity": "moderate",
+      "play_difficulty": 3,
+      "archetypes": [
+        "eruption",
+        "self-destroy"
+      ],
+      "primary_elements": [
+        "fire",
+        "earth"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/moderate/volcano-looming-high.md",
+      "brett_priority": false,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "stone-unyielding-defiance",
+      "name": "Stone's Unyielding Defiance",
+      "expansion": "jagged-earth",
+      "complexity": "high",
+      "play_difficulty": 2,
+      "archetypes": [
+        "defend",
+        "major-heavy",
+        "sacred-site"
+      ],
+      "primary_elements": [
+        "earth",
+        "fire"
+      ],
+      "draft_bias": "major-heavy",
+      "chapter_path": "spirits/high/stone-unyielding-defiance.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "lure-of-the-deep-wilderness",
+      "name": "Lure of the Deep Wilderness",
+      "expansion": "jagged-earth",
+      "complexity": "high",
+      "play_difficulty": 2,
+      "archetypes": [
+        "lure",
+        "isolate"
+      ],
+      "primary_elements": [
+        "moon",
+        "air",
+        "plant"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/high/lure-of-the-deep-wilderness.md",
+      "brett_priority": false,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "fractured-days-split-the-sky",
+      "name": "Fractured Days Split the Sky",
+      "expansion": "jagged-earth",
+      "complexity": "high",
+      "play_difficulty": 3,
+      "archetypes": [
+        "time-manipulation",
+        "major-heavy"
+      ],
+      "primary_elements": [
+        "moon",
+        "air",
+        "sun"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/high/fractured-days-split-the-sky.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "starlight-seeks-its-form",
+      "name": "Starlight Seeks Its Form",
+      "expansion": "jagged-earth",
+      "complexity": "high",
+      "play_difficulty": 3,
+      "archetypes": [
+        "transformation",
+        "flexible"
+      ],
+      "primary_elements": [
+        "any"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/high/starlight-seeks-its-form.md",
+      "brett_priority": false,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "wounded-waters-bleeding",
+      "name": "Wounded Waters Bleeding",
+      "expansion": "nature-incarnate",
+      "complexity": "high",
+      "play_difficulty": 2,
+      "archetypes": [
+        "incarna",
+        "water"
+      ],
+      "primary_elements": [
+        "water"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/high/wounded-waters-bleeding.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "dances-up-earthquakes",
+      "name": "Dances Up Earthquakes",
+      "expansion": "nature-incarnate",
+      "complexity": "high",
+      "play_difficulty": 3,
+      "archetypes": [
+        "incarna",
+        "earth"
+      ],
+      "primary_elements": [
+        "earth"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/high/dances-up-earthquakes.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "ember-eyed-behemoth",
+      "name": "Ember-Eyed Behemoth",
+      "expansion": "nature-incarnate",
+      "complexity": "high",
+      "play_difficulty": 3,
+      "archetypes": [
+        "incarna",
+        "fire"
+      ],
+      "primary_elements": [
+        "fire",
+        "plant"
+      ],
+      "draft_bias": "flexible",
+      "chapter_path": "spirits/high/ember-eyed-behemoth.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "relentless-gaze-of-the-sun",
+      "name": "Relentless Gaze of the Sun",
+      "expansion": "nature-incarnate",
+      "complexity": "high",
+      "play_difficulty": 3,
+      "archetypes": [
+        "incarna",
+        "sun"
+      ],
+      "primary_elements": [
+        "sun"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/high/relentless-gaze-of-the-sun.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "towering-roots-of-the-jungle",
+      "name": "Towering Roots of the Jungle",
+      "expansion": "nature-incarnate",
+      "complexity": "high",
+      "play_difficulty": 3,
+      "archetypes": [
+        "incarna",
+        "plant"
+      ],
+      "primary_elements": [
+        "plant",
+        "earth"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/high/towering-roots-of-the-jungle.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "hearth-vigil",
+      "name": "Hearth-Vigil",
+      "expansion": "nature-incarnate",
+      "complexity": "high",
+      "play_difficulty": 2,
+      "archetypes": [
+        "incarna",
+        "dahan-protection"
+      ],
+      "primary_elements": [
+        "fire",
+        "sun"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/high/hearth-vigil.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "breath-of-darkness",
+      "name": "Breath of Darkness Down Your Spine",
+      "expansion": "nature-incarnate",
+      "complexity": "high",
+      "play_difficulty": 3,
+      "archetypes": [
+        "incarna",
+        "fear"
+      ],
+      "primary_elements": [
+        "moon",
+        "air"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/high/breath-of-darkness.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    },
+    {
+      "slug": "wandering-voice",
+      "name": "Wandering Voice Keens Delirium",
+      "expansion": "nature-incarnate",
+      "complexity": "very-high",
+      "play_difficulty": 3,
+      "archetypes": [
+        "incarna",
+        "strife"
+      ],
+      "primary_elements": [
+        "air",
+        "moon"
+      ],
+      "draft_bias": "mixed",
+      "chapter_path": "spirits/very-high/wandering-voice.md",
+      "brett_priority": true,
+      "chapter_status": "full"
+    }
   ],
   "removed_apocrypha": [
     "Covets Gleaming Shards of Earth (fan-made; not in any expansion)",

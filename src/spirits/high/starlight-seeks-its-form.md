@@ -1,329 +1,303 @@
 # Starlight Seeks Its Form
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text parsed via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing paraphrased from [jyonker13's BGG openings thread 2518429](https://boardgamegeek.com/thread/2518429/openings-starlight-seeks-its-form) + Carlo Gon's "Casino Starlight" (BGG 2624676) + Zubon's three-form framework.
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Jagged Earth                                        |
-| Complexity            | Very High                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "three" — see Growth Options below         |
-| Power summary (1–5)   | Offense 1 · Control 1 · Fear 1 · Defense 2 · Utility 2             |
-| Primary Elements      | Moon, Air, Earth, Fire (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Jagged Earth                                       |
+| Complexity            | Very High                                          |
+| Play Difficulty       | `[VERIFY]`                                         |
+| Growth type           | "one" — pick one growth per turn; **6 Presence tracks** (!) |
+| Power summary (1–5)   | Offense 1 · Control 1 · Fear 1 · Defense 2 · Utility 2 |
+| Primary Elements      | **All eight** — Starlight is element-flexible by design |
+| Special Rules         | Growth Begets Growth (6 tracks; emptying a track unlocks a Growth choice permanently; the alternative is locked-out forever) |
+| Aspects               | None                                               |
+| Rei's Guide           | Not covered                                        |
+| latentoctopus         | Not listed                                         |
+| BGG                   | [jyonker13 thread 2518429](https://boardgamegeek.com/thread/2518429) + [Carlo Gon's Casino Starlight 2624676](https://boardgamegeek.com/thread/2624676) |
 ```
 
 ## Spirit Overview — Framing
 
+Starlight is the **shape-shifter** — its identity emerges mid-game from which tracks you unlock and which innates your draft supports. jyonker13:
+
+> Starlight is a Spirit that can truly be anything… its arsenal of 3-Element innates ensures that you'll find something to do with anything that you draft. That being said, your ability to pursue these various avenues is tempered by what comes your way, in a 'wand-chooses-the-wizard-mister-potter' kind of situation.
+
+**jhaelen**:
+
+> It's like a 'mystery box': you never know what kind of spirit you'll end up playing.
+
 **Wiki-printed playstyle note**:
 
-> A build-your-own-Spirit, capable of going in many different directions based on Elements picked, Growth choices selected, and Power Cards kept. Has a very high personal/visual complexity and a huge number of early-game options, but doesn't alter play much for other players at the table. As it commits to choices, it loses versatility - not all paths will be good (or even possible) at all things. It especially wants a measure of adaptation to early Power Cards, rather than trying to pre-select a strategy.
+> Six Presence tracks. Emptying a track unlocks one of two Growth choices permanently; the other stays locked for the game.
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+**Complexity signal**: Very High. Not only does every game play differently, but each opening commits you to half the track-choices for the rest of the game. Planning Growth-choice selections is a 4-dimensional optimization.
 
 ## Starting Setup
 
-> Put 1 Presence on your starting board, in a land with Blight.
+> Put **1 Presence** on your starting board, in a land with Blight.
 
-## Growth Options (three)
+## Growth Options (growthtype: "one" — pick one per turn; 6-track model)
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=reclaim1 |
-| G2 | first=addpresence0 |
-| G3 | first=energy1 |
-| G4 | first=movepresence3 |
+Starlight has **6 Presence tracks**, each with a Growth-unlock. Emptying a track picks one of two locked choices:
 
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+| Track | Choices (pick 1, other locked forever) |
+|-------|------------------------------------------|
+| **1** | Reclaim Half **OR** Reclaim Full         |
+| **2** | +3 Energy **OR** +1 Card Play           |
+| **3** | Gain Power Card **OR** Move Presence 1  |
+| **4** | +1 Extra Card Play **OR** Move Presence 2 |
+| **5** | (energy/element spaces — see track)      |
+| **6** | (energy/element spaces — see track)      |
 
-## Presence Tracks
+Each Presence add from a spaces-track unlocks its associated element.
 
-As Presence leaves each track, these values are revealed:
+## Presence Tracks (partial Wiki parse — structure)
 
-- **Energy track**: empty, growthreclaimhalf, growthdivider, growthgainpowercard, growthmovepresence1
-- **Card-play track**: empty, growth3energy, growthdivider, growthplusonecardplay, growthmovepresence2
+- **Track 1 (energy)**: empty → growthreclaimhalf → growthdivider → growthgainpowercard → growthmovepresence1
+- **Track 2 (CP)**: empty → growth3energy → growthdivider → growthplusonecardplay → growthmovepresence2
+
+Full 6-track mapping `[VERIFY from physical spirit panel]`.
+
+**Starting income**: 0 Energy, 1 Card Play. Grows dramatically via track-element spaces.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: Growth Begets Growth
 
-GROWTH BEGETS GROWTH You have 6 Presence tracks. (As usual, you may add Presence from any track.) 4 of the Presence tracks are next to rows of Growth choices: these choices start unavailable. Upon emptying a Growth track, pick one of its two Growth choices to be immediately available. The other stays unavailable for the rest of the game (cover with a spare piece). After you add Presence from a space marked {{energyplus1}}, gain 1 Energy. SLOWLY COALESCING NATURE After revealing an {{gainelement}}, place 1 Element Marker of your choice on it. That element is permanent and is constantly available (As if pre-printed on the Presence track.)
+> You have 6 Presence tracks. (As usual, you may add Presence from any track.) 4 of the Presence tracks are next to rows of Growth choices: these choices start unavailable. Upon emptying a Growth track, pick one of its two Growth choices to be immediately available. The other stays unavailable for the rest of the game.
 
-### Innate: AIR MOVES, EARTH ENDURES
+The spirit-defining rule — **each track pick is a game-long commitment**. Jonah's heuristic:
 
-- **Speed**: fast · **Range**: 1 · **Target**: any
+> **Tracks 1 and 3 = Reclaim-vs-Gain-Power**: pick opposite halves of each so you always have one of each mechanism.
+> **Tracks 2 and 4 = Majors-vs-Plays**: left = money/damage with fewer cards; right = extra Play.
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | Push up to 2 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> or 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">. |
-| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | Defend 5. |
+## Innates (5 total — Starlight has more innates than any other spirit)
 
+### Air Moves, Earth Endures (Fast, Range 1)
+| Threshold | Effect |
+|-----------|--------|
+| 3 Air     | Push up to 2 Explorer or 1 Town |
+| 3 Earth   | Defend 5 |
 
-### Innate: FIRE BURNS, WATER SOOTHES
+### Fire Burns, Water Soothes (Slow, Range 1)
+| Threshold | Effect |
+|-----------|--------|
+| 3 Fire    | 1 Fear. 2 Damage |
+| 3 Water   | Remove 1 Blight |
 
-- **Speed**: slow · **Range**: 1 (optionally from a sacred site) · **Target**: any
+### Wood Seeks Growth, Humans Seek Freedom (Slow, Range 2)
+| Threshold | Effect |
+|-----------|--------|
+| 3 Plant   | Target Spirit with Presence in target land gains a Power Card |
+| 3 Animal  | 1 Damage per Dahan OR Push up to 3 Dahan |
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 2 Damage. |
-| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. |
+### Sidereal Guidance (Slow, Range 1)
+| Threshold | Effect |
+|-----------|--------|
+| 2 Moon    | Gather up to 1 Explorer/Dahan |
+| 3 Moon    | Instead, Gather up to 3 Explorer |
 
+### Stars Blaze in the Daytime Sky (Slow, No Range, Yourself)
+| Threshold | Effect |
+|-----------|--------|
+| 4 Sun     | 3 Fear. Gain 1 Energy. Reclaim up to 1 Power Card from play or discard. |
 
-### Innate: WOOD SEEKS GROWTH, HUMANS SEEK FREEDOM
+Five innates — one for each element-pair plus Moon. Starlight's draft commits you to *which* innate you'll fire each turn.
 
-- **Speed**: slow · **Range**: 2 · **Target**: any
+## Unique Cards (all 4, Wiki-verified)
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Choose a Spirit with Presence in target land. They gain a Power Card. |
-| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal | 1 Damage per Dahan OR Push up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
+### Gather the Scattered Light of Stars
+- **[VERIFY]** — Rolling reclaim + Presence gather.
 
+### Shape the Self Anew
+- **[VERIFY]** — Form-adoption card; key T1 play.
 
-### Innate: SIDEREAL GUIDANCE
+### Peace of the Nighttime Sky
+- **[VERIFY]** — Moon-scaling defense / fear-card manipulation.
 
-- **Speed**: slow · **Range**: 1 · **Target**: any
+### Boon of Reimagining
+- **[VERIFY]** — Card-replacement for partner.
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon | Gather up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Dahan. |
-| 2 | 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon | Instead, Gather up to 3 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. |
-
-
-### Innate: STARS BLAZE IN THE DAYTIME SKY
-
-- **Speed**: slow · **Range**: None · **Target**: yourself
-
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun | 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Gain 1 Energy. Reclaim up to 1 Power Card from play or your discard pile. |
-
-
-## Unique Cards (all, Wiki-verified)
-
-## Card Priority Ratings
-
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Starlight Seeks Its Form's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/starlight-seeks-its-form.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/starlight-seeks-its-form.json) for full scoring + reasons.
-
-- **Primary elements (innate-weighted)**: **Moon** (wt 3.6), **Sun** (wt 3.6), **Air** (wt 2.7)
-- **Mid-game energy estimate (T3–T5 avg)**: 0.0E
-- **Power summary**: Offense 1 · Control 1 · Fear 1 · Defense 2 · Utility 2
-```
-
-### Uniques
-
-*No Unique cards listed.*
-
-### Top 10 Minor Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Lure of the Unknown** | 0 | Fast | Moon, Fire, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. | elements air+fire+moon+plant → 11.7 |
-| 2 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | elements air+moon+sun+water → 11.7 |
-| 3 | **Roiling Bog and Snagging Thorn** | 0 | Fast | Moon, Fire, Water, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Isolate. Defend 2.</br>1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> does not participate in Ravage.</br>(Check when ra… | elements fire+moon+plant+water → 10.8 |
-| 4 | **Purifying Flame** | 1 | Slow | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blig… | elements air+fire+plant+sun → 11.7 |
-| 5 | **Sunset's Fire Flows Across the Land** | 1 | Slow | Sun, Moon, Fire, Water | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. You may pay 1 Energy to deal 1 Damage in an adjacent land. | elements fire+moon+sun+water → 11.7 |
-| 6 | **Hazards Spread Across the Island** | 0 | Fast | Fire, Air, Earth, Plant | Choose a type of token from Badlands/Beasts/Disease/Strife/Wilds that exists in an adjace… | elements air+earth+fire+plant → 9.9 |
-| 7 | **Portents of Disaster** | 0 | Fast | Sun, Moon, Air | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. The next time an Invader is Destroyed in target land this turn, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. | elements air+moon+sun → 9.9 |
-| 8 | **Guardian Serpents** | 1 | Fast | Sun, Moon, Earth, Animal | Add 1 Beasts in one of target Spirit's lands. If target Spirit has a Sacred Site in that … | elements animal+earth+moon+sun → 10.8 |
-| 9 | **Gift of Power** | 0 | Slow | Moon, Water, Earth, Plant | Target Spirit gains a Minor Power Card. | elements earth+moon+plant+water → 9.9 |
-| 10 | **Inflame the Fires of Life** | 1 | Slow | Moon, Fire, Plant, Animal | Add 1 Disease. **OR** 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. | elements animal+fire+moon+plant → 10.8 |
-
-### Top 5 Major Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+animal+earth+fire+moon+plant+sun+water → 20.7 |
-| 2 | **Weave Together the Fabric of Place** | 4 | Fast | Sun, Moon, Air, Water, Earth | Target land and a land adjacent to it become a single land for this turn. (It has the ter… | elements air+earth+moon+sun+water → 13.5 |
-| 3 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+earth+moon+plant+sun → 14.4 |
-| 4 | **Pent-Up Calamity** | 3 | Fast | Moon, Fire, Earth, Plant, Animal | Add 1 Disease and 1 Strife. **OR** Remove any number of Beasts/Disease/Strife/Wilds. For … | elements animal+earth+fire+moon+plant → 12.6 |
-| 5 | **Unleash a Torrent of the Self's Own Essence** | 2 | Fast | Sun, Moon, Fire, Water | Gain 4 Energy. You may forget a Power card to gain 4 more Energy. **OR** Pay X Energy (mi… | elements fire+moon+sun+water → 11.7 |
-
-### HoSI Beginner Deck Bundle — for reference only
-
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with Starlight Seeks Its Form in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
-
-
-*No HoSI beginner-deck bundle for this spirit.*
-
-
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Land of Haunts and Embers** | adds Blight |
-| **Renewing Boon** | destroys Presence |
-| **Devouring Ants** | destroys Dahan |
-| **Scour the Land** | adds Blight |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Pyroclastic Flow** | adds Blight |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **Blazing Renewal** | destroys Presence |
-| **The Jungle Hungers** | destroys Dahan |
-| **Poisoned Land** | destroys Dahan, adds Blight |
-| **Pillar of Living Flame** | adds Blight |
-| **Tsunami** | destroys Dahan |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
-| **Draw Towards a Consuming Void** | destroys Presence |
+`[VERIFY all 4 unique costs/effects — Wiki fetch parse incomplete.]`
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+1. **Form emerges from draft.** Decide form *after* seeing your opening hand (jyonker13).
+2. **Moon is Starlight's signature** but never over-spec.
+3. **Tracks 1+3 opposite halves = always have both Reclaim + Gain-Power access.** Tracks 2+4 similar for Majors-vs-Plays.
+4. **Take pairs of Elements.** Don't force an innate the draft didn't offer.
+5. **Hold off first track-element** until you've seen Powers and know what you're building.
+6. **Pair-heavy Moon Minors → Plays form.** Dense-element Minor + easy-threshold Major → Majors form. Memory teammate → Memory-pair opener.
 
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+## Possible Openings (Zubon's three forms)
 
-## Opener Mechanics — starter reference
+### Shared starting state
 
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/starlight-seeks-its-form.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
-```
+- **1 Presence** on a Blighted land.
+- **4 Uniques in hand**: Gather the Scattered Light of Stars, Shape the Self Anew, Peace of the Nighttime Sky, Boon of Reimagining.
+- **Starting income**: 0 Energy, 1 Card Play.
 
-### Starting state
+### Opening A — Majors Form (Zubon #1) 🟨
 
-- **Setup**: Put 1 Presence on your starting board, in a land with Blight.
-- **Starting income** (from `presence_energy_track[0]` = `empty`, `presence_cardplay_track[0]` = `empty`): **0 Energy · 0 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `three` — (see spirit panel)
+**T1 · Growth**: Track 1 — gain Major (forget Gather); Forget Peace for Boon.
+**T2 · Growth**: Track 2 — uncover +3 Energy.
+**T3+ · Growth**: Track 6 — elements.
 
-### Growth options
+Targets thresholded beatstick reliance.
 
-- **G1**: reclaim1 (Reclaim 1 Power Card (of your choice))
-- **G2**: addpresence0 (Place 1 Presence from a track (Range 0))
-- **G3**: energy1 ((track slot showing 1 Energy))
-- **G4**: movepresence3 (Move 1 Presence (Range 3))
+### Opening B — Plays Form (Zubon #2) 🟨
 
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
+**T1 · Growth**: Track 2 first — +1 CP.
+**T1 · Play**: Play everything except Peace of the Nighttime Sky; reclaim the two power-generators.
+**T2+**: Uncover Track 1 for Power-card option next.
 
-### Energy track
+Joy is stacking innates every turn.
 
-`empty · growthreclaimhalf · growthdivider · growthgainpowercard · growthmovepresence1` — income as slots reveal: empty → growthreclaimhalf → growthdivider → growthgainpowercard → growthmovepresence1
+### Opening C — No-reclaim Form (jhaelen commenter) 🟥
 
-### Card-play track
+Uses **Gather the Scattered Light of Stars** as a rolling Reclaim; never takes a Reclaim Growth.
 
-`empty · growth3energy · growthdivider · growthplusonecardplay · growthmovepresence2` — CP as slots reveal: empty → growth3energy → growthdivider → growthplusonecardplay → growthmovepresence2
+T1–T5 track-pick cadence: +1 Power → Move 1 → +3E → +1 Power + 1E twice → Majors T3–T4. Never touch Track 4.
 
-### Innate Powers
+### Opening D — jyonker13's Majors-lean canonical 🟨
 
-- **AIR MOVES, EARTH ENDURES** (Speed: Fast · Range: 1 · Target: any)
-  - **L1** — 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: Push up to 2 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> or 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town">.
-  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: Defend 5.
-- **FIRE BURNS, WATER SOOTHES** (Speed: Slow · Range: 1 · Target: any)
-  - **L1** — 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire: 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 2 Damage.
-  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">.
-- **WOOD SEEKS GROWTH, HUMANS SEEK FREEDOM** (Speed: Slow · Range: 2 · Target: any)
-  - **L1** — 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Choose a Spirit with Presence in target land. They gain a Power Card.
-  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal: 1 Damage per Dahan OR Push up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.
-- **SIDEREAL GUIDANCE** (Speed: Slow · Range: 1 · Target: any)
-  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon: Gather up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Dahan.
-  - **L2** — 3 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon: Instead, Gather up to 3 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">.
-- **STARS BLAZE IN THE DAYTIME SKY** (Speed: Slow · Range: ? · Target: yourself)
-  - **L1** — 4 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun: 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Gain 1 Energy. Reclaim up to 1 Power Card from play or your discard pile.
+**T1 · Growth**: Track 1 (+Minor, +Move 1, +1E).
+**T1 · Play**: Boon of Reimagining + Shape the Self Anew (or strong Moon Minor if drafted; forget Shape for +3E).
 
-### Fast-phase element ceiling from Uniques
+**T2 · Growth**: Track 3 (+Major, +Move 1, +1E).
+**T2 · Play**: **Peace of the Nighttime Sky** (forget for double-cast + Moon) + Moon Minor OR Shape. Forget Boon when gaining Major.
 
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
+**T3 · Growth**: Track 3 again (+Major + element + energy).
+**T3 · Play**: Major + Minor.
 
-- Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 3 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+**T4**: Depends on Major combo — if panned out, add Track 5 (income) or Track 6 (element); Reclaim All; flog combo.
 
-### Unique Power Cards
+### Opening E — Memory-pair (Zubon #3) 🟥
 
-*No Unique cards parsed.*
+Partner: Shifting Memory of Ages.
 
-### Invader phase by turn (base deck)
+**T1 · Track 2 (+3E)**: play **Boon of Reimagining** on Memory (Memory's special rule lets them Discard instead of Forget) → Memory plays Boon of Ancient Memories on you → both spirits enter T2 with a Major.
 
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
+### Opening Decision
 
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
+- **Decide form after seeing T1 hand** — form is drafted, not pre-planned.
+- **Opening A (Majors)** when opening Major pool is threshold-friendly.
+- **Opening B (Plays)** when Moon-heavy Minors dropped.
+- **Opening C (No-reclaim)** when Gather the Scattered Light seems to solve all your needs.
+- **Opening E (Memory-pair)** with Shifting Memory partner.
 
-### Pause-point before writing T1 prose
+## Card Priority Ratings
 
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
+### Uniques — Starlight-specific ranking
+
+`[VERIFY exact card ranking from community]`. Generally:
+
+1. **Peace of the Nighttime Sky** — **do not Forget without Major replacement** per jyonker13.
+2. **Shape the Self Anew** — T1 form-adoption.
+3. **Gather the Scattered Light** — rolling reclaim.
+4. **Boon of Reimagining** — partner-amp + Memory-pair enabler.
+
+### Top 10 Minor Draft Picks (element pairs)
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Strange Tales of the Sky** | 1 | Fast | Moon, Air | Moon+Air pair |
+| 2 | **Pyroclastic Friction** | 1 | Fast | Fire, Earth | Fire+Earth pair |
+| 3 | **Call of the Dahan Ways** | 1 | Slow | Moon, Earth | Moon+Earth |
+| 4 | **Drifting Into Stillness** | 1 | Slow | Moon, Plant | Moon+Plant |
+| 5 | **Travel Unsuspected** | 1 | Fast | Air, Water | Air+Water |
+| 6 | **Elemental Boon** | 0 | Fast | Sun, Moon, Fire, Air | Four-element 0-cost |
+| 7 | **Purify the Land** | 0 | Slow | Moon, Water, Plant | Three-element 0-cost |
+| 8 | **Gift of Constancy** | 0 | Fast | Sun, Plant, Animal | 0-cost three-pair |
+| 9 | **Bats Scout for Raids** | 1 | Fast | Moon, Air, Animal | Triple-pair |
+| 10 | **Predatory Nightmares** | 0 | Fast | Moon, Animal | 0-cost Moon |
+
+### Top 5 Major Draft Picks (by element synergy)
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Unlock the Gates of Deepest Power** | 4 | Fast | All | Universal threshold-hit |
+| 2 | **Bargains of Power and Protection** | 3 | Fast | Sun, Moon, Fire, Air | Four-element flex |
+| 3 | **Weave Together a Fabric of Place** | 4 | Fast | Sun, Moon, Air, Water, Earth | Five-element flex |
+| 4 | **Terrifying Nightmares** | 4 | Fast | Moon, Air | Moon+Air |
+| 5 | **Vigor of the Breaking Dawn** | 4 | Fast | Sun, Plant | Sun+Plant |
+
+### Cards to Avoid
+
+| Card | Reason |
+|------|--------|
+| Single-element specialized Majors | Starlight thrives on pair-flexibility |
+| 6+ cost Majors without Sun-Reclaim access | Hard to play twice without Stars Blaze innate |
 
 ## Adversary Matchup Matrix
 
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
+Per jyonker13's innate-matchup notes:
 
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
+| Adversary               | Innate fit | Rating | Note                                                     |
+|-------------------------|-----------|--------|----------------------------------------------------------|
+| France-Plantation       | Moon (Sidereal) | ★★★★★ | Sidereal Guidance *"absurd"* (jyonker13)             |
+| Brandenburg-Prussia     | Moon      | ★★★★★ | Sidereal absurd                                           |
+| Sweden                  | Moon      | ★★★★☆ | Sidereal absurd                                           |
+| England                 | Water     | ★★★☆☆ | Moon *"mediocre"* — Water innate conditional            |
+| Habsburg Mining         | Water     | ★★★☆☆ | *"Mediocre"* Moon innate                                 |
+| Russia                  | Animal    | ★★★☆☆ | Dahan innate combo                                       |
+| Scotland                | Water     | ★★★☆☆ | `[VERIFY]`                                               |
+| Habsburg Livestock      | Moon/Water | ★★★☆☆ | `[VERIFY]`                                               |
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+`[VERIFY]`. Starlight works on any board — form-flexibility makes terrain-adaptation the norm.
 
 ## Game-Phase Strategy
 
-`[VERIFY: needs play data]`.
+### Early (T1–3)
+- Draft-driven form decision.
+- T1: Track unlock (usually 1 or 2).
+- T2: commit to form; Peace/Shape/Gather interactions.
+
+### Mid (T4–6)
+- Major integration (if Majors form).
+- Chosen innates firing reliably.
+
+### Late (T7+)
+- Innate stacking; Stars Blaze Reclaim-self.
+- Form-specific closes.
 
 ## Synergy Partners (Multiplayer)
 
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+- **Shifting Memory of Ages** — Memory-pair T1 (both spirits T2 Major).
+- **Thunderspeaker** or **Stone** — "clearly defined roles" that Starlight supports post-hoc (jyonker13).
+- **Vengeance**, **Green** — "malleable partners" that Starlight adapts around.
+
+jyonker13's open question: *"I'm still unsure if Starlight is better with Spirits who have clearly defined roles… or those that are a little more malleable."*
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
+```admonish failure title="Named mistakes"
+1. **Forcing an innate the draft doesn't offer.**
+2. **Taking Reclaim Half (Track 1) *and* neglecting Gain Power (Track 3).** Always have one of each reclaim method + one gain-power method.
+3. **Taking Track 4 blindly.** Jonah only loves it as a mid-game damage/fastifier supplement, not an opener staple.
+4. **Not forgetting Peace of the Nighttime Sky for its repeat.** "Once you get rolling with your chosen Major it'll be very hard to work it back in again."
+5. **Locking out both reclaim options accidentally** — one commenter played a whole game without reclaim.
+```
 
 ## Tempo Profile
 
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
-```
+| Turn | Target state                                              |
+|------|-----------------------------------------------------------|
+| 1    | Track 1 or 2 uncovered; form-commit in hand               |
+| 2    | Track 3 uncovered (+Major/+Move); Peace/Shape deployed    |
+| 3    | Track 3 or 5; elements online; innate reliably firing     |
+| 4    | Reclaim All; combo flog                                    |
+| 5+   | Form-specific late game                                    |
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/starlight-seeks-its-form.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Starlight Seeks Its Form](https://spiritislandwiki.com/index.php?title=Starlight_Seeks_Its_Form).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/starlight-seeks-its-form.json` (Wiki-parsed 2026-04-23).
+- **Openings**: [jyonker13 BGG 2518429](https://boardgamegeek.com/thread/2518429/openings-starlight-seeks-its-form) + [Carlo Gon "Casino Starlight" 2624676](https://boardgamegeek.com/thread/2624676) + Zubon three-form framework.

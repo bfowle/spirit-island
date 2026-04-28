@@ -1,352 +1,286 @@
 # Keeper of the Forbidden Wilds
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text parsed via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing paraphrased from [Jeremy Lennert's BGG openings thread 1978655](https://boardgamegeek.com/thread/1978655/openings-keeper-forbidden-wilds).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Branch and Claw                                        |
-| Complexity            | Moderate                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "two" — see Growth Options below         |
-| Power summary (1–5)   | Offense 5 · Control 2 · Fear 1 · Defense 4 · Utility 3             |
-| Primary Elements      | Plant, Sun, Fire, Earth (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Branch & Claw                                      |
+| Complexity            | Moderate                                           |
+| Play Difficulty       | 3 `[VERIFY physical spirit panel]`                 |
+| Growth type           | "many" — pick multiple growths per turn            |
+| Power summary (1–5)   | **Offense 5** · Control 2 · Fear 1 · **Defense 4** · Utility 3 |
+| Primary Elements      | **Sun** (both innates) · **Plant** (both innates) · Fire (Punish L1/L2) · Air (Spreading Wilds range) |
+| Special Rules         | Forbidden Ground (Sacred Sites Push Dahan; Dahan Events don't move Dahan to Sacred Sites) |
+| Aspects (JE)          | Spreading Hostility `[VERIFY]`                     |
+| Rei's Guide           | Not covered                                        |
+| latentoctopus         | Not listed                                         |
+| BGG                   | [Lennert thread 1978655](https://boardgamegeek.com/thread/1978655) |
 ```
 
 ## Spirit Overview — Framing
 
+Keeper is a **slow-starting, cluster-building sacred-site spirit** — falls behind in Stage 1, catches up in Stage 2 when its Wilds tokens start choking Explores. Lennert:
+
+> Keeper tends to fall behind the invaders in the early game and then catch up in stage 2 when all those wilds you've been placing start blocking explores.
+
 **Wiki-printed playstyle note**:
 
-> A slowly growing wall - expanding can sometimes be difficult, but the Invaders will have an equally difficult time penetrating wherever the Keeper plants itself. In larger games, it may be useful to spread to one of the two far-distant lands early on, to have multiple points from which to slowly grow.
+> Wilds-placing, range-limited damage spirit. Punish Those Who Trespass is a zero-range damage innate; Spreading Wilds converts land-type into defensive terrain.
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+**Non-obvious constraint**: **No way to place presence into blighted land.** All three add-presence modes require no-blight, existing wilds, or existing presence. Shapes opening play more than damage numbers do.
+
+**Solo-vs-multi inversion on Towering Wrath**: Wrath scales with sacred-site clustering, which fights against multi-board coverage needs. Community consensus: Wrath is phenomenal solo, weaker at 3–4p.
+
+**Complexity signal**: Moderate is correct.
 
 ## Starting Setup
 
-> Put 1 Presence and 1 Wilds on your starting board in the highest-numbered Jungle.
+> Put **1 Presence and 1 Wilds** on your starting board in the **highest-numbered Jungle**.
 
-## Growth Options (two)
+## Growth Options (growthtype: "many" — pick multiple)
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=reclaim, second=energy1 |
-| G2 | first=gain1p |
-| G3 | first=Keeper, second=energy1 |
-| G4 | first=Keeper3, second=noblight |
-
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+| Growth | Effects                                                          | Best when                                              |
+|--------|------------------------------------------------------------------|--------------------------------------------------------|
+| **G1** | Reclaim + +1 Energy                                              | Reclaim cycle + energy bank                            |
+| **G2** | Gain 1 Power Card                                                | Card-gain only                                         |
+| **G3** | Keeper-add (Presence) + +1 Energy                                | Spread + energy                                        |
+| **G4** | Keeper3 (3-presence bundle) + no-Blight constraint               | Big spread into safe lands                             |
 
 ## Presence Tracks
 
-As Presence leaves each track, these values are revealed:
+- **Energy track** (8 slots): `energy2 → sun → energy4 → energy5 → plant → energy7 → energy8 → energy9`
+- **Card-play track** (6 slots): `card1 → card2 → card2 → card3 → card4 → card5reclaim1`
 
-- **Energy track**: energy2, sun, energy4, energy5, plant, energy7, energy8, energy9
-- **Card-play track**: card1, card2, card2, card3, card4, card5reclaim1
+**Starting income**: 2 Energy, 1 Card Play.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: Forbidden Ground
 
-FORBIDDEN GROUND After you create a Sacred Site, Push all Dahan from that land. Dahan Events never move Dahan to your Sacred Site, but Powers can do so.
+> After you create a Sacred Site, Push all Dahan from that land. Dahan Events never move Dahan to your Sacred Site, but Powers can do so.
 
-### Innate: PUNISH THOSE WHO TRESPASS
+Sacred sites repel Dahan. Keeper's lands are *forbidden* to Dahan — makes Towering Wrath's Destroy-all-Dahan clause mostly a non-event.
 
-- **Speed**: slow · **Range**: 0 · **Target**: any
+### Innate: Punish Those Who Trespass
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | 2 Damage. Destroy 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
-| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | +1 Damage per SunPlant you have. |
-| 3 | 4 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Split this Power's Damage however desired between target land and another 1 of your lands. |
+- **Speed**: Slow · **Range**: 0 · **Target**: Any
 
+| Level | Thresholds                                       | Effect                           |
+|-------|--------------------------------------------------|-----------------------------------|
+| 1     | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | 2 Damage. Destroy 1 Dahan. |
+| 2     | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | +1 Damage per Sun/Plant you have. |
+| 3     | 4 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | Split this Power's Damage between target land and another of your lands. |
 
-### Innate: SPREADING WILDS
+Range-0 damage scales with Sun+Plant. L2 at 2S/2F/3P can reach 4–6 damage.
 
-- **Speed**: slow · **Range**: 1 · **Target**: noblight
+### Innate: Spreading Wilds
 
-| Level | Thresholds | Effect |
-|-------|------------|--------|
-| 1 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> from target land per 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun you have. |
-| 2 | 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | If target land has no Explorer, add 1 Wilds. |
-| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | This Power has Range +1. |
-| 4 | 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | This Power has Range +1. |
+- **Speed**: Slow · **Range**: 1 · **Target**: No-Blight
 
+| Level | Thresholds                                       | Effect                                 |
+|-------|--------------------------------------------------|-----------------------------------------|
+| 1     | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun | Push 1 Explorer per 2 Sun you have. |
+| 2     | 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | If target land has no Explorer, add 1 Wilds. |
+| 3     | 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | This Power has Range +1. |
+| 4     | 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air | This Power has Range +1. |
 
-## Unique Cards (all, Wiki-verified)
+Explorer-push + Wilds-seeding in empty lands. Wilds cancels Explores (see [Token Economies](../../fundamentals/token-economies.md)).
 
-#### Boon of Growing Power
+## Unique Cards (all 4, Wiki-verified)
 
-- **1 Energy · Slow · Range No Range · Any Spirit · Sun, Moon, Plant**
+### Boon of Growing Power
+- **1 Energy · Slow · No Range · Any Spirit · Sun, Moon, Plant**
 - *Target Spirit gains a Power Card. If you target another Spirit, they also gain 1 Energy.*
 
-#### Regrow from Roots
+Card-gain + partner amp. Self-target fine in solo.
 
+### Regrow from Roots
 - **1 Energy · Slow · Range 1 · Jungle or Wetland · Water, Earth, Plant**
-- *If there are 2 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> or fewer in target land, Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">.*
+- *If there are 2 Blight or fewer in target land, Remove 1 Blight.*
 
-#### Sacrosanct Wilderness
+Blight-remove with a cap — won't fix cascaded lands but handles 1–2 Blight.
 
+### Sacrosanct Wilderness
 - **2 Energy · Fast · Range 1 · Land with no Blight · Sun, Earth, Plant**
-- *Push 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. 2 Damage per Wilds in target land. **OR** Add 1 Wilds.*
+- *Push 2 Dahan. 2 Damage per Wilds in target land.* **OR** *Add 1 Wilds.*
 
-#### Towering Wrath
+Dual-mode: Wilds-scaled damage (in already-wilded lands) or Wilds-seeder.
 
-- **3 Energy · Slow · Range 1, from your Sacred Site · Any Land · Sun, Fire, Plant**
-- *2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. For each of your Sacred Site in/adjacent to target land, 2 Damage. Destroy all Dahan.*
+### Towering Wrath
+- **3 Energy · Slow · Range 1 from Sacred Site · Any Land · Sun, Fire, Plant**
+- *2 Fear. For each of your Sacred Site in/adjacent to target land, 2 Damage. Destroy all Dahan.*
 
-## Card Priority Ratings
-
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Keeper of the Forbidden Wilds's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/keeper-of-the-forbidden-wilds.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/keeper-of-the-forbidden-wilds.json) for full scoring + reasons.
-
-- **Primary elements (innate-weighted)**: **Plant** (wt 6.3), **Sun** (wt 4.8), **Fire** (wt 2.1)
-- **Mid-game energy estimate (T3–T5 avg)**: 6.67E
-- **Power summary**: Offense 5 · Control 2 · Fear 1 · Defense 4 · Utility 3
-```
-
-### Uniques
-
-The spirit's own 4 Unique Power cards (always in hand; always A-tier by default — see Uniques section above for full text):
-
-- **Boon of Growing Power**
-- **Regrow from Roots**
-- **Sacrosanct Wilderness**
-- **Towering Wrath**
-
-### Top 10 Minor Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Sear Anger Into the Wild Lands** | 0 | Slow | Sun, Fire, Plant | Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. | elements fire+plant+sun → 13.2 |
-| 2 | **Purifying Flame** | 1 | Slow | Sun, Fire, Air, Plant | 1 Damage per Blight. If target land is a Mountain or Sands, you may instead Remove 1 Blig… | elements air+fire+plant+sun → 13.5 |
-| 3 | **Gift of Living Energy** | 0 | Fast | Sun, Fire, Plant | Target Spirit gains 1 Energy. If you have at least 2 Sacred Sites, target Spirit gains 1 … | elements fire+plant+sun → 13.2 |
-| 4 | **Pact of the Joined Hunt** | 1 | Slow | Sun, Plant, Animal | Target Spirit Gathers 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> into one of their lands. 1 Damage in that land per Dahan pr… | elements plant+sun → 11.1 |
-| 5 | **Enticing Splendor** | 0 | Fast | Sun, Air, Plant | Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town. **OR** Gather up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | elements air+plant+sun → 11.4 |
-| 6 | **Favor of the Sun and Star-lit Dark** | 1 | Fast | Sun, Moon, Plant | Defend 4. Push up to 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements plant+sun → 11.1 |
-| 7 | **Absorb Corruption** | 1 | Slow | Sun, Earth, Plant | Gather 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. **OR** Pay 1 Energy to Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements plant+sun → 11.1 |
-| 8 | **Like Calls to Like** | 1 | Slow | Sun, Water, Plant | If target land has Explorer, Gather up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Do likewise for Town, Dahan, Blight… | elements plant+sun → 11.1 |
-| 9 | **Song of Sanctity** | 1 | Slow | Sun, Water, Plant | If Explorer(s) are present, Push all Explorers. Otherwise, Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements plant+sun → 11.1 |
-| 10 | **Teeming Rivers** | 1 | Slow | Sun, Water, Plant, Animal | If target land has no Blight, add 1 Beasts. If target land has exactly 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">, Remove i… | elements plant+sun → 11.1 |
-
-### Top 5 Major Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Forests of Living Obsidian** | 4 | Slow | Sun, Fire, Earth, Plant | Add 1 Badlands. Push all Dahan. 1 Damage to each Invader. If the origin land is your Sacr… | elements fire+plant+sun → 13.2 |
-| 2 | **Unrelenting Growth** | 4 | Slow | Sun, Fire, Water, Plant | Target Spirit adds 2 Presence and 1 Wilds to a land at Range 1 of their Presence. | elements fire+plant+sun → 13.2 |
-| 3 | **Unlock the Gates of Deepest Power** | 4 | Fast | Sun, Moon, Fire, Air, Water, Earth, Plant, Animal | Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget an… | elements air+fire+plant+sun → 13.5 |
-| 4 | **Twisted Flowers Murmur Ultimatums** | 5 | Slow | Sun, Moon, Air, Earth, Plant | 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Add 1 Strife. If the Terror Level is 2 or higher, Remove 2 Invaders. | elements air+plant+sun → 11.4 |
-| 5 | **The Trees and Stones Speak of War** | 2 | Fast | Sun, Earth, Plant | For each Dahan, 1 Damage and Defend 2. | elements plant+sun → 11.1 |
-
-### HoSI Beginner Deck Bundle — for reference only
-
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with Keeper of the Forbidden Wilds in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
-
-
-*No HoSI beginner-deck bundle for this spirit.*
-
-
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Renewing Boon** | destroys Presence |
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Devouring Ants** | destroys Dahan |
-| **Land of Haunts and Embers** | adds Blight |
-| **Scour the Land** | adds Blight |
-| **Blazing Renewal** | destroys Presence |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **The Jungle Hungers** | destroys Dahan |
-| **Poisoned Land** | destroys Dahan, adds Blight |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Pillar of Living Flame** | adds Blight |
-| **Pyroclastic Flow** | adds Blight |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
-| **Draw Towards a Consuming Void** | destroys Presence |
-| **Tsunami** | destroys Dahan |
+Cluster-scaled damage. 3 sacred sites adjacent = 6 damage + 2 Fear. The "Destroy all Dahan" clause is mostly irrelevant (Forbidden Ground repels Dahan anyway).
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+1. **Cluster sacred sites.** Every additional site adjacent = +2 Wrath damage.
+2. **Wilds tokens compound across turns.** T1 Wilds = T4 Explore-cancel.
+3. **Draft range-extenders.** Zero-range Punish desperately wants Reaching Grasp, Sky Stretches to Shore.
+4. **Keep 2+ energy banked T1–T2** — the +1 E / +presence growth is conditional.
+5. **Solo vs multi inverts Wrath priority.** Solo → cluster. 3–4p → spread.
+6. **Strangling Firevine is the Major-draft crown jewel** (Lennert).
 
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+## Possible Openings
 
-## Opener Mechanics — starter reference
+### Shared starting state
 
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/keeper-of-the-forbidden-wilds.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
-```
+- **1 Presence + 1 Wilds** on highest Jungle.
+- **4 Uniques in hand**: Boon of Growing Power (1E Slow, Sun/Moon/Plant), Regrow from Roots (1E Slow, Water/Earth/Plant), Sacrosanct Wilderness (2E Fast, Sun/Earth/Plant), Towering Wrath (3E Slow, Sun/Fire/Plant).
+- **Starting income**: 2 Energy, 1 Card Play.
 
-### Starting state
+### Opening A — Lennert canonical 🟨 (default)
 
-- **Setup**: Put 1 Presence and 1 Wilds on your starting board in the highest-numbered Jungle.
-- **Starting income** (from `presence_energy_track[0]` = `energy2`, `presence_cardplay_track[0]` = `card1`): **2 Energy · 1 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `two` — (see spirit panel)
+Saves 2E per early turn; reclaim on T4.
 
-### Growth options
+**T1 · Growth**: G1 (Minor) + G2 (+1E, place presence). Presence in starting land.
+- Target elements: 2 Sun + 1 Plant; save 2E. If 0-cost Sun Minor drops, place from bottom track; play Boon of Growing Power + that Minor.
+- Otherwise: place from top track (expose Sun); play only Boon.
+- Hits Spreading Wilds L1 + L2 (2 Sun + 1 Plant); clear lone-Explorer land, seed Wilds.
 
-- **G1**: reclaim (Reclaim all discarded+played Power Cards); energy1 ((track slot showing 1 Energy))
-- **G2**: gain1p (Gain 1 Power Card (Minor unless otherwise noted))
-- **G3**: Keeper ((spirit-specific: `Keeper` — consult spirit panel)); energy1 ((track slot showing 1 Energy))
-- **G4**: Keeper3 ((spirit-specific: `Keeper3` — consult spirit panel)); noblight ((spirit-specific: `noblight` — consult spirit panel))
+**T2 · Growth**: G1 (+1E, presence) + G3 (pay 3E, presence, Minor).
+- Income: 4E / 2 plays.
+- Target: 2 Sun + 1 Plant again; save 2E. Legal combos:
+  - **Sacrosanct Wilderness + any 0-cost Minor**, OR
+  - **Regrow from Roots + any Sun Minor**.
 
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
+**T3 · Growth**: G1 + G3 again (both bottom-track).
+- Cards: **Towering Wrath + Plant/Fire Minor + Plant Minor (e.g., Regrow from Roots)**.
+- Hits Punish Those Who Trespass L2 (4 damage at Range 0, 5–6 with planning) + Spreading Wilds L3 (+1 Range).
+- Energy tight — Wrath costs 3 of your 4E income; one companion must be 0-cost.
 
-### Energy track
+**T4 · Growth**: Reclaim. Repeat roughly T3 shape.
 
-`energy2 · sun · energy4 · energy5 · plant · energy7 · energy8 · energy9` — income as slots reveal: 2 → sun → 4 → 5 → plant → 7 → 8 → 9
+### Opening B — T2 Wrath (damage-rush) 🟥
 
-### Card-play track
+Play Wrath T2 for earlier burst. Lennert: typically a damage loss (fewer sites; only L1 Punish) and slows development — T3 can only place 1 presence.
 
-`card1 · card2 · card2 · card3 · card4 · card5reclaim1` — CP as slots reveal: 1 → 2 → 2 → 3 → 4 → 5
+### Opening C — brunoxv's "save 3E" 🟥
 
-### Innate Powers
+Save 3 rather than 2 on early turns so 3E growth option converts an unblighted presence into a sacred site same turn. Pushes Reclaim to T5.
 
-- **PUNISH THOSE WHO TRESPASS** (Speed: Slow · Range: 0 · Target: any)
-  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: 2 Damage. Destroy 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">.
-  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: +1 Damage per SunPlant you have.
-  - **L3** — 4 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: Split this Power's Damage however desired between target land and another 1 of your lands.
-- **SPREADING WILDS** (Speed: Slow · Range: 1 · Target: noblight)
-  - **L1** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun: Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> from target land per 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun you have.
-  - **L2** — 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: If target land has no Explorer, add 1 Wilds.
-  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant: This Power has Range +1.
-  - **L4** — 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air: This Power has Range +1.
+### Opening D — Major-rush (497328 variant) 🟥
 
-### Fast-phase element ceiling from Uniques
+**T3 · Growth**: G3 + Major (5+ Plant); forget Towering Wrath if better Major dropped.
 
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
+The Jungle Hungers and Strangling Firevine are flagged as better 3-energy effects in games where site-clustering isn't viable.
 
-- Fast-phase Unique elements: **Sun** ×1, **Earth** ×1, **Plant** ×1
+### Opening Decision
 
-### Unique Power Cards
+- **Default Opening A** — Lennert's canonical balanced line.
+- **Opening B/C** in niche acceleration contexts.
+- **Opening D** in 3–4p where cluster-scaling loses value.
 
-| Card | Cost | Speed | Range | Target | Elements | Effect |
-|------|------|-------|-------|--------|----------|--------|
-| **Boon of Growing Power** | 1 | Slow | No Range | Any Spirit | sun, moon, plant | Target Spirit gains a Power Card. If you target another Spirit, they also gain 1 Energy. |
-| **Regrow from Roots** | 1 | Slow | 1 | Jungle or Wetland | water, earth, plant | If there are 2 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> or fewer in target land, Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. |
-| **Sacrosanct Wilderness** | 2 | Fast | 1 | Land with no Blight | sun, earth, plant | Push 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. 2 Damage per Wilds in target land. **OR** Add 1 Wilds. |
-| **Towering Wrath** | 3 | Slow | 1, from your Sacred Site | Any Land | sun, fire, plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. For each of your Sacred Site in/adjacent to target land, 2 Damage. Destroy all Dahan. |
+## Card Priority Ratings
 
-### Invader phase by turn (base deck)
+### Uniques — Keeper-specific ranking
 
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
+1. **Towering Wrath** — site-cluster-scaled damage.
+2. **Sacrosanct Wilderness** — Wilds-scaled Fast damage.
+3. **Boon of Growing Power** — card-gain + partner amp.
+4. **Regrow from Roots** — situational Blight-cleanse.
 
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
+### Top 10 Minor Draft Picks (Sun + Plant + Fire)
 
-### Pause-point before writing T1 prose
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Reaching Grasp** | 1 | Fast | Sun, Water, Plant | Range-extender for Punish |
+| 2 | **Sky Stretches to Shore** (if Major, skip — else sub) | — | — | — | — |
+| 3 | **Drift Down to Rest** | 0 | Slow | Sun, Air, Plant | 0-cost Sun + Plant |
+| 4 | **Unrelenting Growth** | 0 | Slow | Sun, Plant | 0-cost double-prime |
+| 5 | **Song of Sanctity** | 0 | Slow | Sun, Plant, Animal | 0-cost triple-prime |
+| 6 | **Gift of Constancy** | 0 | Fast | Sun, Plant, Animal | 0-cost Sun + Plant |
+| 7 | **Sap Their Strength** | 1 | Fast | Moon, Earth, Plant | Plant + Moon |
+| 8 | **Gift of Power** | 1 | Fast | Moon | Utility |
+| 9 | **Pyroclastic Friction** | 1 | Fast | Fire, Earth | Fire-feeder |
+| 10 | **Quicken the Earth's Struggles** | 0 | Slow | Earth, Plant, Animal | 0-cost Plant |
 
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
+### Top 5 Major Draft Picks
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Strangling Firevine** | 3 | Slow | Fire, Plant | Lennert: *"amazing for Keeper"* |
+| 2 | **The Jungle Hungers** | 6 | Slow | Moon, Plant | Plant + multi-land |
+| 3 | **Sky Stretches to Shore** | 2 | Fast | Sun, Moon, Air | Range-extender |
+| 4 | **Reaching Grasp** | — | — | — | (if Major pool has Grasp — check) |
+| 5 | **Trees Radiate Ancient Sanctity** | 3 | Fast | Moon, Sun, Plant, Earth | Sun + Plant multi-land |
+
+### Cards to Avoid
+
+| Card | Reason |
+|------|--------|
+| Single-land non-Plant Majors | Off-axis |
+| Presence-destroyers | Keeper is presence-thin |
 
 ## Adversary Matchup Matrix
 
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
-
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
-
-
-### Strategy Cliffs — per-adversary-level shifts that change Keeper of the Forbidden Wilds's math
-
-```admonish warning title="Cliffs to watch"
-Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Keeper of the Forbidden Wilds's profile (Fear 1, Offense 5, Control 2, Defense 4, Utility 3).
-```
-
-#### England L5 — Buildings +1 HP
-
-**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
-
-**Mitigation for Keeper of the Forbidden Wilds**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
-
-#### England L3 — Coastal Lands build faster
-
-**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
-
-**Mitigation for Keeper of the Forbidden Wilds**: Front-load coastal defense or disruption before T3's first Ravage.
-
-#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
-
-**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
-
-**Mitigation for Keeper of the Forbidden Wilds**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
+| Adversary               | Opening | Rating | Matchup note                                                 |
+|-------------------------|---------|--------|--------------------------------------------------------------|
+| Brandenburg-Prussia     | A       | ★★★☆☆  | Wilds-cancel Explores; Wrath clears mid-game                 |
+| England                 | A       | ★★★☆☆  | Coastal Cities bypass Jungle-start range                     |
+| Sweden                  | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| France-Plantation       | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Scotland                | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Russia                  | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Habsburg Mining         | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Habsburg Livestock      | A       | ★★☆☆☆  | `[VERIFY]`                                                   |
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+| Board / Start | Rating | Reason |
+|---------------|--------|--------|
+| **Board B + Sands first-explore** | ★☆☆☆☆ | *"Keeper nightmare"* (Stixidor) — no starting card solves a Sands; Sands at Range 2+ |
+| Others | ★★★☆☆ | Workable |
+
+Antistone: Across 12 draws, ~98.8% chance of drawing a useful land-clear. New blight rules mitigate the Board B trap further.
 
 ## Game-Phase Strategy
 
-`[VERIFY: needs play data]`.
+### Early (T1–3)
+- Save 2E per turn; cluster sacred sites.
+- Seed Wilds T1–T3 for Stage-2 Explore cancel.
+- T3 Towering Wrath for first burst.
+
+### Mid (T4–6)
+- Reclaim cycle every 3 turns.
+- Punish Those Who Trespass L2 for 4–6 damage.
+- Major integration (Strangling Firevine).
+
+### Late (T7+)
+- Wrath + Wilds cycle with 4+ sacred sites adjacent.
+- Punish L3 (4 Plant) for split-damage.
 
 ## Synergy Partners (Multiplayer)
 
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+- **A Spread of Rampant Green** — Gift of Proliferation jumps Keeper to 5E T2 / 7E T3.
+- **Early-tempo partners** (Sharp Fangs, Lightning) — pick up the slack T1–T2 (brunoxv).
+- **Avoid**: other slow spirits without external acceleration.
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
+```admonish failure title="Lennert named mistakes"
+1. **Placing both presence from top track T1 without a plan.** Stalls economy.
+2. **Playing Towering Wrath T2 with no sacred-site cluster yet.**
+3. **3–4p cluster-focused + zero late-game reach to other boards** (nobody82b).
+4. **Ignoring range-extenders in the Minor draft.**
+```
 
 ## Tempo Profile
 
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
-```
+| Turn | Target state                                              |
+|------|-----------------------------------------------------------|
+| 1    | G1+G2 + Boon; Spreading Wilds L1/L2; seed Wilds           |
+| 2    | G1+G3 + Sacrosanct / Regrow + Minor; 4E income             |
+| 3    | G1+G3 + Wrath + Minors; Punish L2 hits 4–6 damage          |
+| 4    | Reclaim; reset                                             |
+| 5+   | Wrath-every-Reclaim cycle; Major integration               |
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/keeper-of-the-forbidden-wilds.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Keeper of the Forbidden Wilds](https://spiritislandwiki.com/index.php?title=Keeper_of_the_Forbidden_Wilds).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/keeper-of-the-forbidden-wilds.json` (Wiki-parsed 2026-04-23).
+- **Openings**: [Lennert BGG 1978655](https://boardgamegeek.com/thread/1978655/openings-keeper-forbidden-wilds).

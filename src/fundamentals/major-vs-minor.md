@@ -119,6 +119,37 @@ You pass a Minor when:
 - Rare — almost never pass a Minor.
 - Exception: hand size cap constraints (some spirits cap lower).
 
+## The Forget Economy — a Major's true cost
+
+Most players price a Major as "energy + 1 card-play slot." That undercounts. A Major gained via Growth has **three** costs compounding:
+
+1. **Slot cost** — the card occupies a slot in your personal deck. You play 3–4 of your available cards per turn (bounded by CP); a Major there means one fewer Minor / Unique that turn.
+2. **Forget cost** — gaining a Major via Growth requires Forgetting one of your existing cards (Unique or earlier-gained). That's a *permanent* loss, not a turn-cycle loss. Forgetting your best Unique is often a larger cost than the Major's sticker-price energy.
+3. **Energy cost per play** — 3–8 energy per activation, *every time* you play it.
+
+The Forget cost is the one most often mis-priced:
+
+```admonish abstract title="Pricing the Forget"
+Your starting Uniques are your spirit's *identity*. Concealing Shadows on Shadows, Powerstorm on Lightning, Call of the Dahan on Thunderspeaker. These are the plays the spirit was designed around. Forget one, and you've changed what the spirit *is*.
+
+The Major you gain has to be (a) more impactful per-play than the Unique you Forgot, **and** (b) playable at roughly the same frequency. Miss either check and you traded identity for shinier-cardboard.
+```
+
+Price a candidate Major against the Unique you'd Forget:
+
+| If the Unique you'd Forget is… | The Major needs to be… |
+|---|---|
+| Your best per-turn play (0–1 cost, fires every turn) | A consistent late-game closer you play 2+ times, and the spirit has turns where the Unique is redundant |
+| A niche Unique (high-cost or scenario-specific) | Anything playable twice — easy win |
+| A Unique you rarely play at L4+ (weak-archetype mismatch) | Anything playable once that hits a threshold |
+| An already-strong Unique that's also threshold-gated | Pass. Keep the Unique; take a Minor instead |
+
+Shifting Memory of Ages is the canonical Forget-cost mitigator: the spirit can Forget-and-re-gain, so the Forget cost effectively drops to zero for Shifting Memory's draft math. That's why Shifting Memory over-performs in Major-heavy builds at the same CP/energy as other moderate spirits.
+
+Repeat-a-Power effects (Gift of Strength, Powerstorm, several Innates) don't avoid the Forget cost but *multiply* the per-play payoff, amortizing the Forget faster. A Major you can Repeat effectively pays back in 1 play instead of 2.
+
+Designer note — R. Eric Reuss discusses this axis as **"Energy vs. Plays balance"** in his [Nerdlab Ep. 033 interview](https://nerdlab-games.com/033-spirit-island-and-asymmetric-game-design-with-r-eric-reuss/): every Major is priced to cost *either* energy or card-plays disproportionately, and the spirits that swing a Major draft well are the ones whose curve isn't already pinched on the axis it demands.
+
 ## The "just take the shiny" trap
 
 Majors look great on the card. Vigor of the Breaking Dawn reads like the game-winner. But if you play it once at T6 and never again, you overpaid.

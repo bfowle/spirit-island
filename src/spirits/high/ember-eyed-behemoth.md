@@ -1,298 +1,302 @@
 # Ember-Eyed Behemoth
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing paraphrased from [latentoctopus Behemoth Openings 1–2](https://latentoctopus.github.io/guide/behemoth-opening1/). No Rei guide. No BGG-canonical opener thread.
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Nature Incarnate                                        |
-| Complexity            | Moderate                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 5 · Control 1 · Fear 1 · Defense 1 · Utility 2             |
-| Primary Elements      | _(unknown)_ (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Nature Incarnate                                   |
+| Complexity            | Moderate                                           |
+| Play Difficulty       | `[VERIFY physical spirit panel]`                   |
+| Growth type           | "one" — pick one growth per turn (bundled)         |
+| Power summary (1–5)   | **Offense 5** · Control 1 · Fear 1 · Defense 1 · **Utility 2** |
+| Primary Elements      | **Fire** (everything — Special Rule + innate all tiers) · **Earth** (Smash L1/L2/L3/L4) · Plant (L2/L3/L4) |
+| Special Rules         | The Behemoth Rises (Incarna push/move) + Unrelenting Strides (use Behemoth Rises twice on non-innate turns) |
+| Aspects               | None                                               |
+| Rei's Guide           | Not covered                                        |
+| latentoctopus         | [Opening 1](https://latentoctopus.github.io/guide/behemoth-opening1/) + [Opening 2](https://latentoctopus.github.io/guide/behemoth-opening2/) |
 ```
 
 ## Spirit Overview — Framing
 
+Behemoth is a **Fire-locked Incarna spirit** — one of four Nature Incarnate spirits that field a named physical piece (the Behemoth) that walks the island delivering damage on the Smash, Stomp, and Flatten innate. Everything keys off Fire + Earth thresholds, and the Empowerment mechanic (G4, max once per game) is the central power spike.
+
 **Wiki-printed playstyle note**:
 
-> Slowly but consistently stomps its Incarna around the island, smashing Invaders. (Dahan can keep clear, unless it really gets going.) Benefits from spread-out Sacred Site, both for targeting Powers and for moving its Incarna long distances. Adding Presence at its Incarna (which can count as Presence) can make it easier to get Presence into new lands, particularly non-Jungles.
+> Aggro Incarna spirit — flexible placement, Fire-scaling damage, Incarna movement via sacred-site teleport. High offense, low defense.
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+**Identity capture** (jyonker13, BGG):
+
+> Perhaps the most flexible and challenging Aggro Spirit the game has to offer.
+
+**The Fire-lock**: Behemoth's opening lives or dies on hitting **2 Fire + 1 Earth** by end of T1 to unlock Smash L1 (2 Damage). Without a Fire Minor drafted or a Fire-Unique played, the innate lies dormant and Behemoth falls a turn behind.
+
+**Complexity signal**: Moderate — 4 Uniques, 1 innate with 4 tiers, 2 Special Rules. But the Incarna-movement planning adds decision-load: every sacred site is a Behemoth-teleport target, so sacred-site placement is a damage-targeting decision.
 
 ## Starting Setup
 
-> Put 2 Presence and {{incarna|behemoth}}, Unempowered ({{incarna|unempowered}}) side up, in the highest-numbered Wetland on your starting board that is adjacent to any Jungle. You start with your 4 Unique Power Cards and 0 Energy.
+> Put **2 Presence and {Behemoth, Unempowered side up}** in the **highest-numbered Wetland on your starting board that is adjacent to any Jungle**. You start with your 4 Unique Power Cards.
 
-## Growth Options (one)
+Behemoth the incarna piece sits on that starting Wetland. Empowerment happens later via G4.
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=reclaim, second=gain1p |
-| G2 | first=addpresence3junglepresence, second=addpresence0 |
-| G3 | first=gain1p, second=addpresence1, third=energy3 |
-| G4 | first=reclaimallfire, second=empowerbehemoth, third=moveincarnabehemoth |
+## Growth Options (growthtype: "one" — pick one per turn)
 
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+| Growth | Effects                                                                  | Best when                                                          |
+|--------|--------------------------------------------------------------------------|--------------------------------------------------------------------|
+| **G1** | Reclaim + Gain 1 Power Card                                              | Hand depleted; mid-game Reclaim cycle                              |
+| **G2** | Add Presence (R3 Jungle-presence path) + Add Presence (Range 0)          | Spread reach to Jungle-accessible lands                            |
+| **G3** | Gain 1 Power Card + Add Presence (Range 1) + +3 Energy + discard-fire-power | Default opening — biggest energy jump + card draw (cost: discard Fire card) |
+| **G4** | **MAX 1/GAME** — Reclaim-all-Fire + Empower Behemoth + Move Behemoth   | The single biggest power spike in Behemoth's arc                    |
+
+**G4 is the transformational turn.** Empowers Behemoth (unlocks the "you may Repeat Smash once each turn" clause) + reclaims all Fire cards + moves Behemoth to any sacred site.
+
+G3's "discard-fire-power" cost: you must discard one Fire-element Power card from hand to take the +3E. Plan Fire-card selection T1–T2 around this constraint.
 
 ## Presence Tracks
 
-As Presence leaves each track, these values are revealed:
+- **Energy track** (7 slots): `energy0 → energy1 → energy2fire → energy3 → earth → energy4plant → energy5fire`
+  - 0E → 1E → 2E + Fire marker → 3E → +Earth marker → 4E + Plant marker → 5E + Fire marker
+- **Card-play track** (6 slots): `card1 → card2 → card2 → card3 → fireX → card4`
+  - 1 CP → 2 CP → 2 CP → 3 CP → Fire scaling → 4 CP
 
-- **Energy track**: energy0, energy1, energy2fire, energy3, earth, energy4plant, energy5fire
-- **Card-play track**: card1, card2, card2, card3, fireX, card4
+**Starting income**: 0 Energy, 1 Card Play.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: The Behemoth Rises
 
-THE BEHEMOTH RISES You have an Incarna ({{incarna|behemoth}}). Once per turn, during the Spirit, Fast, or Slow phase, you may either: * Push {{incarna|behemoth}}; or * Add or Move {{incarna|behemoth}} to any of your Sacred Site on the island. UNRELENTING STRIDES On any turn that you don't use Innate Powers, you may use The Behemoth Rises an additional time. (When you use an Innate Power, cover this Special Rule with a Reminder Marker; when you use this Special Rule, cover your Innate Power.)
+> You have an Incarna (Behemoth). Once per turn, during the Spirit, Fast, or Slow phase, you may either:
+> - Push Behemoth; or
+> - Add or Move Behemoth to any of your Sacred Sites on the island.
 
-### Innate: SMASH, STOMP, AND FLATTEN
+**Free sacred-site teleport per turn.** Every sacred site is a valid Smash target as long as you can move Behemoth there.
 
-- **Speed**: slow · **Range**: None · **Target**: behemoth
+### Special Rule: Unrelenting Strides
 
-_(no thresholds listed in Wiki)_
+> On any turn that you don't use Innate Powers, you may use The Behemoth Rises an additional time.
 
+On innate-idle turns, double the Incarna movement. Useful for T1–T2 pre-positioning before the Fire-element threshold is online.
 
-## Unique Cards (all, Wiki-verified)
+### Innate: Smash, Stomp, and Flatten
 
-## Card Priority Ratings
+- **Speed**: Slow · **Range**: — · **Target**: Behemoth (the incarna land)
 
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by Ember-Eyed Behemoth's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/ember-eyed-behemoth.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/ember-eyed-behemoth.json) for full scoring + reasons.
+Text: *If Behemoth is Empowered, you may Repeat this Power once each turn.*
 
-- **Primary elements (innate-weighted)**: —
-- **Mid-game energy estimate (T3–T5 avg)**: 3.0E
-- **Power summary**: Offense 5 · Control 1 · Fear 1 · Defense 1 · Utility 2
-```
+| Level | Thresholds | Effect |
+|-------|------------|--------|
+| 1     | 2 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | 2 Damage. |
+| 2     | 3 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | 1 Damage. Push 1 Dahan. |
+| 3     | 4 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | 1 Fear. 1 Damage. |
+| 4     | 5 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth + 2 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant | 2 Damage. 2 Damage to Dahan. |
 
-### Uniques
+Cumulative: L1+L2+L3+L4 = 2+1+1+2 = 6 Damage + 1 Fear + Push Dahan + 2 Dahan damage. Empowered Repeat = 12 Damage per round of play. The Repeat clause makes G4 the single biggest turn of a Behemoth game.
 
-*No Unique cards listed.*
+## Unique Cards (all 4, Wiki-verified)
 
-### Top 10 Minor Draft Picks (from full pool)
+### Blazing Intimidation
+- **2 Energy · Fast · Range 1 · Any Land · Fire, Plant, Animal**
+- *1 Fear. Push up to 2 Invaders.*
 
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Animated Wrackroot** | 0 | Slow | Moon, Fire, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Destroy 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. **OR** Add 1 Wilds. | 0-cost (always affordable) |
-| 2 | **Savage Mawbeasts** | 0 | Slow | Fire, Animal | If target land is a Jungle or Wetland, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. | 0-cost (always affordable) |
-| 3 | **Sear Anger Into the Wild Lands** | 0 | Slow | Sun, Fire, Plant | Add 1 Badlands. **OR** If Wilds and Invaders are present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. | 0-cost (always affordable) |
-| 4 | **Territorial Strife** | 0 | Slow | Sun, Fire, Animal | 3 Damage to Explorers/Towns. **OR** Add 1 Strife. | 0-cost (always affordable) |
-| 5 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | 0-cost (always affordable) |
-| 6 | **Bats Scout for Raids by Darkness** | 1 | Slow | Moon, Air, Animal | For each [[Dahan]], 1 Damage to [[Towns]]/[[Cities]]. **OR** 1 [[Fear]]. [[Gather]] up to… | Slow speed matches innate |
-| 7 | **Call to Bloodshed** | 1 | Slow | Sun, Fire, Animal | 1 Damage per Dahan. **OR** Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. | Slow speed matches innate |
-| 8 | **Call to Guard** | 0 | Fast | Sun, Air, Earth | Gather up to 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Then, if Dahan are present, either: Defend 1 per Dahan. **OR** Afte… | 0-cost (always affordable) |
-| 9 | **Desiccating Winds** | 1 | Slow | Fire, Air, Earth | If target land has Badlands, 1 Damage. Add 1 Badlands. | Slow speed matches innate |
-| 10 | **Dire Metamorphosis** | 1 | Slow | Moon, Air, Earth, Animal | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. 1 Damage to [[Dahan]]. Add 1 [[Badlands]], 1 [[Beasts]], 1 [[Disease]],… | Slow speed matches innate |
+Fast push + Fear; Fire + Plant for innate thresholds. Repositioning tool before Smash cycles.
 
-### Top 5 Major Draft Picks (from full pool)
+### Surging Lahar
+- **2 Energy · Slow · Range 1 from your Sacred Site · Any Land · Fire, Water, Earth**
+- *Add 1 Badlands. 1 Damage to each Invader per Badlands in target land.*
 
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Accelerated Rot** | 4 | Slow | Sun, Water, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 4 Damage. | Slow speed matches innate |
-| 2 | **Angry Bears** | 3 | Slow | Sun, Fire, Animal | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 2 Damage. If no Beasts are present, add 1 Beasts. Otherwise, +2 Damage, and Push … | Slow speed matches innate |
-| 3 | **Bombard with Boulders and Stinging Seeds** | 2 | Slow | Air, Earth, Plant | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 2 Damage.</br>Add 1 Badlands. | Slow speed matches innate |
-| 4 | **Cleansing Floods** | 5 | Slow | Sun, Water | 4 Damage. Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | Slow speed matches innate |
-| 5 | **Death Falls Gently from Open Blossoms** | 4 | Slow | Moon, Air, Plant | 4 Damage. If any Invaders remain, add 1 Disease. | Slow speed matches innate |
+Badlands-adder + Badlands-scaling damage. 1 Badlands → 1 damage per Invader; 2 Badlands → 2 damage per Invader. Pairs with Behemoth's Smash-scaling pattern.
 
-### HoSI Beginner Deck Bundle — for reference only
+### Exaltation of Grasping Roots
+- **0 Energy · Slow · No Range · Any Spirit · Moon, Fire, Earth, Plant**
+- *Target Spirit gains 1 Power Card. Forget a Power Card. If it's a Major Power, target Spirit may pay 2 Energy instead of Forgetting a Power Card.*
 
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with Ember-Eyed Behemoth in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
+Ally-gift; 0E Slow. Self-target gives +1 card gain (useful on card-light turns). Elements cover Earth + Plant for innate.
 
+### Terrifying Rampage
+- **1 Energy · Fast · Range 1 · Any Land · Moon, Fire, Earth**
+- *Push 1 Explorer/Town. 1 Fear per Presence of yours adjacent to target land.*
 
-*No HoSI beginner-deck bundle for this spirit.*
-
-
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Scour the Land** | adds Blight |
-| **Land of Haunts and Embers** | adds Blight |
-| **Renewing Boon** | destroys Presence |
-| **Devouring Ants** | destroys Dahan |
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Pillar of Living Flame** | adds Blight |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **Pyroclastic Flow** | adds Blight |
-| **Blazing Renewal** | destroys Presence |
-| **The Jungle Hungers** | destroys Dahan |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Draw Towards a Consuming Void** | destroys Presence |
-| **Tsunami** | destroys Dahan |
-| **Poisoned Land** | destroys Dahan, adds Blight |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
+Presence-scaled Fear. Fire + Earth for innate thresholds. Note: *"useless T1 — no triggers and no Energy"* (latentoctopus warning).
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+1. **Fire > Earth > Plant in draft priority.** Every Smash tier needs Fire first.
+2. **Don't play Terrifying Rampage T1.** Useless without adjacent presence.
+3. **G4 is the power spike.** Plan the Empowerment turn on T3–T4 — that's the spike moment.
+4. **Behemoth teleports to sacred sites.** Sacred-site placement = Smash target selection.
+5. **Bottom track first.** Skip top-track Energy — 3 CP is the goal.
+6. **Keep Fire+Plant cards in hand T2** for next-turn L2 threshold.
+7. **Hold Major in hand** on non-Fire turns for the right Fire-innate-unlock turn.
 
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+## Possible Openings
 
-## Opener Mechanics — starter reference
+### Shared starting state
 
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/ember-eyed-behemoth.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
-```
+- **2 Presence + Behemoth (Unempowered)** on starting Wetland adjacent to Jungle.
+- **4 Uniques in hand**: Blazing Intimidation (2E Fast, Fire/Plant/Animal), Surging Lahar (2E Slow, Fire/Water/Earth), Exaltation of Grasping Roots (0E Slow, Moon/Fire/Earth/Plant), Terrifying Rampage (1E Fast, Moon/Fire/Earth).
+- **Starting income**: 0 Energy, 1 Card Play.
 
-### Starting state
+### Opening A — Standard (Early Badlands + Innate lock-on) 🟨 (default)
 
-- **Setup**: Put 2 Presence and {{incarna|behemoth}}, Unempowered ({{incarna|unempowered}}) side up, in the highest-numbered Wetland on your starting board that is adjacent to any Jungle. You start with your 4 Unique Power Cards and 0 Energy.
-- **Starting income** (from `presence_energy_track[0]` = `energy0`, `presence_cardplay_track[0]` = `card1`): **0 Energy · 1 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `one` — pick **one** growth option per turn
+From [latentoctopus Opening 1](https://latentoctopus.github.io/guide/behemoth-opening1/).
 
-### Growth options
+**T1 · Growth**: G3 bottom — Gain 1 Minor (Fire/Earth priority) + Presence (R1) + +3E (discard a Fire card as cost).
+- Income: 3E from G3.
 
-- **G1**: reclaim (Reclaim all discarded+played Power Cards); gain1p (Gain 1 Power Card (Minor unless otherwise noted))
-- **G2**: addpresence3junglepresence ((spirit-specific: `addpresence3junglepresence` — consult spirit panel)); addpresence0 (Place 1 Presence from a track (Range 0))
-- **G3**: gain1p (Gain 1 Power Card (Minor unless otherwise noted)); addpresence1 (Place 1 Presence from a track (Range 1)); energy3 ((+3 Energy this turn — growth effect, not track reveal))
-- **G4**: reclaimallfire ((spirit-specific: `reclaimallfire` — consult spirit panel)); empowerbehemoth ((spirit-specific: `empowerbehemoth` — consult spirit panel)); moveincarnabehemoth ((spirit-specific: `moveincarnabehemoth` — consult spirit panel))
+**T1 · Play** (3E, 1 CP — but 4 plays avail from track): unlock Smash L1 via **2 Fire + 1 Earth**.
+- **Preferred**: Surging Lahar + Exaltation of Grasping Roots (if a valid Lahar target exists). Covers Fire+Earth+Moon+Plant.
+- **Alternative**: Blazing Intimidation + Exaltation of Grasping Roots. Covers Fire+Earth+Plant.
+- *Pause-point*: Terrifying Rampage is useless T1; don't pick.
 
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
+**T2 · Growth**: G2 top — Add Presence (R3 Jungle-presence) + R0.
+**T2 · Play**: 2 cards — may unlock Innate L2 (3 Fire + 1 Earth + 1 Plant) depending on drafts.
 
-### Energy track
+**T3 · Growth**: **G4** — Reclaim-all-Fire + Empower Behemoth + Move Behemoth.
+- **This is the transformational turn.** Every Fire card returns to hand; Behemoth becomes Empowered (Smash now Repeats).
 
-`energy0 · energy1 · energy2fire · energy3 · earth · energy4plant · energy5fire` — income as slots reveal: 0 → 1 → 2 → 3 → earth → 4 → 5
+**T3 · Play** (income + G4-reclaimed hand): Play 2 cards. Smash fires once + Repeats once = 4 Damage baseline.
 
-### Card-play track
+**T4 · Growth**: G2 bottom — reach **3 CP** for future turns.
+- Even without a Fire-element card this turn, prioritize 3 CP.
 
-`card1 · card2 · card2 · card3 · fireX · card4` — CP as slots reveal: 1 → 2 → 2 → 3 → fireX → 4
+**T4 end state** (audit):
+- Behemoth Empowered; Smash firing twice per turn.
+- 3 CP baseline.
+- Fire + Plant cards staged in hand for L2+ thresholds.
 
-### Innate Powers
+**Confidence**: 🟨 latentoctopus primary.
 
-- **SMASH, STOMP, AND FLATTEN** (Speed: Slow · Range: ? · Target: behemoth)
+### Opening B — Early Major 🟥
 
-### Fast-phase element ceiling from Uniques
+From [Opening 2](https://latentoctopus.github.io/guide/behemoth-opening2/).
 
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
+**T1 · Growth**: G2 top — Add Presence; start 2E / 4 cards / 4 plays.
+**T1 · Play**: Surging Lahar (unlocks Innate via Fire+Earth).
 
-- Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
+**T2 · Growth**: G3 bottom (discard/gain Minor or Major).
+**T2 · Play**: 2 cards. *"If the Major does not have Fire element, keep it in hand and play the other two cards to unlock your Innate level 2."*
 
-### Unique Power Cards
+**T3 · Branch**:
+- **Fire-Major route**: G4, Empower Behemoth, play 2.
+- **Non-Fire-Major route**: G3 top, gain Major from discard, play both Majors.
 
-*No Unique cards parsed.*
+**T4 · Branch**:
+- Fire route: G3 top.
+- Non-Fire route: G4 Empower.
 
-### Invader phase by turn (base deck)
+The Fire-element check on the drafted Major is the central pivot.
 
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
+### Opening Decision
 
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
+- **Default Opening A** — reliable across most matchups.
+- **Opening B** when the Major draft lands with Fire or Moon elements; riskier.
 
-### Pause-point before writing T1 prose
+## Card Priority Ratings
 
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
+### Uniques — Behemoth-specific ranking
+
+1. **Surging Lahar** — Badlands engine + Fire/Earth threshold.
+2. **Exaltation of Grasping Roots** — 0E flex + ally-gift + four primary elements.
+3. **Blazing Intimidation** — Fast push; Fire/Plant.
+4. **Terrifying Rampage** — situational; presence-scaled Fear.
+
+### Top 10 Minor Draft Picks (Fire > Earth > Plant)
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Pyroclastic Friction** | 1 | Fast | Fire, Earth | Fire + Earth double-prime |
+| 2 | **Call of the Dahan Ways** | 1 | Slow | Moon, Earth | Earth-feeder |
+| 3 | **Call to Migrate** | 0 | Fast | Air, Animal | 0-cost flex |
+| 4 | **Rain of Blood** | 1 | Slow | Moon, Fire, Water | Fire-feeder |
+| 5 | **Quicken the Earth's Struggles** | 0 | Slow | Earth, Plant, Animal | 0-cost Earth + Plant |
+| 6 | **Visions of Fiery Doom** | 1 | Slow | Moon, Fire | Fire + Moon |
+| 7 | **Unrelenting Growth** | 0 | Slow | Sun, Plant | 0-cost Plant |
+| 8 | **Drift Down to Rest** | 0 | Slow | Sun, Air, Plant | 0-cost Plant |
+| 9 | **Sap Their Strength** | 1 | Fast | Moon, Earth, Plant | Earth + Plant |
+| 10 | **Gift of Constancy** | 0 | Fast | Sun, Plant, Animal | 0-cost Plant |
+
+### Top 5 Major Draft Picks
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Pyroclastic Flow** | 6 | Slow | Fire, Earth | Fire-Earth multi-land |
+| 2 | **Volcanic Eruption** | 8 | Slow | Moon, Fire, Earth | Late-game closer |
+| 3 | **Tigers Hunting** | 3 | Fast | Fire, Animal | Cheap Fire |
+| 4 | **Infinite Vitality** | 4 | Fast | Fire, Water, Plant | Fire + Plant |
+| 5 | **Pillar of Living Flame** | 4 | Fast | Sun, Fire, Air | Fire-element flex |
+
+### Cards to Avoid
+
+| Card | Reason |
+|------|--------|
+| Non-Fire 2-cost Minors | Can't amortize through G3 discard-Fire |
+| Defense-only Powers | Behemoth kit is aggro-only |
 
 ## Adversary Matchup Matrix
 
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
-
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
-
-
-### Strategy Cliffs — per-adversary-level shifts that change Ember-Eyed Behemoth's math
-
-```admonish warning title="Cliffs to watch"
-Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to Ember-Eyed Behemoth's profile (Fear 1, Offense 5, Control 1, Defense 1, Utility 2).
-```
-
-#### England L5 — Buildings +1 HP
-
-**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
-
-**Mitigation for Ember-Eyed Behemoth**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
-
-#### England L3 — Coastal Lands build faster
-
-**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
-
-**Mitigation for Ember-Eyed Behemoth**: Front-load coastal defense or disruption before T3's first Ravage.
-
-#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
-
-**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
-
-**Mitigation for Ember-Eyed Behemoth**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
+| Adversary               | Opening | Rating | Matchup note                                                 |
+|-------------------------|---------|--------|--------------------------------------------------------------|
+| Brandenburg-Prussia     | A       | ★★★★☆  | Direct damage fits Prussia ravages                           |
+| Sweden                  | A       | ★★★☆☆  | Build-spam can outpace Behemoth clears                       |
+| France-Plantation       | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Russia                  | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Scotland                | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| England                 | B       | ★★☆☆☆  | Damage-resistant; Major route only                           |
+| Habsburg Mining         | A       | ★★★☆☆  | `[VERIFY]`                                                   |
+| Habsburg Livestock      | A       | ★★☆☆☆  | `[VERIFY]`                                                   |
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+`[VERIFY — latentoctopus no per-board ratings]`. Heuristic: boards with **Mountains/Sands adjacent to Wetlands** reward Lahar's Badlands scaling. Board E/F have good terrain mix.
 
 ## Game-Phase Strategy
 
-`[VERIFY: needs play data]`.
+### Early (T1–3)
+- T1: Surging Lahar / Blazing Intimidation to unlock Smash L1.
+- T2: stack Fire + Plant cards in hand for L2.
+- T3: G4 Empowerment — the power spike.
+
+### Mid (T4–6)
+- Empowered Smash firing twice per turn.
+- 3 CP baseline.
+- Major integration (Opening B variant).
+
+### Late (T7+)
+- Smash L2/L3/L4 cycle (6+ damage per round).
+- Volcanic/Pyroclastic Major for board-wide closes.
 
 ## Synergy Partners (Multiplayer)
 
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+- **Badlands/Blight-tolerant partners** — Wildfire, Volcano.
+- **Defense partners** — cover Behemoth's ravage lands.
+- **Fire-element donors** — Lightning, Wildfire (via repeat of Fire Minors).
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
+```admonish failure title="latentoctopus named mistakes"
+1. **Playing Terrifying Rampage T1.** Useless without triggers and no Energy.
+2. **Dropping a non-Fire Major T2 instead of holding it to unlock Innate L2 via starting Uniques.**
+3. **Skipping Incarna empowerment on T3.** The G4 option IS the build curve.
+4. **Top-track chase.** 3 CP is the real priority.
+```
 
 ## Tempo Profile
 
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
-```
+| Turn | Target state                                              |
+|------|-----------------------------------------------------------|
+| 1    | G3 bottom + Surging Lahar/Exaltation; Smash L1 live       |
+| 2    | G2 top + 2 cards; L2 reachable with Plant draft           |
+| 3    | **G4 — Empower Behemoth**; Smash Repeat active            |
+| 4    | G2 bottom → 3 CP; Empowered Smash firing twice per turn   |
+| 5–7  | Smash L2/L3 cycle; Major integration (if Opening B)       |
+| 8+   | Smash L4 + Major board-wide closes                         |
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/ember-eyed-behemoth.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [Ember-Eyed Behemoth](https://spiritislandwiki.com/index.php?title=Ember-Eyed_Behemoth).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/ember-eyed-behemoth.json` (Wiki-parsed 2026-04-23).
+- **Openings**: latentoctopus Opening 1 + Opening 2.
+- **Note**: No Rei guide; no BGG-canonical opener thread. Strategic framing thin compared to older spirits.

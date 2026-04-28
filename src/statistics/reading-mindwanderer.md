@@ -2,6 +2,14 @@
 
 [mindwanderer](https://mindwanderer.net/si/stats.html) aggregates player-reported Spirit Island game outcomes into win-rate tables per (spirit × adversary × level × player-count). It's the best public signal for relative spirit strength — but it's **not** ground truth, and reading it well takes a few heuristics.
 
+```admonish tip title="Beyond the stats dashboard"
+The headline dashboard at `/stats.html` is only the entry point. [`mindwanderer.net/si/`](https://mindwanderer.net/si/) has **100+ detail sub-pages** — per-spirit (`LightningsSwiftStrike.html`), per-adversary (`TheHabsburgMonarchy.html`), per-scenario, and per-board-layout (`layout_T4.html`) — each with its own blight-flip rate, average score, and difficulty model. If you're prepping a specific matchup, open the spirit and adversary detail pages side by side; the dashboard only surfaces aggregate cells.
+
+When you cite mindwanderer numbers, also read [BGG thread 3555502 — *An Update on the SI Digital Statistics Project*](https://boardgamegeek.com/thread/3555502): the Handelabra analytics migration changed collection methodology mid-stream, so pre- and post-migration numbers aren't strictly comparable.
+
+For broader empirical context, the community's [SI Digital Data Analysis Series](https://boardgamegeek.com/thread/3617445/si-digital-data-analysis-series-5-how-does-each-sp) mines 2.27M games across 13 entries — entries 5–13 cover per-spirit-per-adversary, scenario difficulty, and aspect performance with more narrative than mindwanderer alone.
+```
+
 ## What it actually is
 
 - **Self-reported**: players submit after their game. Selection bias is real.

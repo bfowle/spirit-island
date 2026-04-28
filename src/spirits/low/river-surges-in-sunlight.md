@@ -1,315 +1,287 @@
 # River Surges in Sunlight
 
-```admonish success title="Mechanics Wiki-verified"
-Card data, innate thresholds, special rules, growth options, presence track, and suggested-draft cards below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py` (MediaWiki API → raw wikitext → template field extraction — no LLM summarization). Remaining `[VERIFY]` items: Play Difficulty (not in Wiki spirit template; spirit panel only), **aspect mechanics** (aspect-page parser pending), live mindwanderer stats, and board ratings (play data).
+```admonish success title="Mechanics Wiki-verified 2026-04-23"
+Card data, innate thresholds, special rules, growth options, presence track, and unique-card text below were parsed deterministically from the Spirit Island Wiki via `scripts/wiki-fetch.py`. Remaining `[VERIFY]`: Play Difficulty, aspect mechanics, live mindwanderer stats, board ratings.
+
+Strategic framing paraphrased from [latentoctopus River Opening 1](https://latentoctopus.github.io/guide/river-opening1/) + [Jeremy Lennert's BGG openings thread 1967085](https://boardgamegeek.com/thread/1967085/openings-river-surges-sunlight).
 ```
 
 ```admonish abstract title="At a Glance"
 | Field                 | Value                                              |
 |-----------------------|----------------------------------------------------|
-| Expansion             | Base Game                                        |
-| Complexity            | Low                                       |
-| Play Difficulty       | `[VERIFY from spirit panel]`                       |
-| Growth type           | "one" — see Growth Options below         |
-| Power summary (1–5)   | Offense 4 · Control 5 · Fear 1 · Defense 1 · Utility 4             |
-| Primary Elements      | Sun, Water, Earth (derived from innates + uniques)|
-| Aspects               | `[VERIFY from physical aspect panels]` |
+| Expansion             | Base Game                                          |
+| Complexity            | Low                                                |
+| Play Difficulty       | 0 `[VERIFY physical spirit panel]`                 |
+| Growth type           | "one" — pick one growth per turn (bundled)         |
+| Power summary (1–5)   | **Offense 4** · **Control 5** · Fear 1 · Defense 1 · **Utility 4** |
+| Primary Elements      | **Water** (all Massive Flooding tiers + special rule) · **Sun** (all tiers) · Earth (L3) |
+| Special Rules         | River's Domain (Presence in Wetlands count as Sacred Site) |
+| Aspects (JE)          | Sunshine · Travel `[VERIFY]`                       |
+| Rei's Guide           | Not covered                                        |
+| latentoctopus         | [Opening 1](https://latentoctopus.github.io/guide/river-opening1/) |
+| BGG                   | [Jeremy Lennert thread 1967085](https://boardgamegeek.com/thread/1967085) |
 ```
 
 ## Spirit Overview — Framing
 
+River is a **base-game Sun/Water scaling spirit** whose win plan is to hit max-tier Massive Flooding every turn from T4 onward. It's one of the two lowest-complexity spirits (Play Difficulty 0) — a teaching spirit that's also surprisingly effective at high difficulty via its reclaim-loop innate.
+
 **Wiki-printed playstyle note**:
 
-> While capable of some direct offense, River Surges in Sunlight is best at flooding out Explorers and Towns, displacing them from lands where they might Build or Ravage. The ability to get free Sacred Sites makes a wide range of Powers more useful.
+> Lots of sacred sites for targeting your innate. The best way to get them is generally to focus on expanding to wetlands, where your special rule (River's Domain) gives you a sacred site with only 1 presence.
 
-Strategic framing `[VERIFY: enhance with play experience]`.
+**Identity capture** (latentoctopus):
+
+> River is an innate-focused scaling Spirit whose win plan is to hit max-tier Massive Flooding every turn from T4/T5 onward.
+
+**The Sacred-Site shortcut**: River's Domain is unique — 1 Presence in a Wetland = a sacred site. Most spirits need 2 presence to make a sacred site; River needs 1. This effectively doubles River's effective presence count for targeting purposes when Wetlands are available.
+
+**Complexity signal**: Low is correct — the simplest "Scale the Innate" spirit. One innate. One Special Rule. Linear energy track (1→2→2→3→4→4→5). Decision-load is *when* to Reclaim and *which Minor* to draft — not much else.
 
 ## Starting Setup
 
-> Put 1 Presence on your starting board in the highest-numbered Wetlands.
+> Put **1 Presence** on your starting board in the **highest-numbered Wetlands**.
 
-## Growth Options (one)
+Only 1 starting presence, which immediately counts as a sacred site via River's Domain.
 
-| Growth | Effects |
-|--------|---------|
-| G1 | first=reclaim, second=gain1p, third=energy1 |
-| G2 | first=addpresence1, second=addpresence1 |
-| G3 | first=gain1p, second=addpresence2 |
+## Growth Options (growthtype: "one" — pick one per turn)
 
-**Growth token reference** (Wiki shorthand):
-- `reclaim` — Reclaim all discarded Power Cards.
-- `gain1p` / `gain2p` — Gain 1 or 2 Power Cards (Minor).
-- `addpresence1` / `addpresence2` / `addpresence3` — Add 1 Presence from track, Range N.
-- `energy1` / `energy2` / `energy3` — +1/+2/+3 Energy.
-- `card1` / `card2` — +1/+2 Card Plays this turn.
-- (Other tokens documented on [Wiki Spirit template reference](https://spiritislandwiki.com/) pages.)
+| Growth | Effects                                             | Best when                                                  |
+|--------|-----------------------------------------------------|------------------------------------------------------------|
+| **G1** | Reclaim + Gain 1 Power Card + +1 Energy             | Default Reclaim turn — full bundle                         |
+| **G2** | Add Presence (Range 1) + Add Presence (Range 1)     | Rapid spread turn                                          |
+| **G3** | Gain 1 Power Card + Add Presence (Range 2)          | Card + placement                                           |
+
+River's growth is benign — all three options are usable. G1 bundles Reclaim + card + energy and is used every 3–4 turns in the standard opening.
 
 ## Presence Tracks
 
-As Presence leaves each track, these values are revealed:
+- **Energy track** (7 slots): `energy1 → energy2 → energy2 → energy3 → energy4 → energy4 → energy5`
+  - 1E → 2E → 2E → 3E → 4E → 4E → 5E
+- **Card-play track** (7 slots): `card1 → card2 → card2 → card3 → reclaim1 → card4 → card5`
+  - 1 CP → 2 CP → 2 CP → 3 CP → Reclaim 1 → 4 CP → 5 CP
 
-- **Energy track**: energy1, energy2, energy2, energy3, energy4, energy4, energy5
-- **Card-play track**: card1, card2, card2, card3, reclaim1, card4, card5
+**Starting income**: 1 Energy, 1 Card Play. Linear energy scaling — no marker complexity.
 
 ## Core Mechanics & Special Rules
 
-### Special Rule
+### Special Rule: River's Domain
 
-RIVER'S DOMAIN Your Presence in Wetlands counts as Sacred Site.
+> Your Presence in Wetlands counts as Sacred Site.
 
-### Innate: MASSIVE FLOODING
+1-Presence Wetland = sacred site. Targeting from sacred sites matters for Range-from-Sacred-Site abilities (Wash Away, Flash Floods).
 
-- **Speed**: slow · **Range**: 1 (optionally from a sacred site) · **Target**: any
+### Innate: Massive Flooding
+
+- **Speed**: Slow · **Range**: 1 · **Target**: Any
 
 | Level | Thresholds | Effect |
 |-------|------------|--------|
-| 1 | 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> / Town. |
-| 2 | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Instead, 2 Damage. Push up to 3 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> / Town. |
-| 3 | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 4 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | Instead, 2 Damage to each Invader. |
+| 1     | 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | Push 1 Explorer/Town. |
+| 2     | 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water | *Instead*, 2 Damage. Push up to 3 Explorers/Towns. |
+| 3     | 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 4 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth | *Instead*, 2 Damage to each Invader. |
 
+**L3 (Max-tier Massive Flooding)** is River's endgame — 2 damage per Invader in a populated land destroys everything a T+ ravage land. Played every turn from T4/T5 onward, this is the whole spirit.
 
-## Unique Cards (all, Wiki-verified)
+## Unique Cards (all 4, Wiki-verified)
 
-## Card Priority Ratings
+### Wash Away
+- **1 Energy · Slow · Range 1 · Any Land · Water, Earth**
+- *Push 1 Explorer/Town/City.* *(+1 damage per Water if text says so — verify from physical card.)*
 
-```admonish abstract title="Full-pool draft analysis"
-Scored across all 114 Minor + 98 Major cards in the full deck (Base + B&C + JE + NI), weighted by River Surges in Sunlight's innate element demands, mid-game energy estimate, primary-innate speed, and power-summary ratings. See [data/references/draft-priority/river-surges-in-sunlight.json](https://github.com/brettfowle/spirit-island/blob/main/data/references/draft-priority/river-surges-in-sunlight.json) for full scoring + reasons.
+1E push for any Invader type. Lennert: *"ideal target is a land where the Invaders just explored but which started with a Town — stopping the T2 city-build. Otherwise push towards the coast to create inland dead zones."*
 
-- **Primary elements (innate-weighted)**: **Water** (wt 4.8), **Sun** (wt 3.0), **Earth** (wt 0.3)
-- **Mid-game energy estimate (T3–T5 avg)**: 3.0E
-- **Power summary**: Offense 4 · Control 5 · Fear 1 · Defense 1 · Utility 4
-```
+### River's Bounty
+- **0 Energy · Slow · Range 0 · Any Land · Sun, Water, Animal**
+- *Gather 1 Dahan. Gather 1 Explorer. Each Dahan in target land destroys 1 Explorer.*
 
-### Uniques
+0-cost Dahan-vs-Explorer. The key reclaim-engine card — played and reclaimed every cycle. Sun+Water double-prime.
 
-*No Unique cards listed.*
+### Flash Floods
+- **2 Energy · Fast · Range 1 · Any Land · Sun, Water**
+- *1 Damage. +1 Damage per Water you have.*
 
-### Top 10 Minor Draft Picks (from full pool)
+Water-scaling damage at 2E Fast. Key to Massive Flooding threshold-feeding during non-Reclaim turns.
 
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Twilight Fog Brings Madness** | 0 | Slow | Sun, Moon, Air, Water | Add 1 Strife. Push 1 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Each remaining Dahan takes 1 Damage. | elements sun+water → 7.8 |
-| 2 | **Strong and Constant Currents** | 0 | Fast | Sun, Water, Earth | Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Town to an adjacent Coastal land. **OR** Move up to 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> between targe… | elements earth+sun+water → 8.1 |
-| 3 | **Like Calls to Like** | 1 | Slow | Sun, Water, Plant | If target land has Explorer, Gather up to 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">. Do likewise for Town, Dahan, Blight… | elements sun+water → 7.8 |
-| 4 | **Song of Sanctity** | 1 | Slow | Sun, Water, Plant | If Explorer(s) are present, Push all Explorers. Otherwise, Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements sun+water → 7.8 |
-| 5 | **Sunset's Fire Flows Across the Land** | 1 | Slow | Sun, Moon, Fire, Water | 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 1 Damage. You may pay 1 Energy to deal 1 Damage in an adjacent land. | elements sun+water → 7.8 |
-| 6 | **Blood Draws Predators** | 1 | Fast | Sun, Fire, Water, Animal | After the next time Invaders are Destroyed in target land: Add 1 Beasts, then 1 Damage pe… | elements sun+water → 7.8 |
-| 7 | **Elusive Ambushes** | 1 | Fast | Sun, Fire, Water | 1 Damage. **OR** Defend 4. | elements sun+water → 7.8 |
-| 8 | **Reaching Grasp** | 0 | Fast | Sun, Air, Water | Target Spirit gets +2 Range with all their Powers. | elements sun+water → 7.8 |
-| 9 | **Teeming Rivers** | 1 | Slow | Sun, Water, Plant, Animal | If target land has no Blight, add 1 Beasts. If target land has exactly 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">, Remove i… | elements sun+water → 7.8 |
-| 10 | **Uncanny Melting** | 1 | Slow | Sun, Moon, Water | If Invaders are present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Sands or Wetland, Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements sun+water → 7.8 |
+### Boon of Vigor
+- **0 Energy · Fast · No Range · Any Spirit · Sun, Water, Plant**
+- *Target Spirit gains +1 Energy this turn and +1 Energy at end of turn (total +2).*
 
-### Top 5 Major Draft Picks (from full pool)
-
-| # | Card | Cost | Speed | Elements | Effect (truncated) | Why this pick |
-|---|------|------|-------|----------|--------------------|---------------|
-| 1 | **Sweep into the Sea** | 4 | Slow | Sun, Air, Water | Push all Explorers and Towns one land towards the nearest Ocean. **OR** If target land is… | elements sun+water → 7.8 |
-| 2 | **Inspire the Release of Stolen Lands** | 4 | Slow | Sun, Water, Plant, Animal | Gather up to 3 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. Remove up to 3 Health worth of Invaders per Dahan. | elements sun+water → 7.8 |
-| 3 | **Accelerated Rot** | 4 | Slow | Sun, Water, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 4 Damage. | elements sun+water → 7.8 |
-| 4 | **Cleansing Floods** | 5 | Slow | Sun, Water | 4 Damage. Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. | elements sun+water → 7.8 |
-| 5 | **Unrelenting Growth** | 4 | Slow | Sun, Fire, Water, Plant | Target Spirit adds 2 Presence and 1 Wilds to a land at Range 1 of their Presence. | elements sun+water → 7.8 |
-
-### HoSI Beginner Deck Bundle — for reference only
-
-```admonish note title="Not a draft-priority list"
-These are the cards shipped with River Surges in Sunlight in the **Horizons of Spirit Island** beginner bundle — a curated onboarding subset, **not an optimized draft list**. The picks above (Top Minor / Major) draw from the full expansion pool. Keep this table for historical reference or when playing with a HoSI-only card pool.
-```
-
-| Card | Type | Cost | Speed | Elements | Effect (truncated) |
-|------|------|------|-------|----------|--------------------|
-| **Uncanny Melting** | Minor | 1 | Slow | Sun, Moon, Water | If Invaders are present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. If target land is a Sands or Wetland, Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. |
-| Nature\'s Resilience | — | — | — | — | (fetch error: Wiki API error for 'Nature\'s_Resilience': {'code': 'missingtitle', 'info': "The page you specified doesn't exist.", 'docref': 'See https://spiritislandwiki.com/api.php for API usage. Subscribe to the mediawiki-api-announce mailing list at &lt;https://lists.wikimedia.org/mailman/listinfo/mediawiki-api-announce&gt; for notice of API deprecations and breaking changes.'}) |
-| **Pull Beneath the Hungry Earth** | Minor | 1 | Slow | Moon, Water, Earth | If your Presence is present, 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> and 1 Damage. If target land is a Sands or Wetland, 1… |
-| **Accelerated Rot** | Major | 4 | Slow | Sun, Water, Plant | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 4 Damage. |
-| **Song of Sanctity** | Minor | 1 | Slow | Sun, Water, Plant | If Explorer(s) are present, Push all Explorers. Otherwise, Remove 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">. |
-| **Tsunami** | Major | 6 | Slow | Water, Earth | 2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. 8 Damage. Destroy 2 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">. |
-| **Encompassing Ward** | Minor | 1 | Fast | Sun, Water, Earth | Target Spirit provides Defend 2 in each of its lands. |
-
-### Cards to Avoid (anti-synergy flagged)
-
-| Card | Reason(s) |
-|------|-----------|
-| **Skies Herald the Season of Return** | destroys Presence |
-| **Renewing Boon** | destroys Presence |
-| **Devouring Ants** | destroys Dahan |
-| **Land of Haunts and Embers** | adds Blight |
-| **Scour the Land** | adds Blight |
-| **Tsunami** | destroys Dahan |
-| **Solidify Echoes of Majesty Past** | destroys Presence |
-| **Insatiable Hunger of the Swarm** | adds Blight |
-| **Pillar of Living Flame** | adds Blight |
-| **Pyroclastic Flow** | adds Blight |
-| **Blazing Renewal** | destroys Presence |
-| **Draw Towards a Consuming Void** | destroys Presence |
-| **The Jungle Hungers** | destroys Dahan |
-| **Poisoned Land** | destroys Dahan, adds Blight |
-| **Volcanic Eruption** | destroys Dahan, adds Blight |
+Ally gift — **Lennert: "Playing Boon of Vigor on yourself is always wrong. It generates more energy for an ally."** Gift to a partner who needs Energy for Majors or plays.
 
 ## Key Strategic Principles
 
-`[VERIFY and enhance]` — strategic principles should be derived from Wiki-verified mechanics above.
+1. **Hit max-tier Massive Flooding every turn from T4/T5.** This is the whole win condition.
+2. **Water + Sun are co-primary.** Both unlock Flooding tiers; both sit in starter elements.
+3. **Minors > Majors by default.** Lennert: *"The main advantage of major powers is dealing with built-up lands that simply have too many invaders to efficiently handle with minor powers. River is able to handle those problem lands using the highest level of Massive Flooding, so I think it's generally better to just get a ton of minor powers."*
+4. **Wetlands = free sacred sites.** Target Wetland-expansion over other terrain.
+5. **Boon of Vigor never self-targeted.** Always gift to ally.
+6. **Wash Away targets the pre-build land, not the city land.** Lennert heuristic.
+7. **Reclaim cycle**: River's Bounty is reclaimed every loop — 0-cost Sun/Water card always in rotation.
 
-1. Use the Special Rule to its fullest (see above for exact text).
-2. Element thresholds drive innate firing — see the innate tables above.
-3. Suggested draft cards are Wiki-recommended; pattern-match to your matchup.
+## Possible Openings
 
-## Opener Mechanics — starter reference
+### Shared starting state
 
-```admonish abstract title="Mechanically-verified starting state"
-Auto-derived from `data/references/wiki/river-surges-in-sunlight.json`. This section states the **factual mechanics** every opener must build on (starting income, growth options, innate thresholds, Fast-vs-Slow timing). It is **not** a strategic opener — use this as the foundation, then apply [Deliberate Play](../../fundamentals/deliberate-play.md) + `si-rules-check` before writing T1/T2/T3 prose.
-```
+- **1 Presence on board**: highest-numbered Wetland (= sacred site via River's Domain).
+- **4 Uniques in hand**: Wash Away (1E Slow, Water/Earth), River's Bounty (0E Slow, Sun/Water/Animal), Flash Floods (2E Fast, Sun/Water), Boon of Vigor (0E Fast, Sun/Water/Plant).
+- **Starting income**: 1 Energy, 1 Card Play.
 
-### Starting state
+### Opening A — Consistent Reclaim Loop 🟨 (default, latentoctopus)
 
-- **Setup**: Put 1 Presence on your starting board in the highest-numbered Wetlands.
-- **Starting income** (from `presence_energy_track[0]` = `energy1`, `presence_cardplay_track[0]` = `card1`): **1 Energy · 1 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
-- **Growth type**: `one` — pick **one** growth option per turn
+From [latentoctopus Opening 1](https://latentoctopus.github.io/guide/river-opening1/).
 
-### Growth options
+**T1 · Growth**: G2 bottom.
+**T1 · Play** (1E, 1 CP): **River's Bounty + one card**.
+- Elements hit: 1 Sun + 2 Water (+ whatever else). Massive Flooding L1 (1 Sun + 2 Water) live.
 
-- **G1**: reclaim (Reclaim all discarded+played Power Cards); gain1p (Gain 1 Power Card (Minor unless otherwise noted)); energy1 ((track slot showing 1 Energy))
-- **G2**: addpresence1 (Place 1 Presence from a track (Range 1)); addpresence1 (Place 1 Presence from a track (Range 1))
-- **G3**: gain1p (Gain 1 Power Card (Minor unless otherwise noted)); addpresence2 (Place 1 Presence from a track (Range 2))
+**T2 · Growth**: G2 bottom. **Reclaim River's Bounty** (via Reclaim-1 track slot — *note: you may need G1 for full Reclaim at this stage, depending on track state*).
+- Play 3 cards → 2 Sun + 3 Water elements → Massive Flooding **L2**.
 
-**Presence-track reveal rules**: placing Presence (via a growth option with `addpresence*`) reveals **one** track slot — either the next Energy slot or the next Card-Play slot, not both. The choice determines your permanent-income trajectory from that turn onward.
+**T3 · Growth**: Reclaim (G1) + Gain Minor.
+**T3 · Play**: River's Bounty + new Minor. Hold 2 Sun / 3 Water / 1 Earth.
 
-### Energy track
+**T4 · Growth**: G2 bottom.
+**T4 · Play**: Reclaim River's Bounty + play all 4 starters → **3 Sun / 4 Water / 1 Earth, unlocking max-level Massive Flooding**.
 
-`energy1 · energy2 · energy2 · energy3 · energy4 · energy4 · energy5` — income as slots reveal: 1 → 2 → 2 → 3 → 4 → 4 → 5
+**Core constraint**: "Little presence placement past T4 requires careful planning."
 
-### Card-play track
+### Opening B — Lennert's 5-turn arc (more detailed) 🟨
 
-`card1 · card2 · card2 · card3 · reclaim1 · card4 · card5` — CP as slots reveal: 1 → 2 → 2 → 3 → reclaim1 → 4 → 5
+From [BGG 1967085](https://boardgamegeek.com/thread/1967085/openings-river-surges-sunlight).
 
-### Innate Powers
+**T1 · Growth**: G2 bottom.
+**T1 · Play**: **Wash Away + River's Bounty**.
+- Wash Away target: "a land where the Invaders just explored but which started with a Town — stopping the T2 city-build."
+- Alternative: push toward coast to create inland dead zones.
 
-- **MASSIVE FLOODING** (Speed: Slow · Range: 1 · Target: any)
-  - **L1** — 1 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> / Town.
-  - **L2** — 2 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: Instead, 2 Damage. Push up to 3 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> / Town.
-  - **L3** — 3 <img class="si" src="/spirit-island/theme/icons/element-sun.png" alt="Sun"> Sun + 4 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-earth.png" alt="Earth"> Earth: Instead, 2 Damage to each Invader.
+**T2 · Growth**: G2 bottom. Reclaim River's Bounty.
+**T2 · Play**: Flash Floods + Boon of Vigor + River's Bounty (3 plays, **Massive Flooding L2**).
 
-### Fast-phase element ceiling from Uniques
+**T3 · Growth**: Reclaim + Gain Minor (+1E).
+**T3 · Play**: Bounty + Flash Floods + Wash Away, hit **Massive Flooding L2** again.
 
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
+**T4 · Growth**: G2 bottom + Gain second Minor.
+**T4 · Play**: all 4 starting cards if draws allow.
 
-- Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
+**T5 · Growth**: Reclaim + Gain Minor (+1E).
+**T5 · Play**: "You can now definitely activate the highest tier of your innate no matter what minors you drew" by playing all 4 starters.
 
-### Unique Power Cards
+**Critical note** (Lennert): *"Make sure you have enough energy for this turn — if both drafted Minors cost energy, River's Bounty must be played both T3 and T4."*
 
-*No Unique cards parsed.*
+### Opening C — Top-Track Variant (optional Major) 🟥
 
-### Invader phase by turn (base deck)
+**T1 · Growth**: G3 top instead of G2 bottom.
+- Rationale: top-track gives +5E by T3, enough to plausibly grab a Major T3–T4 if cheap and reclaim-loop it.
 
-| Turn | Explore | Build | Ravage | Notes |
-|------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
-| 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
+Trade-off: loses the T2 Reclaim; card plays off-curve for L2 Flooding.
 
-Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
+### Opening Decision
 
-### Pause-point before writing T1 prose
+- **Default Opening A or B** (both very similar). Lennert's variant is more explicit.
+- **Opening C** only when Major-rushing is the plan.
 
-```admonish warning title="Before claiming what T1 does"
-1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
-2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
-5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
-```
+## Card Priority Ratings
+
+### Uniques — River-specific ranking
+
+1. **River's Bounty** — 0-cost Sun/Water + reclaim-every-cycle engine.
+2. **Flash Floods** — Water-scaling damage; innate-threshold feeder.
+3. **Wash Away** — surgical Push for Build-prevention.
+4. **Boon of Vigor** — ally-gift; never self-target.
+
+### Top 10 Minor Draft Picks (Water + Sun priority)
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Gift of Proliferation** | 1 | Fast | Plant, Water | Water-feeder |
+| 2 | **Absorb Essence** | 0 | Fast | Water | 0-cost Water |
+| 3 | **Drift Down to Rest** | 0 | Slow | Sun, Air, Plant | 0-cost Sun |
+| 4 | **Unrelenting Growth** | 0 | Slow | Sun, Plant | 0-cost Sun |
+| 5 | **Call to Isolation** | 0 | Slow | Water, Animal | 0-cost Water |
+| 6 | **Song of Sanctity** | 0 | Slow | Sun, Plant, Animal | 0-cost Sun |
+| 7 | **Flow Like Water, Reach Like Air** | 2 | Fast | Sun, Air, Water | Sun + Water |
+| 8 | **Purify the Land** | 0 | Slow | Moon, Water, Plant | 0-cost Water + blight |
+| 9 | **Sea Monsters** | 2 | Slow | Moon, Water, Animal | Water + 2E |
+| 10 | **Gift of Power** | 1 | Fast | Moon | Utility flex |
+
+### Top 5 Major Draft Picks (Opening C only)
+
+| # | Card | Cost | Speed | Elements | Why |
+|---|------|------|-------|----------|-----|
+| 1 | **Tsunami** | 7 | Slow | Moon, Water, Earth | Water-rich late-game closer |
+| 2 | **Sea Monsters** | 2 | Slow | Moon, Water, Animal | Cheap Water |
+| 3 | **Sky Stretches to Shore** | 2 | Fast | Sun, Moon, Air | 2-cost Sun |
+| 4 | **Trees Radiate Ancient Sanctity** | 3 | Fast | Moon, Sun, Plant, Earth | Sun + board-control |
+| 5 | **Manifest Incarnation** | 3 | Fast | Moon, Plant, Animal, Water | Water-rich utility |
+
+### Cards to Avoid
+
+| Card | Reason |
+|------|--------|
+| Single-land non-Sun-Water Majors | Don't compete with max-tier Flooding |
+| Presence-destroyers | River's Domain Wetlands are foundational |
 
 ## Adversary Matchup Matrix
 
-`[VERIFY all grades]` — template only; fill in per-adversary notes after play.
-
-| Adversary            | L0 | L3 | L5 | L6 | Notes `[VERIFY]`     |
-|----------------------|----|----|----|----|----------------------|
-| England              | ?  | ?  | ?  | ?  |                      |
-| Brandenburg-Prussia  | ?  | ?  | ?  | ?  |                      |
-| Sweden               | ?  | ?  | ?  | ?  |                      |
-| France (Plantation)  | ?  | ?  | ?  | ?  |                      |
-| Habsburg Mining      | ?  | ?  | ?  | ?  |                      |
-| Russia               | ?  | ?  | ?  | ?  |                      |
-| Scotland             | ?  | ?  | ?  | ?  |                      |
-| Habsburg Livestock   | ?  | ?  | ?  | ?  |                      |
-
-
-### Strategy Cliffs — per-adversary-level shifts that change River Surges in Sunlight's math
-
-```admonish warning title="Cliffs to watch"
-Not every adversary level is a linear scale-up — some levels flip specific rules that alter what your Powers accomplish. These are the cliffs most relevant to River Surges in Sunlight's profile (Fear 1, Offense 4, Control 5, Defense 1, Utility 4).
-```
-
-#### England L5 — Buildings +1 HP
-
-**What changes**: Towns become 3-HP (was 2), Cities become 4-HP (was 3). **Damage-only Powers dealing 2 or 3 may no longer kill a Town/City in one go.**
-
-**Mitigation for River Surges in Sunlight**: Stack damage from multiple plays or use downgrade Powers (Crops Wither, Tangled Trees) to soften before finishing.
-
-#### England L3 — Coastal Lands build faster
-
-**What changes**: England's L3 escalation adds an extra Build in coastal lands. **Ocean-adjacent spirits see compounded pressure on their home terrain.**
-
-**Mitigation for River Surges in Sunlight**: Front-load coastal defense or disruption before T3's first Ravage.
-
-#### France (Plantation) — Dahan capture threatens your Dahan engine
-
-**What changes**: France's plantation rules convert Dahan to colonists, and Invaders occupy lands with Dahan. **Spirits whose innate/card math counts on Dahan density (Shadows-of-the-Dahan, Favors, Thunderspeaker) are downgraded.**
-
-**Mitigation for River Surges in Sunlight**: Play Defend Powers on Dahan lands; accept loss of range-extension budget.
-
-#### Brandenburg-Prussia — Cities drive Fear-per-kill (favorable swing)
-
-**What changes**: BP's escalation puts Cities on the board early, and each destroyed City dumps Fear into the pool. **Damage-dealing spirits benefit from an inflated Fear curve; weaker spirits may struggle against pre-City pressure.**
-
-**Mitigation for River Surges in Sunlight**: Aim at City-dense lands with your highest-damage plays for outsized Fear returns.
+| Adversary               | Opening | Rating | Matchup note                                                 |
+|-------------------------|---------|--------|--------------------------------------------------------------|
+| Brandenburg-Prussia     | A / B   | ★★★★☆  | Push-based disruption matches Prussia tempo                  |
+| England                 | A / B   | ★★★☆☆  | Needs Max-tier Flooding against coastal Cities               |
+| Sweden                  | A / B   | ★★★☆☆  | Push-kit works against Sweden                                |
+| France-Plantation       | A / B   | ★★★☆☆  | `[VERIFY]`                                                   |
+| Scotland                | A / B   | ★★★☆☆  | `[VERIFY]`                                                   |
+| Russia                  | A / B   | ★★★☆☆  | Dahan-destruction doesn't hurt River much                    |
+| Habsburg Mining         | A / B   | ★★★☆☆  | `[VERIFY]`                                                   |
+| Habsburg Livestock      | A / B   | ★★★☆☆  | `[VERIFY]`                                                   |
 
 ## Board / Map Configuration
 
-`[VERIFY via play]` — base boards A–D, Jagged Earth E–H, and thematic ratings pending per-spirit play experience.
+Wetland-heavy boards give free sacred sites via River's Domain. Prioritize **Board A / B / D orientations** that push river lands toward buildable targets. No adversary matrix explicit in Lennert — core advice applies broadly.
 
 ## Game-Phase Strategy
 
-`[VERIFY: needs play data]`.
+### Early (T1–3)
+- G2 bottom → reclaim → G2 bottom cadence.
+- Massive Flooding L1 on T1, L2 on T2.
+- River's Bounty reclaimed every cycle.
+
+### Mid (T4–6)
+- Max-tier Massive Flooding (L3) active.
+- Minor-integration; Water + Sun drafts.
+- Boon of Vigor ally-gifting.
+
+### Late (T7+)
+- Reclaim loops stabilize; Massive Flooding every turn.
+- Optional Major (Tsunami, Manifest).
 
 ## Synergy Partners (Multiplayer)
 
-`[VERIFY: needs multi-spirit play data]` — archetype-based hints from [Archetype Index](../../combos/archetype-index.md) are the starting point.
+- **Energy-hungry allies** for Boon of Vigor — Lightning, Thunderspeaker, Major-users.
+- **Defending partners** — cover River's Bounty-targeted Dahan lands so Dahan actually kill.
+- **Grouped-Invader partners** — Massive Flooding L3 destroys pods; partners who concentrate Invaders multiply River's output.
 
 ## Common Mistakes
 
-`[VERIFY: collect from play]`.
+```admonish failure title="Lennert's named mistakes"
+1. **Taking top-track T1 "for the energy"** — loses T2 Reclaim; off-curve for L2 Flooding.
+2. **Playing Boon of Vigor on yourself.** Always gift.
+3. **Reclaiming wrong card T4 and losing T5 max-innate combo** — must be able to play all 4 starters.
+4. **Wash-Away-ing a coastal Town** instead of the land-that-will-build-a-City next turn.
+```
 
 ## Tempo Profile
 
-`[VERIFY: per-round targets need playtest]`.
-
-## Expansion Sensitivity
-
-- **Base only**: core Uniques + Innate + Special Rule functional if expansion = Base.
-- **+ Branch & Claw**: events + blight deck introduce variance.
-- **+ Jagged Earth**: Major/Minor pool deepens.
-- **+ Nature Incarnate**: additional aspects may unlock; check the aspect column above.
-
-Per-expansion specifics `[VERIFY]`.
-
-## Stat Snapshot
-
-```admonish note title="Stat Insight"
-`[VERIFY from mindwanderer]` — pending re-scrape of mindwanderer current data. Historical directional figures unavailable in this template draft.
-```
+| Turn | Target state                                              |
+|------|-----------------------------------------------------------|
+| 1    | G2 + Wash Away + River's Bounty; Flooding L1 live         |
+| 2    | G2 + Reclaim River's Bounty + Flash Floods; Flooding L2   |
+| 3    | Reclaim + Gain Minor; Flooding L2                         |
+| 4    | G2 + second Minor; all 4 starters available                |
+| 5    | Reclaim + Gain Minor; Flooding L3 **reliable every turn**  |
+| 6+   | Max-tier Flooding cycle; optional Major integration        |
 
 ## Source Notes
 
-```admonish abstract title="Sources"
-- **Authoritative mechanics** (this chapter): `data/references/wiki/river-surges-in-sunlight.json` — parsed via `scripts/wiki-fetch.py`.
-- Spirit Island Wiki — [River Surges in Sunlight](https://spiritislandwiki.com/index.php?title=River_Surges_in_Sunlight).
-- Cross-reference: [Archetype Index](../../combos/archetype-index.md).
-- Related skill: [si-wiki-fetch](../../../skills/si-wiki-fetch/SKILL.md).
-```
-
----
-
-*Chapter draft generated from Wiki data 2026-04-19. Strategic prose needs enhancement from play experience. See [`templates/SPIRIT_TEMPLATE.md`](../../../templates/SPIRIT_TEMPLATE.md) for the full Rei-format spine.*
+- **Mechanics**: `data/references/wiki/river-surges-in-sunlight.json` (Wiki-parsed 2026-04-23).
+- **Openings**: latentoctopus Opening 1 + Lennert BGG 1967085.

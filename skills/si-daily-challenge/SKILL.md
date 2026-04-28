@@ -1,93 +1,106 @@
 ---
 name: si-daily-challenge
-description: Use when Brett asks for "today's Spirit Island challenge" or says "/si-daily-challenge". Generates a structured daily drill — spirit × adversary × level × scenario × learning goal — based on his playlog history in ~/repos/spirit-island/data/playlog.csv. Anti-repeats spirits from the last 5 sessions and progresses difficulty via a 2-wins-at-level rule.
+description: Use when Brett asks for "today's Spirit Island challenge" or says "/si-daily-challenge". Generates a structured daily drill — spirit × adversary × level × scenario × board × player-count × learning goal — seeded by date, varied per reroll, and informed by his playlog history in ~/repos/spirit-island/data/playlog.csv.
 user-invocable: true
 ---
 
 # si-daily-challenge — Daily Spirit Island Drill
 
-Generates a single daily challenge card that Brett plays next, pulling his learning priorities and playlog to rotate spirits + adversaries intelligently.
+Generates a single daily challenge card for Brett. The selection logic lives in
+`generate.py` (same directory) so the randomization, weighting, and playlog
+reads are deterministic and testable instead of hand-rolled in prose.
 
-## Data Sources
+## How to invoke
 
-1. `~/repos/spirit-island/data/playlog.csv` — Brett's logged games. Schema: `date,player_count,spirits,aspects,adversary,level,scenario,board,result,rounds,fear_level_end,blight_end,notes`. May be empty (no games logged yet).
-2. `~/repos/spirit-island/data/spirits.json` — 42 spirits. Key fields: `slug`, `name`, `complexity`, `draft_bias`, `archetypes`, `primary_elements`, `brett_priority` (bool), `chapter_status` (`full`/`stub`).
-3. `~/repos/spirit-island/data/adversaries.json` — 8 adversaries with their difficulty-level ladders.
-4. `~/repos/spirit-island/data/scenarios.json` — 14 scenarios with `difficulty_mod`.
+Default daily run (date-seeded, stable within a single day):
 
-## Selection Algorithm
+```bash
+python3 ~/.claude/skills/si-daily-challenge/generate.py
+```
 
-### 1. Load playlog
-- Read CSV; if empty, treat as "first session" and pick a beginner-friendly priority spirit.
+Pipe stdout into your response verbatim — it is already formatted as a
+markdown challenge card.
 
-### 2. Anti-repeat spirit filter
-- Exclude spirits that appear in the last 5 log entries.
-- Prefer spirits with `brett_priority == true`.
-- Prefer spirits with `chapter_status == "full"` so Brett has a chapter to read first.
-- If all priority spirits are in the recent-5 cooldown, broaden to all spirits.
+## Re-rolls and overrides
 
-### 3. Adversary rotation
-- Count adversary frequencies in last 10 log entries.
-- Pick the least-recently-played adversary from his four go-to's (England, Sweden, Brandenburg-Prussia, and one "stretch" like Russia or France).
-- For Brett's first 20 logged games, stay in base + B&C adversaries unless he explicitly asked for a stretch.
+Pass flags to vary the draw. The script already handles edge cases; prefer a
+flag over re-describing intent in prose.
 
-### 4. Level progression
-- Compute Brett's rolling win rate at his current level against this adversary.
-- If he has 2 wins in a row at the current level with this adversary → suggest level up.
-- If he has 2 losses in a row → suggest level down.
-- Default starting level: 1.
+| Brett says | Flag |
+| --- | --- |
+| "pick a different spirit" | `--different-spirit` |
+| "pick a different adversary" | `--different-adversary` |
+| "different goal" | `--different-goal` |
+| "reroll" / "another one" | `--reroll N` (bump N each time) |
+| "I want harder" | `--harder` |
+| "easier" | `--easier` |
+| "give me X spirit" | `--spirit <slug>` |
+| "vs England" / "against <adv>" | `--adversary <slug>` |
+| "at level N" | `--level N` |
+| "solo" / "2-handed" / "3-handed" | `--players 1|2|3` |
+| "no scenario" | `--no-scenario` |
+| "with <scenario>" | `--scenario <slug>` |
 
-### 5. Scenario choice
-- Most challenges are scenario-free (simpler).
-- Roll scenario ~20% of the time, biased toward easier difficulty_mods (Blitz, Second Wave, Varied Terrains) until he's experienced with the adversary.
+Multiple flags compose. If Brett re-runs `/si-daily-challenge` within the same
+day, bump `--reroll` (1, 2, 3…) so the draw actually changes — the default
+seed is the date.
 
-### 6. Learning goal
-- Pick one topic to focus on, rotating across chapters:
-  - "Tempo audit — track per-turn energy/CP banked vs spent"
-  - "Major vs. Minor draft — follow the archetype bias for this spirit"
-  - "Fear generation pace — track fear per turn vs the Terror-2 target"
-  - "Opening adherence — follow Opening A from the spirit chapter; don't improvise T1–T3"
-  - "Card priority — grade each power card you see in offerings using the spirit chapter's grades"
-  - "Adversary pressure — identify the cliff turn before it hits"
-  - "Anti-alpha (if multiplayer) — no mid-turn suggestions for your partner"
-- Rotate goals; don't repeat the same goal twice in a row.
+## Selection logic (reference — actual behaviour lives in generate.py)
 
-## Output Format
+1. **Spirit** — weighted random across all 37 spirits. Priority flag adds +2,
+   full chapter adds +2 (both stack). Recent-5 from playlog are excluded.
+2. **Adversary** — from Brett's go-to pool (England / Sweden / Brandenburg-
+   Prussia / France-Plantation). Least-recently-played wins, random tiebreak.
+3. **Level** — walks that adversary's `difficulty_levels` ladder. Default =
+   lowest rung; +1 after 2 consecutive wins at the current rung against that
+   adversary; −1 after 2 consecutive losses.
+4. **Scenario** — 20% chance; weighted toward diff_mod ≤ 1.
+5. **Board** — one random board per spirit. 70% base (A–D), 30% expansion
+   (JE E–F, HoSI G–H).
+6. **Player count** — 55% true solo, 30% 2-handed, 10% 3-handed, 5% 2-player.
+7. **Learning goal** — date-rotated through 7 categories; `--different-goal`
+   skips one slot.
 
-Emit a single compact markdown block:
+## Output shape
+
+The script prints:
 
 ```
-## Today's Challenge — {YYYY-MM-DD}
+## Today's Challenge — YYYY-MM-DD
 
-**Spirit**: {name} ({complexity}, {draft_bias})
-**Adversary**: {adversary} Level {N}
-**Scenario**: {name or "none"}
-**Player count**: 1 (true solo) / 1 multi-handed / other
-**Learning goal**: {goal}
+**Spirit**: …
+**Adversary**: … Level …
+**Scenario**: …
+**Board**: …
+**Player count**: …
+**Learning goal**: …
 
 ### Read first (15 min)
-- Spirit chapter: [{slug}](../src/{chapter_path})
-- {Fundamentals chapter linked to goal}
-- Adversary chapter: [{adversary}](../src/adversaries/{slug}.md)
+- Spirit chapter: …
+- Fundamentals: …
+- Adversary chapter: …
 
 ### Turn-1 commit
-Before you start, write on paper: "By T3 I will have {concrete milestone — pulled from the spirit chapter's Tempo Profile}."
+Before you start, write on paper: "By T3 I will have …"
 
 ### After the game
 Run `si-post-game` to log; tomorrow's challenge shifts based on results.
 ```
 
+A stub-chapter footnote appears when the chosen spirit has no full chapter,
+pointing Brett at the spirit index + Wiki.
+
+## JSON mode
+
+For programmatic callers: `generate.py --json` emits the raw selection as
+JSON (spirit, adversary, level, scenario, boards, goal, player_count, seed).
+
 ## Anti-alpha note
 
-When outputting, never prescribe specific plays. Say "Opening A" not "play Offering of Fear and Flame T1 then Minor T2." The chapter has the details; the challenge should point Brett at the chapter.
+Never prescribe specific plays. The card names chapters and goals; the
+chapter has the turn-by-turn detail. Advisory, not prescriptive.
 
-## Edge cases
+## After output
 
-- **Empty playlog**: pick Shadows (full chapter) + England L1 + no scenario + goal = "Tempo audit."
-- **Brett asks for a specific spirit/adversary**: honor it; skip the rotation. Still emit the full challenge card.
-- **Brett says "I want harder"**: bump level by 1 beyond the algorithm's output.
-- **Brett says "easier"**: bump level down or swap scenario for none.
-
-## Interaction after output
-
-After showing the challenge, ask: "Ready for this, or want me to pick a different {spirit/adversary/goal}?" — one-line prompt only.
+Ask in one line: "Ready for this, or want me to swap the spirit / adversary /
+goal / level?" — then stop. Don't narrate further.
