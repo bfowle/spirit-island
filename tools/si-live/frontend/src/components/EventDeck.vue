@@ -2,6 +2,8 @@
 import { computed, onMounted, ref } from 'vue'
 import type { EventDeckState, EventCardEntry } from '../types'
 import { fetchDeck, type EventCardData } from '../api'
+import ExpansionBadge from './ExpansionBadge.vue'
+import UiIcon from './UiIcon.vue'
 
 /**
  * Event deck tracker.
@@ -154,12 +156,12 @@ function stageText(entry: EventCardEntry): string[] {
             @click="previewCard(c.name)"
           >
             <span class="sug-name">{{ c.name }}</span>
-            <span class="sug-expansion">{{ c.expansion }}</span>
+            <ExpansionBadge :slug="c.expansion" :size="14" class="sug-expansion" />
           </button>
         </div>
       </div>
       <button class="primary" @click="previewCard(filterQ)" :disabled="!filterQ.trim()">
-        🔎 Preview (face-up)
+        <UiIcon name="eye" :size="14" decorative /> Preview (face-up)
       </button>
     </div>
 

@@ -142,8 +142,8 @@ const discCssVars = computed(() => ({
 
 .bowls {
   display: flex;
-  gap: var(--sp-2);
-  padding: var(--sp-2);
+  gap: 6px;
+  padding: 8px;
   background: linear-gradient(180deg, var(--bg-canvas), var(--bg-muted));
   border-radius: var(--r-md);
   border: 1px solid var(--border-subtle);
@@ -152,8 +152,8 @@ const discCssVars = computed(() => ({
 
 .bowl {
   position: relative;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;

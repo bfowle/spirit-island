@@ -1,54 +1,67 @@
 /*
- * si-live design tokens — Hundari-brainstorm aesthetic.
+ * si-live design tokens — Aegis-inspired system.
  *
- * Dark-rich palette: deep neutrals with multi-hue accents per content type.
- * Matches the look in /mnt/c/Users/brett/.../brainstorm/*.html: #1d1d1f canvas,
- * #1a1a2e card surfaces, #0d1117 inner panels, colored left-borders to
- * group related content, tight 13-14px typography, 8/12px rounded corners.
+ * Palette and motion language borrowed from the Aegis genomics platform
+ * (https://aegis-app-830635723869.us-east1.run.app/): slate-900 canvas, blue
+ * → violet gradient accents, backdrop-blur cards with hover lift, tinted
+ * status chips with colored glow, Inter + Oswald + JetBrains Mono.
  *
- * Explicitly dark-only for now (brainstorm docs are dark-only). An auto-
- * switching light mode can layer on later if needed.
+ * Variable names preserved from the prior design-tokens.css so existing Vue
+ * components keep compiling. Values re-tuned to Aegis; new tokens added
+ * (--accent-grad, --shadow-glow, etc.) for the new visual moves.
+ *
+ * Dark-only for now. A light mode can layer on later via `html[data-theme]`.
  */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
 :root {
-  /* ─── Canvas + surfaces ─── */
-  --bg-canvas:   #1d1d1f;   /* page background */
-  --bg-surface:  #1a1a2e;   /* panel / card background */
-  --bg-raised:   #22223a;   /* raised section inside a card */
-  --bg-inset:    #0d1117;   /* deep inner panel (GitHub-dark tone) */
-  --bg-muted:    #2a2a4a;   /* chip background */
-  --bg-hover:    #2f2f52;
-  --bg-active:   #383860;
+  /* ─── Canvas + surfaces (Aegis slate) ─── */
+  --bg-canvas:   hsl(222 47% 11%);  /* #0f172a — main page background */
+  --bg-surface:  hsl(223 47% 9%);   /* #0c1324 — panel / card background */
+  --bg-raised:   hsl(222 40% 13%);  /* raised section inside a card */
+  --bg-inset:    hsl(224 71% 4%);   /* #030712 — deepest inner panel */
+  --bg-muted:    hsl(222 40% 13%);  /* chip background */
+  --bg-hover:    hsl(222 40% 15%);
+  --bg-active:   hsl(222 40% 18%);
+  --bg-elevated: hsl(222 40% 13%);  /* alias for --bg-raised */
 
-  --border-subtle:  #2a2a4a;
-  --border-default: #333;
-  --border-strong:  #444;
+  --border-subtle:  hsl(217 33% 17%);  /* #1e293b */
+  --border-default: hsl(217 33% 17%);
+  --border-strong:  hsl(217 33% 26%);
 
-  --text-primary:   #e0e0e0;
-  --text-secondary: #aaa;
-  --text-muted:     #888;
-  --text-faint:     #555;
-  --text-white:     #fff;
+  --text-primary:   hsl(213 31% 91%);  /* #e2e8f0 */
+  --text-secondary: hsl(215 16% 65%);  /* #94a3b8 */
+  --text-muted:     hsl(215 20% 45%);  /* #64748b */
+  --text-faint:     hsl(215 20% 30%);
+  --text-white:     #ffffff;
+  --text-sub:       var(--text-secondary);
+  --text-mute:      var(--text-muted);
 
-  /* ─── Multi-accent palette (used functionally to group content) ─── */
-  --accent-blue:   #7bb8f5;
-  --accent-blue-hover: #a8d1ff;
-  --accent-purple: #c77dff;
-  --accent-amber:  #e9c46a;
-  --accent-green:  #52b788;
-  --accent-teal:   #2a9d8f;
-  --accent-red:    #dc2f02;
-  --accent-coral:  #ff6b6b;
-  --accent-violet: #aa3bff;
+  /* ─── Multi-accent palette — Aegis blue/violet primary + functional colors ─── */
+  --accent-blue:         #2563eb;   /* blue-600 (Aegis primary) */
+  --accent-blue-hover:   #3b82f6;   /* blue-500 */
+  --accent-purple:       #7c3aed;   /* violet-600 (Aegis secondary) */
+  --accent-violet:       #7c3aed;   /* alias */
+  --accent-amber:        #f59e0b;   /* warn / fear */
+  --accent-green:        #10b981;   /* success */
+  --accent-red:          #ef4444;   /* danger / invader */
+  --accent-teal:         #06b6d4;
+  --accent-coral:        #f87171;
 
-  /* Default "primary" accent — Claude/Hundari blue */
-  --accent: var(--accent-blue);
-  --accent-hover: var(--accent-blue-hover);
-  --accent-soft: rgba(123, 184, 245, 0.15);
-  --accent-border: rgba(123, 184, 245, 0.35);
-  --accent-fg: #0d1117;
+  /* Default "primary" accent — Aegis blue */
+  --accent:        var(--accent-blue);
+  --accent-hover:  var(--accent-blue-hover);
+  --accent-soft:   rgba(37, 99, 235, 0.15);
+  --accent-border: rgba(37, 99, 235, 0.35);
+  --accent-fg:     #ffffff;
 
-  --selected-bg: rgba(123, 184, 245, 0.18);
+  /* Signature gradient — the Aegis blue→violet lives on primary buttons,
+   * active tabs, progress bars, selected states, the logo mark. */
+  --accent-grad: linear-gradient(90deg, #2563eb 0%, #7c3aed 100%);
+  --accent-grad-soft: linear-gradient(90deg, rgba(37,99,235,.18), rgba(124,58,237,.18));
+
+  --selected-bg: rgba(37, 99, 235, 0.18);
   --selected-border: var(--accent-blue);
 
   /* Status (aligned with accents) */
@@ -57,35 +70,46 @@
   --status-danger:  var(--accent-red);
   --status-info:    var(--accent-blue);
 
-  /* Badge pairs — background + text on deep base */
-  --badge-approved-bg: #0a2818;
+  /* Soft (alpha) variants for status chip backgrounds */
+  --ok-soft:     rgba(16, 185, 129, 0.15);
+  --warn-soft:   rgba(245, 158, 11, 0.15);
+  --danger-soft: rgba(239, 68, 68, 0.15);
+  --info-soft:   rgba(59, 130, 246, 0.15);
+
+  /* Badge pairs — kept for backward compat with existing components that
+   * reference these. Values mapped onto new palette. */
+  --badge-approved-bg: rgba(16, 185, 129, 0.12);
   --badge-approved-fg: var(--accent-green);
-  --badge-chosen-bg:   #1a0f30;
+  --badge-chosen-bg:   rgba(124, 58, 237, 0.12);
   --badge-chosen-fg:   var(--accent-purple);
-  --badge-warn-bg:     #331a00;
+  --badge-warn-bg:     rgba(245, 158, 11, 0.12);
   --badge-warn-fg:     var(--accent-amber);
 
-  /* Terrain left-border tints */
+  /* Terrain left-border tints — unchanged (functional, not aesthetic) */
   --terrain-mountain: #b85c64;
   --terrain-wetland:  #5ba5a0;
   --terrain-jungle:   #6fa661;
   --terrain-sands:    #d9a45e;
   --terrain-ocean:    #4f7b9e;
 
-  /* Pool colors */
-  --pool-fear:   var(--accent-amber);
-  --pool-blight: var(--accent-green);
-  --pool-energy: #d1a43a;
+  /* Pool colors — re-tuned to Aegis palette */
+  --pool-fear:   var(--accent-amber);  /* fear = amber */
+  --pool-blight: var(--accent-purple); /* blight = violet */
+  --pool-energy: #fbbf24;
 
-  /* SVG silhouette icons need polarity flip on dark bg */
+  /* Disc (presence) palette aliases — legacy var names some components use */
+  --disc-primary:   var(--accent-blue);
+  --disc-highlight: rgba(37, 99, 235, 0.35);
+  --disc-shadow:    rgba(0, 0, 0, 0.45);
+
+  /* SVG silhouette icons — polarity flip on dark bg */
   --icon-svg-filter: invert(0.92) brightness(1.05);
 
   /* ─── Typography ─── */
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-brand: "Oswald", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  /* Type scale — bumped from 13px body / 0.82rem sm for readability at
-   * normal zoom levels. Previous density was too tight; things now breathe. */
   --fs-xxs:  0.72rem;
   --fs-xs:   0.82rem;
   --fs-sm:   0.92rem;
@@ -93,6 +117,7 @@
   --fs-md:   1.08rem;
   --fs-lg:   1.2rem;
   --fs-xl:   1.5rem;
+  --fs-2xl:  1.875rem;
 
   --lh-tight: 1.3;
   --lh-base:  1.55;
@@ -103,7 +128,7 @@
   --fw-semibold: 600;
   --fw-bold:     700;
 
-  /* ─── Spacing ─── bumped ~20% so panels breathe */
+  /* ─── Spacing ─── */
   --sp-0: 0;
   --sp-1: 0.3rem;
   --sp-2: 0.6rem;
@@ -113,39 +138,78 @@
   --sp-6: 2.25rem;
   --sp-7: 3.25rem;
 
-  /* ─── Radii ─── */
-  --r-sm:   4px;
+  /* ─── Radii (Aegis uses 6–12 px) ─── */
+  --r-sm:   6px;
   --r-md:   8px;
   --r-lg:   12px;
   --r-xl:   16px;
   --r-full: 9999px;
 
-  /* ─── Shadows (dark-tuned, restrained) ─── */
-  --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-lg:    0 10px 24px rgba(0, 0, 0, 0.6);
+  /* ─── Shadows (Aegis depth — subtle at rest, lift on hover, colored glows) ─── */
+  --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-md:    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg:    0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.08);
   --shadow-focus: 0 0 0 3px var(--accent-soft);
+  --shadow-glow:       0 0 15px rgba(37, 99, 235, 0.35);
+  --shadow-glow-violet: 0 0 15px rgba(124, 58, 237, 0.35);
+  --shadow-glow-amber:  0 0 12px rgba(245, 158, 11, 0.35);
+  --shadow-glow-green:  0 0 12px rgba(16, 185, 129, 0.35);
+  --shadow-glow-red:    0 0 12px rgba(239, 68, 68, 0.35);
 
   --motion-fast: 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
   --motion-base: 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-slow: 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Faint grid pattern — used as a backdrop on main work surfaces */
+  --grid-bg:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  --grid-bg-size: 32px 32px;
+
+  /* ─── Aegis-named aliases (match aegis-app component code) ─── */
+  /* These mirror the actual aegis-app token names so component-port code
+   * reads naturally. Values are aliases of the slate-canvas tokens above. */
+  --aegis-bg:               var(--bg-canvas);
+  --aegis-bg-secondary:     var(--bg-surface);
+  --aegis-bg-tertiary:      var(--bg-raised);
+  --aegis-bg-quaternary:    var(--bg-inset);
+
+  --aegis-text-primary:     var(--text-primary);
+  --aegis-text-secondary:   var(--text-secondary);
+  --aegis-text-tertiary:    var(--text-muted);     /* aegis 4-layer scale */
+  --aegis-text-muted:       var(--text-faint);
+
+  --aegis-border:           var(--border-subtle);
+  --aegis-border-strong:    var(--border-strong);
+
+  --aegis-accent-primary:   var(--accent-blue);
+  --aegis-accent-secondary: var(--accent-purple);
+
+  /* Aegis card head/body padding — matches their p-6 / py-4 px-6 rhythm */
+  --aegis-card-pad:    16px;
+  --aegis-card-pad-lg: 24px;
+
+  /* Aegis sidebar width scale (matches w-64/72/80 breakpoints) */
+  --sidebar-w:    260px;
+  --sidebar-w-lg: 288px;
+  --sidebar-w-xl: 320px;
 
   color-scheme: dark;
   color: var(--text-primary);
   background-color: var(--bg-canvas);
   font-family: var(--font-sans);
-  font-size: 15px;              /* bumped from 13px for normal-zoom readability */
+  font-size: 15px;
   line-height: var(--lh-base);
+  letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-body { margin: 0; min-height: 100vh; }
+body { margin: 0; min-height: 100vh; background-color: var(--bg-canvas); }
 * { box-sizing: border-box; }
 
-/* Density modes. `comfortable` (default) bumps spacing and font sizes a bit
- * more on top of the new base. `compact` restores the old terse values for
- * users who prefer maximum information density. */
+/* Density modes — unchanged behavior, just updated font sizes. */
 html[data-density="comfortable"] {
   font-size: 15.5px;
   --sp-1: 0.35rem;
@@ -170,16 +234,23 @@ html[data-density="compact"] {
 h1, h2, h3, h4 {
   font-weight: var(--fw-bold);
   color: var(--text-white);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   margin: 0;
   line-height: var(--lh-tight);
 }
-h1 { font-size: 32px; }
-h2 { font-size: 24px; color: var(--text-white); }
-h3 { font-size: 17px; color: #ccc; font-weight: var(--fw-semibold); }
+h1 { font-size: 32px; font-family: var(--font-brand); letter-spacing: 0.02em; }
+h2 { font-size: 22px; color: var(--text-white); }
+h3 { font-size: 15px; color: var(--text-secondary); font-weight: var(--fw-semibold); }
 
-a { color: var(--accent-blue); text-decoration: none; }
-a:hover { color: var(--accent-blue-hover); text-decoration: underline; }
+a { color: var(--accent-blue); text-decoration: none; transition: color var(--motion-fast); }
+a:hover { color: var(--accent-blue-hover); text-decoration: none; }
+
+.brand {
+  font-family: var(--font-brand);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.mono { font-family: var(--font-mono); }
 
 button {
   font-family: inherit;
@@ -194,18 +265,26 @@ button {
   transition:
     background var(--motion-fast),
     border-color var(--motion-fast),
-    color var(--motion-fast);
+    color var(--motion-fast),
+    box-shadow var(--motion-base);
 }
 button:hover { background: var(--bg-hover); border-color: var(--border-strong); }
 button:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* Primary button = Aegis blue→violet gradient with glow */
 button.primary {
-  background: var(--accent-violet);
+  background: var(--accent-grad);
   color: var(--text-white);
-  border-color: var(--accent-violet);
+  border-color: transparent;
+  box-shadow: var(--shadow-glow);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.01em;
 }
-button.primary:hover { filter: brightness(1.15); }
+button.primary:hover {
+  filter: brightness(1.08);
+  box-shadow: var(--shadow-glow), 0 4px 12px rgba(37, 99, 235, 0.25);
+}
 
 button.ghost {
   background: transparent;
@@ -213,6 +292,79 @@ button.ghost {
   color: var(--text-secondary);
 }
 button.ghost:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+/* Aegis full button variant set — class-based, mirrors aegis-app CVA. */
+button.outline {
+  background: transparent;
+  border: 1px solid var(--aegis-border);
+  color: var(--text-primary);
+}
+button.outline:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent-blue);
+}
+
+button.secondary {
+  background: var(--bg-raised);
+  color: var(--text-primary);
+  border: 1px solid var(--aegis-border);
+}
+button.secondary:hover {
+  background: var(--bg-hover);
+}
+
+button.destructive {
+  background: rgba(239, 68, 68, 0.18);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.45);
+}
+button.destructive:hover {
+  background: rgba(239, 68, 68, 0.28);
+  border-color: rgba(239, 68, 68, 0.65);
+}
+
+button.glow {
+  background: var(--accent-blue);
+  color: white;
+  border-color: transparent;
+  box-shadow: var(--shadow-glow);
+}
+button.glow:hover {
+  background: var(--accent-blue-hover);
+  filter: brightness(1.05);
+}
+
+button.link {
+  background: transparent;
+  border: none;
+  color: var(--accent-blue);
+  padding: 0;
+  text-decoration: none;
+}
+button.link:hover {
+  text-decoration: underline;
+  color: var(--accent-blue-hover);
+}
+
+/* Button size modifiers — class-based. Default size is current. */
+button.size-sm {
+  height: 28px;
+  padding: 0 12px;
+  font-size: var(--fs-xxs);
+  border-radius: var(--r-sm);
+}
+button.size-lg {
+  height: 40px;
+  padding: 0 28px;
+  font-size: var(--fs-base);
+}
+button.size-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+}
 
 input[type="number"],
 input[type="text"],
@@ -224,6 +376,7 @@ select {
   border: 1px solid var(--border-default);
   border-radius: var(--r-sm);
   padding: var(--sp-1) var(--sp-2);
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast);
 }
 input[type="number"] { width: 4rem; }
 input:focus, select:focus {
@@ -242,13 +395,306 @@ code {
   border-radius: var(--r-sm);
 }
 
-/* ─── Utility classes (match Hundari .card / .badge patterns) ─── */
-.card {
-  background: var(--bg-surface);
+/* ───────────────────────── Aegis utility classes ───────────────────────── */
+
+/* Primary card — gradient bg + border + backdrop-blur + hover lift */
+.aegis-card {
+  background: linear-gradient(to bottom right, var(--bg-surface), var(--bg-canvas));
   border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  transition: box-shadow var(--motion-slow), border-color var(--motion-base);
+}
+.aegis-card:hover { box-shadow: var(--shadow-lg); }
+.aegis-card.active { border-color: var(--accent-blue); box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25), var(--shadow-md); }
+
+.aegis-card-head {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; align-items: center; gap: 12px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--bg-inset) 50%, transparent));
+}
+.aegis-card-title {
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+.aegis-card-meta {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.aegis-card-body { padding: 16px; }
+
+/* Gradient accent — for text or bg */
+.aegis-gradient {
+  background: var(--accent-grad);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.aegis-gradient-bg { background: var(--accent-grad); }
+
+/* Colored status badges (rounded-full with soft bg + glow) */
+.aegis-badge {
+  display: inline-flex; align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  font-size: 10px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.aegis-badge.ok      { background: var(--ok-soft); color: var(--accent-green); box-shadow: var(--shadow-glow-green); }
+.aegis-badge.success { background: var(--ok-soft); color: var(--accent-green); box-shadow: var(--shadow-glow-green); }
+.aegis-badge.warn    { background: var(--warn-soft); color: var(--accent-amber); box-shadow: var(--shadow-glow-amber); }
+.aegis-badge.warning { background: var(--warn-soft); color: var(--accent-amber); box-shadow: var(--shadow-glow-amber); }
+.aegis-badge.danger  { background: var(--danger-soft); color: var(--accent-red); box-shadow: var(--shadow-glow-red); }
+.aegis-badge.destructive { background: var(--danger-soft); color: var(--accent-red); box-shadow: var(--shadow-glow-red); }
+.aegis-badge.info    { background: var(--info-soft); color: var(--accent-blue); box-shadow: var(--shadow-glow); }
+.aegis-badge.primary { background: var(--info-soft); color: var(--accent-blue); border: 1px solid rgba(37, 99, 235, 0.45); }
+.aegis-badge.secondary {
+  background: rgba(124, 58, 237, 0.18);
+  color: #c4b5fd;
+  border: 1px solid rgba(124, 58, 237, 0.45);
+}
+.aegis-badge.outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--aegis-border);
+  box-shadow: none;
+}
+.aegis-badge.glow {
+  background: var(--info-soft);
+  color: var(--accent-blue-hover);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Pulsing imminent-win badge */
+.aegis-badge.imminent {
+  background: rgba(16, 185, 129, 0.18);
+  color: var(--accent-green);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.35);
+  animation: pulse-ok 1.6s ease-in-out infinite;
+}
+@keyframes pulse-ok {
+  0%, 100% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.25); }
+  50%      { box-shadow: 0 0 25px rgba(16, 185, 129, 0.55); }
+}
+
+/* Tab pill-row (e.g., for deck tabs, spirit tabs) */
+.aegis-tabs {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--bg-inset);
+  border-radius: var(--r-md);
+}
+.aegis-tabs > button {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  padding: 5px 12px;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  border-radius: calc(var(--r-md) - 2px);
+  cursor: pointer;
+  transition: all var(--motion-fast);
+}
+.aegis-tabs > button:hover { background: var(--bg-hover); color: var(--text-primary); }
+.aegis-tabs > button.active {
+  background: var(--accent-grad);
+  color: var(--text-white);
+  border-color: transparent;
+  box-shadow: var(--shadow-glow);
+}
+
+/* Progress bar with gradient fill */
+.aegis-progress {
+  width: 100%; height: 6px;
+  background: var(--bg-inset);
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+.aegis-progress > i {
+  display: block; height: 100%;
+  background: var(--accent-grad);
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+  transition: width var(--motion-base);
+}
+
+/* Grid-pattern surface — subtle texture for main workspace background */
+.aegis-grid-bg {
+  background-image: var(--grid-bg);
+  background-size: var(--grid-bg-size);
+}
+
+/* Aegis text input — h-9, ring focus, tertiary bg. Apply `.aegis-input`
+ * to <input> / <select> / <textarea> for consistent styling. */
+.aegis-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--aegis-border);
+  background: color-mix(in srgb, var(--bg-raised) 50%, transparent);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast);
+}
+.aegis-input::placeholder { color: var(--text-muted); }
+.aegis-input:focus,
+.aegis-input:focus-visible {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 1px var(--accent-blue);
+}
+.aegis-input:disabled { opacity: 0.5; cursor: not-allowed; }
+
+textarea.aegis-input { min-height: 72px; padding: 8px 12px; height: auto; line-height: 1.5; }
+select.aegis-input { padding-right: 28px; cursor: pointer; }
+
+/* Aegis section header — small uppercase label with subtle separator below.
+ * Use for "Workspace", "Analysis", etc. groupings inside cards/sidebars. */
+.aegis-section-hdr {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px 8px;
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+/* Aegis separator — gradient border that fades at the edges. */
+.aegis-separator {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--aegis-border), transparent);
+  margin: 8px 0;
+  border: none;
+}
+.aegis-separator.vertical {
+  width: 1px; height: auto;
+  background: linear-gradient(180deg, transparent, var(--aegis-border), transparent);
+  margin: 0 8px;
+}
+
+/* Aegis empty state — centered icon + message + optional action. */
+.aegis-empty {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--text-muted);
+  gap: 8px;
+}
+.aegis-empty-title {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: var(--text-secondary);
+}
+.aegis-empty-desc { font-size: var(--fs-sm); max-width: 360px; line-height: 1.5; }
+
+/* Aegis nav-link — used in sidebars. Hover bg + active gradient highlight. */
+.aegis-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--r-sm);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--motion-fast);
+}
+.aegis-nav-link:hover {
+  background: color-mix(in srgb, var(--accent-blue) 8%, transparent);
+  color: var(--text-primary);
+}
+.aegis-nav-link.active {
+  background: var(--accent-grad);
+  color: white;
+  border-color: transparent;
+  box-shadow: var(--shadow-glow);
+}
+.aegis-nav-link .icon {
+  width: 16px; height: 16px;
+  flex: 0 0 16px;
+  color: inherit;
+}
+
+/* Modal/dialog overlay + content — match Aegis dialog sizing. */
+.aegis-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: grid;
+  place-items: center;
+  animation: fadeIn 200ms ease-out;
+}
+.aegis-dialog {
+  background: linear-gradient(to bottom right, var(--bg-surface), var(--bg-canvas));
+  border: 1px solid var(--aegis-border);
   border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  width: min(92vw, 720px);
+  max-height: 88vh;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  animation: scaleIn 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.aegis-dialog-head {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--aegis-border);
+  display: flex; align-items: center; gap: 12px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--bg-inset) 50%, transparent));
+}
+.aegis-dialog-title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+}
+.aegis-dialog-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+.aegis-dialog-foot {
+  padding: 16px 24px;
+  border-top: 1px solid var(--aegis-border);
+  display: flex; justify-content: flex-end; gap: 8px;
+  background: color-mix(in srgb, var(--bg-inset) 30%, transparent);
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ─── Legacy utility classes (kept for backward compat with components) ─── */
+.card {
+  background: linear-gradient(to bottom right, var(--bg-surface), var(--bg-canvas));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
   padding: var(--sp-5);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(4px);
 }
 
 .card-inset {
@@ -260,7 +706,6 @@ code {
 .stack { display: flex; flex-direction: column; gap: var(--sp-2); }
 .row   { display: flex; gap: var(--sp-2); align-items: center; }
 
-/* Pill-style chip */
 .chip {
   display: inline-flex;
   align-items: center;
@@ -278,23 +723,22 @@ code {
   color: var(--text-primary);
 }
 
-/* Badge (with accent-tinted background + border) */
 .badge {
   display: inline-flex;
   align-items: center;
   font-size: 10px;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: var(--r-full);
   font-weight: var(--fw-bold);
   white-space: nowrap;
+  letter-spacing: 0.04em;
 }
-.badge-approved { background: var(--badge-approved-bg); color: var(--badge-approved-fg); border: 1px solid rgba(82, 183, 136, 0.4); }
-.badge-chosen   { background: var(--badge-chosen-bg);   color: var(--badge-chosen-fg);   border: 1px solid rgba(199, 125, 255, 0.4); }
-.badge-warn     { background: var(--badge-warn-bg);     color: var(--badge-warn-fg);     border: 1px solid rgba(233, 196, 106, 0.4); }
+.badge-approved { background: var(--badge-approved-bg); color: var(--badge-approved-fg); border: 1px solid rgba(16, 185, 129, 0.35); }
+.badge-chosen   { background: var(--badge-chosen-bg);   color: var(--badge-chosen-fg);   border: 1px solid rgba(124, 58, 237, 0.35); }
+.badge-warn     { background: var(--badge-warn-bg);     color: var(--badge-warn-fg);     border: 1px solid rgba(245, 158, 11, 0.35); }
 
 .muted  { color: var(--text-muted); }
 .subtle { color: var(--text-secondary); }
-.mono   { font-family: var(--font-mono); }
 .label {
   font-size: var(--fs-xxs);
   text-transform: uppercase;

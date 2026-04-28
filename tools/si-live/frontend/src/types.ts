@@ -36,6 +36,22 @@ export interface Spirit {
    *  this spirit's presence is rendered). */
   disc_color?: string
   disc_style?: 'glass' | 'wood' | 'solid'
+  /** Selected aspect slug (e.g., "reach" for Shadows). null/undefined = base spirit. */
+  aspect?: string | null
+  /** Display name of the selected aspect (e.g., "Dark Fire"). */
+  aspect_name?: string | null
+  /** Aspect special-rule overrides (name + text pairs). */
+  aspect_special_rules?: Array<{ name: string; text: string }> | null
+  /** Raw setup-note string from the aspect (e.g., "Gain Unquenchable Flames (Minor Power)"). */
+  aspect_setup_note?: string | null
+  /** Replacement innate (when aspect overrides the spirit's base innate). Null when aspect keeps the base. */
+  aspect_innate_override?: {
+    innate_name?: string
+    speed?: string
+    range?: string
+    target?: string
+    innate_thresholds?: string
+  } | null
 }
 
 export interface SpiritDiscInfo {
@@ -62,6 +78,8 @@ export interface Setup {
   spirits: string[]
   boards: string[]
   expansions_active: string[]
+  /** Aspect assignments — spirit slug → aspect key. Omitted spirits use base. */
+  aspects?: Record<string, string>
 }
 
 export interface InvaderCard {

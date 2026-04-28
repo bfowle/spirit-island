@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { GameState, Phase, InvaderCard, FearCardEntry, EventCardEntry } from '../types'
+import UiIcon from './UiIcon.vue'
 
 /**
  * Retrospective view — walks the log's phase_snapshot + turn_advanced entries
@@ -268,7 +269,7 @@ function snapshotDecks(round: number, phase: string): DeckSnapshot | undefined {
           class="ghost"
           @click="captureCurrent"
           title="Manually capture (or update) a snapshot for the current round + phase"
-        >📸 Snapshot now</button>
+        ><UiIcon name="camera" :size="14" decorative /> Snapshot now</button>
       </div>
     </div>
 

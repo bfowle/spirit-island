@@ -195,6 +195,32 @@ pub struct Spirit {
     pub played_this_turn: Vec<String>,
     #[serde(default)]
     pub growth_options: Vec<GrowthOption>,
+
+    /// Per-spirit disc color (hex) — purely cosmetic, drives the presence-disc
+    /// rendering across the app. Persisted with the rest of game state so the
+    /// UI's color/style customization survives refresh + save/load.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub disc_color: Option<String>,
+    /// Per-spirit disc style: "glass" | "wood" | "solid".
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub disc_style: Option<String>,
+
+    /// Selected aspect slug (e.g., "dark-fire"). None = base spirit.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub aspect: Option<String>,
+    /// Aspect display name (e.g., "Dark Fire").
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub aspect_name: Option<String>,
+    /// Aspect special-rule overrides. Array of `{name, text}` pairs — kept as
+    /// raw JSON so schema evolution on the Wiki side doesn't need code changes.
+    #[serde(default, skip_serializing_if = "serde_json::Value::is_null")]
+    pub aspect_special_rules: serde_json::Value,
+    /// Raw setup-note string from the aspect (e.g., "Gain Unquenchable Flames (Minor Power)").
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub aspect_setup_note: Option<String>,
+    /// Replacement innate (when an aspect overrides the spirit's base innate).
+    #[serde(default, skip_serializing_if = "serde_json::Value::is_null")]
+    pub aspect_innate_override: serde_json::Value,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

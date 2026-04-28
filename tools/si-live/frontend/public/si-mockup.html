@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>si-live — Aegis-style prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ───────────────────────── Aegis-inspired design tokens ───────────────────────── */
+    :root {
+      --bg-canvas: hsl(222 47% 11%);
+      --bg-surface: hsl(223 47% 9%);
+      --bg-inset: hsl(224 71% 4%);
+      --bg-elevated: hsl(222 40% 13%);
+      --border: hsl(217 33% 17%);
+      --border-strong: hsl(217 33% 26%);
+
+      --text: hsl(213 31% 91%);
+      --text-sub: hsl(215 16% 65%);
+      --text-mute: hsl(215 20% 45%);
+
+      --accent-1: #2563eb;   /* blue-600 */
+      --accent-2: #7c3aed;   /* violet-600 */
+      --accent-grad: linear-gradient(90deg, #2563eb 0%, #7c3aed 100%);
+
+      --ok: #10b981;
+      --ok-soft: rgba(16,185,129,.15);
+      --warn: #f59e0b;
+      --warn-soft: rgba(245,158,11,.15);
+      --danger: #ef4444;
+      --danger-soft: rgba(239,68,68,.15);
+      --info: #3b82f6;
+      --info-soft: rgba(59,130,246,.15);
+
+      --shadow-1: 0 1px 2px rgba(0,0,0,.25);
+      --shadow-2: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);
+      --shadow-hover: 0 10px 15px -3px rgba(0,0,0,.2), 0 4px 6px -2px rgba(0,0,0,.08);
+      --shadow-glow: 0 0 15px rgba(37,99,235,.35);
+      --shadow-glow-vi: 0 0 15px rgba(124,58,237,.35);
+
+      --r-sm: 6px;
+      --r-md: 8px;
+      --r-lg: 12px;
+      --r-full: 9999px;
+
+      /* grid-pattern faint overlay */
+      --grid-bg:
+        linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+
+      font-size: 14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    body {
+      background: var(--bg-canvas);
+      color: var(--text);
+      font-family: "Inter", system-ui, sans-serif;
+      font-feature-settings: "cv11", "ss01";
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -.005em;
+    }
+    a { color: var(--accent-1); text-decoration: none; }
+    a:hover { color: var(--accent-2); }
+
+    .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+    .brand { font-family: "Oswald", sans-serif; font-weight: 700; letter-spacing: .02em; }
+
+    /* ───────────────────────── Shell ─────────────────────────
+     * Three columns: left-nav / main-dashboard / right-spirit-rail.
+     * Spirit is ALWAYS visible in the right rail so the player doesn't hunt
+     * for it when playing cards, regardless of phase. The main area carries
+     * only board / decks / analytics and reflows those three per phase.
+     */
+    .shell {
+      display: grid;
+      grid-template-columns: 248px minmax(0, 1fr) 360px;
+      grid-template-rows: 56px minmax(0, 1fr);
+      grid-template-areas:
+        "sidebar header    spirit"
+        "sidebar main      spirit";
+      height: 100vh;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .sidebar { grid-area: sidebar; border-right: 1px solid var(--border); background: var(--bg-surface); display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+    .header  { grid-area: header; border-bottom: 1px solid var(--border); background: color-mix(in srgb, var(--bg-surface) 92%, transparent); backdrop-filter: blur(8px); display: flex; align-items: center; padding: 0 20px; gap: 16px; min-height: 0; }
+    .main    {
+      grid-area: main;
+      padding: 14px 18px 18px;
+      background-image: var(--grid-bg);
+      background-size: 32px 32px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .spirit-rail {
+      grid-area: spirit;
+      border-left: 1px solid var(--border);
+      background: var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* ───────────────────────── Sidebar ───────────────────────── */
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0 18px;
+      height: 56px;
+      flex: 0 0 56px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo-mark {
+      width: 30px; height: 30px; border-radius: 7px;
+      background: var(--accent-grad);
+      display: grid; place-items: center;
+      color: white; font-weight: 700; font-size: 13px;
+      box-shadow: var(--shadow-glow);
+    }
+    .logo-text { font-family: "Oswald", sans-serif; font-weight: 700; font-size: 18px; letter-spacing: .04em; }
+    .logo-sub  { font-size: 10px; color: var(--text-mute); text-transform: uppercase; letter-spacing: .12em; margin-top: -2px; }
+
+    .nav { padding: 14px 10px; flex: 1; overflow: auto; }
+    .nav-group { margin-bottom: 18px; }
+    .nav-heading { font-size: 10px; text-transform: uppercase; letter-spacing: .12em; color: var(--text-mute); padding: 0 10px 8px; font-weight: 600; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 10px; border-radius: var(--r-sm);
+      color: var(--text-sub); cursor: pointer;
+      font-size: 13px;
+      margin-bottom: 2px;
+      transition: all 150ms ease;
+    }
+    .nav-item:hover { background: color-mix(in srgb, var(--accent-1) 8%, transparent); color: var(--text); }
+    .nav-item.active {
+      background: var(--accent-grad);
+      color: white;
+      box-shadow: var(--shadow-glow);
+    }
+    .nav-icon {
+      width: 16px; height: 16px;
+      display: inline-grid; place-items: center;
+      color: var(--accent-1);
+    }
+    .nav-item.active .nav-icon { color: white; }
+
+    .sidebar-footer {
+      padding: 14px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--accent-grad);
+      display: grid; place-items: center; color: white; font-weight: 700; font-size: 12px;
+    }
+
+    /* ───────────────────────── Header ───────────────────────── */
+    .matchup {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 5px 10px; border-radius: var(--r-full);
+      background: color-mix(in srgb, var(--accent-2) 18%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent-2) 35%, transparent);
+      font-size: 12px;
+      color: #ddd4f9;
+    }
+    .matchup-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 8px var(--accent-2); }
+
+    .phase-stepper {
+      display: inline-flex; align-items: center; gap: 2px;
+      flex: 1;
+      justify-content: center;
+      max-width: 720px;
+    }
+    .phase-node {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: var(--r-full);
+      color: var(--text-mute);
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 150ms ease;
+    }
+    .phase-node:hover { color: var(--text); background: color-mix(in srgb, var(--accent-1) 6%, transparent); }
+    .phase-node .pnum { font-family: "JetBrains Mono", monospace; font-size: 10px; color: var(--text-mute); }
+    .phase-node.done { color: var(--text-sub); opacity: .72; }
+    .phase-node.done .pnum { color: var(--ok); }
+    .phase-node.active {
+      background: var(--accent-grad);
+      color: white;
+      border-color: transparent;
+      box-shadow: var(--shadow-glow);
+    }
+    .phase-node.active .pnum { color: rgba(255,255,255,.78); }
+    .phase-sep { width: 10px; height: 1px; background: var(--border); }
+
+    .header-right { display: inline-flex; align-items: center; gap: 12px; }
+    .save-status { font-size: 11px; color: var(--text-mute); display: inline-flex; align-items: center; gap: 6px; }
+    .save-status::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--ok); box-shadow: 0 0 6px var(--ok);
+    }
+
+    .icon-btn {
+      width: 32px; height: 32px; border-radius: var(--r-sm);
+      display: inline-grid; place-items: center;
+      background: transparent; border: 1px solid transparent;
+      color: var(--text-sub); cursor: pointer; transition: all 150ms ease;
+    }
+    .icon-btn:hover { background: var(--bg-elevated); color: var(--text); border-color: var(--border); }
+
+    /* ───────────────────────── Cards ───────────────────────── */
+    .card {
+      background: linear-gradient(to bottom right, var(--bg-surface), var(--bg-canvas));
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      box-shadow: var(--shadow-2);
+      backdrop-filter: blur(6px);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      min-height: 0;   /* critical: allow card to shrink into its grid cell */
+      transition: box-shadow 300ms ease, transform 200ms ease;
+    }
+    .card:hover { box-shadow: var(--shadow-hover); }
+    .card-head {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+      background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--bg-inset) 50%, transparent));
+      flex: 0 0 auto;
+    }
+    .card-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--text-sub); }
+    .card-meta { margin-left: auto; font-size: 11px; color: var(--text-mute); font-family: "JetBrains Mono", monospace; }
+    .card-body {
+      padding: 14px;
+      flex: 1 1 auto;
+      min-height: 0;    /* critical for overflow:auto inside flex child */
+      overflow: auto;
+    }
+    .card-body.pad-tight { padding: 10px 14px; }
+    .card-body.pad-none  { padding: 0; }
+
+    /* ───────────────────────── Status bar (top of main) ───────────────────────── */
+    .status-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 14px;
+      background: linear-gradient(to bottom right, var(--bg-surface), var(--bg-canvas));
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-2);
+      flex: 0 0 auto;  /* don't let it shrink or grow in the flex column */
+    }
+    .stat {
+      display: flex; flex-direction: column; gap: 2px;
+      padding: 0 8px;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-of-type { border-right: none; }
+    .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--text-mute); font-weight: 600; }
+    .stat-value { font-size: 22px; font-weight: 700; letter-spacing: -.015em; font-family: "JetBrains Mono", monospace; }
+    .stat-sub { font-size: 11px; color: var(--text-mute); }
+    .stat.accent .stat-value { background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+    .progress {
+      width: 100%; height: 6px;
+      background: var(--bg-inset);
+      border-radius: var(--r-full);
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .progress > i {
+      display: block; height: 100%;
+      background: var(--accent-grad);
+      box-shadow: 0 0 10px rgba(37,99,235,.4);
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 2px 8px; border-radius: var(--r-full);
+      font-size: 10px; font-weight: 600; letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .badge.ok { background: var(--ok-soft); color: var(--ok); box-shadow: 0 0 10px rgba(16,185,129,.15); }
+    .badge.warn { background: var(--warn-soft); color: var(--warn); }
+    .badge.danger { background: var(--danger-soft); color: var(--danger); }
+    .badge.info { background: var(--info-soft); color: var(--info); }
+    .badge.imminent { background: rgba(16,185,129,.18); color: var(--ok); box-shadow: 0 0 15px rgba(16,185,129,.35); animation: pulse-ok 1.6s ease-in-out infinite; }
+    @keyframes pulse-ok {
+      0%, 100% { box-shadow: 0 0 15px rgba(16,185,129,.25); }
+      50% { box-shadow: 0 0 25px rgba(16,185,129,.55); }
+    }
+
+    /* ───────────────────────── Dashboard grid ───────────────────────── */
+    .grid {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: grid;
+      gap: 14px;
+      /* Default (fallback) — same as Fast/Slow. Every phase below overrides.
+       * Only three zones in the main area: board, decks, analytics.
+       * Spirit panel lives in the permanent right rail (always visible). */
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      grid-template-rows: minmax(0, 3fr) minmax(0, 2fr);
+      grid-template-areas:
+        "board     board"
+        "decks     analytics";
+    }
+    #zone-board { grid-area: board; min-width: 0; min-height: 0; }
+    #zone-decks { grid-area: decks; min-width: 0; min-height: 0; }
+    #zone-analytics { grid-area: analytics; min-width: 0; min-height: 0; }
+
+    /* Phase reflow — board / decks / analytics reshape per phase. Spirit is
+     * the right-rail and is unaffected. */
+
+    /* SETUP — board big + decks for setup tokens */
+    body[data-phase="setup"] .grid {
+      grid-template-areas:
+        "board    board"
+        "decks    analytics";
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      grid-template-rows: minmax(0, 3fr) minmax(0, 2fr);
+    }
+
+    /* GROWTH — board secondary; decks + analytics accessible for review */
+    body[data-phase="growth"] .grid {
+      grid-template-areas:
+        "board     analytics"
+        "decks     analytics";
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      grid-template-rows: minmax(0, 2fr) minmax(0, 1fr);
+    }
+
+    /* FAST / SLOW — board primary (card effects hit lands); decks compact */
+    body[data-phase="fast"] .grid, body[data-phase="slow"] .grid {
+      grid-template-areas:
+        "board     board"
+        "decks     analytics";
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      grid-template-rows: minmax(0, 3fr) minmax(0, 2fr);
+    }
+
+    /* EVENT / FEAR — decks primary; board + analytics compact */
+    body[data-phase="event"] .grid, body[data-phase="fear"] .grid {
+      grid-template-areas:
+        "decks     decks"
+        "board     analytics";
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      grid-template-rows: minmax(0, 3fr) minmax(0, 2fr);
+    }
+
+    /* INVADER — board + decks both primary; analytics underneath */
+    body[data-phase="invader"] .grid {
+      grid-template-areas:
+        "board     decks"
+        "board     analytics";
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      grid-template-rows: minmax(0, 3fr) minmax(0, 2fr);
+    }
+
+    /* TIME PASSES — analytics primary for review; decks + board secondary */
+    body[data-phase="timepasses"] .grid {
+      grid-template-areas:
+        "analytics analytics"
+        "board     decks";
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-rows: minmax(0, 3fr) minmax(0, 2fr);
+    }
+
+    /* ───────────────────────── Board zone ───────────────────────── */
+    .board-wrap {
+      position: relative;
+      width: 100%; height: 100%;
+      background: radial-gradient(ellipse at top, rgba(37,99,235,.05), transparent 60%);
+      display: grid; place-items: center;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .board-bg {
+      display: block;
+      max-width: 100%; max-height: 100%;
+      width: auto; height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,.5));
+    }
+    .board-marker {
+      position: absolute;
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      background: color-mix(in srgb, var(--bg-surface) 70%, transparent);
+      border: 2px solid var(--accent-1);
+      color: white; font-weight: 700; font-family: "JetBrains Mono", monospace; font-size: 14px;
+      box-shadow: 0 0 12px rgba(37,99,235,.4);
+      cursor: pointer;
+      transition: transform 150ms ease, border-color 150ms ease;
+    }
+    .board-marker:hover { transform: scale(1.1); border-color: var(--accent-2); }
+
+    /* ───────────────────────── Right-rail spirit panel ───────────────────────── */
+    .rail-header {
+      flex: 0 0 auto;
+      height: 56px;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .rail-title { display: flex; flex-direction: column; }
+    .rail-title .rail-sub { font-size: 10px; color: var(--text-mute); text-transform: uppercase; letter-spacing: .1em; }
+    .rail-tabs { margin-left: auto; display: flex; gap: 4px; }
+    .rail-tab {
+      width: 26px; height: 26px; border-radius: var(--r-sm);
+      border: 1px solid var(--border); background: var(--bg-inset);
+      color: var(--text-sub); cursor: pointer; font-size: 11px; font-weight: 600;
+      transition: all 150ms ease;
+    }
+    .rail-tab.active { background: var(--accent-grad); color: white; border-color: transparent; box-shadow: var(--shadow-glow); }
+    .rail-tab:hover:not(.active) { background: var(--bg-elevated); color: var(--text); }
+
+    .rail-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: auto;
+      padding: 14px 16px;
+    }
+
+    .rail-resources {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .presence-tracks { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
+    .track { display: flex; align-items: center; gap: 8px; }
+    .track-label { font-size: 10px; color: var(--text-mute); text-transform: uppercase; letter-spacing: .08em; width: 56px; font-weight: 600; }
+    .bowls { display: flex; gap: 4px; flex: 1; }
+    .bowl {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 11px; font-weight: 700; font-family: "JetBrains Mono", monospace;
+      border: 1.5px solid var(--border);
+      background: var(--bg-inset);
+      color: var(--text-sub);
+    }
+    .bowl.open { border-color: var(--accent-1); color: var(--accent-1); box-shadow: 0 0 8px rgba(37,99,235,.3); }
+    .bowl.covered { background: color-mix(in srgb, var(--accent-2) 25%, var(--bg-inset)); border-color: rgba(124,58,237,.5); color: #e0d4ff; }
+
+    .pile-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .pile-chip {
+      padding: 8px 10px; border: 1px solid var(--border);
+      border-radius: var(--r-sm); background: var(--bg-inset);
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .pile-label { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-mute); font-weight: 600; }
+    .pile-count { font-size: 18px; font-weight: 700; font-family: "JetBrains Mono", monospace; }
+
+    /* Legacy spirit-zone tabs kept for reference but no longer used in main grid */
+    .spirit-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); padding: 0 10px; flex: 0 0 auto; }
+    .spirit-tab {
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--text-sub);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 150ms ease, border-color 150ms ease;
+      font-weight: 500;
+    }
+    .spirit-tab:hover { color: var(--text); }
+    .spirit-tab.active { color: var(--text); border-bottom-color: var(--accent-1); }
+
+    .spirit-body { padding: 14px; }
+    .spirit-resources { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+    .res-chip {
+      background: var(--bg-inset); border: 1px solid var(--border);
+      border-radius: var(--r-sm); padding: 8px 10px;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .res-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-mute); }
+    .res-value { font-size: 20px; font-weight: 700; font-family: "JetBrains Mono", monospace; }
+    .res-accent .res-value { background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+    .section-title { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--text-mute); font-weight: 600; margin: 10px 0 6px; }
+
+    .element-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+    .element-cell {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 6px;
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px;
+    }
+    .element-cell.has { border-color: var(--accent-1); background: color-mix(in srgb, var(--accent-1) 12%, var(--bg-elevated)); }
+    .element-cell .el-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: .55; }
+    .element-cell.has .el-dot { opacity: 1; box-shadow: 0 0 6px currentColor; }
+    .el-count { margin-left: auto; font-weight: 700; font-family: "JetBrains Mono", monospace; }
+    .el-moon { color: #a8b3f7; }
+    .el-sun { color: #fbbf24; }
+    .el-fire { color: #f87171; }
+    .el-air { color: #67e8f9; }
+    .el-water { color: #60a5fa; }
+    .el-earth { color: #d6b88b; }
+    .el-plant { color: #86efac; }
+    .el-animal { color: #d8b4fe; }
+
+    .card-row {
+      display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center;
+      padding: 8px; margin-bottom: 4px;
+      background: var(--bg-inset); border: 1px solid var(--border); border-radius: var(--r-sm);
+      font-size: 12px;
+    }
+    .card-cost { width: 22px; height: 22px; border-radius: 50%; background: var(--accent-grad); display: grid; place-items: center; color: white; font-weight: 700; font-size: 11px; font-family: "JetBrains Mono", monospace; }
+    .card-name { font-weight: 500; }
+    .card-meta-inline { font-size: 10px; color: var(--text-mute); display: flex; gap: 4px; }
+    .pill {
+      display: inline-block; padding: 1px 6px; font-size: 10px;
+      border-radius: var(--r-full); background: var(--bg-elevated); color: var(--text-sub);
+      border: 1px solid var(--border);
+    }
+    .pill.fast { background: rgba(248,113,113,.12); color: #f87171; border-color: rgba(248,113,113,.35); }
+    .pill.slow { background: rgba(96,165,250,.12); color: #60a5fa; border-color: rgba(96,165,250,.35); }
+
+    /* ───────────────────────── Deck stations ───────────────────────── */
+    .decks-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
+      gap: 10px;
+      height: 100%;
+      min-height: 0;
+      padding: 10px;
+    }
+    .deck-card {
+      background: linear-gradient(to bottom right, var(--bg-surface), var(--bg-canvas));
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .deck-card .deck-body { min-height: 0; }
+    .deck-card.primary { border-color: var(--accent-1); box-shadow: 0 0 0 1px rgba(37,99,235,.25), var(--shadow-2); }
+    .deck-head {
+      padding: 10px 14px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+      background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--bg-inset) 40%, transparent));
+    }
+    .deck-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text); }
+    .deck-count { margin-left: auto; font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--text-mute); }
+    .deck-body { padding: 10px 14px; flex: 1; overflow: auto; }
+
+    .slot-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
+    .slot {
+      padding: 6px 8px; border: 1px solid var(--border); border-radius: var(--r-sm);
+      background: var(--bg-inset);
+      display: flex; flex-direction: column; gap: 2px;
+      min-height: 52px;
+    }
+    .slot.ravage { border-left: 3px solid var(--danger); }
+    .slot.build  { border-left: 3px solid var(--warn); }
+    .slot.explore{ border-left: 3px solid var(--info); }
+    .slot-label { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-mute); font-weight: 600; }
+    .slot-stage { font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: 12px; color: var(--text); }
+    .slot-terrain { font-size: 10px; color: var(--text-sub); }
+
+    .upcoming { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 6px; }
+    .stage-chip {
+      width: 20px; height: 20px; border-radius: 50%;
+      display: grid; place-items: center; font-size: 10px; font-weight: 700;
+      font-family: "JetBrains Mono", monospace;
+    }
+    .stage-chip.s1 { background: rgba(59,130,246,.25); color: #93c5fd; }
+    .stage-chip.s2 { background: rgba(245,158,11,.25); color: #fcd34d; }
+    .stage-chip.s3 { background: rgba(239,68,68,.25); color: #fca5a5; }
+
+    .fear-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 10px; }
+    .fear-dot {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: grid; place-items: center;
+      font-size: 10px; font-weight: 700;
+      font-family: "JetBrains Mono", monospace;
+      color: var(--text-mute);
+    }
+    .fear-dot.t1 { border-color: rgba(59,130,246,.5); color: #93c5fd; }
+    .fear-dot.t2 { border-color: rgba(245,158,11,.5); color: #fcd34d; }
+    .fear-dot.t3 { border-color: rgba(239,68,68,.5); color: #fca5a5; }
+    .fear-dot.resolved { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+    .fear-dot.earned   { background: rgba(245,158,11,.25); border-color: var(--warn); color: var(--warn); }
+
+    /* ───────────────────────── Analytics ───────────────────────── */
+    .charts-wrap {
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) minmax(0, auto);
+      gap: 8px;
+      height: 100%;
+      min-height: 0;
+    }
+    .chart-block { padding: 10px 14px; background: var(--bg-inset); border: 1px solid var(--border); border-radius: var(--r-sm); }
+    .chart-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-mute); margin-bottom: 4px; font-weight: 600; }
+    .spark { width: 100%; height: 60px; display: block; }
+    .winprob-big {
+      display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;
+    }
+    .winprob-big .n { font-size: 32px; font-weight: 800; letter-spacing: -.02em; background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-family: "JetBrains Mono", monospace; }
+    .winprob-big .ci { font-size: 11px; color: var(--text-mute); }
+
+    .terror-progress {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-top: 6px;
+    }
+    .terror-seg {
+      height: 8px; border-radius: var(--r-full);
+      background: var(--bg-elevated); border: 1px solid var(--border);
+    }
+    .terror-seg.done { background: var(--accent-grad); box-shadow: var(--shadow-glow); }
+    .terror-seg.current { background: var(--accent-grad); box-shadow: var(--shadow-glow); animation: pulse-glow 1.6s ease-in-out infinite; }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 8px rgba(37,99,235,.3); }
+      50% { box-shadow: 0 0 18px rgba(37,99,235,.6); }
+    }
+  </style>
+</head>
+<body data-phase="invader">
+
+<div class="shell">
+
+  <!-- ────────────────────────── Sidebar ────────────────────────── -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">SI</div>
+      <div>
+        <div class="logo-text">SI-LIVE</div>
+        <div class="logo-sub">Tableside companion</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-group">
+        <div class="nav-heading">Workspace</div>
+        <div class="nav-item active"><span class="nav-icon">◈</span>Overview</div>
+        <div class="nav-item"><span class="nav-icon">▦</span>Board</div>
+        <div class="nav-item"><span class="nav-icon">✦</span>Spirits</div>
+        <div class="nav-item"><span class="nav-icon">⚔</span>Invader Deck</div>
+        <div class="nav-item"><span class="nav-icon">😱</span>Fear Deck</div>
+        <div class="nav-item"><span class="nav-icon">📜</span>Event Deck</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-heading">Analysis</div>
+        <div class="nav-item"><span class="nav-icon">%</span>Stats</div>
+        <div class="nav-item"><span class="nav-icon">📊</span>Terrain Timeline</div>
+        <div class="nav-item"><span class="nav-icon">🔍</span>Retrospective</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-heading">Games</div>
+        <div class="nav-item"><span class="nav-icon">💾</span>Saved</div>
+        <div class="nav-item"><span class="nav-icon">＋</span>New Game</div>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="avatar">B</div>
+      <div>
+        <div style="font-size:12px;font-weight:500;">brett</div>
+        <div style="font-size:10px;color:var(--text-mute);">Solo · Prussia L6</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ────────────────────────── Header ────────────────────────── -->
+  <header class="header">
+    <span class="matchup"><span class="matchup-dot"></span>Brandenburg-Prussia · L6 · Shadows · Board A</span>
+
+    <div class="phase-stepper">
+      <div class="phase-node done"><span class="pnum">01</span>Setup</div><div class="phase-sep"></div>
+      <div class="phase-node done"><span class="pnum">02</span>Growth</div><div class="phase-sep"></div>
+      <div class="phase-node done"><span class="pnum">03</span>Fast</div><div class="phase-sep"></div>
+      <div class="phase-node done"><span class="pnum">04</span>Event</div><div class="phase-sep"></div>
+      <div class="phase-node done"><span class="pnum">05</span>Fear</div><div class="phase-sep"></div>
+      <div class="phase-node active"><span class="pnum">06</span>Invader</div><div class="phase-sep"></div>
+      <div class="phase-node"><span class="pnum">07</span>Slow</div><div class="phase-sep"></div>
+      <div class="phase-node"><span class="pnum">08</span>Time Passes</div>
+    </div>
+
+    <div class="header-right">
+      <span class="save-status">auto-saved 3s ago</span>
+      <button class="icon-btn" title="Theme">◐</button>
+      <button class="icon-btn" title="Archive">💾</button>
+      <button class="icon-btn" title="Export">⬇</button>
+    </div>
+  </header>
+
+  <!-- ────────────────────────── Main ────────────────────────── -->
+  <main class="main">
+
+    <!-- Status bar -->
+    <div class="status-bar">
+      <div class="stat">
+        <div class="stat-label">Round</div>
+        <div class="stat-value" style="color: var(--warn)">08</div>
+        <div class="stat-sub">of est. 9</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Fear · T3</div>
+        <div class="stat-value">2 / 4</div>
+        <div class="progress"><i style="width:50%"></i></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Blight · 🌑 Flipped</div>
+        <div class="stat-value" style="color: var(--warn)">2 / 3</div>
+        <div class="progress"><i style="width:67%; background: linear-gradient(90deg, var(--warn), var(--danger));"></i></div>
+      </div>
+      <div class="stat accent">
+        <div class="stat-label">Win probability</div>
+        <div class="stat-value">96%</div>
+        <div class="stat-sub" style="display:flex;align-items:center;gap:6px"><span class="badge imminent">Imminent</span> fear deck drawn</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <button class="icon-btn" style="width:auto; padding: 8px 14px; background: var(--accent-grad); color: white; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; border-radius: var(--r-md); box-shadow: var(--shadow-glow);">Advance Turn →</button>
+        <button class="icon-btn" style="width:auto; padding: 6px 14px; font-size: 11px;">← Previous</button>
+      </div>
+    </div>
+
+    <!-- Dashboard grid -->
+    <div class="grid">
+
+      <!-- Board zone -->
+      <section id="zone-board" class="card">
+        <div class="card-head">
+          <div class="card-title">Board A · Balanced</div>
+          <span class="badge info">MAP VIEW</span>
+          <div class="card-meta">4 lands w/ blight · 13 invaders</div>
+        </div>
+        <div class="card-body pad-none">
+          <div class="board-wrap">
+            <img class="board-bg" src="/board-images/A-balanced.png" alt="Board A" />
+            <!-- Synthetic marker positions as a visual preview; real coords will come from data/boards/layouts.json -->
+            <div class="board-marker" style="left: 35%; top: 12%">1</div>
+            <div class="board-marker" style="left: 58%; top: 22%; border-color: var(--danger); box-shadow: 0 0 14px var(--danger-soft);">2</div>
+            <div class="board-marker" style="left: 68%; top: 40%">3</div>
+            <div class="board-marker" style="left: 47%; top: 40%">4</div>
+            <div class="board-marker" style="left: 30%; top: 55%">5</div>
+            <div class="board-marker" style="left: 55%; top: 62%">6</div>
+            <div class="board-marker" style="left: 38%; top: 75%">7</div>
+            <div class="board-marker" style="left: 68%; top: 80%; border-color: var(--warn);">8</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- (Spirit zone moved to right-rail — see <aside class="spirit-rail"> below) -->
+
+      <!-- Decks zone -->
+      <section id="zone-decks" class="card">
+        <div class="card-body pad-none" style="display:flex;flex-direction:column;">
+        <div class="decks-wrap">
+
+          <div class="deck-card primary">
+            <div class="deck-head">
+              <span class="deck-title">⚔ Invader Deck</span>
+              <span class="badge info">ACTIVE</span>
+              <span class="deck-count">3·2·2·2·3·3·3·3</span>
+            </div>
+            <div class="deck-body">
+              <div class="slot-row">
+                <div class="slot ravage">
+                  <span class="slot-label">Ravage</span>
+                  <span class="slot-stage">III · Sands+Wetland</span>
+                </div>
+                <div class="slot build">
+                  <span class="slot-label">Build</span>
+                  <span class="slot-stage">III · Jungle</span>
+                </div>
+                <div class="slot explore">
+                  <span class="slot-label">Explore</span>
+                  <span class="slot-stage">III · Mountain</span>
+                </div>
+              </div>
+              <div class="section-title" style="margin-top:8px">Upcoming stack</div>
+              <div class="upcoming">
+                <span class="stage-chip s3">III</span>
+                <span class="stage-chip s3">III</span>
+                <span class="stage-chip s3">III</span>
+                <span class="stage-chip s3">III</span>
+              </div>
+              <div style="margin-top: 8px; display: flex; gap: 4px;">
+                <button class="icon-btn" style="width:auto;padding:5px 10px;font-size:10px;background:var(--accent-grad);color:white;">Advance →</button>
+                <button class="icon-btn" style="width:auto;padding:5px 10px;font-size:10px">Undo</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="deck-card">
+            <div class="deck-head">
+              <span class="deck-title">😱 Fear</span>
+              <span class="deck-count">10r · 2e / 12</span>
+            </div>
+            <div class="deck-body">
+              <div class="fear-slots">
+                <div class="fear-dot t1 resolved">✓</div><div class="fear-dot t1 resolved">✓</div><div class="fear-dot t1 resolved">✓</div><div class="fear-dot t1 resolved">✓</div>
+                <div class="fear-dot t2 resolved">✓</div><div class="fear-dot t2 resolved">✓</div><div class="fear-dot t2 resolved">✓</div><div class="fear-dot t2 resolved">✓</div>
+                <div class="fear-dot t3 resolved">✓</div><div class="fear-dot t3 resolved">✓</div><div class="fear-dot t3 earned">●</div><div class="fear-dot t3 earned">●</div>
+              </div>
+              <div style="font-size:11px; color: var(--text-sub); margin-top: 6px;">
+                Terror <strong style="color:var(--danger)">3</strong> ·
+                <span style="color:var(--ok)">deck drawn</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="deck-card">
+            <div class="deck-head">
+              <span class="deck-title">📜 Event</span>
+              <span class="deck-count">7 resolved</span>
+            </div>
+            <div class="deck-body">
+              <div class="slot" style="border-left:3px solid var(--accent-2); min-height: 42px">
+                <span class="slot-label">Previewed</span>
+                <span class="slot-stage" style="font-size:11px">(face-down · next turn)</span>
+              </div>
+              <div class="section-title" style="margin-top:8px">Last resolved</div>
+              <div style="font-size: 11px; color: var(--text-sub);">Focused Farming — R7</div>
+            </div>
+          </div>
+
+        </div>
+        </div><!-- /card-body pad-none -->
+      </section>
+
+      <!-- Analytics zone -->
+      <section id="zone-analytics" class="card">
+        <div class="card-head">
+          <div class="card-title">Analytics</div>
+          <span class="badge ok">WIN IMMINENT</span>
+        </div>
+        <div class="card-body pad-tight">
+          <div class="charts-wrap">
+
+            <div class="chart-block">
+              <div class="chart-label">Win probability · trajectory</div>
+              <div class="winprob-big">
+                <span class="n">96%</span>
+                <span class="ci">band ±4%</span>
+              </div>
+              <svg class="spark" viewBox="0 0 200 40" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="g-win" x1="0" x2="1">
+                    <stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#7c3aed"/>
+                  </linearGradient>
+                </defs>
+                <polyline fill="none" stroke="url(#g-win)" stroke-width="2"
+                  points="0,30 25,28 50,26 75,22 100,20 125,14 150,10 175,4 200,3"/>
+                <circle cx="200" cy="3" r="3" fill="#7c3aed"/>
+              </svg>
+            </div>
+
+            <div class="chart-block">
+              <div class="chart-label">Fear per round (R1 → R8)</div>
+              <svg class="spark" viewBox="0 0 200 40" preserveAspectRatio="none">
+                <g fill="#f59e0b" opacity=".85">
+                  <rect x="0"   y="28" width="20" height="12"/>
+                  <rect x="25"  y="22" width="20" height="18"/>
+                  <rect x="50"  y="14" width="20" height="26"/>
+                  <rect x="75"  y="8"  width="20" height="32"/>
+                  <rect x="100" y="20" width="20" height="20"/>
+                  <rect x="125" y="10" width="20" height="30"/>
+                  <rect x="150" y="4"  width="20" height="36"/>
+                  <rect x="175" y="12" width="20" height="28"/>
+                </g>
+              </svg>
+              <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-mute);margin-top:2px;">
+                <span>R1</span><span>R2</span><span>R3</span><span>R4</span><span>R5</span><span>R6</span><span>R7</span><span>R8</span>
+              </div>
+            </div>
+
+            <div class="chart-block">
+              <div class="chart-label">Terror progression</div>
+              <div class="terror-progress">
+                <div class="terror-seg done"></div>
+                <div class="terror-seg done"></div>
+                <div class="terror-seg current"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-mute);margin-top:4px;">
+                <span>T1 · 4 cards</span><span>T2 · 4</span><span>T3 · 4 drawn</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ────────────────────── Right rail: active spirit ────────────────────── -->
+  <aside class="spirit-rail">
+    <div class="rail-header">
+      <div class="rail-title">
+        <span class="brand" style="font-size:13px;letter-spacing:.04em;">SHADOWS</span>
+        <span class="rail-sub">Flicker Like Flame</span>
+      </div>
+      <div class="rail-tabs">
+        <button class="rail-tab active" title="Shadows">S</button>
+        <button class="rail-tab" title="Add spirit" style="opacity:.4">+</button>
+      </div>
+    </div>
+    <div class="rail-body">
+      <!-- Resource strip -->
+      <div class="rail-resources">
+        <div class="res-chip res-accent">
+          <div class="res-label">Energy</div>
+          <div class="res-value">3</div>
+        </div>
+        <div class="res-chip">
+          <div class="res-label">Card plays</div>
+          <div class="res-value">3</div>
+        </div>
+      </div>
+
+      <!-- Presence tracks (schematic) -->
+      <div class="section-title">Presence · 4 placed</div>
+      <div class="presence-tracks">
+        <div class="track">
+          <span class="track-label">Energy</span>
+          <div class="bowls">
+            <span class="bowl open">1</span>
+            <span class="bowl covered">3</span>
+            <span class="bowl covered">4</span>
+            <span class="bowl covered">5</span>
+            <span class="bowl covered">6</span>
+          </div>
+        </div>
+        <div class="track">
+          <span class="track-label">CP</span>
+          <div class="bowls">
+            <span class="bowl open">2</span>
+            <span class="bowl covered">3</span>
+            <span class="bowl covered">3</span>
+            <span class="bowl covered">4</span>
+            <span class="bowl covered">5</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elements this turn -->
+      <div class="section-title">Elements this turn</div>
+      <div class="element-grid">
+        <div class="element-cell el-moon has"><span class="el-dot"></span>Moon<span class="el-count">4</span></div>
+        <div class="element-cell el-fire has"><span class="el-dot"></span>Fire<span class="el-count">2</span></div>
+        <div class="element-cell el-air has"><span class="el-dot"></span>Air<span class="el-count">2</span></div>
+        <div class="element-cell el-sun"><span class="el-dot"></span>Sun<span class="el-count">0</span></div>
+        <div class="element-cell el-water"><span class="el-dot"></span>Water<span class="el-count">0</span></div>
+        <div class="element-cell el-earth"><span class="el-dot"></span>Earth<span class="el-count">0</span></div>
+        <div class="element-cell el-plant"><span class="el-dot"></span>Plant<span class="el-count">0</span></div>
+        <div class="element-cell el-animal"><span class="el-dot"></span>Animal<span class="el-count">0</span></div>
+      </div>
+
+      <!-- Hand -->
+      <div class="section-title">Hand · 2</div>
+      <div class="card-row">
+        <div class="card-cost">0</div>
+        <div>
+          <div class="card-name">Concealing Shadows</div>
+          <div class="card-meta-inline"><span class="pill fast">Fast</span> <span class="pill">R0</span> 🌙 💨</div>
+        </div>
+        <button class="icon-btn" style="width:auto;padding:4px 10px;font-size:11px;background:var(--accent-grad);color:white;">Play</button>
+      </div>
+      <div class="card-row">
+        <div class="card-cost">3</div>
+        <div>
+          <div class="card-name">Twisted Flowers Murmur Ultimatums</div>
+          <div class="card-meta-inline"><span class="pill slow">Slow</span> <span class="pill">R1</span> ☀ 🌙 💨 🌎 🌿 <span class="badge ok" style="margin-left:4px;font-size:9px;padding:1px 6px;">✓ THR</span></div>
+        </div>
+        <button class="icon-btn" style="width:auto;padding:4px 10px;font-size:11px;background:var(--accent-grad);color:white;">Play</button>
+      </div>
+
+      <!-- Innate -->
+      <div class="section-title">Innate · Darkness Swallows the Unwary <span class="pill fast" style="margin-left:6px">Fast</span></div>
+      <div class="card-row" style="background:color-mix(in srgb, var(--ok-soft) 40%, var(--bg-inset));border-color:var(--ok)">
+        <div class="badge ok" style="font-size:10px">L2 MET</div>
+        <div style="min-width:0">
+          <div style="font-size:12px;line-height:1.4">🌙 3 + 🔥 2 → Destroy up to 2 Explorer. 1 Fear per.</div>
+        </div>
+        <button class="icon-btn" style="width:auto;padding:4px 10px;font-size:11px;color:var(--ok)">⚡ Fire</button>
+      </div>
+
+      <!-- Piles collapsed -->
+      <div class="section-title" style="margin-top:14px">Piles</div>
+      <div class="pile-strip">
+        <div class="pile-chip"><span class="pile-label">Played</span><span class="pile-count">2</span></div>
+        <div class="pile-chip"><span class="pile-label">Discard</span><span class="pile-count">0</span></div>
+        <div class="pile-chip"><span class="pile-label">Forgotten</span><span class="pile-count">0</span></div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+  // Tiny helper so user can switch phases in the prototype with ?phase=growth etc.
+  const q = new URLSearchParams(location.search).get('phase');
+  if (q) document.body.dataset.phase = q;
+</script>
+</body>
+</html>

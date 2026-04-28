@@ -2,6 +2,8 @@
 import { computed, onMounted, ref } from 'vue'
 import type { FearDeckState, FearCardEntry } from '../types'
 import { fetchDeck, type FearCardData } from '../api'
+import ExpansionBadge from './ExpansionBadge.vue'
+import UiIcon from './UiIcon.vue'
 
 /**
  * Fear deck tracker.
@@ -309,7 +311,7 @@ function cardText(name: string, tl: number): string {
         :title="s.name ? `${s.name} (T${s.terror_level})` : `Slot ${s.idx + 1} · T${s.terror_level}`"
       >
         <span class="slot-tl">T{{ s.terror_level }}</span>
-        <span v-if="s.state === 'resolved'" class="slot-check">✓</span>
+        <UiIcon v-if="s.state === 'resolved'" name="check" :size="10" class="slot-check" decorative />
         <span v-else-if="s.state === 'earned'" class="slot-dot">●</span>
         <span v-else class="slot-blank">○</span>
       </div>
@@ -322,7 +324,7 @@ function cardText(name: string, tl: number): string {
         Manual bank below — for recording a missed threshold crossing.
       </div>
       <button class="primary" @click="bankFaceDown" title="Record a fear card earned face-down (threshold crossed). Name it at resolve time.">
-        🎯 Bank 1 face-down
+        <UiIcon name="target" :size="14" decorative /> Bank 1 face-down
       </button>
     </div>
 
@@ -347,7 +349,7 @@ function cardText(name: string, tl: number): string {
               @click="earnCard(c.name)"
             >
               <span class="sug-name">{{ c.name }}</span>
-              <span class="sug-expansion">{{ c.expansion }}</span>
+              <ExpansionBadge :slug="c.expansion" :size="14" class="sug-expansion" />
             </button>
           </div>
         </div>
@@ -389,7 +391,7 @@ function cardText(name: string, tl: number): string {
                   @click="resolveEarned(i, c.name)"
                 >
                   <span class="sug-name">{{ c.name }}</span>
-                  <span class="sug-expansion">{{ c.expansion }}</span>
+                  <ExpansionBadge :slug="c.expansion" :size="14" class="sug-expansion" />
                 </button>
               </div>
             </div>

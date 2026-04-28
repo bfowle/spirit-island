@@ -4,6 +4,7 @@ import type { GameState } from '../types'
 import { computeWinProb, fearPct, blightPct, type WinProbResult } from '../lib/winprob'
 import { fetchSpiritAffinity, type SpiritAffinityMap } from '../api'
 import Icon from './Icon.vue'
+import UiIcon from './UiIcon.vue'
 
 /**
  * Tableside always-visible status bar. Pinned beneath the PhaseStepper so the
@@ -66,7 +67,7 @@ const phaseLabel = computed(() => {
           <div class="pool-fill blight-fill" :style="{ width: blightBarPct + '%' }"></div>
         </div>
         <span class="pool-text mono">{{ state.pools.blight_current }}/{{ state.pools.blight_cap }}</span>
-        <span v-if="state.pools.island_blighted" class="blighted-tag">🌑</span>
+        <UiIcon v-if="state.pools.island_blighted" name="moon" :size="12" class="blighted-tag" label="Blighted island" />
       </div>
     </div>
 
@@ -75,9 +76,9 @@ const phaseLabel = computed(() => {
         <span class="winprob-label">Win</span>
         <span class="winprob-value mono">{{ winPct }}</span>
         <span v-if="wp.endState !== 'in-progress'" class="winprob-state">
-          <span v-if="wp.endState === 'won'">🏆 WON</span>
-          <span v-else-if="wp.endState === 'lost'">💀 LOST</span>
-          <span v-else-if="wp.endState === 'imminent'">🎯 IMMINENT</span>
+          <span v-if="wp.endState === 'won'"><UiIcon name="trophy" :size="12" decorative /> WON</span>
+          <span v-else-if="wp.endState === 'lost'"><UiIcon name="skull" :size="12" decorative /> LOST</span>
+          <span v-else-if="wp.endState === 'imminent'"><UiIcon name="target" :size="12" decorative /> IMMINENT</span>
         </span>
       </div>
     </div>

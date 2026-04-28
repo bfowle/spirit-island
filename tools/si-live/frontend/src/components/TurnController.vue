@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import type { GameState, Phase } from '../types'
 import Icon from './Icon.vue'
+import ExpansionBadge from './ExpansionBadge.vue'
 import { fetchDeck, type FearCardData, type EventCardData } from '../api'
 
 const props = defineProps<{ modelValue: GameState }>()
@@ -405,16 +406,16 @@ function entryLabel(e: LogEntry): string {
       return `Seen (not kept)${d}: ${e.details.card}`
     }
     case 'event_resolved': return `Event resolved: ${e.details.card}`
-    case 'innate_fired': return `⚡ ${e.details.spirit} fired ${e.details.innate} at L${e.details.tier}`
+    case 'innate_fired': return `[innate] ${e.details.spirit} fired ${e.details.innate} at L${e.details.tier}`
     case 'turn_rewound': return `← Rewound: R${e.details.from_round} → R${e.details.to_round}`
-    case 'fear_card_earned': return `🎯 Fear card earned (face-down) — T${e.details.terror_level}`
-    case 'terror_advanced': return `🔥 Terror level advanced to ${e.details.to_level}`
+    case 'fear_card_earned': return `[fear] card earned (face-down) — T${e.details.terror_level}`
+    case 'terror_advanced': return `[terror] level advanced to ${e.details.to_level}`
     case 'note':         return e.details.text as string
     case 'turn_advanced': return `→ advanced to round ${(e.details.from_round as number) + 1}`
     case 'invader_rotated': return `Invader deck rotated — ravaged: Stage ${e.details.ravaged_stage} ${e.details.ravaged_terrain}`
-    case 'phase_snapshot': return `📸 ${e.details.phase} snapshot — ${e.details.summary}`
-    case 'blight_added': return `🟣 +${e.details.amount} blight`
-    case 'blight_removed': return `🟢 −${e.details.amount} blight removed`
+    case 'phase_snapshot': return `[snap] ${e.details.phase} — ${e.details.summary}`
+    case 'blight_added': return `[blight] +${e.details.amount}`
+    case 'blight_removed': return `[blight] −${e.details.amount} removed`
     default: return `${e.event}: ${JSON.stringify(e.details)}`
   }
 }
@@ -481,7 +482,7 @@ function removeEntry(entryRef: LogEntry) {
         <div v-if="eventMatches.length" class="suggestions">
           <button v-for="m in eventMatches" :key="m.name" type="button" class="suggestion" @click="pickEvent(m.name)">
             <span class="sug-name">{{ m.name }}</span>
-            <span class="sug-expansion">{{ m.expansion }}</span>
+            <ExpansionBadge :slug="m.expansion" :size="14" class="sug-expansion" />
           </button>
         </div>
       </div>
@@ -492,7 +493,7 @@ function removeEntry(entryRef: LogEntry) {
         <div v-if="fearMatches.length" class="suggestions">
           <button v-for="m in fearMatches" :key="m.name" type="button" class="suggestion" @click="pickFear(m.name)">
             <span class="sug-name">{{ m.name }}</span>
-            <span class="sug-expansion">{{ m.expansion }}</span>
+            <ExpansionBadge :slug="m.expansion" :size="14" class="sug-expansion" />
           </button>
         </div>
       </div>
@@ -537,7 +538,7 @@ function removeEntry(entryRef: LogEntry) {
             <span class="sug-name">{{ m.name }}</span>
             <span class="sug-meta">
               <span class="sug-deck" :class="m.deck">{{ m.deck }}</span>
-              <span v-if="m.expansion" class="sug-expansion">{{ m.expansion }}</span>
+              <ExpansionBadge v-if="m.expansion" :slug="m.expansion" :size="14" class="sug-expansion" />
             </span>
           </button>
         </div>

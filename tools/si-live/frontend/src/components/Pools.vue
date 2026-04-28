@@ -3,6 +3,8 @@ import { computed, onMounted, ref } from 'vue'
 import type { Pools } from '../types'
 import { fetchDeck } from '../api'
 import Icon from './Icon.vue'
+import ExpansionBadge from './ExpansionBadge.vue'
+import UiIcon from './UiIcon.vue'
 
 interface BlightCardData {
   name: string
@@ -72,7 +74,7 @@ function toggleFlipped() {
       <div class="pool-hdr">
         <Icon name="resource-blight" :size="16" decorative />
         <span class="pool-name">Blight</span>
-        <span v-if="modelValue.island_blighted" class="flipped-tag">🌑 BLIGHTED ISLAND</span>
+        <span v-if="modelValue.island_blighted" class="flipped-tag"><UiIcon name="moon" :size="12" decorative /> BLIGHTED ISLAND</span>
       </div>
       <div class="pool-values">
         <input type="number" min="0" v-model.number="modelValue.blight_current" />
@@ -113,7 +115,7 @@ function toggleFlipped() {
           <div class="card-hdr">
             <div class="card-title-block">
               <span class="card-title">{{ selectedCard.name }}</span>
-              <span v-if="selectedCard.expansion" class="card-exp">{{ selectedCard.expansion }}</span>
+              <ExpansionBadge v-if="selectedCard.expansion" :slug="selectedCard.expansion" :size="16" class="card-exp" />
               <span class="card-type-tag" :class="selectedCard.cardtype?.toLowerCase().replace(/\s+/g, '-')">
                 {{ selectedCard.cardtype }}
               </span>
@@ -126,7 +128,8 @@ function toggleFlipped() {
                   ? 'Flip back to the Healthy Island side'
                   : 'Flip the island to the Blighted side (triggers the card effect)'"
               >
-                {{ modelValue.island_blighted ? '↩ Flip to Healthy' : '🌑 Flip to Blighted' }}
+                <template v-if="modelValue.island_blighted"><UiIcon name="undo" :size="12" decorative /> Flip to Healthy</template>
+                <template v-else><UiIcon name="moon" :size="12" decorative /> Flip to Blighted</template>
               </button>
               <button class="ghost tiny" @click="clearBlightCard" title="Change the selected Blight card">Change</button>
             </div>

@@ -208,18 +208,6 @@ const chartOptions = {
   },
 }
 
-// Read directly from props.state so bars stay in sync instantly — the /api/stats
-// fetch lags behind by the 400ms save debounce and was causing the Stats bar to
-// display stale values (e.g., 1/4 while the pool actually read 2/4).
-const fearPct = computed(() => {
-  const p = props.state.pools
-  return !p.fear_threshold ? 0 : Math.min(100, (p.fear_current / p.fear_threshold) * 100)
-})
-const blightPct = computed(() => {
-  const p = props.state.pools
-  return !p.blight_cap ? 0 : Math.min(100, (p.blight_current / p.blight_cap) * 100)
-})
-
 // Win-probability delegated to shared lib so sticky bar, charts, and banner
 // all stay canonical.
 const affinityMap = ref<SpiritAffinityMap | null>(null)
@@ -333,39 +321,15 @@ const ELEMENT_ICONS: Record<string, string> = {
   animal: 'element-animal',
 }
 
-const spiritElements = computed(() => {
-  if (!stats.value) return [] as { slug: string; elements: [string, number][] }[]
-  return Object.entries(stats.value.elements_per_spirit).map(([slug, elems]) => ({
-    slug,
-    elements: Object.entries(elems).filter(([, n]) => n > 0),
-  }))
-})
 </script>
 
 <template>
   <div class="stats-panel">
     <div v-if="error" class="error">Error: {{ error }}</div>
 
-    <div class="bars">
-      <div class="bar-group">
-        <div class="bar-hdr">
-          <Icon name="resource-fear" :size="14" decorative />
-          <span>Fear</span>
-          <span class="bar-count">{{ props.state.pools.fear_current }} / {{ props.state.pools.fear_threshold }}</span>
-          <span class="tl">Terror {{ props.state.pools.terror_level }}</span>
-        </div>
-        <div class="bar"><div class="fill fear" :style="{ width: fearPct + '%' }" /></div>
-      </div>
-      <div class="bar-group">
-        <div class="bar-hdr">
-          <Icon name="resource-blight" :size="14" decorative />
-          <span>Blight</span>
-          <span class="bar-count">{{ props.state.pools.blight_current }} / {{ props.state.pools.blight_cap }}</span>
-        </div>
-        <div class="bar"><div class="fill blight" :style="{ width: blightPct + '%' }" /></div>
-      </div>
-    </div>
-
+    <!-- Fear/Blight bars removed: shown in the header status-inline and the
+         decks panel. Elements-this-turn also moved out — it lives in the
+         SpiritPanel. Analytics now focuses only on forward-looking stats. -->
     <div class="section win-prob-section">
       <div class="section-hdr">
         <h3>Win probability estimate</h3>
@@ -459,34 +423,16 @@ const spiritElements = computed(() => {
       </div>
     </div>
 
-    <div class="section">
-      <h3>Elements this turn</h3>
-      <div class="spirit-elements">
-        <div v-for="s in spiritElements" :key="s.slug" class="spirit-row">
-          <span class="spirit-slug">{{ s.slug }}</span>
-          <div v-if="s.elements.length" class="chips">
-            <span v-for="[el, n] in s.elements" :key="el" class="element-chip">
-              <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="12" decorative />
-              <span class="el-name">{{ el }}</span>
-              <span class="el-count">×{{ n }}</span>
-            </span>
-          </div>
-          <span v-else class="subtle">no elements tallied</span>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <style scoped>
 .stats-panel {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--r-lg);
-  padding: var(--sp-4);
   display: flex;
   flex-direction: column;
   gap: var(--sp-4);
+  padding: var(--sp-3);
+  min-height: 0;
 }
 
 .error {
@@ -673,20 +619,23 @@ const spiritElements = computed(() => {
 }
 
 h3 {
-  font-size: 0.78rem;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
   color: var(--text-muted);
-  font-weight: var(--fw-semibold);
+  font-weight: var(--fw-bold);
   margin: 0;
 }
 
 .chart-box {
   height: 200px;
   padding: var(--sp-2);
-  background: var(--bg-canvas);
-  border: 1px solid var(--border-subtle);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent-blue) 4%, transparent), transparent),
+    var(--bg-inset);
+  border: 1px solid var(--aegis-border);
   border-radius: var(--r-md);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-blue) 4%, transparent);
 }
 
 .probs-grid {
@@ -696,13 +645,18 @@ h3 {
 }
 
 .prob-card {
-  background: var(--bg-muted);
-  border: 1px solid var(--border-subtle);
+  background: linear-gradient(to bottom right, var(--bg-raised), var(--bg-inset));
+  border: 1px solid var(--aegis-border);
   border-radius: var(--r-md);
   padding: var(--sp-2) var(--sp-3);
   display: flex;
   flex-direction: column;
   gap: 2px;
+  transition: border-color var(--motion-fast), transform var(--motion-fast);
+}
+.prob-card:hover {
+  border-color: var(--accent-blue);
+  transform: translateY(-1px);
 }
 
 .prob-hdr {

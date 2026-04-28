@@ -25,21 +25,32 @@ export interface BoardLayout {
 }
 
 /**
- * Board A Balanced. Boards are tall rectangles with ocean along the top
- * (for Base A/B — ocean on top/left vs bottom/right depending). Approximate
- * coords based on the Wiki board image.
+ * Board A Balanced — ocean runs along the LEFT edge of the Wiki PNG.
+ * Positions hand-tuned from the transparent PNG at
+ * `/board-images/A-balanced.png` (1500×1043). Coords are 0..100 where
+ * (0, 0) = top-left of the rendered image and (100, 100) = bottom-right.
+ *
+ * Land placements (reading the PNG):
+ *   1 — upper-left jungle
+ *   2 — upper-center-left wetland (coastal; the starting-city land)
+ *   3 — left-center wetland (coastal)
+ *   4 — center mountain (blight-seeded)
+ *   5 — lower-center sands
+ *   6 — upper-center mountain strip
+ *   7 — right sands
+ *   8 — right jungle (starting-town)
  */
 const BOARD_A_BALANCED: BoardLayout = {
-  oceanEdge: 'top',
+  oceanEdge: 'left',
   positions: {
-    '1': { x: 22, y: 35, oceanEdge: 'top' },   // mountain, coastal
-    '2': { x: 52, y: 22, oceanEdge: 'top' },   // wetland, coastal (city + dahan)
-    '3': { x: 78, y: 30, oceanEdge: 'top' },   // jungle, coastal (2 dahan)
-    '4': { x: 48, y: 48 },                     // sands, inland (blight)
-    '5': { x: 22, y: 60 },                     // wetland, inland
-    '6': { x: 32, y: 82 },                     // mountain, inland (dahan)
-    '7': { x: 60, y: 78 },                     // sands, inland (2 dahan)
-    '8': { x: 82, y: 62 },                     // jungle, inland (town)
+    '1': { x: 30, y: 22 },                      // upper-center jungle
+    '2': { x: 22, y: 42, oceanEdge: 'left' },   // left-center wetland, coastal (starting city)
+    '3': { x: 18, y: 72, oceanEdge: 'left' },   // lower-left wetland/sands, coastal
+    '4': { x: 52, y: 50 },                      // center mountain (blight)
+    '5': { x: 58, y: 82 },                      // lower sands
+    '6': { x: 52, y: 20 },                      // upper mountain strip
+    '7': { x: 80, y: 60 },                      // right sands
+    '8': { x: 80, y: 25 },                      // right jungle (starting town)
   },
 }
 

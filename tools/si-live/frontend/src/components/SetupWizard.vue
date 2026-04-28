@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import type { GameState } from '../types'
+import ExpansionBadge from './ExpansionBadge.vue'
 
 interface BoardSummary {
   file: string
@@ -9,11 +10,19 @@ interface BoardSummary {
   variants: { key: string; name: string }[]
 }
 
+interface AspectOption {
+  key: string
+  name: string
+  expansion?: string
+  complexity_change?: string
+}
+
 interface RegistryResponse {
   spirits: { spirits: { slug: string; name: string; expansion: string; complexity?: string }[] }
   adversaries: { adversaries: { slug: string; name: string; expansion: string; difficulty_levels: number[] }[] }
   scenarios: { scenarios: { slug: string; name: string; expansion: string }[] }
   boards: BoardSummary[]
+  aspects?: Record<string, AspectOption[]>
 }
 
 const emit = defineEmits<{ 'game-started': [state: GameState]; close: [] }>()
@@ -30,6 +39,55 @@ const selectedBoards = ref<string[]>(['A'])
 const expansions = ref<string[]>(['base'])
 const archiveCurrent = ref<boolean>(true)
 const boardVariant = ref<'balanced' | 'thematic'>('balanced')
+/** Per-spirit aspect selection. Keyed by spirit slug; empty string = base. */
+const selectedAspects = ref<Record<string, string>>({})
+
+function aspectsFor(slug: string): AspectOption[] {
+  return registry.value?.aspects?.[slug] ?? []
+}
+
+// Display order for expansions across any spirit/board grouping.
+// Horizons sits at the bottom because it's the beginner/onboarding set —
+// serious drafters usually scroll past it, so keeping it out of the
+// top-of-list real estate is more helpful.
+const EXPANSION_ORDER = [
+  'base',
+  'branch-and-claw',
+  'jagged-earth',
+  'nature-incarnate',
+  'promo-1',
+  'promo-2',
+  'horizons',
+  'horizons-of-spirit-island',
+  'hosi',
+] as const
+
+function expansionRank(slug: string | null | undefined): number {
+  if (!slug) return EXPANSION_ORDER.length
+  const normalized = slug.toLowerCase().replace(/_/g, '-')
+  const idx = EXPANSION_ORDER.indexOf(normalized as (typeof EXPANSION_ORDER)[number])
+  return idx === -1 ? EXPANSION_ORDER.length - 1 : idx
+}
+
+interface SpiritGroup {
+  expansion: string
+  spirits: { slug: string; name: string; expansion: string; complexity?: string }[]
+}
+
+const spiritGroups = computed<SpiritGroup[]>(() => {
+  const all = registry.value?.spirits.spirits ?? []
+  const byExp = new Map<string, SpiritGroup>()
+  for (const s of all) {
+    const exp = s.expansion || 'base'
+    if (!byExp.has(exp)) byExp.set(exp, { expansion: exp, spirits: [] })
+    byExp.get(exp)!.spirits.push(s)
+  }
+  // Sort spirits alphabetically inside each group, and groups by EXPANSION_ORDER.
+  for (const g of byExp.values()) {
+    g.spirits.sort((a, b) => a.name.localeCompare(b.name))
+  }
+  return [...byExp.values()].sort((a, b) => expansionRank(a.expansion) - expansionRank(b.expansion))
+})
 
 onMounted(async () => {
   try {
@@ -104,6 +162,12 @@ async function startGame() {
         console.warn('archive current game failed', e)
       }
     }
+    // Drop aspects for spirits that aren't selected, or whose value is empty.
+    const aspectsPayload: Record<string, string> = {}
+    for (const slug of selectedSpirits.value) {
+      const a = selectedAspects.value[slug]
+      if (a) aspectsPayload[slug] = a
+    }
     const res = await fetch('/api/new-game', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -115,6 +179,7 @@ async function startGame() {
         spirits: selectedSpirits.value,
         boards: selectedBoards.value,
         expansions_active: expansions.value,
+        aspects: aspectsPayload,
       }),
     })
     if (!res.ok) {
@@ -131,133 +196,270 @@ async function startGame() {
 </script>
 
 <template>
-  <div v-if="show" class="modal-bg" @click.self="emit('close')">
-    <div class="modal">
-      <header>
-        <h2>New Game Setup</h2>
-        <button class="close" @click="emit('close')" aria-label="close">×</button>
-      </header>
+  <div v-if="show" class="aegis-overlay" @click.self="emit('close')">
+    <div class="aegis-dialog wizard">
+      <div class="aegis-dialog-head">
+        <h2 class="aegis-dialog-title">New Game Setup</h2>
+        <span class="head-spacer" />
+        <button class="ghost size-icon" @click="emit('close')" aria-label="close">×</button>
+      </div>
 
-      <div v-if="error" class="error">{{ error }}</div>
-      <div v-else-if="!registry" class="loading">Loading…</div>
-      <div v-else class="form">
-        <section>
-          <label>Adversary
-            <select v-model="adversary">
-              <option value="">(none)</option>
-              <option v-for="a in registry.adversaries.adversaries" :key="a.slug" :value="a.slug">
-                {{ a.name }}
-              </option>
-            </select>
-          </label>
-          <label>Level
-            <select v-model.number="level">
-              <option v-for="l in availableLevels" :key="l.level" :value="l.level">{{ l.label }}</option>
-            </select>
-          </label>
-        </section>
-
-        <section>
-          <label>Scenario
-            <select v-model="scenario">
-              <option value="">(none)</option>
-              <option v-for="s in registry.scenarios.scenarios" :key="s.slug" :value="s.slug">
-                {{ s.name }}
-              </option>
-            </select>
-          </label>
-        </section>
-
-        <section>
-          <div class="hdr">Spirits</div>
-          <div class="chips">
-            <label v-for="s in registry.spirits.spirits" :key="s.slug" class="chip">
-              <input type="checkbox" :checked="selectedSpirits.includes(s.slug)" @change="toggleSpirit(s.slug)" />
-              {{ s.name }}
-              <span class="muted">({{ s.complexity || '?' }})</span>
+      <div class="aegis-dialog-body">
+        <div v-if="error" class="error">{{ error }}</div>
+        <div v-else-if="!registry" class="aegis-empty">
+          <div class="aegis-empty-title">Loading registry…</div>
+        </div>
+        <div v-else class="form">
+          <section class="grid-2">
+            <label class="field">
+              <span class="aegis-section-hdr">Adversary</span>
+              <select v-model="adversary" class="aegis-input">
+                <option value="">(none)</option>
+                <option v-for="a in registry.adversaries.adversaries" :key="a.slug" :value="a.slug">
+                  {{ a.name }}
+                </option>
+              </select>
             </label>
-          </div>
-        </section>
-
-        <section>
-          <div class="hdr">Boards</div>
-          <div class="chips">
-            <label v-for="b in availableBoards" :key="b.board_id" class="chip">
-              <input type="checkbox" :checked="selectedBoards.includes(b.board_id)" @change="toggleBoard(b.board_id)" />
-              {{ b.board_id }}
-              <span class="muted">({{ b.expansion }})</span>
+            <label class="field">
+              <span class="aegis-section-hdr">Level</span>
+              <select v-model.number="level" class="aegis-input">
+                <option v-for="l in availableLevels" :key="l.level" :value="l.level">{{ l.label }}</option>
+              </select>
             </label>
-          </div>
-          <div class="variant-row">
-            <span class="variant-label">Variant</span>
-            <div class="variant-picker">
-              <label class="variant-opt">
-                <input type="radio" v-model="boardVariant" value="balanced" :disabled="!variantAvailableForAllSelected.balanced" />
-                Balanced
-              </label>
-              <label class="variant-opt">
-                <input type="radio" v-model="boardVariant" value="thematic" :disabled="!variantAvailableForAllSelected.thematic" />
-                Thematic
-                <span v-if="!variantAvailableForAllSelected.thematic" class="muted">(not available for some selected boards)</span>
+          </section>
+
+          <section>
+            <label class="field">
+              <span class="aegis-section-hdr">Scenario</span>
+              <select v-model="scenario" class="aegis-input">
+                <option value="">(none)</option>
+                <option v-for="s in registry.scenarios.scenarios" :key="s.slug" :value="s.slug">
+                  {{ s.name }}
+                </option>
+              </select>
+            </label>
+          </section>
+
+          <hr class="aegis-separator" />
+
+          <section>
+            <div class="aegis-section-hdr">Spirits</div>
+            <div v-for="g in spiritGroups" :key="g.expansion" class="spirit-group">
+              <div class="spirit-group-hdr">
+                <ExpansionBadge :slug="g.expansion" :size="16" />
+                <span class="spirit-group-name">{{
+                  g.expansion === 'base' ? 'Base Game' :
+                  g.expansion === 'branch-and-claw' ? 'Branch & Claw' :
+                  g.expansion === 'jagged-earth' ? 'Jagged Earth' :
+                  g.expansion === 'nature-incarnate' ? 'Nature Incarnate' :
+                  g.expansion === 'horizons-of-spirit-island' || g.expansion === 'hosi' || g.expansion === 'horizons' ? 'Horizons of Spirit Island' :
+                  g.expansion === 'promo-1' ? 'Promo Pack 1' :
+                  g.expansion === 'promo-2' ? 'Promo Pack 2' :
+                  g.expansion
+                }}</span>
+                <span class="spirit-group-count">{{ g.spirits.length }}</span>
+              </div>
+              <div class="chips">
+                <label v-for="s in g.spirits" :key="s.slug" class="pick-chip">
+                  <input type="checkbox" :checked="selectedSpirits.includes(s.slug)" @change="toggleSpirit(s.slug)" />
+                  <span>{{ s.name }}</span>
+                  <span class="muted">{{ s.complexity || '?' }}</span>
+                </label>
+              </div>
+            </div>
+
+            <div v-if="selectedSpirits.some(slug => aspectsFor(slug).length > 0)" class="aspect-list">
+              <div class="aegis-section-hdr">Aspects (optional)</div>
+              <div
+                v-for="slug in selectedSpirits.filter(s => aspectsFor(s).length > 0)"
+                :key="slug"
+                class="aspect-row"
+              >
+                <span class="aspect-spirit-name">{{
+                  registry.spirits.spirits.find(s => s.slug === slug)?.name || slug
+                }}</span>
+                <select v-model="selectedAspects[slug]" class="aegis-input">
+                  <option value="">Base (no aspect)</option>
+                  <option v-for="a in aspectsFor(slug)" :key="a.key" :value="a.key">
+                    {{ a.name }}<span v-if="a.complexity_change"> — {{ a.complexity_change }}</span>
+                  </option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <hr class="aegis-separator" />
+
+          <section>
+            <div class="aegis-section-hdr">Boards</div>
+            <div class="chips">
+              <label v-for="b in availableBoards" :key="b.board_id" class="pick-chip">
+                <input type="checkbox" :checked="selectedBoards.includes(b.board_id)" @change="toggleBoard(b.board_id)" />
+                <span class="board-id">{{ b.board_id }}</span>
+                <ExpansionBadge :slug="b.expansion" :size="14" />
               </label>
             </div>
-          </div>
-        </section>
+            <div class="variant-row">
+              <span class="variant-label">Variant</span>
+              <div class="variant-picker">
+                <label class="variant-opt">
+                  <input type="radio" v-model="boardVariant" value="balanced" :disabled="!variantAvailableForAllSelected.balanced" />
+                  Balanced
+                </label>
+                <label class="variant-opt">
+                  <input type="radio" v-model="boardVariant" value="thematic" :disabled="!variantAvailableForAllSelected.thematic" />
+                  Thematic
+                  <span v-if="!variantAvailableForAllSelected.thematic" class="muted">(not available for some selected boards)</span>
+                </label>
+              </div>
+            </div>
+          </section>
 
-        <section>
-          <div class="hdr">Expansions active</div>
-          <div class="chips">
-            <label v-for="e in ['base', 'branch-and-claw', 'jagged-earth', 'nature-incarnate', 'promo-2']" :key="e" class="chip">
-              <input type="checkbox" :checked="expansions.includes(e)" @change="toggleExpansion(e)" />
-              {{ e }}
-            </label>
-          </div>
-        </section>
+          <hr class="aegis-separator" />
 
-        <footer>
-          <label class="archive-toggle" title="Save the current game to data/games/ before overwriting">
-            <input type="checkbox" v-model="archiveCurrent" />
-            <span>Archive current game first</span>
-          </label>
-          <div class="spacer" />
-          <button class="primary" :disabled="!selectedSpirits.length || !selectedBoards.length" @click="startGame">
-            Start Game
-          </button>
-          <button @click="emit('close')">Cancel</button>
-        </footer>
+          <section>
+            <div class="aegis-section-hdr">Expansions active</div>
+            <div class="chips">
+              <label v-for="e in ['base', 'branch-and-claw', 'jagged-earth', 'nature-incarnate', 'promo-1', 'promo-2']" :key="e" class="pick-chip expansion-chip">
+                <input type="checkbox" :checked="expansions.includes(e)" @change="toggleExpansion(e)" />
+                <ExpansionBadge :slug="e" :size="20" :show-label="true" />
+              </label>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="aegis-dialog-foot">
+        <label class="archive-toggle" title="Save the current game to data/games/ before overwriting">
+          <input type="checkbox" v-model="archiveCurrent" />
+          <span>Archive current game first</span>
+        </label>
+        <div class="spacer" />
+        <button class="outline" @click="emit('close')">Cancel</button>
+        <button class="primary" :disabled="!selectedSpirits.length || !selectedBoards.length" @click="startGame">
+          Start Game
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.65); display: flex; align-items: center; justify-content: center; z-index: 100; }
-.modal { background: #1a1a1e; border: 1px solid #444; border-radius: 8px; padding: 1rem; width: min(90vw, 720px); max-height: 90vh; overflow-y: auto; }
-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem; border-bottom: 1px solid #333; padding-bottom: .5rem; }
-h2 { margin: 0; font-size: 1.1rem; }
-.close { background: transparent; border: none; color: #ccc; font-size: 1.5rem; cursor: pointer; }
-.close:hover { color: #fff; }
-.error { background: #522; color: #fcc; padding: .5rem; border-radius: 4px; margin-bottom: .5rem; }
-.loading { text-align: center; color: #aaa; padding: 2rem; }
-section { margin-bottom: .75rem; }
-.hdr { font-size: .85rem; color: #ccc; margin-bottom: .35rem; text-transform: uppercase; letter-spacing: 0.5px; }
-label { display: inline-flex; align-items: center; gap: .35rem; font-size: .9rem; margin-right: 1rem; }
-select { padding: .15rem .3rem; }
-.chips { display: flex; flex-wrap: wrap; gap: .4rem; }
-.chip { font-size: .85rem; background: #2a2a30; padding: .25rem .5rem; border-radius: 4px; border: 1px solid #444; cursor: pointer; margin: 0; }
-.chip:has(input:checked) { background: #3a3a48; border-color: #888; }
-.chip .muted { color: #888; font-size: .75rem; }
-footer { display: flex; gap: .5rem; align-items: center; margin-top: 1rem; border-top: 1px solid var(--border-subtle); padding-top: .75rem; }
-.archive-toggle { display: inline-flex; align-items: center; gap: .3rem; font-size: var(--fs-xs); color: var(--text-secondary); cursor: pointer; }
+.wizard { width: min(92vw, 760px); }
+.head-spacer { flex: 1; }
+
+.error {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  padding: 8px 12px;
+  border-radius: var(--r-sm);
+  margin-bottom: 12px;
+  font-size: var(--fs-sm);
+}
+
+.form { display: flex; flex-direction: column; gap: 16px; }
+section { display: flex; flex-direction: column; gap: 8px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field .aegis-section-hdr { padding: 0 0 4px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.pick-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-size: var(--fs-xs);
+  background: var(--bg-raised);
+  border: 1px solid var(--aegis-border);
+  border-radius: var(--r-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--motion-fast);
+}
+.pick-chip:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+.pick-chip:has(input:checked) {
+  background: color-mix(in srgb, var(--accent-blue) 12%, transparent);
+  border-color: var(--accent-blue);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 1px var(--accent-blue) inset;
+}
+.pick-chip input { accent-color: var(--accent-blue); }
+.pick-chip .muted { color: var(--text-muted); font-size: var(--fs-xxs); }
+.pick-chip .board-id { font-family: var(--font-mono); font-weight: var(--fw-semibold); }
+
+.archive-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
 .spacer { flex: 1; }
-.variant-row { display: flex; align-items: center; gap: .5rem; margin-top: .5rem; }
-.variant-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
-.variant-picker { display: inline-flex; gap: .75rem; }
-.variant-opt { display: inline-flex; align-items: center; gap: .25rem; font-size: var(--fs-xs); color: var(--text-secondary); cursor: pointer; }
+
+.variant-row { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
+.variant-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  font-weight: var(--fw-bold);
+}
+.variant-picker { display: inline-flex; gap: 12px; }
+.variant-opt {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
 .variant-opt:has(input:disabled) { color: var(--text-faint); cursor: not-allowed; }
-button { background: #2a2a30; border: 1px solid #444; color: #eee; padding: .35rem .75rem; border-radius: 4px; cursor: pointer; font-size: .9rem; }
-button:hover:not(:disabled) { background: #383840; }
-button.primary { background: #3a5a3a; border-color: #5a8a5a; }
-button.primary:hover:not(:disabled) { background: #4a6a4a; }
-button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.spirit-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
+.spirit-group-hdr {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--aegis-border);
+}
+.spirit-group-name { flex: 1; font-weight: var(--fw-semibold); color: var(--text-secondary); }
+.spirit-group-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--bg-inset);
+  padding: 1px 7px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--aegis-border);
+}
+
+.aspect-list {
+  margin-top: 8px;
+  padding: 12px;
+  background: color-mix(in srgb, var(--bg-inset) 50%, transparent);
+  border: 1px solid var(--aegis-border);
+  border-radius: var(--r-sm);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.aspect-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--fs-sm);
+}
+.aspect-spirit-name {
+  color: var(--text-secondary);
+  font-weight: var(--fw-medium);
+}
+.aspect-row .aegis-input { height: 32px; font-size: var(--fs-xs); }
 </style>

@@ -419,11 +419,83 @@ async fn get_registry(
         }
     }
 
+    // Aspects: read every `references/wiki/aspects/*.json`, group by spirit slug.
+    // Each aspect JSON carries a `spirit` field with the human-readable name; we
+    // resolve that to a slug via spirits.json so the frontend can key aspects by
+    // the same slug it uses for spirit selection.
+    let aspects_dir = state.data_dir.join("references/wiki/aspects");
+    let mut aspects_by_spirit: HashMap<String, Vec<serde_json::Value>> = HashMap::new();
+    if let Ok(entries) = std::fs::read_dir(&aspects_dir) {
+        // Build a name→slug index from the spirits registry so we can key aspects
+        // by slug (matching the rest of the API surface).
+        let name_to_slug: HashMap<String, String> = spirits
+            .as_ref()
+            .and_then(|s| s.get("spirits"))
+            .and_then(|v| v.as_array())
+            .map(|arr| {
+                arr.iter()
+                    .filter_map(|s| {
+                        let name = s.get("name").and_then(|v| v.as_str())?.to_string();
+                        let slug = s.get("slug").and_then(|v| v.as_str())?.to_string();
+                        Some((name, slug))
+                    })
+                    .collect()
+            })
+            .unwrap_or_default();
+
+        for entry in entries.flatten() {
+            let p = entry.path();
+            if p.extension().and_then(|s| s.to_str()) != Some("json") {
+                continue;
+            }
+            let Some(aspect_key) = p.file_stem().and_then(|s| s.to_str()) else {
+                continue;
+            };
+            let Ok(raw) = std::fs::read_to_string(&p) else { continue };
+            let Ok(json): Result<serde_json::Value, _> = serde_json::from_str(&raw) else { continue };
+            let spirit_name = json.get("spirit").and_then(|v| v.as_str()).unwrap_or("").to_string();
+            let Some(spirit_slug) = name_to_slug.get(&spirit_name) else {
+                // Orphan aspect — the wiki's spirit name doesn't match our registry.
+                // Skip rather than guess; authoring can fix the JSON if needed.
+                continue;
+            };
+            let aspect_name = json
+                .get("name")
+                .and_then(|v| v.as_str())
+                .unwrap_or(aspect_key)
+                .to_string();
+            let expansion = json.get("expansion").and_then(|v| v.as_str()).unwrap_or("").to_string();
+            let complexity_change = json
+                .get("complexity_change")
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+                .to_string();
+            aspects_by_spirit
+                .entry(spirit_slug.clone())
+                .or_default()
+                .push(serde_json::json!({
+                    "key": aspect_key,
+                    "name": aspect_name,
+                    "expansion": expansion,
+                    "complexity_change": complexity_change,
+                }));
+        }
+        // Stable sort for deterministic UI ordering.
+        for list in aspects_by_spirit.values_mut() {
+            list.sort_by(|a, b| {
+                let ak = a.get("key").and_then(|v| v.as_str()).unwrap_or("");
+                let bk = b.get("key").and_then(|v| v.as_str()).unwrap_or("");
+                ak.cmp(bk)
+            });
+        }
+    }
+
     Json(serde_json::json!({
         "spirits": spirits,
         "adversaries": adversaries,
         "scenarios": scenarios,
         "boards": boards,
+        "aspects": aspects_by_spirit,
     }))
 }
 
@@ -439,6 +511,10 @@ struct NewGameRequest {
     /// Applied globally to all selected boards. Defaults to "balanced".
     #[serde(default = "default_variant")]
     board_variant: String,
+    /// Optional map from spirit slug → aspect slug. An empty or missing value
+    /// for a spirit means the base (no-aspect) version.
+    #[serde(default)]
+    aspects: HashMap<String, String>,
 }
 
 fn default_variant() -> String {
@@ -594,6 +670,58 @@ async fn post_new_game(
             .map(|a| a.iter().skip(1).cloned().collect())
             .unwrap_or_default();
 
+        let aspect_key = req.aspects.get(slug).cloned().filter(|s| !s.is_empty());
+
+        // Aspect-driven hand + special-rule overrides. Some aspects (e.g.,
+        // Dark Fire / Shadows) ship with a starting-card gain; others remove
+        // or replace Uniques; most just swap the spirit's Special Rule.
+        // We parse the aspect JSON's `other_row_fields.Setup` field for
+        // "Gain {{Card|NAME}}" style additions and append to the hand.
+        let mut hand = uniques.as_array().cloned().unwrap_or_default();
+        let mut aspect_special_rules: serde_json::Value = serde_json::Value::Null;
+        let mut aspect_setup_note: Option<String> = None;
+        let mut aspect_name: Option<String> = None;
+        let mut aspect_innate_override: serde_json::Value = serde_json::Value::Null;
+        if let Some(key) = aspect_key.as_deref() {
+            let aspect_path = wiki_dir.join(format!("aspects/{key}.json"));
+            if let Ok(raw) = std::fs::read_to_string(&aspect_path) {
+                if let Ok(aspect_json) = serde_json::from_str::<serde_json::Value>(&raw) {
+                    aspect_name = aspect_json
+                        .get("name")
+                        .and_then(|v| v.as_str())
+                        .map(String::from);
+                    aspect_special_rules = aspect_json
+                        .get("special_rules")
+                        .cloned()
+                        .unwrap_or(serde_json::Value::Null);
+                    aspect_innate_override = aspect_json
+                        .get("innate_override")
+                        .cloned()
+                        .unwrap_or(serde_json::Value::Null);
+                    // "Gain {{Card|NAME}}" — add NAME to hand.
+                    if let Some(setup_str) = aspect_json
+                        .get("other_row_fields")
+                        .and_then(|v| v.get("Setup"))
+                        .and_then(|v| v.as_str())
+                    {
+                        aspect_setup_note = Some(setup_str.to_string());
+                        for cap in setup_str.split("Gain ").skip(1) {
+                            // cap might look like "{{Card|Unquenchable Flames}} (Minor Power) ..."
+                            if let Some(start) = cap.find("{{Card|") {
+                                let rest = &cap[start + 7..];
+                                if let Some(end) = rest.find("}}") {
+                                    let name = rest[..end].trim();
+                                    if !name.is_empty() && !hand.iter().any(|c| c.as_str() == Some(name)) {
+                                        hand.push(serde_json::Value::String(name.to_string()));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         spirits_out.insert(
             slug.clone(),
             serde_json::json!({
@@ -603,11 +731,16 @@ async fn post_new_game(
                 "presence_on_track_energy": covered_energy,
                 "presence_on_track_cardplay": covered_cp,
                 "elements_this_turn": {},
-                "hand": uniques,
+                "hand": hand,
                 "discard": [],
                 "forgotten": [],
                 "played_this_turn": [],
                 "growth_options": [],
+                "aspect": aspect_key,
+                "aspect_name": aspect_name,
+                "aspect_special_rules": aspect_special_rules,
+                "aspect_setup_note": aspect_setup_note,
+                "aspect_innate_override": aspect_innate_override,
             }),
         );
     }
@@ -695,6 +828,7 @@ async fn post_new_game(
             "spirits": req.spirits,
             "boards": req.boards,
             "expansions_active": req.expansions_active,
+            "aspects": req.aspects,
         },
         "pools": {
             "fear_current": 0,

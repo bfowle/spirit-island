@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import type { Board, Land, Spirit } from '../types'
 import LandEditor from './LandEditor.vue'
 import Icon from './Icon.vue'
 import PresenceDisc from './PresenceDisc.vue'
-import { getLayout } from '../boardLayouts'
 
 const props = defineProps<{
   modelValue: Board
@@ -53,10 +51,6 @@ function bumpPresence(landId: string, slug: string, delta: number) {
   else spirit.presence_on_board[key] = next
 }
 
-type ViewMode = 'grid' | 'map'
-const viewMode = ref<ViewMode>('grid')
-const expandedLand = ref<string | null>(null)
-
 function sortedKeys(b: Board): string[] {
   return Object.keys(b.lands).sort((a, z) => Number(a) - Number(z))
 }
@@ -77,49 +71,14 @@ function summaryChips(l: Land): SummaryChip[] {
   return chips
 }
 
-const layout = computed(() => getLayout(props.boardId, props.modelValue.variant))
-const canMap = computed(() => layout.value !== null)
-
-function toggleLand(id: string) {
-  expandedLand.value = expandedLand.value === id ? null : id
-}
 </script>
 
 <template>
   <div class="board-wrap">
-    <div class="board-tools">
-      <div class="legend">
-        <span class="legend-label">Units</span>
-        <span class="legend-items">
-          <Icon name="unit-explorer" :size="14" decorative /> Explorer
-          <Icon name="unit-town" :size="14" decorative /> Town
-          <Icon name="unit-city" :size="14" decorative /> City
-          <Icon name="unit-dahan" :size="14" decorative /> Dahan
-          <Icon name="resource-blight" :size="14" decorative /> Blight
-        </span>
-      </div>
-
-      <div class="board-meta">
-        <span v-if="modelValue.variant_name" class="variant-tag">{{ modelValue.variant_name }}</span>
-        <div class="view-toggle">
-          <button
-            class="view-btn"
-            :class="{ active: viewMode === 'grid' }"
-            @click="viewMode = 'grid'"
-          >Grid</button>
-          <button
-            class="view-btn"
-            :class="{ active: viewMode === 'map' }"
-            :disabled="!canMap"
-            :title="canMap ? 'Show lands positioned like the physical board' : 'Map layout not defined for this board/variant'"
-            @click="viewMode = 'map'"
-          >Map</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- GRID VIEW -->
-    <div v-if="viewMode === 'grid'" class="grid">
+    <!-- Grid-only rendering when embedded in AppShell. The outer Map/Grid
+         toggle lives in AppShell's board card head; showing another one
+         here was redundant. -->
+    <div class="grid">
       <div
         v-for="id in sortedKeys(modelValue)"
         :key="id"
@@ -177,77 +136,6 @@ function toggleLand(id: string) {
       </div>
     </div>
 
-    <!-- MAP VIEW -->
-    <div v-else class="map-view">
-      <div class="map-canvas" :class="[`ocean-${layout?.oceanEdge || 'top'}`]">
-        <div class="map-ocean" :title="'Ocean'"></div>
-        <button
-          v-for="id in sortedKeys(modelValue)"
-          :key="id"
-          class="map-land"
-          :class="[
-            `terrain-${modelValue.lands[id].terrain}`,
-            { coastal: modelValue.lands[id].coastal, expanded: expandedLand === id }
-          ]"
-          :style="{
-            left: (layout?.positions[id]?.x ?? 50) + '%',
-            top: (layout?.positions[id]?.y ?? 50) + '%'
-          }"
-          :title="`#${id} — ${modelValue.lands[id].terrain}${modelValue.lands[id].coastal ? ' · coast' : ''}`"
-          @click="toggleLand(id)"
-        >
-          <span class="map-id">{{ id }}</span>
-          <div v-if="presenceOn(id).length" class="map-presence">
-            <span
-              v-for="info in presenceOn(id)"
-              :key="info.slug"
-              class="presence-cluster"
-              :title="`${info.slug} — ${info.count}`"
-            >
-              <PresenceDisc
-                v-for="n in info.count"
-                :key="n"
-                :slug="info.slug"
-                :color="info.color"
-                :style="info.style"
-                :size="10"
-              />
-            </span>
-          </div>
-          <div class="map-chips">
-            <span
-              v-for="chip in summaryChips(modelValue.lands[id])"
-              :key="chip.label"
-              class="map-chip"
-              :title="`${chip.count} ${chip.label}`"
-            >
-              <Icon :name="chip.icon" :size="10" decorative />{{ chip.count }}
-            </span>
-          </div>
-        </button>
-      </div>
-
-      <!-- Inline editor opens beneath the map when a land is clicked -->
-      <div v-if="expandedLand" class="map-editor-panel">
-        <div class="editor-hdr">
-          <strong>#{{ expandedLand }}</strong>
-          <span class="editor-terrain">
-            <Icon :name="`terrain-${modelValue.lands[expandedLand].terrain}`" :size="14" decorative />
-            {{ modelValue.lands[expandedLand].terrain }}
-            <span v-if="modelValue.lands[expandedLand].coastal" class="coastal-tag">coast</span>
-          </span>
-          <button class="ghost" @click="expandedLand = null">Close</button>
-        </div>
-        <LandEditor
-          v-model="modelValue.lands[expandedLand]"
-          :land-id="expandedLand"
-          :spirits="spirits"
-          :board-id="boardId"
-          @bump-presence="(slug, delta) => bumpPresence(expandedLand!, slug, delta)"
-          @bump-pool="(pool, delta) => $emit('bump-pool', pool, delta)"
-        />
-      </div>
-    </div>
   </div>
 </template>
 
@@ -297,8 +185,9 @@ function toggleLand(id: string) {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: var(--sp-3);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-2);
+  align-items: start;
 }
 
 .land {

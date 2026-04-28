@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import type { Spirit } from '../types'
 import Icon from './Icon.vue'
+import UiIcon from './UiIcon.vue'
 import PresenceTrack from './PresenceTrack.vue'
 import { fetchDeck } from '../api'
 import {
@@ -51,6 +52,17 @@ const fullEnergyTrack = ref<string[]>([])
 const fullCardplayTrack = ref<string[]>([])
 const cardDetailsByName = ref<Record<string, CardDetail>>({})
 const innates = ref<InnatePower[]>([])
+const spiritName = ref<string>('')
+/** Fallback: title-case the slug if the Wiki metadata hasn't loaded yet. */
+const displayName = computed(() => {
+  if (spiritName.value) return spiritName.value
+  const slug = props.slug || ''
+  if (!slug) return 'Spirit'
+  return slug
+    .split('-')
+    .map(p => p.charAt(0).toUpperCase() + p.slice(1))
+    .join(' ')
+})
 const wikiError = ref<string | null>(null)
 const presenceExpanded = ref<boolean>(false)
 
@@ -79,6 +91,7 @@ async function loadSpiritMeta(slug: string | undefined) {
     const res = await fetch(`/api/spirit/${encodeURIComponent(slug)}`)
     if (!res.ok) throw new Error(`${res.status}`)
     const data = await res.json()
+    spiritName.value = data.name || ''
     fullEnergyTrack.value = data.presence_energy_track || []
     fullCardplayTrack.value = data.presence_cardplay_track || []
     innates.value = data.innates || []
@@ -325,93 +338,61 @@ function logInnateFired(innateName: string, tier: number) {
 
 <template>
   <div class="panel">
-    <div class="top">
-      <div class="resources">
-        <label class="res">
-          <span class="res-label">Energy</span>
-          <input type="number" v-model.number="modelValue.energy" />
-        </label>
-        <label class="res">
-          <span class="res-label">Card Plays</span>
-          <input type="number" min="0" v-model.number="modelValue.card_plays" />
-        </label>
-      </div>
+    <!-- Spirit identity header — always visible so the active panel's spirit
+         is unambiguous. Aspect name (if any) shown inline with the title. -->
+    <div class="spirit-hdr">
+      <span class="spirit-hdr-name">{{ displayName }}</span>
+      <span v-if="modelValue.aspect_name || modelValue.aspect" class="spirit-hdr-aspect">
+        {{ modelValue.aspect_name || modelValue.aspect }}
+      </span>
+    </div>
 
-      <div class="elements">
-        <div class="elements-hdr">
-          <span class="section-label">Elements this turn</span>
-          <button class="ghost tiny" @click="clearAllElements" title="Reset all element counts (end of turn handled automatically)">Clear</button>
+    <!-- Aspect banner: shows selected Aspect's name + setup-card gain + special-rule text.
+         Hidden for base spirits. -->
+    <div v-if="modelValue.aspect" class="aspect-banner">
+      <div class="aspect-hdr">
+        <span class="aspect-chip">ASPECT</span>
+        <span class="aspect-name">{{ modelValue.aspect_name || modelValue.aspect }}</span>
+      </div>
+      <div v-if="modelValue.aspect_setup_note" class="aspect-setup">
+        <UiIcon name="sparkle" :size="12" decorative /> {{ modelValue.aspect_setup_note.replace(/\{\{Card\|/g, '').replace(/\}\}/g, '').replace(/''/g, '') }}
+      </div>
+      <div v-if="modelValue.aspect_special_rules && modelValue.aspect_special_rules.length" class="aspect-rules">
+        <div v-for="r in modelValue.aspect_special_rules" :key="r.name" class="aspect-rule">
+          <strong>{{ r.name }}:</strong> {{ r.text }}
         </div>
-        <!-- Live tally of card-play + manual elements. Each element shows a
-             stepper so the player can add/remove from non-card sources
-             (Elemental Boon, innate grants, events). -->
-        <div class="element-steppers">
-          <div
-            v-for="el in ALL_ELEMENTS"
-            :key="el"
-            class="el-stepper"
-            :class="[`el-${el}`, { active: ((modelValue.elements_this_turn ?? {})[el] ?? 0) > 0 }]"
-          >
-            <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="16" decorative />
-            <span class="el-count-big">{{ (modelValue.elements_this_turn ?? {})[el] ?? 0 }}</span>
-            <div class="el-buttons">
-              <button class="step" @click="bumpElement(el, -1)" aria-label="decrement">−</button>
-              <button class="step" @click="bumpElement(el, 1)" aria-label="increment">+</button>
-            </div>
-          </div>
+      </div>
+      <div v-if="modelValue.aspect_innate_override && modelValue.aspect_innate_override.innate_name" class="aspect-innate">
+        <div class="aspect-innate-hdr">
+          <span class="aspect-innate-label">Replaces Innate:</span>
+          <span class="aspect-innate-name">{{ modelValue.aspect_innate_override.innate_name }}</span>
+          <span v-if="modelValue.aspect_innate_override.speed" class="aspect-innate-meta">
+            {{ modelValue.aspect_innate_override.speed }}
+            <span v-if="modelValue.aspect_innate_override.range">· Range {{ modelValue.aspect_innate_override.range }}</span>
+            <span v-if="modelValue.aspect_innate_override.target">· Target: {{ modelValue.aspect_innate_override.target }}</span>
+          </span>
+        </div>
+        <div v-if="modelValue.aspect_innate_override.innate_thresholds" class="aspect-innate-body">
+          {{ modelValue.aspect_innate_override.innate_thresholds }}
         </div>
       </div>
     </div>
 
-    <!-- Innate powers: each tier listed with its threshold; highest achieved
-         tier highlighted based on current elements_this_turn. "Mark fired"
-         logs the tier to the state log for retrospective + rules-check. -->
-    <div v-if="innates.length" class="innates-block">
-      <div class="innates-hdr">
-        <span class="section-label">Innate Powers</span>
-        <span class="hdr-hint">Tiers highlight when current elements meet the threshold</span>
-      </div>
-      <div v-for="(innate, ii) in innates" :key="ii" class="innate-card" :class="innate.speed">
-        <div class="innate-name">
-          <Icon
-            v-if="innate.speed"
-            :name="innate.speed.toLowerCase() === 'fast' ? 'speed-fast' : 'speed-slow'"
-            :size="12"
-            decorative
-          />
-          <span>{{ innate.name }}</span>
-        </div>
-        <div class="innate-tiers">
-          <div
-            v-for="(tier, ti) in innate.thresholds"
-            :key="ti"
-            class="tier-row"
-            :class="{
-              achieved: ti <= highestTierSatisfied(innate),
-              highest: ti === highestTierSatisfied(innate),
-            }"
-          >
-            <span class="tier-num mono">L{{ ti + 1 }}</span>
-            <span class="tier-elements">
-              <span v-for="[el, n] in tierElementNeeds(tier)" :key="el" class="tier-elem">
-                <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="11" decorative />
-                <span class="tier-elem-count">{{ n }}</span>
-              </span>
-            </span>
-            <span class="tier-effect">{{ tier.effect }}</span>
-            <button
-              v-if="ti <= highestTierSatisfied(innate)"
-              class="ghost tiny fire-btn"
-              @click="logInnateFired(innate.name, ti)"
-              :title="`Log '${innate.name}' firing at L${ti + 1} in round ${round ?? '?'}`"
-            >⚡ fired</button>
-          </div>
-        </div>
-      </div>
+    <!-- Resources: Energy + Card Plays as full-width side-by-side cards -->
+    <div class="resources">
+      <label class="res">
+        <span class="res-label">Energy</span>
+        <input type="number" v-model.number="modelValue.energy" />
+      </label>
+      <label class="res">
+        <span class="res-label">Card Plays</span>
+        <input type="number" min="0" v-model.number="modelValue.card_plays" />
+      </label>
     </div>
 
     <!-- Presence tracks: bowls always visible. Only the disc color/style
-         customization panel is behind a toggle. -->
+         customization panel is behind a toggle. Placed high up (right after
+         resources) — see mockup ordering. -->
     <div class="presence-block">
       <div class="presence-stats">
         <div class="presence-stat">
@@ -495,6 +476,77 @@ function logInnateFired(innateName: string, tier: number) {
       </details>
     </div>
 
+    <!-- Elements this turn — full-width 4-col grid. Steppers are +/- only;
+         counts roll up from card plays + manual bumps. -->
+    <div class="elements">
+      <div class="elements-hdr">
+        <span class="section-label">Elements this turn</span>
+        <button class="ghost tiny" @click="clearAllElements" title="Reset all element counts">Clear</button>
+      </div>
+      <div class="element-steppers">
+        <div
+          v-for="el in ALL_ELEMENTS"
+          :key="el"
+          class="el-stepper"
+          :class="[`el-${el}`, { active: ((modelValue.elements_this_turn ?? {})[el] ?? 0) > 0 }]"
+        >
+          <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="16" decorative />
+          <span class="el-name">{{ el }}</span>
+          <span class="el-count-big">{{ (modelValue.elements_this_turn ?? {})[el] ?? 0 }}</span>
+          <div class="el-buttons">
+            <button class="step" @click="bumpElement(el, -1)" aria-label="decrement">−</button>
+            <button class="step" @click="bumpElement(el, 1)" aria-label="increment">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Innate powers: each tier listed with its threshold; highest achieved
+         tier highlighted based on current elements_this_turn. -->
+    <div v-if="innates.length" class="innates-block">
+      <div class="innates-hdr">
+        <span class="section-label">Innate Powers</span>
+        <span class="hdr-hint">Tiers highlight when current elements meet the threshold</span>
+      </div>
+      <div v-for="(innate, ii) in innates" :key="ii" class="innate-card" :class="innate.speed">
+        <div class="innate-name">
+          <Icon
+            v-if="innate.speed"
+            :name="innate.speed.toLowerCase() === 'fast' ? 'speed-fast' : 'speed-slow'"
+            :size="12"
+            decorative
+          />
+          <span>{{ innate.name }}</span>
+        </div>
+        <div class="innate-tiers">
+          <div
+            v-for="(tier, ti) in innate.thresholds"
+            :key="ti"
+            class="tier-row"
+            :class="{
+              achieved: ti <= highestTierSatisfied(innate),
+              highest: ti === highestTierSatisfied(innate),
+            }"
+          >
+            <span class="tier-num mono">L{{ ti + 1 }}</span>
+            <span class="tier-elements">
+              <span v-for="[el, n] in tierElementNeeds(tier)" :key="el" class="tier-elem">
+                <Icon v-if="ELEMENT_ICONS[el]" :name="ELEMENT_ICONS[el]" :size="11" decorative />
+                <span class="tier-elem-count">{{ n }}</span>
+              </span>
+            </span>
+            <span class="tier-effect">{{ tier.effect }}</span>
+            <button
+              v-if="ti <= highestTierSatisfied(innate)"
+              class="ghost tiny fire-btn"
+              @click="logInnateFired(innate.name, ti)"
+              :title="`Log '${innate.name}' firing at L${ti + 1} in round ${round ?? '?'}`"
+            ><UiIcon name="bolt" :size="12" decorative /> fired</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Card piles with rich detail -->
     <div class="piles">
       <div class="pile">
@@ -537,7 +589,7 @@ function logInnateFired(innateName: string, tier: number) {
                   </span>
                 </span>
                 <span class="thresh-effect">{{ thresholdInfo(c)?.effect }}</span>
-                <span v-if="thresholdInfo(c)?.met" class="thresh-badge met-badge">✓ MET</span>
+                <span v-if="thresholdInfo(c)?.met" class="thresh-badge met-badge"><UiIcon name="check" :size="11" decorative /> MET</span>
               </div>
             </div>
             <div class="card-actions">
@@ -547,7 +599,7 @@ function logInnateFired(innateName: string, tier: number) {
                 class="ghost forget"
                 @click="moveCard(c, 'hand', 'forgotten')"
                 title="Forget (remove from deck — usually paid as a Major Power cost)"
-              >🗑 Forget</button>
+              ><UiIcon name="trash" :size="12" decorative /> Forget</button>
             </div>
           </li>
           <li v-if="!(modelValue.hand ?? []).length" class="empty">hand is empty</li>
@@ -592,13 +644,13 @@ function logInnateFired(innateName: string, tier: number) {
                   </span>
                 </span>
                 <span class="thresh-effect">{{ thresholdInfo(c)?.effect }}</span>
-                <span v-if="thresholdInfo(c)?.met" class="thresh-badge met-badge">✓ MET</span>
+                <span v-if="thresholdInfo(c)?.met" class="thresh-badge met-badge"><UiIcon name="check" :size="11" decorative /> MET</span>
               </div>
             </div>
             <div class="card-actions">
               <button class="ghost" @click="moveCard(c, 'played_this_turn', 'discard')" title="Send to discard">→ Discard</button>
               <button class="ghost" @click="moveCard(c, 'played_this_turn', 'hand')" title="Unplay (return to hand)">↩ Unplay</button>
-              <button class="ghost forget" @click="moveCard(c, 'played_this_turn', 'forgotten')" title="Forget">🗑</button>
+              <button class="ghost forget" @click="moveCard(c, 'played_this_turn', 'forgotten')" title="Forget"><UiIcon name="trash" :size="12" decorative /></button>
             </div>
           </li>
           <li v-if="!(modelValue.played_this_turn ?? []).length" class="empty">no plays yet this turn</li>
@@ -623,7 +675,7 @@ function logInnateFired(innateName: string, tier: number) {
             </div>
             <div class="card-actions">
               <button class="ghost" @click="moveCard(c, 'discard', 'hand')" title="Return this card to hand">↩ Reclaim</button>
-              <button class="ghost forget" @click="moveCard(c, 'discard', 'forgotten')" title="Forget">🗑</button>
+              <button class="ghost forget" @click="moveCard(c, 'discard', 'forgotten')" title="Forget"><UiIcon name="trash" :size="12" decorative /></button>
             </div>
           </li>
           <li v-if="!(modelValue.discard ?? []).length" class="empty">discard empty</li>
@@ -672,14 +724,155 @@ function logInnateFired(innateName: string, tier: number) {
 <style scoped>
 .panel {
   display: flex; flex-direction: column; gap: var(--sp-3);
-  background: var(--bg-surface); border: 1px solid var(--border-subtle);
-  border-radius: var(--r-lg); padding: var(--sp-4);
-  box-shadow: var(--shadow-sm);
+  background: linear-gradient(to bottom right, var(--bg-surface), var(--bg-canvas));
+  border: 1px solid var(--aegis-border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(6px);
 }
 
-.top { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-4); align-items: start; }
-.resources { display: inline-flex; gap: var(--sp-3); }
-.res { display: flex; flex-direction: column; gap: var(--sp-1); }
+/* Spirit header — the identity badge at the top of the panel. */
+.spirit-hdr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 4px var(--sp-2);
+  border-bottom: 1px solid var(--aegis-border);
+  margin-bottom: var(--sp-1);
+  flex-wrap: wrap;
+}
+.spirit-hdr-name {
+  font-family: var(--font-brand);
+  font-size: 20px;
+  font-weight: var(--fw-bold);
+  color: var(--text-white);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  background: var(--accent-grad);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.spirit-hdr-aspect {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: var(--fw-bold);
+  padding: 3px 9px;
+  border-radius: var(--r-full);
+  background: rgba(124, 58, 237, 0.18);
+  color: #c4b5fd;
+  border: 1px solid rgba(124, 58, 237, 0.45);
+}
+
+/* Aspect banner: shown above resources when an aspect is active. */
+.aspect-banner {
+  padding: 12px 14px;
+  border: 1px solid rgba(124, 58, 237, 0.40);
+  background:
+    linear-gradient(135deg, rgba(124, 58, 237, 0.14), rgba(37, 99, 235, 0.06)),
+    var(--bg-inset);
+  border-radius: var(--r-md);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.10) inset;
+}
+.aspect-hdr { display: flex; align-items: center; gap: 8px; }
+.aspect-chip {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--accent-purple, #7c3aed);
+  color: white;
+}
+.aspect-name {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.aspect-setup {
+  font-size: 12px;
+  color: var(--accent-green, #10b981);
+  font-style: italic;
+}
+.aspect-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 2px;
+}
+.aspect-rule {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+.aspect-rule strong { color: var(--text-primary); font-weight: 600; }
+.aspect-innate {
+  margin-top: 6px;
+  padding: 6px 8px;
+  border-left: 2px solid var(--accent-purple, #7c3aed);
+  background: rgba(124, 58, 237, 0.04);
+  border-radius: 3px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.aspect-innate-hdr { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; margin-bottom: 3px; }
+.aspect-innate-label {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-purple, #7c3aed);
+  font-weight: 700;
+}
+.aspect-innate-name {
+  font-family: var(--font-mono, monospace);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 12px;
+}
+.aspect-innate-meta { color: var(--text-muted); font-size: 10px; }
+.aspect-innate-body { line-height: 1.45; white-space: pre-wrap; }
+
+/* Resources: full-width 2-col grid, big numeric inputs per mockup */
+.resources {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+.res {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent-blue) 6%, transparent), transparent),
+    var(--bg-inset);
+  border: 1px solid var(--aegis-border);
+  border-radius: var(--r-md);
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast);
+}
+.res:focus-within {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 1px var(--accent-blue);
+}
+.res input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: var(--fw-bold);
+  color: var(--text-white);
+  padding: 0;
+  line-height: 1.1;
+  width: 100%;
+}
 .res-label, .section-label {
   font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em;
   color: var(--text-muted); font-weight: var(--fw-medium);
@@ -699,26 +892,56 @@ function logInnateFired(innateName: string, tier: number) {
 
 .element-steppers {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(4rem, 1fr));
-  gap: var(--sp-1);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
 }
 .el-stepper {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "icon name count"
+    "icon btns btns";
   align-items: center;
-  gap: 2px;
-  padding: 4px;
+  gap: 2px 6px;
+  padding: 6px 8px;
   background: var(--bg-canvas);
   border: 1px solid var(--border-subtle);
   border-radius: var(--r-sm);
   transition: all var(--motion-fast);
   opacity: 0.55;
+  min-width: 0;
 }
+.el-stepper > :deep(svg) { grid-area: icon; width: 18px; height: 18px; }
+.el-stepper .el-name {
+  grid-area: name;
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: capitalize;
+  font-weight: var(--fw-semibold);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.el-stepper .el-count-big {
+  grid-area: count;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+.el-stepper .el-buttons { grid-area: btns; justify-self: end; gap: 3px; }
 .el-stepper.active {
   opacity: 1;
   background: var(--bg-muted);
   border-color: rgba(123, 184, 245, 0.35);
 }
+/* Per-element color tint on active */
+.el-stepper.active.el-moon    { background: color-mix(in srgb, #fbbf24 14%, var(--bg-canvas)); border-color: rgba(251, 191, 36, 0.45); }
+.el-stepper.active.el-sun     { background: color-mix(in srgb, #f59e0b 14%, var(--bg-canvas)); border-color: rgba(245, 158, 11, 0.45); }
+.el-stepper.active.el-fire    { background: color-mix(in srgb, #ef4444 14%, var(--bg-canvas)); border-color: rgba(239, 68, 68, 0.45); }
+.el-stepper.active.el-air     { background: color-mix(in srgb, #60a5fa 14%, var(--bg-canvas)); border-color: rgba(96, 165, 250, 0.45); }
+.el-stepper.active.el-water   { background: color-mix(in srgb, #3b82f6 14%, var(--bg-canvas)); border-color: rgba(59, 130, 246, 0.45); }
+.el-stepper.active.el-earth   { background: color-mix(in srgb, #a16207 14%, var(--bg-canvas)); border-color: rgba(161, 98, 7, 0.55); }
+.el-stepper.active.el-plant   { background: color-mix(in srgb, #10b981 14%, var(--bg-canvas)); border-color: rgba(16, 185, 129, 0.45); }
+.el-stepper.active.el-animal  { background: color-mix(in srgb, #f97316 14%, var(--bg-canvas)); border-color: rgba(249, 115, 22, 0.45); }
 .el-count-big {
   font-family: var(--font-mono);
   font-size: var(--fs-lg);
