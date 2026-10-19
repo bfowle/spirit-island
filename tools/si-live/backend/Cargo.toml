@@ -5,6 +5,8 @@ edition.workspace = true
 
 [dependencies]
 si-common = { path = "../common" }
+si-steam = { path = "../steam" }
+tokio-stream = { version = "0.1", features = ["sync"] }
 serde.workspace = true
 serde_json.workspace = true
 tokio.workspace = true

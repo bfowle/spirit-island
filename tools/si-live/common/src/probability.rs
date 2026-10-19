@@ -99,9 +99,10 @@ mod tests {
 
     #[test]
     fn hypergeom_known_value() {
-        // 50-card deck, 20 successes, draw 4, P(exactly 2): standard example
+        // 50-card deck, 20 successes, draw 4, P(exactly 2) =
+        // C(20,2)·C(30,2) / C(50,4) = 82650 / 230300 ≈ 0.35888.
         let p = hypergeom_pmf(50, 20, 4, 2);
-        assert!((p - 0.3641).abs() < 0.005, "got {p}");
+        assert!((p - 0.35888).abs() < 1e-4, "got {p}");
     }
 
     #[test]
@@ -111,7 +112,7 @@ mod tests {
         assert!(hi > 0.2 && hi < 0.35);
         let (lo, hi) = wilson_95(10, 10);
         assert!(lo > 0.65 && lo < 0.80);
-        assert_eq!(hi, 1.0);
+        assert!((hi - 1.0).abs() < 1e-9, "got {hi}");
     }
 
     #[test]

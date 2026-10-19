@@ -245,6 +245,8 @@ function exportCurrentGame() {
       @export="exportCurrentGame"
     />
 
+    <a class="companion-link" href="#/companion" target="_blank" rel="noopener" title="Open the Steam companion dashboard in a new tab">Steam companion</a>
+
     <SetupWizard :show="showWizard" @close="showWizard = false" @game-started="onGameStarted" />
     <SavedGames :show="showSavedGames" @close="showSavedGames = false" @game-loaded="onGameStarted" />
   </template>
@@ -310,5 +312,21 @@ function exportCurrentGame() {
 .end-sub { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 2px; }
 
 .end-actions { display: inline-flex; align-items: center; gap: var(--sp-2); }
+
+/* Link to the Steam companion: sits in the header's empty middle column. */
+.companion-link {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  font-size: var(--fs-xs);
+  padding: 2px 10px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+}
+.companion-link:hover { color: var(--text-primary); border-color: var(--accent-blue); }
 .saving-inline { font-size: var(--fs-xs); color: var(--status-success); font-style: italic; }
 </style>

@@ -1,7 +1,8 @@
 # Steam Companion — design
 
 Date: 2026-10-18
-Status: draft (rev 3, after two spec reviews), awaiting Brett's review
+Status: rev 5, building (M1 built; M2 stats and the M3 dashboard in progress). Rev 5 adds Sections 7.7–7.9
+and the backtest (Section 10), from Brett's requests on 2026-10-18.
 Branch: `steam-companion` (worktree `~/repos/spirit-island-steam-companion`)
 
 ## 1. Goal
@@ -243,6 +244,16 @@ So `RawLogEvent` never leaves `si-steam`. `projection.rs` maps each one to a
    table, so a new zone fails loudly instead of being guessed.
 4. **Field-name test.** Serialized `CompanionState`, SSE payloads, and
    `/health` never contain `RNG`, `Seed`, or deck-order arrays.
+5. **Derived numbers too.** Every stat, including Monte Carlo rollouts, samples
+   hidden orders from the public belief (the unseen multiset per deck), never
+   from the save. A rollout seeded from the real deck order would leak through
+   its numbers with no card name in sight. Rollout outputs are part of the
+   invariance fixtures.
+
+The serialized RNG state matters beyond deck order: it would predict future
+power-deck reshuffles and France/Sweden escalation picks. Russia L5 puts
+invader cards inside the fear deck; their positions are public setup facts,
+their identities hidden.
 
 ## 6. CompanionState and API
 
@@ -278,6 +289,23 @@ carries a `basis` string (what it assumes) and an `approx` flag. Rules live in
 `si-common/src/rules.rs`, each verified with `si-rules-check` before coding
 (memory rule: never hallucinate mechanics).
 
+The model choices follow the research report
+`reports/Spirit Island companion stat models.md`: exact ledgers first,
+probability only where a hidden card meets a land. Layers, in build order:
+ledgers (deterministic resolution with named, signed modifier terms) →
+card counting (hypergeometric family on the unseen-card lemma) → per-land
+threat map with land-tempo badges → "if X is next" timelines → momentum
+projection → simulation (race and comparisons only). Displays use natural
+frequencies ("2 of the 3 unseen Stage II cards explore here"), show what
+changes rather than what to play, and pair each exact number with a pocket
+rule ("1 ÷ unseen cards left in this stage"). The engine's own preview
+functions (`GetRavagePreviewForLand`, `GetInvaderActionPreviewForLand`,
+`IsTerrorWinPossible`) serve as test oracles for `rules.rs`.
+
+`PublicSnapshot` stores spirits **N** and boards **B** separately, and each
+rule in `rules.rs` is tagged with the unit it scales by (fear per card scales
+with N; blight pool, lands hit per card, and Scotland's loss with B).
+
 ### 7.1 Invader forecast
 
 - **Ravage forecast**, per land matching the face-up Ravage card: invader
@@ -289,49 +317,312 @@ carries a `basis` string (what it assumes) and an `approx` flag. Rules live in
   terrain or coastal result. Candidate set per stage = rules pool for that
   stage − cards seen. Per land: P(explored next round); lands with Brett's
   presence or sacred sites at risk.
+  Explore eligibility includes the source rule (the land has a Town or City,
+  or is adjacent to one or to the Ocean) and Wilds/Isolate effects.
+- **Land-tempo badges** per land (lumia's glossary): `ahead` (explored, not yet
+  built), `on` (built, ravaging next), `b2b` (two invader actions in a row),
+  `capital` (7 buildings during the Invader Phase). Face-up cards make most
+  badges certain; the map separates certain from possible.
+- **"If X is next" table:** for each possible next invader card, which lands
+  explore, build, and ravage — the darkest and best timeline, exactly.
 - **Card counting**: per stage, terrains seen vs. unseen.
-- **Adversary changes to the pool.** `data/adversary-stacks.json` is mostly
-  unverified (61 `[VERIFY]` entries), so it is not used for stage order (the
-  card backs give that). Adversary changes to *which cards are in a stage's
-  pool* are added to `rules.rs` per adversary level only after verification;
-  until then the stat uses the base pool and is marked `approx` with a warning
-  naming the adversary level.
+- **Adversary deck recipes.** `data/adversary-stacks.json` is wrong (levels
+  keyed by difficulty, most stacks incorrect), so it is not used. A recipe
+  interpreter in `rules.rs` applies each adversary level's deck operations
+  (remove unseen, move to a known position, replace, accelerate, Russia L5
+  insertion; combined adversaries supporting-first), each verified and listed
+  in the rules register. Unverified levels fall back to the base recipe,
+  marked `approx` with a warning.
 
 ### 7.2 Fear and victory race
 
-- Fear to next card; cards earned and left per terror level; projected round
-  for each terror level.
-- Fear per round (from history) with a rolling rate and a min/max band.
+- **Fear runway by dividers:** fear to the next Terror Level = (cards above
+  the next divider) × (fear per card) − fear generated, with overflow carried.
+  Fear per card is 4 per spirit, 5 with an extra board, +1 per player at
+  England L6. Shown in cards and as each spirit's share.
+- **Terror Level timing as an accelerator.** For each banked (face-down) fear
+  card, show the Terror Level it will resolve at, and the value of crossing
+  the next divider *before* the Fear phase: the Level is set the moment the
+  divider is reached, so every card resolving that phase uses the higher
+  Level's text. Test 1, Turn 3: Display Your Wrath's +1 fear earned the last
+  Terror Level I card during the Event; both banked cards resolved at
+  Level II, and the share of fear cards that could save a ravaging land rose
+  from 16 of 50 (32%) to 23 of 49 (47%). Spreading Timidity (Defend 2) then
+  saved a land.
+- Fear per round (from history), shown as observed values, not a fitted rate.
 - Current victory condition and the invaders still blocking it.
-- **Race chart:** projected win round vs. projected end-of-time round
-  (invader deck runs out; exact, public deck size) vs. projected blight-card
-  flip round (before the flip) or blight-loss round (after the flip).
-  Adversary-specific loss conditions are not modeled in v1; a warning names
-  the adversary when it has one.
+- **Race chart, v1 (no play policy needed):** the exact deck clock (loss at
+  turn D's Explore; D from the deck recipe), an invaders-only projection
+  enumerated exactly over the next few cards ("if you do nothing"), and the
+  fear runway from guaranteed sources plus the land inventory.
+- **Race chart, later (simulation):** one cumulative incidence curve per
+  outcome — fear win, blight loss, deck exhaustion, and each adversary loss
+  clock (six of eight adversaries have one) — never each clock alone.
+  Labeled with its rollout policy; Wilson intervals; common random numbers;
+  a fixed seed per state.
 
 ### 7.3 Blight and loss risk
 
-- Blight left on the card; flipped or not.
-- Lands one Ravage from blight; lands with blight (cascade risk) and their
-  cascade neighbors.
-- Projected round of the flip (or of the loss, after the flip) at the current
-  rate.
+- Blight left on the card (2B + 1 before the flip); flipped or not.
+- Before the flip, the flipped side's blight count X is a mixture over the
+  unseen blight cards (shown as a distribution, not a single number).
+- Lands one Ravage from blight; lands with blight (cascade risk), their
+  cascade neighbors, and the loaded-cluster cascade reach.
+- Presence at risk: adding blight destroys one presence of each spirit in the
+  land.
+- Adversary blight rules (Sweden L1, Scotland L5, France L5, Habsburg Mining
+  L1) as signed modifier terms.
 
 ### 7.4 Spirit economy and powers
 
-- Energy and card plays per round (history); presence-track progress.
+- Energy and card plays per round (history), plus a forward **momentum
+  projection** per growth line from the engine's presence-track graph,
+  plotted against the invader-pressure step function from the deck recipe
+  (Rei's "stay ahead of the curve" as a chart). Any Energy-per-card-play
+  valuation is a user-set parameter with a sensitivity band, never a fact.
 - Elements vs. innate thresholds. `common::stats::compute_innate_status`
   exists but has no caller and no spec loader; v1 adds a loader from the
   spirit Wiki JSON and makes the check phase-aware, per the rule verified with
   `si-rules-check`.
 - Power draws: hypergeometric P(≥ k cards with element E) for a Minor or Major
-  draw (reuse `common::probability::hypergeom_at_least`). Unseen pool =
+  draw of 4, keep 1, the other 3 to the public discard (reuse
+  `common::probability::hypergeom_at_least`). Reshuffles of the discard into
+  the deck are tracked. Unseen pool =
   allowed pool − cards outside the deck now (hands, discards, played,
   forgotten, removed). The pool size must equal the deck count; a mismatch is
   a warning and the stat is `approx`. Card elements from
   `data/decks/minor.json` and `major.json`; the 3 cards with no elements count
   as "no element".
 - Requires an engine-card-ID → repo-card-slug map (Section 14).
+- **Need finder** (requested by Brett during Test 1, Turn 3). The player
+  names a need — Defend ≥ n, Damage ≥ n, Gather/Push Dahan, Fear, Isolate, an
+  element — and the panel shows P(a Minor or Major draw of 4 holds at least
+  one card that meets it **and is playable now**: speed fits the phase, cost
+  ≤ current Energy, a card play free), as natural frequencies plus a pocket
+  rule. Next to it, the ledger delta of each growth option at the coming
+  Ravage: blight per land, P(blight card flips this turn), presence lost,
+  Dahan lost, fear cards earned, economy change. It shows what each option
+  buys and never ranks them. Needs effect tags per card (Defend n, Damage n,
+  Fear n, Gather/Push, Isolate, …), taken from the engine's embedded card
+  definitions, cross-checked against `data/decks/*.json`.
+  **"Saves the land" means any effect, not one keyword**: Defend, moving the
+  Town out, Strife on the Town, enough damage, blight returned to the card,
+  skipping the Ravage. A Defend-only count gave 17 of 96 Minors (55%); all
+  effects give about 27 (74%) — Brett found the miss live (Lure of the
+  Unknown, Cycles of Time and Tide).
+  **"Playable now" includes reach**: range from presence or Sacred Site,
+  target restrictions ("one of your lands", "land with Dahan", "land with no
+  invaders"), and spirit rules that extend reach (Shadows pays 1 Energy to
+  target a land with Dahan). Test 1, Turn 4: a plan to downgrade C7 with
+  Crops (range 0), push with Mantle ("your lands") and damage with Bats ("per
+  Dahan") failed on reach alone; C7 had neither presence nor Dahan.
+  **Each candidate card gets three values**, shown side by side:
+  1. *This turn:* what it changes at the anchor step.
+  2. *Repeatability:* how likely its conditions keep holding (e.g. "a land with
+     no invaders within range 2" gets scarcer as the island fills), and
+     whether it removes the problem or moves it (a gathered Town is still a
+     Town).
+  3. *Elements:* its contribution to the spirit's innate thresholds, weighted
+     by the spirit's scarce element, and the card plays needed to reach each
+     level with it vs. without it (Shadows: Fire is the bottleneck; Lure's
+     Moon + Fire + Air makes Darkness Swallows the Unwary L3 reachable at 4
+     card plays, which the starting deck cannot reach at all).
+  Worked example (Test 1, Turn 3, Shadows vs Prussia L2): C4 needed Defend 2;
+  about 15 of 96 unseen Minors qualify, so P ≈ 1 in 2 per draw of 4, which
+  made "Reclaim + Minor" and "Minor + Presence" equal on blight (50% flip)
+  and different on Dahan kept vs. economy grown.
+
+## 7.5 The scenario lens (core interaction)
+
+Stated by Brett during Test 1, Turn 3, after working the "save C4 / keep
+the island healthy" decision by hand. The dashboard is organized around this
+interaction; the stat families of Sections 7.1–7.4 feed it.
+
+**Anchor:** a question about a coming step, picked by the player or suggested
+by the phase: "this turn's Ravage", "next Explore", "does the blight card flip
+this turn", "can I earn a fear card before Ravage".
+
+**Inputs, in three groups, shown side by side:**
+
+| Group | Examples | Treatment |
+|---|---|---|
+| Fixed facts | Face-up invader cards, pieces, tokens, blight left, fear pool, hand, Energy, card plays | Ledger terms, certain |
+| Levers (you control) | Growth option, which track a presence comes off, cards to play, targets, Event choices, fear-card targeting, payments ("aided by Air") | Enumerated as options (a handful, not every permutation) |
+| Unknowns (you can't control, but can count) | Next invader card, a Minor/Major draw, earned fear cards still face-down, the coming Event, the blight card's other side | Exact distributions from public pools (Section 5); independent decks combine by multiplying misses |
+
+**Model:** depth-1 expectimax with chance nodes at reveal points
+(the research report's recommended planner). For each lever option, each
+possible unknown card is applied to the current state through the rules
+ledger (not keyword tags), giving "saves land X / hurts land X / neutral";
+probabilities come from the counts. Multi-turn effects use the momentum
+projection.
+
+**Output, for each option (never ranked):**
+1. The anchor's probability as a natural-frequency bar ("island still healthy
+   after this Ravage: A 79%, B 69%, C 32%"), with the parts that make it up
+   ("Defend draw 55% or 2 fear cards 54%").
+2. An outcome-by-branch table (unknown resolved one way vs. the other).
+3. What each option buys beyond the anchor (Dahan kept, presence, cards,
+   Energy, Reclaim timing).
+4. **Pace:** the option's economy curve (Energy, card plays, presence, cards
+   gained, Reclaim schedule) against the adversary's pressure curve (lands hit
+   per invader card from the deck recipe, builds, blight runway, fear runway)
+   over the next turns, with the gap's trend and the turn, if any, where the
+   economy outgrows the pressure ("outgrowing the adversary").
+
+Worked example: Test 1, Turn 3 (Shadows vs Prussia L2) — Defend-draw odds
+(17 of 96 Minors), fear-card saves (16 of 50 at Terror Level I), the Event as a
+common shift, and the Reclaim-now vs. Reclaim-later pace comparison.
+
+## 7.6 Augment, don't decide (core principle)
+
+Stated by Brett during Test 1, Turn 4: the companion augments the player's
+choices with math and **presents things to think about**; it never makes the
+call. Every lens and panel follows these rules:
+
+- No rankings, no "best move", no highlighted option, no default selection.
+  Options appear in a fixed order (by lever), never sorted by value.
+- Every number answers a named question and shows its parts, as natural
+  frequencies ("17 of 96 Minors"), with a pocket rule the player can
+  compute at the table.
+- Each decision shows **think-about prompts**. The catalog below grew out of
+  the Test 1 decisions; each prompt names the panel that answers it.
+
+| Prompt | Answered by | Test 1 example |
+|---|---|---|
+| What is certain this step, and what is still hidden? | Fixed facts / unknowns columns | Turn 3: Ravage lands certain; Minor draw, fear cards, Event hidden |
+| Which land is one action from safe, and which is not worth saving? | Cost-to-save per land | Turn 4: a lone-Explorer land is 1 action; C7 at 9 damage is not |
+| What does this card buy now, and later? | This turn / repeatability / elements | Lure: saves C4 now; scarcer targets later; enables innate L3 |
+| Can it reach? | Reach check (range, targets, spirit rules) | Turn 4: Crops, Mantle, Bats could not reach C7 |
+| When does it act? | Timing (Fast/Slow, next action a skip hits, Terror Level at resolution) | Spiders now skips this Build; held, it skips Turn 5's Ravage |
+| Which clock does it move, and by how much? | Race / loss table | Turn 4: 9 → 6 Turn-5 blights moves loss risk 57% → 4% |
+| What is this turn's bottleneck? | Resource strip (Energy, card plays, elements) | Turn 4: 8 Energy but 2 card plays |
+| Is this factor common to all options? | Common-factor callout | Turn 3: the Event shifts every option alike |
+| Is this about order or about count? | Pace / Reclaim schedule | Turn 4: G1 vs G2 differ in order only; L2 lands on Turn 5 either way |
+| Does it remove the problem or move it? | Repeatability value | Lure gathers a Town elsewhere; the Town still exists |
+| Which effects might you be missing? | Need finder over all effect types | Turn 3: Defend-only count missed Lure and Cycles |
+
+- The optional predict-first hold (Section 6 of the report) stays available
+  for players who want to commit a guess before the numbers show.
+
+## 7.7 Post-game review
+
+Requested by Brett on 2026-10-18: "where did the momentum shift, where were
+suboptimal picks made, what can we learn from each scenario after the game is
+over … too much focus on ravages and not preventing builds (or explores)".
+Built in `si-common/src/companion_stats/review.rs` from the game's timeline of
+public snapshots (so it has the same firewall guarantees as the live view).
+Each change between two snapshots is attributed to the step it happened in
+(a save is written on entering a step, so blight from a Ravage first shows in
+the Build save).
+
+- **Blight attribution**: each blight by turn, land, and cause (`Ravage`,
+  `cascade`, `Event`, `BlightedIsland`, …).
+- **Invader chains**: for each blight from a Ravage, the same card's Explore
+  and Build in that land, and the Invaders standing there at each point a
+  Fast or Slow action could act ("Turn 3, after Explore: 1 Explorer" →
+  "Turn 5, before Ravage: 3 damage"). This is the prevention-vs-reaction view.
+- **Flow by phase**: Invaders added (Explore, Build, Event, …) vs removed
+  (Fast, Slow, Fear, Ravage counterattack, Event) per turn, at island level so
+  pushes and gathers cancel.
+- **Pressure**: total Ravage damage the island's Invaders could deal at the
+  end of each turn, and the turn of the largest jump.
+- **Reflections**: questions with this game's facts (never a grade, per 7.6):
+  where blight came from; which Ravage blights began as a lone Explorer; did
+  removal keep pace with arrival and in which phase; what happened in the
+  largest jump; were unused plays or banked Energy deliberate.
+
+Test 1 (Shadows vs Prussia L2, lost to blight Turn 7): 6 blight from Ravage,
+2 from cascades, 5 from Events; 3 Ravage blights began as a lone Explorer two
+turns earlier; Explore added 29 Invaders and Build 17, while Fast powers
+removed none net (Lure and similar cards moved Invaders), Slow 3, Fear 3,
+counterattacks 12, Events 13; the largest pressure jump was Turn 4 (+19
+damage: 6 Builds and 6 Explores).
+
+Later: decision points from the log (`UseActivationJournalEntry` / log
+`Proceed` lines: growth chosen, cards kept, targets), so the review can name
+the choice at each chain point. The log names hidden cards, so this runs only
+after the game ends, through `projection.rs`.
+
+## 7.8 Invader pipeline invariants and the timing lens
+
+Stated by Brett on 2026-10-18 as things the companion must treat as obvious:
+Explore → Build → Ravage across turns, resolved in reverse order within each
+Invader Phase; adversary changes (England's extra Build); Fast vs Slow; inland
+lands can be made unexplorable by clearing sources, coasts cannot. Built in
+`si-common/src/companion_stats/invaders.rs` and `rules.rs`:
+
+- **Resolution order.** The forecast applies this phase's Ravage, then its
+  Build, then computes Explore on the resulting board. A Build can create an
+  Explore source; a counterattack that destroys every Invader whatever the
+  damage assignment removes one (Test 1 Turn 3: Jungle E3's Dahan destroyed
+  the Town that fed Mountain E5 and Wetland E4, so neither was explored).
+- **Two-turn pipeline per land.** This phase: Ravage (ledger), Build (+Town or
+  +City), Explore chance. Next phase: Ravage next turn (the Build card's lands;
+  certain when Invaders are already there), Build next turn (chance from this
+  Explore's candidates). Badges: `ravage-now`, `build-now`, `ravage-next`,
+  `back-to-back`, `explore-dead`, `sole-source`.
+- **Explore access.** `coastal` (always explorable; the Ocean is a permanent
+  source), `fed` (sources in range, listed), `dead` (no source in range after
+  this phase's Builds). `sole_source_for`: inland lands whose only source is
+  this land, so clearing its Towns and Cities leaves them unexplorable.
+- **Fast vs Slow windows** per land, as mechanical statements: what an action
+  resolving in the Fast phase (before the Invader Phase) still changes here
+  this turn, and what a Slow action (after it) changes for next turn, e.g.
+  "If explored (2 in 5), clearing that lone Explorer after the Explore stops
+  next turn's Build here".
+- **Modifiers from the engine's own status effects.** Status effects from
+  public cards cross the firewall with their parameters. Applied: Defend
+  (flat, per piece), Ravage damage per Invader, Skip (optional, uses), no
+  cascade, health changes (already on the pieces). Token rules applied with
+  engine evidence: Strife (no Ravage damage, loses 1), Disease (cancels a
+  Build, 1 removed), Wilds (cancels an Explore, 1 removed). Anything with
+  conditions the rules do not interpret is flagged `unmodeled`, never guessed.
+- **Adversary and spirit exceptions.** The rules register
+  (`data/references/rules/register.md`, `common/data/invader-rules.json`)
+  lists every adversary level, spirit, scenario, and Event that changes the
+  pipeline, with engine and Wiki evidence. Effects not yet applied show as
+  notes on the phase forecast (extra invader slots are already detected).
+
+## 7.9 Stochastic-process framings that fit (and one that does not)
+
+Brett asked whether M. S. Bartlett's *An Introduction to Stochastic
+Processes* (1955) or later work applies. What fits:
+
+1. **Birth–death–immigration.** Per region, Explore is immigration, Build is
+   birth (it needs Invaders present), spirit removal is death. Coastal lands
+   have immigration that never stops (the Ocean is always a source); an
+   inland cluster has an absorbing "explore-dead" state once every source in
+   range is cleared. This is the stochastic form of 7.8's Explore access.
+   Candidate stat: turns until a dead land is re-seeded, from the deck's
+   terrain mix.
+2. **Epidemics on a graph / fade-out vs persistence** (Bartlett's 1957 work
+   on community size). Blight cascades spread over the adjacency graph
+   through already-blighted lands; a connected blighted cluster is the
+   "susceptible network". Candidate stat: size of the blighted component each
+   land touches (cascade reach), next to `cascade_chains`.
+3. **Absorbing Markov chains and competing risks.** The game ends in
+   absorbing states (Fear win, blight loss, deck exhaustion, adversary
+   losses); the race chart (7.2) is the first-passage-time distribution per
+   outcome, shown as cumulative incidence.
+4. **Linear filter / impulse response.** Each invader card is an impulse
+   through a three-tap delay line (Explore, Build, Ravage on consecutive
+   turns); adversaries change the taps (England adds a Build) or the input
+   (deck recipes). Removing an Explorer at the first tap removes the two later
+   responses; acting at Ravage removes only the last. This is the mental model
+   the review's invader chains display.
+5. **Bartlett's formula for autocorrelation variance**, as a limit. With about
+   8 turns per game the 95% band is about ±2/√8 ≈ ±0.7, so "momentum" cannot
+   be detected statistically inside one game. The review therefore attributes
+   mechanistically (which Explore and Build caused which Ravage), and any
+   cross-game statistics wait for enough games.
+
+What does not fit: **spectral estimation and power spectra** (periodograms,
+Bartlett's averaged periodogram). They need long, stationary series; a game is
+8–12 turns and non-stationary (stages escalate, Terror Levels change), and the
+only periodicity (the three-turn pipeline) is known exactly from the rules, so
+there is nothing to estimate. Likewise, Gaussian (Wiener/Kalman) filtering of
+the hidden deck is worse than exact card counting.
 
 ## 8. Dashboard UI
 
@@ -379,11 +670,23 @@ carries a `basis` string (what it assumes) and an `approx` flag. Rules live in
 | Unknown class, field, piece, or card | Kept internally; a warning names its type, never a hidden card name. |
 | Unparsed log line | Counted by action type in `/health`. |
 | Multiplayer game | `IsGameMultiplayer` → warning; v1 stats may be wrong. |
-| Turn-1 Event | The engine moves an Event card to the discard during round 1 (`SeekingTheInterior` observed). The companion's event panel uses its own model from engine data, not the tabletop `EventDeckState.previewed` model. |
+| Turn-1 Event | Rule (Jagged Earth rulebook p.12, confirmed by Brett): the Turn-1 Event is drawn and discarded without resolving. The engine matches (`SeekingTheInterior` moved Event Deck → Event Discard in round 1). The card is public (Event discard) and leaves the unseen pool. The companion's event panel uses its own model; the tabletop `EventDeckState.previewed` model encodes the wrong rule and is not used. |
 
 ## 10. Testing
 
-- **Fixtures** (gzip-compressed, `si-steam/tests/fixtures/`): the April 27
+- **Fixtures policy (rev 5).** The repo is public, so Brett's saves are not
+  checked in. Tests that need real data read the local capture
+  (`data/steam-capture/2026-10-18-test1`, gitignored, or `SI_STEAM_CAPTURE`)
+  and the installed engine DLL, and skip when either is absent. Rules have
+  synthetic unit tests that always run.
+- **Backtest (rev 5).** `companion_stats/backtest.rs`: for every turn, the
+  forecast made on entering Ravage (after the Fast phase) against what the
+  engine then did (Ravage blight per land, Builds with piece type, Explores
+  for the revealed card). Test 1 drove the rules: Strife, Disease, Wilds,
+  Defend per Dahan, −1 damage per Invader, and counterattack clears were each
+  found by a mismatch. `steam/tests/backtest.rs` asserts zero mismatches on
+  all six Invader Phases of Test 1.
+- **Fixtures** (original plan, superseded above): the April 27
   game's rolling saves (`Ravage`, `Build`, `Explore` ×2,
   `AdvanceInvaderCards`, `SlowPower`, `Undo-000`), its `EndGame` `.dat` and
   `.txt`, plus two older `EndGame` `.dat` files with a different spirit and
@@ -431,13 +734,40 @@ carries a `basis` string (what it assumes) and an `approx` flag. Rules live in
    log parser, firewall, watcher, `PublicSnapshot`, API + SSE + health,
    firewall tests, live check (including undo).
 2. **M2 — Stats.** `rules.rs` (verified), the four stat families, history.
+   Every rule in `rules.rs` is listed in a **rules register**
+   (`data/references/rules/register.md`), grouped base → Branch & Claw →
+   Jagged Earth → Horizons → Nature Incarnate, plus a cross-layer interactions
+   section. Each entry has its sources (rulebook page, engine evidence) and a
+   status: `unreviewed` or `reviewed by Brett`. Brett reviews the register in
+   batches; the dashboard marks a stat whose rules are not yet reviewed.
+   Open conflicts go to `data/references/rules/open-questions.md`.
 3. **M3 — Dashboard.** Companion root, panels, schematic island layout (backend)
    and heat map, race chart.
 
 Each milestone ends with working, tested software.
 
+**Status (2026-10-19).** M1 built: NRBF decoder (all 327 Test 1 saves and all
+46 EndGame files decode), engine map, DLL definition extractor, firewall with
+invariance and field-name tests, live watcher and capture replay, API + SSE +
+health + replay control. In place of a raw `log.txt` event stream, the
+play-by-play is derived from snapshot diffs (it cannot leak hidden Fear
+cards), and the log is parsed only for the player's own decisions
+(`log_parse.rs`, whitelisted kinds, undo-aware). Live mode records every game
+as a capture (`data/steam-capture/live-<game-id>/`, saves gzipped) so it can be
+replayed and reviewed. M2 largely built: invader forecast (backtested to zero
+mismatches on Test 1), status-effect and token rules, fear, blight, spirit
+economy, innate thresholds, draw odds, need finder, rules in play (rules
+register), prompts, post-game review with decisions. M3 built: the dashboard
+(`frontend/src/companion/`). Not yet: race chart and simulation (7.2), the
+scenario lens's option enumeration (7.5), the momentum projection (7.4), and
+MCP access to `steam-game.json`.
+
 ## 14. Risks and open questions
 
+0. **Several engine builds.** Brett's save folder holds saves from three
+   engine builds (1.0.9116, 1.0.9602, 1.0.9776) whose fields differ. The
+   decoder is generic, but `engine_map` must tolerate missing or renamed
+   fields per build; fixtures include at least one save per build.
 1. **NRBF coverage.** BinaryFormatter has ~20 record types; the decoder must
    handle all that appear (classes with members, primitive and object arrays,
    references, nulls, generic `List`/`Dictionary`/`Tuple`/`HashSet`/`Stack`).

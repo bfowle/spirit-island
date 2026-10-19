@@ -22,3 +22,8 @@ tools/si-live/frontend/dist/
 
 # Ad-hoc exports
 si-live-v0-brief.zip
+
+# Steam companion: raw live-play captures (personal game data)
+data/steam-capture/
+data/steam-game.json
+data/steam-history/

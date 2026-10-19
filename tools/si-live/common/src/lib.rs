@@ -8,7 +8,11 @@
 
 pub mod elements;
 pub mod growth;
+pub mod companion_stats;
 pub mod probability;
+pub mod public;
+pub mod rules;
+pub mod rules_register;
 pub mod schema;
 pub mod stats;
 

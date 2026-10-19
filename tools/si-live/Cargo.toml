@@ -4,6 +4,7 @@ members = [
     "common",
     "backend",
     "mcp",
+    "steam",
 ]
 
 [workspace.package]
@@ -28,3 +29,11 @@ tower-http = { version = "0.6", features = ["cors", "fs", "trace"] }
 notify = "7"
 
 # shared rule engine owns its own data models
+
+# The companion decodes ~250 KB saves several times a second and recomputes
+# its stats on each; optimize those two crates even in dev builds.
+[profile.dev.package.si-steam]
+opt-level = 2
+
+[profile.dev.package.si-common]
+opt-level = 2

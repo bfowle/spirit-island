@@ -26,6 +26,8 @@ use tower_http::cors::{Any, CorsLayer};
 use tower_http::services::ServeDir;
 use tracing::info;
 
+mod companion;
+
 #[derive(Clone)]
 struct AppState {
     state: Arc<RwLock<GameState>>,
@@ -60,6 +62,7 @@ async fn main() -> anyhow::Result<()> {
     };
 
     let frontend_dist = PathBuf::from("tools/si-live/frontend/dist");
+    let companion_app = companion::start(&app_state.data_dir);
 
     let app = Router::new()
         .route("/api/state", get(get_state).put(put_state))
@@ -80,6 +83,7 @@ async fn main() -> anyhow::Result<()> {
         .fallback_service(ServeDir::new(&frontend_dist).append_index_html_on_directories(true))
         .layer(CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any))
         .with_state(app_state);
+    let app = companion::routes(companion_app).merge(app);
 
     let addr: SocketAddr = std::env::var("SI_BIND")
         .unwrap_or_else(|_| "127.0.0.1:7777".to_string())
