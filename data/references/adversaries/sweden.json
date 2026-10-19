@@ -1,64 +1,102 @@
 {
   "slug": "sweden",
   "name": "Sweden",
+  "title": "The Kingdom of Sweden",
+  "engine_id": "TheKingdomOfSweden",
   "expansion": "base",
-  "pressure_shape": "high-early plateau; fear-card penalties; coastal Build early",
+  "pressure_shape": "Stronger Invaders: extra Blight on 4+ overkill (L1), extra City at Setup (L2), Town 3 / City 5 Damage (L3), Accelerated deck (L4), Towns after Ravage Blight (L5); Escalation replaces Dahan with Towns; no additional loss condition.",
+  "base_difficulty": 1,
+  "stage_ii_escalation": {
+    "title": "Swayed by the Invaders",
+    "text": "After Invaders Explore into each land, if that land has at least as many Invaders as Dahan, replace 1 Dahan with 1 Town."
+  },
+  "loss_condition": null,
+  "last_updated": "2026-10-19",
+  "sources": "Level titles and text: Steam engine defs (TheKingdomOfSweden), icon tokens written as words, formatting tags removed. Cross-checked against data/references/rules/register.md section 4.3 (Wiki copy). Difficulty and fear decks: box panel values (Brett, 2026-10-19); fear deck = 3 per Terror Level plus the engine offsets. Levels are cumulative: level N applies levels 1..N. is_cliff is unset pending a strategy review.",
   "levels": [
     {
       "level": 0,
       "name": "Base",
-      "escalation": "No escalation.",
+      "difficulty": 1,
+      "fear_deck": {
+        "total": 9,
+        "by_terror_level": [3, 3, 3]
+      },
+      "escalation": "Escalation (Swayed by the Invaders): After Invaders Explore into each land, if that land has at least as many Invaders as Dahan, replace 1 Dahan with 1 Town. Additional loss condition: none.",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-SWE-L0a, R-ADV-SWE-L0b. Escalation happens after Exploring."
     },
     {
       "level": 1,
-      "name": "Prosperity",
-      "escalation": "Build column shifts earlier.",
+      "name": "Heavy Mining",
+      "difficulty": 2,
+      "fear_deck": {
+        "total": 9,
+        "by_terror_level": [3, 3, 3]
+      },
+      "escalation": "When a Ravage does 4+ overkill to the land, add an extra Blight. (This does not cause extra cascades / Presence destruction.)",
       "is_cliff": false,
-      "notes": "[VERIFY]"
+      "notes": "R-ADV-SWE-L1. Nature Incarnate wording (NI p.14), as the engine (Brett, Q18). Older Wiki text: 'If the Invaders do at least 6 Damage to the land during Ravage'; same at land Health 2."
     },
     {
       "level": 2,
-      "name": "Fear-Dampened Colonies",
-      "escalation": "Fear-card effects reduced at this and higher levels.",
-      "is_cliff": true,
-      "notes": "Fear-rush spirits stall \u2014 shift to board-control archetype"
+      "name": "Population Pressure at Home",
+      "difficulty": 3,
+      "fear_deck": {
+        "total": 10,
+        "by_terror_level": [3, 4, 3]
+      },
+      "escalation": "During Setup, on each board add 1 City to land #4. On boards where land #4 starts with Blight, put that Blight in land #5 instead.",
+      "is_cliff": false,
+      "notes": "R-ADV-SWE-L2."
     },
     {
       "level": 3,
-      "name": "Homesteaders",
-      "escalation": "Additional Dahan converted to settlers during Setup.",
-      "is_cliff": true,
-      "notes": "Dahan-reliant spirits downgraded"
+      "name": "Fine Steel for Tools and Guns",
+      "difficulty": 5,
+      "fear_deck": {
+        "total": 10,
+        "by_terror_level": [3, 4, 3]
+      },
+      "escalation": "Town deal 3 Damage. City deal 5 Damage.",
+      "is_cliff": false,
+      "notes": "R-ADV-SWE-L3."
+    },
+    {
+      "level": 4,
+      "name": "Royal Backing",
+      "difficulty": 6,
+      "fear_deck": {
+        "total": 11,
+        "by_terror_level": [3, 4, 4]
+      },
+      "escalation": "At the end of Setup, Accelerate the Invader Deck. (After the initial Explore, discard the topmost card of the lowest Invader Stage in the deck.) On each board, add 1 Town to the land matching the discarded card with the fewest Invaders.",
+      "is_cliff": false,
+      "notes": "R-ADV-SWE-L4a, R-ADV-SWE-L4b. Engine timing confirmed by the FAQ (NQ-A): the Accelerate happens after the initial Explore. The discarded card goes face-up to the Invader discard and is public (NQ-E)."
     },
     {
       "level": 5,
-      "name": "Wave of Colonists",
-      "escalation": "Heavier coastal Builds.",
+      "name": "Mining Rush",
+      "difficulty": 7,
+      "fear_deck": {
+        "total": 12,
+        "by_terror_level": [4, 4, 4]
+      },
+      "escalation": "When Ravaging adds at least 1 Blight to a land, also add 1 Town to an adjacent land without Town/City. Cascading Blight does not cause this effect.",
       "is_cliff": false,
-      "notes": "[VERIFY]"
+      "notes": "R-ADV-SWE-L5. Players choose the land (Q21)."
     },
     {
       "level": 6,
-      "name": "Firm Foothold",
-      "escalation": "[VERIFY physical panel]",
+      "name": "Prospecting Outpost",
+      "difficulty": 8,
+      "fear_deck": {
+        "total": 13,
+        "by_terror_level": [4, 4, 5]
+      },
+      "escalation": "During Setup, on each board add 1 Town and 1 Blight to land #8. The Blight comes from the box, not the Blight Card.",
       "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 7,
-      "name": "Entrenched",
-      "escalation": "[VERIFY physical panel]",
-      "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 8,
-      "name": "Massive Colonization",
-      "escalation": "Maximum pressure.",
-      "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-SWE-L6."
     }
   ]
 }

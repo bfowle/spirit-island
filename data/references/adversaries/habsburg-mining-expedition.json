@@ -1,64 +1,105 @@
 {
   "slug": "habsburg-mining-expedition",
   "name": "Habsburg Mining Expedition",
+  "title": "Habsburg Mining Expedition",
+  "engine_id": "HabsburgMiningExpedition",
   "expansion": "nature-incarnate",
-  "pressure_shape": "scaling Explorer/Town late; aggressive Build counts",
+  "pressure_shape": "Mining lands (3+ Invaders) Ravage on Build Cards; Explorer upgrades after each Build Step (L3, L5), Salt Deposits card (L4), extra Explorers on Explore (L6); loses at 8+ Invaders/Blight in one land at the end of the Fast Phase.",
+  "base_difficulty": 1,
+  "stage_ii_escalation": {
+    "title": "Mining Tunnels",
+    "text": "After Advancing Invader Cards: On each board, Explore in 2 lands whose terrains don't match a Ravage or Build Card (no source required)."
+  },
+  "loss_condition": {
+    "title": "Land Stripped Bare",
+    "text": "At the end of the Fast Phase, the Invaders win if any land has at least 8 total Invaders/Blight (combined)."
+  },
+  "last_updated": "2026-10-19",
+  "sources": "Level titles and text: Steam engine defs (HabsburgMiningExpedition), icon tokens written as words, formatting tags removed. Cross-checked against data/references/rules/register.md section 4.8 (Wiki copy). Difficulty and fear decks: box panel values (Brett, 2026-10-19); fear deck = 3 per Terror Level plus the engine offsets. Levels are cumulative: level N applies levels 1..N. is_cliff is unset pending a strategy review.",
   "levels": [
     {
       "level": 0,
       "name": "Base",
-      "escalation": "No escalation.",
+      "difficulty": 1,
+      "fear_deck": {
+        "total": 9,
+        "by_terror_level": [3, 3, 3]
+      },
+      "escalation": "Escalation (Mining Tunnels): After Advancing Invader Cards: On each board, Explore in 2 lands whose terrains don't match a Ravage or Build Card (no source required). Additional loss condition (Land Stripped Bare): At the end of the Fast Phase, the Invaders win if any land has at least 8 total Invaders/Blight (combined).",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-HME-L0a, R-ADV-HME-L0b."
     },
     {
       "level": 1,
-      "name": "Quick Profit",
-      "escalation": "[VERIFY]",
+      "name": "Avarice Rewarded + Ceaseless Mining",
+      "difficulty": 3,
+      "fear_deck": {
+        "total": 9,
+        "by_terror_level": [3, 3, 3]
+      },
+      "escalation": "Avarice Rewarded: When Blight added by a Ravage Action would cascade, instead Upgrade 1 Explorer/Town (before Dahan counterattack). Ceaseless Mining: Lands with 3 or more Invaders are Mining lands. In Mining lands: • Disease and modifiers to Disease affect Ravage Actions as though they were Build Actions. • During the Build Step, Build Cards cause Ravage Actions (instead of Build Actions).",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-HME-L1a, R-ADV-HME-L1b."
+    },
+    {
+      "level": 2,
+      "name": "Miners Come From Far and Wide",
+      "difficulty": 4,
+      "fear_deck": {
+        "total": 10,
+        "by_terror_level": [3, 3, 4]
+      },
+      "escalation": "Setup: Add 1 Explorer in each land with no Dahan. On each board, Add 1 Disease and 1 City in the highest-numbered land with a Town Setup symbol.",
+      "is_cliff": false,
+      "notes": "R-ADV-HME-L2. 'On each board' per the FAQ errata (NQ-B); Brett's panel image prints the text without it."
     },
     {
       "level": 3,
-      "name": "Surface Mining",
-      "escalation": "[VERIFY]",
+      "name": "Mining Boom (I)",
+      "difficulty": 5,
+      "fear_deck": {
+        "total": 11,
+        "by_terror_level": [3, 4, 4]
+      },
+      "escalation": "After the Build Step, on each board: Choose a land with Explorer. Upgrade 1 Explorer there.",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-HME-L3."
+    },
+    {
+      "level": 4,
+      "name": "Untapped Salt Deposits",
+      "difficulty": 7,
+      "fear_deck": {
+        "total": 12,
+        "by_terror_level": [4, 4, 4]
+      },
+      "escalation": "Setup: Remove the Stage II “Coastal Lands” card before randomly choosing Stage II cards. Place the “Salt Deposits” card in place of the 2nd Stage II card. (New Deck Order: 111-2S22-33333, where S is the Salt Deposits card. Escalation ignores S.)",
+      "is_cliff": false,
+      "notes": "R-ADV-HME-L4. Salt Deposits cannot be Accelerated out; discard the next Stage II card (or the top-most Stage III) instead (FAQ; NQ-E)."
     },
     {
       "level": 5,
-      "name": "Industrial Scaling",
-      "escalation": "Extra Explorers/Towns each turn.",
-      "is_cliff": true,
-      "notes": "Raw Invader accumulation outpaces fear-rush"
+      "name": "Mining Boom (II)",
+      "difficulty": 9,
+      "fear_deck": {
+        "total": 13,
+        "by_terror_level": [4, 5, 4]
+      },
+      "escalation": "Instead of Mining Boom (I), after the Build Step, on each board: Choose a land with Explorer. Build there, then Upgrade 1 Explorer. (Build normally in a Mining land.)",
+      "is_cliff": false,
+      "notes": "R-ADV-HME-L5."
     },
     {
       "level": 6,
-      "name": "Heavy Machinery",
-      "escalation": "[VERIFY]",
+      "name": "The Empire Ascendant",
+      "difficulty": 10,
+      "fear_deck": {
+        "total": 13,
+        "by_terror_level": [4, 5, 4]
+      },
+      "escalation": "Setup and During the Explore Step: On boards with 3 or fewer Blight, Add +1 Explorer in each land successfully explored. (Max. 2 lands per board per Explore Card.)",
       "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 7,
-      "name": "Deep Shaft",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 9,
-      "name": "Exhausting the Land",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 10,
-      "name": "Maximum Pressure",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-HME-L6."
     }
   ]
 }

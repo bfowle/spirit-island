@@ -1,64 +1,105 @@
 {
   "slug": "russia",
   "name": "Russia",
+  "title": "The Tsardom of Russia",
+  "engine_id": "TheTsardomOfRussia",
   "expansion": "jagged-earth",
-  "pressure_shape": "Dahan pressure + fear-card suppression from mid-late",
+  "pressure_shape": "Explorers and Beasts: Explorers +1 Damage and Beast hunting (L1), Explorers Pushed instead of Destroyed (L2), Ravage in lands with 3+ Explorers (L3), a Stage III card after each Stage II (L4), Invader cards in the Fear Deck (L5); loses if Beasts Destroyed by adversary rules exceed Beasts on the island.",
+  "base_difficulty": 1,
+  "stage_ii_escalation": {
+    "title": "Stalk the Predators",
+    "text": "On each board: Add 2 Explorer (total) among lands with Beast. If you can’t, instead add 2 Explorer among lands with Beast on a different board."
+  },
+  "loss_condition": {
+    "title": "Hunters Swarm the Island",
+    "text": "Track Beast Destroyed by Adversary rules. If that number ever exceeds the number of Beast on the island, the Invaders win."
+  },
+  "last_updated": "2026-10-19",
+  "sources": "Level titles and text: Steam engine defs (TheTsardomOfRussia), icon tokens written as words, formatting tags removed. Cross-checked against data/references/rules/register.md section 4.6 (Wiki copy). Difficulty and fear decks: box panel values (Brett, 2026-10-19); fear deck = 3 per Terror Level plus the engine offsets. Levels are cumulative: level N applies levels 1..N. is_cliff is unset pending a strategy review.",
   "levels": [
     {
       "level": 0,
       "name": "Base",
-      "escalation": "No escalation.",
+      "difficulty": 1,
+      "fear_deck": {
+        "total": 9,
+        "by_terror_level": [3, 3, 3]
+      },
+      "escalation": "Escalation (Stalk the Predators): On each board: Add 2 Explorer (total) among lands with Beast. If you can’t, instead add 2 Explorer among lands with Beast on a different board. Additional loss condition (Hunters Swarm the Island): Track Beast Destroyed by Adversary rules. If that number ever exceeds the number of Beast on the island, the Invaders win.",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-RUS-L0a, R-ADV-RUS-L0b. Escalation happens before Exploring (Wiki ruling); it adds Explorers, which are never Explore sources (NQ-G)."
     },
     {
       "level": 1,
-      "name": "Frontier Warlords",
-      "escalation": "[VERIFY]",
+      "name": "Hunters Seek Shell and Hide",
+      "difficulty": 3,
+      "fear_deck": {
+        "total": 10,
+        "by_terror_level": [3, 3, 4]
+      },
+      "escalation": "During Setup, on each board, add 1 Beast and 1 Explorer to the highest-numbered land without Town/City. During Play, Explorer do +1 Damage. When Ravage adds Blight to a land (including cascades), Destroy 1 Beast in that land.",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-RUS-L1a, R-ADV-RUS-L1b, R-ADV-RUS-L1c. Engine title 'Hunters Seek Shell and Hide'; Wiki title 'Hunters Bring Home Shell and Hide' (box title not confirmed)."
+    },
+    {
+      "level": 2,
+      "name": "A Sense for Impending Disaster",
+      "difficulty": 4,
+      "fear_deck": {
+        "total": 11,
+        "by_terror_level": [4, 3, 4]
+      },
+      "escalation": "The first time each Action would Destroy Explorer: If possible, 1 of those Explorer is instead Pushed; 1 Fear when you do so.",
+      "is_cliff": false,
+      "notes": "R-ADV-RUS-L2."
     },
     {
       "level": 3,
-      "name": "Colonization Drive",
-      "escalation": "Fear-card penalties + Dahan under pressure.",
-      "is_cliff": true,
-      "notes": "Fear-rush + Dahan-reliant spirits both compromised at this level"
+      "name": "Competition Among Hunters",
+      "difficulty": 6,
+      "fear_deck": {
+        "total": 11,
+        "by_terror_level": [4, 4, 3]
+      },
+      "escalation": "Ravage Cards also match lands with 3 or more Explorer. (If the land already matched the Ravage Card, it still Ravages just once per Card. )",
+      "is_cliff": false,
+      "notes": "R-ADV-RUS-L3."
     },
     {
       "level": 4,
-      "name": "Settler Attacks",
-      "escalation": "Dahan directly targeted.",
-      "is_cliff": true,
-      "notes": "[VERIFY]"
+      "name": "Accelerated Exploitation",
+      "difficulty": 7,
+      "fear_deck": {
+        "total": 12,
+        "by_terror_level": [4, 4, 4]
+      },
+      "escalation": "When making the Invader Deck, put 1 Stage III Card after each Stage II Card. (New Deck Order: 111-2-3-2-3-2-3-2-33)",
+      "is_cliff": false,
+      "notes": "R-ADV-RUS-L4."
+    },
+    {
+      "level": 5,
+      "name": "Entrench in the Face of Fear",
+      "difficulty": 9,
+      "fear_deck": {
+        "total": 13,
+        "by_terror_level": [4, 5, 4]
+      },
+      "escalation": "Put an unused Stage II Invader Card under the top 3 Fear Cards, and an unused Stage III Card under the top 7 Fear Cards. When one is revealed, immediately place it in the Build space (face-up).",
+      "is_cliff": false,
+      "notes": "R-ADV-RUS-L5a, R-ADV-RUS-L5b. The two cards are taken face down from the cards left over after the whole Invader Deck is built; they are Invader Cards, not Fear Cards. The Stage II card is exposed by earning the 3rd Fear Card, the Stage III by the 7th; it triggers its Escalation when first resolved (Brett, Q20)."
     },
     {
       "level": 6,
-      "name": "Conscription",
-      "escalation": "[VERIFY]",
+      "name": "Pressure for Fast Profit",
+      "difficulty": 11,
+      "fear_deck": {
+        "total": 14,
+        "by_terror_level": [5, 5, 4]
+      },
+      "escalation": "After the Ravage Step of turn 2+, on each board where it added no Blight: In the land with the most Explorer (min. 1), add 1 Explorer and 1 Town.",
       "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 7,
-      "name": "Peasant Levies",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 9,
-      "name": "Grand Army",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 11,
-      "name": "Maximum Pressure",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-RUS-L6."
     }
   ]
 }

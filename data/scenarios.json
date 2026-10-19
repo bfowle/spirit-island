@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1",
-  "last_updated": "2026-04-19",
+  "last_updated": "2026-10-19",
   "scenarios": [
     {"slug": "blitz", "name": "Blitz", "expansion": "base", "difficulty_mod": 0, "pressure_shape": "time-compression", "chapter_path": "scenarios/blitz.md"},
     {"slug": "guard-the-isles-heart", "name": "Guard the Isle's Heart", "expansion": "base", "difficulty_mod": 0, "pressure_shape": "objective", "chapter_path": "scenarios/guard-the-isles-heart.md"},
@@ -13,8 +13,9 @@
     {"slug": "despicable-theft", "name": "Despicable Theft", "expansion": "jagged-earth", "difficulty_mod": 2, "pressure_shape": "artifact-rescue", "chapter_path": "scenarios/despicable-theft.md"},
     {"slug": "elemental-invocation", "name": "Elemental Invocation", "expansion": "jagged-earth", "difficulty_mod": 1, "pressure_shape": "element-gating", "chapter_path": "scenarios/elemental-invocation.md"},
     {"slug": "a-diversity-of-spirits", "name": "A Diversity of Spirits", "expansion": "promo-2", "difficulty_mod": 0, "pressure_shape": "varied-spirits", "chapter_path": "scenarios/a-diversity-of-spirits.md"},
-    {"slug": "the-great-river", "name": "The Great River", "expansion": "jagged-earth", "difficulty_mod": 1, "pressure_shape": "river-presence", "chapter_path": "scenarios/the-great-river.md"},
-    {"slug": "varied-terrains", "name": "Varied Terrains", "expansion": "promo-2", "difficulty_mod": 0, "pressure_shape": "terrain-variance", "chapter_path": "scenarios/varied-terrains.md"},
-    {"slug": "destiny-unfolds", "name": "Destiny Unfolds", "expansion": "nature-incarnate", "difficulty_mod": 2, "pressure_shape": "scaling-narrative", "chapter_path": "scenarios/destiny-unfolds.md"}
+    {"slug": "the-great-river", "name": "The Great River", "expansion": "jagged-earth", "difficulty_mod": 3, "pressure_shape": "river-presence", "chapter_path": "scenarios/the-great-river.md"},
+    {"slug": "varied-terrains", "name": "Varied Terrains", "expansion": "promo-2", "difficulty_mod": 2, "pressure_shape": "terrain-variance", "chapter_path": "scenarios/varied-terrains.md"},
+    {"slug": "destiny-unfolds", "name": "Destiny Unfolds", "expansion": "nature-incarnate", "difficulty_mod": -1, "difficulty_range": [-2, 0], "difficulty_note": "Printed -1*: usually 0 to -2, varies with familiarity (archived Wiki; confirmed by Brett 2026-10-19). Not in the Steam app yet (Q22).", "pressure_shape": "scaling-narrative", "chapter_path": "scenarios/destiny-unfolds.md"},
+    {"slug": "surges-of-colonization", "name": "Surges of Colonization", "expansion": "nature-incarnate", "difficulty_mod": 2, "difficulty_mod_alt": 7, "difficulty_note": "Printed +2/+7 (archived Wiki; confirmed by Brett 2026-10-19). Not in the Steam app yet (Q22).", "pressure_shape": "invader-surges", "chapter_path": "scenarios/surges-of-colonization.md"}
   ]
 }

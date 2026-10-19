@@ -1,64 +1,111 @@
 {
   "slug": "england",
   "name": "England",
+  "title": "The Kingdom of England",
+  "engine_id": "TheKingdomOfEngland",
   "expansion": "base",
-  "pressure_shape": "slow builds, long tail; Towns steadily become Cities; L5 HP bump",
+  "pressure_shape": "Build pressure: Building Boom Escalation, Builds in lands without Invaders (L1), extra City/Town at Setup (L2), extra High Immigration Build (L3-L4), +1 Health Town/City (L5); loses at 7+ Town/City in one land.",
+  "base_difficulty": 1,
+  "stage_ii_escalation": {
+    "title": "Building Boom",
+    "text": "On each board with Town/City, build in the land with the most Town/City."
+  },
+  "loss_condition": {
+    "title": "Proud & Mighty Capital",
+    "text": "If 7 or more Town/City are ever in a single land, the Invaders win."
+  },
+  "last_updated": "2026-10-19",
+  "sources": "Level titles and text: Steam engine defs (TheKingdomOfEngland), icon tokens written as words, formatting tags removed. Cross-checked against data/references/rules/register.md section 4.2 (Wiki copy). Difficulty and fear decks: box panel values (Brett, 2026-10-19); fear deck = 3 per Terror Level plus the engine offsets. Levels are cumulative: level N applies levels 1..N. is_cliff is unset pending a strategy review.",
   "levels": [
     {
       "level": 0,
       "name": "Base",
-      "escalation": "No escalation.",
+      "difficulty": 1,
+      "fear_deck": {
+        "total": 9,
+        "by_terror_level": [3, 3, 3]
+      },
+      "escalation": "Escalation (Building Boom): On each board with Town/City, build in the land with the most Town/City. Additional loss condition (Proud & Mighty Capital): If 7 or more Town/City are ever in a single land, the Invaders win.",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-ENG-L0a, R-ADV-ENG-L0b. Escalation is an Invader Action, not an Adversary Action, and happens before Exploring (Wiki rulings; NQ-G)."
     },
     {
       "level": 1,
-      "name": "Contempt",
-      "escalation": "Coastal Lands: additional Town during Setup.",
+      "name": "Indentured Servants Earn Land",
+      "difficulty": 3,
+      "fear_deck": {
+        "total": 10,
+        "by_terror_level": [3, 4, 3]
+      },
+      "escalation": "Invader Build actions affect lands without Invaders, if they are adjacent to at least 2 Town/City before the Build Action.",
       "is_cliff": false,
-      "notes": "[VERIFY Wiki]"
+      "notes": "R-ADV-ENG-L1. Wiki wording: 'Invader Build Cards affect matching lands without Invaders if they are adjacent to at least 2 Town/City.' Same rule (Q2)."
     },
     {
       "level": 2,
-      "name": "Endless Influx",
-      "escalation": "Additional Invader card into deck each turn.",
-      "is_cliff": true,
-      "notes": "Raw Invader pressure jumps \u2014 plan for faster board crawl"
+      "name": "Criminals and Malcontents",
+      "difficulty": 4,
+      "fear_deck": {
+        "total": 11,
+        "by_terror_level": [4, 4, 3]
+      },
+      "escalation": "During Setup, on each board add 1 City to land #1, and 1 Town to land #2.",
+      "is_cliff": false,
+      "notes": "R-ADV-ENG-L2."
     },
     {
       "level": 3,
-      "name": "Shores of Wealth",
-      "escalation": "Coastal Lands Build every Invader Phase.",
-      "is_cliff": true,
-      "notes": "The classic England T1 cliff \u2014 coastal pressure compounds"
+      "name": "High Immigration (I)",
+      "difficulty": 6,
+      "fear_deck": {
+        "total": 13,
+        "by_terror_level": [4, 5, 4]
+      },
+      "escalation": "Put the “High Immigration” tile on the Invader board, to the left of “Ravage”. The Invaders take this Build action each Invader phase before Ravaging. Cards slide left from Ravage to it, and from it to the discard pile. Remove the tile when a Stage II card slides onto it, putting that card in the discard.",
+      "is_cliff": false,
+      "notes": "R-ADV-ENG-L3."
     },
     {
       "level": 4,
-      "name": "Puppet Government",
-      "escalation": "Towns grow into Cities.",
-      "is_cliff": true,
-      "notes": "City density spikes \u2014 damage-only plays fall off"
+      "name": "High Immigration (full)",
+      "difficulty": 7,
+      "fear_deck": {
+        "total": 14,
+        "by_terror_level": [4, 5, 5]
+      },
+      "escalation": "The extra Build tile remains out the entire game.",
+      "is_cliff": false,
+      "notes": "R-ADV-ENG-L4."
     },
     {
       "level": 5,
-      "name": "Sustained Immigration",
-      "escalation": "Buildings gain +1 HP (Town = 3, City = 4).",
-      "is_cliff": true,
-      "notes": "Damage-math cliff: 3-damage innates no longer 1-shot 3-HP Towns"
+      "name": "Local Autonomy",
+      "difficulty": 9,
+      "fear_deck": {
+        "total": 14,
+        "by_terror_level": [4, 5, 5]
+      },
+      "escalation": "Town/City have +1 Health.",
+      "is_cliff": false,
+      "notes": "R-ADV-ENG-L5."
     },
     {
       "level": 6,
-      "name": "Ironclads",
-      "escalation": "Buildings are harder to kill.",
+      "name": "Independent Resolve",
+      "difficulty": 11,
+      "fear_deck": {
+        "total": 13,
+        "by_terror_level": [4, 5, 4]
+      },
+      "escalation": "During Setup, add an additional Fear to the Fear Pool per player in the game. During any Invader Phase where you resolve no Fear Cards, perform the Build from High Immigration twice. (This has no effect if no card is on the extra Build slot).",
       "is_cliff": false,
-      "notes": "[VERIFY physical panel]"
-    },
-    {
-      "level": 7,
-      "name": "Steamrolled",
-      "escalation": "Invaders ravage more aggressively.",
-      "is_cliff": false,
-      "notes": "[VERIFY physical panel]"
+      "notes": "R-ADV-ENG-L6a, R-ADV-ENG-L6b. Difficulty 11 per Brett's box panel (Q16); the Steam engine says 10. Fear per card +1 per player (Q6).",
+      "steam_difference": {
+        "field": "difficulty",
+        "box": 11,
+        "steam": 10,
+        "source": "Brett, physical panel (Q16)"
+      }
     }
   ]
 }

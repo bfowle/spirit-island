@@ -1,64 +1,106 @@
 {
   "slug": "habsburg-livestock-colony",
   "name": "Habsburg Livestock Colony",
+  "title": "The Habsburg Monarchy (Livestock Colony)",
+  "engine_id": "TheHabsburgMonarchy",
   "expansion": "jagged-earth",
-  "pressure_shape": "Livestock tokens, slow-ramp; favorable to most spirits",
+  "pressure_shape": "Town spread: Towns gathered into Build lands (L1), 2 Towns instead of an Inland City (L2), one fewer Stage I card (L3), Durable Towns in lands without Blight (L4), reminder-card wave (L5), +2 Ravage Damage next to Towns (L6); loses on Blight from 6+ overkill Ravages.",
+  "base_difficulty": 2,
+  "stage_ii_escalation": {
+    "title": "Seek Prime Territory",
+    "text": "After Exploring: On each board with 4 or fewer Blight, add 1 Town to a land without Town/Blight. On each board with 2 or fewer Blight, do so again."
+  },
+  "loss_condition": {
+    "title": "Irreparable Damage",
+    "text": "Track how many Blight come off the Blight Card during Ravages that do 6+ overkill to the land. If that number ever exceeds players, the Invaders win.",
+    "note": "Nature Incarnate wording (NI p.14), as the engine (Brett, Q18). Older Wiki text: 'Ravages that do 8+ Damage to the land'; same at land Health 2."
+  },
+  "last_updated": "2026-10-19",
+  "sources": "Level titles and text: Steam engine defs (TheHabsburgMonarchy), icon tokens written as words, formatting tags removed. Cross-checked against data/references/rules/register.md section 4.5 (Wiki copy). Difficulty and fear decks: box panel values (Brett, 2026-10-19); fear deck = 3 per Terror Level plus the engine offsets. Levels are cumulative: level N applies levels 1..N. is_cliff is unset pending a strategy review.",
   "levels": [
     {
       "level": 0,
       "name": "Base",
-      "escalation": "No escalation.",
+      "difficulty": 2,
+      "fear_deck": {
+        "total": 9,
+        "by_terror_level": [3, 3, 3]
+      },
+      "escalation": "Escalation (Seek Prime Territory): After Exploring: On each board with 4 or fewer Blight, add 1 Town to a land without Town/Blight. On each board with 2 or fewer Blight, do so again. Additional loss condition (Irreparable Damage): Track how many Blight come off the Blight Card during Ravages that do 6+ overkill to the land. If that number ever exceeds players, the Invaders win.",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-HLC-L0a, R-ADV-HLC-L0b. Escalation happens after Exploring."
+    },
+    {
+      "level": 1,
+      "name": "Migratory Herders",
+      "difficulty": 3,
+      "fear_deck": {
+        "total": 10,
+        "by_terror_level": [3, 4, 3]
+      },
+      "escalation": "After the normal Build Step: In each land matching a Build Card, Gather 1 Town from a land not matching a Build Card. (In board/land order.)",
+      "is_cliff": false,
+      "notes": "R-ADV-HLC-L1."
     },
     {
       "level": 2,
-      "name": "Cattle Drives",
-      "escalation": "[VERIFY]",
+      "name": "More Rural Than Urban",
+      "difficulty": 5,
+      "fear_deck": {
+        "total": 11,
+        "by_terror_level": [4, 5, 2]
+      },
+      "escalation": "During Setup, on each board, add 1 Town to land #2 and 1 Town to the highest-numbered land without Setup symbols. During Play, when Invaders would Build 1 City in an Inland land, they instead Build 2 Town.",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-HLC-L2a, R-ADV-HLC-L2b."
     },
     {
       "level": 3,
-      "name": "Grazing Expansion",
-      "escalation": "Livestock tokens added.",
-      "is_cliff": true,
-      "notes": "[VERIFY]"
+      "name": "Fast Spread",
+      "difficulty": 6,
+      "fear_deck": {
+        "total": 12,
+        "by_terror_level": [4, 5, 3]
+      },
+      "escalation": "When making the Invader Deck, Remove 1 additional Stage I Card. (New deck order: 11-2222-33333)",
+      "is_cliff": false,
+      "notes": "R-ADV-HLC-L3."
+    },
+    {
+      "level": 4,
+      "name": "Herds Thrive in Verdant Lands",
+      "difficulty": 8,
+      "fear_deck": {
+        "total": 12,
+        "by_terror_level": [4, 5, 3]
+      },
+      "escalation": "Town in lands without Blight are Durable: they have +2 Health, and “Destroy Town” effects instead deal 2 Damage (to those Town only) per Town they could Destroy. (”Destroy all Town“ works normally.)",
+      "is_cliff": false,
+      "notes": "R-ADV-HLC-L4."
     },
     {
       "level": 5,
-      "name": "Large Herds",
-      "escalation": "[VERIFY]",
+      "name": "Wave of Immigration",
+      "difficulty": 9,
+      "fear_deck": {
+        "total": 13,
+        "by_terror_level": [4, 6, 3]
+      },
+      "escalation": "Before the initial Explore, put the Habsburg Reminder Card under the top 5 Invader Cards. When revealed, on each board, add 1 City to a Coastal land without City and 1 Town to the 3 Inland lands with the fewest Blight.",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-HLC-L5a, R-ADV-HLC-L5b. Wiki ruling: resolve the Reminder Card after the Explore that turn."
     },
     {
       "level": 6,
-      "name": "Organized Ranches",
-      "escalation": "[VERIFY]",
+      "name": "Far-Flung Herds",
+      "difficulty": 10,
+      "fear_deck": {
+        "total": 14,
+        "by_terror_level": [5, 6, 3]
+      },
+      "escalation": "Ravages do +2 Damage (total) if any adjacent lands have Town. (This does not cause lands without Invaders to Ravage.)",
       "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 8,
-      "name": "Grand Haciendas",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 9,
-      "name": "[VERIFY]",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 10,
-      "name": "Maximum",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-HLC-L6."
     }
   ]
 }

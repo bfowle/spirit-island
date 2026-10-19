@@ -2,7 +2,7 @@
   "slug": "despicable-theft",
   "name": "Despicable Theft",
   "expansion": "jagged-earth",
-  "difficulty_delta": "+0",
+  "difficulty_delta": "+2",
   "setup_modifications": "[VERIFY] Invaders steal resources triggering effects.",
   "win_condition_modifications": "Standard.",
   "loss_condition_modifications": "Standard.",

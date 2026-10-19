@@ -1,64 +1,105 @@
 {
   "slug": "scotland",
   "name": "Scotland",
+  "title": "The Kingdom of Scotland",
+  "engine_id": "TheKingdomOfScotland",
   "expansion": "promo-2",
-  "pressure_shape": "mixed; mild Town/City escalation; few hard cliffs",
+  "pressure_shape": "Coastal growth: coastal Explores add Towns (L1), Coastal Lands card moved earlier and a City in land #2 (L2), coastal Builds without Invaders (L3), a Stage III card moved earlier (L4), Ocean Blight (L5), Inland Towns after Ravage (L6); loses when Coastal lands with City exceed 2 per board.",
+  "base_difficulty": 1,
+  "stage_ii_escalation": {
+    "title": "Ports Sprawl Outward",
+    "text": "On the single board with the most Coastal Town/City, add 1 Town to the N lands with the fewest Town. (N = # of players.)"
+  },
+  "loss_condition": {
+    "title": "Trade Hub",
+    "text": "If the number of Coastal lands with City is ever greater than (2 x # of boards), the Invaders win."
+  },
+  "last_updated": "2026-10-19",
+  "sources": "Level titles and text: Steam engine defs (TheKingdomOfScotland), icon tokens written as words, formatting tags removed. Cross-checked against data/references/rules/register.md section 4.7 (Wiki copy). Difficulty and fear decks: box panel values (Brett, 2026-10-19); fear deck = 3 per Terror Level plus the engine offsets. Levels are cumulative: level N applies levels 1..N. is_cliff is unset pending a strategy review.",
   "levels": [
     {
       "level": 0,
       "name": "Base",
-      "escalation": "No escalation.",
+      "difficulty": 1,
+      "fear_deck": {
+        "total": 9,
+        "by_terror_level": [3, 3, 3]
+      },
+      "escalation": "Escalation (Ports Sprawl Outward): On the single board with the most Coastal Town/City, add 1 Town to the N lands with the fewest Town. (N = # of players.) Additional loss condition (Trade Hub): If the number of Coastal lands with City is ever greater than (2 x # of boards), the Invaders win.",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-SCO-L0a, R-ADV-SCO-L0b. Escalation happens before Exploring; its Towns can be Explore sources that turn (NQ-G). Players break ties (Q21). With a combined adversary, other setup pieces bound for a Coastal land other than #2 go to an adjacent Inland land (Q19)."
     },
     {
       "level": 1,
-      "name": "Second Sons",
-      "escalation": "[VERIFY]",
+      "name": "Trading Port",
+      "difficulty": 3,
+      "fear_deck": {
+        "total": 10,
+        "by_terror_level": [3, 4, 3]
+      },
+      "escalation": "After Setup, in Coastal lands, Explore Cards add 1 Town instead of 1 Explorer. “Coastal Lands” Invader Cards do this for maximum 2 lands per board.",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-SCO-L1. Wiki errata: an Explore adding 2 Explorers adds 1 Town + 1 Explorer; Towns added by Explore are not sources for that Explore."
+    },
+    {
+      "level": 2,
+      "name": "Seize Opportunity",
+      "difficulty": 4,
+      "fear_deck": {
+        "total": 11,
+        "by_terror_level": [4, 4, 3]
+      },
+      "escalation": "During Setup, add 1 City to land #2. Place “Coastal Lands” as the 3rd Stage II Card, and move the two Stage II Cards above it up by one. (New Deck Order: 11-22-1-C2-33333, where C is the Stage II Coastal Lands Card.)",
+      "is_cliff": false,
+      "notes": "R-ADV-SCO-L2a, R-ADV-SCO-L2b."
     },
     {
       "level": 3,
-      "name": "Clearances",
-      "escalation": "[VERIFY]",
-      "is_cliff": true,
-      "notes": "Possible Dahan pressure cliff"
+      "name": "Chart the Coastline",
+      "difficulty": 6,
+      "fear_deck": {
+        "total": 13,
+        "by_terror_level": [4, 5, 4]
+      },
+      "escalation": "In Coastal lands, Build Cards affect lands without Invaders, so long as there is an adjacent City.",
+      "is_cliff": false,
+      "notes": "R-ADV-SCO-L3."
     },
     {
       "level": 4,
-      "name": "Defoliation",
-      "escalation": "[VERIFY]",
+      "name": "Ambition of a Minor Nation",
+      "difficulty": 7,
+      "fear_deck": {
+        "total": 14,
+        "by_terror_level": [5, 5, 4]
+      },
+      "escalation": "During Setup, replace the bottom Stage I Card with the bottom Stage III Card. (New Deck Order: 11-22-3-C2-3333)",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-SCO-L4."
+    },
+    {
+      "level": 5,
+      "name": "Runoff and Bilgewater",
+      "difficulty": 8,
+      "fear_deck": {
+        "total": 15,
+        "by_terror_level": [5, 6, 4]
+      },
+      "escalation": "After a Ravage Action adds Blight to a Coastal land, add 1 Blight to that board’s Ocean (without cascading). Treat the Ocean as a Coastal Wetland for this rule and for Blight removal/movement.",
+      "is_cliff": false,
+      "notes": "R-ADV-SCO-L5."
     },
     {
       "level": 6,
-      "name": "Resources Drained",
-      "escalation": "[VERIFY]",
+      "name": "Exports Fuel Inward Growth",
+      "difficulty": 10,
+      "fear_deck": {
+        "total": 16,
+        "by_terror_level": [6, 6, 4]
+      },
+      "escalation": "After the Ravage Step, add 1 Town to each Inland land that matches a Ravage Card and is within 1 Range of Town/City.",
       "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 7,
-      "name": "[Verify]",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 8,
-      "name": "[Verify]",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 10,
-      "name": "Total",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-SCO-L6. Wiki copy of this text is truncated; engine text used."
     }
   ]
 }

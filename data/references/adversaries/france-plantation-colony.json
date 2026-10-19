@@ -1,64 +1,107 @@
 {
   "slug": "france-plantation-colony",
   "name": "France (Plantation Colony)",
+  "title": "The Kingdom of France (Plantation Colony)",
+  "engine_id": "TheKingdomOfFrance",
   "expansion": "branch-and-claw",
-  "pressure_shape": "Dahan capture + plantation-tokens; punishes Dahan-reliance",
+  "pressure_shape": "Town sprawl: extra Explorers (L1, L6), Explorers replaced by Towns after Builds (L2), extra Towns at Setup (L3) and from Coastal Cities (L4), removed Blight held back (L5); loses if a Town cannot be placed (7 Town per player).",
+  "base_difficulty": 2,
+  "stage_ii_escalation": {
+    "title": "Demand for New Cash Crops",
+    "text": "After Exploring, on each board, pick a land of the shown terrain. If it has Town/City, add 1 Blight. Otherwise, add 1 Town."
+  },
+  "loss_condition": {
+    "title": "Sprawling Plantations",
+    "text": "Before Setup, return all but 7 Town per player to the box. Invaders win if you ever cannot place a Town.",
+    "steam_text": "There is a limit of 7 Town per starting board. Invaders win if you ever cannot place a Town.",
+    "note": "Box panel text (Brett, Q17): 7 Town per player, also with an extra board. The Steam engine limits Towns per starting board, which differs from the box only with an extra board."
+  },
+  "last_updated": "2026-10-19",
+  "sources": "Level titles and text: Steam engine defs (TheKingdomOfFrance), icon tokens written as words, formatting tags removed. Cross-checked against data/references/rules/register.md section 4.4 (Wiki copy). Difficulty and fear decks: box panel values (Brett, 2026-10-19); fear deck = 3 per Terror Level plus the engine offsets. Levels are cumulative: level N applies levels 1..N. is_cliff is unset pending a strategy review.",
   "levels": [
     {
       "level": 0,
       "name": "Base",
-      "escalation": "No escalation.",
+      "difficulty": 2,
+      "fear_deck": {
+        "total": 9,
+        "by_terror_level": [3, 3, 3]
+      },
+      "escalation": "Escalation (Demand for New Cash Crops): After Exploring, on each board, pick a land of the shown terrain. If it has Town/City, add 1 Blight. Otherwise, add 1 Town. Additional loss condition (Sprawling Plantations): Before Setup, return all but 7 Town per player to the box. Invaders win if you ever cannot place a Town.",
       "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-FRA-L0a, R-ADV-FRA-L0b. Escalation happens after Exploring."
+    },
+    {
+      "level": 1,
+      "name": "Frontier Explorers",
+      "difficulty": 3,
+      "fear_deck": {
+        "total": 9,
+        "by_terror_level": [3, 3, 3]
+      },
+      "escalation": "Except during Setup: After Invaders successfully Explore into a land which had no Town/City, add 1 Explorer there.",
+      "is_cliff": false,
+      "notes": "R-ADV-FRA-L1."
     },
     {
       "level": 2,
-      "name": "Slavery",
-      "escalation": "Dahan captured \u2192 Settlers/Plantations.",
-      "is_cliff": true,
-      "notes": "Dahan-engine spirits (Shadows-of-Dahan, Thunderspeaker) lose count"
+      "name": "Slave Labor",
+      "difficulty": 5,
+      "fear_deck": {
+        "total": 10,
+        "by_terror_level": [3, 4, 3]
+      },
+      "escalation": "During Setup, put the “Slave Rebellion” Event under the top 3 cards of the Event Deck. After Invaders Build in a land with 2 Explorer or more, replace all but 1 Explorer there with an equal number of Town.",
+      "is_cliff": false,
+      "notes": "R-ADV-FRA-L2a, R-ADV-FRA-L2b. Slave Rebellion is added to the Event Deck only against France (NI p.5; Q15)."
     },
     {
       "level": 3,
-      "name": "Sugar",
-      "escalation": "Plantation tokens added during Ravage.",
-      "is_cliff": true,
-      "notes": "Blight accelerates from plantation density"
+      "name": "Early Plantations",
+      "difficulty": 7,
+      "fear_deck": {
+        "total": 11,
+        "by_terror_level": [4, 4, 3]
+      },
+      "escalation": "During Setup, on each board add 1 Town to the highest-numbered land without Town. Add 1 Town to land #1.",
+      "is_cliff": false,
+      "notes": "R-ADV-FRA-L3. Engine title 'Early Plantations'; Wiki 'Early Plantation'."
+    },
+    {
+      "level": 4,
+      "name": "Triangle Trade",
+      "difficulty": 8,
+      "fear_deck": {
+        "total": 12,
+        "by_terror_level": [4, 4, 4]
+      },
+      "escalation": "Whenever Invaders Build a Coastal City, add 1 Town to the adjacent land with the fewest Town.",
+      "is_cliff": false,
+      "notes": "R-ADV-FRA-L4."
     },
     {
       "level": 5,
-      "name": "Entrenched Estates",
-      "escalation": "Plantations harder to remove.",
+      "name": "Slow-Healing Ecosystem",
+      "difficulty": 9,
+      "fear_deck": {
+        "total": 13,
+        "by_terror_level": [4, 5, 4]
+      },
+      "escalation": "When you remove Blight from the board, put it here instead of onto the Blight Card. As soon as you have 3 Blight per player here, move it all back to the Blight Card.",
       "is_cliff": false,
-      "notes": "[VERIFY]"
+      "notes": "R-ADV-FRA-L5."
     },
     {
       "level": 6,
-      "name": "Coffee",
-      "escalation": "[VERIFY]",
+      "name": "Persistent Explorers",
+      "difficulty": 10,
+      "fear_deck": {
+        "total": 14,
+        "by_terror_level": [4, 5, 5]
+      },
+      "escalation": "After resolving an Explore Card, on each board add 1 Explorer to a land without any. Fear Card effects never remove Explorer. If one would, you may instead Push that Explorer.",
       "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 8,
-      "name": "Tobacco",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 9,
-      "name": "Indentured Workforce",
-      "escalation": "[VERIFY]",
-      "is_cliff": false,
-      "notes": ""
-    },
-    {
-      "level": 10,
-      "name": "Total Plantation",
-      "escalation": "Maximum pressure.",
-      "is_cliff": false,
-      "notes": ""
+      "notes": "R-ADV-FRA-L6a, R-ADV-FRA-L6b."
     }
   ]
 }
