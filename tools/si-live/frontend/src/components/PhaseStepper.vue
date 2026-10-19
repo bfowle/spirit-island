@@ -25,7 +25,7 @@ const PHASES: PhaseMeta[] = [
   { key: 'setup',      label: 'Setup',       short: '1', focus: 'boards, invader deck, fear deck', accent: 'var(--accent-blue)' },
   { key: 'growth',     label: 'Growth',      short: '2', focus: 'spirit panels — pick growth options', accent: 'var(--accent-green)' },
   { key: 'fast',       label: 'Fast',        short: '3', focus: 'spirit panels — fast cards', accent: 'var(--accent-red)' },
-  { key: 'event',      label: 'Event',       short: '4', focus: 'event deck — resolve previewed event', accent: 'var(--accent-purple)' },
+  { key: 'event',      label: 'Event',       short: '4', focus: "event deck — draw and resolve this turn's event (Turn 1: discard unresolved)", accent: 'var(--accent-purple)' },
   { key: 'fear',       label: 'Fear',        short: '5', focus: 'fear deck — resolve earned fear cards', accent: 'var(--pool-fear, var(--accent-amber))' },
   { key: 'invader',    label: 'Invader',     short: '6', focus: 'invader deck — Ravage, Build, Explore', accent: 'var(--accent-red)' },
   { key: 'slow',       label: 'Slow',        short: '7', focus: 'spirit panels — slow cards', accent: 'var(--accent-blue)' },

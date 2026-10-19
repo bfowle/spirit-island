@@ -107,13 +107,15 @@ interface LevelOption {
 
 const availableLevels = computed((): LevelOption[] => {
   const adv = registry.value?.adversaries.adversaries.find(a => a.slug === adversary.value)
+  // difficulty_levels is indexed by level: [base, L1, …, L6].
   const ratings = adv?.difficulty_levels ?? []
-  const out: LevelOption[] = [{ level: 0, rating: 0, label: 'L0 (base, difficulty 0)' }]
-  for (let i = 0; i < Math.min(ratings.length, 6); i++) {
+  const base = ratings[0] ?? 0
+  const out: LevelOption[] = [{ level: 0, rating: base, label: `L0 (base, difficulty ${base})` }]
+  for (let lvl = 1; lvl < Math.min(ratings.length, 7); lvl++) {
     out.push({
-      level: i + 1,
-      rating: ratings[i],
-      label: `L${i + 1} (difficulty ${ratings[i]})`,
+      level: lvl,
+      rating: ratings[lvl],
+      label: `L${lvl} (difficulty ${ratings[lvl]})`,
     })
   }
   return out

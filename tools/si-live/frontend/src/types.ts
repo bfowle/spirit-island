@@ -120,14 +120,17 @@ export interface FearDeckState {
 
 export interface EventCardEntry {
   name: string
+  /** The turn this card was drawn (field name kept for saved games). */
   previewed_on_turn: number
   resolved_on_turn?: number | null
+  /** Turn 1's Event: drawn and discarded without resolving. */
+  discarded_unresolved?: boolean
 }
 
 export interface EventDeckState {
-  /** Face-up cards previewed for next turn. Typically 1 at a time. */
+  /** Legacy: older saves tracked a face-up "preview" (not a rule). No longer written. */
   previewed: EventCardEntry[]
-  /** Events that have already resolved in prior turns. */
+  /** Events drawn so far: resolved, or discarded unresolved on Turn 1. */
   resolved: EventCardEntry[]
   /** Rough remaining count in the event deck. */
   unseen: number

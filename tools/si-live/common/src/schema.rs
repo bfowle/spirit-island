@@ -98,24 +98,31 @@ pub struct FearCardEntry {
     pub round: u8,
 }
 
+/// One Event card. Each turn's Event is drawn and resolved in that turn's
+/// Invader Phase; Turn 1's is drawn and discarded without resolving (JE
+/// rulebook p.12). Field names are kept so saved games still load.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EventCardEntry {
     /// Event name as it appears in data/decks/event.json. Empty until identified.
     pub name: String,
-    /// The turn this card was previewed (face-up, visible).
+    /// The turn this card was drawn.
     pub previewed_on_turn: u8,
-    /// The turn the card resolved (usually `previewed_on_turn + 1`).
-    /// None while the card is still in the "previewed" bucket.
+    /// The turn the card resolved; None if it was discarded unresolved (or,
+    /// in older saves, still in the legacy "previewed" bucket).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resolved_on_turn: Option<u8>,
+    /// Turn 1's Event: drawn and discarded without resolving.
+    #[serde(default)]
+    pub discarded_unresolved: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EventDeckState {
-    /// Face-up card(s) previewed for next turn. Typically exactly one at a time.
+    /// Legacy: older saves tracked a face-up "preview" of next turn's Event,
+    /// which is not a rule. No longer written; kept so those saves load.
     #[serde(default)]
     pub previewed: Vec<EventCardEntry>,
-    /// Cards that have resolved in prior turns, preserved for retrospective review.
+    /// Cards drawn so far (resolved, or discarded unresolved on Turn 1).
     #[serde(default)]
     pub resolved: Vec<EventCardEntry>,
     /// Cards remaining in the Event deck (face-down, unknown).

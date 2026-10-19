@@ -8,10 +8,12 @@ import UiIcon from './UiIcon.vue'
 /**
  * Event deck tracker.
  *
- * **Rule reminder**: The first Event card is flipped face-up during Setup so
- * the spirits know what's coming on Turn 2. The previewed card does NOT
- * resolve on Turn 1. On each Advance Turn, the previewed card moves to
- * resolved, and a new card is previewed for the following turn.
+ * **Rule**: each turn's Event is drawn and resolved during that turn's
+ * Invader Phase (after Blighted Island, before Fear). On Turn 1 the Event is
+ * drawn and discarded without resolving; it stays visible in the discard
+ * (Jagged Earth rulebook p.12). There is no preview of next turn's Event.
+ * Older saves may still hold "previewed" entries from the earlier (wrong)
+ * flow; they are shown so they can be resolved or removed.
  *
  * The tool doesn't shuffle programmatically — the player identifies which
  * card they flipped via an autocomplete against data/decks/event.json (62
@@ -64,20 +66,29 @@ function emitUpdate(next: EventDeckState) {
   emit('update:modelValue', next)
 }
 
-function previewCard(name: string) {
+// Turn 1's Event is discarded without resolving; later ones resolve this turn.
+const turnOne = computed(() => props.round <= 1)
+
+function drawCard(name: string) {
   if (!name.trim()) return
   const entry: EventCardEntry = {
     name: name.trim(),
     previewed_on_turn: props.round,
-    resolved_on_turn: null,
+    resolved_on_turn: turnOne.value ? null : props.round,
+    discarded_unresolved: turnOne.value,
   }
-  // Replace any existing preview — typically only one Event is face-up at a time.
   emitUpdate({
     ...deck.value,
-    previewed: [...deck.value.previewed, entry],
+    resolved: [...deck.value.resolved, entry],
     unseen: Math.max(0, deck.value.unseen - 1),
   })
   filterQ.value = ''
+}
+
+function drawnLabel(r: EventCardEntry): string {
+  return r.discarded_unresolved
+    ? `T${r.previewed_on_turn} · discarded unresolved`
+    : `T${r.resolved_on_turn ?? r.previewed_on_turn} · resolved`
 }
 
 function resolvePreview(i: number) {
@@ -124,12 +135,12 @@ function stageText(entry: EventCardEntry): string[] {
     <div class="hdr">
       <div class="hdr-left">
         <h3>Event Deck</h3>
-        <span class="rule-tag" title="The first Event card is face-up on Turn 1 but does NOT resolve until Turn 2">
-          T1 previews T2 · first event doesn't resolve on T1
+        <span class="rule-tag" title="Each turn's Event is drawn and resolved in that turn's Invader Phase. Turn 1's is drawn and discarded without resolving (Jagged Earth rulebook p.12).">
+          drawn each Invader Phase · Turn 1's is discarded unresolved
         </span>
         <span class="counts">
-          <span class="count-chip previewed">{{ deck.previewed.length }} previewed</span>
-          <span class="count-chip resolved">{{ deck.resolved.length }} resolved</span>
+          <span v-if="deck.previewed.length" class="count-chip previewed">{{ deck.previewed.length }} legacy preview</span>
+          <span class="count-chip resolved">{{ deck.resolved.length }} drawn</span>
           <span class="count-chip unseen">{{ deck.unseen }} unseen</span>
         </span>
       </div>
@@ -139,13 +150,13 @@ function stageText(entry: EventCardEntry): string[] {
     </div>
 
     <div class="preview-input">
-      <label class="field-label">Preview next event (reveal face-up):</label>
+      <label class="field-label">{{ turnOne ? "Turn 1's Event (drawn and discarded, not resolved):" : "This turn's Event (drawn in the Invader Phase):" }}</label>
       <div class="autocomplete">
         <input
           type="text"
           v-model="filterQ"
           placeholder="start typing an event card name…"
-          @keyup.enter="previewCard(filterQ)"
+          @keyup.enter="drawCard(filterQ)"
         />
         <div v-if="filterQ && suggestions.length" class="suggestions">
           <button
@@ -153,24 +164,24 @@ function stageText(entry: EventCardEntry): string[] {
             :key="c.name"
             type="button"
             class="suggestion"
-            @click="previewCard(c.name)"
+            @click="drawCard(c.name)"
           >
             <span class="sug-name">{{ c.name }}</span>
             <ExpansionBadge :slug="c.expansion" :size="14" class="sug-expansion" />
           </button>
         </div>
       </div>
-      <button class="primary" @click="previewCard(filterQ)" :disabled="!filterQ.trim()">
-        <UiIcon name="eye" :size="14" decorative /> Preview (face-up)
+      <button class="primary" @click="drawCard(filterQ)" :disabled="!filterQ.trim()">
+        <UiIcon name="eye" :size="14" decorative /> {{ turnOne ? 'Discard (Turn 1)' : 'Draw' }}
       </button>
     </div>
 
     <div v-if="loading" class="loading">Loading event deck data…</div>
     <div v-else-if="loadError" class="banner error">Couldn't load event.json: {{ loadError }}</div>
 
-    <!-- Previewed cards (face-up; will resolve next turn) -->
+    <!-- Legacy previews from older saves (the preview flow was not a rule) -->
     <div v-if="deck.previewed.length" class="preview-list">
-      <div class="col-label">Previewed — resolves on Turn {{ round + 1 }}</div>
+      <div class="col-label">From an older save: resolve or remove</div>
       <div v-for="(e, i) in deck.previewed" :key="i" class="preview-card">
         <div class="preview-hdr">
           <span class="preview-name">{{ e.name }}</span>
@@ -186,13 +197,13 @@ function stageText(entry: EventCardEntry): string[] {
       </div>
     </div>
 
-    <!-- Resolved (history) -->
-    <details v-if="deck.resolved.length" class="resolved">
-      <summary>Resolved events ({{ deck.resolved.length }})</summary>
+    <!-- Drawn (history) -->
+    <details v-if="deck.resolved.length" class="resolved" open>
+      <summary>Drawn events ({{ deck.resolved.length }})</summary>
       <ul>
         <li v-for="(r, i) in deck.resolved" :key="i" class="resolved-item">
           <span class="row-name">{{ r.name }}</span>
-          <span class="row-turn mono">previewed T{{ r.previewed_on_turn }} · resolved T{{ r.resolved_on_turn }}</span>
+          <span class="row-turn mono">{{ drawnLabel(r) }}</span>
         </li>
       </ul>
     </details>

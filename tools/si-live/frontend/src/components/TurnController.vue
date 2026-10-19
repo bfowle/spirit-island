@@ -316,10 +316,10 @@ function advanceTurn() {
     spirit.elements_this_turn = {}
   }
 
-  // Auto-resolve any previewed events (they fire during this turn's Invader phase).
-  // Per rule: the first Event card is previewed on Setup/T1 and doesn't resolve
-  // until T2. So on each Advance Turn, we move previewed → resolved at the
-  // current round, which will become the "resolved_on_turn" stamp.
+  // Legacy: older saves may hold "previewed" Events from the earlier (wrong)
+  // preview flow. Events are now drawn and resolved in the Invader Phase they
+  // belong to (Turn 1's is discarded unresolved), so this only clears out
+  // leftovers from those saves.
   const evDeck = props.modelValue.event_deck
   if (evDeck && evDeck.previewed.length) {
     const resolving = evDeck.previewed.map(e => ({ ...e, resolved_on_turn: props.modelValue.round }))
