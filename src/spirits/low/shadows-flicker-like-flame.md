@@ -54,7 +54,7 @@ As presence leaves each track, these values are revealed (cumulative per-turn ga
 - **Energy track** (6 slots): **0 → 1 → 3 → 4 → 5 → 6 Energy** per turn as track fills.
 - **Card-play track** (6 slots): **1 → 2 → 3 → 3 → 4 → 5** cards per turn.
 
-Starting: 1 Energy, 1 CP (implied from track-0 values). Opening the track quickly unlocks 3 Energy (significant for the 1E-per-turn Shadows-of-the-Dahan rule).
+Starting: 0 Energy, 1 CP (track-0 values). Opening the track quickly unlocks 3 Energy (significant for the 1E-per-turn Shadows-of-the-Dahan rule).
 
 ## Core Mechanics & Special Rules
 
@@ -139,9 +139,9 @@ Verified per `si-rules-check shadows-flicker-like-flame`:
 
 | Turn | Explore | Build | Ravage | Consequence for opener prose                                      |
 |------|---------|-------|--------|-------------------------------------------------------------------|
-| 1    | ✓       | —     | —      | **Ravage-protection is dormant T1.** Concealing's "Dahan take 0 Damage from Ravaging" = null effect this turn. Its Fear + elements are the only T1 material value. |
-| 2    | ✓       | ✓     | —      | **Still dormant** for Ravage-protection. First Build triggers; Mantle/Crops pushes matter for Build prevention.  |
-| 3    | ✓       | ✓     | ✓      | **First Ravage.** Concealing's protection now material IF played on the Ravage target land. |
+| 1    | ✓       | ✓     | —      | **Ravage-protection is dormant T1** (no Ravage yet). Concealing's "Dahan take no damage from Ravaging Invaders" = null effect this turn; its Fear + elements are the only T1 material value. **First Build**: Setup's Explore card sits in the Build slot, so its terrain Builds T1. |
+| 2    | ✓       | ✓     | ✓      | **First Ravage** (Setup's card, now in the Ravage slot). Concealing's protection is **live** IF played on a Ravage land with Dahan. |
+| 3    | ✓       | ✓     | ✓      | Ravage, Build, and Explore every turn from here. |
 
 ### Growth-option decoder (T1 income branches)
 
@@ -153,23 +153,26 @@ Verified per `si-rules-check shadows-flicker-like-flame`:
 | **G3, reveal CP track (card2)** | Place 1 Presence Range 3 + "+3 Energy" growth effect | **3E / 2CP** |
 | **G3, reveal Energy track (energy1)** | Place 1 Presence Range 3 + "+3 Energy" growth effect | **4E** / 1CP (1 slot + 3 growth effect) |
 
-### Fast-phase element ceiling — load-bearing constraint
+### Element math — every played card counts
 
-Shadows's innate Darkness Swallows the Unwary is **Fast**. Fast innates check thresholds using only elements from Fast cards played before the innate resolves. Mantle/Crops/Favors are all Slow — their elements **arrive after the Fast innate's resolution window** and cannot trigger it.
+Shadows's innate Darkness Swallows the Unwary is **Fast**: it resolves in the Fast Power Phase, before the Invader Phase. Its thresholds check **every Element you have this turn**. Each card you play in the Spirit Phase grants its Elements from the moment you play it, whether the card is Fast or Slow (Core rulebook p.16; FAQ "Rules semi-commonly misplayed"; confirmed in `data/references/rules/open-questions.md` Q10). So Mantle, Crops, and Favors feed the Fast innate on the turn you play them, even though their own effects wait for the Slow phase. Shadows's Presence tracks have no Element spaces, so cards are the only source.
 
-**Fast-phase Moon/Fire available from Uniques alone:**
+**Element reach from Uniques alone** (each Unique gives exactly 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon; only Crops and Mantle give <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire):
 
-- Concealing Shadows — the only Fast Unique — gives 1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air.
-- Fast-phase Moon ceiling from Uniques = **1**. Fast-phase Fire from Uniques = **0**.
-- L1 needs 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire. **Shadows cannot fire L1 in Fast phase from Uniques alone.**
+- **L1 (2 Moon + 1 Fire)**: any two Uniques that include Crops or Mantle. Cheapest: Concealing + Crops, or Concealing + Mantle → **1E, 2 Card Plays**. Concealing + Favors gives 2 Moon but no Fire → no L1.
+- **L2 (3 Moon + 2 Fire)**: Crops + Mantle + any third Moon card (Concealing is cheapest) → **2E, 3 Card Plays**. Reachable from Uniques alone once the CP track shows 3.
+- **L3 (4 Moon + 3 Fire + 2 Air)**: the Uniques hold only 2 Fire between them, so L3 needs Fire from a drafted card plus at least four Moon cards → 4+ Card Plays.
+- **1-Card-Play turns**: no Unique gives 2 Moon, so L1 can't fire on a 1-CP turn of Uniques.
 
-**Minimum requirement for L1 to fire**: a drafted Fast Moon+Fire Minor. Wiki-suggested candidates: **Land of Haunts and Embers** (0E Fast, 1M+1F+1A — drafts + plays in the same turn) or **Visions of Fiery Doom** (1E Fast, 1M+1F — needs energy). Hitting L1 T1 is entirely draft-dependent and not guaranteed.
+**What speed still decides**: when each card's *effect* lands. A Fast card's effect, and the innate's Gather or Destroy, acts before this turn's Ravage, Build, and Explore. A Slow card's effect acts after the Invader Phase and sets up next turn. Moon+Fire Minors feed the innate at either speed, so weigh a Minor's cost and its effect's timing, not its Elements' timing.
+
+**Pause-point (card plays)**: before committing cards, total Moon and Fire across *all* planned plays, Slow ones included. One Fire short? Swapping Favors for Crops or Mantle may fix it without drafting anything.
 
 ### Opening A — G3-via-CP Double-Card Fear Opener 🟨 (default)
 
-**When to pick this**: default against **Brandenburg-Prussia, England, Scotland, Habsburg Livestock** — fear-friendly adversaries. G3-via-CP is the only T1 growth choice that affords a 0E + 1E two-card play from a 0E start, giving the highest T1 Fear + material-effect output.
+**When to pick this**: default against **Brandenburg-Prussia, England, Scotland, Habsburg Livestock** — fear-friendly adversaries. G3-via-CP is the only T1 growth choice that affords a 0E + 1E two-card play from a 0E start, giving the highest T1 Fear + material-effect output — and two Uniques with Moon + Fire, so L1 fires T1.
 
-**Target arc**: 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> T1 · L1 fires first at T3 after reclaim + Fast Moon+Fire Minor · Terror 2 flip T5–T6.
+**Target arc**: 3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + L1 Gather T1 · L1 again T2 (Crops + Favors) and T3 (Concealing + a Fire card) · Terror 2 flip T5–T6.
 
 #### Turn 1
 
@@ -186,26 +189,29 @@ Shadows's innate Darkness Swallows the Unwary is **Fast**. Fast innates check th
   <dt>Slow plays</dt>
   <dd><span class="si-land"><strong>Mantle of Dread</strong> (self) <img class="si" src="/spirit-island/theme/icons/speed-slow.svg" alt="Slow"> <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> · 1E spent</span></dd>
 
-  <dt>Fast-phase elements</dt>
-  <dd><span class="si-land">1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air · L1 <strong class="subtle">does NOT fire</strong></span></dd>
+  <dt>Turn elements</dt>
+  <dd><span class="si-land">2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air (Concealing + Mantle, both counted from the moment played) · <strong>L1 FIRES T1</strong> → Gather 1 <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"></span></dd>
 
   <dt>End of T1</dt>
-  <dd><span class="si-pool">3 <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> Fear generated</span> <span class="si-pool"><strong>2E banked</strong></span> <span class="si-pool">1 <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> + 1 <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> pushed</span></dd>
+  <dd><span class="si-pool">3 <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> Fear generated</span> <span class="si-pool"><strong>2E banked</strong></span> <span class="si-pool">1 <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> gathered by L1</span> <span class="si-pool">1 <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> + 1 <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> pushed</span></dd>
 
   <dt>Invader card</dt>
-  <dd><span class="si-pool">Stage I — Explore only</span></dd>
+  <dd><span class="si-pool">Stage I — Build + Explore (no Ravage yet)</span></dd>
 </dl>
 
 
 - **Growth**: **G3, revealing CP track** (uncover `card2`). Post-growth: **3E / 2CP**. 1 Presence placed Range 3; "+3 Energy" is a this-turn-only effect.
-- **Fast phase plays**: **Concealing Shadows** (0E, target one of your Presence lands — jungle #6 or wetland #5).
-  - **T1 gain from Concealing**: +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Elements 1M+1A into Fast pool. *"Dahan take 0 Damage from Ravaging"* clause is **dormant this turn** (no Ravage until T3). Concealing discards.
-- **Fast innate check**: pool = 1M+1A. L1 needs 2M+1F → **does NOT fire T1**.
-- **Invader phase**: Explore (Card 1 = Stage I). Explorers arrive in any land adjacent to a City/Town/ocean (coastal). No Build, no Ravage.
-- **Slow phase plays**: **Mantle of Dread** (1E, target self).
-  - **T1 gain from Mantle**: +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> from one of your Presence lands — removes 2 Invader units from the board. Elements 1M+1F+1A into Slow pool. Mantle discards.
-- **End of T1**: **3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> generated** · 1E spent (Mantle) · **2E banked** · 0 CP left · 4 Presence on board (3 starting + 1 G3) · Hand: 3 Uniques (Concealing + Mantle in discard) · Tracks: CP at card2 (2 CP sustained from now), Energy still at energy0.
-- **Pause-point (pre-Mantle-target)**: self-target is the default, but Mantle's target is "Any Spirit" — in multiplayer, check whether pushing from a partner's Presence land solves a bigger T2-Build threat than pushing from yours. Solo: choose the Presence land whose Explorer+Town pair creates the largest T2 Invader-count reduction in the land most likely to Ravage at T3.
+- **Card plays (Spirit Phase)**: **Concealing Shadows** (0E, Fast) + **Mantle of Dread** (1E, Slow) — 1E spent, both CP used. **Elements this turn: 2M+1F+2A.** Both cards' Elements count from the moment they're played, Mantle's included, though Mantle's effect waits for the Slow phase.
+- **Fast phase plays**: **Concealing Shadows** (target one of your Presence lands — jungle #6 or wetland #5).
+  - **T1 gain from Concealing**: +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Its 1M+1A supply half the innate's Moon this turn. *"Dahan take 0 Damage from Ravaging"* clause is **dormant this turn** (no Ravage until T2). Concealing discards — so it is also out of hand for T2's first Ravage, until the T3 Reclaim.
+- **Innate check (Fast phase)**: total 2M+1F+2A → **L1 fires T1** (needs 2M+1F). L2 (3M+2F) does not.
+  - **T1 gain from L1**: Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> into the target land, before the Invader Phase. Material this turn if it pulls the only Invader out of a land that Builds this turn (lands without Invaders don't Build). Check the reverse too: gathering into an empty land of the Build terrain gives it a Build.
+- **Invader phase**: Build in the lands matching Setup's Explore card, then Explore (Stage I): one Explorer in each land of the shown terrain that has, or is adjacent to, a Town/City or the Ocean. No Ravage yet.
+- **Slow phase plays**: **Mantle of Dread** (target self).
+  - **T1 gain from Mantle**: +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> and 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> from one of your Presence lands — moves 2 Invader units out of that land. Its 1M+1F+1A already counted toward L1 this turn. Mantle discards.
+- **End of T1**: **3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> generated** · **1 Explorer gathered (L1)** · 1E spent (Mantle) · **2E banked** · 0 CP left · 4 Presence on board (3 starting + 1 G3) · Hand: 2 Uniques (Concealing + Mantle in discard) · Tracks: CP at card2 (2 CP sustained from now), Energy still at energy0.
+- **Pause-point (card choice)**: Concealing + Mantle is the cheapest L1 pair (1E). Crops + Mantle (2E) also fires L1 (2M+2F), for 4 Fear instead of 3, and keeps Concealing in hand for T2's first Ravage, at the cost of 1E banked instead of 2E and a different T2 hand. Crops' downgrade needs a Town or City in the target land to do more than its 2 Fear. Which is worth more here: the extra Energy, or Dahan protection on T2's Ravage land?
+- **Pause-point (pre-Mantle-target)**: self-target is the default, but Mantle's target is "Any Spirit" — in multiplayer, check whether pushing from a partner's Presence land solves a bigger threat than pushing from yours. Solo: T2's Ravage hits Setup's Explore terrain — the lands that Build this turn — so choose the Presence land whose Explorer+Town push most shrinks that Ravage (or a later one).
 
 #### Turn 2
 
@@ -219,27 +225,27 @@ Shadows's innate Darkness Swallows the Unwary is **Fast**. Fast innates check th
   <dt>Slow plays</dt>
   <dd><span class="si-land"><strong>Crops Wither</strong> <img class="si" src="/spirit-island/theme/icons/speed-slow.svg" alt="Slow"> 1E</span> <span class="si-land"><strong>Favors Called Due</strong> <img class="si" src="/spirit-island/theme/icons/speed-slow.svg" alt="Slow"> 1E</span></dd>
 
-  <dt>Fast-phase elements</dt>
-  <dd><span class="si-land">0 — no Fast cards played · L1 <strong class="subtle">does NOT fire</strong></span></dd>
+  <dt>Turn elements</dt>
+  <dd><span class="si-land">2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 1 <img class="si" src="/spirit-island/theme/icons/element-plant.png" alt="Plant"> Plant + 1 <img class="si" src="/spirit-island/theme/icons/element-animal.png" alt="Animal"> Animal (Crops + Favors) · <strong>L1 FIRES T2</strong> → Gather 1 <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> before the first Ravage</span></dd>
 
   <dt>End of T2</dt>
-  <dd><span class="si-pool">2–5 <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> Fear</span> <span class="si-pool">1 City <img class="si" src="/spirit-island/theme/icons/unit-city.svg" alt="City"> → Town (if targeted)</span> <span class="si-pool">Dahan gathered</span></dd>
+  <dd><span class="si-pool">2–5 <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> Fear</span> <span class="si-pool">1 <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> gathered by L1</span> <span class="si-pool">1 City <img class="si" src="/spirit-island/theme/icons/unit-city.svg" alt="City"> → Town (if targeted)</span> <span class="si-pool">Dahan gathered</span></dd>
 
   <dt>Invader card</dt>
-  <dd><span class="si-pool">Stage I+II — Build + Explore (first <strong>Build</strong>)</span></dd>
+  <dd><span class="si-pool">Stage I — Ravage + Build + Explore (first <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> <strong>Ravage</strong>)</span></dd>
 </dl>
 
 
 - **Growth**: **G2, revealing Energy track** (uncover `energy1` → 1E permanent income from now). Post-growth: **2E banked + 1E income = 3E / 2CP**, +1 Minor drafted.
-- **Draft priority for the T2 Minor**: Fast Moon+Fire (Land of Haunts and Embers 0E, Visions of Fiery Doom 1E). Enables T2 Fast innate firing.
-- **Fast phase plays (if Fast M+F Minor drafted)**: drafted Minor alone (no Concealing in hand — it's in discard since T1). Fast elements = Minor's contribution (e.g., Haunts 1M+1F+1A).
-- **Fast innate check (with Haunts drafted)**: 1M+1F → still short of 2M+1F. **L1 still does NOT fire**. Needs Concealing back in hand (T3 reclaim) plus the Fast M+F Minor to combine for 2M+1F.
+- **Draft consideration for the T2 Minor**: L1 already fires T2 from Crops + Favors (below), and 2 CP fills this turn, so this Minor is for T3+. Moon+Fire Minors feed the innate at either speed. 0-cost ones (e.g., Land of Haunts and Embers, Fast, adds 1 Blight; Shadows of the Burning Forest, Slow) fit low-Energy turns. A Fast one's effect also lands before the Invaders act.
+- **Card plays (Spirit Phase)**: **Crops Wither and Fade** (1E) + **Favors Called Due** (1E) — 2E spent, both CP used. **Elements this turn: 2M+1F+1A+1P+1An**, counted from the moment played.
+- **Fast phase**: no Fast cards. **Innate check**: 2M+1F → **L1 fires T2**; L2 (3M+2F) does not.
+  - **T2 gain from L1**: Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> into the target land before the Invader Phase. T2 is the first Ravage: pulling an Explorer out of the Ravage land (or out of a Build land where it's the only Invader) means one fewer Invader there when the Invaders act. It's the only part of this turn that acts before the Ravage.
 - **Slow phase plays**: **Crops Wither and Fade** (1E, Range 0 — target one of your Presence lands with a Town or City) + **Favors Called Due** (1E, Range 1 — target a Dahan-dense Invader-present land).
   - **T2 gain from Crops**: +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Immediate replace: City→Town OR Town→Explorer in target land. *Material this turn*: the replaced unit is gone; *downstream*: when T3 Ravage hits that land, Damage is 1 lower than it would have been.
   - **T2 gain from Favors**: Gather up to 4 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> into target. *Material this turn*: Dahan positioning for T3+ counterattacks. If post-gather Dahan > Invaders in target, **+3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> conditional**.
-- **Slow elements (Fast innate already resolved)**: Crops 1M+1F+1P + Favors 1M+1A+1An = 2M+1F+1A+1P+1An. Darkness Swallows can't use these (Fast innate only checks in Fast phase).
-- **End of T2**: **2–5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> generated** (2 Crops + 0–3 Favors conditional) · 2E spent · **1E banked** · 0 CP left · 5 Presence on board · Hand: 1 Unique (Concealing in discard, Crops+Favors now also in discard; Mantle discarded T1) · Tracks: CP at card2, Energy at energy1.
-- **Pause-point (pre-Favors-target)**: Favors's 3-Fear conditional is **not free** — it needs post-gather Dahan to strictly outnumber Invaders. Before committing, count: Invaders in target + Dahan in R1 of target = enough to gather past Invader count? If no, change target or save Favors for T3.
+- **End of T2**: **2–5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> generated** (2 Crops + 0–3 Favors conditional) · **1 Explorer gathered (L1)** · 2E spent · **1E banked** · 0 CP left · 5 Presence on board · Hand: 0 Uniques + 1 Minor (all four Uniques in discard: Concealing + Mantle since T1, Crops + Favors now) · Tracks: CP at card2, Energy at energy1.
+- **Pause-point (pre-Favors-target)**: Favors's 3-Fear conditional is **not free** — it needs post-gather Dahan to strictly outnumber Invaders. Before committing, count: Invaders in target + Dahan in R1 of target = enough to gather past Invader count? If no, change target or save Favors for T3. If you swap a card for the drafted Minor, check L1 still holds: Crops is the only Fire Unique in hand (Mantle is in discard), and every pair needs 2 Moon. Crops + a Moonless Minor, or Favors + a Fireless Minor, leaves L1 unfired.
 
 #### Turn 3
 
@@ -250,26 +256,27 @@ Shadows's innate Darkness Swallows the Unwary is **Fast**. Fast innates check th
   <dt>Income</dt>
   <dd><span class="si-pool">1E banked + 1E income = <strong>2E</strong></span> <span class="si-pool"><strong>2CP</strong></span></dd>
 
-  <dt>Fast plays</dt>
-  <dd><span class="si-land"><strong>Concealing Shadows</strong> (target Ravage land w/ Dahan) <img class="si" src="/spirit-island/theme/icons/speed-fast.svg" alt="Fast"> <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"></span> <span class="si-land">+ drafted Fast Moon+Fire Minor (if in hand) → L1 may fire</span></dd>
+  <dt>Card plays</dt>
+  <dd><span class="si-land"><strong>Concealing Shadows</strong> (target Ravage land w/ Dahan) <img class="si" src="/spirit-island/theme/icons/speed-fast.svg" alt="Fast"> <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"></span> <span class="si-land">+ one Moon+Fire card (Crops, Mantle, or a drafted Minor, either speed) → <strong>L1 FIRES T3</strong></span></dd>
 
   <dt>Key T3 note</dt>
-  <dd><span class="si-pool"><strong>First Ravage turn</strong> — Concealing's protection now <em>material</em></span></dd>
+  <dd><span class="si-pool"><strong>Second Ravage turn</strong> (first was T2) — Concealing is back in hand, its protection <em>material</em></span></dd>
 
   <dt>Invader card</dt>
-  <dd><span class="si-pool">Stage I+II+III — first <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> <strong>Ravage</strong></span></dd>
+  <dd><span class="si-pool">Stage I Ravage + Build · Stage II Explore</span></dd>
 </dl>
 
 
-- **Growth**: **G1** — Reclaim (all 3 discarded Uniques back to hand) + Gain 1 Minor. No presence placed. State: **1E banked + 1E income = 2E / 2CP**, hand = 4 Uniques + 2 Minors.
-- **Invader state**: **T3 is the first Ravage turn.** Identify the Ravage-target land from the current Invader card's Ravage column (the card that was in Build slot last turn has advanced).
-- **Fast phase plays**: **Concealing Shadows** (target the Ravage-incoming land, with Dahan in it, if any) + **drafted Fast Moon+Fire Minor if in hand** (e.g., Land of Haunts).
-  - **T3 gain from Concealing**: +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + **Ravage-protection now material** — Dahan in target land take 0 Damage from this turn's Ravage. Fast elements 1M+1A.
-  - **T3 gain from Haunts (if played)**: +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + Push up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns from R2 target. Fast elements 1M+1F+1A.
-- **Fast innate check (Concealing + Haunts)**: pool = 2M+1F+2A → **L1 fires for the first time this game**. Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> into a land at R1 of your presence or Sacred Site. Fast, so the gather happens **before** the Ravage — can pull an Explorer out of the Ravage target (one fewer Invader taking the Ravage).
-- **Slow phase plays**: 1 more Slow card if CP remains — e.g., **Crops Wither** (another City→Town downgrade). Depending on hand: **Mantle of Dread** for +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + another push.
-- **End of T3**: **5+ Fear generated** (1 Concealing + 2 Haunts + 2 Crops/Mantle + possible 1-Fear L1 if destroy-variant) · **1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> gathered (L1 innate)** · **Ravage Damage in one land reduced or neutralized** (Concealing or Haunts push) · ~0E / ~0CP depending on plays · 5 Presence on board · Hand: mixed reclaims + drafts · Tracks: CP at card2, Energy at energy1.
-- **Pause-point (pre-Fast-plays)**: Concealing's Ravage-protection is material T3+ **only if the target land actually Ravages this turn AND has Dahan to protect**. If the Ravage target has 0 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">, Concealing's protection clause is still dormant — consider targeting a Dahan-adjacent Ravage land (use Shadows of the Dahan's 1E range extension) or playing Concealing elsewhere for its Fear + elements alone.
+- **Growth**: **G1** — Reclaim (all 4 discarded Uniques back to hand) + Gain 1 Minor. No presence placed. State: **1E banked + 1E income = 2E / 2CP**, hand = 4 Uniques + 2 Minors.
+- **Invader state**: **T3 is the second Ravage turn** (the first was T2). Identify the Ravage-target land from the current Invader card's Ravage column (the card that was in Build slot last turn has advanced).
+- **Card plays (Spirit Phase)**: **Concealing Shadows** (0E) + one card with Moon + Fire costing ≤1E: **Crops** (1E), **Mantle** (1E), or a drafted Moon+Fire Minor of either speed (e.g., Land of Haunts and Embers, 0E). Any of these pairs totals 2M+1F or more. 2 CP caps the turn at two cards, so L2 (3M+2F) is out of reach.
+- **Fast phase plays**: **Concealing Shadows** (target the Ravage-incoming land, with Dahan in it, if any), plus the second card if it's Fast.
+  - **T3 gain from Concealing**: +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + **Ravage-protection now material** — Dahan in target land take 0 Damage from this turn's Ravage. Elements 1M+1A.
+  - **T3 gain from Haunts (if it's the second card)**: +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + Push up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns from its Range-2 target, before the Ravage. If Blight is already present there: +2 Fear and Push up to 2 more. Then **Add 1 Blight** <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> to the target land (its own line on the card, so it always happens). Elements 1M+1F+1A.
+- **Innate check (Fast phase)**: 2M+1F or more → **L1 fires T3** (its third straight turn in this opener). Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> into the target land. Fast, so the gather happens **before** the Ravage — can pull an Explorer out of the Ravage target (one fewer Invader taking the Ravage).
+- **Slow phase plays**: the second card, if you chose **Crops** (+2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + City→Town or Town→Explorer downgrade) or **Mantle** (+2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + push). Either resolves after this turn's Ravage. No CP remains for a third card.
+- **End of T3**: **3 Fear generated** (1 Concealing + 2 from Crops, Mantle, or Haunts; L1 makes no Fear) · **1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> gathered (L1 innate)** · **Ravage Damage in one land reduced** (Concealing protects Dahan; the L1 Gather, or a Haunts push, thins the Ravage land first) · +1 Blight if Haunts was played · 1–2E banked (2E if the second card cost 0) · 0 CP left · 5 Presence on board · Hand: 4 cards (2 Uniques + 2 Minors, or 3 Uniques + 1 Minor if a Minor was the second card) · Tracks: CP at card2, Energy at energy1.
+- **Pause-point (pre-Fast-plays)**: Concealing's Ravage-protection is material from T2 on **only if the target land actually Ravages this turn AND has Dahan to protect**. If the Ravage target has 0 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan">, Concealing's protection clause is still dormant — consider targeting a Dahan-adjacent Ravage land (use Shadows of the Dahan's 1E range extension) or playing Concealing elsewhere for its Fear + elements alone.
 
 #### Turn 4 — state audit
 
@@ -277,21 +284,21 @@ After T3, you should have:
 
 - **Presence**: 5 on board (3 starting + 1 T1 G3 + 1 T2 G2).
 - **Energy / CP**: 1E income (from energy1 slot) / 2CP.
-- **Engine**: All 4 Uniques available + 2 Minors drafted. L1 firing conditional on Fast M+F Minor in hand.
+- **Engine**: All 4 Uniques available + 2 Minors drafted. L1 fires any turn your plays total 2M+1F — from Uniques alone, Concealing + Crops or Mantle does it. L2 (3M+2F) needs a third Card Play (Crops + Mantle + one more Moon card), so it waits on the CP track's `card3` slot.
 - **Fear pool**: ~8–12 (solo — Terror 2 should flip around end-T4 or T5, not T3 as the prior opener claimed).
-- **Blight**: 0–1 (depends on T3 Ravage outcomes; Concealing + L1 Gather mitigation should keep this low).
+- **Blight**: 0–1 (depends on the T2 and T3 Ravage outcomes; Concealing + L1 Gather mitigation should keep this low), +1 if you played Land of Haunts and Embers.
 
 **Pivot triggers** (if any of these, deviate from the opener):
 
-- **No Fast Moon+Fire Minor drafted by T3** — L1 firing stays blocked. Keep leaning on Crops + Favors for Fear; L1 is "nice to have" not "required".
+- **Fire runs out** — Crops and Mantle are the only Fire Uniques. On a turn both sit in discard and no Fire Minor is in hand, L1 can't fire. Time the G1 Reclaim around the turns you need the Gather.
 - **Ravage target T3 has no Dahan** — Concealing's protection is still dormant; use Concealing purely for Fear + elements, and save the real defense for T4+ when Dahan density increases.
 - **Favors never triggers 3-Fear conditional** — Fear pool is running 3–4 under target. Prioritize Minor picks that generate Fear directly (e.g., 2-Fear Moon Minors from the full pool).
 
 ### Opening B — G2-via-CP Minor-Draft-Dependent 🟥
 
-**When to pick this**: **Habsburg Mining L5+, Russia L5+**, or long-game matchups where Minor-draft density pays off. Trades T1 Fear output for hand depth. **Gated on drafting a 0-cost Fast Moon+Fire Minor (Land of Haunts and Embers) by T1** — otherwise this opener under-delivers.
+**When to pick this**: **Habsburg Mining L5+, Russia L5+**, or long-game matchups where Minor-draft density pays off. Trades T1 Fear output for hand depth. **Gated on drafting a 0-cost Moon+Fire Minor on T1, Fast or Slow** (e.g., Land of Haunts and Embers or Shadows of the Burning Forest) — otherwise this opener under-delivers.
 
-**Target arc**: If Haunts drafted T1 → **L1 fires T1** (unique to Opening B among the three) · 2 Minors drafted by T2 · Reclaim T3 → 4 Uniques + 3 Minors in hand · matchup-specific Minor picks scale T4+.
+**Target arc**: If a 0-cost Moon+Fire Minor is drafted T1 → **L1 fires T1** (as in Opening A, here via Concealing + the Minor) · 2 Minors drafted by T2 · Reclaim T3 → 4 Uniques + 3 Minors in hand · matchup-specific Minor picks scale T4+.
 
 #### Turn 1
 
@@ -302,64 +309,73 @@ After T3, you should have:
   <dt>Income</dt>
   <dd><span class="si-pool"><strong>0E</strong></span> <span class="si-pool"><strong>2CP</strong></span></dd>
 
-  <dt>Best-case Fast plays</dt>
-  <dd><span class="si-land"><strong>Concealing Shadows</strong> + <strong>Land of Haunts and Embers</strong> (drafted 0-cost Minor)</span></dd>
+  <dt>Best-case plays</dt>
+  <dd><span class="si-land"><strong>Concealing Shadows</strong> + a drafted 0-cost Moon+Fire Minor (e.g., <strong>Land of Haunts and Embers</strong>)</span></dd>
 
-  <dt>Fast-phase elements</dt>
-  <dd><span class="si-land">2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> · <strong>L1 FIRES T1</strong> → Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"></span></dd>
+  <dt>Turn elements</dt>
+  <dd><span class="si-land">2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> + 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> (with Haunts) · <strong>L1 FIRES T1</strong> → Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"></span></dd>
 
   <dt>End of T1</dt>
-  <dd><span class="si-pool">3 <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> Fear</span> <span class="si-pool">1 <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> gathered by L1</span> <span class="si-pool">up to 2 pushed by Haunts</span></dd>
+  <dd><span class="si-pool">3 <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> Fear</span> <span class="si-pool">1 <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> gathered by L1</span> <span class="si-pool">up to 2 pushed by Haunts</span> <span class="si-pool">+1 <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> Blight (Haunts)</span></dd>
 </dl>
 
 
 - **Growth**: **G2, revealing CP track** (uncover `card2`). Post-growth: **0E / 2CP**, 1 Minor drafted.
-- **Draft priority T1 Minor**: absolute top pick **Land of Haunts and Embers** (0E Fast, 1M+1F+1A). Second pick: Shadows of the Burning Forest (0E Slow, 1M+1F+1P). If neither appears: Opening B is underpowered T1 — consider pivoting to C (see Opening Decision tree).
-- **Fast phase plays (with Haunts drafted)**: **Concealing Shadows** (0E) + **Land of Haunts and Embers** (0E, target a Mountain or Jungle with Invaders for the push rider, else any Invader land for the 2-Fear base).
-  - **T1 gain from Concealing**: +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Dormant Ravage-protection (no Ravage T1). 1M+1A Fast elements.
-  - **T1 gain from Haunts**: +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns from target land. 1M+1F+1A Fast elements. (Haunts "Add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight">" clause is card-text — read the full card; if playing the 0-cost base version, blight consequences apply.)
-- **Fast innate check**: pool = 2M+1F+2A → **L1 fires T1**. Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> to a R1 land. The only Opening that gets L1 T1.
-- **Slow phase plays**: none (0 CP remaining; both CP used on Fast cards).
-- **Invader phase**: Explore only.
-- **End of T1**: **3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> gathered (L1)** + up-to-2 units pushed by Haunts · 0E banked · 0 CP left · 4 Presence on board · Hand: 3 Uniques + 0 Minors (Haunts played) · Tracks: CP at card2, Energy still at energy0.
-- **Pause-point (pre-Haunts-target)**: Haunts's push clause triggers only on Mountain or Jungle; its base 2-Fear + 2-push works on any Invader land. If target isn't Mountain/Jungle, the push-up-to-2 doesn't fire — pick a Mountain/Jungle Invader land if you have range, else accept the 2-Fear-only output. Also check Haunts's "Add 1 Blight <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> if Blight present" clause on the physical card — some versions add Blight unconditionally.
+- **Draft priority T1 Minor**: any **0-cost Minor with Moon + Fire** fires L1 alongside Concealing. Slow ones count too, since a card's Elements count from the moment it's played. Candidates from the full-pool table below (engine card text):
+  - **Land of Haunts and Embers** (Fast; Moon, Fire, Air) — 2 Fear, Push up to 2 Explorers/Towns; more if Blight is present; **Adds 1 Blight**.
+  - **Shadows of the Burning Forest** (Slow; Moon, Fire, Plant) — 2 Fear; if the target is a Mountain or Jungle, Push 1 Explorer and 1 Town.
+  - **Animated Wrackroot** (Slow; Moon, Fire, Plant) — 1 Fear + Destroy 1 Explorer, OR Add 1 Wilds.
+  - **Lure of the Unknown** (Fast; Moon, Fire, Air, Plant) — Gather 1 Explorer/Town.
+  - **Roiling Bog and Snagging Thorn** (Fast; Moon, Fire, Water, Plant) — 1 Fear, Isolate, Defend 2 (Defend dormant T1).
+  - **Pause**: speed now decides only *when the Minor's effect lands*. A Fast push or gather acts before T1's Build; a Slow one acts after the Invader Phase. Weigh that, and Haunts' Blight, against each other. If no 0-cost Moon+Fire Minor appears: Opening B is underpowered T1 — consider pivoting to C (see Opening Decision tree).
+- **Card plays (Spirit Phase, with Haunts drafted)**: **Concealing Shadows** (0E) + **Land of Haunts and Embers** (0E) — 0E spent, both CP used. **Elements this turn: 2M+1F+2A.**
+- **Fast phase plays**: both cards. Haunts is Range 2; target an Invader land (its push works on any terrain).
+  - **T1 gain from Concealing**: +1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Dormant Ravage-protection (no Ravage T1). Elements 1M+1A.
+  - **T1 gain from Haunts**: +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">. Push up to 2 Explorers <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer">/Towns from target land, before T1's Build — material if it empties a land that Builds this turn. If Blight is already present: +2 more Fear and Push up to 2 more. Then **Add 1 Blight** <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> <img class="si" src="/spirit-island/theme/icons/resource-blight.svg" alt="Blight"> to the target land (its own line on the card, so it always happens). Elements 1M+1F+1A.
+- **Innate check (Fast phase)**: total 2M+1F+2A → **L1 fires T1** (L2 does not). Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> into the target land, before the Invader Phase. With a Slow 0-cost Moon+Fire Minor instead of Haunts, L1 fires just the same.
+- **Slow phase plays**: none with Haunts (0 CP remain). If the drafted Minor was Slow (e.g., Shadows of the Burning Forest), its effect resolves here.
+- **Invader phase**: Build (Setup's Explore terrain) + Explore. No Ravage yet.
+- **End of T1**: **3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> gathered (L1)** + up-to-2 units pushed by Haunts + **1 Blight added (Haunts)** · 0E banked · 0 CP left · 4 Presence on board · Hand: 3 Uniques + 0 Minors (Haunts played) · Tracks: CP at card2, Energy still at energy0.
+- **Pause-point (pre-Haunts-target)**: Haunts' push works on any terrain (the Mountain/Jungle condition belongs to Shadows of the Burning Forest), but it Adds 1 Blight to the target land every time. Is +2 Fear and up to 2 pushed before the Build worth a Blight now? Would a Slow 0-cost Moon+Fire Minor, if offered, give the same T1 L1 without it?
 
-**Fallback T1 (Haunts NOT drafted)**: Play **Concealing alone**. Fear = 1. L1 does NOT fire (Fast phase elements = 1M+1A). 1 CP unused. This is Opening B underperforming — expect T2–T3 Minor draft to compensate.
+**Fallback T1 (no 0-cost Moon+Fire Minor drafted)**: at 0E only 0-cost cards are playable — Concealing, plus the drafted Minor if it costs 0. **Concealing alone**: Fear = 1; elements 1M+1A → L1 does NOT fire (needs 2M+1F). A 0-cost Minor with Moon but no Fire also leaves L1 short. This is Opening B underperforming — expect T2–T3 Minor draft to compensate.
 
 #### Turn 2
 
 - **Growth**: **G2, revealing Energy track** (uncover `energy1` → 1E income). Post-growth: **1E / 2CP**, +1 Minor drafted (2 total).
-- **Draft priority T2 Minor**: if Haunts was T1, look for Moon+Fire next (Visions of Fiery Doom 1E Fast) to chain L1 firings; otherwise Haunts.
-- **Fast phase plays**: Fast cards in hand (Concealing discarded T1 if played; Fast Minors drafted).
-  - If drafted Fast M+F Minor this T2 and have 1E to spare: play it. Elements contribute to L1 threshold (but Concealing is in discard — only 1M from the Fast play typically, unless a 2M-on-one-card Minor was drafted).
-  - Typically: play nothing Fast T2; L1 defers to T3 reclaim + Fast M+F Minor combo.
+- **Draft priority T2 Minor**: another Moon+Fire Minor (either speed) widens which pairs fire L1. At 1E this turn, only a 0-cost one can be paired with a 1E Unique now.
+- **Card plays (Spirit Phase)**: 1E / 2 CP. Hand = Crops, Favors, Mantle + the T2 Minor (Concealing and the T1 Minor are in discard). Every Unique in hand costs 1E, so the most you can play is one Unique + one 0-cost Minor.
+- **Innate check**: one Unique gives 1 Moon; L1 needs 2 Moon + 1 Fire. So **L1 fires T2 only if the T2 Minor costs 0 and carries Moon** (and Fire too, if the Unique is Favors). Otherwise L1 does not fire T2.
 - **Slow phase plays**: 1 Slow Unique at 1E — **Crops Wither** (+2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">, downgrade) OR **Mantle** (+2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">, self-push) OR **Favors** (+0–3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">, Dahan gather).
-- **T2 material gain**: typically 2–3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + one material board effect (downgrade / push / gather). **L1 does not fire T2 reliably** — Fast pool depends on which Minors were drafted and playable.
-- **End of T2**: 2–5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> · ~0E banked · 0 CP left · 5 Presence · hand typically 2 Uniques + 2 Minors.
-- **Pause-point (pre-T2-plays)**: T2 introduces first Build. Check the Invader card's Build column — which terrain Builds? Any land with Town/City on that terrain gets a new Town/City. Crops'ing a Town on that terrain T2 Slow phase (or Mantle pushing from it) pre-empts the Build's upgrade path.
+- **T2 material gain**: typically 2–3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + one material board effect (downgrade / push / gather), + the L1 Gather if a 0-cost Moon Minor was drafted (see innate check).
+- **End of T2**: 2–5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> · ~0E banked · 0–1 CP left · 5 Presence · hand typically 2 Uniques + 0–1 Minor.
+- **Pause-point (pre-T2-plays)**: T2 is the first Ravage (and the second Build). Check the Invader card's Build column — which terrain Builds? Every land of that terrain with any Invaders gets a Town (or a City, if it has more Towns than Cities). Slow cards resolve after the Invader Phase, so a T2 Slow Crops (or Mantle push) can't stop this turn's Build; it shrinks that land's Ravage next turn instead.
 
 #### Turn 3
 
 - **Growth**: **G1** — Reclaim + Gain 1 Minor. State: **~0E + 1E income = 1E / 2CP**, hand = 4 Uniques + 3 Minors.
-- **Fast phase plays**: **Concealing + Fast M+F Minor** (Haunts if reclaimed, or Visions if drafted). Elements = 2M+1F+... → **L1 fires T3**.
-- **Slow phase plays**: best Fear/material combo from hand. Typically Crops + Mantle, or Crops + Favors if Dahan-outnumber is triggerable.
-- **T3 material gain**: 3–5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + L1 Gather + 2× Slow-card effects. First turn with Ravage + Concealing protection becomes material.
+- **Card plays (Spirit Phase)**: 1E / 2 CP — two cards. **Concealing** (0E) + one card costing ≤1E with Moon + Fire: Crops, Mantle, Haunts (if reclaimed), Visions of Fiery Doom (1E Fast), or another Moon+Fire Minor. Elements = 2M+1F+... → **L1 fires T3**. 2 CP caps the turn there; L2 (3M+2F) needs a third card.
+- **Fast phase plays**: Concealing, plus the second card if it's Fast. L1 Gather resolves here, before the Ravage.
+- **Slow phase plays**: the second card, if it's Slow (Crops or Mantle). No CP remains for more.
+- **T3 material gain**: 2–3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> (Concealing 1 + Crops, Mantle, or Haunts 2, or Visions 1) + L1 Gather + the second card's board effect. First Ravage turn in this opener with Concealing back in hand (the first Ravage was T2), so its protection becomes material.
 - **Pause-point (pre-Concealing-target)**: same as Opening A T3 — Ravage-protection is material only on the Ravage target with Dahan. If Ravage lands don't have Dahan, use Concealing purely for Fear + elements.
 
 #### Turn 4 — state audit
 
 - **Presence**: 5 on board.
 - **Energy/CP**: 1E income / 2CP.
-- **Engine**: L1 firing reliably if Fast M+F Minor in hand; L2 conditional on additional Moon or Fire Minors.
-- **Fear pool**: 6–10 (slower than Opening A if Haunts missed T1; comparable if Haunts hit T1).
+- **Engine**: L1 fires whenever two plays total 2M+1F — from Uniques alone, Concealing + Crops or Mantle does it. L2 (3M+2F) needs a third Card Play (Crops + Mantle + one more Moon card).
+- **Fear pool**: 6–10 (slower than Opening A if the T1 Moon+Fire Minor missed; comparable if it hit).
 - **Hand depth**: 7 cards (4 Uniques + 3 Minors) — deepest of the three openers.
 - **Strategy note**: Opening B's payoff is **late** — T5+ benefits from Minor-draft breadth for matchup-specific picks (e.g., Dahan-summoning, Blight-removing, Strife-adding). Fear-rush numbers lag Opening A by ~3–4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> through T4.
 
-### Opening C — G3-via-Energy Energy-Bank (Fear-Suppression) 🟥
+### Opening C — G3-via-Energy Energy-Bank 🟥
 
-**When to pick this**: **Sweden L3+, Russia L3+** — where fear-card penalties reduce the value of a Fear-rush opener. Opening C leans on energy depth for (a) aggressive Shadows-of-the-Dahan range extension (1E/use budget), (b) 1E Slow Uniques played every turn, (c) potential Major acquisition via fear-card Events when they do fire.
+**When to pick this**: when you want Energy depth over early Card Plays. Opening C leans on energy for (a) aggressive Shadows-of-the-Dahan range extension (1E/use budget), (b) 1E Slow Uniques played every turn, (c) room for a costlier Minor or Major later. The trade: 1 CP on T1, so **L1 can't fire T1** (no Unique gives 2 Moon), and 2 T1 Fear against Opening A's 3.
 
-**Target arc**: Mantle T1 (2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">) · double-Slow T2 · L1 first fires T3–T4 via reclaim + drafted Fast M+F Minor · Terror 2 flip delayed to T6–T7 (accepted).
+An earlier version of this chapter sent Sweden L3+ and Russia here because of "fear-card penalties". Neither adversary has one (`data/references/rules/register.md` §4.3, §4.6). What they do change that touches Shadows is listed under [Strategy Cliff — Sweden / Russia](#strategy-cliff--sweden--russia-no-fear-penalty). Whether any of it favors this opener over Opening A is untested `[VERIFY via play]`.
+
+**Target arc**: Mantle T1 (2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">; L1 can't fire on 1 CP) · Crops + Favors T2 → L1 fires T2 · Terror 2 flip later (T6–T7).
 
 #### Turn 1
 
@@ -373,8 +389,8 @@ After T3, you should have:
   <dt>Slow plays</dt>
   <dd><span class="si-land"><strong>Mantle of Dread</strong> (self) <img class="si" src="/spirit-island/theme/icons/speed-slow.svg" alt="Slow"> 1E · 2 <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> Fear + push</span></dd>
 
-  <dt>Fast-phase elements</dt>
-  <dd><span class="si-land">0 — no Fast card · L1 <strong class="subtle">does NOT fire</strong></span></dd>
+  <dt>Turn elements</dt>
+  <dd><span class="si-land">1 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 1 <img class="si" src="/spirit-island/theme/icons/element-fire.png" alt="Fire"> Fire + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air (Mantle) · L1 <strong class="subtle">does NOT fire</strong> — 1 Moon short</span></dd>
 
   <dt>End of T1</dt>
   <dd><span class="si-pool">2 <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> Fear</span> <span class="si-pool"><strong>3E banked</strong></span> <span class="si-pool">1 <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> + 1 <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> pushed</span></dd>
@@ -382,41 +398,43 @@ After T3, you should have:
 
 
 - **Growth**: **G3, revealing Energy track** (uncover `energy1` → 1E permanent income). Post-growth: **1E income + 3E growth-effect = 4E / 1CP**.
+- **Card plays (Spirit Phase)**: **Mantle of Dread** (1E) — 1E spent, the only CP used. **Elements this turn: 1M+1F+1A**, counted from the moment it's played.
 - **Fast phase plays**: none (CP budget of 1 is best spent on a higher-material-effect Slow card).
-- **Fast innate check**: pool = 0 elements. L1 does NOT fire.
-- **Invader phase**: Explore.
-- **Slow phase plays**: **Mantle of Dread** (1E, self-target).
-  - **T1 gain from Mantle**: +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> + 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> from one of your Presence lands. 1M+1F+1A Slow elements (irrelevant for Darkness Swallows since it's Fast).
+- **Innate check (Fast phase)**: 1M+1F+1A → L1 needs 2 Moon → **does NOT fire**. With 1 CP and no Unique carrying 2 Moon, L1 can't fire T1 in this opener whichever card you play.
+- **Invader phase**: Build (Setup's Explore terrain) + Explore. No Ravage yet.
+- **Slow phase plays**: **Mantle of Dread** (self-target).
+  - **T1 gain from Mantle**: +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + Push 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> + 1 Town <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> <img class="si" src="/spirit-island/theme/icons/unit-town.svg" alt="Town"> from one of your Presence lands. Its 1M+1F+1A counted all turn, one Moon short of L1.
 - **End of T1**: **2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">** · 1E spent · **3E banked** · 0 CP left · 4 Presence on board · Hand: 3 Uniques (Mantle in discard) · Tracks: CP at card1 (still 1 CP), Energy at energy1 (1E sustained).
-- **Pause-point (growth choice)**: G3-via-Energy gives deeper Energy income long-term (energy1 permanent = +1E/turn from T2 onward) vs. G3-via-CP (card2 permanent = +1 CP/turn). Over 6 rounds that's 6E vs. 6 extra card plays. Pick based on matchup: fear-suppression adversaries benefit from energy depth (more Shadows-of-the-Dahan range extensions; more Minor cost-curve flexibility); fear-friendly adversaries benefit from CP depth (more Fear-generating card plays per turn). If unsure, G3-via-CP (Opening A) is the tighter fear-rush; G3-via-Energy (Opening C) is the slower, more flexible play.
+- **Pause-point (growth choice)**: G3-via-Energy gives deeper Energy income long-term (energy1 permanent = +1E/turn from T2 onward) vs. G3-via-CP (card2 permanent = +1 CP/turn). Over 6 rounds that's 6E vs. 6 extra card plays. Energy depth buys Shadows-of-the-Dahan range extensions and Minor cost-curve flexibility. CP depth buys more card plays per turn, and with them more Fear and more innate Elements (L1 needs 2 plays of Uniques, L2 needs 3). If unsure, G3-via-CP (Opening A) is the tighter fear-rush; G3-via-Energy (Opening C) is the slower, more flexible play.
 
 #### Turn 2
 
 - **Growth**: **G2, revealing CP track** (uncover `card2` → 2 CP from now). Post-growth: **3E banked + 1E income = 4E / 2CP**, +1 Minor drafted.
-- **Fast phase plays**: none likely (Concealing in hand but saving for T3 Ravage turn; or play Concealing for 1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + element cycle).
-  - Optional Concealing T1-style 1-Fear + element-pool play: 1M+1A. Doesn't fire innate alone.
+- **Card plays (Spirit Phase)**: **Crops Wither** (1E) + **Favors Called Due** (1E) — 2E spent, both CP used. **Elements this turn: 2M+1F+1A+1P+1An**, counted from the moment played.
+- **Fast phase plays**: none in this line. Concealing is in hand and T2 is the first Ravage, so its protection would be live this turn — but the 2 CP go to Crops + Favors. Pause: is protecting Dahan in T2's Ravage land worth more than one of those Slow plays? Concealing + Crops also fires L1 (2M+1F); Concealing + Favors does not (2 Moon, no Fire — Mantle is in discard).
+- **Innate check (Fast phase)**: 2M+1F → **L1 fires T2** (L2 does not). Gather 1 Explorer <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> <img class="si" src="/spirit-island/theme/icons/unit-explorer.svg" alt="Explorer"> into the target land before the first Ravage — can pull an Explorer out of the Ravage land.
 - **Slow phase plays**: **Crops Wither** (1E, Presence-land target with a Town or City) + **Favors Called Due** (1E, R1 Dahan-dense target).
   - **T2 gain from Crops**: +2 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + City→Town OR Town→Explorer. (Material THIS turn; reduces next-turn Ravage damage in that land.)
   - **T2 gain from Favors**: Gather up to 4 Dahan <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> <img class="si" src="/spirit-island/theme/icons/unit-dahan.svg" alt="Dahan"> into R1 target; conditional +3 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> if post-gather Dahan > Invaders.
-- **Slow elements**: Crops 1M+1F+1P + Favors 1M+1A+1An = 2M+1F+1A+1P+1An. (Fast innate already resolved with 0 elements; Slow elements not usable here.)
-- **End of T2**: **2–5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">** · 2E spent · **2E banked** · 0 CP left · 5 Presence on board · Hand: 1 Unique (Concealing) + 1 Minor · Tracks: CP at card2, Energy at energy1.
-- **Pause-point (pre-T2-plays)**: T2 is first Build. Same check as Opening A/B — Crops + Favors together handle one Build-threat land (downgrade + gather counter-Dahan). If two lands are about to Build-into-City, one of them is **not handled** — prioritize the worst one; accept the other.
+- **End of T2**: **2–5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">** · **1 Explorer gathered (L1)** · 2E spent · **2E banked** · 0 CP left · 5 Presence on board · Hand: 1 Unique (Concealing) + 1 Minor · Tracks: CP at card2, Energy at energy1.
+- **Pause-point (pre-T2-plays)**: T2 is the first Ravage and the second Build. Same check as Opening A/B — Crops + Favors are Slow, so they resolve after this turn's Ravage and Build and together handle one land that Ravages next turn (downgrade + gather counter-Dahan). The L1 Gather is the only piece that acts before this turn's Ravage. If two lands are headed for a big Ravage, one of them is **not handled** — which one costs you more?
 
 #### Turn 3
 
 - **Growth**: **G1** — Reclaim + Gain 1 Minor. State: **2E banked + 1E income = 3E / 2CP**, hand = 4 Uniques + 2 Minors.
-- **Fast phase plays**: **Concealing + drafted Fast M+F Minor** if in hand → L1 fires. Otherwise Concealing alone (1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">, elements pool 1M+1A, L1 does not fire).
-- **Slow phase plays**: 1–2 cards from 3E budget. Typical pick: **Crops + Mantle** for 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + downgrade + push; OR **Crops + Favors** if Dahan-outnumber still triggerable somewhere.
-- **T3 material gain**: 4–6 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + material board effects + Ravage-protection on Concealing's target (material T3+).
-- **End of T3**: ~0E banked · energy bank depleted for the big-swing turn.
+- **Card plays (Spirit Phase)**: 3E / 2 CP — two cards. Any pair totaling 2M+1F fires L1: **Concealing + Crops or Mantle** (1E; Concealing's Ravage-protection live on a Ravage land with Dahan), **Crops + Mantle** (2E; 4 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> + downgrade + push), **Crops + Favors** (2E; if Dahan-outnumber is still triggerable somewhere), or Concealing/Favors + a drafted Moon+Fire Minor. Concealing + Favors has no Fire → no L1. L2 (3M+2F) needs a third card, so not on 2 CP.
+- **Fast phase plays**: Concealing, if in the pair (1 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear">, elements 1M+1A), and the **L1 Gather** whenever the pair totals 2M+1F — before the Ravage.
+- **Slow phase plays**: the Slow card(s) from the pair.
+- **T3 material gain**: 2–5 Fear <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> <img class="si" src="/spirit-island/theme/icons/resource-fear.svg" alt="Fear"> depending on the pair (Concealing 1; Crops, Mantle 2 each; Favors 0–3) + L1 Gather + the pair's board effects + Ravage-protection on Concealing's target if played.
+- **End of T3**: 1–2E banked before any Shadows-of-the-Dahan range extensions (1E each).
 - **Pause-point (T3 Ravage targeting)**: same Ravage-protection check as Openings A/B. Additionally, Opening C's energy-bank advantage lets you spend 1E on Shadows-of-the-Dahan range extension to place a Slow-effect card (Crops / Favors / Mantle) on a non-Presence Dahan land — consider if the highest-leverage target is outside R0.
 
 #### Turn 4 — state audit
 
 - **Presence**: 5 on board.
 - **Energy/CP**: ~1E income / 2CP.
-- **Engine**: L1 firing conditional on Minor draft (same as Openings A/B); L2 element threshold 3M+2F rarely reached without multiple Moon-heavy Minors.
-- **Fear pool**: 4–8 (lowest of three openers; accepted for fear-suppression matchups).
+- **Engine**: L1 fires from any two-card play with Crops or Mantle plus another Moon card (same as Openings A/B). L2 (3M+2F) needs three plays (Crops + Mantle + one more Moon card), so it waits on a third Card Play.
+- **Fear pool**: ~6–12 (T1 2 + T2 2–5 + T3 2–5).
 - **Blight**: 0–2.
 - **Strategy note**: energy depth will continue paying dividends T5+ — Shadows-of-the-Dahan range extensions multiply over the game. Accept slower Terror; target Terror 2 T6–T7.
 
@@ -430,12 +448,14 @@ graph TD
   Adv -->|Scotland| A
   Adv -->|Habsburg Livestock| A
   Adv -->|Sweden L0-L2| A
-  Adv -->|Sweden L3+| C[Opening C - Fear-Suppression Resistant]
+  Adv -->|Sweden L3+| C[Opening C - Energy Bank]
   Adv -->|Russia| C
   Adv -->|Habsburg Mining L5+| B[Opening B - Minor-Draft Dependent]
   Adv -->|Multi-handed with board-carry partner| A
   Adv -->|Other| A
 </pre>
+
+The Sweden L3+ and Russia → C routes are untested 🟥 suggestions. Their original reason ("fear-card penalties") was wrong: neither adversary has one (see [Strategy Cliff — Sweden / Russia](#strategy-cliff--sweden--russia-no-fear-penalty)).
 
 ## Card Priority Ratings
 
@@ -585,10 +605,10 @@ All 5 Shadows aspects **replace** the Shadows of the Dahan special rule. Four ra
 |----------------------|----|----|----|----|------------------------------------------------------------------------------|
 | England              | A  | A- | B+ | B  | Slow builds; fear-rush works. **L5 cliff**: buildings +1 HP — Innate L3 (3 damage) insufficient for 4-HP Cities without Crops Wither's City→Town downgrade first. |
 | Brandenburg-Prussia  | A  | A- | B+ | B  | Cities add fear-per-kill; favorable.                                         |
-| Sweden               | A- | B+ | B  | B- | Fear penalties reduce engine output at L2+.                                  |
+| Sweden               | A- | B+ | B  | B- | No Fear penalty. Escalation turns Dahan into Towns after Explore; L3 Towns deal 3 Damage, Cities 5. |
 | France (Plantation)  | B+ | B  | B  | C+ | Dahan capture threatens Shadows of the Dahan targeting pool.                 |
 | Habsburg Mining      | A  | B+ | B  | C+ | Scaling outpaces fear-rush late.                                             |
-| Russia               | B+ | B  | B- | C  | Fear-suppression mid-late.                                                   |
+| Russia               | B+ | B  | B- | C  | No Fear penalty. L2 Pushes the first Explorer each Action would Destroy (+1 Fear); L5 Fear cards #3/#7 send Invader cards to Build. |
 | Scotland             | A  | B+ | B+ | B  | Favorable.                                                                   |
 | Habsburg Livestock   | A  | A- | B  | B  | Favorable.                                                                   |
 
@@ -604,14 +624,18 @@ Grades directional `[VERIFY]` — individual cell confirmations pending playtest
 **Mitigation sequence**: (turn N) Crops Wither downgrades City → Town; (turn N+1) Innate L3 or Major finishes.
 ```
 
-### Strategy Cliff — Sweden L2+ / Russia L3+
+### Strategy Cliff — Sweden / Russia (no Fear penalty)
 
-```admonish info title="Strategy Cliff — Fear-suppression adversaries"
-**What changes**: Sweden L2+ and Russia L3+ have fear-suppression rules.
+```admonish info title="Strategy Cliff — Sweden / Russia"
+**What changes**: neither adversary penalizes Fear (`data/references/rules/register.md` §4.3, §4.6). The rules that touch Shadows:
 
-**Impact on Shadows**: Terror flips slower; fear-card effects reduced.
+- **Sweden Escalation** (Stage II): after Invaders Explore into a land, if it has at least as many Invaders as Dahan, replace 1 Dahan with 1 Town — fewer Dahan for Favors Called Due and Shadows of the Dahan.
+- **Sweden L3**: Towns deal 3 Damage, Cities 5 — Ravages kill more Dahan, so Concealing's protection and Crops' downgrade save more.
+- **Russia L2**: the first time each Action would Destroy Explorers, 1 of them is Pushed instead (if possible), +1 Fear. Innate L2 destroys 1 and pushes 1 of its 2 Explorers; Russia's Fear makes up the lost Fear, but the pushed Explorer stays on the island.
+- **Russia L3**: Ravage cards also match lands with 3+ Explorers — an L1 Gather that brings a land to 3 Explorers adds a Ravage there.
+- **Russia L5**: an Invader card sits under Fear cards #3 and #7 and goes straight to the Build space when earned — Shadows' Fear pace decides when those extra Builds arrive.
 
-**Mitigation**: shift toward Crops Wither + Innate L2 Explorer-destruction as board-pressure tools; accept later Terror timeline.
+**Pause-points**: before an L1 Gather vs. Russia L3+, count Explorers in the target land. Before a Fear-heavy turn vs. Russia L5+, count Fear cards earned: is the 3rd or 7th about to flip an Invader card into Build?
 ```
 
 ## Board / Map Configuration
@@ -718,7 +742,7 @@ Aspect mechanics now Wiki-verified (see Aspects section above); parser extended 
 `[VERIFY current numbers from mindwanderer]` — directional figures from community tier lists + older mindwanderer snapshots:
 - Solo L6 win rate: approximately 50–55%.
 - Best adversary: Brandenburg-Prussia L6 (fear-dense; favorable).
-- Worst adversary: Russia L6 (fear-suppression).
+- Worst adversary: Russia L6.
 - 2-handed: Shadows + Bringer often cited as top fear-rush pair.
 
 Live stats require re-scraping mindwanderer's current page.

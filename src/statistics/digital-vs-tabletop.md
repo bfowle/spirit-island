@@ -1,16 +1,16 @@
 # Digital vs. Tabletop
 
-Community win rates (mindwanderer and similar) blend tabletop and digital. They shouldn't — the two have measurably different dynamics. This chapter catalogues the differences so you apply appropriate skepticism when using aggregated data to plan tabletop games.
+Community win rates such as [mindwanderer](reading-mindwanderer.md)'s come from Spirit Island Digital only; they contain no tabletop games. The two modes differ in ways that matter for planning a physical game. This chapter catalogs the differences so you apply appropriate skepticism when using digital data to plan tabletop games.
 
 ## Where digital differs from tabletop
 
 ### Shuffle + draw rigor
 
-**Digital**: cryptographically random; every draw is truly independent.
+**Digital**: all the randomness happens at setup. The engine seeds one pseudorandom generator (the .NET subtractive generator, seeded from the clock) and uses it to fix the order of every deck: Invader, Fear, Event, Minor and Major. After setup the generator is used only for Power-deck reshuffles, France's and Sweden's Escalations, one Fractured Days Power and three Scenarios. So randomness during play is a hidden order fixed at the start, not fresh sampling. Draws are *exchangeable*, not independent: each unseen card is equally likely to be next, and each card you see changes the odds for the rest (see [Statistics: Why and How](index.md), lens 4). Source: the engine read in the companion's stat-models report (`reports/Spirit Island companion stat models.md`, "One seeded shuffle at setup").
 
-**Tabletop**: shuffles are imperfect. Classic gaming-shuffle studies suggest 5-7 riffle shuffles for full randomization; most tabletop players do 1-3. This produces subtle clumping — Minors drafted together are slightly more likely to show up again soon than pure-random would suggest.
+**Tabletop**: the decks are only as random as the shuffle. The draw rules are the same (draw without replacement; unkept Power Cards go to the discard and return only when that deck's discard is reshuffled), so the same exchangeable counting applies if the deck is well shuffled.
 
-**Impact**: tabletop Minor drafts have slightly more variance than digital. Spirits that depend on drawing a specific card type (Moon+Fire for Shadows's L1) get worse tail outcomes tabletop.
+**Impact**: unmeasured. No source used in this book measures how much a typical tabletop shuffle changes draw odds. The book's counting assumes a fair shuffle in both modes.
 
 ### Rules strictness
 
@@ -18,15 +18,15 @@ Community win rates (mindwanderer and similar) blend tabletop and digital. They 
 
 **Tabletop**: human-enforced. Forgetting threshold crossings, miscounting innate elements, or failing to resolve Slow events in the right order happens regularly.
 
-**Impact**: tabletop tends to be *easier* than it should be (in the player's favor) by ~3-7% at high difficulty. Your 60% tabletop win rate is closer to 55% digital.
+**Impact**: rules mistakes at the table can push results either way, and missed Invader steps tend to favor the players. No source used in this book measures the size of the effect, so don't apply a fixed correction to digital win rates.
 
 ### Turn pacing
 
-**Digital**: unlimited thinking time. Most take 1-2 minutes per turn.
+**Digital**: no time pressure from other people at the table.
 
 **Tabletop**: group pressure encourages faster turns. Missed tactical opportunities are common.
 
-**Impact**: tabletop plays below-optimal. This hurts high-skill spirits (Fractured Days, Starlight) more than low-complexity spirits (River, Vital).
+**Impact** (reasoning, not measured): faster play costs most on spirits with many decisions per turn, so expect complex spirits to lose more at a rushed table than simple ones.
 
 ### Alpha-player effect
 
@@ -38,17 +38,17 @@ Community win rates (mindwanderer and similar) blend tabletop and digital. They 
 
 ## Selection bias
 
-- **Digital data is dominated by online-engaged players** — skews harder-difficulty, more experienced. Rates over-represent this population.
-- **Tabletop data is dominated by motivated post-game reporters** — skews toward memorable games, not the middle-of-the-road average.
+- **Digital data covers only the people who play the digital game**, at the difficulties they choose. Whether that population is stronger or weaker than your table is not measured.
+- **Tabletop reports** (forum polls, post-game threads) come from players motivated to post, which can skew toward memorable games.
 
-Both biases inflate dispersion at the tails. Point estimates near 50% are probably closest to truth; estimates at 80%+ or <20% are most suspect.
+Neither bias is quantified in any source used here. Treat extreme rates with the most suspicion, and read the sample size first (see [Reading mindwanderer](reading-mindwanderer.md)).
 
 ## Practical implications
 
-1. **Subtract 3-5% from high-adversary-level digital rates** when planning careful tabletop games.
-2. **Add variance to tabletop estimates** — your tabletop rate will swing more game-to-game than digital suggests. Imperfect shuffling drives it.
+1. **Don't apply a fixed discount to digital rates.** No source measures the digital-to-tabletop gap, so any single percentage would be invented.
+2. **Expect your own tabletop results to vary.** Rules slips, rushed turns and shuffling all add noise that digital data doesn't contain.
 3. **If you play both, keep separate logs.** Don't blend.
-4. **Community data informs archetype ranking, not absolute win-rate expectation.** "Bringer is a top-5 solo spirit" is robust across modes; "Bringer wins 63% vs England L6" is not.
+4. **Community data informs archetype ranking, not absolute win-rate expectation.** A ranking such as "Bringer is a top-5 solo spirit" carries across modes better than a single figure such as "Bringer wins X% vs England L6".
 
 ## See also
 

@@ -191,11 +191,11 @@ Verified per `si-rules-check shifting-memory-of-ages`:
 
 | Turn | Explore | Build | Ravage | Consequence for opener prose                                     |
 |------|---------|-------|--------|------------------------------------------------------------------|
-| 1    | Stage 1 | —     | —      | No Ravage yet. Setup + T1 Explore only.                          |
-| 2    | Stage 1 | Stg 1 | —      | Still no Ravage. T2 is pure build-up.                            |
-| 3    | Stage 2 | Stg 1 | Stg 1  | **First Ravage** — prep Learn or Share Secrets by end of T2.     |
-| 4    | Stage 2 | Stg 2 | Stg 1  | Ravage continues; Stage-2 spread begins.                         |
-| 5    | Stage 3 | Stg 2 | Stg 2  | Stage-2 Ravage hits wider terrain set.                           |
+| 1    | Stage 1 | Stg 1 | —      | No Ravage yet. Setup's Explore card Builds; T1 Explores.         |
+| 2    | Stage 1 | Stg 1 | Stg 1  | **First Ravage** (Setup's card) — prep Learn or Share Secrets for T2. |
+| 3    | Stage 2 | Stg 1 | Stg 1  | Ravage continues; first Stage-2 Explore.                         |
+| 4    | Stage 2 | Stg 2 | Stg 1  | Stage-2 Build begins.                                            |
+| 5    | Stage 2 | Stg 2 | Stg 2  | First Stage-2 Ravage.                                            |
 
 ### Growth-option decoder (T1 income branches)
 
@@ -208,15 +208,17 @@ Verified per `si-rules-check shifting-memory-of-ages`:
 
 G3 is the T1 special: the +2E immediate covers a 1-cost card + a 1-cost card (two Slow plays if paired with any other energy). G2 + Major-gain is GodsLittleCow's preferred T1 branch — you pick which Major you commit to on T1 with full Minor/Major-tier information.
 
-### Fast-phase element ceiling — load-bearing constraint
+### Element math — every played card counts
+
+Both innates are Fast (engine `spirits.json`). Their thresholds check every Element you have this turn: each card played in the Spirit Phase grants its Elements from the moment it's played, Fast or Slow (Core rulebook p.16; `data/references/rules/open-questions.md` Q10). So Boon of Ancient Memories (Slow) counts toward Learn and Observe on the turn you play it. Element Markers work differently, by Shifting Memory's own special rule: a spent marker grants its Element "for a single Action", so it counts only for the Power you spend it on.
 
 On T1, before any marker spend:
-- Hand elements if all 4 played: Moon × 4, Air × 3, Earth × 2, Water × 1, Plant × 1, Animal × 1, Sun × 1.
-- Observe L1 (1 Moon) can fire off any single card with Moon.
-- Learn L1 (2 Earth) — one marker spend fills this if paired with Boon of Ancient Memories' Earth (= 2 Earth total).
-- Observe L2 (2 Moon + 1 Air) — one marker spend on Moon + any Moon/Air card covers.
+- Hand elements if all 4 Uniques were played: Moon × 3, Air × 3, Earth × 3, Sun × 1, Water × 1, Plant × 1, Animal × 1 (engine `power_cards.json`). You start at 1 Card Play.
+- Observe L1 (1 Moon): fires off any single Moon card — Boon, Study, or Teachings — or a Moon marker spent on it.
+- Learn L1 (2 Earth): any two of Boon / Teachings / Secrets give 2 Earth with no marker. On a 1-play turn: one Earth card + 1 Earth marker spent on Learn.
+- Observe L2 (2 Moon + 1 Air): Study or Teachings (each Moon + Air) + 1 Moon marker spent on Observe; or two Moon cards that include one with Air.
 
-You can't reach Learn L3 (2 Moon + 3 Air + 4 Earth) without 4 turns of Earth-minor stacking. Don't plan T1–T3 around L3.
+Don't plan T1–T3 around Learn L3 (2 Moon + 3 Air + 4 Earth): the four Uniques together carry only 3 Earth, and you start at 1 Card Play.
 
 ### Opening A — Fast Major (via G2 T1, Forget Boon) 🟨 (default)
 
@@ -224,10 +226,10 @@ You can't reach Learn L3 (2 Moon + 3 Air + 4 Earth) without 4 turns of Earth-min
 - **Rationale**: Boon is the weakest Unique + its "Forget" is redirected to Discard via Special Rule, so it returns on Reclaim. Net cost: one card discarded, one Major in hand.
 
 **T1 · Play** (0 Energy):
-- Share Secrets of Survival (0E Fast, Sun/Air/Earth) → R1 from sacred-site land #5. Pre-positions against T3 ravage + banks elements.
+- Share Secrets of Survival (0E Fast, Sun/Air/Earth) → R1 from sacred-site land #5. Its Sun/Air/Earth count for this turn only (Elements don't carry over); its Dahan-protection mode is dormant T1 (no Ravage until T2), so its material T1 value is the Gather mode.
 - *Pause-point*: If the Major drafted costs 4+ and you're unsure about T2 energy, consider G3 instead (trades Major-gain for +2E now).
 
-**T1 · Invader**: Explore only. No ravage consequence for Shifting Memory this turn.
+**T1 · Invader**: Build (Setup's Explore terrain) + Explore. No Ravage yet, so no ravage consequence for Shifting Memory this turn.
 
 **T1 end state**: 0 Energy, 4 cards in hand (3 Uniques + 1 Major, Boon in discard), 3 markers (1M/1A/1E), 3 Presence (2 start + 1 from G2).
 
@@ -239,7 +241,7 @@ You can't reach Learn L3 (2 Moon + 3 Air + 4 Earth) without 4 turns of Earth-min
 - Elemental Teachings (0E Fast, Moon/Air/Earth) → self-target Prepare + discard 3 markers to gift a partner. In solo, Prepare only (net +1 marker).
 - **Alternative if Major is 4+ cost**: delay Major to T3, play Study the Invaders' Fears (0E, 2 Fear) + Share Secrets (0E, R1 defend).
 
-**T2 · Invader**: Still no Ravage. Build only.
+**T2 · Invader**: **First Ravage** (Setup's card), then Build + Explore. *Pause-point*: did your T2 plays cover the Ravage land?
 
 **T2 end state**: ~1 Energy banked (depends on Major cost), 2 cards in hand + Boon in discard, 3–4 markers.
 
@@ -248,8 +250,8 @@ You can't reach Learn L3 (2 Moon + 3 Air + 4 Earth) without 4 turns of Earth-min
 
 **T3 · Play** (2E, 2 CP):
 - Major again (if applicable) — cost threshold now reachable with banked markers.
-- Share Secrets or Learn-innate via Earth marker for first Ravage Defend.
-- **Pause-point**: T3 is the first Ravage. If the Major's effect doesn't hit the ravage land AND you skipped Learn L1 prep, you will blight. Don't waste the Major unless it covers the ravage.
+- Share Secrets or Learn-innate via Earth marker for this turn's Ravage Defend. These stack: Secrets' Air + Earth count all turn, so Secrets + 1 Earth marker spent on Learn gives Learn 1 Air + 2 Earth → **Learn L2 (Defend 3)**, before the Ravage. An Earth-bearing Major played this turn also counts toward Learn, whatever its speed.
+- **Pause-point**: Ravage has hit every turn since T2. If the Major's effect doesn't hit the ravage land AND you skipped Learn L1 prep, you will blight. Don't waste the Major unless it covers the ravage.
 
 **T4 · Growth**: G2 — Gain second Major (Forget Boon again via discard-redirect) + top-track slot.
 
@@ -259,11 +261,11 @@ You can't reach Learn L3 (2 Moon + 3 Air + 4 Earth) without 4 turns of Earth-min
 - Innate Defend active on most ravage lands.
 - 6+ markers banked across the game.
 
-**Confidence**: 🟨 somewhat tested. GodsLittleCow runs this baseline; multiple variants covered in his guide for 2-cost / 3-cost / 4-cost / 5+ cost Major drafts.
+**Confidence**: 🟨 somewhat tested. GodsLittleCow runs this baseline; multiple variants covered in their guide for 2-cost / 3-cost / 4-cost / 5+ cost Major drafts.
 
 ### Opening B — Slow Burn (reclaim-delay) 🟥
 
-**When to pick**: the Major drafted on T1 is a **weak T2 target** (single-land, no partner synergy, threshold out of reach). Instead of forcing it, you stall one turn for a better Major or event preview.
+**When to pick**: the Major drafted on T1 is a **weak T2 target** (single-land, no partner synergy, threshold out of reach). Instead of forcing it, you stall one turn for a better Major.
 
 **T1 · Growth**: G2 — Gain (draft Major, **Forget Study the Invaders' Fears + Boon**). Add Presence Top track.
 - Unusual double-forget. Boon + Study both redirect to discard via Special Rule.
@@ -332,7 +334,7 @@ Scored across the full Major + Minor deck (Base + B&C + JE + NI), weighted by Sh
 
 ### Top 5 Major Draft Picks (from full pool)
 
-GodsLittleCow's guide ranks Majors by: **Moon element (coloured green); multi-land effects (bolded)**. His S-tier is the intersection.
+GodsLittleCow's guide ranks Majors by: **Moon element (colored green); multi-land effects (bolded)**. Their S-tier is the intersection.
 
 | # | Card | Cost | Speed | Elements | Why (per GLC) |
 |---|------|------|-------|----------|----------------|
@@ -373,7 +375,7 @@ Aspect JSON import pending; `data/references/wiki/aspects/` currently only cover
 |-------------------------|--------|------------------------------------------------------------------------|
 | England                 | ★★★★☆  | Learn L3 scales beautifully against coastal-City ravages               |
 | Brandenburg-Prussia     | ★★★★☆  | "Fast Major opening is correct; early repeated terrains easier because T2 Major clears the land" (GLC). **TL2 wins typical.** |
-| Sweden                  | ★★★★☆  | "Fast Major, don't stall; defend one land per turn with innate, handle other with Major." (GLC) **TL3 wins ~50% of his** |
+| Sweden                  | ★★★★☆  | "Fast Major, don't stall; defend one land per turn with innate, handle other with Major." (GLC) **TL3 wins ~50% of theirs** |
 | France-Plantation       | ★★★☆☆  | `[VERIFY]` — GLC marks this WIP; Dahan-attract mechanic may interact poorly with Secrets |
 | Habsburg Mining         | ★★★☆☆  | `[VERIFY]` — WIP |
 | Habsburg Livestock      | ★★☆☆☆  | `[VERIFY]` — WIP |
@@ -474,7 +476,7 @@ Top-tier partners (per GLC):
 ## Expansion Sensitivity
 
 - **Base + JE only**: plays as-designed. Secrets + Teachings + Learn L1/L2 is the core loop.
-- **+ B&C**: Event-card reveal (Study) becomes more valuable; markers used to threshold B&C Majors.
+- **+ B&C**: Study the Invaders' Fears turns the top *Fear* card face-up (a Fear card, not an Event); markers used to threshold B&C Majors.
 - **+ NI**: Incarna-aspect partners become prime Teachings targets.
 - **Without JE**: not possible — Memory is a JE spirit.
 - **Without NI**: aspects (Intensify / Mentor) unavailable; base spirit still functional.

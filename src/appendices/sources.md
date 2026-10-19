@@ -75,12 +75,13 @@ Continuously-updated win-rate stats from Spirit Island Digital play logs.
 
 *Credit*: per-spirit, per-adversary, per-level win rates; digital-vs-tabletop discussion; card-frequency data.
 
-### SI Digital Data Analysis Series (BGG) — mined 2.27M games
+### SI Digital Data Analysis Series (BGG, Jonathan4290) — 2.27M log lines
 
-Thirteen-entry community series mining Spirit Island Digital play data for setup preferences, spirit win rates per adversary, scenario difficulty rankings, aspect performance.
+Twenty-six-entry community series mining Spirit Island Digital play data for setup preferences, spirit win rates per adversary, scenario difficulty rankings, aspect performance. Its "2.27M" figure counts log lines, not games ([BGG 3569421](https://boardgamegeek.com/thread/3569421)).
 
 - [Series index / entry #5 — "How does each spirit perform vs. each adversary?"](https://boardgamegeek.com/thread/3617445/si-digital-data-analysis-series-5-how-does-each-sp)
-- Entries 1–13 linked from series index.
+- [Entry #7](https://boardgamegeek.com/thread/3636188)
+- Entries 1–26 linked from series index.
 
 ### Handelabra Tableau — two-spirit combo dashboard (Heidi Kalbe)
 

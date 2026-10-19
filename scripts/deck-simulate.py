@@ -2,29 +2,53 @@
 """
 Monte-Carlo simulator for Spirit Island deck dynamics across expansion combos.
 
-For each expansion combo, runs N trials of a simplified 8-round game:
+For each expansion combo, runs N trials of a simplified game with no
+Adversary, no Scenario and no extra board. Rules followed (sources in
+data/references/rules/open-questions.md):
 
-- Fear deck is shuffled and drawn against a Fear-generation model:
-  the Fear pool increases by a configurable per-turn rate; each time the pool
-  crosses the threshold, a Fear card is drawn at the current Terror level.
-  Terror 2/3 transitions are applied as Fear threshold fills up.
-- Event deck is shuffled and drawn once per turn (starting T1 for B&C+ games
-  and skipped for base-only).
-- Blight deck is drawn once at game start + each time the Blight track fills
-  (approximated by a configurable Blight-per-turn rate).
+- Fear (Q6, Q7; core rulebook setup steps 2-3): the Fear Pool holds
+  4 Fear Markers per player, so each Fear Card costs 4 x players Fear.
+  Leftover Fear carries over. The Fear Deck is 9 cards dealt from the
+  combo's pool, split 3/3/3 by the Terror Level dividers. Earning the card
+  that reveals a divider raises the Terror Level at once; earning the last
+  card is a Fear victory. Earned cards resolve in the Invader Phase's Fear
+  step at the Terror Level current then (FAQ, Fear and Fear Cards).
+- Events (JE rulebook p.12; Q15): one Event per Invader Phase, after the
+  Blighted Island effect and before the Fear step. The Turn-1 Event is
+  drawn and discarded without resolving. The Event deck is never
+  reshuffled. Slave Rebellion is used only against France, so it is left
+  out of the pool here.
+- Blight (Q11, Q12; NI p.5 errata; JE rulebook "Still Healthy" cards): one
+  Blight Card at setup, Healthy side up, with 2 Blight per player + 1.
+  When its pool empties the card flips to its other side, refilling the
+  pool with that side's number per player (no +1). A Still-Healthy card
+  whose pool empties draws a new Blight Card and goes straight to its
+  reverse side. When a Blighted side's pool empties, the players lose.
 
-Outputs the mean + Wilson 95% CI across trials for:
-- Fear drawn per game, split by stage (1, 2, 3)
-- Token additions from Fear + Event cards (each token type)
-- Invader-favoring vs Spirit-favoring net from Event draws
-- Blight card draws + severity-proxy accumulated
-- Expected fear-card output per game (sum of "N Fear" instructions that fire)
+Model inputs that are NOT sourced (placeholders, change them with care):
+- Fear generated per turn: Gaussian, mean 2.5, sd 1.0, rounded, floored at 0.
+- Net Blight added per turn from Turn 2 (no Ravage on Turn 1, Q24):
+  Gaussian, mean 0.5, sd 1.0, rounded (a negative value returns Blight to
+  the card).
+The simulation does not stop at a win or loss; it reports whether a Fear
+victory or a Blight loss was reached within the rounds simulated.
 
-Writes data/references/deck-stats/sim_<combo>.json for each combo.
+Outputs the mean + 95% CI across trials for:
+- Fear Cards earned per game, and how many resolved at Terror Level I/II/III
+- Token additions from resolved Fear + Event cards (each token type)
+- Invader-favoring vs Spirit-favoring keyword hits from resolved cards
+- Blight Cards drawn, whether the island went Blighted, and a keyword
+  severity proxy summed over every Blight Card reverse side reached
+- "N Fear" phrases on resolved Fear and Event texts (a text count; that
+  Fear is not added to the Fear Pool)
+
+Writes <out-dir>/sim_<combo>.json for each combo (default out-dir:
+data/references/deck-stats/).
 
 Usage:
     python3 scripts/deck-simulate.py
     python3 scripts/deck-simulate.py --trials 50000 --rounds 10
+    python3 scripts/deck-simulate.py --players 2 --fear-per-player 5
 """
 
 from __future__ import annotations
@@ -119,150 +143,196 @@ def mean_ci(values: list[float]) -> dict:
     }
 
 
+# Core rulebook setup step 3: 9 Fear Cards, Terror Level dividers splitting
+# them 3/3/3 (no Adversary).
+FEAR_DECK_LAYOUT = (3, 3, 3)
+# Core rulebook setup step 2 and Q6: 4 Fear Markers per player. England L6
+# and an extra board each add +1 per player (pass --fear-per-player 5).
+FEAR_PER_PLAYER = 4
+# Q12 and the NI p.5 errata: Healthy side 2 per player, +1 at setup only.
+HEALTHY_BLIGHT_PER_PLAYER = 2
+SETUP_EXTRA_BLIGHT = 1
+# Q15: Slave Rebellion is added only against France.
+FRANCE_ONLY_EVENTS = {"Slave Rebellion"}
+
+
+def blight_severity(text: str) -> int:
+    """Keyword severity proxy for a Blight Card side: Destroy hits + Add
+    Blight hits + 2 x Ongoing hits. A text count, not a measured effect."""
+    return (
+        len(re.findall(r"\bdestroy\w*\b", text, re.IGNORECASE))
+        + len(re.findall(r"\badd \d* ?blight\b", text, re.IGNORECASE))
+        + len(re.findall(r"\bongoing\b", text, re.IGNORECASE)) * 2
+    )
+
+
+def is_still_healthy(card: dict) -> bool:
+    return "still-healthy" in (card.get("cardtype") or "").lower()
+
+
 def simulate_game(
     fear_deck: list[dict],
     event_deck: list[dict] | None,
     blight_deck: list[dict] | None,
     rounds: int,
     players: int,
+    fear_per_player: int,
     fear_per_turn_mean: float,
     fear_per_turn_stdev: float,
     blight_per_turn_mean: float,
 ) -> dict:
-    """Simulate one 8-round game; return per-game aggregated metrics.
+    """Simulate one game of `rounds` turns; return per-game metrics.
 
-    Model assumptions (for replacement later):
-    - Fear threshold transitions: TL1→TL2 at `4 × players` fear; TL2→TL3 at
-      `8 × players` fear; win at `12 × players` fear. Each Fear card drawn
-      pulls from fear_deck without replacement; at draw, the current TL
-      determines which stage's text resolves.
-    - Event deck: 1 draw per turn starting T1 (only if event_deck provided).
-    - Blight deck: 1 draw at game start; another if Blight-per-turn total
-      exceeds the current card's threshold — simplified: 1 blight card / game.
+    Turn order modeled: Spirit Phase (this turn's Fear is generated and
+    Fear Cards are earned), then the Invader Phase: Event, Fear step
+    (earned cards resolve), then Ravage/Build/Explore (net Blight change).
+    All of a turn's Fear is assumed to arrive before the Invader Phase.
     """
-    fear_pool = 0
-    terror = 1
-    blight_track = 0
-
-    fear_threshold_tl1 = 4 * players
-    fear_threshold_tl2 = 8 * players
+    fear_per_card = fear_per_player * players
+    dividers = set()
+    running = 0
+    for group in FEAR_DECK_LAYOUT[:-1]:
+        running += group
+        dividers.add(running)
 
     metrics = {
-        "fear_drawn_total": 0,
-        "fear_drawn_by_stage": Counter(),
+        "fear_drawn_total": 0,  # Fear Cards earned
+        "fear_drawn_by_stage": Counter(),  # resolved at Terror Level I/II/III
         "fear_output": 0,
         "tokens_added": Counter(),
         "spirit_favor_hits": 0,
         "invader_favor_hits": 0,
         "events_drawn": 0,
+        "events_resolved": 0,
         "blight_cards_drawn": 0,
         "blight_severity_accum": 0,
+        "island_blighted": 0,
+        "blight_loss_reached": 0,
+        "fear_victory_reached": 0,
     }
+
+    def resolve(text: str) -> None:
+        card_m = score_card_text(text)
+        metrics["fear_output"] += card_m["fear_amount"]
+        metrics["tokens_added"] += card_m["tokens_added"]
+        metrics["spirit_favor_hits"] += card_m["spirit_hits"]
+        metrics["invader_favor_hits"] += card_m["invader_hits"]
 
     fear_shuffled = list(fear_deck)
     random.shuffle(fear_shuffled)
+    fear_shuffled = fear_shuffled[: sum(FEAR_DECK_LAYOUT)]
     event_shuffled = list(event_deck) if event_deck else []
     random.shuffle(event_shuffled)
     blight_shuffled = list(blight_deck) if blight_deck else []
     random.shuffle(blight_shuffled)
 
-    # Initial Blight draw at game start (if Blight deck in play)
+    # Blight setup: one card, Healthy side up, 2 per player + 1.
+    blight_card = None
+    blight_side = None  # "healthy" | "still_healthy" | "blighted"
+    blight_pool = 0
     if blight_shuffled:
-        bc = blight_shuffled.pop(0)
+        blight_card = blight_shuffled.pop(0)
         metrics["blight_cards_drawn"] += 1
-        text = bc.get("text") or ""
-        metrics["blight_severity_accum"] += (
-            len(re.findall(r"\bdestroy\w*\b", text, re.IGNORECASE))
-            + len(re.findall(r"\badd \d* ?blight\b", text, re.IGNORECASE))
-            + len(re.findall(r"\bongoing\b", text, re.IGNORECASE)) * 2
-        )
+        blight_side = "healthy"
+        blight_pool = HEALTHY_BLIGHT_PER_PLAYER * players + SETUP_EXTRA_BLIGHT
+
+    def go_to_reverse(card: dict) -> None:
+        nonlocal blight_side, blight_pool
+        # Refill with that side's number per player; no +1 on a flip.
+        blight_pool += int(card.get("blight_per_player") or 0) * players
+        metrics["blight_severity_accum"] += blight_severity(card.get("text") or "")
+        if is_still_healthy(card):
+            blight_side = "still_healthy"
+        else:
+            blight_side = "blighted"
+            metrics["island_blighted"] = 1
+
+    fear_pool = 0
+    terror = 1
+    earned = 0
+    banked: list[dict] = []
 
     for turn in range(1, rounds + 1):
-        # Fear generated this turn (Gaussian around mean)
-        turn_fear = max(0, round(random.gauss(fear_per_turn_mean, fear_per_turn_stdev)))
-        fear_pool += turn_fear
+        # Spirit Phase: Fear generated this turn (placeholder rate).
+        fear_pool += max(0, round(random.gauss(fear_per_turn_mean, fear_per_turn_stdev)))
+        while fear_pool >= fear_per_card and fear_shuffled:
+            fear_pool -= fear_per_card
+            banked.append(fear_shuffled.pop(0))
+            earned += 1
+            if earned in dividers:
+                terror += 1  # Terror Level changes the moment the divider is reached
+            if not fear_shuffled:
+                metrics["fear_victory_reached"] = 1
 
-        # Resolve Fear threshold crossings & card draws
-        while fear_pool >= (fear_threshold_tl1 if terror == 1 else fear_threshold_tl2 if terror == 2 else 999):
-            if terror == 1:
-                fear_pool -= fear_threshold_tl1
-                terror = 2
-                stage = 1
-            elif terror == 2:
-                fear_pool -= fear_threshold_tl2
-                terror = 3
-                stage = 2
-            else:
-                break
-            # Draw the appropriate number of Fear cards per threshold: simplification
-            # — 1 card per threshold crossing at the TL we just left.
-            if fear_shuffled:
-                card = fear_shuffled.pop(0)
-                metrics["fear_drawn_total"] += 1
-                metrics["fear_drawn_by_stage"][f"stage_{stage}"] += 1
-                text = card.get(f"text_stage_{stage}") or ""
-                card_m = score_card_text(text)
-                metrics["fear_output"] += card_m["fear_amount"]
-                metrics["tokens_added"] += card_m["tokens_added"]
-                metrics["spirit_favor_hits"] += card_m["spirit_hits"]
-                metrics["invader_favor_hits"] += card_m["invader_hits"]
-
-        # Event draw (per turn if deck present)
+        # Invader Phase, Event step: Turn-1 Event is discarded unresolved.
         if event_shuffled:
             ec = event_shuffled.pop(0)
             metrics["events_drawn"] += 1
-            ev_text = " ".join(s.get("text") or "" for s in (ec.get("stages") or []))
-            card_m = score_card_text(ev_text)
-            metrics["fear_output"] += card_m["fear_amount"]
-            metrics["tokens_added"] += card_m["tokens_added"]
-            metrics["spirit_favor_hits"] += card_m["spirit_hits"]
-            metrics["invader_favor_hits"] += card_m["invader_hits"]
+            if turn > 1:
+                metrics["events_resolved"] += 1
+                resolve(" ".join(s.get("text") or "" for s in (ec.get("stages") or [])))
 
-        # Blight tick
-        blight_track += random.gauss(blight_per_turn_mean, 1.0)
-        if blight_track > 3 and blight_shuffled:
-            bc = blight_shuffled.pop(0)
-            metrics["blight_cards_drawn"] += 1
-            text = bc.get("text") or ""
-            metrics["blight_severity_accum"] += (
-                len(re.findall(r"\bdestroy\w*\b", text, re.IGNORECASE))
-                + len(re.findall(r"\badd \d* ?blight\b", text, re.IGNORECASE))
-                + len(re.findall(r"\bongoing\b", text, re.IGNORECASE)) * 2
-            )
-            blight_track = 0
+        # Fear step: earned cards resolve at the current Terror Level.
+        if not metrics["fear_victory_reached"]:
+            for card in banked:
+                metrics["fear_drawn_by_stage"][f"stage_{terror}"] += 1
+                resolve(card.get(f"text_stage_{terror}") or "")
+        banked.clear()
 
+        # Ravage/Build/Explore: net Blight change (placeholder rate), from Turn 2.
+        if blight_side and turn > 1 and not metrics["blight_loss_reached"]:
+            blight_pool -= round(random.gauss(blight_per_turn_mean, 1.0))
+            while blight_pool <= 0 and not metrics["blight_loss_reached"]:
+                if blight_side == "healthy":
+                    go_to_reverse(blight_card)
+                elif blight_side == "still_healthy":
+                    if not blight_shuffled:
+                        break
+                    blight_card = blight_shuffled.pop(0)
+                    metrics["blight_cards_drawn"] += 1
+                    go_to_reverse(blight_card)
+                else:
+                    metrics["blight_loss_reached"] = 1
+
+    metrics["fear_drawn_total"] = earned
     metrics["terror_level_final"] = terror
     metrics["fear_drawn_by_stage"] = dict(metrics["fear_drawn_by_stage"])
     metrics["tokens_added"] = dict(metrics["tokens_added"])
     return metrics
 
 
-def run_combo(combo_name: str, keys: list[str], fear, event, blight, trials: int, rounds: int, players: int) -> dict:
+def run_combo(combo_name: str, keys: list[str], fear, event, blight, trials: int,
+              rounds: int, players: int, fear_per_player: int) -> dict:
     fear_combo = load_combo_deck(fear, keys)
     # Events are B&C+ only (base has no Event deck). Skip when not in combo.
     has_events = "bnc" in keys or "je" in keys or "ni" in keys
-    event_combo = load_combo_deck(event, keys) if has_events else None
-    # Blight deck is also B&C+
-    has_blight = has_events
-    blight_combo = load_combo_deck(blight, keys) if has_blight else None
+    event_combo = None
+    if has_events:
+        event_combo = [c for c in load_combo_deck(event, keys)
+                       if c.get("name") not in FRANCE_ONLY_EVENTS]
+    # The core game has Blight Cards too (2 in the base box), so every combo
+    # draws one at setup.
+    blight_combo = load_combo_deck(blight, keys)
 
     results = []
     for _ in range(trials):
         r = simulate_game(
             fear_combo, event_combo, blight_combo,
-            rounds=rounds, players=players,
-            fear_per_turn_mean=2.5,  # typical — base games average ~2-3 fear/turn from spirits
-            fear_per_turn_stdev=1.0,
-            blight_per_turn_mean=0.5,
+            rounds=rounds, players=players, fear_per_player=fear_per_player,
+            fear_per_turn_mean=2.5,  # UNSOURCED placeholder, not a measured rate
+            fear_per_turn_stdev=1.0,  # UNSOURCED placeholder
+            blight_per_turn_mean=0.5,  # UNSOURCED placeholder
         )
         results.append(r)
 
-    # Aggregate per-metric
     def series(key):
         return [r[key] for r in results]
 
     def token_series(tok):
         return [r["tokens_added"].get(tok, 0) for r in results]
+
+    def stage_series(stage):
+        return [r["fear_drawn_by_stage"].get(stage, 0) for r in results]
 
     agg = {
         "combo_name": combo_name,
@@ -270,16 +340,26 @@ def run_combo(combo_name: str, keys: list[str], fear, event, blight, trials: int
         "trials": trials,
         "rounds_per_game": rounds,
         "players": players,
+        "fear_per_card": fear_per_player * players,
+        "fear_deck_layout": list(FEAR_DECK_LAYOUT),
         "pool_sizes": {
             "fear": len(fear_combo),
             "event": len(event_combo) if event_combo else 0,
-            "blight": len(blight_combo) if blight_combo else 0,
+            "blight": len(blight_combo),
         },
         "per_game": {
+            # Key name kept for scripts/gen-stats-chapters.py; value = cards earned.
             "fear_cards_drawn": mean_ci(series("fear_drawn_total")),
+            "fear_resolved_tl1": mean_ci(stage_series("stage_1")),
+            "fear_resolved_tl2": mean_ci(stage_series("stage_2")),
+            "fear_resolved_tl3": mean_ci(stage_series("stage_3")),
             "fear_output_total": mean_ci(series("fear_output")),
             "events_drawn": mean_ci(series("events_drawn")),
+            "events_resolved": mean_ci(series("events_resolved")),
             "blight_cards_drawn": mean_ci(series("blight_cards_drawn")),
+            "island_blighted": mean_ci(series("island_blighted")),
+            "blight_loss_reached": mean_ci(series("blight_loss_reached")),
+            "fear_victory_reached": mean_ci(series("fear_victory_reached")),
             "blight_severity_accum": mean_ci(series("blight_severity_accum")),
             "spirit_favor_hits": mean_ci(series("spirit_favor_hits")),
             "invader_favor_hits": mean_ci(series("invader_favor_hits")),
@@ -296,7 +376,12 @@ def main():
     p.add_argument("--trials", type=int, default=5000)
     p.add_argument("--rounds", type=int, default=8)
     p.add_argument("--players", type=int, default=1)
+    p.add_argument("--fear-per-player", type=int, default=FEAR_PER_PLAYER,
+                   help="Fear Markers per player per Fear Card: 4 by default; "
+                        "5 with England L6 or an extra board (Q6)")
     p.add_argument("--seed", type=int, default=42)
+    p.add_argument("--out-dir", type=Path, default=OUT_DIR,
+                   help="where to write sim_<combo>.json (default: %(default)s)")
     args = p.parse_args()
 
     random.seed(args.seed)
@@ -305,27 +390,34 @@ def main():
     event = deck_stats.load_deck(DECKS_DIR / "event.json") if (DECKS_DIR / "event.json").exists() else []
     blight = deck_stats.load_deck(DECKS_DIR / "blight.json") if (DECKS_DIR / "blight.json").exists() else []
 
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    out_dir = args.out_dir
+    out_dir.mkdir(parents=True, exist_ok=True)
     combined = {}
     for name, keys in COMBOS.items():
         print(f"Simulating {name} ({args.trials} trials, {args.rounds}-round, {args.players}p)...", file=sys.stderr)
-        agg = run_combo(name, keys, fear, event, blight, args.trials, args.rounds, args.players)
-        out = OUT_DIR / f"sim_{name}.json"
+        agg = run_combo(name, keys, fear, event, blight, args.trials, args.rounds,
+                        args.players, args.fear_per_player)
+        out = out_dir / f"sim_{name}.json"
         out.write_text(json.dumps(agg, indent=2) + "\n")
         print(f"  wrote {out}", file=sys.stderr)
         combined[name] = agg
 
-    (OUT_DIR / "_simulation_combined.json").write_text(json.dumps(combined, indent=2) + "\n")
-    print(f"\n=== per-game summary across combos ({args.trials} trials × {args.rounds} rounds, {args.players}p) ===")
-    print(f"{'combo':<16} {'fear_drawn':>12} {'fear_out':>10} {'ev':>4} {'blight':>7} {'+favor':>7} {'-favor':>7} {'net':>7}")
+    (out_dir / "_simulation_combined.json").write_text(json.dumps(combined, indent=2) + "\n")
+    print(f"\n=== per-game summary across combos ({args.trials} trials × {args.rounds} rounds, "
+          f"{args.players}p, {args.fear_per_player * args.players} Fear per card) ===")
+    print(f"{'combo':<12} {'earned':>6} {'TL1/TL2/TL3':>15} {'fear_out':>8} {'ev d/r':>7} "
+          f"{'blight':>6} {'blighted':>8} {'+favor':>7} {'-favor':>7} {'net':>7}")
     for name, a in combined.items():
         pg = a["per_game"]
+        tl = f"{pg['fear_resolved_tl1']['mean']:.2f}/{pg['fear_resolved_tl2']['mean']:.2f}/{pg['fear_resolved_tl3']['mean']:.2f}"
         print(
-            f"{name:<16} "
-            f"{pg['fear_cards_drawn']['mean']:>12.2f} "
-            f"{pg['fear_output_total']['mean']:>10.2f} "
-            f"{pg['events_drawn']['mean']:>4.1f} "
-            f"{pg['blight_cards_drawn']['mean']:>7.2f} "
+            f"{name:<12} "
+            f"{pg['fear_cards_drawn']['mean']:>6.2f} "
+            f"{tl:>15} "
+            f"{pg['fear_output_total']['mean']:>8.2f} "
+            f"{pg['events_drawn']['mean']:>3.1f}/{pg['events_resolved']['mean']:<3.1f} "
+            f"{pg['blight_cards_drawn']['mean']:>6.2f} "
+            f"{pg['island_blighted']['mean']:>8.2f} "
             f"{pg['spirit_favor_hits']['mean']:>7.2f} "
             f"{pg['invader_favor_hits']['mean']:>7.2f} "
             f"{pg['net_favor']['mean']:>+7.2f}"

@@ -22,13 +22,13 @@ This part gives you the mental models, the stat sources, and the reusable reason
 
 Four lenses run through every chapter:
 
-1. **Confidence, not point estimates.** A win rate of 60% across 10 games isn't 60% ± 0 — it's closer to (26%, 88%) via Wilson 95%. Every rate here reports a CI where data supports one.
+1. **Confidence, not point estimates.** A win rate of 60% across 10 games isn't 60% ± 0 — the Wilson 95% interval for 6 wins in 10 is about (31%, 83%). Every rate here reports a CI where data supports one.
 2. **Conditional on expansion pool.** The Minor deck at base-only is not the Minor deck at all-expansions. A "33% chance of drawing Moon-heavy" means different things in each pool.
 3. **Per-turn distributions, not per-game averages.** "Averages 6 fear/game" hides whether that's 6 evenly or 2+0+0+4+0. Shape is the signal.
-4. **Correlated vs. independent events.** Fear-card draws depend on fear-pool threshold crossings; Event draws are independent per turn. The math differs.
+4. **Exchangeable, not independent.** Each deck is a shuffled stack drawn without replacement, so draws are *exchangeable*, not independent: each unseen card is equally likely to be next, but every card you see changes the odds for the rest. The Event deck is not reshuffled (the Steam engine never does), so this holds for the whole game; a Power deck reshuffles its discard only when it runs out. The Turn-1 Event is drawn and discarded without resolving, and it is public, so it already shrinks the unseen Event pool by one. Fear Cards are earned, not drawn on a schedule: one card per 4 Fear per player, with the Terror Level rising when a divider is reached. Dice-style "independent per turn" math gives the wrong odds for both decks.
 
 ## Data provenance
 
 - **Wiki-parsed card data** — `data/decks/{minor,major,fear,event,blight}.json`, parsed by `scripts/wiki-fetch.py`.
 - **Monte Carlo simulations** — `scripts/deck-simulate.py` runs 5 000+ trials per expansion combo; outputs at `data/references/deck-stats/sim_*.json`.
-- **Community win-rate data** — [mindwanderer](https://mindwanderer.net/si/stats.html). Directional; subject to selection bias. Treated accordingly.
+- **Community win-rate data** — [mindwanderer](https://mindwanderer.net/si/stats.html). Spirit Island Digital games only, analyzed with regression models. Directional; subject to selection bias. Treated accordingly.

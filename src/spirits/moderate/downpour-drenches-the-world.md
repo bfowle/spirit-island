@@ -175,7 +175,7 @@ Adapted from [latentoctopus Opening 1](https://latentoctopus.github.io/guide/dow
 - Reclaims hand. +1 card. Income: 1E (track) + 2E banked = 3E.
 
 **T3 · Play** (3E, 2 CP): Gift of Abundance (+Repeat via Pour Down → double-gift to ally) + Dark Skies Loose a Stinging Rain on a Ravage land.
-- *Pause-point*: **First Ravage.** Rain-and-Mud L1 (1 Air + 3 Water) reachable? If not, Unbearable Deluge's Defend 3 covers one land instead.
+- *Pause-point*: **Ravage turn** (Ravages began T2). Rain-and-Mud L1 (1 Air + 3 Water) reachable? If not, Unbearable Deluge's Defend 3 covers one land instead.
 
 **T4 · Growth**: G2 or G3 — depending on card-hand state.
 

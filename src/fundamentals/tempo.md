@@ -6,32 +6,35 @@ This chapter gives you the vocabulary and the heuristics to reason about it deli
 
 ## What tempo actually is
 
-Tempo is **the rate at which you convert currencies into board effect per turn**.
+"Tempo" gets used for two different things. Keep them apart:
 
-There are three interacting tempo axes:
+- **Land tempo** — where each land sits in the Invader pipeline. Every land is somewhere on Explore → Build → Ravage: an Explore card this turn means a Build there next turn and a Ravage the turn after (see [Invader Lifecycle](./invader-lifecycle.md)). Land tempo is the Invaders' clock, land by land, and you read it off the Invader board.
+- **Economy momentum** — how fast your own engine grows: your per-turn Energy, Card Plays, and presence on the board.
 
-1. **Energy tempo** — how fast your per-turn energy grows.
-2. **Card-play tempo** — how fast your per-turn CP grows.
-3. **Presence tempo** — how fast you occupy the board, enabling targeting + damage sinks.
+Economy momentum has three interacting axes:
 
-The goal isn't to maximize all three. It's to **keep all three above the adversary's pressure curve** at every round. Go below the curve and you lose; go *far* above the curve and you over-invested in growth when you should have been stopping ravages.
+1. **Energy** — how fast your per-turn energy grows.
+2. **Card plays** — how fast your per-turn CP grows.
+3. **Presence** — how fast you occupy the board, enabling targeting and uncovering your tracks.
+
+The goal isn't to maximize all three. It's to **keep your economy ahead of the land tempo** at every round: enough Energy, Card Plays, and reach to deal with the lands about to Build and Ravage. Fall behind and the lands get away from you; go *far* ahead and you over-invested in growth when you should have been stopping ravages.
 
 ## The adversary's pressure curve
 
-Each adversary produces a pressure curve — a rising line of "how much board effect you need to deliver this turn to not fall behind." The shape varies:
+Each adversary bends the land tempo — the rising line of "how much board effect you need to deliver this turn to not fall behind." What each one actually changes (levels are cumulative):
 
-- **Brandenburg-Prussia** — *flat-early, steep-late*. T1–2 are calm; T5+ has Cities bombarding coasts.
-- **England** — *gradual rise, long tail*. Towns accumulate steadily; late-game they become Cities everywhere.
-- **Sweden** — *high-early, plateau*. You must defend hard T2–3; if you survive, scaling matters less.
-- **Russia** — *dahan-pressure, fear-blocked*. Kills dahan while suppressing your fear gain.
+- **Brandenburg-Prussia** — *a compressed deck*. L1 adds a Town to land #3 on each board at Setup. L2+ moves one Stage III card to just after Stage I, so a two-terrain card is Explored on Turn 3 at L2; L3 and L5 each remove a Stage I card, pulling it earlier, and L6 has no Stage I at all. The deck also shrinks (12 cards at L2, 8 at L6), so the Time-runs-out clock comes sooner. Escalation (Land Rush) adds a Town on each board with Towns/Cities, before the Explore.
+- **England** — *extra Builds*. Escalation (Building Boom) Builds in the land with the most Towns/Cities on each board; L1+ Builds in lands without Invaders next to 2+ Towns/Cities; L3+ adds a second Build slot (High Immigration) that Builds before each Ravage. Loss condition: 7+ Towns/Cities in a single land.
+- **Sweden** — *heavier Ravages*. L1+ adds an extra Blight on a Ravage with 4+ overkill; L3+ Towns deal 3 Damage and Cities 5; L5+ adds a Town next to any land a Ravage Blights. Escalation replaces Dahan with Towns after the Explore.
+- **Russia** — *Explorer pressure*. L1+ Explorers deal +1 Damage and Ravage Blight Destroys Beasts (feeding the Hunters Swarm loss condition); L2+ the first Explorer each Action would Destroy is Pushed instead, for 1 Fear; L3+ Ravage cards also match lands with 3+ Explorers; L4+ puts a Stage III card after each Stage II card. Escalation adds 2 Explorers among lands with Beasts on each board.
 
-Your opening choice should be a bet on your spirit's tempo matching this curve, not on the spirit's "power level" in abstract.
+Your opening choice should be a bet on your spirit's economy momentum keeping up with this land tempo, not on the spirit's "power level" in abstract.
 
-## The three tempo axes, one at a time
+## The three economy axes, one at a time
 
 ### Energy tempo
 
-Most spirits open at **1E per turn**. Some (Lightning) at 2E+, some (Fangs, Wildfire) well below effective income due to cost-heavy cards.
+From the Steam engine's presence-track data, 19 of the 34 Steam spirits open at **1E per turn**, 10 at 0E (e.g., Shadows, Wildfire, Ocean, Many Minds), and 5 at 2E (Bringer, Devouring Teeth, Keeper, Stone, Vital Strength). Read your own panel's leftmost Energy space.
 
 What raises energy tempo:
 - Growth slots that give +energy.
@@ -43,25 +46,24 @@ What raises energy tempo:
 
 ### Card-play tempo
 
-Most spirits open at **2CP** (sometimes 1CP). CP scaling is the tightest bottleneck past T3 for almost every spirit.
+From the same track data, 27 of the 34 Steam spirits open at **1CP** and 7 at 2CP (Breath of Darkness, Bringer, Dances Up Earthquakes, Trickster, Lightning, Fangs, Starlight). CP scaling is the tightest bottleneck past T3 for almost every spirit.
 
 What raises CP:
 - Growth slots that unlock +CP.
 - Reclaim — not a CP gain per se, but enables cycling the same 2 cards forever.
-- Rare spirit-specific mechanics (Many Minds' special rule; Fractured Days' engine).
+- Spirit-specific track spaces, where your panel shows them.
 
 **Heuristic**: if you're not playing your maximum CP every turn past T3, you've over-invested elsewhere. Holding cards is almost never correct for most spirits.
 
 ### Presence tempo
 
-Presence does three things at once — targeting, sacred sites, damage absorption. Tempo here is subtler.
+Presence does three things at once — targeting, sacred sites, and uncovering your tracks. Tempo here is subtler.
 
 What raises presence tempo:
 - Growth slots that place presence.
-- Spirit-specific mechanics (Fangs' Beasts, Many Minds' Beasts-as-presence).
-- Moving existing presence (Shroud, Shadows).
+- Moving existing presence (Shroud's Mists Shift and Flow; Shadows' Amorphous aspect; Fangs' presence moving with Beasts; Thunderspeaker's with Dahan).
 
-**Heuristic**: your presence count usually peaks around T3–T4, then gradually decays as ravages destroy it. If your presence count rises past T5, you're over-growing.
+**Heuristic**: Invaders never damage presence; your count usually falls because Blight added to one of your lands (or another effect) Destroys it. If the count is falling, ask which Ravages Blighted your lands and whether the land tempo showed them coming.
 
 ## Banking vs. spending
 
@@ -125,7 +127,6 @@ Log the answer in [`si-post-game`](../appendices/claude-skills-guide.md). Across
 ```admonish tip title="Pro Tip"
 - If you bank > 2 energy into next turn, you underspent. Play the card.
 - If you hold cards past T3 without a reclaim plan, you under-CP'd. Play them.
-- If your presence is still rising past T5, you over-grew. Shift to card plays.
 - If your adversary's L6 win rate on your spirit (per mindwanderer) is under 30%, your tempo assumption needs to be more aggressive than the default.
 ```
 
@@ -138,10 +139,13 @@ Log the answer in [`si-post-game`](../appendices/claude-skills-guide.md). Across
 
 ```admonish abstract title="Sources"
 - latentoctopus glossary (Gn, nE, nCP notation): https://latentoctopus.github.io/glossary/
+- Land tempo vs. economy momentum distinction: lumia's Spirit Island glossary, https://iam.lumia.gay/si_glossary
+- Adversary effects: the project rules register, `data/references/rules/register.md` §4 (engine `adversaries.json` cross-checked with the Wiki).
+- Starting Energy/CP counts: the Steam engine's `spirits.json` presence tracks.
 - Rei on Vengeance's late-game juggernaut scaling (a canonical tempo-arc example): BGG thread #2709070.
 - mindwanderer stats for per-spirit tempo shape validation: https://mindwanderer.net/si/stats.html
 ```
 
 ---
 
-*Last revised: 2026-04-19*
+*Last revised: 2026-10-19*

@@ -42,7 +42,7 @@ Before committing to typed-shorthand: remind Brett once that the si-live tool (`
 
 1. **Get the state** via path 1 → 2 → 3 above. Don't mix sources; pick one.
 2. **Consult the deliberate-play checklist** ([fundamentals/deliberate-play.md](../../src/fundamentals/deliberate-play.md)) for the current phase's pause-point questions. Use these to frame options.
-3. **Verify timing claims** against `si-rules-check` rules: invader-phase-by-turn (no Ravage T1/T2), Fast-vs-Slow innate element access, dormant-effect detection. If you're about to claim a Fast innate fires, sanity-check the Fast-phase element pool from that turn's plays only.
+3. **Verify timing claims** against `si-rules-check` rules: invader-phase-by-turn (no Ravage T1; first Ravage T2), innate element timing, dormant-effect detection. If you're about to claim an innate fires, total the turn's Elements: every card played this turn, Fast or Slow, plus uncovered Presence-track Elements. A Slow card's Elements count toward a Fast innate.
 4. **Read the spirit chapter** (if authored) for Tempo Profile row at this round + Common Mistakes + Strategy Cliffs.
 5. **Read the adversary chapter** (if authored) for the level-specific pressure this round.
 6. **Match Brett's question** to a decision category:

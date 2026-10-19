@@ -177,7 +177,7 @@ Auto-derived from `data/references/wiki/finder-of-paths-unseen.json`. This secti
 
 - **Setup**: Put 1 Presence on your starting board in land #3. Put 1 Presence on any board in land #1. Note that you have 6 Unique Power Cards.
 - **Starting income** (from `presence_energy_track[0]` = `—`, `presence_cardplay_track[0]` = `blank`): **0 Energy · 1 Card Play**
-- **Hand at start**: 4 Unique Power Cards (listed below)
+- **Hand at start**: 6 Unique Power Cards (see Element math below)
 - **Growth type**: `one` — pick **one** growth option per turn
 
 ### Growth options
@@ -205,12 +205,31 @@ Auto-derived from `data/references/wiki/finder-of-paths-unseen.json`. This secti
   - **L3** — 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon + 4 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air + 3 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water: Repeat this Power.
 - **CLOSE THE WAYS** (Speed: Fast · Range: 1 · Target: any)
 
-### Fast-phase element ceiling from Uniques
+### Element math from Uniques — every played card counts
 
-Fast innates resolve in Fast phase and can only see elements from **Fast cards played before the innate**. Slow-card elements arrive too late to feed a Fast innate. This is the element ceiling Fast plays from your Uniques alone can contribute each turn:
+Both innates are Fast (engine `spirits.json`). Their thresholds check every Element you have this turn: each card played in the Spirit Phase grants its Elements from the moment it's played, Fast or Slow, and uncovered Presence-track Element spaces count too (Core rulebook pp.14, 16; `data/references/rules/open-questions.md` Q10). So Slow Uniques feed the Fast innates on the turn you play them.
 
-- Fast-phase Unique elements: _(no Fast Uniques — all innate firings require drafted Fast cards)_
-- **Fast-phase L1 ceiling from Uniques alone is insufficient** — need 2 <img class="si" src="/spirit-island/theme/icons/element-moon.png" alt="Moon"> Moon, Uniques give 0; need 2 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air, Uniques give 0. L1 only fires T1 with a drafted Fast Minor providing the shortfall element(s).
+The Wiki parse below missed the Uniques. The engine (`power_cards.json`) lists six:
+
+| Unique | Cost | Speed | Elements |
+|--------|------|-------|----------|
+| A Circuitous and Wending Journey | 0 | Slow | Moon, Air |
+| Aid from the Spirit-Speakers | 2 | Fast | Sun, Fire, Air, Animal |
+| Offer Passage Between Worlds | 1 | Fast | Sun, Moon, Air |
+| Paths Tied by Nature | 0 | Slow | Sun, Air, Earth, Plant |
+| Traveler's Boon | 0 | Fast | Moon, Air, Water |
+| Ways of Shore and Heartland | 1 | Slow | Air, Water, Earth |
+
+Close the Ways thresholds (engine; each level is a separate Power, "Isolate target land"): 2 <img class="si" src="/spirit-island/theme/icons/element-water.png" alt="Water"> Water + 1 <img class="si" src="/spirit-island/theme/icons/element-air.png" alt="Air"> Air · 2 Earth + 2 Air · 2 Plant + 3 Air.
+
+**Reach from Uniques alone** (every Unique carries Air; no card lists an Element twice):
+
+- **Lay Paths L1 (2 Moon + 2 Air)**: any two of Circuitous / Offer Passage / Traveler's Boon. Cheapest: Circuitous (Slow) + Traveler's Boon → **0E, 2 Card Plays**.
+- **Lay Paths L2 (2 Sun + 2 Air)**: any two of Aid / Offer Passage / Paths Tied. Cheapest: Paths Tied (Slow) + Offer Passage → **1E, 2 Card Plays**.
+- **Lay Paths L3 (2 Moon + 4 Air + 3 Water)**: only Traveler's Boon and Ways carry Water among the Uniques, so the third Water must come from a Presence-track Water space or a drafted card.
+- **Close the Ways**: Water level — Traveler's Boon + Ways (1E). Earth level — Paths Tied + Ways (1E). Plant level — Paths Tied is the only Plant Unique, so the second Plant must come from a drafted card.
+- **1-Card-Play turns**: no Unique gives 2 of any Element, so on 1 CP no innate level fires from Uniques alone unless Presence-track Elements make up the gap. You start at 1 CP; G2's "+1 Card Play this turn" makes T1 a 2-play turn at 0E — enough for Circuitous + Traveler's Boon (Lay Paths L1).
+- **Presence-track Elements** (engine `presenceTrackNodes`): Finder's tracks include Sun, Earth, Moon, Water, and Air spaces; each uncovered one adds its Element every turn. The first spaces off the starting slots give Sun (top) or Earth (bottom).
 
 ### Unique Power Cards
 
@@ -220,9 +239,9 @@ Fast innates resolve in Fast phase and can only see elements from **Fast cards p
 
 | Turn | Explore | Build | Ravage | Notes |
 |------|---------|-------|--------|-------|
-| 1 | ✓ | — | — | Ravage-protection effects are **dormant T1**. |
-| 2 | ✓ | ✓ | — | First Build; Ravage-protection still dormant. |
-| 3 | ✓ | ✓ | ✓ | First Ravage; Ravage-protection becomes material. |
+| 1 | ✓ | ✓ | — | Ravage-protection effects are **dormant T1**. First Build (Setup's Explore card). |
+| 2 | ✓ | ✓ | ✓ | **First Ravage** (Setup's card); Ravage-protection becomes material. |
+| 3 | ✓ | ✓ | ✓ | Ravage continues. |
 | 4+ | ✓ | ✓ | ✓ | Full cycle continues. |
 
 Adversary escalation can shift this — check the adversary JSON for deviations (Sweden front-loads a Build; some Habsburg levels add early Builds).
@@ -232,8 +251,8 @@ Adversary escalation can shift this — check the adversary JSON for deviations 
 ```admonish warning title="Before claiming what T1 does"
 1. **Compute post-growth E/CP** for every growth × track-choice branch. Don't assume both tracks reveal simultaneously.
 2. **Enumerate legal T1 plays** — subsets of hand with sum(costs) ≤ E and count ≤ CP.
-3. **Separate Fast vs. Slow elements** — when claiming an innate fires, verify the threshold is met using only elements from its resolution phase (Fast sees Fast; Slow sees Fast + Slow).
-4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1/T2** in base play. Only cite them as opener value when the trigger actually occurs that turn.
+3. **Total the turn's Elements** — when claiming an innate fires, count every card played this turn, Fast or Slow, plus uncovered Presence-track Elements. A Slow card's Elements count toward a Fast innate (Core rulebook p.16; `open-questions.md` Q10).
+4. **Flag dormant effects** — Ravage-protection, Defend N, etc. are **null T1** in base play (the first Ravage is T2). Only cite them as opener value when the trigger actually occurs that turn.
 5. **State per-turn material effect** for every card play: Fear generated, units pushed/gathered/destroyed, elements contributed. Never narrate dormant effects as if they were active.
 ```
 

@@ -37,7 +37,7 @@ Laminate this. Or keep a notecard. Or paste it inside the box. Every turn, in ev
 ### Fast Power phase
 
 1. **In what order do I resolve Fast cards + Fast innates?** Order matters — e.g., a Gather that moves Dahan into a land enables a conditional Fear on a later Slow play.
-2. **What elements are in the pool as each Fast innate threshold is checked?** Fast innates see only Fast-played elements. Write it out if you're not sure.
+2. **What's my Element total, and which innate levels does it meet?** Every card you played this turn grants its Elements from the moment you played it, Fast or Slow, so a Slow card's Elements count for a Fast innate. Add uncovered Presence-track Elements (if you haven't yet chosen a Presence-track "Any" Element, choose it now; it stays fixed until next turn). Write it out if you're not sure.
 3. **Are there Dahan movements / damage / explorations triggered by my Fast effects?** Resolve the board consequences fully, one effect at a time.
 
 ### Invader phase
@@ -49,7 +49,7 @@ Laminate this. Or keep a notecard. Or paste it inside the box. Every turn, in ev
 ### Slow Power phase
 
 1. **In what order do I resolve Slow cards + Slow innates?** Again, order matters — a Push that removes an Invader before a Fear-conditional evaluates can make/break the conditional.
-2. **Now the full turn's element pool is visible to Slow innates.** Re-check thresholds.
+2. **Has my Element total changed since the Fast phase?** It's the same total your Fast innates checked, unless something changed it mid-turn: a Presence-track Element uncovered, a card played mid-turn, or a card Forgotten from play. If it changed, re-check thresholds.
 3. **Did any Event / Blight / other side-effect happen this turn that I need to factor into the end state?**
 
 ### Time Passes
@@ -69,10 +69,10 @@ Every 2–3 rounds, step back and re-evaluate at a higher altitude:
 
 | Auto-pilot failure                                                     | Remediation                                                                                          |
 |------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
-| Playing Concealing / Defend / Ravage-protection cards on no-Ravage turns | Check the invader deck's current T-column: no Ravage → these cards are 1 Fear + elements only. Don't narrate their protection effect as T1/T2 value. |
+| Playing Concealing / Defend / Ravage-protection cards on no-Ravage turns | Check the invader deck's current T-column: no Ravage → these cards are 1 Fear + elements only. Don't narrate their protection effect as Turn 1 value (the first Ravage is Turn 2). |
 | Picking a growth option by habit                                       | Compute income for at least two growth × track branches before choosing.                              |
 | Targeting a Power on the land with your presence rather than the highest-leverage land | Check range-extension options (spirit's special rule + Shadows-of-the-Dahan-style rules) before narrowing to R0 targets. |
-| Claiming your innate "fires this turn" without checking phase          | Fast innates see only Fast elements. Slow innates see Fast + Slow. Elements don't persist across turns. Recount at each resolution. |
+| Claiming your innate "fires this turn" without totaling Elements       | Total every card played this turn (Fast and Slow alike) plus uncovered Presence-track Elements; that total applies to Fast and Slow innates. Card Elements don't persist across turns. Recount when an Element is gained or lost mid-turn. |
 | Executing the opener verbatim T4+                                      | Openers rehearse T1–T3. T4+ is adaptive play by definition. Name the pivot trigger at T3's end.       |
 | Treating Wiki-suggested cards as draft priority                        | Wiki-suggested = HoSI beginner-deck bundle. Full-pool draft ranks by element alignment + cost curve + synergy, not by who packaged which starter deck. |
 
@@ -87,7 +87,7 @@ Every 2–3 rounds, step back and re-evaluate at a higher altitude:
 
 If you only have energy for one pause per turn, make it **Growth**. Wrong growth choice at T1 is the single biggest correctable swing in a Spirit Island game: it compounds for eight rounds. Growth is where auto-pilot costs the most.
 
-If you have energy for two pauses per turn, add the **pre-Fast-phase element tally** — before playing any Fast card, count the elements your planned Fast plays will produce in Fast phase. This catches the "my innate fires because I have the right total elements" error where the total includes Slow elements the Fast innate will never see.
+If you have energy for two pauses per turn, add the **pre-play element tally**: before committing your cards, total the Elements of every card you plan to play, Fast and Slow alike, plus uncovered Presence-track Elements, and check each innate's thresholds. This catches the "one Element short" turn while you can still swap a card. It also catches the opposite error: holding back a Slow card because you think its Elements arrive too late for a Fast innate. They don't. You gain a card's Elements the moment you play it.
 
 Three pauses: add the **end-of-turn pivot check**. "Does my 3-turn plan still apply?" If yes, continue. If no, spend 30 seconds naming the new plan before Time Passes.
 

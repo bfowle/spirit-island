@@ -11,7 +11,11 @@ Two numbers per round:
 1. **Income** — what your presence track + growth produces this turn.
 2. **Spend** — what your playable hand actually costs.
 
-Target: income ≈ spend + 1 (a small buffer). Equality is fine; banking > 2 is usually wrong; spending more than income means you gained a Major you can't afford.
+Target: income ≈ spend + 1 (a small buffer). Equality is fine; banking > 2 is usually wrong. Spending more than this turn's income is only possible from Energy banked earlier (unspent Energy carries over); if you need to do that every turn, you gained cards your curve can't afford.
+
+```admonish example title="What to compute"
+There is no universal per-round target: income depends on which Growth options you pick. Compute your own curve. Income on turn N = the highest uncovered number on your Energy track (after the presence you have added from it) + any Energy that turn's Growth gives. Spend = the cost of the cards you plan to play. Take the track arrays from your panel or from the [`si-rules-check`](../appendices/claude-skills-guide.md) skill, write down the growth sequence you plan for T1–T5, and fill in income and spend per turn. The archetypes below describe shapes to compare against, not numbers to hit.
+```
 
 ## The four curve archetypes
 
@@ -19,31 +23,9 @@ Target: income ≈ spend + 1 (a small buffer). Equality is fine; banking > 2 is 
 
 Example: Vital Strength of the Earth, Keeper of the Forbidden Wilds.
 
-| Round | Target income | Target spend |
-|-------|---------------|--------------|
-| 1     | 1E            | 0–1E         |
-| 2     | 1E            | 0–1E         |
-| 3     | 2E            | 1–2E         |
-| 4     | 2E            | 2E           |
-| 5     | 3E            | 3E           |
-| 6     | 3–4E          | 3–4E (Major) |
-| 7     | 4E            | 4E (Major + minor) |
-| 8     | 4E+           | 4E+          |
-
 Slow-ramp banks 1E through T2–T3 to afford T5 Majors. Deviation cost: skipping the bank means no Major on T5, and the archetype fails.
 
 ### 2. Fast-energy (Lightning, high-E Horizons spirits)
-
-| Round | Target income | Target spend |
-|-------|---------------|--------------|
-| 1     | 2E            | 1–2E         |
-| 2     | 2E            | 2E           |
-| 3     | 2–3E          | 2–3E         |
-| 4     | 3E            | 3E           |
-| 5     | 3–4E          | 3E+          |
-| 6     | 4E            | 3–4E         |
-| 7     | 4E            | 3–4E         |
-| 8     | 4E            | 3–4E         |
 
 Fast-energy spends aggressively — cards cycle, presence lands, and the spirit's pressure stays constant. Banking > 1E past T3 indicates you dropped a play.
 
@@ -51,141 +33,116 @@ Fast-energy spends aggressively — cards cycle, presence lands, and the spirit'
 
 Example: Downpour, Many Minds, Shroud (openings 1–2), Fangs.
 
-| Round | Target income | Target spend |
-|-------|---------------|--------------|
-| 1     | 1E            | 0–1E         |
-| 2     | 1E            | 0–1E         |
-| 3     | 1–2E          | 1–2E         |
-| 4     | 2E            | 2E           |
-| 5     | 2E            | 2E           |
-| 6     | 2E            | 2E           |
-| 7     | 2–3E          | 2–3E         |
-| 8     | 3E            | 3E           |
-
 Flat-cheap lives on 0–1 cost Minors. Income rarely clears 3E because it doesn't need to. Banking = error (you drafted the wrong Minors).
 
 ### 4. Late-spike (Vengeance, Serpent)
 
-| Round | Target income | Target spend |
-|-------|---------------|--------------|
-| 1     | 1E            | 0–1E         |
-| 2     | 1E            | 1E           |
-| 3     | 1–2E          | 1–2E         |
-| 4     | 2E            | 2E           |
-| 5     | 2E            | 2E           |
-| 6     | 3E            | 3E           |
-| 7     | 4–5E          | 4–5E         |
-| 8     | 5–8E          | 5–8E         |
-
 Late-spike lives for T7–T8. Early turns are weak by design; late turns are game-ending.
 
-## Per-spirit energy targets (Brett-priority)
+## Per-spirit energy tracks
 
-All 39 spirits below. Targets are directional; revisions per spirit land as each chapter is authored.
+All 37 spirits below. The numbers are each spirit's starting Energy per turn and the highest Energy space on its presence tracks, from the Steam engine's track data (`spirits.json`); the three spirits not yet in Steam are marked. Your T3 and T5 income falls between the two, depending on how many Energy-track spaces your growth uncovers by then — compute it as above. Physical panels are the ground truth if they differ.
 
 **Base (8)**:
 
-| Spirit                        | Curve          | T3 target E income | T5 target E income |
-|-------------------------------|----------------|---------------------|---------------------|
-| River Surges in Sunlight      | Mid            | 2E                  | 3E                  |
-| Lightning's Swift Strike      | Fast-energy    | 2–3E                | 3E                  |
-| Shadows Flicker Like Flame    | Flat-cheap     | 1E                  | 2E                  |
-| Vital Strength of the Earth   | Slow-ramp      | 2E                  | 3–4E                |
-| Ocean's Hungry Grasp          | Mid            | 2E                  | 3E                  |
-| A Spread of Rampant Green     | Slow-ramp-ish  | 1–2E                | 3E                  |
-| Thunderspeaker                | Fast-energy    | 2E                  | 3E                  |
-| Bringer of Dreams and Nightmares | Flat-cheap  | 1E                  | 2E                  |
+| Spirit | Curve | Starting E income | Highest Energy space |
+|---|---|---|---|
+| River Surges in Sunlight | Mid | 1E | 5E |
+| Lightning's Swift Strike | Fast-energy | 1E | 5E |
+| Shadows Flicker Like Flame | Flat-cheap | 0E | 6E |
+| Vital Strength of the Earth | Slow-ramp | 2E | 8E |
+| Ocean's Hungry Grasp | Mid | 0E | 2E |
+| A Spread of Rampant Green | Slow-ramp-ish | 0E | 3E |
+| Thunderspeaker | Fast-energy | 1E | 3E |
+| Bringer of Dreams and Nightmares | Flat-cheap | 2E | 5E |
 
 **Branch & Claw (2)**:
 
-| Spirit                        | Curve          | T3 target E income | T5 target E income |
-|-------------------------------|----------------|---------------------|---------------------|
-| Sharp Fangs Behind the Leaves | Flat-cheap     | 1E                  | 2E                  |
-| Keeper of the Forbidden Wilds | Slow-ramp      | 2E                  | 3–4E                |
+| Spirit | Curve | Starting E income | Highest Energy space |
+|---|---|---|---|
+| Sharp Fangs Behind the Leaves | Flat-cheap | 1E | 4E |
+| Keeper of the Forbidden Wilds | Slow-ramp | 2E | 9E |
 
 **Promo — Feather & Flame (2)**:
 
-| Spirit                        | Curve          | T3 target E income | T5 target E income |
-|-------------------------------|----------------|---------------------|---------------------|
-| Heart of the Wildfire         | Flat-cheap (tight) | 1E              | 2E                  |
-| Serpent Slumbering Beneath the Island | Late-spike | 1E              | 2E (spike T6+)      |
+| Spirit | Curve | Starting E income | Highest Energy space |
+|---|---|---|---|
+| Heart of the Wildfire | Flat-cheap (tight) | 0E | 3E |
+| Serpent Slumbering Beneath the Island | Late-spike | 1E | 12E (track branches; read the panel) |
 
 **Promo Pack 2 (2)**:
 
-| Spirit                        | Curve          | T3 target E income | T5 target E income |
-|-------------------------------|----------------|---------------------|---------------------|
-| Downpour Drenches the World   | Flat-cheap     | 1–2E                | 2–3E                |
-| Finder of Paths Unseen        | Mid            | 2E                  | 3E                  |
+| Spirit | Curve | Starting E income | Highest Energy space |
+|---|---|---|---|
+| Downpour Drenches the World | Flat-cheap | 1E | 2E |
+| Finder of Paths Unseen | Mid | 0E | 2E, plus "+Energy" spaces (track branches; read the panel) |
 
 **Horizons (5)**:
 
-| Spirit                        | Curve          | T3 target E income | T5 target E income |
-|-------------------------------|----------------|---------------------|---------------------|
-| Devouring Teeth Lurk Underfoot | Mid           | 2E                  | 2–3E                |
-| Eyes Watch from the Trees     | Mid            | 2E                  | 2–3E                |
-| Fathomless Mud of the Swamp   | Mid            | 2E                  | 2–3E                |
-| Rising Heat of Stone and Sand | Mid            | 2E                  | 3E                  |
-| Sun-Bright Whirlwind          | Mid            | 2E                  | 3E                  |
+| Spirit | Curve | Starting E income | Highest Energy space |
+|---|---|---|---|
+| Devouring Teeth Lurk Underfoot | Mid | 2E | 7E |
+| Eyes Watch from the Trees | Mid | 1E | 4E |
+| Fathomless Mud of the Swamp | Mid | 1E | 5E |
+| Rising Heat of Stone and Sand | Mid | 1E | 5E |
+| Sun-Bright Whirlwind | Mid | 1E | 6E |
 
 **Jagged Earth (10)**:
 
-| Spirit                        | Curve          | T3 target E income | T5 target E income |
-|-------------------------------|----------------|---------------------|---------------------|
-| Shifting Memory of Ages       | Mid            | 2E                  | 3E                  |
-| Grinning Trickster Stirs Up Trouble | Mid (via innate) | 1–2E          | 2–3E                |
-| Many Minds Move as One        | Flat-cheap     | 1E                  | 2E                  |
-| Shroud of Silent Mist         | Flat-cheap     | 1E                  | 2E                  |
-| Vengeance as a Burning Plague | Late-spike     | 1E                  | 2E (spike T7+)      |
-| Volcano Looming High          | Mid            | 2E                  | 3E                  |
-| Stone's Unyielding Defiance   | Slow-ramp      | 2E                  | 3–4E                |
-| Lure of the Deep Wilderness   | Mid            | 2E                  | 3E                  |
-| Fractured Days Split the Sky  | Mid-high       | 2–3E                | 3–4E                |
-| Starlight Seeks Its Form      | Flexible       | form-dependent      | form-dependent      |
+| Spirit | Curve | Starting E income | Highest Energy space |
+|---|---|---|---|
+| Shifting Memory of Ages | Mid | 0E | 6E |
+| Grinning Trickster Stirs Up Trouble | Mid (via innate) | 1E | 3E |
+| Many Minds Move as One | Flat-cheap | 0E | 4E |
+| Shroud of Silent Mist | Flat-cheap | 0E | 2E |
+| Vengeance as a Burning Plague | Late-spike | 1E | 4E |
+| Volcano Looming High | Mid | 1E | 5E |
+| Stone's Unyielding Defiance | Slow-ramp | 2E | 6E |
+| Lure of the Deep Wilderness | Mid | 1E | 5E |
+| Fractured Days Split the Sky | Mid-high | 1E | 3E |
+| Starlight Seeks Its Form | Flexible | 1E | 4E (track is shaped in play; read the panel) |
 
-**Nature Incarnate (10)**:
+**Nature Incarnate (8)**:
 
-| Spirit                        | Curve          | T3 target E income | T5 target E income |
-|-------------------------------|----------------|---------------------|---------------------|
-| Ember-Eyed Behemoth           | Mid-high       | 2–3E                | 3–4E                |
-| Hearth-Vigil                  | Mid            | 2E                  | 3E                  |
-| Towering Roots of the Jungle  | Slow-ramp      | 2E                  | 3E                  |
-| Breath of Darkness Down Your Spine | Mid       | 2E                  | 3E                  |
-| Relentless Gaze of the Sun    | Mid            | 2E                  | 3E                  |
-| Wandering Voice Keens Delirium | Mid           | 2E                  | 3E                  |
-| Wounded Waters Bleeding       | Mid            | 2E                  | 3E                  |
-| Dances Up Earthquakes         | Mid            | 2E                  | 3E                  |
-| Covets Gleaming Shards of Earth | Slow-ramp    | 2E                  | 3–4E                |
-| Ferocious Warrior of the Lost Lands | Mid      | 2E                  | 3E                  |
+| Spirit | Curve | Starting E income | Highest Energy space |
+|---|---|---|---|
+| Ember-Eyed Behemoth | Mid-high | 0E | 5E |
+| Hearth-Vigil | Mid | not in Steam; read the panel | not in Steam; read the panel |
+| Towering Roots of the Jungle | Slow-ramp | 1E | 6E |
+| Breath of Darkness Down Your Spine | Mid | 1E | 5E |
+| Relentless Gaze of the Sun | Mid | not in Steam; read the panel | not in Steam; read the panel |
+| Wandering Voice Keens Delirium | Mid | 0E | 4E |
+| Wounded Waters Bleeding | Mid | not in Steam; read the panel | not in Steam; read the panel |
+| Dances Up Earthquakes | Mid | 1E | 4E, plus Impending Energy spaces (read the panel) |
 
 ## Deviation cost
 
 Falling 1E below curve for 1 turn costs you ~1 card play.  
-Falling 1E below curve for 3 turns compounds to ~3 missed plays = usually a lost game at L5+.  
+Falling 1E below curve for 3 turns compounds to ~3 missed plays.  
 Banking 2+ E over curve means you missed a play; the extra energy doesn't make up for it.
 
 ## When to deviate on purpose
 
 - **Save for a Major next turn**: legitimate bank. Limit: 1 turn.
-- **Scenario-specific**: some scenarios (Powers Long Forgotten) forbid certain cards, forcing banking.
-- **Emergency defend**: burning 2E on A Year of Perfect Stillness saves a game; worth spiking out-of-curve for one turn.
+- **Scenario-specific**: some scenarios change costs or plays. In Powers Long Forgotten, one Invader benefit makes Fire Powers cost an extra Energy to Damage/Destroy Invaders, and another limits Spirits to 1 Card Play next turn — both can force a bank.
+- **Emergency stop**: burning 3E on A Year of Perfect Stillness (Vital Strength's Unique: Invaders skip all Actions in the target land this turn) can save a game; ask whether it's worth spiking out-of-curve for one turn.
 
 ## Repeat-a-Power — the hidden energy multiplier
 
-Repeat effects (Gift of Strength, Powerstorm, many Innates with a "Repeat this Power" line, Heart of the Wildfire's Fire-Consume-Fire pattern) don't show up on your curve — but they double a turn's effective card-play economy when they fire. Treat them as a separate axis:
+Repeat effects (Vital Strength's Gift of Strength innate; the Major Power Powerstorm; innate tiers that read "Repeat this Power," such as A Spread of Rampant Green's Creepers Tear into Mortar, Finder's Lay Paths They Cannot Help But Walk, Lure's two innates, and Stone's Let Them Break Themselves Against the Stone) don't show up on your curve — but they can double a turn's effective card-play economy when they fire. Treat them as a separate axis:
 
-- **Per-play value**: a 2-cost Minor with an effect worth ~X is normally X per play. Repeated, it's 2X for the same 2 energy. The energy-per-effect rate halves.
-- **CP cost**: Repeat costs one CP (you played the Power) but generates two effects. On a 2-CP turn, that's half your effect-generation pipeline doubled.
-- **Element count**: Repeating a Power re-counts its elements *for threshold purposes*? **No** — elements are counted per-card-played, not per-instance-resolved. Check specific text: some Repeats explicitly re-count elements; most do not.
+- **Per-play value**: a 2-cost Minor with an effect worth ~X is normally X per play. Repeated, it's 2X. Read whether your Repeat makes you pay the cost again: Powerstorm does ("by paying its cost again"), so you get 2X for 4 Energy and save only the Card Play; Gift of Strength's text asks for no payment but only reaches cards costing 1 or less.
+- **CP cost**: the card is played once (one CP) and resolves twice. On a 2-CP turn, that's half your effect-generation pipeline doubled.
+- **Element count**: Repeating a Power re-counts its elements *for threshold purposes*? **No** — elements come from cards played, not from each resolution. Check the specific Repeat's text.
 
 Strategic implications:
 
-- A Repeat-capable spirit (Lightning natively via Powerstorm; Keeper via Innate; anyone holding Gift of Strength) prices its Majors differently. A 4-cost Major that Repeats is ~2-cost-per-effect. This is why Lightning over-performs in Major-heavy builds despite its thin CP pool.
+- A Repeat-capable spirit prices its cards differently. Vital Strength's Gift of Strength makes every 0- and 1-cost card worth more to them (and to the Spirit they target); a spirit holding Powerstorm saves Card Plays, not Energy.
 - Repeat-on-Innate (Lay Paths They Cannot Help But Walk's Level-3 "Repeat this Power") is the element-thresholds-matter-most kind of Repeat. Draft minors that feed the threshold; the Innate pays back twice.
-- **Not every repetition is a Repeat**: some Powers say "double this effect" which resolves in-instance, not as a full re-play. Check text.
 
-Draft heuristic: if your spirit has native Repeat access, add roughly **20–30% to the effective value** of any Power that would be Repeat-target legal. This often flips a borderline Minor into a pick.
+Draft heuristic: if your spirit has native Repeat access, ask what each Repeat-legal Power in the offer is worth played twice, and price the offer on that. This often flips a borderline Minor into a pick.
 
-Source: community discussion at [BGG thread 3061696 — Repeating Slow Power Card with Fast Innate](https://boardgamegeek.com/thread/3061696/repeating-slow-power-card-with-fast-innate-power); rules detail at [Wiki — Repeat](https://spiritislandwiki.com/index.php?title=Repeat).
+Card and innate texts: the Steam engine's `power_cards.json` and `spirits.json`. Source: community discussion at [BGG thread 3061696 — Repeating Slow Power Card with Fast Innate](https://boardgamegeek.com/thread/3061696/repeating-slow-power-card-with-fast-innate-power); rules detail at [Wiki — Repeat](https://spiritislandwiki.com/index.php?title=Repeat).
 
 ## Cross-references
 
@@ -195,4 +152,4 @@ Source: community discussion at [BGG thread 3061696 — Repeating Slow Power Car
 
 ---
 
-*Last revised: 2026-04-19*
+*Last revised: 2026-10-19*

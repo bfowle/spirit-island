@@ -4,7 +4,11 @@ Most spirit chapters rate a preferred draft bias: **Minor-heavy**, **Major-heavy
 
 ## The arithmetic
 
-Drafting a Major: 3-card-view-pick-1, costs ≥3 Energy to play, gates on elemental threshold. Drafting a Minor: 4-card-view-pick-1 (or 2-pick-1 per growth), costs 0-2 Energy, no elemental gate.
+Gaining either kind is the same draw: draw 4 from the chosen deck, keep 1, and put the other 3 in that deck's discard (core rulebook, "Gaining Power Cards"; `data/references/rules/open-questions.md` Q9). A Major also makes you Forget a Power Card unless the effect waives it.
+
+- **Major cost:** 2 to 9 Energy. Nine of the 78 Majors cost 2, among them Entwined Power and The Trees and Stones Speak of War (base game) and Tigers Hunting (Branch & Claw); 22 cost 3 (engine card list `power_cards.json`, `powerType` "Major", `energyCost`; the wiki card data agrees).
+- **Minor cost:** 0 or 1 Energy (36 cost 0 and 64 cost 1 in the active pool of 100, per the wiki card data; the engine list agrees once the dropped Growth Through Sacrifice is set aside).
+- **Thresholds are a bonus, not a gate.** You can play a Major for its base effect without meeting its Elemental Threshold; the threshold only adds its extra effect when you have the Elements (core rulebook, "Elemental Thresholds": optional effects you may use only with those Elements). Most Majors print a threshold; a few Minors do too (the engine list encodes one on, for example, Drought and Renewing Rain).
 
 **EV per draft:**
 
@@ -13,7 +17,7 @@ Drafting a Major: 3-card-view-pick-1, costs ≥3 Energy to play, gates on elemen
 
 Low-income spirits (most base-complexity) struggle to play Majors fast enough to amortize the draft opportunity cost. Minor-heavy wins for them.
 
-High-income spirits (Stone's Unyielding Defiance, Starlight, Serpent) or energy-banking growths (Shadows G3, Ocean G3) can afford 3-6E Majors and have the CP to play them alongside cheap Minors.
+High-income spirits (Stone's Unyielding Defiance, Starlight, Serpent) or energy-banking growths (Shadows G3, Ocean G3) can afford the 4+ Energy Majors and have the CP to play them alongside cheap Minors. A 2-cost Major is within reach of almost anyone, so its cost is rarely the reason to skip it.
 
 ## Draft bias by archetype
 
@@ -27,18 +31,20 @@ High-income spirits (Stone's Unyielding Defiance, Starlight, Serpent) or energy-
 | Control/presence (Serpent, Lure) | 2-4E | 2-3 | **Mixed** |
 | Complex late-game (Fractured Days, Wandering Voice) | 2-4E | 2-3 | **Major-heavy** |
 
+The income and CP ranges are rough authoring estimates, not computed from presence-track data; check the spirit's chapter for its actual tracks.
+
 ## Pool-dilution effect
 
-Per [Expansion Dilution Claims](expansion-dilution-claims.md):
+Mean "N Fear" printed in each card's base effect (threshold text excluded), from `scripts/expansion-deltas.py` run on the current wiki card data (see also [Expansion Dilution Claims](expansion-dilution-claims.md), whose base-game rows, n = 41 Majors and 50 Minors, don't match the current 22- and 36-card base pools):
 
-- Base Major pool mean: **1.05 fear/card**
-- B&C Majors: **2.00** (peak)
-- JE Majors: **1.04**
-- **NI Majors: 0.83** (lowest)
+- Base Majors (22 cards): **1.18 fear/card**
+- B&C Majors (21): **2.00** (peak)
+- JE Majors (23): **1.04**
+- **NI Majors (12): 0.83** (lowest)
 
-**Implication**: more expansions → *less* raw Fear per average Major draft. This partially compensates the Minor pool expansion (B&C Minors 0.67 vs. base 0.58).
+**Implication**: across all expansions, Majors print 102 Fear over 78 cards (102 ÷ 78 ≈ 1.31 per card) against 26 ÷ 22 ≈ 1.18 in base alone. B&C's Majors pull the average up and NI's pull it down (base + B&C + JE: 92 ÷ 66 ≈ 1.39). Minors go from 18 ÷ 36 = 0.50 in base to 58 ÷ 100 = 0.58 with everything; B&C Minors average 20 ÷ 30 ≈ 0.67.
 
-So all-expansions games have a subtly different Minor-vs-Major balance than base-only. In base, Major drafts are more rewarding on average. In all-expansions, Minor advantage grows.
+So all-expansions games shift both decks a little toward printed Fear, Majors more than Minors. Printed Fear is one narrow measure of a card's value, so treat this as a nudge, not a draft rule.
 
 ## When Minor-heavy wins decisively
 

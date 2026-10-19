@@ -1,16 +1,18 @@
 # Card Draft Theory
 
-Every Minor or Major gain pops a 4-card offer. You pick one, the other three shuffle back. That's the mechanic. The *theory* — when to take, when to pass, how to coordinate drafts with a partner — is what separates drafting by feel from drafting for leverage.
+Every Minor or Major gain pops a 4-card offer. You keep one, the other three go to that deck's discard pile. That's the mechanic. The *theory* — when to gain at all, which deck to draw from, which card to keep, how to coordinate gains with a partner — is what separates drafting by feel from drafting for leverage.
 
 Read this after [Major vs. Minor](./major-vs-minor.md). That chapter sets the archetype-level bias; this one operates below it.
 
 ## The 4-card offer
 
-When you gain a Minor Power, 4 Minor Power cards reveal from the top of the Minor deck. You take 1; the other 3 return to the bottom of the deck.
+When you gain a Power Card, you first choose Minor or Major, then draw 4 cards from that deck. You keep 1 in your hand; the other 3 go to that deck's discard pile (not back into the deck). Only when the deck runs out do you reshuffle its discard pile.
 
-When you gain a Major Power, 4 Major Power cards reveal from the top of the Major deck. You take 1 (and pay the Forget cost); the other 3 return.
+When you gain a Major Power, you must also Forget one of your Power Cards, unless an effect says you don't have to (e.g., Unlock the Gates of Deepest Power). You may Forget any of your cards — in hand, in your discard, or in play — including the Major you just kept.
 
-In multiplayer, the offer is **pooled** by default — any spirit can take any revealed card, but only the acting spirit pays the gain cost. This creates coordination opportunities (and alpha-gaming traps — see [Alpha-Player Problem](../social/alpha-player-problem.md)).
+You can't pass a gain once the cards are drawn: you always keep one. The real "pass" happens earlier, at Growth, by choosing an option without a gain.
+
+In multiplayer, each gain belongs to the gaining spirit: they draw, keep, and discard. What the table shares is the conversation before Growth (see below; for keeping that conversation fair, see [Alpha-Player Problem](../social/alpha-player-problem.md)).
 
 ## The two axes of card evaluation
 
@@ -41,54 +43,41 @@ The right question often downgrades a "stronger" card and upgrades a "weak" util
 
 ### 2. Offer variance
 
-What are the *other* 3 cards? If all 4 are weak fits, the best of 4 may still be worth taking. If 1 is a perfect fit and 3 are irrelevant, take the fit.
+What are the *other* 3 cards? If all 4 are weak fits, you still keep one: pick the least-bad. If 1 is a perfect fit and 3 are irrelevant, take the fit.
 
-Experienced drafters think about expected-next-offer too: if you pass this mediocre card, the next gain-growth produces a fresh 4-offer. Sometimes the draft is a ratchet — take the decent card now because variance may hand you a worse offer next turn.
+Experienced drafters think about expected-next-offer too, but at Growth, before drawing: a later gain draws a fresh 4 from the same shuffled deck, so it is not better on average. The 3 cards you don't keep go to the discard and won't reappear until that deck runs out and is reshuffled.
 
 ## The decision tree
 
-For each gain:
+Before Growth, ask whether you'll have the Energy and Card Plays to use a new card soon; if not, a growth option without a gain may serve you better. Once you've drawn, for each gain:
 
 <pre class="mermaid">
 graph TD
   Q1{Is any offer a top-tier fit?} -->|Yes| Take[Take it]
   Q1 -->|No| Q2{Is the best-of-4 at least B-tier?}
-  Q2 -->|Yes| Q3{Do I have energy + CP for another gain soon?}
-  Q3 -->|Yes| Consider[Consider passing; next gain may be better]
-  Q3 -->|No| Take
+  Q2 -->|Yes| Take
   Q2 -->|No| Q4{Am I critically short on this effect type?}
-  Q4 -->|Yes| Take
-  Q4 -->|No| Pass[Take the least-bad or pass if possible]
+  Q4 -->|Yes| Cover[Take the card that covers it]
+  Q4 -->|No| Least[Take the least-bad; you must keep one]
 </pre>
 
-"Pass" here means: take a weak card to clear the offer, or take a gain-option that doesn't advance card count (rarely available).
+There is no "pass" branch: once the 4 are drawn, you keep one of them.
 
 ## Multiplayer draft coordination
 
-The 4-offer is pooled. Any spirit can claim a revealed card. This means:
+The offer is not pooled: the gaining spirit keeps one of their 4, and the rest go to the discard. Players do play each phase simultaneously and may confer as they wish, so the coordination happens in conversation.
 
 ### Pre-gain discussion
 
-Before Spirit A's growth triggers a gain, a quick table check:
-- "Anyone want a gain this turn? I could pick different growth."
-- "If the offer has X, call dibs."
+Before Growth, a quick table check:
+- "Who is gaining this turn, and from which deck?"
+- "What element or effect type is each of us missing?"
 
-### During-gain claim
-
-When 4 cards reveal:
-- Spirit A (gainer) announces their top pick.
-- If Spirit B or C wants a different revealed card MORE than their own upcoming gain, they may swap — but only the *gainer* executes the gain mechanically.
-
-### Gain-pooling patterns
-
-- **Spirit A has a Major gain but nothing fits**. Spirit B needs a Minor but doesn't have a gain this turn. Spirit A can "waste" their Major gain on a Minor-shape offer for Spirit B's benefit — *if* the table agreed.
-- **Multiple claims on one card**: communicate before the reveal.
-
-The alpha-gaming risk is real here. See [Alpha-Player Problem](../social/alpha-player-problem.md) for how to keep this coordination fair.
+Each spirit then chooses their own growth and keeps their own card. The alpha-gaming risk is real even here. See [Alpha-Player Problem](../social/alpha-player-problem.md) for how to keep this coordination fair.
 
 ## Forget math
 
-Majors require a Forget. Evaluate:
+Majors require a Forget unless an effect waives it. The Forgotten card goes to its deck's discard pile (a Unique goes under your Spirit Panel). Evaluate:
 
 - **Which card am I forgetting?** The weakest Unique, typically. Check the spirit chapter for your "forget-candidate."
 - **Is the forget candidate still useful?** Some Uniques degrade in the matchup (Wildfire's Flash-Fires vs. England), making them free Forgets. Others are load-bearing (Earth's Guard the Healing Land), making the Forget painful.
@@ -117,35 +106,26 @@ Most spirits gain 3–5 cards over a game (excluding Major Power Shoppers who ga
 
 Over-gaining (5+ cards on a Minor-heavy spirit) produces a bloated hand you can't play. Under-gaining (2 cards by T6) leaves you without options. Target 3–4 total for most spirits.
 
-## Pass to shuffle
+## Seen cards stay out
 
-If an offer is uniformly bad AND you have future gains coming, refusing this one shuffles the 4 back to deck bottom — improving the next gain's offer statistically. Rarely a primary strategy but valid as a tie-breaker.
+You can't refuse an offer, and the 3 cards you don't keep go to the discard pile, not back into the deck. They stay out of future offers until the deck runs out and its discard is reshuffled. If you are counting what's left in a deck, every gain removes 4 cards from it.
 
 ## Pool-size awareness
 
-The Minor deck has ~101 cards; Major ~80. Your offers draw from this pool. Late-game, the deck shrinks as cards get into hands and stay there. Card variance changes — the 4-card offer late in a long game is often worse than a T2 offer because the "best" cards are already in play.
+With every expansion, the Minor deck has 100 cards and the Major deck 78, after Nature Incarnate's dropped cards (Growth Through Sacrifice is out of the Minors). Your offers draw from this pool. Each gain takes 4 cards out of the deck (1 to a hand, 3 to the discard), and the discard comes back only when the deck runs out — rare with the full pool, possible at high player counts. Ask how many gains the whole table will make before you expect the game to end, and how much of a 100-card deck that actually uses.
 
 ## Card-specific grades
 
 Each spirit chapter has a **Card Priority Ratings** table (e.g., [Shadows's table](../spirits/low/shadows-flicker-like-flame.md#card-priority-ratings)) listing the top Minors, Majors, and Uniques for that spirit. Refer to those when drafting at the table.
 
-## Stat insight
-
-```admonish note title="Stat Insight"
-Per mindwanderer (2026-Q1):
-- Spirits that pass Major offers more than 30% of the time have higher win rates than spirits that take the best-of-4 every time.
-- Over-drafting Majors (4+ total) correlates with loss rates above 60%.
-- Sample variance is high; treat as directional, not prescriptive.
-```
-
 ## Common mistakes
 
 ```admonish failure title="Common Mistake"
-Taking "the cool Major" without threshold-fit. Vigor of the Breaking Dawn is a beautiful card; with 0 Sun elements, it's dead in hand.
+Taking "the cool Major" without threshold-fit. Vigor of the Breaking Dawn is a beautiful card, but its threshold needs 3 Sun and 2 Animal. A Major is still playable without its threshold, so with no Sun beyond the card's own you pay 3 Energy (and a Forget) for the base effect alone — 2 Damage per Dahan. Ask whether that base effect is worth it to you.
 ```
 
 ```admonish failure title="Common Mistake"
-Passing a decent Minor "because the next offer might be better." Variance makes next offers often worse. Take the B+ you have.
+Skipping a gain growth on a turn you needed a card "because the next offer might be better." A later offer is a fresh draw from the same shuffled deck — no better on average.
 ```
 
 ```admonish failure title="Common Mistake"
@@ -153,7 +133,7 @@ Drafting a Major that perfectly fits a *future* state you'll reach T6 — but yo
 ```
 
 ```admonish failure title="Common Mistake"
-Ignoring the offer-pool in multiplayer. Your Major gain might be better used to let a partner grab a better card. Coordinate.
+Gaining blind in multiplayer. Your partners can't take cards from your offer, but they can tell you which elements and effects the table lacks before you choose which deck to draw from. Ask.
 ```
 
 ## Cross-references
@@ -165,4 +145,4 @@ Ignoring the offer-pool in multiplayer. Your Major gain might be better used to 
 
 ---
 
-*Last revised: 2026-04-19*
+*Last revised: 2026-10-19*

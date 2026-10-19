@@ -8,17 +8,44 @@
     "trials": 5000,
     "rounds_per_game": 8,
     "players": 1,
+    "fear_per_card": 4,
+    "fear_deck_layout": [
+      3,
+      3,
+      3
+    ],
     "pool_sizes": {
       "fear": 15,
       "event": 0,
-      "blight": 0
+      "blight": 2
     },
     "per_game": {
       "fear_cards_drawn": {
-        "mean": 1.997,
-        "ci_lo": 1.995,
-        "ci_hi": 1.998,
-        "stdev": 0.058,
+        "mean": 4.637,
+        "ci_lo": 4.615,
+        "ci_hi": 4.659,
+        "stdev": 0.794,
+        "n": 5000
+      },
+      "fear_resolved_tl1": {
+        "mean": 1.993,
+        "ci_lo": 1.991,
+        "ci_hi": 1.995,
+        "stdev": 0.083,
+        "n": 5000
+      },
+      "fear_resolved_tl2": {
+        "mean": 2.511,
+        "ci_lo": 2.494,
+        "ci_hi": 2.529,
+        "stdev": 0.628,
+        "n": 5000
+      },
+      "fear_resolved_tl3": {
+        "mean": 0.132,
+        "ci_lo": 0.122,
+        "ci_hi": 0.142,
+        "stdev": 0.37,
         "n": 5000
       },
       "fear_output_total": {
@@ -35,7 +62,35 @@
         "stdev": 0.0,
         "n": 5000
       },
+      "events_resolved": {
+        "mean": 0.0,
+        "ci_lo": 0.0,
+        "ci_hi": 0.0,
+        "stdev": 0.0,
+        "n": 5000
+      },
       "blight_cards_drawn": {
+        "mean": 1.0,
+        "ci_lo": 1.0,
+        "ci_hi": 1.0,
+        "stdev": 0.0,
+        "n": 5000
+      },
+      "island_blighted": {
+        "mean": 0.703,
+        "ci_lo": 0.691,
+        "ci_hi": 0.716,
+        "stdev": 0.457,
+        "n": 5000
+      },
+      "blight_loss_reached": {
+        "mean": 0.113,
+        "ci_lo": 0.104,
+        "ci_hi": 0.122,
+        "stdev": 0.316,
+        "n": 5000
+      },
+      "fear_victory_reached": {
         "mean": 0.0,
         "ci_lo": 0.0,
         "ci_hi": 0.0,
@@ -43,17 +98,17 @@
         "n": 5000
       },
       "blight_severity_accum": {
-        "mean": 0.0,
-        "ci_lo": 0.0,
-        "ci_hi": 0.0,
-        "stdev": 0.0,
+        "mean": 0.703,
+        "ci_lo": 0.691,
+        "ci_hi": 0.716,
+        "stdev": 0.457,
         "n": 5000
       },
       "spirit_favor_hits": {
-        "mean": 0.645,
-        "ci_lo": 0.628,
-        "ci_hi": 0.662,
-        "stdev": 0.629,
+        "mean": 1.496,
+        "ci_lo": 1.471,
+        "ci_hi": 1.521,
+        "stdev": 0.902,
         "n": 5000
       },
       "invader_favor_hits": {
@@ -64,16 +119,17 @@
         "n": 5000
       },
       "net_favor": {
-        "mean": 0.645,
-        "ci_lo": 0.628,
-        "ci_hi": 0.662,
-        "stdev": 0.629,
+        "mean": 1.496,
+        "ci_lo": 1.471,
+        "ci_hi": 1.521,
+        "stdev": 0.902,
         "n": 5000
       }
     },
     "terror_level_final_distribution": {
-      "3": 4983,
-      "2": 17
+      "2": 4385,
+      "3": 608,
+      "1": 7
     },
     "tokens_per_game": {
       "badlands": {
@@ -144,24 +200,51 @@
     "trials": 5000,
     "rounds_per_game": 8,
     "players": 1,
+    "fear_per_card": 4,
+    "fear_deck_layout": [
+      3,
+      3,
+      3
+    ],
     "pool_sizes": {
       "fear": 30,
-      "event": 23,
+      "event": 22,
       "blight": 8
     },
     "per_game": {
       "fear_cards_drawn": {
-        "mean": 1.999,
-        "ci_lo": 1.998,
-        "ci_hi": 2.0,
-        "stdev": 0.037,
+        "mean": 4.622,
+        "ci_lo": 4.601,
+        "ci_hi": 4.644,
+        "stdev": 0.786,
+        "n": 5000
+      },
+      "fear_resolved_tl1": {
+        "mean": 1.991,
+        "ci_lo": 1.988,
+        "ci_hi": 1.994,
+        "stdev": 0.094,
+        "n": 5000
+      },
+      "fear_resolved_tl2": {
+        "mean": 2.507,
+        "ci_lo": 2.489,
+        "ci_hi": 2.524,
+        "stdev": 0.625,
+        "n": 5000
+      },
+      "fear_resolved_tl3": {
+        "mean": 0.125,
+        "ci_lo": 0.115,
+        "ci_hi": 0.135,
+        "stdev": 0.358,
         "n": 5000
       },
       "fear_output_total": {
-        "mean": 3.489,
-        "ci_lo": 3.451,
-        "ci_hi": 3.527,
-        "stdev": 1.358,
+        "mean": 3.195,
+        "ci_lo": 3.16,
+        "ci_hi": 3.231,
+        "stdev": 1.292,
         "n": 5000
       },
       "events_drawn": {
@@ -171,45 +254,74 @@
         "stdev": 0.0,
         "n": 5000
       },
+      "events_resolved": {
+        "mean": 7.0,
+        "ci_lo": 7.0,
+        "ci_hi": 7.0,
+        "stdev": 0.0,
+        "n": 5000
+      },
       "blight_cards_drawn": {
-        "mean": 1.894,
-        "ci_lo": 1.875,
-        "ci_hi": 1.913,
-        "stdev": 0.692,
+        "mean": 1.0,
+        "ci_lo": 1.0,
+        "ci_hi": 1.0,
+        "stdev": 0.0,
+        "n": 5000
+      },
+      "island_blighted": {
+        "mean": 0.699,
+        "ci_lo": 0.686,
+        "ci_hi": 0.712,
+        "stdev": 0.459,
+        "n": 5000
+      },
+      "blight_loss_reached": {
+        "mean": 0.219,
+        "ci_lo": 0.208,
+        "ci_hi": 0.231,
+        "stdev": 0.414,
+        "n": 5000
+      },
+      "fear_victory_reached": {
+        "mean": 0.0,
+        "ci_lo": 0.0,
+        "ci_hi": 0.0,
+        "stdev": 0.0,
         "n": 5000
       },
       "blight_severity_accum": {
-        "mean": 1.422,
-        "ci_lo": 1.395,
-        "ci_hi": 1.449,
-        "stdev": 0.971,
+        "mean": 0.538,
+        "ci_lo": 0.519,
+        "ci_hi": 0.556,
+        "stdev": 0.662,
         "n": 5000
       },
       "spirit_favor_hits": {
-        "mean": 7.03,
-        "ci_lo": 6.986,
-        "ci_hi": 7.074,
-        "stdev": 1.583,
+        "mean": 6.688,
+        "ci_lo": 6.642,
+        "ci_hi": 6.735,
+        "stdev": 1.674,
         "n": 5000
       },
       "invader_favor_hits": {
-        "mean": 5.943,
-        "ci_lo": 5.909,
-        "ci_hi": 5.977,
-        "stdev": 1.227,
+        "mean": 5.437,
+        "ci_lo": 5.404,
+        "ci_hi": 5.469,
+        "stdev": 1.179,
         "n": 5000
       },
       "net_favor": {
-        "mean": 1.087,
-        "ci_lo": 1.025,
-        "ci_hi": 1.149,
-        "stdev": 2.229,
+        "mean": 1.251,
+        "ci_lo": 1.188,
+        "ci_hi": 1.314,
+        "stdev": 2.27,
         "n": 5000
       }
     },
     "terror_level_final_distribution": {
-      "3": 4993,
-      "2": 7
+      "2": 4417,
+      "3": 577,
+      "1": 6
     },
     "tokens_per_game": {
       "badlands": {
@@ -220,31 +332,31 @@
         "n": 5000
       },
       "beasts": {
-        "mean": 5.139,
-        "ci_lo": 5.105,
-        "ci_hi": 5.173,
-        "stdev": 1.228,
+        "mean": 5.077,
+        "ci_lo": 5.041,
+        "ci_hi": 5.112,
+        "stdev": 1.267,
         "n": 5000
       },
       "disease": {
-        "mean": 3.698,
-        "ci_lo": 3.664,
-        "ci_hi": 3.733,
-        "stdev": 1.233,
+        "mean": 3.745,
+        "ci_lo": 3.709,
+        "ci_hi": 3.782,
+        "stdev": 1.303,
         "n": 5000
       },
       "strife": {
-        "mean": 1.361,
-        "ci_lo": 1.335,
-        "ci_hi": 1.387,
-        "stdev": 0.938,
+        "mean": 1.38,
+        "ci_lo": 1.353,
+        "ci_hi": 1.407,
+        "stdev": 0.978,
         "n": 5000
       },
       "wilds": {
-        "mean": 0.353,
-        "ci_lo": 0.34,
-        "ci_hi": 0.367,
-        "stdev": 0.478,
+        "mean": 0.326,
+        "ci_lo": 0.313,
+        "ci_hi": 0.339,
+        "stdev": 0.469,
         "n": 5000
       },
       "plantation": {
@@ -280,6 +392,12 @@
     "trials": 5000,
     "rounds_per_game": 8,
     "players": 1,
+    "fear_per_card": 4,
+    "fear_deck_layout": [
+      3,
+      3,
+      3
+    ],
     "pool_sizes": {
       "fear": 21,
       "event": 30,
@@ -287,17 +405,38 @@
     },
     "per_game": {
       "fear_cards_drawn": {
-        "mean": 1.999,
-        "ci_lo": 1.998,
-        "ci_hi": 2.0,
-        "stdev": 0.032,
+        "mean": 4.636,
+        "ci_lo": 4.615,
+        "ci_hi": 4.658,
+        "stdev": 0.78,
+        "n": 5000
+      },
+      "fear_resolved_tl1": {
+        "mean": 1.991,
+        "ci_lo": 1.989,
+        "ci_hi": 1.994,
+        "stdev": 0.093,
+        "n": 5000
+      },
+      "fear_resolved_tl2": {
+        "mean": 2.518,
+        "ci_lo": 2.501,
+        "ci_hi": 2.535,
+        "stdev": 0.616,
+        "n": 5000
+      },
+      "fear_resolved_tl3": {
+        "mean": 0.127,
+        "ci_lo": 0.117,
+        "ci_hi": 0.138,
+        "stdev": 0.365,
         "n": 5000
       },
       "fear_output_total": {
-        "mean": 3.971,
-        "ci_lo": 3.926,
-        "ci_hi": 4.017,
-        "stdev": 1.642,
+        "mean": 3.5,
+        "ci_lo": 3.455,
+        "ci_hi": 3.544,
+        "stdev": 1.603,
         "n": 5000
       },
       "events_drawn": {
@@ -307,80 +446,109 @@
         "stdev": 0.0,
         "n": 5000
       },
+      "events_resolved": {
+        "mean": 7.0,
+        "ci_lo": 7.0,
+        "ci_hi": 7.0,
+        "stdev": 0.0,
+        "n": 5000
+      },
       "blight_cards_drawn": {
-        "mean": 1.887,
-        "ci_lo": 1.867,
-        "ci_hi": 1.906,
-        "stdev": 0.704,
+        "mean": 1.09,
+        "ci_lo": 1.082,
+        "ci_hi": 1.098,
+        "stdev": 0.298,
+        "n": 5000
+      },
+      "island_blighted": {
+        "mean": 0.615,
+        "ci_lo": 0.602,
+        "ci_hi": 0.628,
+        "stdev": 0.487,
+        "n": 5000
+      },
+      "blight_loss_reached": {
+        "mean": 0.135,
+        "ci_lo": 0.125,
+        "ci_hi": 0.144,
+        "stdev": 0.342,
+        "n": 5000
+      },
+      "fear_victory_reached": {
+        "mean": 0.0,
+        "ci_lo": 0.0,
+        "ci_hi": 0.0,
+        "stdev": 0.0,
         "n": 5000
       },
       "blight_severity_accum": {
-        "mean": 1.875,
-        "ci_lo": 1.828,
-        "ci_hi": 1.923,
-        "stdev": 1.717,
+        "mean": 0.798,
+        "ci_lo": 0.765,
+        "ci_hi": 0.831,
+        "stdev": 1.183,
         "n": 5000
       },
       "spirit_favor_hits": {
-        "mean": 10.723,
-        "ci_lo": 10.648,
-        "ci_hi": 10.798,
-        "stdev": 2.708,
+        "mean": 10.181,
+        "ci_lo": 10.108,
+        "ci_hi": 10.253,
+        "stdev": 2.62,
         "n": 5000
       },
       "invader_favor_hits": {
-        "mean": 5.856,
-        "ci_lo": 5.821,
-        "ci_hi": 5.892,
-        "stdev": 1.268,
+        "mean": 5.106,
+        "ci_lo": 5.073,
+        "ci_hi": 5.14,
+        "stdev": 1.199,
         "n": 5000
       },
       "net_favor": {
-        "mean": 4.866,
-        "ci_lo": 4.785,
-        "ci_hi": 4.947,
-        "stdev": 2.915,
+        "mean": 5.074,
+        "ci_lo": 4.996,
+        "ci_hi": 5.152,
+        "stdev": 2.822,
         "n": 5000
       }
     },
     "terror_level_final_distribution": {
-      "3": 4995,
-      "2": 5
+      "2": 4414,
+      "3": 583,
+      "1": 3
     },
     "tokens_per_game": {
       "badlands": {
-        "mean": 1.243,
-        "ci_lo": 1.217,
-        "ci_hi": 1.269,
-        "stdev": 0.93,
+        "mean": 1.341,
+        "ci_lo": 1.314,
+        "ci_hi": 1.369,
+        "stdev": 0.982,
         "n": 5000
       },
       "beasts": {
-        "mean": 5.679,
-        "ci_lo": 5.647,
-        "ci_hi": 5.711,
-        "stdev": 1.155,
+        "mean": 5.129,
+        "ci_lo": 5.096,
+        "ci_hi": 5.161,
+        "stdev": 1.166,
         "n": 5000
       },
       "disease": {
-        "mean": 4.11,
-        "ci_lo": 4.075,
-        "ci_hi": 4.145,
-        "stdev": 1.258,
+        "mean": 3.698,
+        "ci_lo": 3.663,
+        "ci_hi": 3.733,
+        "stdev": 1.262,
         "n": 5000
       },
       "strife": {
-        "mean": 1.609,
-        "ci_lo": 1.581,
-        "ci_hi": 1.637,
-        "stdev": 1.009,
+        "mean": 1.818,
+        "ci_lo": 1.787,
+        "ci_hi": 1.849,
+        "stdev": 1.121,
         "n": 5000
       },
       "wilds": {
-        "mean": 0.996,
-        "ci_lo": 0.973,
-        "ci_hi": 1.02,
-        "stdev": 0.843,
+        "mean": 1.142,
+        "ci_lo": 1.117,
+        "ci_hi": 1.167,
+        "stdev": 0.904,
         "n": 5000
       },
       "plantation": {
@@ -391,10 +559,10 @@
         "n": 5000
       },
       "isolate": {
-        "mean": 0.272,
-        "ci_lo": 0.26,
-        "ci_hi": 0.285,
-        "stdev": 0.445,
+        "mean": 0.239,
+        "ci_lo": 0.227,
+        "ci_hi": 0.251,
+        "stdev": 0.427,
         "n": 5000
       },
       "fortress": {
@@ -417,24 +585,51 @@
     "trials": 5000,
     "rounds_per_game": 8,
     "players": 1,
+    "fear_per_card": 4,
+    "fear_deck_layout": [
+      3,
+      3,
+      3
+    ],
     "pool_sizes": {
       "fear": 36,
-      "event": 53,
+      "event": 52,
       "blight": 15
     },
     "per_game": {
       "fear_cards_drawn": {
-        "mean": 1.999,
-        "ci_lo": 1.998,
-        "ci_hi": 2.0,
-        "stdev": 0.035,
+        "mean": 4.606,
+        "ci_lo": 4.584,
+        "ci_hi": 4.628,
+        "stdev": 0.787,
+        "n": 5000
+      },
+      "fear_resolved_tl1": {
+        "mean": 1.988,
+        "ci_lo": 1.985,
+        "ci_hi": 1.991,
+        "stdev": 0.107,
+        "n": 5000
+      },
+      "fear_resolved_tl2": {
+        "mean": 2.498,
+        "ci_lo": 2.481,
+        "ci_hi": 2.516,
+        "stdev": 0.637,
+        "n": 5000
+      },
+      "fear_resolved_tl3": {
+        "mean": 0.119,
+        "ci_lo": 0.109,
+        "ci_hi": 0.129,
+        "stdev": 0.353,
         "n": 5000
       },
       "fear_output_total": {
-        "mean": 3.787,
-        "ci_lo": 3.742,
-        "ci_hi": 3.833,
-        "stdev": 1.644,
+        "mean": 3.397,
+        "ci_lo": 3.352,
+        "ci_hi": 3.442,
+        "stdev": 1.621,
         "n": 5000
       },
       "events_drawn": {
@@ -444,80 +639,109 @@
         "stdev": 0.0,
         "n": 5000
       },
+      "events_resolved": {
+        "mean": 7.0,
+        "ci_lo": 7.0,
+        "ci_hi": 7.0,
+        "stdev": 0.0,
+        "n": 5000
+      },
       "blight_cards_drawn": {
-        "mean": 1.892,
-        "ci_lo": 1.873,
-        "ci_hi": 1.912,
-        "stdev": 0.71,
+        "mean": 1.053,
+        "ci_lo": 1.047,
+        "ci_hi": 1.06,
+        "stdev": 0.231,
+        "n": 5000
+      },
+      "island_blighted": {
+        "mean": 0.657,
+        "ci_lo": 0.644,
+        "ci_hi": 0.671,
+        "stdev": 0.475,
+        "n": 5000
+      },
+      "blight_loss_reached": {
+        "mean": 0.181,
+        "ci_lo": 0.171,
+        "ci_hi": 0.192,
+        "stdev": 0.385,
+        "n": 5000
+      },
+      "fear_victory_reached": {
+        "mean": 0.0,
+        "ci_lo": 0.0,
+        "ci_hi": 0.0,
+        "stdev": 0.0,
         "n": 5000
       },
       "blight_severity_accum": {
-        "mean": 1.641,
-        "ci_lo": 1.598,
-        "ci_hi": 1.685,
-        "stdev": 1.57,
+        "mean": 0.664,
+        "ci_lo": 0.635,
+        "ci_hi": 0.692,
+        "stdev": 1.027,
         "n": 5000
       },
       "spirit_favor_hits": {
-        "mean": 9.048,
-        "ci_lo": 8.978,
-        "ci_hi": 9.118,
-        "stdev": 2.531,
+        "mean": 8.593,
+        "ci_lo": 8.524,
+        "ci_hi": 8.662,
+        "stdev": 2.492,
         "n": 5000
       },
       "invader_favor_hits": {
-        "mean": 5.875,
-        "ci_lo": 5.837,
-        "ci_hi": 5.913,
-        "stdev": 1.368,
+        "mean": 5.267,
+        "ci_lo": 5.231,
+        "ci_hi": 5.302,
+        "stdev": 1.281,
         "n": 5000
       },
       "net_favor": {
-        "mean": 3.173,
-        "ci_lo": 3.092,
-        "ci_hi": 3.254,
-        "stdev": 2.929,
+        "mean": 3.326,
+        "ci_lo": 3.247,
+        "ci_hi": 3.405,
+        "stdev": 2.848,
         "n": 5000
       }
     },
     "terror_level_final_distribution": {
-      "3": 4994,
-      "2": 6
+      "2": 4440,
+      "3": 547,
+      "1": 13
     },
     "tokens_per_game": {
       "badlands": {
-        "mean": 0.715,
-        "ci_lo": 0.695,
-        "ci_hi": 0.736,
-        "stdev": 0.753,
+        "mean": 0.802,
+        "ci_lo": 0.78,
+        "ci_hi": 0.825,
+        "stdev": 0.822,
         "n": 5000
       },
       "beasts": {
-        "mean": 5.586,
-        "ci_lo": 5.548,
-        "ci_hi": 5.623,
-        "stdev": 1.345,
+        "mean": 5.325,
+        "ci_lo": 5.287,
+        "ci_hi": 5.363,
+        "stdev": 1.372,
         "n": 5000
       },
       "disease": {
-        "mean": 4.016,
-        "ci_lo": 3.977,
-        "ci_hi": 4.055,
-        "stdev": 1.404,
+        "mean": 3.977,
+        "ci_lo": 3.938,
+        "ci_hi": 4.016,
+        "stdev": 1.414,
         "n": 5000
       },
       "strife": {
-        "mean": 1.631,
-        "ci_lo": 1.6,
-        "ci_hi": 1.662,
-        "stdev": 1.114,
+        "mean": 1.96,
+        "ci_lo": 1.927,
+        "ci_hi": 1.993,
+        "stdev": 1.198,
         "n": 5000
       },
       "wilds": {
-        "mean": 0.706,
-        "ci_lo": 0.685,
-        "ci_hi": 0.727,
-        "stdev": 0.764,
+        "mean": 0.79,
+        "ci_lo": 0.768,
+        "ci_hi": 0.812,
+        "stdev": 0.811,
         "n": 5000
       },
       "plantation": {
@@ -528,10 +752,10 @@
         "n": 5000
       },
       "isolate": {
-        "mean": 0.15,
-        "ci_lo": 0.14,
-        "ci_hi": 0.16,
-        "stdev": 0.357,
+        "mean": 0.131,
+        "ci_lo": 0.121,
+        "ci_hi": 0.14,
+        "stdev": 0.337,
         "n": 5000
       },
       "fortress": {
@@ -557,24 +781,51 @@
     "trials": 5000,
     "rounds_per_game": 8,
     "players": 1,
+    "fear_per_card": 4,
+    "fear_deck_layout": [
+      3,
+      3,
+      3
+    ],
     "pool_sizes": {
       "fear": 50,
-      "event": 62,
+      "event": 61,
       "blight": 23
     },
     "per_game": {
       "fear_cards_drawn": {
-        "mean": 1.998,
-        "ci_lo": 1.997,
-        "ci_hi": 1.999,
-        "stdev": 0.042,
+        "mean": 4.627,
+        "ci_lo": 4.606,
+        "ci_hi": 4.649,
+        "stdev": 0.781,
+        "n": 5000
+      },
+      "fear_resolved_tl1": {
+        "mean": 1.992,
+        "ci_lo": 1.99,
+        "ci_hi": 1.995,
+        "stdev": 0.088,
+        "n": 5000
+      },
+      "fear_resolved_tl2": {
+        "mean": 2.509,
+        "ci_lo": 2.492,
+        "ci_hi": 2.526,
+        "stdev": 0.619,
+        "n": 5000
+      },
+      "fear_resolved_tl3": {
+        "mean": 0.126,
+        "ci_lo": 0.116,
+        "ci_hi": 0.136,
+        "stdev": 0.364,
         "n": 5000
       },
       "fear_output_total": {
-        "mean": 4.663,
-        "ci_lo": 4.605,
-        "ci_hi": 4.721,
-        "stdev": 2.091,
+        "mean": 4.288,
+        "ci_lo": 4.232,
+        "ci_hi": 4.344,
+        "stdev": 2.021,
         "n": 5000
       },
       "events_drawn": {
@@ -584,80 +835,109 @@
         "stdev": 0.0,
         "n": 5000
       },
+      "events_resolved": {
+        "mean": 7.0,
+        "ci_lo": 7.0,
+        "ci_hi": 7.0,
+        "stdev": 0.0,
+        "n": 5000
+      },
       "blight_cards_drawn": {
-        "mean": 1.903,
-        "ci_lo": 1.884,
-        "ci_hi": 1.923,
-        "stdev": 0.705,
+        "mean": 1.078,
+        "ci_lo": 1.07,
+        "ci_hi": 1.086,
+        "stdev": 0.284,
+        "n": 5000
+      },
+      "island_blighted": {
+        "mean": 0.656,
+        "ci_lo": 0.643,
+        "ci_hi": 0.669,
+        "stdev": 0.475,
+        "n": 5000
+      },
+      "blight_loss_reached": {
+        "mean": 0.195,
+        "ci_lo": 0.184,
+        "ci_hi": 0.206,
+        "stdev": 0.396,
+        "n": 5000
+      },
+      "fear_victory_reached": {
+        "mean": 0.0,
+        "ci_lo": 0.0,
+        "ci_hi": 0.0,
+        "stdev": 0.0,
         "n": 5000
       },
       "blight_severity_accum": {
-        "mean": 1.648,
-        "ci_lo": 1.61,
-        "ci_hi": 1.687,
-        "stdev": 1.38,
+        "mean": 0.676,
+        "ci_lo": 0.65,
+        "ci_hi": 0.701,
+        "stdev": 0.929,
         "n": 5000
       },
       "spirit_favor_hits": {
-        "mean": 9.202,
-        "ci_lo": 9.133,
-        "ci_hi": 9.271,
-        "stdev": 2.488,
+        "mean": 8.786,
+        "ci_lo": 8.717,
+        "ci_hi": 8.855,
+        "stdev": 2.48,
         "n": 5000
       },
       "invader_favor_hits": {
-        "mean": 5.55,
-        "ci_lo": 5.509,
-        "ci_hi": 5.592,
-        "stdev": 1.483,
+        "mean": 4.955,
+        "ci_lo": 4.917,
+        "ci_hi": 4.993,
+        "stdev": 1.371,
         "n": 5000
       },
       "net_favor": {
-        "mean": 3.652,
-        "ci_lo": 3.571,
-        "ci_hi": 3.732,
-        "stdev": 2.909,
+        "mean": 3.831,
+        "ci_lo": 3.752,
+        "ci_hi": 3.91,
+        "stdev": 2.84,
         "n": 5000
       }
     },
     "terror_level_final_distribution": {
-      "3": 4991,
-      "2": 9
+      "2": 4417,
+      "3": 579,
+      "1": 4
     },
     "tokens_per_game": {
       "badlands": {
-        "mean": 0.979,
-        "ci_lo": 0.954,
-        "ci_hi": 1.003,
-        "stdev": 0.874,
+        "mean": 0.999,
+        "ci_lo": 0.974,
+        "ci_hi": 1.025,
+        "stdev": 0.922,
         "n": 5000
       },
       "beasts": {
-        "mean": 5.642,
-        "ci_lo": 5.605,
-        "ci_hi": 5.678,
-        "stdev": 1.313,
+        "mean": 5.361,
+        "ci_lo": 5.325,
+        "ci_hi": 5.398,
+        "stdev": 1.318,
         "n": 5000
       },
       "disease": {
-        "mean": 3.658,
-        "ci_lo": 3.62,
-        "ci_hi": 3.696,
-        "stdev": 1.36,
+        "mean": 3.533,
+        "ci_lo": 3.495,
+        "ci_hi": 3.571,
+        "stdev": 1.387,
         "n": 5000
       },
       "strife": {
-        "mean": 1.484,
-        "ci_lo": 1.455,
-        "ci_hi": 1.514,
-        "stdev": 1.058,
+        "mean": 1.814,
+        "ci_lo": 1.781,
+        "ci_hi": 1.847,
+        "stdev": 1.181,
         "n": 5000
       },
       "wilds": {
-        "mean": 0.582,
-        "ci_lo": 0.563,
-        "ci_hi": 0.602,
-        "stdev": 0.704,
+        "mean": 0.65,
+        "ci_lo": 0.629,
+        "ci_hi": 0.67,
+        "stdev": 0.741,
         "n": 5000
       },
       "plantation": {
@@ -668,10 +948,10 @@
         "n": 5000
       },
       "isolate": {
-        "mean": 0.325,
-        "ci_lo": 0.311,
-        "ci_hi": 0.34,
-        "stdev": 0.536,
+        "mean": 0.415,
+        "ci_lo": 0.398,
+        "ci_hi": 0.431,
+        "stdev": 0.607,
         "n": 5000
       },
       "fortress": {
@@ -691,6 +971,12 @@
     "trials": 5000,
     "rounds_per_game": 8,
     "players": 1,
+    "fear_per_card": 4,
+    "fear_deck_layout": [
+      3,
+      3,
+      3
+    ],
     "pool_sizes": {
       "fear": 9,
       "event": 9,
@@ -698,17 +984,38 @@
     },
     "per_game": {
       "fear_cards_drawn": {
-        "mean": 1.998,
-        "ci_lo": 1.997,
-        "ci_hi": 2.0,
-        "stdev": 0.04,
+        "mean": 4.622,
+        "ci_lo": 4.601,
+        "ci_hi": 4.644,
+        "stdev": 0.788,
+        "n": 5000
+      },
+      "fear_resolved_tl1": {
+        "mean": 1.988,
+        "ci_lo": 1.985,
+        "ci_hi": 1.991,
+        "stdev": 0.107,
+        "n": 5000
+      },
+      "fear_resolved_tl2": {
+        "mean": 2.507,
+        "ci_lo": 2.49,
+        "ci_hi": 2.525,
+        "stdev": 0.635,
+        "n": 5000
+      },
+      "fear_resolved_tl3": {
+        "mean": 0.127,
+        "ci_lo": 0.117,
+        "ci_hi": 0.137,
+        "stdev": 0.361,
         "n": 5000
       },
       "fear_output_total": {
-        "mean": 9.998,
-        "ci_lo": 9.965,
-        "ci_hi": 10.031,
-        "stdev": 1.2,
+        "mean": 9.077,
+        "ci_lo": 9.033,
+        "ci_hi": 9.121,
+        "stdev": 1.586,
         "n": 5000
       },
       "events_drawn": {
@@ -718,73 +1025,102 @@
         "stdev": 0.0,
         "n": 5000
       },
+      "events_resolved": {
+        "mean": 7.0,
+        "ci_lo": 7.0,
+        "ci_hi": 7.0,
+        "stdev": 0.0,
+        "n": 5000
+      },
       "blight_cards_drawn": {
-        "mean": 1.898,
-        "ci_lo": 1.878,
-        "ci_hi": 1.917,
-        "stdev": 0.699,
+        "mean": 1.139,
+        "ci_lo": 1.129,
+        "ci_hi": 1.149,
+        "stdev": 0.378,
+        "n": 5000
+      },
+      "island_blighted": {
+        "mean": 0.631,
+        "ci_lo": 0.617,
+        "ci_hi": 0.644,
+        "stdev": 0.483,
+        "n": 5000
+      },
+      "blight_loss_reached": {
+        "mean": 0.199,
+        "ci_lo": 0.188,
+        "ci_hi": 0.21,
+        "stdev": 0.399,
+        "n": 5000
+      },
+      "fear_victory_reached": {
+        "mean": 0.0,
+        "ci_lo": 0.0,
+        "ci_hi": 0.0,
+        "stdev": 0.0,
         "n": 5000
       },
       "blight_severity_accum": {
-        "mean": 1.672,
-        "ci_lo": 1.645,
-        "ci_hi": 1.699,
-        "stdev": 0.975,
+        "mean": 0.744,
+        "ci_lo": 0.724,
+        "ci_hi": 0.765,
+        "stdev": 0.742,
         "n": 5000
       },
       "spirit_favor_hits": {
-        "mean": 10.317,
-        "ci_lo": 10.29,
-        "ci_hi": 10.344,
-        "stdev": 0.96,
+        "mean": 9.894,
+        "ci_lo": 9.859,
+        "ci_hi": 9.928,
+        "stdev": 1.259,
         "n": 5000
       },
       "invader_favor_hits": {
-        "mean": 3.56,
-        "ci_lo": 3.541,
-        "ci_hi": 3.579,
-        "stdev": 0.679,
+        "mean": 3.1,
+        "ci_lo": 3.075,
+        "ci_hi": 3.126,
+        "stdev": 0.915,
         "n": 5000
       },
       "net_favor": {
-        "mean": 6.757,
-        "ci_lo": 6.727,
-        "ci_hi": 6.787,
-        "stdev": 1.076,
+        "mean": 6.793,
+        "ci_lo": 6.754,
+        "ci_hi": 6.833,
+        "stdev": 1.411,
         "n": 5000
       }
     },
     "terror_level_final_distribution": {
-      "3": 4992,
-      "2": 8
+      "2": 4404,
+      "3": 589,
+      "1": 7
     },
     "tokens_per_game": {
       "badlands": {
-        "mean": 2.666,
-        "ci_lo": 2.653,
-        "ci_hi": 2.679,
-        "stdev": 0.472,
+        "mean": 2.34,
+        "ci_lo": 2.323,
+        "ci_hi": 2.358,
+        "stdev": 0.627,
         "n": 5000
       },
       "beasts": {
-        "mean": 6.454,
-        "ci_lo": 6.438,
-        "ci_hi": 6.471,
-        "stdev": 0.599,
+        "mean": 5.962,
+        "ci_lo": 5.942,
+        "ci_hi": 5.983,
+        "stdev": 0.748,
         "n": 5000
       },
       "disease": {
-        "mean": 1.777,
-        "ci_lo": 1.765,
-        "ci_hi": 1.788,
-        "stdev": 0.416,
+        "mean": 1.56,
+        "ci_lo": 1.545,
+        "ci_hi": 1.575,
+        "stdev": 0.55,
         "n": 5000
       },
       "strife": {
-        "mean": 0.677,
-        "ci_lo": 0.66,
-        "ci_hi": 0.694,
-        "stdev": 0.622,
+        "mean": 1.528,
+        "ci_lo": 1.506,
+        "ci_hi": 1.549,
+        "stdev": 0.777,
         "n": 5000
       },
       "wilds": {
@@ -802,10 +1138,10 @@
         "n": 5000
       },
       "isolate": {
-        "mean": 1.104,
-        "ci_lo": 1.089,
-        "ci_hi": 1.118,
-        "stdev": 0.519,
+        "mean": 1.294,
+        "ci_lo": 1.276,
+        "ci_hi": 1.313,
+        "stdev": 0.666,
         "n": 5000
       },
       "fortress": {

@@ -4,18 +4,21 @@ Presence is the game's most overloaded resource. It's simultaneously:
 
 - a **targeting anchor** (most powers require presence in or near the target land),
 - a **board currency** (sacred sites unlock innate abilities + certain card effects),
-- a **damage sink** (when ravages destroy it, they spare dahan and delay blight),
 - a **tempo investment** (growth slots that place presence trade against energy/CP growth).
 
-Treating presence as any one of these is the beginner mistake. This chapter teaches you to reason about all four simultaneously.
+Treating presence as any one of these is the beginner mistake. This chapter teaches you to reason about all three simultaneously.
+
+```admonish info title="Rules Clarification"
+Invaders never Damage Presence: "Spirit Presence does not fight back as Invaders do not directly attack the Spirits." What Destroys Presence is **Blight**: adding Blight to a land Destroys one Presence of each Spirit in that land, unless that Spirit's own rules say otherwise. Destroyed Presence is set next to the Island, not returned to your tracks, and if any Spirit has no Presence left on the Island, everyone loses. Presence in a land does not stop a Ravage from adding Blight. (Core rulebook, "Ravage", "Effects of Blight", "Presence and Sacred Sites".)
+```
 
 ## The opening budget
 
-You start with **3 presence on the board** (seeded by the spirit setup) and **10 presence in your supply** to place throughout the game. Over a typical 8-round game you'll place ~7–9 presence. The rest sit in supply or stay on the track unused.
+Your spirit's Setup places its starting presence, and the count varies by spirit: River Surges in Sunlight and Serpent Slumbering Beneath the Island start with 1 on the board, Lightning's Swift Strike with 2, Shadows Flicker Like Flame and Vital Strength of the Earth with 3, and Vengeance as a Burning Plague starts with one of theirs already Destroyed. Every other presence starts on your Presence Tracks until Growth adds it to the board. Count your panel's track spaces and ask how many you realistically uncover by the turn you expect the game to end; the rest stay on the track unused.
 
 **The rule**: not every presence needs a home. Sometimes the right play is to leave a slot unplaced and take an energy/CP growth instead. Presence just-in-case is a common tempo leak.
 
-## The four presence roles, quantified
+## The three presence roles, quantified
 
 ### 1. Targeting anchor
 
@@ -29,15 +32,7 @@ A land with 2+ of your presence is a sacred site. Many innates and some powers r
 
 **Heuristic**: if your spirit's innates or cards say "sacred site," you want 2–3 sacred sites by T4. If they don't, a sacred site is wasted presence density — spread instead.
 
-### 3. Damage sink
-
-When a ravage hits a land with your presence, and damage exceeds dahan health, your presence gets destroyed (sometimes along with dahan). Destroyed presence usually adds blight to the land.
-
-This is **presence as insurance**: if a ravage will happen and you can't prevent it, placing presence in that land sacrifices one presence to save 1 blight. 1 blight = 1 step closer to cascade.
-
-**Heuristic**: place presence in high-ravage terrain *before* T3 for exactly this reason. The presence acts as a shield.
-
-### 4. Tempo investment
+### 3. Tempo investment
 
 Every presence placed costs an energy/CP growth you didn't take. Over 8 turns, 4 presence placements means 4 growths not taken elsewhere.
 
@@ -45,27 +40,18 @@ Every presence placed costs an energy/CP growth you didn't take. Over 8 turns, 4
 
 ## The presence curve
 
-Most spirits follow a predictable presence arc:
+There is no universal presence arc: starting presence, track length, and growth options all differ by spirit. Build your own from the panel. Write down your starting board count and track spaces, then, for the growth sequence you plan, note turn by turn how many presence are on the board and which track spaces are uncovered.
 
-| Round | Presence in Supply | Presence on Board | Presence on Track |
-|-------|--------------------|-------------------|-------------------|
-| Start | 10                 | 3                 | 10 (unlocked)     |
-| T1    | 8–9                | 4–5               | 9–10              |
-| T3    | 6–7                | 6–8               | 7–8               |
-| T5    | 4–5                | 7–9               | 5–6               |
-| T7    | 3–4                | 6–8 (decaying)    | 3–4               |
-
-The decay on T7+ is from ravages destroying board presence. If your presence count *rises* past T5, you're over-growing.
+Your board count usually falls because presence is Destroyed — most often by Blight added to one of your lands. When it falls, find the Blight that did it and ask whether you could have seen that Ravage coming two turns earlier.
 
 ## Presence destruction isn't always bad
 
-For most spirits, losing presence is painful. For some, it's the engine:
+For most spirits, losing presence is painful. For some, their own rules soften or reward it:
 
-- **Vengeance**: presence destruction adds Disease. A planned sacrifice accelerates the spirit.
-- **Wildfire**: presence destruction enables 1-blight wipes of low-health targets.
-- **Serpent**: some aspects convert destroyed presence to other board tokens.
+- **Vengeance**: when their presence is Destroyed by anything except a Spirit Action (e.g., by Blight from a Ravage), they add 1 Disease where it was (Lingering Pestilence). Destroying their own presence with a Power is a Spirit Action and adds no Disease.
+- **Wildfire**: Blight added by Spirit effects, cascades included, doesn't Destroy their presence (Destructive Nature).
 
-For these spirits, the presence economy flips: spending presence *is* the damage engine.
+For these spirits, read the presence economy through their own rules, not the default.
 
 ## Territorial spirits vs. flexible spirits
 
@@ -88,28 +74,28 @@ Your opening should acknowledge this. Territorial spirits bias toward presence-p
 Rare but real. Some plays give you the option to destroy your own presence for an effect (e.g., certain unique powers, certain Majors). Do this only when:
 
 1. The effect clears a ravage that would otherwise cost 2+ blight.
-2. The presence destroyed was in a terrible land (low-value for targeting, low-value as sink).
-3. Your spirit converts destroyed presence into value (Vengeance, some Incarna spirits).
+2. The presence destroyed was in a terrible land (low value for targeting and sacred sites).
+3. Your spirit's own rules reward the destruction. Read the exact trigger: Vengeance's Lingering Pestilence, for one, excludes Spirit Actions.
 
 ```admonish failure title="Common Mistake"
-Destroying your own presence "for the effect" on a non-Vengeance/Wildfire spirit. Unless the math is clear (2 blight prevented > 1 presence lost), you're compounding a problem.
+Destroying your own presence "for the effect" when your spirit's rules don't reward it. Unless the math is clear (2 blight prevented > 1 presence lost), you're compounding a problem.
 ```
 
 ## Reading presence on other spirits (multiplayer)
 
 When you have a partner, count *their* presence too. Cross-spirit presence coverage matters for:
 
-- **Defend sharing** — a Thunderspeaker with dahan nearby can defend your ravage if your presence is adjacent.
-- **Fear coordination** — Bringer's fear cards trigger more broadly with more spirits' presence on the board.
+- **Defend sharing** — a partner's Defend Powers reach your Ravage lands only within their Range, which is measured from their presence or sacred sites. Check which of your lands they can actually cover.
+- **Fear coordination** — the same Range check decides which lands a partner's Fear Powers can reach.
 - **Territory splits** — see [Teaching Methods](../social/teaching-methods.md) for conventions on who takes which terrain.
 
 ## Cross-references
 
 - [Tempo](./tempo.md) — how presence interacts with the energy/CP axes.
 - [Terrain](./terrain.md) — where to place presence by land type.
-- [Dahan](./dahan.md) — dahan as alternative/complementary damage sinks.
-- [Blight Track](./blight-track.md) — the downside of presence destruction.
+- [Dahan](./dahan.md) — dahan take Ravage damage; presence doesn't.
+- [Blight Track](./blight-track.md) — Blight, the usual cause of presence destruction.
 
 ---
 
-*Last revised: 2026-04-19*
+*Last revised: 2026-10-19*
