@@ -6,6 +6,7 @@
 //! question with its parts and a pocket rule. Nothing ranks options or names
 //! a best move.
 
+pub mod adversary;
 pub mod backtest;
 pub mod changes;
 pub mod invaders;
@@ -33,6 +34,14 @@ pub struct CompanionStats {
     /// pipeline (rules register), and whether the forecast applies them.
     pub rules_in_play: Vec<crate::rules_register::RuleInPlay>,
     pub prompts: Vec<Prompt>,
+    /// Each adversary's additional loss condition as a count against its limit.
+    #[serde(default)]
+    pub loss_clocks: Vec<adversary::LossClock>,
+    /// Next turn's Invader Phase, played forward from this turn's forecast
+    /// (`None` once this turn's Invader Phase is over: then `invader_phase`
+    /// is next turn's).
+    #[serde(default)]
+    pub next_phase: Option<InvaderPhaseForecast>,
     /// Assumptions every number above rests on.
     pub basis: Vec<String>,
 }
@@ -65,6 +74,23 @@ pub struct FearStats {
     pub pocket_rule: String,
 }
 
+/// Next turn's Ravage against the Blight card, before anyone acts.
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+pub struct NextRavage {
+    /// The Ravage card(s) next turn (this turn's Build cards).
+    pub cards: Vec<String>,
+    /// Lands that add Blight next turn if nothing changes.
+    pub lands: Vec<String>,
+    /// Fewest Blight they add (cascades to the nearest unblighted land).
+    pub adds_min: i64,
+    /// Blight left on the card after this turn's forecast; `None` when this
+    /// turn flips the card (the new side's count isn't known yet).
+    pub remaining_after_this: Option<i64>,
+    /// "card holds", "card flips", "card runs out (loss)",
+    /// "card runs out (draw a new Blight Card)".
+    pub outcome: String,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
 pub struct BlightStats {
     pub remaining: i64,
@@ -80,7 +106,16 @@ pub struct BlightStats {
     pub flipped_side: Vec<(i64, u32)>,
     /// Before the flip: how many of those cards are Still-Healthy.
     pub flipped_still_healthy: u32,
+    /// Chance of losing to Blight if this many more Blight come off the card
+    /// this phase: (Blight, probability), over the cards a draw could bring,
+    /// through Still-Healthy chains. Immediately effects are not counted.
+    pub loss_risk: Vec<(i64, f64)>,
+    /// `loss_risk` at this phase's forecast (`adds_this_phase_min`).
+    pub loss_risk_now: f64,
     pub cascade_chains: Vec<CascadeChain>,
+    /// Next turn's Ravage, played forward from this turn's forecast.
+    #[serde(default)]
+    pub next_turn: Option<NextRavage>,
     pub per_turn: Vec<(u32, u32)>,
     pub pocket_rule: String,
 }
@@ -122,7 +157,12 @@ pub struct RoundSummary {
 pub fn compute(s: &PublicSnapshot, history: &[RoundSummary]) -> CompanionStats {
     let view = invaders::forecast(s);
     let fear = fear_stats(s, &view.phase, history);
-    let blight = blight_stats(s, &view.phase, history);
+    let mut blight = blight_stats(s, &view.phase, history);
+    let next = invaders::next_turn(s, &view);
+    // Moot when this turn already empties the card.
+    if !blight.outcome_this_phase.starts_with("card runs out (loss") {
+        blight.next_turn = next.as_ref().map(|n| next_ravage(s, n, &blight));
+    }
     let spirits = s.spirits.iter().map(|sp| spirits::spirit_stats(sp, s)).collect();
     let open_ravages: Vec<(String, rules::RavageLedger)> =
         view.phase.ravages.iter().filter(|r| !r.done).map(|r| (r.land.clone(), r.ledger.clone())).collect();
@@ -131,6 +171,7 @@ pub fn compute(s: &PublicSnapshot, history: &[RoundSummary]) -> CompanionStats {
         s.adversaries.iter().flat_map(|a| crate::rules_register::adversary_rules(&a.id, a.level)).collect();
     rules_in_play.extend(s.spirits.iter().flat_map(|sp| crate::rules_register::spirit_rules(&sp.id, &sp.title, sp.aspect.as_deref())));
     let prompts = prompts(s, &view.phase, &view.lands, &fear, &blight);
+    let loss_clocks = adversary::loss_clocks(&adversary::Adv::new(s), &view.after_build, &view.phase.ravages, &view.phase.build_ravages);
     CompanionStats {
         invader_phase: view.phase,
         lands: view.lands,
@@ -141,8 +182,10 @@ pub fn compute(s: &PublicSnapshot, history: &[RoundSummary]) -> CompanionStats {
         needs,
         rules_in_play,
         prompts,
+        loss_clocks,
+        next_phase: next.map(|n| n.phase),
         basis: vec![
-            "Base rules only: adversary, token, and power modifiers are flagged, not applied (rules register pending Brett's review).".into(),
+            "Adversary and scenario rules are applied where the forecast models them; rules the players resolve by choice are listed as options, not applied.".into(),
             "Explore odds treat each unseen card of the next stage as equally likely (pool − seen); the deck is never read.".into(),
             "Explore sources are counted after this phase's Builds; Ravage counterattack kills are not assumed.".into(),
         ],
@@ -224,16 +267,47 @@ fn blighted_cluster(start: &str, lands: &[PublicLand], nbrs: &BTreeMap<&str, BTr
     seen.into_iter().map(String::from).collect()
 }
 
+/// Fewest Blight a phase's Ravages add on `lands`, and the lands adding it.
+fn phase_blight(phase: &InvaderPhaseForecast, lands: &[PublicLand], nbrs: &BTreeMap<&str, BTreeSet<&str>>) -> (i64, Vec<String>) {
+    let mut adds = 0;
+    let mut adding = Vec::new();
+    for r in phase.ravages.iter().chain(&phase.build_ravages).filter(|r| !r.done && r.ledger.adds_blight) {
+        let extra = if r.ledger.cascades { cascade_min_extra(&r.land, lands, nbrs).0 } else { 0 };
+        adds += 1 + extra + r.ledger.extra_blight;
+        adding.push(r.land.clone());
+    }
+    (adds, adding)
+}
+
+fn next_ravage(s: &PublicSnapshot, next: &invaders::InvaderView, b: &BlightStats) -> NextRavage {
+    let nbrs = rules::neighbors(s);
+    let (adds_min, lands) = phase_blight(&next.phase, &next.after_build, &nbrs);
+    // This turn flips the card, or empties a Still-Healthy side (a new Blight
+    // Card is drawn): the next count isn't known yet.
+    let changes_now = b.adds_this_phase_min > 0 && b.adds_this_phase_min >= b.remaining;
+    let remaining_after_this = (!changes_now).then(|| b.remaining - b.adds_this_phase_min);
+    let still_healthy = s.blight.blighted_text.iter().any(|t| t.contains("draw a new Blight Card"));
+    let outcome = match remaining_after_this {
+        Some(left) if adds_min > 0 && adds_min >= left => {
+            if !b.flipped {
+                "card flips"
+            } else if still_healthy {
+                "card runs out (draw a new Blight Card)"
+            } else {
+                "card runs out (loss)"
+            }
+        }
+        Some(_) => "card holds",
+        None if adds_min > 0 => "card changes this turn (it flips, or a new Blight Card is drawn); next turn's Ravage goes on the new side",
+        None => "card holds",
+    };
+    NextRavage { cards: next.phase.ravage_cards.iter().map(|c| c.id.clone()).collect(), lands, adds_min, remaining_after_this, outcome: outcome.into() }
+}
+
 fn blight_stats(s: &PublicSnapshot, phase: &InvaderPhaseForecast, history: &[RoundSummary]) -> BlightStats {
     let b = &s.blight;
     let nbrs = rules::neighbors(s);
-    let mut adds = 0;
-    let mut adding = Vec::new();
-    for r in phase.ravages.iter().filter(|r| !r.done && r.ledger.adds_blight) {
-        let (extra, _) = cascade_min_extra(&r.land, &s.lands, &nbrs);
-        adds += 1 + extra;
-        adding.push(r.land.clone());
-    }
+    let (adds, adding) = phase_blight(phase, &s.lands, &nbrs);
     // A Still-Healthy flipped side draws a new Blight Card when it empties
     // instead of losing (JE rulebook; open-questions Q11).
     let still_healthy = b.blighted_text.iter().any(|t| t.contains("draw a new Blight Card"));
@@ -270,10 +344,79 @@ fn blight_stats(s: &PublicSnapshot, phase: &InvaderPhaseForecast, history: &[Rou
         outcome_this_phase: outcome.into(),
         flipped_side: dist.into_iter().collect(),
         flipped_still_healthy: b.unseen_still_healthy,
+        loss_risk: (0..=(adds + 4).max(6)).map(|k| (k, p_loss(k, b))).collect(),
+        loss_risk_now: p_loss(adds, b),
         cascade_chains,
+        next_turn: None,
         per_turn: history.iter().map(|h| (h.turn, h.blight_on_island)).collect(),
         pocket_rule: "Each blight added comes off the card; a blight added to a land that already has blight cascades to an adjacent land.".into(),
     }
+}
+
+/// Chance the island is lost to Blight if `k` more Blight come off the card
+/// (playtest U16). A Blighted side that empties loses; a Still-Healthy side
+/// that empties draws a new card, already flipped, from the cards not yet
+/// seen; before the flip the current card is one of the cards sharing its
+/// healthy side. Built from the public pool only; Immediately effects that
+/// add Blight are not counted, so this is a floor.
+pub fn p_loss(k: i64, b: &crate::public::PublicBlight) -> f64 {
+    if k < b.remaining || b.remaining <= 0 && b.pool.is_empty() {
+        return 0.0;
+    }
+    let pool: Vec<(i64, bool)> = b.pool.iter().filter_map(|o| o.flipped_total.map(|x| (x, o.still_healthy))).collect();
+    let left = k - b.remaining;
+    if b.flipped {
+        return if b.current_still_healthy { draw_loss(left, &pool) } else { 1.0 };
+    }
+    // Before the flip: the current card is one of the same-healthy-side cards.
+    let group: Vec<usize> = b
+        .pool
+        .iter()
+        .filter(|o| o.flipped_total.is_some())
+        .enumerate()
+        .filter(|(_, o)| o.same_healthy_side)
+        .map(|(i, _)| i)
+        .collect();
+    if group.is_empty() {
+        return 0.0;
+    }
+    let total: f64 = group
+        .iter()
+        .map(|&i| {
+            let (x, still_healthy) = pool[i];
+            let rest: Vec<(i64, bool)> = pool.iter().enumerate().filter(|(j, _)| *j != i).map(|(_, c)| *c).collect();
+            match (left >= x, still_healthy) {
+                (false, _) => 0.0,
+                (true, true) => draw_loss(left - x, &rest),
+                (true, false) => 1.0,
+            }
+        })
+        .sum();
+    total / group.len() as f64
+}
+
+/// Loss chance when `k` Blight remain to place and a new card (already
+/// flipped) is drawn from `pool` (Blight on its flipped side, Still-Healthy).
+fn draw_loss(k: i64, pool: &[(i64, bool)]) -> f64 {
+    if k <= 0 {
+        return 0.0;
+    }
+    if pool.is_empty() {
+        return 1.0;
+    }
+    let total: f64 = pool
+        .iter()
+        .enumerate()
+        .map(|(i, &(x, still_healthy))| match (k >= x, still_healthy) {
+            (false, _) => 0.0,
+            (true, true) => {
+                let rest: Vec<(i64, bool)> = pool.iter().enumerate().filter(|(j, _)| *j != i).map(|(_, c)| *c).collect();
+                draw_loss(k - x, &rest)
+            }
+            (true, false) => 1.0,
+        })
+        .sum();
+    total / pool.len() as f64
 }
 
 fn prompts(s: &PublicSnapshot, phase: &InvaderPhaseForecast, lands: &[LandOutlook], fear: &FearStats, blight: &BlightStats) -> Vec<Prompt> {
@@ -386,4 +529,38 @@ pub fn round_summaries(timeline: &[PublicSnapshot]) -> Vec<RoundSummary> {
         }
     }
     out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::public::{BlightOption, PublicBlight};
+
+    /// Playtest 2026-10-19 Turn 5: Strong Earth Shatters Slowly (Still-Healthy,
+    /// 1 left) with 22 unseen cards; 5 Blight forecast.
+    fn turn5() -> PublicBlight {
+        let mut pool = Vec::new();
+        let mut add = |x: i64, n: usize, still_healthy: bool| {
+            for _ in 0..n {
+                pool.push(BlightOption { flipped_total: Some(x), still_healthy, same_healthy_side: false });
+            }
+        };
+        add(1, 1, true);
+        add(2, 4, false);
+        add(2, 2, true);
+        add(3, 5, false);
+        add(4, 7, false);
+        add(5, 3, false);
+        PublicBlight { flipped: true, remaining: 1, current_still_healthy: true, pool, ..Default::default() }
+    }
+
+    #[test]
+    fn loss_risk_through_still_healthy_chains() {
+        let b = turn5();
+        let pct = |k| (p_loss(k, &b) * 100.0).round() as i64;
+        assert_eq!((pct(5), pct(4), pct(3), pct(2), pct(1)), (76, 42, 18, 0, 0));
+        // A Blighted side loses as soon as it empties.
+        let blighted = PublicBlight { flipped: true, remaining: 3, ..Default::default() };
+        assert_eq!((p_loss(2, &blighted), p_loss(3, &blighted)), (0.0, 1.0));
+    }
 }

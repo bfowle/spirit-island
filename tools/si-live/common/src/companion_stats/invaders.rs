@@ -7,7 +7,8 @@
 //! *after* this phase's Builds (a new Town is a new Explore source), and the
 //! card in the Build slot names next turn's Ravage lands.
 
-use crate::public::{PublicInvaderCard, PublicLand, PublicSnapshot};
+use crate::public::{PublicInvaderCard, PublicLand, PublicSnapshot, PublicStatusEffect};
+use super::adversary;
 use crate::rules::{self, RavageLedger};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
@@ -24,6 +25,42 @@ pub struct InvaderPhaseForecast {
     pub builds: Vec<BuildForecast>,
     pub explore: ExploreForecast,
     pub notes: Vec<String>,
+    /// England L3+: the card on the High Immigration tile and the Builds it
+    /// makes before the Ravage.
+    #[serde(default)]
+    pub high_immigration_cards: Vec<PublicInvaderCard>,
+    #[serde(default)]
+    pub high_immigration: Vec<BuildForecast>,
+    /// A Stage II Escalation that resolves as Builds (England), if the
+    /// Explore card is flagged.
+    #[serde(default)]
+    pub escalation: Option<EscalationForecast>,
+    /// Adversary actions between the printed steps (after the Ravage, after
+    /// the Build), applied when the rule decides, listed when players pick.
+    #[serde(default)]
+    pub rule_actions: Vec<super::adversary::RuleAction>,
+    /// Habsburg Mining L1, Ceaseless Mining: the Build card Ravages in Mining lands.
+    #[serde(default)]
+    pub build_ravages: Vec<RavageForecast>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+pub struct EscalationForecast {
+    pub title: String,
+    pub text: String,
+    /// Flagged cards among the possible Explore cards (1 of 1 once revealed).
+    pub chance: (u32, u32),
+    /// Where it Builds. Tied lands on one board: the player picks one.
+    pub builds: Vec<BuildForecast>,
+    /// Every listed land is affected (Sweden), not one per board (England).
+    #[serde(default)]
+    pub each_land: bool,
+    /// "before the Explore", "after the Explore", "after the cards advance".
+    #[serde(default)]
+    pub when: String,
+    /// What the players choose, if anything ("you pick 1 per board").
+    #[serde(default)]
+    pub pick: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
@@ -39,6 +76,10 @@ pub struct BuildForecast {
     pub adds: String,
     pub done: bool,
     pub notes: Vec<String>,
+    /// Only if this Explore card is drawn (an Escalation that depends on
+    /// where the card explores).
+    #[serde(default)]
+    pub card: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
@@ -61,6 +102,9 @@ pub struct ExploreCandidate {
     pub lands: Vec<String>,
     /// Lands that match the card but have no Explore source in range.
     pub blocked: Vec<String>,
+    /// Adversary and scenario changes to this card's Explore.
+    #[serde(default)]
+    pub notes: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
@@ -127,69 +171,226 @@ pub struct InvaderView {
     pub phase: InvaderPhaseForecast,
     pub lands: Vec<LandOutlook>,
     pub stages: Vec<StageCount>,
+    /// The forecast board after this phase's Builds (for loss clocks).
+    pub after_build: Vec<PublicLand>,
+}
+
+/// Next turn's Invader Phase, played forward from this turn's forecast
+/// board: the Build card Ravages, this turn's Explore card Builds. A lower
+/// bound: this turn's Explorers count only once the Explore card is face up,
+/// and no Spirit action is assumed. `None` once this turn's Invader Phase is
+/// over (then `forecast` already describes next turn). Brett, 2026-10-19
+/// (Prussia + Blitz game): Turn 4's four-land Ravage wasn't visible on Turn 3.
+pub fn next_turn(s: &PublicSnapshot, now: &InvaderView) -> Option<InvaderView> {
+    if phase_position(&s.step) == "after" {
+        return None;
+    }
+    let mut n = s.clone();
+    n.turn = s.turn + 1;
+    n.step = "SpiritPhase".into();
+    n.lands = now.after_build.clone();
+    // This turn's Ravage Blight stays (its cascades' targets are the players'
+    // pick, so they aren't placed).
+    for r in now.phase.ravages.iter().filter(|r| !r.done && r.ledger.adds_blight) {
+        if let Some(l) = n.lands.iter_mut().find(|l| l.id == r.land) {
+            l.blight += 1 + r.ledger.extra_blight as u32;
+        }
+    }
+    if let Some(c) = now.phase.explore.candidates.iter().find(|_| now.phase.explore.revealed.is_some()) {
+        for l in n.lands.iter_mut().filter(|l| c.lands.contains(&l.id)) {
+            rules::add_built(l, "Explorer", 1);
+        }
+    }
+    for l in &mut n.lands {
+        l.defend = 0;
+        l.damage_taken = 0;
+        for p in &mut l.pieces {
+            p.damage = 0;
+        }
+    }
+    n.status_effects.retain(|e| !matches!(e.source_kind.as_str(), "fear" | "event" | "power"));
+    let inv = &mut n.invaders;
+    for (slot, cards) in &mut inv.extra_slots {
+        if slot.starts_with("HighImmigration") {
+            *cards = s.invaders.ravage.clone();
+        }
+    }
+    inv.ravage = s.invaders.build.clone();
+    inv.build = s.invaders.explore.clone();
+    inv.explore.clear();
+    if s.invaders.explore.is_empty() && !inv.upcoming_stages.is_empty() {
+        inv.upcoming_stages.remove(0);
+    }
+    Some(forecast_at(&n))
 }
 
 pub fn forecast(s: &PublicSnapshot) -> InvaderView {
+    // After this turn's Invader Phase the forecast is for next turn, when
+    // Time Passes will have cleared this turn's Defend, Damage and single-turn
+    // effects (Fear, Event and Power effects). Playtest R7: Overseas Trade's
+    // Defend 6 made next turn's Coastal Ravage look harmless.
+    if phase_position(&s.step) == "after" {
+        let mut next = s.clone();
+        for l in &mut next.lands {
+            l.defend = 0;
+            l.damage_taken = 0;
+            for p in &mut l.pieces {
+                p.damage = 0;
+            }
+        }
+        next.status_effects.retain(|e| !matches!(e.source_kind.as_str(), "fear" | "event" | "power"));
+        return forecast_at(&next);
+    }
+    forecast_at(s)
+}
+
+/// A Spread of Rampant Green, Choke the Land with Green: "Whenever Invaders
+/// would Ravage or Build in a land with your Sacred Site, you may skip it by
+/// destroying one of your Presence in that land" (playtest 2026-10-19 Russia
+/// game: six Builds/Ravages skipped this way).
+fn choke(l: &PublicLand) -> Option<String> {
+    (l.presence.get("ASpreadOfRampantGreen").copied().unwrap_or(0) >= 2)
+        .then(|| "Choke the Land with Green (destroy 1 Presence there)".to_string())
+}
+
+/// What a Build card's resolution needs besides the board.
+struct BuildRules<'a> {
+    adv: &'a adversary::Adv<'a>,
+    effects: &'a [PublicStatusEffect],
+    nbrs: &'a BTreeMap<&'a str, BTreeSet<&'a str>>,
+    /// Health of a new Town / City.
+    town_health: i64,
+    city_health: i64,
+    /// Boards where Vengeance as a Burning Plague has Presence: there a
+    /// Disease stops a Build only if the player spends it.
+    vengeance_boards: BTreeSet<String>,
+}
+
+const VENGEANCE: &str = "VengeanceAsABurningPlague";
+
+/// Boards where Vengeance as a Burning Plague has Presence.
+fn vengeance_boards(lands: &[PublicLand]) -> BTreeSet<String> {
+    lands.iter().filter(|l| l.presence.get(VENGEANCE).copied().unwrap_or(0) > 0).map(|l| l.board.clone()).collect()
+}
+
+/// One Build card on `board`. The lands it builds in are fixed on the board
+/// before it resolves (FAQ: "you check what lands will Build at the beginning
+/// of looking at the Build Card"); each Build then adds its piece, which the
+/// next card sees. `normal`: the card is in the printed Build space. `skip`:
+/// lands where the card does something else (Ceaseless Mining).
+#[allow(clippy::too_many_arguments)]
+fn build_card(
+    card: &PublicInvaderCard,
+    board: &mut [PublicLand],
+    r: &BuildRules,
+    cancels: &mut rules::BuildCancels,
+    normal: bool,
+    done: bool,
+    skip: &BTreeSet<String>,
+    notes: &mut Vec<String>,
+) -> Vec<BuildForecast> {
+    let mut out = Vec::new();
+    if !done && let Some(src) = cancels.card(normal) {
+        notes.push(format!("{}: whole Build skipped ({src})", card.id));
+        return out;
+    }
+    let before = board.to_vec();
+    let mut lands: Vec<(String, Option<String>)> = before
+        .iter()
+        .filter(|l| !skip.contains(&l.id))
+        .filter_map(|l| {
+            if rules::builds_in(card, l) {
+                Some((l.id.clone(), None))
+            } else {
+                adversary::builds_without_invaders(r.adv, card, l, &before, r.nbrs).map(|why| (l.id.clone(), Some(why)))
+            }
+        })
+        .collect();
+    if !done && let Some(src) = cancels.lowest(normal) {
+        // The lowest-numbered land matching the card on each board, whether
+        // or not it would have built.
+        let mut boards: Vec<&str> = before.iter().map(|l| l.board.as_str()).collect();
+        boards.dedup();
+        for b in boards {
+            if let Some(low) = before.iter().filter(|l| l.board == b && rules::card_matches(card, l)).min_by_key(|l| l.number) {
+                if lands.iter().any(|(id, _)| *id == low.id) {
+                    notes.push(format!("{}: no Build ({src}: the lowest-numbered matching land)", low.id));
+                    lands.retain(|(id, _)| *id != low.id);
+                } else {
+                    notes.push(format!("{src} skips {}, which would not have built anyway", low.id));
+                }
+            }
+        }
+    }
+    for (id, why) in lands {
+        let Some(i) = board.iter().position(|l| l.id == id) else { continue };
+        let (mut piece, mut bnotes) = rules::build_outcome_with(&board[i], r.effects, cancels);
+        // Vengeance as a Burning Plague, The Terror of a Slowly Unfolding
+        // Plague: "When Disease would prevent a Build on a board with your
+        // Presence, you may let the Build happen (Removing no Disease). If you
+        // do, 1 Fear." The engine asks (optional RemoveDiseaseToPreventBuild;
+        // Prussia + Blitz game: Sands C2 and Mountain C7 built, Sands C6 didn't).
+        if piece.is_none() && bnotes.iter().any(|n| n.starts_with("Disease stops")) && r.vengeance_boards.contains(&board[i].board) {
+            piece = Some(rules::build_piece(&board[i]));
+            bnotes.retain(|n| !n.starts_with("Disease stops"));
+            bnotes.push("Can skip: spend the Disease to stop it; or let it Build (Disease stays, +1 Fear: The Terror of a Slowly Unfolding Plague)".into());
+        }
+        bnotes.extend(why);
+        if let Some(c) = choke(&board[i]) {
+            bnotes.push(format!("Can skip: {c}"));
+        }
+        match piece {
+            Some(p) => {
+                let mut adds = p;
+                if !done {
+                    rules::add_built(&mut board[i], p, if p == "City" { r.city_health } else { r.town_health });
+                    let (more, built) = adversary::after_build(r.adv, board, i, p, r.nbrs, r.town_health);
+                    bnotes.extend(more);
+                    adds = built.unwrap_or(p);
+                }
+                out.push(BuildForecast { land: id, adds: adds.to_string(), done, notes: bnotes, card: None });
+            }
+            None => {
+                // The Disease that stopped it is spent (Turn 4 of the England
+                // game: Building Boom then built in Jungle D2).
+                if !done
+                    && bnotes.iter().any(|n| n.starts_with("Disease stops"))
+                    && let Some(d) = board[i].tokens.get_mut("Disease")
+                {
+                    *d -= 1;
+                }
+                notes.push(format!("{id}: no Build ({})", bnotes.join("; ")));
+            }
+        }
+    }
+    out
+}
+
+fn forecast_at(s: &PublicSnapshot) -> InvaderView {
     let nbrs = rules::neighbors(s);
+    let adv = adversary::Adv::new(s);
     let position = phase_position(&s.step);
     // After this turn's Invader Phase the slots already hold next turn's cards.
     let (turn, position) = if position == "after" { (s.turn + 1, "before") } else { (s.turn, position) };
+    let high_immigration_done = position != "before";
     let ravage_done = matches!(position, "build" | "explore");
     let build_done = position == "explore";
     let inv = &s.invaders;
     let mut notes = Vec::new();
     for (slot, cards) in &inv.extra_slots {
-        if !cards.is_empty() {
+        if !cards.is_empty() && !slot.starts_with("HighImmigration") {
             notes.push(format!("{slot} holds {}: an extra invader action this turn (see rules register)", titles(cards)));
         }
     }
 
-    // ---- Ravage (first)
-    let ravages: Vec<RavageForecast> = s
-        .lands
-        .iter()
-        .filter(|l| inv.ravage.iter().any(|c| rules::ravages_in(c, l)))
-        .map(|l| RavageForecast { land: l.id.clone(), ledger: rules::ravage_ledger(l, &s.status_effects), done: ravage_done })
-        .collect();
+    // Adversary rules that change Ravage damage, as effects the ledger applies.
+    let mut effects = s.status_effects.clone();
+    effects.extend(adversary::ravage_effects(&adv));
+    let isolated = rules::isolated_lands(&effects);
+    let range = rules::explore_range(&effects);
 
-    // A counterattack that destroys every Invader whatever the assignment
-    // clears the land before Build and Explore: it stops this turn's Build
-    // there and can remove an Explore source (Test 1 Turn 3: Jungle E3's
-    // Dahan destroyed the Town feeding Mountain E5 and Wetland E4).
-    let mut after_build: Vec<PublicLand> = s.lands.clone();
-    if !ravage_done {
-        for r in ravages.iter().filter(|r| r.ledger.counterattack_clears && r.ledger.skip_available.is_none()) {
-            if let Some(l) = after_build.iter_mut().find(|l| l.id == r.land) {
-                l.explorers = 0;
-                l.towns = 0;
-                l.cities = 0;
-                l.pieces.retain(|p| !rules::is_invader(&p.kind));
-                notes.push(format!("{}: the Dahan counterattack destroys every Invader before Build and Explore", l.id));
-            }
-        }
-    }
-
-    // ---- Build (second), then the board Explore sees.
-    let mut builds = Vec::new();
-    for l in after_build.iter_mut() {
-        if inv.build.iter().any(|c| rules::builds_in(c, l)) {
-            let (piece, bnotes) = rules::build_outcome(l, &s.status_effects);
-            if !build_done {
-                match piece {
-                    Some("City") => l.cities += 1,
-                    Some(_) => l.towns += 1,
-                    None => {}
-                }
-            }
-            if let Some(p) = piece {
-                builds.push(BuildForecast { land: l.id.clone(), adds: p.to_string(), done: build_done, notes: bnotes });
-            } else {
-                notes.push(format!("{}: no Build ({})", l.id, bnotes.join("; ")));
-            }
-        }
-    }
-
-    // ---- Explore (third)
+    // Card counting first: the Explore candidates feed rules that act before
+    // the Explore (which lands a new Town would open to Exploring).
     let seen: BTreeSet<&str> = inv
         .explore
         .iter()
@@ -207,11 +408,6 @@ pub fn forecast(s: &PublicSnapshot) -> InvaderView {
             left_in_deck: inv.upcoming_stages.iter().filter(|x| **x == st).count() as u32,
         })
         .collect();
-
-    let isolated = rules::isolated_lands(&s.status_effects);
-    let fed = |land: &PublicLand| -> Vec<&str> {
-        rules::explore_sources_for(land, &after_build, &nbrs).into_iter().filter(|src| !isolated.contains(*src)).collect()
-    };
     let revealed = inv.explore.first().cloned();
     let next_stage = inv.upcoming_stages.first().copied();
     let candidates_cards: Vec<PublicInvaderCard> = match (&revealed, next_stage) {
@@ -219,16 +415,132 @@ pub fn forecast(s: &PublicSnapshot) -> InvaderView {
         (None, Some(st)) => stages[(st - 1) as usize].unseen.clone(),
         (None, None) => Vec::new(),
     };
+
+    // ---- High Immigration (England L3+): the card that left the Ravage slot
+    // Builds before the Ravage (rules register R-ADV-ENG-L3). It is not in the
+    // printed Build space, so its Builds are not normal (FAQ); the Towns and
+    // Cities it adds count for the Ravage and the regular Build (FAQ).
+    let england = adv.level(adversary::ENGLAND);
+    let health = |kind: &str| {
+        s.lands.iter().flat_map(|l| &l.pieces).find(|p| p.kind == kind).map(|p| p.max_health).unwrap_or_else(|| rules::invader_damage(kind) + i64::from(england >= 5))
+    };
+    let (town_health, city_health) = (health("Town"), health("City"));
+    let build_rules = BuildRules { adv: &adv, effects: &effects, nbrs: &nbrs, town_health, city_health, vengeance_boards: vengeance_boards(&s.lands) };
+    let mut cancels = rules::BuildCancels::new(&effects);
+    let mut board: Vec<PublicLand> = s.lands.clone();
+    let high_immigration_cards: Vec<PublicInvaderCard> =
+        inv.extra_slots.iter().filter(|(slot, _)| slot.starts_with("HighImmigration")).flat_map(|(_, v)| v.iter().cloned()).collect();
+    let mut high_immigration = Vec::new();
+    let none = BTreeSet::new();
+    for card in &high_immigration_cards {
+        high_immigration.extend(build_card(card, &mut board, &build_rules, &mut cancels, false, high_immigration_done, &none, &mut notes));
+    }
+    if england >= 6 && !high_immigration_cards.is_empty() {
+        notes.push("England L6 (Independent Resolve): if no Fear Card resolves this Invader Phase, High Immigration Builds twice".into());
+    }
+
+    // One Ravage action in a land, with every rule that changes it.
+    let ravage_of = |l: &PublicLand, board: &[PublicLand], done: bool| -> RavageForecast {
+        let mut fx = rules::for_land(&effects, l, board, &nbrs);
+        fx.extend(adversary::land_effects(&adv, l, board, &nbrs));
+        let mut ledger = rules::ravage_ledger(l, &fx);
+        if ledger.skip_available.is_none() {
+            ledger.skip_available = choke(l);
+        }
+        adversary::after_ledger(&adv, l, &mut ledger, &effects);
+        RavageForecast { land: l.id.clone(), ledger, done }
+    };
+
+    // ---- Ravage (first of the printed spaces)
+    let ravages: Vec<RavageForecast> =
+        board.iter().filter(|l| inv.ravage.iter().any(|c| adversary::ravages_in(&adv, c, l))).map(|l| ravage_of(l, &board, ravage_done)).collect();
+
+    // A counterattack that destroys every Invader whatever the assignment
+    // clears the land before Build and Explore: it stops this turn's Build
+    // there and can remove an Explore source (Test 1 Turn 3: Jungle E3's
+    // Dahan destroyed the Town feeding Mountain E5 and Wetland E4).
+    let mut after_build: Vec<PublicLand> = board.clone();
+    let mut rule_actions = Vec::new();
+    if !ravage_done {
+        for r in ravages.iter().filter(|r| r.ledger.counterattack_clears && r.ledger.skip_available.is_none()) {
+            if let Some(l) = after_build.iter_mut().find(|l| l.id == r.land) {
+                l.explorers = 0;
+                l.towns = 0;
+                l.cities = 0;
+                l.pieces.retain(|p| !rules::is_invader(&p.kind));
+                notes.push(format!("{}: the Dahan counterattack destroys every Invader before Build and Explore", l.id));
+            }
+        }
+        rule_actions.extend(adversary::after_ravage_step(&adv, &mut after_build, &ravages, &inv.ravage, &nbrs, turn, town_health));
+        // Vengeance, Lingering Pestilence: "When your Presence is Destroyed by
+        // anything except a Spirit Action, add 1 Disease where each Destroyed
+        // Presence was." Ravage Blight destroys 1 Presence of each Spirit in
+        // the land, so the Disease is there for the Build (Prussia + Blitz
+        // game, Turn 2: Mountain C7).
+        let mut lands = Vec::new();
+        for r in ravages.iter().filter(|r| r.ledger.adds_blight && r.ledger.presence_at_risk.contains_key(VENGEANCE)) {
+            if let Some(l) = after_build.iter_mut().find(|l| l.id == r.land) {
+                *l.tokens.entry("Disease".into()).or_default() += 1;
+                lands.push(BuildForecast { land: l.id.clone(), adds: "Disease".into(), done: false, notes: vec!["your destroyed Presence".into()], card: None });
+            }
+        }
+        if !lands.is_empty() {
+            rule_actions.push(adversary::RuleAction {
+                rule: "Lingering Pestilence (Vengeance as a Burning Plague)".into(),
+                when: "after the Ravage".into(),
+                text: "Blight destroys your Presence here: +1 Disease, before the Build".into(),
+                lands,
+                pick: String::new(),
+            });
+        }
+    }
+
+    // ---- Build (second), then the board Explore sees. Each Build card
+    // resolves in turn and sees the earlier card's results (FAQ, multiple
+    // Build cards); one-use cancels apply once across them.
+    let mut builds = Vec::new();
+    let mut build_ravages = Vec::new();
+    for (i, card) in inv.build.iter().enumerate() {
+        // The card that advanced normally is listed last (an Entrench in the
+        // Face of Fear card is inserted before it).
+        let normal = i + 1 == inv.build.len();
+        // Ceaseless Mining: in Mining lands the ordinary Build card Ravages.
+        let mining: BTreeSet<String> = if normal {
+            after_build.iter().filter(|l| rules::card_matches(card, l) && adversary::ceaseless_mining(&adv, l)).map(|l| l.id.clone()).collect()
+        } else {
+            BTreeSet::new()
+        };
+        for l in after_build.iter().filter(|l| mining.contains(&l.id)) {
+            let mut r = ravage_of(l, &after_build, build_done);
+            r.ledger.applied.insert(0, "Ceaseless Mining (Habsburg Mining L1): the Build card Ravages this Mining land".into());
+            build_ravages.push(r);
+        }
+        builds.extend(build_card(card, &mut after_build, &build_rules, &mut cancels, normal, build_done, &mining, &mut notes));
+    }
+    if !build_done {
+        let cards: Vec<&PublicInvaderCard> = candidates_cards.iter().collect();
+        rule_actions.extend(adversary::after_build_step(&adv, &mut after_build, &inv.build, &cards, &nbrs, range, town_health));
+    }
+
+    // ---- Explore (third)
+    if range > 1 {
+        notes.push(format!("Explore range is {range} this turn: lands up to {range} away from a source can be explored"));
+    }
+    let fed = |land: &PublicLand| -> Vec<&str> {
+        rules::explore_sources_within(land, &after_build, &nbrs, range).into_iter().filter(|src| !isolated.contains(*src)).collect()
+    };
     let candidates: Vec<ExploreCandidate> = candidates_cards
         .iter()
         .map(|c| {
             let matching: Vec<&PublicLand> = after_build.iter().filter(|l| rules::card_matches(c, l)).collect();
             let open = |l: &&&PublicLand| {
-                !isolated.contains(&l.id) && !fed(l).is_empty() && !rules::wilds_stop_explore(l, &s.status_effects)
+                !isolated.contains(&l.id) && !fed(l).is_empty() && !rules::wilds_stop_explore(l, &effects)
             };
+            let lands: Vec<String> = matching.iter().filter(|l| open(l)).map(|l| l.id.clone()).collect();
             ExploreCandidate {
                 card: c.clone(),
-                lands: matching.iter().filter(|l| open(l)).map(|l| l.id.clone()).collect(),
+                notes: adversary::explore_notes(&adv, c, &lands, &after_build),
+                lands,
                 blocked: matching
                     .iter()
                     .filter(|l| !open(l))
@@ -259,23 +571,9 @@ pub fn forecast(s: &PublicSnapshot) -> InvaderView {
         (false, None) => "The Invader deck is empty: the spirits lose at the next Explore.".into(),
     };
     let explore = ExploreForecast { revealed, next_stage, deck_empty: next_stage.is_none() && inv.explore.is_empty(), candidates, per_land, pocket_rule };
-    // Escalation: on a flagged card, the adversary's Escalation resolves
-    // (for most adversaries before this Explore; see the rules register).
-    let escalating = match &explore.revealed {
-        Some(c) => c.escalation as u32,
-        None => explore.candidates.iter().filter(|c| c.card.escalation).count() as u32,
-    };
-    if escalating > 0 && !build_done {
-        for a in &s.adversaries {
-            if let Some((title, text, _)) = crate::rules_register::escalation(&a.id) {
-                let text = text.replace("<i>", "").replace("</i>", "");
-                notes.push(format!(
-                    "Escalation ({title}) if the card is flagged ({escalating} of {}): {text} Unless it says otherwise it resolves before the Explore, so Towns it adds are Explore sources this turn; these odds don't include them yet (FAQ; open-questions NQ-G).",
-                    explore.candidates.len()
-                ));
-            }
-        }
-    }
+    // Escalation: on a flagged card, the adversary's Escalation resolves.
+    let escalation =
+        adversary::escalation(&adv, &after_build, &explore.candidates, explore.revealed.is_some(), &inv.build, &effects, &cancels, &ravages, &nbrs, range, &mut notes);
 
     // ---- next turn: the Build card becomes the Ravage card, this Explore card the Build card.
     let explored_now = |id: &str| explore.per_land.get(id).copied().unwrap_or((0, 0));
@@ -381,9 +679,15 @@ pub fn forecast(s: &PublicSnapshot) -> InvaderView {
             builds,
             explore,
             notes,
+            high_immigration_cards,
+            high_immigration,
+            escalation,
+            rule_actions,
+            build_ravages,
         },
         lands,
         stages,
+        after_build,
     }
 }
 

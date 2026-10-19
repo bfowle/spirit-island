@@ -29,13 +29,13 @@ fn main() -> anyhow::Result<()> {
             println!("decoded {ok}, failed {bad}");
         }
         Some("hist") => {
-            let g = nrbf::decode(&std::fs::read(&args[1])?)?;
+            let g = nrbf::decode(&si_steam::source::read_save(std::path::Path::new(&args[1]))?)?;
             for (name, n) in g.class_histogram().iter().take(80) {
                 println!("{n:6}  {name}");
             }
         }
         Some("tree") => {
-            let g = nrbf::decode(&std::fs::read(&args[1])?)?;
+            let g = nrbf::decode(&si_steam::source::read_save(std::path::Path::new(&args[1]))?)?;
             let mut node = g.root();
             if let Some(path) = args.get(2).filter(|p| !p.is_empty() && *p != ".") {
                 for part in path.split('.') {
@@ -50,15 +50,15 @@ fn main() -> anyhow::Result<()> {
             print_node(node, 0, depth);
         }
         Some("snap") => {
-            let g = nrbf::decode(&std::fs::read(&args[1])?)?;
+            let g = nrbf::decode(&si_steam::source::read_save(std::path::Path::new(&args[1]))?)?;
             println!("{:#?}", si_steam::engine_map::map(&g));
         }
         Some("sum") => {
-            let g = nrbf::decode(&std::fs::read(&args[1])?)?;
+            let g = nrbf::decode(&si_steam::source::read_save(std::path::Path::new(&args[1]))?)?;
             summary(&si_steam::engine_map::map(&g));
         }
         Some("adjprobe") => {
-            let g = nrbf::decode(&std::fs::read(&args[1])?)?;
+            let g = nrbf::decode(&si_steam::source::read_save(std::path::Path::new(&args[1]))?)?;
             let defs = si_steam::engine_defs::EngineDefs::load(std::path::Path::new(si_steam::engine_defs::DEFAULT_DLL))?;
             let island = g.root().child("Island").unwrap();
             let n = island.int("LandMatrixDimensionSize").unwrap() as usize;
@@ -92,7 +92,7 @@ fn main() -> anyhow::Result<()> {
             println!("engine {} → {}", d.engine_sha256, out.display());
         }
         Some("pub") => {
-            let g = nrbf::decode(&std::fs::read(&args[1])?)?;
+            let g = nrbf::decode(&si_steam::source::read_save(std::path::Path::new(&args[1]))?)?;
             let defs = si_steam::engine_defs::EngineDefs::load(std::path::Path::new(si_steam::engine_defs::DEFAULT_DLL))?;
             let p = si_steam::projection::project(&si_steam::engine_map::map(&g), &defs);
             println!("{}", serde_json::to_string_pretty(&p)?);
@@ -111,7 +111,7 @@ fn main() -> anyhow::Result<()> {
                 println!("T{} {:20} {:?}", d.turn, d.step, d.decision);
             }
         }
-        Some("review") | Some("stats") | Some("backtest") => {
+        Some("review") | Some("stats") | Some("backtest") | Some("timeline") => {
             // Replay a capture's saves in capture order through the companion.
             let defs = si_steam::engine_defs::EngineDefs::load(std::path::Path::new(si_steam::engine_defs::DEFAULT_DLL))?;
             let dir = std::path::Path::new(&args[1]).join("saves");
@@ -120,15 +120,32 @@ fn main() -> anyhow::Result<()> {
             let upto: usize = args.get(2).and_then(|a| a.parse().ok()).unwrap_or(usize::MAX);
             let mut c = si_steam::companion::Companion::default();
             for f in files.iter().take(upto.saturating_add(1)) {
-                let g = nrbf::decode(&std::fs::read(f)?)?;
+                let g = nrbf::decode(&si_steam::source::read_save(f)?)?;
                 c.push(si_steam::projection::project(&si_steam::engine_map::map(&g), &defs));
             }
-            if args[0] == "backtest" {
+            if args[0] == "timeline" {
+                // One public snapshot per line, for ad hoc analysis.
+                for s in c.timeline() {
+                    println!("{}", serde_json::to_string(s)?);
+                }
+            } else if args[0] == "backtest" {
                 for t in si_common::companion_stats::backtest::backtest(c.timeline()) {
                     println!("Turn {}: card {:?}", t.turn, t.explore_card);
+                    if !t.high_immigration_predicted.is_empty() || !t.high_immigration_actual.is_empty() {
+                        println!("  high immig.    predicted {:?}\n                 actual    {:?}", t.high_immigration_predicted, t.high_immigration_actual);
+                    }
                     println!("  ravage blight  predicted {:?}  actual {:?}", t.ravage_blight_predicted, t.ravage_blight_actual);
                     println!("  build          predicted {:?}\n                 actual    {:?}", t.builds_predicted, t.builds_actual);
+                    if !t.escalation_predicted.is_empty() {
+                        println!("  escalation     predicted {:?}\n                 actual    {:?}", t.escalation_predicted, t.escalation_actual);
+                    }
                     println!("  explore        predicted {:?}\n                 actual    {:?}", t.explores_predicted, t.explores_actual);
+                    for a in &t.rule_actions_actual {
+                        println!("  rule action: {a}");
+                    }
+                    for s in &t.skipped_by_choice {
+                        println!("  skipped by choice: {s}");
+                    }
                     for m in &t.mismatches {
                         println!("  MISMATCH {m}");
                     }
@@ -142,7 +159,7 @@ fn main() -> anyhow::Result<()> {
                 println!("{}", serde_json::to_string_pretty(&st.stats)?);
             }
         }
-        _ => eprintln!("usage: si-steam-dump check|hist|tree|snap|sum|adjprobe|dims|defs|pub|scan|review|stats …"),
+        _ => eprintln!("usage: si-steam-dump check|hist|tree|snap|sum|adjprobe|dims|defs|pub|scan|review|stats|backtest|timeline …"),
     }
     Ok(())
 }

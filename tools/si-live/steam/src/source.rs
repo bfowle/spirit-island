@@ -74,15 +74,20 @@ fn now_ms() -> u64 {
     SystemTime::now().duration_since(UNIX_EPOCH).map(|d| d.as_millis() as u64).unwrap_or(0)
 }
 
-fn decode_file(path: &Path, defs: &EngineDefs) -> anyhow::Result<PublicSnapshot> {
+/// A save's bytes, gunzipped when the recorder stored it as `.gz`.
+pub fn read_save(path: &Path) -> anyhow::Result<Vec<u8>> {
     let raw = std::fs::read(path)?;
-    let bytes = if path.extension().is_some_and(|e| e == "gz") {
+    if path.extension().is_some_and(|e| e == "gz") {
         let mut out = Vec::new();
         GzDecoder::new(&raw[..]).read_to_end(&mut out)?;
-        out
+        Ok(out)
     } else {
-        raw
-    };
+        Ok(raw)
+    }
+}
+
+fn decode_file(path: &Path, defs: &EngineDefs) -> anyhow::Result<PublicSnapshot> {
+    let bytes = read_save(path)?;
     decode_bytes(&bytes, defs)
 }
 

@@ -43,6 +43,10 @@ pub struct AdversaryRef {
     pub id: String,
     pub title: String,
     pub level: i64,
+    /// Pieces on the adversary's panel by kind, which its rules track
+    /// (Russia: Beasts destroyed by adversary rules).
+    #[serde(default)]
+    pub panel: BTreeMap<String, u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
@@ -203,6 +207,9 @@ pub struct PublicFear {
     /// positions are public): `[TL I, TL II, TL III]`.
     pub deck_by_level: [u32; 3],
     pub discard: Vec<PublicFearCard>,
+    /// The Fear Card being resolved now, if any.
+    #[serde(default)]
+    pub resolving: Option<PublicFearCard>,
     /// Fear cards removed without being seen (count only).
     pub removed_unseen: u32,
 }
@@ -212,11 +219,36 @@ pub struct PublicFearCard {
     pub id: String,
     pub title: String,
     pub resolved_at_terror_level: Option<i64>,
+    /// The card's text at Terror Level I, II, III (public once revealed).
+    #[serde(default)]
+    pub body: Vec<String>,
+}
+
+/// A revealed Event Card with its sections (public once revealed).
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+pub struct PublicEventCard {
+    pub id: String,
+    pub title: String,
+    pub sections: Vec<PublicEventSection>,
+    /// Being resolved now (in the Play Area), not yet discarded.
+    pub in_play: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+pub struct PublicEventSection {
+    pub title: String,
+    /// When it applies: HealthyIsland, BlightedIsland, TerrorLevelI…, StageI…,
+    /// or a piece/token section (Dahan, Beast, Disease, Strife, …).
+    pub types: Vec<String>,
+    pub body: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
 pub struct PublicEvents {
     pub deck_count: u32,
+    /// The Event being resolved, else the last one resolved.
+    #[serde(default)]
+    pub shown: Option<PublicEventCard>,
     /// Newest last.
     pub discard: Vec<NamedCard>,
 }
@@ -257,6 +289,25 @@ pub struct PublicBlight {
     /// one draws a new Blight Card instead of losing).
     #[serde(default)]
     pub unseen_still_healthy: u32,
+    /// The current card's flipped side is Still-Healthy (emptying it draws a
+    /// new card, already flipped, instead of losing).
+    #[serde(default)]
+    pub current_still_healthy: bool,
+    /// Every Blight Card not seen yet (allowed minus the current card when
+    /// face up, minus cards already used): what a draw could bring. Public:
+    /// built from the allowed list and seen cards only.
+    #[serde(default)]
+    pub pool: Vec<BlightOption>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+pub struct BlightOption {
+    /// Blight its flipped side puts on the card (per board × boards).
+    pub flipped_total: Option<i64>,
+    pub still_healthy: bool,
+    /// Shares the face-down current card's healthy side (before the flip,
+    /// the current card is one of these).
+    pub same_healthy_side: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
@@ -264,6 +315,10 @@ pub struct PublicStatusEffect {
     pub kind: String,
     /// Title of the public card or rule that created it, when known.
     pub source: Option<String>,
+    /// event, fear, power, blight, adversary, scenario, spirit or other.
+    /// Event, Fear and Power effects last only this turn.
+    #[serde(default)]
+    pub source_kind: String,
     /// Engine parameters (non-default only), when the source is public.
     pub params: BTreeMap<String, StatusParam>,
 }
@@ -288,4 +343,8 @@ pub struct PublicDecision {
     pub card: Option<String>,
     /// Capture wall clock, ms since midnight (orders decisions against saves).
     pub ms: u64,
+    /// An Event revealed in the log, with its sections (the save shows it
+    /// only at the end of the Event step).
+    #[serde(default)]
+    pub event: Option<PublicEventCard>,
 }

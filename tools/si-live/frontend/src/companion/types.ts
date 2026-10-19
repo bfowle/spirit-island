@@ -270,6 +270,19 @@ export interface InvaderPhaseForecast {
   builds: BuildForecast[]
   explore: ExploreForecast
   notes: string[]
+  /** England L3+: the High Immigration card and its Builds before the Ravage. */
+  high_immigration_cards: PublicInvaderCard[]
+  high_immigration: BuildForecast[]
+  /** A Stage II Escalation that Builds (England), if the Explore card is flagged. */
+  escalation: EscalationForecast | null
+}
+
+export interface EscalationForecast {
+  title: string
+  text: string
+  /** [flagged cards, possible Explore cards] */
+  chance: [number, number]
+  builds: BuildForecast[]
 }
 
 export interface RavageForecast {
@@ -482,6 +495,10 @@ export interface BlightStats {
   flipped_side: [number, number][]
   /** How many of those unseen cards are Still-Healthy (no loss when emptied). */
   flipped_still_healthy: number
+  /** [Blight this phase, chance of losing]. */
+  loss_risk: [number, number][]
+  /** Chance of losing at this phase's forecast. */
+  loss_risk_now: number
   cascade_chains: CascadeChain[]
   /** [turn, blight on island]. */
   per_turn: [number, number][]

@@ -28,6 +28,12 @@ pub enum RawDecision {
     Presence { from: String, to: String },
     Damage { sources: String, targets: String, amount: i64 },
     Forget { card: String },
+    /// The turn's Event, face up (public). The save at the Event step is
+    /// written before the draw, so the log is the first place it shows (U7).
+    EventRevealed { card: String },
+    /// Power Cards drawn for a gain, shown to the player (U12). Titles, since
+    /// the log names them by title; some titles contain commas.
+    PowersRevealed { deck: String, titles: Vec<String> },
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -116,7 +122,32 @@ fn parse_decision(text: &str) -> Option<RawDecision> {
     if text.starts_with("DidPerformAction: [ForgetPowerCardAction:") && text.contains("From=") && text.contains("Hand") {
         return Some(RawDecision::Forget { card: between(text, "CardBeingMoved=", &[","])?.to_string() });
     }
+    if text.starts_with("DidPerformAction: [MoveCardAction:") && text.contains("To=Play Area, From=Event Deck") {
+        return Some(RawDecision::EventRevealed { card: between(text, "CardBeingMoved=", &[","])?.to_string() });
+    }
+    if text.starts_with("DidPerformAction: [RevealCardsAction:") && text.contains("Power Deck,") {
+        return powers_revealed(text);
+    }
     None
+}
+
+/// `RevealCardsAction: CardMovements=(Title, Minor Power Deck, X's Reveal
+/// Location), (…)`. Titles can contain ", " ("Vanish Softly Away, Forgotten by
+/// All"), so each group is split from the right: destination, then source.
+fn powers_revealed(text: &str) -> Option<RawDecision> {
+    let body = text.split_once("CardMovements=(")?.1;
+    let body = body.trim_end().trim_end_matches(']').trim_end_matches(')');
+    let mut deck = String::new();
+    let mut titles = Vec::new();
+    for group in body.split("), (") {
+        let mut parts = group.rsplitn(3, ", ");
+        let (_to, from, title) = (parts.next()?, parts.next()?, parts.next()?);
+        if let Some(d) = from.strip_suffix(" Power Deck") {
+            deck = d.to_string();
+            titles.push(title.to_string());
+        }
+    }
+    (!titles.is_empty()).then_some(RawDecision::PowersRevealed { deck, titles })
 }
 
 /// Decisions from a capture folder (`log-stream.txt` + `events.txt` or `saves/`).
@@ -155,31 +186,52 @@ pub fn undo_write_times(capture: &Path) -> BTreeMap<String, Vec<u64>> {
     out
 }
 
+/// How long after a choice its undo checkpoint can be written. Test 1: 3 ms;
+/// the 2026-10-19 Prussia game: 130 ms (playtest U19).
+const CHECKPOINT_LAG_MS: u64 = 2000;
+
 pub fn parse_log(log: &str, undo_writes: &BTreeMap<String, Vec<u64>>) -> Vec<TimedDecision> {
     let mut out: Vec<TimedDecision> = Vec::new();
     let mut turn = 1u32;
     let mut step = "PlayerSetup".to_string();
+    // (time, turn, step) at every step change, to restore them on an undo.
+    let mut steps: Vec<(u64, u32, String)> = Vec::new();
     for line in log.lines() {
         let Some((ms, text)) = stamp(line) else { continue };
         if text.starts_with("GameView Start") {
             out.clear();
+            steps.clear();
             turn = 1;
             step = "PlayerSetup".into();
             continue;
         }
         if let Some(file) = between(text, "LOADED FILE: ", &[" *****"]) {
-            if let Some(t) = undo_writes.get(file).and_then(|ts| ts.iter().filter(|t| **t <= ms).max()) {
-                let cut = t.saturating_sub(50);
+            if let Some(&t) = undo_writes.get(file).and_then(|ts| ts.iter().filter(|t| **t <= ms).max()) {
+                // The checkpoint is written just after the choice it undoes:
+                // cut at the last choice made shortly before the write.
+                let cut = out
+                    .iter()
+                    .rev()
+                    .find(|d| d.ms <= t && t - d.ms <= CHECKPOINT_LAG_MS)
+                    .map(|d| d.ms)
+                    .unwrap_or_else(|| t.saturating_sub(50));
                 out.retain(|d| d.ms < cut);
+                steps.retain(|(at, _, _)| *at < cut);
+                if let Some((_, tn, st)) = steps.last() {
+                    turn = *tn;
+                    step = st.clone();
+                }
             }
             continue;
         }
         if text.starts_with("DidPerformAction: [TimePassesAction") {
             turn += 1;
+            steps.push((ms, turn, step.clone()));
             continue;
         }
         if let Some(to) = text.strip_prefix("DidPerformAction: [ChangeStateAction: ").and_then(|t| between(t, "To=", &["/"])) {
             step = to.to_string();
+            steps.push((ms, turn, step.clone()));
             continue;
         }
         // Take-backs inside the Spirit phase net out against what they undo.

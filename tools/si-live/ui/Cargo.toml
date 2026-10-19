@@ -1,0 +1,16 @@
+[package]
+name = "si-ui"
+version.workspace = true
+edition.workspace = true
+
+# The native app's toolkit: rounded rectangles (SDF) and glyphon text on
+# wgpu, an immediate-mode painter with clipping and inner scrolling, and an
+# offscreen renderer for screenshots. No windowing: the app maps its events.
+
+[dependencies]
+wgpu = "=30.0.1"
+glyphon = "=0.12.0"
+bytemuck = { version = "1", features = ["derive"] }
+png = "0.18"
+pollster = "1"
+anyhow.workspace = true

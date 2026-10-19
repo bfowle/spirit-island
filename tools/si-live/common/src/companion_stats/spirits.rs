@@ -73,6 +73,10 @@ fn meets(have: &BTreeMap<String, i64>, need: &BTreeMap<String, i64>) -> BTreeMap
 }
 
 pub fn spirit_stats(sp: &PublicSpirit, s: &PublicSnapshot) -> SpiritStats {
+    // Blitz: "All Powers are Fast" (scenario rules; Prussia + Blitz game: every
+    // removal happened in the Fast phase).
+    let blitz = s.scenario.as_deref() == Some("Blitz");
+    let speed = |printed: &str| if blitz { "Fast".to_string() } else { printed.to_string() };
     let hand: Vec<&PublicPowerCard> = sp.hand.iter().collect();
     let affordable_sets = affordable_subsets(&hand, sp.energy, sp.card_plays);
     let innates = sp
@@ -80,7 +84,7 @@ pub fn spirit_stats(sp: &PublicSpirit, s: &PublicSnapshot) -> SpiritStats {
         .iter()
         .map(|inn| InnateStatus {
             title: inn.title.clone(),
-            speed: inn.speed.clone(),
+            speed: speed(&inn.speed),
             levels: inn
                 .levels
                 .iter()
@@ -131,8 +135,8 @@ pub fn spirit_stats(sp: &PublicSpirit, s: &PublicSnapshot) -> SpiritStats {
         elements: sp.elements.clone(),
         innates,
         draw_odds,
-        hand_fast: sp.hand.iter().filter(|c| c.speed == "Fast").map(|c| c.title.clone()).collect(),
-        hand_slow: sp.hand.iter().filter(|c| c.speed == "Slow").map(|c| c.title.clone()).collect(),
+        hand_fast: sp.hand.iter().filter(|c| speed(&c.speed) == "Fast").map(|c| c.title.clone()).collect(),
+        hand_slow: sp.hand.iter().filter(|c| speed(&c.speed) == "Slow").map(|c| c.title.clone()).collect(),
     }
 }
 

@@ -93,6 +93,12 @@ pub fn escalation(id: &str) -> Option<(String, String, String)> {
     Some((s(e, "title"), s(e, "text"), s(e, "status")))
 }
 
+/// The adversary's additional loss condition, if it has one.
+pub fn loss_condition(id: &str) -> Option<(String, String, String)> {
+    let e = register().pointer(&format!("/adversaries/{id}/loss_condition")).filter(|l| l.get("text").is_some_and(|t| !t.is_null()))?;
+    Some((s(e, "title"), s(e, "text"), s(e, "status")))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

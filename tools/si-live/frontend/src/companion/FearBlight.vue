@@ -94,7 +94,7 @@ function barPath(i: number, c: number): string {
           </div>
         </div>
         <div class="line">
-          <span>This phase if nothing changes: at least <b>{{ B.adds_this_phase_min }}</b>, so the <b>{{ B.outcome_this_phase }}</b></span>
+          <span>This phase if nothing changes: at least <b>{{ B.adds_this_phase_min }}</b>, so the <b>{{ B.outcome_this_phase }}</b><template v-if="B.loss_risk_now > 0">; chance of losing this phase <b>{{ Math.round(B.loss_risk_now * 100) }}%</b></template></span>
         </div>
 
         <figure v-if="!B.flipped && dist.length" class="dist">

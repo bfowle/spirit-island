@@ -8,6 +8,7 @@
 //! `nrbf::Node`'s name-tolerant accessors so the three engine builds in
 //! Brett's save folder (1.0.9116, 1.0.9602, 1.0.9776) all map.
 
+use std::collections::BTreeMap;
 use crate::nrbf::{Graph, Node, Value};
 use sha2::{Digest, Sha256};
 
@@ -44,6 +45,10 @@ pub struct EngineSnapshot {
     pub state: String,
     pub difficulty: Option<i64>,
     pub adversaries: Vec<(String, Option<i64>)>,
+    /// Pieces on each adversary's panel location, by kind: what adversary
+    /// rules track there (Russia's destroyed Beasts; Russia game save, end:
+    /// `TheTsardomOfRussiaAdversary` held Beast1, Beast2).
+    pub adversary_pieces: Vec<(String, BTreeMap<String, u32>)>,
     pub scenario: Option<String>,
     pub multiplayer: bool,
     pub boards: Vec<EngineBoard>,
@@ -72,6 +77,8 @@ pub struct EngineSnapshot {
     pub fear_discard: Vec<EngineCard>,
     pub event_deck: Vec<EngineCard>,
     pub event_discard: Vec<EngineCard>,
+    /// Cards being resolved now: a revealed Event or Fear Card.
+    pub game_play_area: Vec<EngineCard>,
     pub minor_deck: Vec<EngineCard>,
     pub minor_discard: Vec<EngineCard>,
     pub major_deck: Vec<EngineCard>,
@@ -220,6 +227,23 @@ pub fn map(g: &Graph) -> EngineSnapshot {
                 .collect()
         })
         .unwrap_or_default();
+    let adversary_pieces = root
+        .child("adversaries")
+        .map(|l| {
+            l.item_nodes()
+                .into_iter()
+                .map(|a| {
+                    let mut kinds: BTreeMap<String, u32> = BTreeMap::new();
+                    for p in a.child("AdversaryLocation").and_then(|loc| loc.child("pieces")).map(|l| l.item_nodes()).unwrap_or_default() {
+                        if let Some(id) = p.str("Identifier") {
+                            *kinds.entry(id.trim_end_matches(|c: char| c.is_ascii_digit()).to_string()).or_default() += 1;
+                        }
+                    }
+                    (a.str("Identifier").unwrap_or("?").to_string(), kinds)
+                })
+                .collect()
+        })
+        .unwrap_or_default();
     let scenario = root.child("Scenario").and_then(|s| s.str("Identifier")).map(String::from);
 
     // ---- island
@@ -307,6 +331,7 @@ pub fn map(g: &Graph) -> EngineSnapshot {
         state: state_name,
         difficulty: root.int("DifficultyRating"),
         adversaries,
+        adversary_pieces,
         scenario,
         multiplayer: root.bool("IsGameMultiplayer").unwrap_or(false),
         boards,
@@ -330,6 +355,7 @@ pub fn map(g: &Graph) -> EngineSnapshot {
         fear_discard: cards_of("FearDiscard"),
         event_deck: cards_of("EventDeck"),
         event_discard: cards_of("EventDiscard"),
+        game_play_area: cards_of("PlayArea"),
         minor_deck: cards_of("MinorPowerDeck"),
         minor_discard: cards_of("MinorPowerDiscard"),
         major_deck: cards_of("MajorPowerDeck"),
@@ -594,6 +620,8 @@ fn enum_table(list_class: &str) -> Option<&'static [&'static str]> {
         Some(PIECE_TYPES)
     } else if list_class.contains("Engine.StateType") {
         Some(STATE_TYPES)
+    } else if list_class.contains("Engine.TargetType") {
+        Some(si_common::rules::TARGET_TYPES)
     } else {
         None
     }

@@ -5,6 +5,16 @@ members = [
     "backend",
     "mcp",
     "steam",
+    "ui",
+    "app",
+]
+# The native app (ui, app) builds for Windows with app/build-windows.sh; a
+# plain `cargo build` / `cargo test` keeps to the server crates.
+default-members = [
+    "common",
+    "backend",
+    "mcp",
+    "steam",
 ]
 
 [workspace.package]

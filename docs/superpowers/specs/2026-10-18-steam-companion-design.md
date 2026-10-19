@@ -1,8 +1,10 @@
 # Steam Companion — design
 
 Date: 2026-10-18
-Status: rev 5, building (M1 built; M2 stats and the M3 dashboard in progress). Rev 5 adds Sections 7.7–7.9
-and the backtest (Section 10), from Brett's requests on 2026-10-18.
+Status: rev 7, building (M1 built; M2 stats and the M3 dashboard in progress). Rev 5 adds Sections 7.7–7.9
+and the backtest (Section 10), from Brett's requests on 2026-10-18. Rev 6 adds Section 7.10 (retro), from
+the 2026-10-19 playtest (`docs/playtests/2026-10-19-shadows-vs-prussia6.md`). Rev 7 adds Section 7.11
+(adversary rule coverage), from the Sweden game.
 Branch: `steam-companion` (worktree `~/repos/spirit-island-steam-companion`)
 
 ## 1. Goal
@@ -623,6 +625,171 @@ Bartlett's averaged periodogram). They need long, stationary series; a game is
 only periodicity (the three-turn pipeline) is known exactly from the rules, so
 there is nothing to estimate. Likewise, Gaussian (Wiener/Kalman) filtering of
 the hidden deck is worse than exact card counting.
+
+## 7.10 Retro: turn-by-turn evaluation (rev 6)
+
+Brett's request after the 2026-10-19 playtest (`docs/playtests/2026-10-19-shadows-vs-prussia6.md`):
+a retroactive, turn-by-turn evaluation of what went wrong, which choices were
+costly, and exactly what was on the board when each decision was made, as a
+timeline with a breakout per turn. Section 7.7's review (Blight causes, chains,
+flow) is the starting point; this adds decisions.
+
+**Principles.**
+
+- **Judge by what was knowable then.** Each decision is evaluated against the
+  public snapshot at the moment it was made (the firewall projection), never
+  against cards revealed later. Hidden information that arrived afterward (the
+  Explore card, Events, Fear cards, power draws) is shown separately.
+- **Separate decisions from luck.** Every outcome is attributed: a decision,
+  an Event, a Fear card, the Explore card, or a rule. Saves that came from
+  hidden information go in a luck ledger, not to the player's credit or blame.
+- **Facts and flags, not verdicts.** Flags name a pattern ("damage reduced but
+  still at the Blight line") with the numbers; the reader judges. This keeps
+  section 7.6 (augment, don't decide) after the game too.
+- **Counterfactuals only where the rules model them**, and for one phase:
+  "Defend 5 on B3 → 2 fewer Blight this Ravage", never multi-turn simulations
+  presented as fact. A multi-turn "what if" is labeled hindsight.
+
+**Data.** Decision points come from `log_parse` decisions (with the undo fixes
+in the playtest's U19) joined to the snapshot just before each decision. The
+forecast at that moment is `CompanionStats` recomputed on that snapshot.
+Outcomes come from the following snapshots (`changes.rs`), and reveals come
+from the log with timestamps.
+
+**Per-turn record.**
+
+| Part | Contents |
+|---|---|
+| Board then | Ravage, Build and Explore cards; each Ravage ledger; Blight card buffer and the chance of losing (U16); Presence count; Fear and Terror Level; hand, discard, Energy and Card Plays |
+| Decisions | Growth, draft and Forget, cards played with targets, innate levels, Event and Fear choices (push destinations, token placement, cascade targets) |
+| Alternatives visible then | The companion's prompts, need finder and draft lens (U13) at that moment |
+| Outcome | Blight added and its causes, pieces added/removed by source, Fear, buffer change; forecast vs actual |
+| Flags | From the catalog below |
+| Luck | Saves or losses from information revealed after the decision |
+
+**Flag catalog (initial).**
+
+| Flag | Pattern | Example (2026-10-19) |
+|---|---|---|
+| F1 | A Ravage land one action from safe left unaddressed | |
+| F2 | Damage reduced but still at or above the Blight line | T2: Crops on B1 3 → 2 |
+| F3 | Pieces moved into a land the visible cards say Builds or Ravages next, or that already has Blight | T4: Mantle pushed into B6 with Sands+Wetland face up |
+| F4 | The last Fast protection Forgotten or passed while the Blight buffer is low | T3 Forgot Drift; T4 passed Sap; T5 Forgot Concealing |
+| F5 | Energy and plays spent only on Slow cards when this turn's Ravage decides the game | T6 |
+| F6 | Blight buffer turning points (largest drops; flips; new cards) | T2: 3 → 1 |
+| F7 | Saves from hidden information (luck ledger) | Canny Defense T3, Sense of Dread T4, Seek Safety T5 |
+| F8 | A draft or Forget that skipped an option meeting a current need | T4: Sap would have stopped B8 |
+| F9 | Presence spent while Presence is a loss clock | T5: Transformative Sacrifice |
+| F10 | A move into a doomed-anyway land (positive: no extra Blight) | T1: Mantle into B2 |
+
+**Counterfactual runner.** Rerun the Ravage ledger and Blight count for one
+phase with one change: Defend N on a land, a different push or gather
+destination, pieces removed, or a different card from the same draw (if it
+can act this turn). Report the change in Blight and cascades, nothing more.
+
+**UI.** A retro timeline (one row per turn: Blight buffer, Blight added, the
+key decisions as chips colored by flag) with a click-through breakout per turn
+(board then, decisions, alternatives, outcome, flags, luck). A short "where it
+turned" summary at the top lists the largest buffer drops and the flags behind
+them.
+
+**Tests.** The 2026-10-19 capture (gitignored, tests skip without it) as a
+fixture, with the playtest log's hand-written breakdown as the reference
+answer; synthetic snapshots for each flag.
+
+**Milestones.** R1 decision-point snapshots and per-turn records; R2 flags
+F1–F10 and the luck ledger; R3 counterfactual runner; R4 the timeline and
+breakout UI. R1 depends on the decision-parser fixes (playtest U17, U19) and
+R2 on the loss-risk model (U16) and the cancel-effect fixes (R4, R6, R7).
+
+## 7.11 Adversary rule coverage (rev 7)
+
+Brett, 2026-10-19 (Sweden game): the companion shows "the ACTUAL things like
+Sweden's extra dmg". Every adversary rule that changes a number the
+companion shows is applied in `companion_stats/adversary.rs`, one hook per
+point where the rule acts. A rule the players resolve by choosing (Q21) is
+listed with its options instead of being guessed. Each adversary's own loss
+condition is a clock (`LossClock`), read from the save where the engine
+keeps the count on the adversary's panel (Russia: destroyed Beasts).
+
+Status key:
+- **verified**: modeled, and the backtest matches the engine in a recorded game.
+- **modeled**: applied from the printed rule; no recorded game yet.
+- **options**: the players choose; the forecast lists the choices.
+- **state**: already in the game state (setup pieces, deck recipes, piece Health).
+- **clock**: a loss clock.
+- **not modeled**.
+
+| Adversary | Rule | Status |
+|---|---|---|
+| England | Building Boom (Escalation) | verified (England game) |
+| | Proud & Mighty Capital (loss) | clock |
+| | L1 Indentured Servants Earn Land | verified |
+| | L2 Criminals and Malcontents | state |
+| | L3/L4 High Immigration | verified (L3); L4 reads the same slot |
+| | L5 Local Autonomy | state (piece Health from the save), not yet seen |
+| | L6 Independent Resolve | note only (High Immigration twice when no Fear Card resolves): not modeled |
+| Sweden | Swayed by the Invaders (Escalation) | verified (Sweden game) |
+| | L1 Heavy Mining | verified (Blight amounts checked) |
+| | L2 Population Pressure, L4 Royal Backing, L6 Prospecting Outpost | state |
+| | L3 Fine Steel for Tools and Guns | verified |
+| | L5 Mining Rush | options |
+| Russia | Stalk the Predators (Escalation) | options; verified (Russia game, Mountain A1) |
+| | Hunters Swarm the Island (loss) | clock (adversary panel count verified: 2 at that game's end) |
+| | L1 Explorers +1 Damage | verified; the Beast it destroys is noted and counted |
+| | L2 A Sense for Impending Disaster | note on counterattacks (1 Explorer Pushed) |
+| | L3 Competition Among Hunters | verified |
+| | L4, L5 deck | state; L5's card in the Build slot is verified (G2) |
+| | L6 Pressure for Fast Profit | modeled (applied when one land has the most Explorers) |
+| Brandenburg-Prussia | Land Rush (Escalation) | options; verified (Test 1, Prussia game, Prussia + Blitz game) |
+| | L1–L6 | state; L2's early Stage III card verified in play (NQ-P: it explored on Turn 2 as a Stage III option) |
+| France | Demand for New Cash Crops (Escalation) | options |
+| | Sprawling Plantations (loss) | clock (Towns on the island against 7 per player) |
+| | L1 Frontier Explorers | modeled (Explore note per card) |
+| | L2 Slave Labor | modeled |
+| | L3 Early Plantations, L5 Slow-Healing Ecosystem | state |
+| | L4 Triangle Trade | modeled (options when the fewest-Town land ties) |
+| | L6 Persistent Explorers | options; "Fear never removes Explorers": not modeled |
+| Scotland | Ports Sprawl Outward (Escalation) | options |
+| | Trade Hub (loss) | clock |
+| | L1 Trading Port | modeled (Explore note) |
+| | L2, L4 | state |
+| | L3 Chart the Coastline | modeled |
+| | L5 Runoff and Bilgewater | modeled |
+| | L6 Exports Fuel Inward Growth | modeled |
+| Habsburg Livestock | Seek Prime Territory (Escalation) | options |
+| | Irreparable Damage (loss) | clock: this phase's count is modeled; the running count reads the adversary panel, unverified |
+| | L1 Migratory Herders | modeled (options when several neighbors can give a Town) |
+| | L2 More Rural Than Urban | modeled |
+| | L3 Fast Spread | state |
+| | L4 Herds Thrive in Verdant Lands | state if the engine's piece Health includes it: unverified |
+| | L5 Wave of Immigration | not modeled (the reminder card in the deck) |
+| | L6 Far-Flung Herds | modeled |
+| Habsburg Mining | Mining Tunnels (Escalation) | options; verified (Habsburg game) |
+| | Land Stripped Bare (loss) | clock with the value after this Invader Phase; verified (the Habsburg game was lost to it) |
+| | L1 Ceaseless Mining | verified (Build cards Ravage in Mining lands; Disease stops those Ravages) |
+| | L1 Avarice Rewarded | modeled (no cascade); not yet seen |
+| | L2, L4 | state |
+| | L3/L5 Mining Boom | options, with which lands a new Town would open to Exploring; L3 verified (one upgrade per board each turn) |
+| | L6 The Empire Ascendant | modeled (Explore note) |
+| Blitz (scenario) | extra Explorer per board | options (Explore note); seen in the Prussia + Blitz game (Sands C2: 2 Explorers) |
+| | extra setup actions, extra Blight | state; the Turn 1 Ravage is verified (NQ-J) |
+| | all Powers Fast | modeled (spirit panel: hand and innates count as Fast) |
+
+Game 4 (Prussia L2 + Blitz) verified the Land Rush and Blitz rows; game 5
+(Habsburg Mining L4) verified Ceaseless Mining, Mining Boom I, Mining
+Tunnels and Land Stripped Bare.
+
+Loss clocks within one step of their limit (now or after this Invader Phase)
+and next turn's Ravage when it would empty or flip the Blight card are
+called out at the top of the native app's Invader Phase view (Brett, games 4
+and 5: neither was visible a turn ahead).
+
+Spirit rules that change the numbers follow the same principle. Modeled so
+far: A Spread of Rampant Green's Choke the Land with Green (a skip), and
+Vengeance as a Burning Plague's The Terror of a Slowly Unfolding Plague (a
+Disease-stopped Build becomes the player's choice) and Lingering Pestilence
+(Ravage Blight on its Presence adds a Disease before the Build).
 
 ## 8. Dashboard UI
 

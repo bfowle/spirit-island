@@ -144,25 +144,29 @@ pub fn project(s: &EngineSnapshot, defs: &EngineDefs) -> PublicSnapshot {
     let fear = PublicFear {
         generated: s.fear_generated,
         required_per_card: s.fear_required,
-        terror_level: terror_level(s.terror_level_card.as_deref()),
+        terror_level: terror_level(s.terror_level_card.as_deref(), &fear_deck_by_level(&s.fear_deck)),
         earned_count: s.fear_earned.iter().filter(|c| c.class == "FearCard").count() as u32,
         deck_by_level: fear_deck_by_level(&s.fear_deck),
         discard: s
             .fear_discard
             .iter()
             .filter(|c| c.class == "FearCard")
-            .map(|c| PublicFearCard {
-                id: c.id.clone(),
-                title: defs.title_of(&c.id).unwrap_or_else(|| c.id.clone()),
-                resolved_at_terror_level: c.resolved_at_terror_level,
-            })
+            .map(|c| fear_card(c, defs))
             .collect(),
+        resolving: s.game_play_area.iter().find(|c| c.class == "FearCard").map(|c| fear_card(c, defs)),
         removed_unseen: s.out_of_game.iter().filter(|c| c.class == "FearCard").count() as u32,
     };
 
     let named = |id: &str| NamedCard { id: id.to_string(), title: defs.title_of(id).unwrap_or_else(|| id.to_string()) };
+    let shown = s
+        .game_play_area
+        .iter()
+        .find(|c| c.class == "EventCard")
+        .map(|c| event_card(&c.id, true, defs))
+        .or_else(|| s.event_discard.last().map(|c| event_card(&c.id, false, defs)));
     let events = PublicEvents {
         deck_count: s.event_deck.len() as u32,
+        shown,
         discard: s.event_discard.iter().map(|c| named(&c.id)).collect(),
     };
 
@@ -218,6 +222,8 @@ pub fn project(s: &EngineSnapshot, defs: &EngineDefs) -> PublicSnapshot {
                 blighted_text: if b.flipped { lines("flippedBody") } else { Vec::new() },
                 unseen_flipped: if b.flipped { Vec::new() } else { unseen_flipped(&b.id, s, defs) },
                 unseen_still_healthy: if b.flipped { 0 } else { unseen_still_healthy(&b.id, s, defs) },
+                current_still_healthy: b.flipped && is_still_healthy(&b.id, defs),
+                pool: blight_pool(b, s, defs),
             }
         }
         None => PublicBlight { on_island: lands.iter().map(|l| l.blight).sum(), ..Default::default() },
@@ -237,14 +243,41 @@ pub fn project(s: &EngineSnapshot, defs: &EngineDefs) -> PublicSnapshot {
     for (a, _) in &s.adversaries {
         public_ids.insert(a);
     }
+    // What kind of thing made the effect; Fear, Event and Power effects last
+    // only this turn (the forecast drops them once the Invader Phase is over).
+    let source_kind = |id: &str| -> &'static str {
+        if defs.event_cards.contains_key(id) {
+            "event"
+        } else if defs.fear_cards.contains_key(id) {
+            "fear"
+        } else if defs.power_cards.contains_key(id) {
+            "power"
+        } else if defs.blight_cards.contains_key(id) {
+            "blight"
+        } else if defs.adversaries.contains_key(id) {
+            "adversary"
+        } else if defs.scenarios.contains_key(id) {
+            "scenario"
+        } else if defs.spirits.contains_key(id) {
+            "spirit"
+        } else {
+            "other"
+        }
+    };
     let status_effects = s
         .status_effects
         .iter()
         .map(|e| {
             // Parameters cross only when the source is a public card or rule.
-            let public = e.source.as_deref().is_some_and(|id| public_ids.contains(id));
+            // An Event's or Fear Card's effect exists only once that card is
+            // face up (revealed or resolving), so it is public even before
+            // the card reaches its discard (playtest R5).
+            let public = e.source.as_deref().is_some_and(|id| {
+                public_ids.contains(id) || matches!(source_kind(id), "event" | "fear")
+            });
             PublicStatusEffect {
                 kind: e.class.trim_end_matches("StatusEffect").to_string(),
+                source_kind: e.source.as_deref().map(|id| source_kind(id).to_string()).unwrap_or_default(),
                 source: e.source.as_deref().filter(|_| public).map(|id| defs.title_of(id).unwrap_or_else(|| id.to_string())),
                 params: if public {
                     e.params
@@ -275,7 +308,12 @@ pub fn project(s: &EngineSnapshot, defs: &EngineDefs) -> PublicSnapshot {
         adversaries: s
             .adversaries
             .iter()
-            .map(|(id, level)| AdversaryRef { id: id.clone(), title: defs.title_of(id).unwrap_or_else(|| id.clone()), level: level.unwrap_or(0) })
+            .map(|(id, level)| AdversaryRef {
+                id: id.clone(),
+                title: defs.title_of(id).unwrap_or_else(|| id.clone()),
+                level: level.unwrap_or(0),
+                panel: s.adversary_pieces.iter().find(|(a, _)| a == id).map(|(_, k)| k.clone()).unwrap_or_default(),
+            })
             .collect(),
         scenario: s.scenario.clone(),
         multiplayer: s.multiplayer,
@@ -298,11 +336,15 @@ fn element_map(counts: &[i64; 8]) -> BTreeMap<String, i64> {
     ELEMENTS.iter().zip(counts).filter(|(_, n)| **n != 0).map(|(e, n)| (e.to_string(), *n)).collect()
 }
 
-fn terror_level(card: Option<&str>) -> u8 {
+/// The Terror Level card's level. Otherwise (the England game's end-of-game
+/// save, Fear deck empty) the deck says: the first level with cards left, or
+/// III when none are.
+fn terror_level(card: Option<&str>, by_level: &[u32; 3]) -> u8 {
     match card {
         Some("TerrorLevelIII") => 3,
         Some("TerrorLevelII") => 2,
-        _ => 1,
+        Some("TerrorLevelI") => 1,
+        _ => by_level.iter().position(|n| *n > 0).map_or(3, |i| i as u8 + 1),
     }
 }
 
@@ -459,6 +501,41 @@ fn unseen_still_healthy(card: &str, s: &EngineSnapshot, defs: &EngineDefs) -> u3
         .count() as u32
 }
 
+fn is_still_healthy(id: &str, defs: &EngineDefs) -> bool {
+    defs.blight_cards.get(id).and_then(|d| d.get("blightCardType")).and_then(Json::as_str) == Some("StillHealthyIsland")
+}
+
+/// Every Blight Card a later draw could bring: allowed, minus cards already
+/// used (face up out of the game), minus the current card once face up.
+/// Before the flip the current card stays in (it is hidden among the cards
+/// sharing its healthy side), so this never depends on which card it is.
+fn blight_pool(current: &crate::engine_map::EngineBlightCard, s: &EngineSnapshot, defs: &EngineDefs) -> Vec<BlightOption> {
+    let used: HashSet<&str> =
+        s.out_of_game.iter().filter(|c| c.class == "BlightCard" && c.flipped).map(|c| c.id.as_str()).collect();
+    let healthy_key = |id: &str| {
+        defs.blight_cards.get(id).map(|d| (d.get("healthyIslandBody").cloned(), d.get("healthyIslandNumberPerStartingBoard").cloned()))
+    };
+    let mine = healthy_key(&current.id);
+    let mut ids: Vec<&String> = s
+        .allowed_blight
+        .iter()
+        .filter(|id| !used.contains(id.as_str()) && !(current.flipped && **id == current.id))
+        .collect();
+    ids.sort();
+    ids.into_iter()
+        .map(|id| BlightOption {
+            flipped_total: defs
+                .blight_cards
+                .get(id)
+                .and_then(|d| d.get("flippedNumberPerStartingBoard"))
+                .and_then(Json::as_i64)
+                .map(|n| n * s.initial_boards),
+            still_healthy: is_still_healthy(id, defs),
+            same_healthy_side: !current.flipped && healthy_key(id) == mine,
+        })
+        .collect()
+}
+
 /// Flipped-side blight for each card in the flip pool.
 fn unseen_flipped(card: &str, s: &EngineSnapshot, defs: &EngineDefs) -> Vec<Option<i64>> {
     flip_pool(card, s, defs)
@@ -508,8 +585,22 @@ pub fn decisions(raw: &[TimedDecision], defs: &EngineDefs) -> Vec<PublicDecision
                 RawDecision::GrowthOption { option } => ("growth", format!("Growth: {option}"), None, None),
                 RawDecision::CardChoice { reason, selected, choices } if PUBLIC_CARD_REASONS.contains(&reason.as_str()) => {
                     let others: Vec<String> = choices.iter().map(|c| title(c)).filter(|t| t != selected).collect();
-                    let text = if others.is_empty() { format!("{reason}: {selected}") } else { format!("{reason}: kept {selected} (over {})", others.join(", ")) };
-                    ("gain-power", text, None, Some(selected.clone()))
+                    // The selected card is what the choice does to it: for a
+                    // Forget it is the card Forgotten, not one kept (U17).
+                    let (kind, text) = match reason.as_str() {
+                        "GainPower" if others.is_empty() => ("gain-power", format!("Gained {selected}")),
+                        "GainPower" => ("gain-power", format!("Gained {selected} (over {})", others.join(", "))),
+                        "Forget" | "ForgetPower" => ("forget", format!("Forgot {selected}")),
+                        "Discard" => ("card-choice", format!("Discarded {selected}")),
+                        "Reclaim" => ("card-choice", format!("Reclaimed {selected}")),
+                        "ReturnToHand" => ("card-choice", format!("Returned {selected} to hand")),
+                        _ => ("card-choice", format!("Chose {selected} ({reason})")),
+                    };
+                    (kind, text, None, Some(selected.clone()))
+                }
+                RawDecision::EventRevealed { card } => ("event", format!("Event revealed: {}", title(card)), None, Some(title(card))),
+                RawDecision::PowersRevealed { deck, titles } => {
+                    ("draft", format!("Drew {} ({deck}): {}", titles.len(), titles.join(", ")), None, None)
                 }
                 RawDecision::CardChoice { reason, .. } => ("card-choice", format!("Chose a card ({reason})"), None, None),
                 RawDecision::PlayCard { card } => {
@@ -547,7 +638,11 @@ pub fn decisions(raw: &[TimedDecision], defs: &EngineDefs) -> Vec<PublicDecision
                 RawDecision::Damage { sources, targets, amount } => ("damage", format!("{amount} damage from {sources} assigned among {targets}"), None, None),
                 RawDecision::Forget { card } => ("forget", format!("Forgot {}", title(card)), None, Some(title(card))),
             };
-            Some(PublicDecision { turn: d.turn, step: d.step.clone(), kind: kind.into(), text, land, card, ms: d.ms })
+            let event = match &d.decision {
+                RawDecision::EventRevealed { card } => Some(event_card(card, true, defs)),
+                _ => None,
+            };
+            Some(PublicDecision { turn: d.turn, step: d.step.clone(), kind: kind.into(), text, land, card, ms: d.ms, event })
         });
     // An identical decision repeated in the same step is a replay of one
     // the parser could not see undone; keep one.
@@ -558,4 +653,37 @@ pub fn decisions(raw: &[TimedDecision], defs: &EngineDefs) -> Vec<PublicDecision
         out.push(d);
     }
     out
+}
+
+fn fear_card(c: &EngineCard, defs: &EngineDefs) -> PublicFearCard {
+    let body = defs
+        .fear_cards
+        .get(&c.id)
+        .and_then(|d| d.get("body"))
+        .and_then(|b| b.as_array())
+        .map(|b| b.iter().filter_map(|x| x.as_str().map(String::from)).collect())
+        .unwrap_or_default();
+    PublicFearCard { id: c.id.clone(), title: defs.title_of(&c.id).unwrap_or_else(|| c.id.clone()), resolved_at_terror_level: c.resolved_at_terror_level, body }
+}
+
+fn event_card(id: &str, in_play: bool, defs: &EngineDefs) -> PublicEventCard {
+    let strs = |v: Option<&serde_json::Value>| -> Vec<String> {
+        v.and_then(|x| x.as_array()).map(|a| a.iter().filter_map(|x| x.as_str().map(String::from)).collect()).unwrap_or_default()
+    };
+    let sections = defs
+        .event_cards
+        .get(id)
+        .and_then(|d| d.get("eventSections"))
+        .and_then(|x| x.as_array())
+        .map(|a| {
+            a.iter()
+                .map(|sec| PublicEventSection {
+                    title: sec.get("eventSectionTitle").and_then(|t| t.as_str()).unwrap_or("").to_string(),
+                    types: strs(sec.get("eventSectionTypes")),
+                    body: strs(sec.get("eventSectionBody")),
+                })
+                .collect()
+        })
+        .unwrap_or_default();
+    PublicEventCard { id: id.to_string(), title: defs.title_of(id).unwrap_or_else(|| id.to_string()), sections, in_play }
 }

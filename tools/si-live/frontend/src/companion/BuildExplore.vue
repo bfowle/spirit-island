@@ -22,6 +22,26 @@ const anyBlocked = computed(() => ex.value.candidates.some((c) => c.blocked.leng
 
 <template>
   <Panel title="Build and Explore" question="Where do new Invaders arrive?" anchor="panel-explore">
+    <template v-if="phase.high_immigration_cards?.length">
+      <h3 class="sub">High Immigration, before the Ravage <span class="cnt">{{ phase.high_immigration_cards.map(invaderLabel).join(', ') }}</span></h3>
+      <table v-if="phase.high_immigration.length" class="tbl builds">
+        <tbody>
+          <tr v-for="b in phase.high_immigration" :key="b.land" :class="{ done: b.done }">
+            <td class="c-land"><LandChip :id="b.land" /></td>
+            <td class="c-add">
+              <Icon v-if="pieceIcon(b.adds)" :name="pieceIcon(b.adds)!" :size="14" decorative />
+              +{{ b.adds }}
+            </td>
+            <td class="c-note">
+              <span v-if="b.done" class="muted">built</span>
+              <span v-for="(n, i) in b.notes" :key="i" class="note">{{ prettyText(n) }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p v-else class="empty">No land builds.</p>
+    </template>
+
     <h3 class="sub">Build <span class="cnt">{{ phase.builds.length }}</span></h3>
     <table v-if="phase.builds.length" class="tbl builds">
       <tbody>
@@ -39,6 +59,26 @@ const anyBlocked = computed(() => ex.value.candidates.some((c) => c.blocked.leng
       </tbody>
     </table>
     <p v-else class="empty">No land matches the Build card<template v-if="phase.build_cards.length"> and has Invaders</template>.</p>
+
+    <template v-if="phase.escalation">
+      <h3 class="sub">
+        Escalation: {{ phase.escalation.title }}
+        <span class="cnt">{{ phase.escalation.chance[0] }} of {{ phase.escalation.chance[1] }} possible cards</span>
+      </h3>
+      <p class="lead">{{ prettyText(phase.escalation.text) }} Before the Explore.</p>
+      <table v-if="phase.escalation.builds.length" class="tbl builds">
+        <tbody>
+          <tr v-for="b in phase.escalation.builds" :key="b.land">
+            <td class="c-land"><LandChip :id="b.land" /></td>
+            <td class="c-add">
+              <Icon v-if="pieceIcon(b.adds)" :name="pieceIcon(b.adds)!" :size="14" decorative />
+              +{{ b.adds }}
+            </td>
+            <td class="c-note"><span v-for="(n, i) in b.notes" :key="i" class="note">{{ prettyText(n) }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </template>
 
     <h3 class="sub">
       Explore
