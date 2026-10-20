@@ -122,30 +122,39 @@ impl Outcome {
     }
 
     pub fn summary(&self) -> String {
+        self.words(false)
+    }
+
+    /// The outcome in short tokens (`Bl2 Dh1 x1E 2T Fr3 next:Bl1`) or in words.
+    pub fn words(&self, long: bool) -> String {
         let mut p = Vec::new();
         if self.blight > 0 {
-            p.push(format!("Blight {}", self.blight));
+            p.push(if long { format!("Blight {}", self.blight) } else { format!("Bl{}", self.blight) });
         }
         if self.dahan_lost > 0 {
-            p.push(format!("Dahan lost {}", self.dahan_lost));
+            p.push(if long { format!("Dahan lost {}", self.dahan_lost) } else { format!("Dh{}", self.dahan_lost) });
         }
         if self.presence_destroyed > 0 {
-            p.push(format!("presence lost {}", self.presence_destroyed));
+            p.push(if long { format!("presence lost {}", self.presence_destroyed) } else { format!("Pr{}", self.presence_destroyed) });
         }
         let k: Vec<String> = [(self.explorers_destroyed, "E"), (self.towns_destroyed, "T"), (self.cities_destroyed, "C")].iter().filter(|(n, _)| *n > 0).map(|(n, k)| format!("{n}{k}")).collect();
         if !k.is_empty() {
-            p.push(format!("destroyed {}", k.join(" ")));
+            p.push(if long { format!("destroyed {}", k.join(" ")) } else { format!("kill {}", k.join(" ")) });
         }
         if self.invaders_pushed > 0 {
-            p.push(format!("pushed {}", self.invaders_pushed));
+            p.push(if long { format!("pushed {}", self.invaders_pushed) } else { format!("push {}", self.invaders_pushed) });
         }
         if self.fear > 0 {
-            p.push(format!("Fear {}", self.fear));
+            p.push(if long { format!("Fear {}", self.fear) } else { format!("Fr{}", self.fear) });
         }
         if self.next_blight > 0 || self.next_dahan_lost > 0 {
-            p.push(format!("next turn: Blight {}{}", self.next_blight, if self.next_dahan_lost > 0 { format!(", Dahan {}", self.next_dahan_lost) } else { String::new() }));
+            p.push(if long {
+                format!("next turn: Blight {}{}", self.next_blight, if self.next_dahan_lost > 0 { format!(", Dahan {}", self.next_dahan_lost) } else { String::new() })
+            } else {
+                format!("| next{}{}", if self.next_blight > 0 { format!(" Bl{}", self.next_blight) } else { String::new() }, if self.next_dahan_lost > 0 { format!(" Dh{}", self.next_dahan_lost) } else { String::new() })
+            });
         }
-        if p.is_empty() { "nothing changed".into() } else { p.join(", ") }
+        if p.is_empty() { "-".into() } else { p.join(" ") }
     }
 }
 
@@ -221,8 +230,15 @@ impl Line {
 
     /// The elements and innate tiers in words: `Fire 3 Animal 4 → Epidemics Run Rampant tier 2 of 3`.
     pub fn elements_words(&self, code: &dyn Fn(&str) -> String) -> String {
-        let tiers: Vec<String> = self.tiers.iter().map(|(id, reached, of)| if *reached == 0 { format!("{} —", code(id)) } else { format!("{} {reached}/{of}", code(id)) }).collect();
-        if tiers.is_empty() { self.elements.clone() } else { format!("{}  innates {}", self.elements, tiers.join(" ")) }
+        let tiers: Vec<String> = self
+            .tiers
+            .iter()
+            .map(|(id, reached, of)| {
+                let dots: String = (0..*of).map(|i| if i < *reached { '●' } else { '○' }).collect();
+                format!("{}{dots}", code(id))
+            })
+            .collect();
+        if tiers.is_empty() { self.elements.clone() } else { format!("{}  {}", self.elements, tiers.join(" ")) }
     }
 
     /// The growth in notation: `G2 e4@C4 c2@C4 +HSAI`.
@@ -232,27 +248,28 @@ impl Line {
 }
 
 /// `Sun + Moon + 2 Fire + Animal` → `Su1 Mo1 Fi2 An1`: two letters per element and the count.
+/// The eight elements in printed order, first letter and count, always all eight so the
+/// column has one width: `S1 M0 F3 A1 W0 E1 P0 A2` (Sun Moon Fire Air Water Earth Plant Animal).
 pub fn element_short(set: &ElementSet) -> String {
-    set.to_string()
-        .split(" + ")
-        .filter(|t| !t.trim().is_empty())
-        .map(|t| {
-            let mut parts = t.trim().split(' ');
-            let first = parts.next().unwrap_or("");
-            let (n, name) = match first.parse::<u8>() {
-                Ok(n) => (n, parts.next().unwrap_or("")),
-                Err(_) => (1, first),
-            };
-            let abbr = match name {
-                "Animal" => "An",
-                "Air" => "Ai",
-                other => &other[..other.len().min(2)],
-            };
-            format!("{abbr}{n}")
-        })
-        .collect::<Vec<_>>()
-        .join(" ")
+    let mut counts = [0u8; 8];
+    for t in set.to_string().split(" + ").filter(|t| !t.trim().is_empty()) {
+        let mut parts = t.trim().split(' ');
+        let first = parts.next().unwrap_or("");
+        let (n, name) = match first.parse::<u8>() {
+            Ok(n) => (n, parts.next().unwrap_or("")),
+            Err(_) => (1, first),
+        };
+        if let Some(i) = ELEMENT_ORDER.iter().position(|e| *e == name) {
+            counts[i] = n;
+        }
+    }
+    ELEMENT_ORDER.iter().zip(counts.iter()).map(|(name, n)| format!("{}{n}", &name[..1])).collect::<Vec<_>>().join(" ")
 }
+
+pub const ELEMENT_ORDER: [&str; 8] = ["Sun", "Moon", "Fire", "Air", "Water", "Earth", "Plant", "Animal"];
+
+/// The legend, printed once per report.
+pub const GLYPH_LEGEND: &str = "elements S M F A W E P A = Sun Moon Fire Air Water Earth Plant Animal, with counts  ·  innate tiers ●●○ = tier 2 of 3 reached  ·  produced: Bl Blight, Dh Dahan lost, Pr presence lost, kill 2E 1T Invaders destroyed, push N pushed out, Fr Fear, | next = the next turn's Invader steps";
 
 /// Fill a line's elements and innate tiers from its plays and the position's track.
 fn annotate_elements(line: &mut Line, defs: &Definitions, s2: &SpiritTurn) {

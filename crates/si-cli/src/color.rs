@@ -72,19 +72,8 @@ fn c256u(n: u8, s: &str) -> String {
 }
 
 /// Element abbreviations as the hindsight prints them: `Su1 Mo1 Fi2 Ai1 Wa1 Ea1 Pl1 An2`.
-fn element_color(abbr: &str) -> Option<u8> {
-    Some(match abbr {
-        "Su" => 220,
-        "Mo" => 250,
-        "Fi" => 196,
-        "Ai" => 159,
-        "Wa" => 33,
-        "Ea" => 130,
-        "Pl" => 34,
-        "An" => 131,
-        _ => return None,
-    })
-}
+/// Sun, Moon, Fire, Air, Water, Earth, Plant, Animal.
+const ELEMENT_COLORS: [u8; 8] = [220, 250, 196, 159, 33, 130, 34, 131];
 
 const MOUNTAIN: u8 = 245;
 const SANDS: u8 = 220;
@@ -122,7 +111,13 @@ pub fn paint(line: &str) -> String {
     let land = LAND.get_or_init(|| Regex::new(r"\b(?:NW|NE|SW|SE|[A-HW])\d{1,2}\b").unwrap());
     let word = WORD.get_or_init(|| Regex::new(r"\b[A-Za-z][A-Za-z0-9']*\b|Bl\+?\d*~?|Fr\+\d+|†").unwrap());
     static ELEMENT: OnceLock<Regex> = OnceLock::new();
-    let element = ELEMENT.get_or_init(|| Regex::new(r"\b(Su|Mo|Fi|Ai|Wa|Ea|Pl|An)(\d)\b").unwrap());
+    // the eight elements by position: S M F A W E P A, each with its count
+    let element = ELEMENT.get_or_init(|| Regex::new(r"\bS(\d) M(\d) F(\d) A(\d) W(\d) E(\d) P(\d) A(\d)\b").unwrap());
+    static GLYPH: OnceLock<Regex> = OnceLock::new();
+    let glyph = GLYPH.get_or_init(|| Regex::new(r"\bBl\d+\b|\bDh\d+\b|\bPr\d+\b|\bFr\d+\b|\bkill\b|\bpush \d+\b|\| next\b|●+|○+|⑂|\bLOSES\b|\bFLIPS\b").unwrap());
+    static TEMPO_ROW: OnceLock<Regex> = OnceLock::new();
+    let tempo_row = TEMPO_ROW.get_or_init(|| Regex::new(r"^\s*(?:NW|NE|SW|SE|[A-HW])\d{1,2}\s+(?:Mountain|Sands|Jungle|Wetland|Ocean)\b|^\s*(?:total|above|on|gambled|failed|sacrificed|untouched|late)\b").unwrap());
+    let is_tempo_row = tempo_row.is_match(line);
     let score = SCORE.get_or_init(|| Regex::new(r"[+-]\d+\.\d\d").unwrap());
     let palette = PALETTE.lock().unwrap();
     let trimmed = line.trim_start();
@@ -141,10 +136,22 @@ pub fn paint(line: &str) -> String {
         }
     }
     for m in element.captures_iter(line) {
-        let whole = m.get(0).unwrap();
-        if let Some(c) = element_color(&m[1]) {
-            pieces.push((whole.start(), whole.end(), c256(c, whole.as_str())));
+        // each "X<n>" token colored by its element; a zero count dimmed
+        for i in 1..=8 {
+            let g = m.get(i).unwrap();
+            let start = g.start() - 1;
+            let text = &line[start..g.end()];
+            let color = if g.as_str() == "0" { DIM } else { ELEMENT_COLORS[i - 1] };
+            pieces.push((start, g.end(), c256(color, text)));
         }
+    }
+    for m in glyph.find_iter(line) {
+        if pieces.iter().any(|(s, e, _)| m.start() >= *s && m.start() < *e) {
+            continue;
+        }
+        let g = m.as_str();
+        let color = if g.starts_with("Bl") { BLIGHT } else if g.starts_with("Fr") { FEAR } else if g.starts_with("Dh") { DAHAN } else if g.starts_with("Pr") { WARN } else if g == "kill" || g == "LOSES" { BAD } else if g == "FLIPS" { WARN } else if g.starts_with("push") { 37 } else if g.starts_with("| next") { DIM } else if g.starts_with('●') { GOOD } else if g.starts_with('○') { DIM } else { WARN };
+        pieces.push((m.start(), m.end(), if g == "LOSES" || g == "FLIPS" { bold(&c256(color, g)) } else { c256(color, g) }));
     }
     for m in word.find_iter(line) {
         if pieces.iter().any(|(s, e, _)| m.start() >= *s && m.start() < *e) {
@@ -152,11 +159,15 @@ pub fn paint(line: &str) -> String {
         }
         let w = m.as_str();
         let painted = match w {
-            "above" | "won" | "prevented" | "cleared" | "Sound" | "matched" => Some(c256(GOOD, w)),
-            "on" | "defended" => Some(c256(37, w)),
-            "gambled" | "Gambled" | "open" => Some(c256(WARN, w)),
-            "failed" | "late" => Some(c256(FAST, w)),
-            "sacrificed" | "untouched" | "lost" | "blighted" | "Mistake" | "mismatches" => Some(c256(BAD, w)),
+            // Rei's class words only where they are classes: the land-tempo rows and totals
+            "above" | "prevented" | "cleared" if is_tempo_row => Some(c256(GOOD, w)),
+            "on" | "defended" if is_tempo_row => Some(c256(37, w)),
+            "gambled" | "Gambled" | "open" if is_tempo_row => Some(c256(WARN, w)),
+            "failed" | "late" if is_tempo_row => Some(c256(FAST, w)),
+            "sacrificed" | "untouched" | "blighted" if is_tempo_row => Some(c256(BAD, w)),
+            "won" | "Sound" | "matched" => Some(c256(GOOD, w)),
+            "lost" | "Mistake" | "mismatches" => Some(c256(BAD, w)),
+            "Unlucky" => Some(c256(WARN, w)),
             "Fast" | "F" => Some(c256(FAST, w)),
             "Slow" | "S" => Some(c256(SLOW, w)),
             "Blight" | "blight" => Some(c256(BLIGHT, w)),

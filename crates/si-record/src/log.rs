@@ -277,7 +277,7 @@ fn action(body: &str) -> Option<Event> {
             }
         }
         "AdvanceInvaderCardsAction" => Event::SlotsAdvanced { moves: card_moves(between(body, "CardMovements=", &["]"])?) },
-        "RavageAction" => Event::Ravaged { land: land(between(body, "LandTarget: ", &[","])?)? },
+        "RavageAction" => Event::Ravaged { land: land(between(body, "LandTarget: ", &[","])?)?, source: between(body, "Source: ", &["]", ","]).map(|s| s.to_string()) },
         "CancelAction" => {
             let inner = between(body, "GameAction=[", &["]"])?;
             let step = match inner.split(':').next()?.trim() {
@@ -523,7 +523,7 @@ mod tests {
             ev("DidPerformAction: [AddBlightAction: Source: Widespread Clearcutting, Destination: Sands C2, WillCascade: False, IsFromCascade: False, AmountOfBlight: 1]"),
             Event::BlightAdded { land: Some(LandId::new("C", 2)), amount: 1, cascade: false }
         );
-        assert_eq!(ev("DidPerformAction: [RavageAction: LandTarget: Sands A4, Source: Stage I Sands]"), Event::Ravaged { land: LandId::new("A", 4) });
+        assert_eq!(ev("DidPerformAction: [RavageAction: LandTarget: Sands A4, Source: Stage I Sands]"), Event::Ravaged { land: LandId::new("A", 4), source: Some("Stage I Sands".into()) });
     }
 
     #[test]

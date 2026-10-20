@@ -209,7 +209,23 @@ pub fn apply_status_effects(island: &mut Island, rules: &mut Rules, t: &TurnReco
                     if p("PerInvaderOfType").trim().is_empty() {
                         notes.push(format!("T{} {}: {a:+} Ravage damage (condition {} not modeled)", t.turn, se.source, p("IfLandHasPresence")));
                     } else {
-                        rules.damage_adjust.push((a, kinds));
+                        // the lands it applies to: the effect's own list, else the land the player
+                        // chose for the same card this turn (the engine logs the effect before the
+                        // choice, with an empty list), else every land
+                        let norm = |s: &str| s.chars().filter(|c| c.is_ascii_alphanumeric()).collect::<String>().to_lowercase();
+                        let mut lands: Vec<LandId> = list(&p("AffectedLands")).iter().filter_map(|l| l.parse::<LandId>().ok()).collect();
+                        if lands.is_empty() {
+                            lands = t.choices.iter().filter(|c| c.kind == "Location" && norm(&c.source) == norm(&se.source)).filter_map(|c| c.selected.parse::<LandId>().ok()).collect();
+                        }
+                        if lands.is_empty() {
+                            rules.damage_adjust.push((a, kinds));
+                        } else {
+                            for land in lands {
+                                if let Some(l) = island.lands.get_mut(&land) {
+                                    l.damage_adjust.push((a, kinds.clone()));
+                                }
+                            }
+                        }
                     }
                 }
             }

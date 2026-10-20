@@ -17,5 +17,6 @@ si-rules = { path = "../si-rules" }
 si-hindsight = { path = "../si-hindsight" }
 si-steam = { path = "../si-steam" }
 anyhow.workspace = true
+sha2 = "0.10"
 regex.workspace = true
 serde_json.workspace = true

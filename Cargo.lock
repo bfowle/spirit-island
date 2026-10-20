@@ -2500,6 +2500,7 @@ dependencies = [
  "anyhow",
  "regex",
  "serde_json",
+ "sha2",
  "si-defs",
  "si-hindsight",
  "si-metrics",

@@ -36,6 +36,8 @@ pub struct Land {
     pub isolated: bool,
     /// Blight would be added here but stays on the card this turn (Water Nourishes Life's Growth).
     pub no_blight: bool,
+    /// Ravage damage adjustments that apply to this land only (a Fear card's chosen land): (amount, Invader kinds; empty = all).
+    pub damage_adjust: Vec<(i32, Vec<PieceKind>)>,
 }
 
 #[derive(Debug, Clone, Default)]
@@ -303,9 +305,10 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
         o.notes.push("Ravage skipped by a Spirit effect".into());
         return Some(o);
     }
+    let land_adjust = l.damage_adjust.clone();
     let adjust = |kind: PieceKind, base: i32| -> u32 {
         let mut d = base + rules.piece_damage_mod;
-        for (a, kinds) in &rules.damage_adjust {
+        for (a, kinds) in rules.damage_adjust.iter().chain(land_adjust.iter()) {
             if kinds.is_empty() || kinds.contains(&kind) {
                 d += a;
             }

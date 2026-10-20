@@ -29,6 +29,8 @@ fn main() -> Result<()> {
         "cards" => cards(&args[1..]),
         "verify" => verify(&args[1..]),
         "notate" => notate(&args[1..]),
+        "checkpoint" => checkpoint(&args[1..]),
+        "inject" => inject(&args[1..]),
         "hindsight" => hindsight(&args[1..]),
         _ => usage(),
     }
@@ -40,6 +42,8 @@ fn usage() -> Result<()> {
     eprintln!("       si corpus <path>... [--defs <dir>] [--md]                  one row per game over captures and EndGame logs, then groupings");
     eprintln!("       si hindsight <EndGame.txt | capture dir> [--defs <dir>] [--turn n] [--top n] [--fixed-growth] [--try \"SLSF>C8 MI\"]   each turn's growth and plays against every legal line, scored on the Invader steps that followed; Event and Fear choices against their alternatives");
     eprintln!("       si notate <EndGame.txt | capture dir> [--defs <dir>] [--canonical]   the game in Spirit Island notation (moves, reveals, results)");
+    eprintln!("       si checkpoint <capture dir…> [--turn n] [--phase SpiritPhase|FastPower|SlowPower|…] [--export <dir>] [--graph [--dot]]   the app's saves kept with a capture, by turn and phase; --export writes the chosen .dat; --graph draws the checkpoint DAG (undo branches as forks)");
+    eprintln!("       si inject <capture dir> --turn n [--phase SpiritPhase] [--save <file part>] [--any-branch] [--name save-Undo-990.dat] [--timeout 90] [--fetch]   load that checkpoint (on the path the game finally took) into the RUNNING Steam app from WSL (frida-inject.exe, no restart; main menu or in-game)");
     eprintln!("       si verify <EndGame.txt | capture dir> [--defs <dir>] [--level n] [--all]   simulate each turn's Invader phase and compare with the log");
     eprintln!("       si cards [--defs <dir>] [--unparsed [n]] [--card <title>] [--features] [--fit]   effect-parser coverage; one card's parse; the feature table; the pricing fit");
     Ok(())
@@ -337,6 +341,7 @@ fn hindsight(args: &[String]) -> Result<()> {
         eprintln!("hindsight: {} turns to review; each dot is one growth position tried with every play set (--fixed-growth keeps the growth as played)", rec.turns.iter().filter(|t| t.turn >= 1 && !t.before_fast.is_empty()).count());
     }
     let review = si_hindsight::review_with(&rec, &defs, &opts);
+    let pool_at = blight_pool_by_turn(Path::new(path));
     out!("{}", rec.meta.source);
     out!("spirits {} | boards {} | adversary {} level {} | {}", rec.meta.spirits.join("+"), rec.meta.boards.join(""), rec.meta.adversary.clone().unwrap_or("none".into()), rec.meta.adversary_level.map(|l| l.to_string()).unwrap_or("?".into()), rec.meta.ending.map(|e| e.words()).unwrap_or("no ending"));
     if rec.coverage.undo_unresolved > 0 {
@@ -349,6 +354,7 @@ fn hindsight(args: &[String]) -> Result<()> {
         out!("--fixed-growth: the growth is taken as played; only the plays vary.");
     }
     out!("ledger: {}", review.values.source);
+    out!("glyphs: {}", si_hindsight::GLYPH_LEGEND);
     for n in &review.notes {
         out!("note: {n}");
     }
@@ -370,18 +376,32 @@ fn hindsight(args: &[String]) -> Result<()> {
         out!();
         let hand: Vec<String> = t.hand.iter().map(|c| code(c)).collect();
         out!("════ T{} ════  hand {}  ·  {} plays  ·  {} Energy", t.turn, hand.join(" "), t.plays, t.energy);
-        out!("  LINES  ({} play sets over {} growth position{}; ranked by the informed score)", t.candidates, t.positions, if t.positions == 1 { "" } else { "s" });
-        out!("    {:<6} {:<36} {:<44} {:>8} {:>8} {:>6} {:>5}  {}", "", "growth", "plays (cards | innate …)", "informed", "hindsight", "luck", "conf", "what the hindsight line produced");
+        // the Blight pool at the turn's start, when the capture kept that save: a line whose
+        // Blight reaches it ends the game
+        let pool = pool_at.get(&t.turn).copied();
+        let pool_note = match pool {
+            Some((p, true)) => format!("; Blight card flipped, {p} left: Bl{p} or more LOSES the game"),
+            Some((p, false)) => format!("; Blight card not yet flipped, {p} left on it: Bl{p} or more FLIPS it"),
+            None => String::new(),
+        };
+        out!("  LINES  ({} play sets over {} growth position{}; ranked by the informed score{})", t.candidates, t.positions, if t.positions == 1 { "" } else { "s" }, pool_note);
+        out!("    {:<6} {:<36} {:<42} {:>8} {:>8} {:>6} {:>5}  {:<23} {:<16} {}", "", "growth", "plays (cards | innate …)", "informed", "hindsight", "luck", "conf", "elements S M F A W E P A", "innate tiers", "produced (hindsight)");
+        // a column never grows past its width, so the table stays aligned; the full notation is in si notate
+        let fit = |s: &str, w: usize| -> String {
+            if s.chars().count() <= w { s.to_string() } else { format!("{}…", s.chars().take(w - 1).collect::<String>()) }
+        };
         let row = |tag: &str, l: &si_hindsight::Line| {
             let growth = l.growth_notation(&|id| code(id));
             let growth = if l.growth_actual && !l.actual { format!("{growth} (as played)") } else { growth };
             let growth = if l.ties > 0 { format!("{growth} +{} alike", l.ties) } else { growth };
             let conf = l.confidence.map(|c| format!("{:.0}%", c * 100.0)).unwrap_or_else(|| "-".into());
-            out!("    {tag} {:<36} {:<44} {:>+8.2} {:>+8.2} {:>+6.2} {:>5}  {}", growth, l.notation(&|id| code(id)), l.informed, l.score, l.luck, conf, l.outcome.summary());
-            let el = l.elements_words(&|id| code(id));
-            if !el.is_empty() {
-                out!("            {el}");
-            }
+            let tiers: Vec<String> = l.tiers.iter().map(|(id, reached, of)| format!("{}{}", code(id), (0..*of).map(|i| if i < *reached { '●' } else { '○' }).collect::<String>())).collect();
+            let mark = match pool {
+                Some((p, true)) if p > 0 && l.outcome.blight as i64 >= p => "  LOSES",
+                Some((p, false)) if p > 0 && l.outcome.blight as i64 >= p => "  FLIPS",
+                _ => "",
+            };
+            out!("    {tag} {:<36} {:<42} {:>+8.2} {:>+8.2} {:>+6.2} {:>5}  {:<23} {:<16} {}{}", fit(&growth, 36), fit(&l.notation(&|id| code(id)), 42), l.informed, l.score, l.luck, conf, l.elements, fit(&tiers.join(" "), 16), l.outcome.summary(), mark);
         };
         row("actual", &t.actual);
         let mut shown = 0;
@@ -464,6 +484,395 @@ fn hindsight(args: &[String]) -> Result<()> {
         out!("{{{legend}}}");
     }
     Ok(())
+}
+
+/// One of the app's saves kept with a capture, decoded.
+struct Checkpoint {
+    path: PathBuf,
+    /// The file name the app wrote (`save-Feedback-002-0047-SpiritPhase.dat`).
+    name: String,
+    snap: si_steam::engine_map::EngineSnapshot,
+    /// sha256 of the save bytes: the checkpoint's id. Copies share it; a reload that
+    /// lands on an existing id is a fork in the game's DAG.
+    id: String,
+    /// On the path the game finally took (an undone attempt is off it).
+    on_final_path: bool,
+}
+
+fn checkpoints_of(dir: &Path) -> Result<Vec<Checkpoint>> {
+    let saves = dir.join("saves");
+    if !saves.is_dir() {
+        bail!("{} has no saves/ folder: only recorder captures keep the app's saves (an EndGame log has only its final .dat)", dir.display());
+    }
+    let mut files: Vec<PathBuf> = std::fs::read_dir(&saves)?.flatten().map(|e| e.path()).filter(|p| p.file_name().is_some_and(|n| n.to_string_lossy().contains("save-"))).collect();
+    files.sort();
+    let mut out = Vec::new();
+    for p in files {
+        let Ok(bytes) = si_steam::source::read_save(&p) else { continue };
+        let Ok(graph) = si_steam::nrbf::decode(&bytes) else { continue };
+        let snap = si_steam::engine_map::map(&graph);
+        use sha2::Digest;
+        let id = format!("{:x}", sha2::Sha256::digest(&bytes));
+        let full = p.file_name().unwrap().to_string_lossy().trim_end_matches(".gz").to_string();
+        let name = full.split("__").last().unwrap_or(&full).to_string();
+        out.push(Checkpoint { path: p, name, snap, id, on_final_path: false });
+    }
+    // the final path: walk the saves on the capture's clock; a save whose id was seen
+    // before (an undo copy, a reload) moves the tip back to it, so what follows hangs
+    // off that node; the ancestors of the last save are the path the game took
+    let mut parent: std::collections::BTreeMap<String, Option<String>> = std::collections::BTreeMap::new();
+    let mut tip: Option<String> = None;
+    for c in &out {
+        if !parent.contains_key(&c.id) {
+            parent.insert(c.id.clone(), tip.clone());
+        }
+        tip = Some(c.id.clone());
+    }
+    let mut on_path: std::collections::BTreeSet<String> = std::collections::BTreeSet::new();
+    let mut cur = tip;
+    while let Some(id) = cur {
+        if !on_path.insert(id.clone()) {
+            break;
+        }
+        cur = parent.get(&id).cloned().flatten();
+    }
+    for c in out.iter_mut() {
+        c.on_final_path = on_path.contains(&c.id);
+    }
+    Ok(out)
+}
+
+fn checkpoint_matches(c: &Checkpoint, turn: Option<i64>, phase: Option<&str>) -> bool {
+    turn.is_none_or(|n| n == c.snap.turn_index + 1) && phase.is_none_or(|ph| c.snap.state.eq_ignore_ascii_case(ph) || c.snap.phase.eq_ignore_ascii_case(ph) || c.name.contains(ph))
+}
+
+/// The checkpoint saves a capture kept (`saves/*.dat.gz`, the app's own
+/// save at every decision point), decoded for their turn and phase.
+fn checkpoint(args: &[String]) -> Result<()> {
+    let dirs: Vec<PathBuf> = args.iter().take_while(|a| !a.starts_with("--")).map(PathBuf::from).collect();
+    if dirs.is_empty() {
+        bail!("checkpoint needs a capture directory");
+    }
+    let turn: Option<i64> = args.iter().position(|a| a == "--turn").and_then(|i| args.get(i + 1)).and_then(|s| s.parse().ok());
+    let phase: Option<String> = args.iter().position(|a| a == "--phase").and_then(|i| args.get(i + 1)).cloned();
+    let export: Option<PathBuf> = args.iter().position(|a| a == "--export").and_then(|i| args.get(i + 1)).map(PathBuf::from);
+    if args.iter().any(|a| a == "--graph") {
+        return checkpoint_graph(&dirs, args.iter().any(|a| a == "--dot"));
+    }
+    let dir = &dirs[0];
+    let any_branch = args.iter().any(|a| a == "--any-branch");
+    let all = checkpoints_of(dir)?;
+    out!("{} save(s) kept with {} (save-Feedback-<turn index>-<journal index>-<state>; save-Undo-<n> are the app's undo copies); {} on the path the game finally took{}", all.len(), dir.display(), all.iter().filter(|c| c.on_final_path).count(), if any_branch { "" } else { " (shown; --any-branch shows undone attempts too)" });
+    out!("{:<4} {:<58} {:>4}  {:<28} {:<12} {:<7} {}", "#", "file", "turn", "state", "id", "path", "game");
+    let chosen: Vec<(usize, &Checkpoint)> = all.iter().enumerate().filter(|(_, c)| checkpoint_matches(c, turn, phase.as_deref()) && (any_branch || c.on_final_path)).collect();
+    for (i, c) in &chosen {
+        out!("{:<4} {:<58} {:>4}  {:<28} {:<12} {:<7} {}", i, c.path.file_name().unwrap().to_string_lossy(), c.snap.turn_index + 1, format!("{}/{}", c.snap.phase, c.snap.state), &c.id[..12], if c.on_final_path { "final" } else { "undone" }, c.snap.game_id);
+    }
+    if chosen.is_empty() {
+        out!("no save matches the filter");
+    }
+    if let Some(dir) = export {
+        let Some((_, c)) = chosen.first() else { bail!("nothing to export") };
+        if chosen.len() > 1 {
+            out!("{} saves match; exporting the first (narrow with --turn and --phase)", chosen.len());
+        }
+        let target = export_checkpoint(c, &dir)?;
+        out!("exported {} ({} bytes; turn {} {}/{}; id {}) to {}", c.name, std::fs::metadata(&target)?.len(), c.snap.turn_index + 1, c.snap.phase, c.snap.state, &c.id[..12], target.display());
+        out!("load it into the running app: si inject {} --turn {} --phase {}", dirs[0].display(), c.snap.turn_index + 1, c.snap.state);
+    }
+    Ok(())
+}
+
+/// Write the save as the file the app wrote (a capture's .dat.gz gunzipped once).
+fn export_checkpoint(c: &Checkpoint, dir: &Path) -> Result<PathBuf> {
+    std::fs::create_dir_all(dir)?;
+    let bytes = si_steam::source::read_save(&c.path)?;
+    let target = dir.join(&c.name);
+    std::fs::write(&target, &bytes)?;
+    Ok(target)
+}
+
+/// The checkpoints of one or more captures as a DAG: nodes are save ids (content
+/// hashes), each save's parent is the save before it in the capture's clock, and
+/// a save whose id already exists (an undo copy, a reload) moves the tip back to
+/// that node, so the next save forks from it. Captures of the same game join
+/// where they share an id.
+fn checkpoint_graph(dirs: &[PathBuf], dot: bool) -> Result<()> {
+    use std::collections::BTreeMap;
+    struct Node {
+        label: String,
+        turn: i64,
+        state: String,
+        parents: Vec<String>,
+        children: Vec<String>,
+        seen_in: Vec<String>,
+    }
+    let mut nodes: BTreeMap<String, Node> = BTreeMap::new();
+    let mut order: Vec<String> = Vec::new();
+    for dir in dirs {
+        let cap = dir.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default();
+        let saves = checkpoints_of(dir)?;
+        let mut tip: Option<String> = None;
+        for c in &saves {
+            let id = c.id[..12].to_string();
+            let existed = nodes.contains_key(&id);
+            let node = nodes.entry(id.clone()).or_insert_with(|| Node { label: format!("{} ({})", c.name, c.snap.game_id), turn: c.snap.turn_index + 1, state: c.snap.state.clone(), parents: vec![], children: vec![], seen_in: vec![] });
+            if !node.seen_in.contains(&cap) {
+                node.seen_in.push(cap.clone());
+            }
+            if !existed {
+                order.push(id.clone());
+                if let Some(t) = &tip {
+                    if t != &id {
+                        node.parents.push(t.clone());
+                        nodes.get_mut(t).unwrap().children.push(id.clone());
+                    }
+                }
+            }
+            tip = Some(id);
+        }
+    }
+    let forks: Vec<&String> = nodes.iter().filter(|(_, n)| n.children.len() > 1).map(|(id, _)| id).collect();
+    let roots = nodes.values().filter(|n| n.parents.is_empty()).count();
+    let leaves: Vec<&String> = nodes.iter().filter(|(_, n)| n.children.is_empty()).map(|(id, _)| id).collect();
+    if dot {
+        out!("digraph checkpoints {{");
+        out!("  rankdir=LR; node [shape=box, fontsize=9];");
+        for (id, n) in &nodes {
+            let color = if n.children.len() > 1 { ", color=red, penwidth=2" } else if n.children.is_empty() { ", color=darkgreen" } else { "" };
+            out!("  \"{id}\" [label=\"T{} {}\\n{}\\n{}\"{color}];", n.turn, n.state, n.label, id);
+        }
+        for (id, n) in &nodes {
+            for ch in &n.children {
+                out!("  \"{id}\" -> \"{ch}\";");
+            }
+        }
+        out!("}}");
+        return Ok(());
+    }
+    out!("CHECKPOINT DAG — {} capture(s), {} distinct saves, {} root(s), {} fork(s), {} leaf/leaves", dirs.len(), nodes.len(), roots, forks.len(), leaves.len());
+    out!("ids are the first 12 hex digits of the save's sha256; a fork is a save the game came back to (undo, or a live reload) and left again");
+    for id in &order {
+        let n = &nodes[id];
+        let mark = if n.children.len() > 1 { "⑂" } else if n.children.is_empty() { "●" } else { "│" };
+        out!("  {mark} {id}  T{:<2} {:<22} {:<48} ← {}  {}", n.turn, n.state, n.label, n.parents.join(","), if n.seen_in.len() > 1 { format!("in {}", n.seen_in.join(" + ")) } else { String::new() });
+    }
+    if !forks.is_empty() {
+        out!("forks:");
+        for f in forks {
+            let n = &nodes[f];
+            out!("  {f} T{} {} → {} branches: {}", n.turn, n.state, n.children.len(), n.children.join(" "));
+        }
+    }
+    Ok(())
+}
+
+/// Load a checkpoint into the running Steam app from WSL: export the save next to
+/// Frida's standalone injector on the Windows side and run it with the reload
+/// script; the app reloads in place (its own Undo path), no restart.
+fn inject(args: &[String]) -> Result<()> {
+    use std::io::BufRead;
+    use std::process::{Command, Stdio};
+    let Some(path) = args.first() else { bail!("inject needs a capture directory") };
+    let turn: Option<i64> = args.iter().position(|a| a == "--turn").and_then(|i| args.get(i + 1)).and_then(|s| s.parse().ok());
+    let phase: Option<String> = args.iter().position(|a| a == "--phase").and_then(|i| args.get(i + 1)).cloned();
+    let name: String = args.iter().position(|a| a == "--name").and_then(|i| args.get(i + 1)).cloned().unwrap_or("save-Undo-990.dat".into());
+    let timeout: u64 = args.iter().position(|a| a == "--timeout").and_then(|i| args.get(i + 1)).and_then(|s| s.parse().ok()).unwrap_or(90);
+    let pick: Option<String> = args.iter().position(|a| a == "--save").and_then(|i| args.get(i + 1)).cloned();
+    let tools = win_tools_dir();
+    std::fs::create_dir_all(tools.join("checkpoints"))?;
+    let injector = tools.join("frida-inject.exe");
+    if !injector.exists() {
+        if args.iter().any(|a| a == "--fetch") {
+            out!("fetching frida-inject {FRIDA_VERSION} for Windows into {}", tools.display());
+            let url = format!("https://github.com/frida/frida/releases/download/{FRIDA_VERSION}/frida-inject-{FRIDA_VERSION}-windows-x86_64.exe.xz");
+            let xz = tools.join("frida-inject.exe.xz");
+            let st = Command::new("curl").args(["-sL", "-o"]).arg(&xz).arg(&url).status()?;
+            if !st.success() {
+                bail!("download failed: {url}");
+            }
+            let st = Command::new("xz").arg("-d").arg("-f").arg(&xz).status()?;
+            if !st.success() {
+                bail!("xz -d failed on {}", xz.display());
+            }
+        } else {
+            bail!("{} is missing: run with --fetch to download frida-inject {FRIDA_VERSION} (Windows x64) there", injector.display());
+        }
+    }
+    if !game_running() {
+        bail!("SpiritIsland.exe is not running: open the game (any game, past setup) and run this again");
+    }
+    let any_branch = args.iter().any(|a| a == "--any-branch");
+    let all = checkpoints_of(Path::new(path))?;
+    let chosen: Vec<&Checkpoint> = all.iter().filter(|c| checkpoint_matches(c, turn, phase.as_deref()) && (any_branch || c.on_final_path) && pick.as_ref().is_none_or(|p| c.name.contains(p.as_str()))).collect();
+    let Some(c) = chosen.first() else { bail!("no checkpoint on the final path matches --turn/--phase/--save (si checkpoint {} lists them; --any-branch includes undone attempts)", path) };
+    if chosen.len() > 1 {
+        out!("{} checkpoints on the final path match; taking the earliest, {} (the start of that phase as the game actually went; --save <file name part> picks another)", chosen.len(), c.name);
+    }
+    let dat = export_checkpoint(c, &tools.join("checkpoints"))?;
+    // the app's loader reads disk files as <save folder>/<file name>. The undo name serves
+    // both routes: in a game, ReloadFromFile reads it; at the main menu, Continue falls back
+    // to the newest undo file on disk when the continue file is not found (verified
+    // 2026-10-20 with Steam Cloud on: "Continue file missing but found undo").
+    let save_dir = steam_dir();
+    let continue_name = "save-ContinueGame.dat".to_string();
+    std::fs::copy(&dat, save_dir.join(&name)).map_err(|e| anyhow::anyhow!("could not place {} in the save folder {}: {e}", name, save_dir.display()))?;
+    let script = live_replay_script()?;
+    let dat_win = wslpath_w(&save_dir.join(&name))?;
+    let script_win = wslpath_w(&script)?;
+    let log = tools.join("checkpoints").join("inject.log");
+    let _ = std::fs::remove_file(&log);
+    let log_win = wslpath_w(&tools.join("checkpoints"))? + "\\inject.log";
+    let params = serde_json::json!({ "path": dat_win, "name": name, "continue_name": continue_name, "log": log_win }).to_string();
+    let player_log = save_dir.join("Player.log");
+    let log_mark = std::fs::metadata(&player_log).map(|m| m.len()).unwrap_or(0);
+    out!("checkpoint {} (turn {} {}/{}, id {}) placed in {} as {}", c.name, c.snap.turn_index + 1, c.snap.phase, c.snap.state, &c.id[..12], save_dir.display(), name);
+    out!("attaching frida-inject to SpiritIsland.exe (up to {timeout}s). Keep the game window focused: Unity stops running its frames in the background.");
+    out!("inside a game: the open game reloads in place to the checkpoint (its own Undo path); at the main menu: the checkpoint replaces the app's continue game and Continue opens it. Either way the previous state stays in its capture.");
+    // -i keeps frida-inject attached while the script works; closing its stdin ends it.
+    let mut child = Command::new(&injector).args(["-n", "SpiritIsland.exe", "-s", &script_win, "-P", &params, "-i"]).stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::piped()).spawn()?;
+    let stdout = child.stdout.take().unwrap();
+    let stderr = child.stderr.take().unwrap();
+    let (tx, rx) = std::sync::mpsc::channel::<String>();
+    for reader in [Box::new(stdout) as Box<dyn std::io::Read + Send>, Box::new(stderr)] {
+        let tx = tx.clone();
+        std::thread::spawn(move || {
+            for line in std::io::BufReader::new(reader).lines().map_while(Result::ok) {
+                let _ = tx.send(line);
+            }
+        });
+    }
+    drop(tx);
+    let started = std::time::Instant::now();
+    let mut done = false;
+    let mut failed = false;
+    let mut seen_log = 0usize;
+    let handle = |line: &str, done: &mut bool, failed: &mut bool| {
+        let line = line.trim_end_matches('\r');
+        if line.trim().is_empty() {
+            return;
+        }
+        out!("  app: {line}");
+        if line.contains("\"step\":\"error\"") {
+            *failed = true;
+        }
+        if line.contains("\"step\":\"done\"") {
+            *done = true;
+        }
+    };
+    while started.elapsed().as_secs() < timeout && !done {
+        // the script's own log file is the reliable channel; stdout arrives when it can
+        if let Ok(text) = std::fs::read_to_string(&log) {
+            let lines: Vec<&str> = text.lines().collect();
+            for l in &lines[seen_log.min(lines.len())..] {
+                handle(l, &mut done, &mut failed);
+            }
+            seen_log = lines.len();
+        }
+        match rx.recv_timeout(std::time::Duration::from_millis(200)) {
+            Ok(line) => {
+                if !line.contains("\"type\":\"send\"") {
+                    handle(&line, &mut done, &mut failed);
+                }
+            }
+            Err(std::sync::mpsc::RecvTimeoutError::Timeout) => {}
+            Err(std::sync::mpsc::RecvTimeoutError::Disconnected) => break,
+        }
+    }
+    // closing stdin ends frida-inject's interactive loop; it detaches on exit
+    drop(child.stdin.take());
+    std::thread::sleep(std::time::Duration::from_millis(500));
+    let _ = child.kill();
+    let _ = Command::new("taskkill.exe").args(["/F", "/IM", "frida-inject.exe"]).stdout(Stdio::null()).stderr(Stdio::null()).status();
+    // what the app itself logged during the run
+    if let Ok(mut f) = std::fs::File::open(&player_log) {
+        use std::io::{Read, Seek, SeekFrom};
+        if f.seek(SeekFrom::Start(log_mark)).is_ok() {
+            let mut tail = String::new();
+            if f.read_to_string(&mut tail).is_ok() {
+                let interesting: Vec<&str> = tail.lines().filter(|l| ["ReloadFromFile", "Failed to load", "Continue file", "Has continue", "Successfully loaded", "LoadContinue", "Loading", "Exception", "undo", "SaveIfNecessary", "SaveForContinue", "continue file", "Saving feedback", "Written to Steam Cloud"].iter().any(|k| l.contains(k))).collect();
+                for l in interesting.iter().take(20) {
+                    out!("  app log: {}", l.trim());
+                }
+            }
+        }
+    }
+    if !done {
+        bail!("no completion from the injector within {timeout}s; the app's Player.log (next to the saves) has its ReloadFromFile lines");
+    }
+    if failed {
+        bail!("the reload failed inside the app; see the error line above");
+    }
+    // the app has loaded the file (twice on the menu route: the validity check and the load);
+    // left on disk it would be the "last undo file" the Undo button finds, so take it away
+    std::thread::sleep(std::time::Duration::from_secs(2));
+    match std::fs::remove_file(save_dir.join(&name)) {
+        Ok(()) => out!("removed {} from the save folder: the app holds the state now and writes its own continue save at its next decision", name),
+        Err(e) => out!("could not remove {} from the save folder ({e}); delete it by hand so the Undo button does not find it", name),
+    }
+    out!("reloaded: the app now shows {} at turn {} ({}). Play the branch; its saves continue under the same game id, so the checkpoint DAG shows the fork. The hindsight block for this turn: si hindsight {} --turn {}", c.name, c.snap.turn_index + 1, c.snap.state, path, c.snap.turn_index + 1);
+    Ok(())
+}
+
+const FRIDA_VERSION: &str = "17.24.3";
+
+/// The Blight pool at each turn's start, from the earliest Spirit-phase save the capture
+/// kept for that turn (`save-Feedback-<turn index>-<journal>-SpiritPhase`); empty for a bare log.
+fn blight_pool_by_turn(path: &Path) -> std::collections::BTreeMap<u32, (i64, bool)> {
+    let mut out = std::collections::BTreeMap::new();
+    let saves = path.join("saves");
+    let Ok(rd) = std::fs::read_dir(&saves) else { return out };
+    let mut files: Vec<PathBuf> = rd.flatten().map(|e| e.path()).filter(|p| p.file_name().is_some_and(|n| n.to_string_lossy().contains("-SpiritPhase.dat"))).collect();
+    files.sort();
+    let mut seen: std::collections::BTreeSet<u32> = std::collections::BTreeSet::new();
+    for p in files {
+        let name = p.file_name().unwrap().to_string_lossy().to_string();
+        // save-Feedback-002-0047-SpiritPhase.dat(.gz): the first number is the turn index
+        let Some(idx) = name.split("save-Feedback-").nth(1).and_then(|r| r.split('-').next()).and_then(|n| n.parse::<u32>().ok()) else { continue };
+        if !seen.insert(idx) {
+            continue;
+        }
+        if let Some(snap) = decode_save(&p) {
+            if let Some(b) = snap.blight_card.as_ref() {
+                out.insert(idx + 1, (b.blight_remaining, b.flipped));
+            }
+        }
+    }
+    out
+}
+
+/// `/mnt/c/Users/<user>/AppData/Local/si-companion/tools`: Windows-visible, next to the recorder's captures.
+fn win_tools_dir() -> PathBuf {
+    if let Ok(d) = std::env::var("SI_WIN_TOOLS_DIR") {
+        return PathBuf::from(d);
+    }
+    let user = std::env::var("SI_WIN_USER").ok().or_else(|| {
+        std::process::Command::new("cmd.exe").args(["/c", "echo %USERNAME%"]).output().ok().and_then(|o| String::from_utf8(o.stdout).ok()).map(|s| s.trim().to_string()).filter(|s| !s.is_empty() && !s.contains('%'))
+    }).unwrap_or_else(|| "brett".into());
+    PathBuf::from(format!("/mnt/c/Users/{user}/AppData/Local/si-companion/tools"))
+}
+
+fn wslpath_w(p: &Path) -> Result<String> {
+    let o = std::process::Command::new("wslpath").arg("-w").arg(p).output()?;
+    let s = String::from_utf8_lossy(&o.stdout).trim().to_string();
+    if s.is_empty() {
+        bail!("wslpath -w failed for {}", p.display());
+    }
+    Ok(s)
+}
+
+fn game_running() -> bool {
+    std::process::Command::new("tasklist.exe").args(["/FI", "IMAGENAME eq SpiritIsland.exe", "/NH"]).output().map(|o| String::from_utf8_lossy(&o.stdout).contains("SpiritIsland.exe")).unwrap_or(false)
+}
+
+/// The reload script shipped with the repo (`tools/live-replay/reload_checkpoint.js`), or `SI_LIVE_REPLAY_SCRIPT`.
+fn live_replay_script() -> Result<PathBuf> {
+    if let Ok(p) = std::env::var("SI_LIVE_REPLAY_SCRIPT") {
+        return Ok(PathBuf::from(p));
+    }
+    let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../tools/live-replay/reload_checkpoint.js");
+    let p = repo.canonicalize().map_err(|e| anyhow::anyhow!("reload script not found at {} ({e}); set SI_LIVE_REPLAY_SCRIPT", repo.display()))?;
+    Ok(p)
 }
 
 fn notate(args: &[String]) -> Result<()> {

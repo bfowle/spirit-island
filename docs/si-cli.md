@@ -135,10 +135,12 @@ instant). The report then prints, per turn:
   placement or slot), then the plays, cards first and innates after `| innate`
   (`SLSF>C2 FV>C4 | innate ERR>C2 SR>C1`; innates are underlined in color), the score,
   and what the line produced;
-- under each row, the line's elements in short form (`Su1 Fi3 Ai1 Ea1 An2`: Sun, Moon,
-  Fire, Air, Water, Earth, Plant, Animal, each with its count, colored) and the tier
-  each innate reaches (`ERR 2/3`, `SR —`), so a better element pairing shows up as a
-  better innate;
+- under each row, the line's elements as glyphs with counts (`☼1 ▲3 ≋1 ■1 ♞2`: ☼ Sun
+  ☾ Moon ▲ Fire ≋ Air ≈ Water ■ Earth ♣ Plant ♞ Animal, colored) and each innate's
+  tiers as dots (`ERR ●●○` = tier 2 of 3 reached), so a better element pairing shows
+  up as a better innate; outcomes use glyphs too (`☣2 ♙1 ✕1E 2T ☠3 ↷☣1`: Blight,
+  Dahan lost, Invaders destroyed, Fear, next turn), with the legend printed once at
+  the top;
 - `same G`: the best line from the growth you actually took, when another growth ranks
   first;
 - four numbers per row: **informed** (the score on what was knowable: averaged over
@@ -178,6 +180,36 @@ Limits: one spirit (the first) is reviewed; a card held for later scores only it
 Energy kept; Push and Gather choices, counterattack distributions and the Event's
 option choices are listed, not scored; bare logs with many undo reloads can re-log a
 play or a payment.
+
+## 5e. Checkpoints and live replay
+
+```
+si checkpoint $CAPS/live-e392726411c9                         # every save the app wrote during the game, with turn and phase
+si checkpoint $CAPS/live-e392726411c9 --turn 3 --phase SpiritPhase          # the saves at the start of turn 3's Spirit phase
+si checkpoint $CAPS/live-e392726411c9 --turn 3 --phase SpiritPhase --export /tmp/ckpt   # write the first match as the app's .dat
+```
+
+Only recorder captures keep the saves (`saves/*.dat.gz`, one per decision point, plus
+the app's undo copies); an EndGame log has only its final `.dat`. Each row shows the
+save's id (first 12 hex digits of its sha256): copies share it, and a reload that lands
+on an existing id is a fork.
+
+```
+si checkpoint $CAPS/live-e392726411c9 --graph            # the checkpoint DAG: distinct saves, forks (undo branches), leaves
+si checkpoint $CAPS/live-e392726411c9 --graph --dot | dot -Tsvg > dag.svg
+si inject $CAPS/live-e392726411c9 --turn 3 --phase SpiritPhase --fetch   # first time: also downloads frida-inject.exe
+si inject $CAPS/live-e392726411c9 --turn 6 --phase SpiritPhase           # load that checkpoint into the RUNNING app, no restart
+```
+
+`si inject` needs the app running on Windows, at the home screen or inside a game. It
+places the checkpoint in the game's save folder as `save-Undo-990.dat`, runs Frida's
+standalone `frida-inject.exe` (fetched once into the companion's Windows tools folder)
+against `SpiritIsland.exe` with `tools/live-replay/reload_checkpoint.js`, and follows the
+script's log until it reports `done` or an error. At the home screen the app's Continue
+picks the file up (its undo fallback); in a game the app reloads in place through its own
+Undo path. Click the game window after starting the command: Unity runs no frames while
+the window is in the background. Verified 2026-10-20. Mechanism and findings:
+`docs/superpowers/specs/2026-10-20-live-replay-checkpoints.md`.
 
 ## 5d. Colors
 

@@ -52,7 +52,8 @@ pub enum Event {
     InvaderCardRevealed { card: InvaderCardId },
     SlotsAdvanced { moves: Vec<(InvaderCardId, String, String)> },
     /// A Ravage action in one land began (the engine logs the land).
-    Ravaged { land: LandId },
+    /// A land Ravaged; `source` is the Invader card's printed title ("Stage III Mountain+Jungle").
+    Ravaged { land: LandId, source: Option<String> },
     PiecesAdded { moves: Vec<PieceMove> },
     PiecesMoved { moves: Vec<PieceMove> },
     PiecesDestroyed { pieces: Vec<(String, Option<LandId>)>, source: String },

@@ -106,6 +106,8 @@ struct Walk<'d> {
     // the Invader step in progress
     step_adds: Vec<(LandId, PieceKind)>,
     step_ravaged: Vec<LandId>,
+    /// The Invader card named by the Ravage in progress, for a game that ends mid-step.
+    ravage_source: Option<String>,
     step_blight: BTreeMap<LandId, (u32, u32)>,
     step_damage: BTreeMap<LandId, u32>,
     step_dahan_lost: BTreeMap<LandId, u32>,
@@ -153,6 +155,7 @@ impl<'d> Replay<'d> {
             terror: 1,
             step_adds: vec![],
             step_ravaged: vec![],
+            ravage_source: None,
             step_blight: BTreeMap::new(),
             step_damage: BTreeMap::new(),
             step_dahan_lost: BTreeMap::new(),
@@ -642,9 +645,12 @@ impl<'d> Walk<'d> {
                 self.step_dahan_lost.clear();
                 self.step_invaders_destroyed.clear();
             }
-            Event::Ravaged { land } => {
+            Event::Ravaged { land, source } => {
                 if !self.step_ravaged.contains(&land) {
                     self.step_ravaged.push(land);
+                }
+                if source.is_some() {
+                    self.ravage_source = source;
                 }
             }
             Event::Canceled { step, land, source } => {
@@ -970,6 +976,13 @@ impl<'d> Walk<'d> {
             }
             Event::GameOver { ending } => {
                 self.rec.meta.ending = Some(ending);
+                // a game that ends during the Ravage never logs ResolveInvaderCardAction for
+                // that card: take it from the Ravage lines, so the turn's Ravage is on record
+                if self.phase == Phase::Ravage && self.turn > 0 && self.turn_rec().ravage.is_empty() {
+                    if let Some(id) = self.ravage_source.as_deref().and_then(invader_card_id_from_title) {
+                        self.turn_rec().ravage.push(id);
+                    }
+                }
             }
             Event::TimePassed => {}
             Event::SlotsAdvanced { .. }
@@ -985,4 +998,22 @@ impl<'d> Walk<'d> {
             | Event::Unparsed { .. } => {}
         }
     }
+}
+
+/// "Stage III Mountain+Jungle" → "MountainJungle3", "Stage II Coastal" → "Coastal2": the
+/// engine's card ids are the terrains joined, then the stage digit.
+fn invader_card_id_from_title(title: &str) -> Option<String> {
+    let rest = title.strip_prefix("Stage ")?;
+    let (stage, terrains) = rest.split_once(' ')?;
+    let digit = match stage {
+        "I" => '1',
+        "II" => '2',
+        "III" => '3',
+        _ => return None,
+    };
+    let joined: String = terrains.split('+').map(|t| t.trim()).collect::<Vec<_>>().join("");
+    if joined.is_empty() {
+        return None;
+    }
+    Some(format!("{joined}{digit}"))
 }
