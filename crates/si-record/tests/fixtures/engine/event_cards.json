@@ -1,0 +1,136 @@
+{
+ "AccumulatedDevastation": {
+  "eventSections": [
+   {
+    "eventSectionBody": [
+     "<b>On Each Board:</b> During the first Ravage Action, increase the total Damage Invaders deal to the land by the Invader Stage. <i>(Damage to {Dahan} in that land is not increased.)</i>"
+    ],
+    "eventSectionTitle": "Accumulated Devastation",
+    "eventSectionTypes": [
+     "HealthyIsland"
+    ]
+   },
+   {
+    "eventSectionBody": [
+     "Remove 1 {Blight} per player from the Blight Card, returning it to the box.",
+     "Each Spirit may prevent 1 {Blight} from being Removed by Destroying 2 of their {Presence}."
+    ],
+    "eventSectionTitle": "The World's Vibrance Fades",
+    "eventSectionTypes": [
+     "BlightedIsland"
+    ]
+   },
+   {
+    "eventSectionBody": [
+     "<b>On Each Board:</b> Isolate a land with {Beast}. 1 {Fear} if Invaders are present."
+    ],
+    "eventSectionTitle": "Territorial Beasts",
+    "eventSectionTypes": [
+     "Beast"
+    ]
+   },
+   {
+    "eventSectionBody": [
+     "<nobr><b>On Each Board with 5 or more {Dahan}:</b></nobr> Add 1 {Dahan} to the land with the most {Dahan}."
+    ],
+    "eventSectionTitle": "Years of Health and Harmony",
+    "eventSectionTypes": [
+     "Dahan"
+    ]
+   }
+  ],
+  "expansion": "NatureIncarnate",
+  "identifier": "AccumulatedDevastation"
+ },
+ "AnOminousDawn": {
+  "eventSections": [
+   {
+    "eventSectionBody": [
+     "1 {Fear} per Power Card in play that generates {Fear}. <i>(In its instructions, not by destroying {Town}/{City}. Count thresholds even if you don't have the Elements. <nobr>Generated {Fear}</nobr> can't cause Wavering Resolve.)</i>"
+    ],
+    "eventSectionTitle": "An Ominous Dawn",
+    "eventSectionTypes": [
+     "TerrorLevelI"
+    ]
+   },
+   {
+    "eventSectionBody": [
+     "Remove 1 Health worth of Invaders per Power Card in play that generates {Fear}.",
+     "<i>(In its instructions, not by destroying {Town}/{City}. Count thresholds even if you don't have the Elements.)</i>"
+    ],
+    "eventSectionTitle": "Wavering Resolve",
+    "eventSectionTypes": [
+     "TerrorLevelII",
+     "TerrorLevelIII"
+    ]
+   },
+   {
+    "eventSectionBody": [
+     "<b>On Each Board:</b> <nobr>1 Damage</nobr> in a land with {Badlands}/{Beast}. <nobr>1 Damage</nobr> to {Dahan} in a land with {Badlands}/{Beast} and {Dahan}."
+    ],
+    "eventSectionTitle": "Dangerous Lands",
+    "eventSectionTypes": [
+     "Badlands",
+     "Beast"
+    ]
+   },
+   {
+    "eventSectionBody": [
+     "<b>On Each Board with {Town}/{City}</b>",
+     "<b>...and 5 or fewer {Dahan}:</b> Destroy 1 {Presence}.",
+     "<b>...and 3 or fewer {Dahan}:</b> Also Add 1 {Blight} to a land with {Town}/{City}."
+    ],
+    "eventSectionTitle": "Waning Support",
+    "eventSectionTypes": [
+     "Dahan"
+    ]
+   }
+  ],
+  "expansion": "NatureIncarnate",
+  "identifier": "AnOminousDawn"
+ },
+ "BureaucratsAdjustFunding": {
+  "eventSections": [
+   {
+    "eventSectionBody": [
+     "<b>On Each Board with 9 or more {Town}/{City}:</b> Build Cards skip the highest-numbered matching land.",
+     "<b>On Each Board with 3 or fewer {Town}/{City}:</b> Build Cards cause 1 extra Build Action in the highest-numbered matching land. <i>(This can affect a land without Invaders.)</i>"
+    ],
+    "eventSectionTitle": "Bureaucrats Adjust Funding",
+    "eventSectionTypes": [
+     "TerrorLevelI",
+     "TerrorLevelII"
+    ]
+   },
+   {
+    "eventSectionBody": [
+     "After the Ravage Step, <b>On Each Board:</b> In the land with the most {City} (min. 1), Ravage, then Remove 1 {City}."
+    ],
+    "eventSectionTitle": "Ransack and Run",
+    "eventSectionTypes": [
+     "TerrorLevelIII"
+    ]
+   },
+   {
+    "eventSectionBody": [
+     "2 {Fear} per board with 2 or more {Beast}."
+    ],
+    "eventSectionTitle": "Terrifying Beasts",
+    "eventSectionTypes": [
+     "Beast"
+    ]
+   },
+   {
+    "eventSectionBody": [
+     "When Invaders Ravage, if the land has both {Dahan} and {Presence}, Defend 5."
+    ],
+    "eventSectionTitle": "Coordinated Defense",
+    "eventSectionTypes": [
+     "Dahan"
+    ]
+   }
+  ],
+  "expansion": "JaggedEarth",
+  "identifier": "BureaucratsAdjustFunding"
+ }
+}

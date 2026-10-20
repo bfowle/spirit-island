@@ -1,0 +1,988 @@
+{
+ "ADreadfulTideOfScurryingFlesh": {
+  "artistName": "Moro Rogers",
+  "body": [
+   "Remove up to half (round down) of {Beast} in target land.",
+   "For each {Beast} Removed, 2 {Fear} and skip one Invader Action."
+  ],
+  "elementTypes": [
+   "Moon",
+   "Air",
+   "Water",
+   "Animal"
+  ],
+  "energyCost": 0,
+  "expansion": "JaggedEarth",
+  "identifier": "ADreadfulTideOfScurryingFlesh",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "rangeSacredSite": true,
+  "speed": true,
+  "targetType": "LandWithTwoBeast",
+  "title": "A Dreadful Tide of Scurrying Flesh"
+ },
+ "AnimatedWrackroot": {
+  "artistName": "Joshua Wright",
+  "body": [
+   "1 {Fear}. Destroy 1 {Explorer}.",
+   "{Or}",
+   "Add 1 {Wilds}."
+  ],
+  "elementTypes": [
+   "Moon",
+   "Fire",
+   "Plant"
+  ],
+  "energyCost": 0,
+  "expansion": "BranchAndClaw",
+  "identifier": "AnimatedWrackroot",
+  "powerType": "Minor",
+  "rangeDistance": 0,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Animated Wrackroot"
+ },
+ "BlazingRenewal": {
+  "artistName": "Nolan Nasser",
+  "body": [
+   "In a single land within {2Range} of your {Presence}: target Spirit Adds 2 of their {DestroyedPresenceNew}. If any {Presence} was Added, 2 Damage to each {Town}/{City}."
+  ],
+  "elementOptions": [
+   {
+    "body": "If any {Presence} was Added, 4 Damage.",
+    "costEarth": 3,
+    "costFire": 3,
+    "costPlant": 2
+   }
+  ],
+  "elementTypes": [
+   "Fire",
+   "Earth",
+   "Plant"
+  ],
+  "energyCost": 5,
+  "identifier": "BlazingRenewal",
+  "powerType": "Major",
+  "setAsideBody": [
+   "In a single land: target Spirit Adds 2 of their {DestroyedPresenceNew}. If any {Presence} was Added, 2 Damage to each {Town}/{City}."
+  ],
+  "speed": true,
+  "targetType": "AnySpirit",
+  "textRanges": [
+   2
+  ],
+  "title": "Blazing Renewal"
+ },
+ "BloodwrackPlague": {
+  "artistName": "Jorge Ramos",
+  "body": [
+   "Add 2 {Disease}.",
+   "For each {Disease} in target land, Defend 1 in target and all adjacent lands."
+  ],
+  "elementOptions": [
+   {
+    "body": "2 {Fear}. For each {Disease} in target land do 1 Damage in target land or an adjacent land.",
+    "costAnimal": 4,
+    "costEarth": 2
+   }
+  ],
+  "elementTypes": [
+   "Water",
+   "Earth",
+   "Animal"
+  ],
+  "energyCost": 4,
+  "expansion": "BranchAndClaw",
+  "identifier": "BloodwrackPlague",
+  "powerType": "Major",
+  "rangeDistance": 1,
+  "rangeSacredSite": true,
+  "speed": true,
+  "targetType": "AnyLand",
+  "title": "Bloodwrack Plague"
+ },
+ "BombardWithBouldersAndStingingSeeds": {
+  "artistName": "Kat Guevara",
+  "body": [
+   "1 {Fear}. 2 Damage.",
+   "Add 1 {Badlands}."
+  ],
+  "elementOptions": [
+   {
+    "body": [
+     "1 {Fear}. 2 Damage.",
+     "Add 1 {Wilds}."
+    ],
+    "costAir": 2,
+    "costEarth": 2,
+    "costPlant": 3
+   }
+  ],
+  "elementTypes": [
+   "Air",
+   "Earth",
+   "Plant"
+  ],
+  "energyCost": 2,
+  "expansion": "NatureIncarnate",
+  "identifier": "BombardWithBouldersAndStingingSeeds",
+  "powerType": "Major",
+  "rangeDistance": 2,
+  "rangeLandTypes": [
+   "Mountain",
+   "Jungle"
+  ],
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Bombard with Boulders and Stinging Seeds"
+ },
+ "BoonOfSwarmingBedevilment": {
+  "artistName": "Moro Rogers",
+  "body": [
+   "For the rest of this turn, each of target Spirit\u2019s {Presence} grants Defend 1 in its land.",
+   "Target Spirit may Push up to 1 of their {Presence}."
+  ],
+  "elementTypes": [
+   "Air",
+   "Water",
+   "Animal"
+  ],
+  "energyCost": 0,
+  "expansion": "JaggedEarth",
+  "identifier": "BoonOfSwarmingBedevilment",
+  "powerType": "Unique",
+  "speed": true,
+  "targetType": "AnotherSpirit",
+  "title": "Boon of Swarming Bedevilment"
+ },
+ "BoonOfVigor": {
+  "artistName": "Nolan Nasser",
+  "body": [
+   "If you target yourself, gain 1 Energy.",
+   "If you target another Spirit, they gain 1 Energy per Power Card they played this turn."
+  ],
+  "elementTypes": [
+   "Sun",
+   "Water",
+   "Plant"
+  ],
+  "energyCost": 0,
+  "identifier": "BoonOfVigor",
+  "powerType": "Unique",
+  "setAsideBody": [
+   "Target Spirit gains 1 Energy per Power Card they played this turn."
+  ],
+  "speed": true,
+  "targetType": "AnySpirit",
+  "title": "Boon of Vigor"
+ },
+ "CallToFerocity": {
+  "artistName": "Joshua Wright",
+  "body": [
+   "Gather up to 3 {Dahan}.",
+   "{Or}",
+   "If target land has {Dahan}, 1 {Fear} and Push 1 {Explorer} and 1 {Town}."
+  ],
+  "elementTypes": [
+   "Sun",
+   "Fire",
+   "Earth"
+  ],
+  "energyCost": 0,
+  "expansion": "BranchAndClaw",
+  "identifier": "CallToFerocity",
+  "powerType": "Minor",
+  "rangeDistance": 1,
+  "speed": false,
+  "targetType": "LandWithInvaders",
+  "title": "Call to Ferocity"
+ },
+ "CallToGuard": {
+  "artistName": "Kat Guevara",
+  "body": [
+   "Gather up to 1 {Dahan}.",
+   "Then, if {Dahan} are present, either:",
+   "Defend 1 per {Dahan}.",
+   "{Or}",
+   "After Invaders are added or moved to target land, 1 Damage to each added or moved Invader."
+  ],
+  "elementTypes": [
+   "Sun",
+   "Air",
+   "Earth"
+  ],
+  "energyCost": 0,
+  "expansion": "JaggedEarth",
+  "identifier": "CallToGuard",
+  "powerType": "Minor",
+  "rangeDistance": 1,
+  "speed": true,
+  "targetType": "AnyLand",
+  "title": "Call to Guard"
+ },
+ "CallToIsolation": {
+  "artistName": "Graham Stermberg",
+  "body": [
+   "Push 1 {Explorer}/{Town} per {Dahan}.",
+   "{Or}",
+   "Push 1 {Dahan}."
+  ],
+  "elementTypes": [
+   "Sun",
+   "Air",
+   "Animal"
+  ],
+  "energyCost": 0,
+  "identifier": "CallToIsolation",
+  "powerType": "Minor",
+  "rangeDistance": 1,
+  "speed": true,
+  "targetType": "LandWithDahan",
+  "title": "Call to Isolation"
+ },
+ "CarapacedLand": {
+  "artistName": "Kat Guevara",
+  "body": [
+   "If targeting a land with {Beast}, this Power has {+1Range}.",
+   "Defend 3."
+  ],
+  "elementOptions": [
+   {
+    "body": "Defend +3.",
+    "costEarth": 2
+   }
+  ],
+  "elementTypes": [
+   "Earth",
+   "Plant",
+   "Animal"
+  ],
+  "energyCost": 0,
+  "expansion": "JaggedEarth",
+  "identifier": "CarapacedLand",
+  "powerType": "Minor",
+  "rangeDistance": 0,
+  "speed": true,
+  "targetType": "AnyLand",
+  "title": "Carapaced Land"
+ },
+ "CastDownIntoTheBrinyDeep": {
+  "artistName": "Jason Behnke",
+  "body": [
+   "6 {Fear}.",
+   "Destroy all Invaders."
+  ],
+  "elementOptions": [
+   {
+    "body": "Destroy the board containing target land and everything on that board. All destroyed {Blight} is removed from the game instead of being returned to the Blight Card.",
+    "costEarth": 4,
+    "costMoon": 2,
+    "costSun": 2,
+    "costWater": 4
+   }
+  ],
+  "elementTypes": [
+   "Sun",
+   "Moon",
+   "Water",
+   "Earth"
+  ],
+  "energyCost": 9,
+  "expansion": "BranchAndClaw",
+  "identifier": "CastDownIntoTheBrinyDeep",
+  "powerType": "Major",
+  "rangeDistance": 1,
+  "rangeSacredSite": true,
+  "speed": false,
+  "targetType": "Coastal",
+  "title": "Cast Down into the Briny Deep"
+ },
+ "CleansingFloods": {
+  "artistName": "Nolan Nasser",
+  "body": [
+   "4 Damage.",
+   "Remove 1 {Blight}."
+  ],
+  "elementOptions": [
+   {
+    "body": "10 Damage.",
+    "costWater": 4
+   }
+  ],
+  "elementTypes": [
+   "Sun",
+   "Water"
+  ],
+  "energyCost": 5,
+  "identifier": "CleansingFloods",
+  "powerType": "Major",
+  "rangeDistance": 1,
+  "rangeLandTypes": [
+   "Wetland"
+  ],
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Cleansing Floods"
+ },
+ "DesiccatingWinds": {
+  "artistName": "Shawn Daley",
+  "body": [
+   "If target land has {Badlands}, 1 Damage.",
+   "Add 1 {Badlands}."
+  ],
+  "elementTypes": [
+   "Fire",
+   "Air",
+   "Earth"
+  ],
+  "energyCost": 1,
+  "expansion": "JaggedEarth",
+  "identifier": "DesiccatingWinds",
+  "powerType": "Minor",
+  "rangeDistance": 1,
+  "rangeSacredSite": true,
+  "speed": false,
+  "targetType": "MountainSands",
+  "title": "Desiccating Winds"
+ },
+ "DevouringAnts": {
+  "artistName": "Nolan Nasser",
+  "body": [
+   "1 {Fear}.",
+   "1 Damage.",
+   "Destroy 1 {Dahan}.",
+   "If target land is {JungleSands}, +1 Damage."
+  ],
+  "elementTypes": [
+   "Sun",
+   "Earth",
+   "Animal"
+  ],
+  "energyCost": 1,
+  "identifier": "DevouringAnts",
+  "powerType": "Minor",
+  "rangeDistance": 1,
+  "rangeSacredSite": true,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Devouring Ants"
+ },
+ "DisorientingLandscape": {
+  "artistName": "Nolan Nasser",
+  "body": [
+   "Push 1 {Explorer}.",
+   "If target land is {MountainJungle}, add 1 {Wilds}."
+  ],
+  "elementTypes": [
+   "Moon",
+   "Air",
+   "Plant"
+  ],
+  "energyCost": 1,
+  "expansion": "BranchAndClaw",
+  "identifier": "DisorientingLandscape",
+  "powerType": "Minor",
+  "rangeDistance": 2,
+  "rangeSacredSite": true,
+  "speed": true,
+  "targetType": "AnyLand",
+  "title": "Disorienting Landscape"
+ },
+ "DissolvingVapors": {
+  "artistName": "Emily Hancock",
+  "body": [
+   "1 {Fear}.",
+   "1 Damage to each Invader.",
+   "1 Damage to each {Dahan}."
+  ],
+  "elementTypes": [
+   "Air",
+   "Water"
+  ],
+  "energyCost": 2,
+  "expansion": "JaggedEarth",
+  "identifier": "DissolvingVapors",
+  "powerType": "Unique",
+  "rangeDistance": 0,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Dissolving Vapors"
+ },
+ "DrawTowardsAConsumingVoid": {
+  "artistName": "Joshua Wright",
+  "body": [
+   "Gather 1 {Explorer}, 1 {Town}, 1 {City}, 1 {Dahan}, 1 {Beast}, and 1 {Presence} (from any Spirit) from each adjacent land.",
+   "4 {Fear}. 15 Damage. 5 Damage to {Dahan}. Destroy 1 {Presence} from each Spirit. Destroy 2 {Beast}."
+  ],
+  "conditionalBody": [
+   "<b>Any number of times:</b> Forget a Minor Power, a Major Power, and a Unique Power to perform the above effects again."
+  ],
+  "conditionalTitle": "If you have no other power cards in play",
+  "energyCost": 8,
+  "expansion": "JaggedEarth",
+  "identifier": "DrawTowardsAConsumingVoid",
+  "powerType": "Major",
+  "rangeDistance": 0,
+  "setAsideBody": [
+   "Gather 1 {Explorer}, 1 {Town}, 1 {City}, 1 {Dahan}, 1 {Beast}, and 1 {Presence} (from any Spirit) from each adjacent land.",
+   "4 {Fear}. 15 Damage. 5 Damage to {Dahan}. Destroy 1 {Presence} from each Spirit. Destroy 2 {Beast}.",
+   "<b>One time:</b> You may perform the above effects again."
+  ],
+  "setAsideHideThreshold": true,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Draw Towards a Consuming Void"
+ },
+ "DreamOfTheUntouchedLand": {
+  "artistName": "Joshua Wright",
+  "body": [
+   "Remove up to 3 {Blight} and up to 3 Health worth of Invaders."
+  ],
+  "elementOptions": [
+   {
+    "body": "<b>(Max. 1x/game)</b> Add a random new Island Board next to target board. Ignore its Setup icons; add 2 {Beast}, 2 {Wilds}, 2 {Badlands} and up to 2 {Presence} (from any Spirits) anywhere on it. From now on, Build Cards and \u201cEach board / Each land\u201d Adversary Actions skip 1 board.",
+    "costEarth": 3,
+    "costMoon": 3,
+    "costPlant": 2,
+    "costWater": 2
+   }
+  ],
+  "elementTypes": [
+   "Moon",
+   "Water",
+   "Earth",
+   "Plant",
+   "Animal"
+  ],
+  "energyCost": 6,
+  "expansion": "JaggedEarth",
+  "identifier": "DreamOfTheUntouchedLand",
+  "powerType": "Major",
+  "rangeDistance": 1,
+  "rangeSacredSite": true,
+  "speed": true,
+  "targetType": "AnyLand",
+  "title": "Dream of the Untouched Land"
+ },
+ "DriftDownIntoSlumber": {
+  "artistName": "Lucas Durham",
+  "body": [
+   "Defend 1.",
+   "If target land is {JungleSands}, instead, Defend 4."
+  ],
+  "elementTypes": [
+   "Air",
+   "Earth",
+   "Plant"
+  ],
+  "energyCost": 0,
+  "identifier": "DriftDownIntoSlumber",
+  "powerType": "Minor",
+  "rangeDistance": 2,
+  "speed": true,
+  "targetType": "AnyLand",
+  "title": "Drift Down into Slumber"
+ },
+ "EverMultiplyingSwarm": {
+  "artistName": "Moro Rogers",
+  "body": [
+   "Add 2 {Beast}."
+  ],
+  "elementTypes": [
+   "Fire",
+   "Earth",
+   "Animal"
+  ],
+  "energyCost": 1,
+  "expansion": "JaggedEarth",
+  "identifier": "EverMultiplyingSwarm",
+  "powerType": "Unique",
+  "rangeDistance": 0,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Ever-Multiplying Swarm"
+ },
+ "ExaltationOfMoltenStone": {
+  "artistName": "Moro Rogers",
+  "body": [
+   "Split 1 Energy per {Fire} you have between yourself and target Spirit, as evenly as possible.",
+   "Target Spirit gains {+1Range} with their Powers that originate from a {MountainLeft}."
+  ],
+  "elementTypes": [
+   "Moon",
+   "Fire",
+   "Earth"
+  ],
+  "energyCost": 1,
+  "expansion": "JaggedEarth",
+  "identifier": "ExaltationOfMoltenStone",
+  "powerType": "Unique",
+  "setAsideBody": [
+   "Target Spirit gains 5 Energy.",
+   "Target Spirit gains {+1Range} with their Powers that originate from a {MountainLeft}."
+  ],
+  "speed": true,
+  "targetType": "AnotherSpirit",
+  "title": "Exaltation of Molten Stone"
+ },
+ "FetidBreathSpreadsInfection": {
+  "artistName": "Damon Westenhofer",
+  "body": [
+   "1 {Fear}.",
+   "Add 1 {Disease}."
+  ],
+  "elementTypes": [
+   "Air",
+   "Water",
+   "Animal"
+  ],
+  "energyCost": 2,
+  "expansion": "JaggedEarth",
+  "identifier": "FetidBreathSpreadsInfection",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "speed": false,
+  "targetType": "LandWithInvaders",
+  "title": "Fetid Breath Spreads Infection"
+ },
+ "FieryVengeance": {
+  "artistName": "Damon Westenhofer",
+  "body": [
+   "1 {Fear} and 1 Damage in one of target Spirit\u2019s lands.",
+   "<i>(This is your Power, so {Blight} counts as {Badlands}, even if target is another Spirit.)</i>"
+  ],
+  "costToUse": "Target Spirit Removes 1 of their {DestroyedPresenceNew} from the game.",
+  "elementTypes": [
+   "Sun",
+   "Fire"
+  ],
+  "energyCost": 0,
+  "expansion": "JaggedEarth",
+  "identifier": "FieryVengeance",
+  "powerType": "Unique",
+  "speed": true,
+  "targetType": "AnySpirit",
+  "title": "Fiery Vengeance"
+ },
+ "FlashFloods": {
+  "artistName": "Nolan Nasser",
+  "body": [
+   "1 Damage.",
+   "If target land is Coastal, +1 Damage."
+  ],
+  "elementTypes": [
+   "Sun",
+   "Water"
+  ],
+  "energyCost": 2,
+  "identifier": "FlashFloods",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "speed": true,
+  "targetType": "AnyLand",
+  "title": "Flash Floods"
+ },
+ "FlowingAndSilentFormsDartBy": {
+  "artistName": "Emily Hancock",
+  "body": [
+   "2 {Fear} if Invaders are present.",
+   "When {Presence} in target land would be Destroyed, its owner may, if possible, instead Push that {Presence}.",
+   "You may Gather 1 {Presence}/{SacredSite} of another Spirit (with their permission)."
+  ],
+  "elementTypes": [
+   "Moon",
+   "Air",
+   "Water"
+  ],
+  "energyCost": 0,
+  "expansion": "JaggedEarth",
+  "identifier": "FlowingAndSilentFormsDartBy",
+  "powerType": "Unique",
+  "rangeDistance": 0,
+  "speed": true,
+  "targetType": "AnyLand",
+  "title": "Flowing And Silent Forms Dart By"
+ },
+ "GuideTheWayOnFeatheredWings": {
+  "artistName": "Moro Rogers",
+  "body": [
+   "Move 1 {Beast} up to two lands. As it moves, up to 2 {Dahan} may move with it, for part or all of the way.",
+   "<i>(The {Beast}/{Dahan} may move to an adjacent land and then back.)</i>"
+  ],
+  "elementTypes": [
+   "Sun",
+   "Air",
+   "Animal"
+  ],
+  "energyCost": 0,
+  "expansion": "JaggedEarth",
+  "identifier": "GuideTheWayOnFeatheredWings",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "speed": true,
+  "targetType": "AnyLand",
+  "title": "Guide the Way on Feathered Wings"
+ },
+ "HarbingersOfTheLightning": {
+  "artistName": "Rocky Hammer",
+  "body": [
+   "Push up to 2 {Dahan}.",
+   "1 {Fear} if you pushed any {Dahan} into a land with {Town}/{City}."
+  ],
+  "elementTypes": [
+   "Fire",
+   "Air"
+  ],
+  "energyCost": 0,
+  "identifier": "HarbingersOfTheLightning",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Harbingers of the Lightning"
+ },
+ "LavaFlows": {
+  "artistName": "Moro Rogers",
+  "body": [
+   "Add 1 {Badlands} and 1 {Wilds}.",
+   "{Or}",
+   "1 Damage."
+  ],
+  "elementTypes": [
+   "Fire",
+   "Earth"
+  ],
+  "energyCost": 1,
+  "expansion": "JaggedEarth",
+  "identifier": "LavaFlows",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Lava Flows"
+ },
+ "LightningsBoon": {
+  "artistName": "Rocky Hammer",
+  "body": [
+   "Target Spirit may use up to 2 {Slow} Powers as if they were {Fast} Powers this turn."
+  ],
+  "elementTypes": [
+   "Fire",
+   "Air"
+  ],
+  "energyCost": 1,
+  "identifier": "LightningsBoon",
+  "powerType": "Unique",
+  "speed": true,
+  "targetType": "AnySpirit",
+  "title": "Lightning's Boon"
+ },
+ "ManifestationOfPowerAndGlory": {
+  "artistName": "Loic Belliau",
+  "body": [
+   "1 {Fear}.",
+   "Each {Dahan} deals Damage equal to the number of your {Presence} in target land."
+  ],
+  "elementTypes": [
+   "Sun",
+   "Fire",
+   "Air"
+  ],
+  "energyCost": 3,
+  "identifier": "ManifestationOfPowerAndGlory",
+  "powerType": "Unique",
+  "rangeDistance": 0,
+  "setAsideBody": [
+   "1 {Fear}.",
+   "Each {Dahan} deals 2 Damage."
+  ],
+  "speed": false,
+  "targetType": "LandWithDahan",
+  "title": "Manifestation of Power and Glory"
+ },
+ "Plaguebearers": {
+  "artistName": "Damon Westenhofer",
+  "body": [
+   "1 {Fear} if Invaders are present.",
+   "For each {Disease}, Push 2 {Explorer}/{Town}/{Dahan}.",
+   "1 {Disease} may move with each Pushed piece."
+  ],
+  "elementTypes": [
+   "Fire",
+   "Water",
+   "Animal"
+  ],
+  "energyCost": 1,
+  "expansion": "JaggedEarth",
+  "identifier": "Plaguebearers",
+  "powerType": "Unique",
+  "rangeDistance": 2,
+  "speed": false,
+  "targetType": "LandWithDisease",
+  "title": "Plaguebearers"
+ },
+ "PursueWithScratchesPecksAndStings": {
+  "artistName": "Moro Rogers",
+  "body": [
+   "1 {Fear}.",
+   "For each {Beast} past the first, Push 1 {Explorer}/{Town}."
+  ],
+  "elementTypes": [
+   "Sun",
+   "Fire",
+   "Air",
+   "Animal"
+  ],
+  "energyCost": 0,
+  "expansion": "JaggedEarth",
+  "identifier": "PursueWithScratchesPecksAndStings",
+  "powerType": "Unique",
+  "rangeDistance": 2,
+  "speed": true,
+  "targetType": "LandWithBeast",
+  "title": "Pursue with Scratches, Pecks, and Stings"
+ },
+ "PyroclasticBombardment": {
+  "artistName": "Moro Rogers",
+  "body": [
+   "1 Damage to each {Town}/{City}/{Dahan}.",
+   "1 Damage.",
+   "1 Damage to {Dahan}."
+  ],
+  "elementTypes": [
+   "Fire",
+   "Air",
+   "Earth"
+  ],
+  "energyCost": 3,
+  "expansion": "JaggedEarth",
+  "identifier": "PyroclasticBombardment",
+  "powerType": "Unique",
+  "rangeDistance": 2,
+  "rangeSacredSite": true,
+  "speed": true,
+  "targetType": "AnyLand",
+  "title": "Pyroclastic Bombardment"
+ },
+ "RagingStorm": {
+  "artistName": "Rocky Hammer",
+  "body": [
+   "1 Damage to each Invader."
+  ],
+  "elementTypes": [
+   "Fire",
+   "Air",
+   "Water"
+  ],
+  "energyCost": 3,
+  "identifier": "RagingStorm",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Raging Storm"
+ },
+ "RainOfAsh": {
+  "artistName": "Moro Rogers",
+  "body": [
+   "2 {Fear} if Invaders are present.",
+   "Push 2 {Dahan} and 2 {Explorer}/{Town} to land(s) without your {Presence}."
+  ],
+  "elementTypes": [
+   "Fire",
+   "Air",
+   "Earth"
+  ],
+  "energyCost": 2,
+  "expansion": "JaggedEarth",
+  "identifier": "RainOfAsh",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Rain of Ash"
+ },
+ "RiversBounty": {
+  "artistName": "Nolan Nasser",
+  "body": [
+   "Gather up to 2 {Dahan}.",
+   "If there are now at least 2 {Dahan}, add 1 {Dahan} and gain 1 Energy."
+  ],
+  "elementTypes": [
+   "Sun",
+   "Water",
+   "Animal"
+  ],
+  "energyCost": 0,
+  "identifier": "RiversBounty",
+  "powerType": "Unique",
+  "rangeDistance": 0,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "River's Bounty"
+ },
+ "ShatterHomesteads": {
+  "artistName": "Rocky Hammer",
+  "body": [
+   "1 {Fear}.",
+   "Destroy 1 {Town}."
+  ],
+  "elementTypes": [
+   "Fire",
+   "Air"
+  ],
+  "energyCost": 2,
+  "identifier": "ShatterHomesteads",
+  "powerType": "Unique",
+  "rangeDistance": 2,
+  "rangeSacredSite": true,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Shatter Homesteads"
+ },
+ "StrikeLowWithSuddenFevers": {
+  "artistName": "Damon Westenhofer",
+  "body": [
+   "1 {Fear}.",
+   "Invaders skip Ravage Actions."
+  ],
+  "elementTypes": [
+   "Fire",
+   "Air",
+   "Earth",
+   "Animal"
+  ],
+  "energyCost": 2,
+  "expansion": "JaggedEarth",
+  "identifier": "StrikeLowWithSuddenFevers",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "speed": true,
+  "targetType": "LandWithDisease",
+  "title": "Strike Low with Sudden Fevers"
+ },
+ "SuddenAmbush": {
+  "artistName": "Loic Belliau",
+  "body": [
+   "You may Gather 1 {Dahan}.",
+   "Each {Dahan} destroys 1 {Explorer}."
+  ],
+  "elementTypes": [
+   "Fire",
+   "Air",
+   "Animal"
+  ],
+  "energyCost": 2,
+  "identifier": "SuddenAmbush",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "speed": true,
+  "targetType": "AnyLand",
+  "title": "Sudden Ambush"
+ },
+ "TheFogClosesIn": {
+  "artistName": "Emily Hancock",
+  "body": [
+   "For each adjacent land with your {Presence}, 1 Damage to a different Invader.",
+   "Push 2 {Dahan}."
+  ],
+  "elementTypes": [
+   "Moon",
+   "Air",
+   "Water"
+  ],
+  "energyCost": 1,
+  "expansion": "JaggedEarth",
+  "identifier": "TheFogClosesIn",
+  "powerType": "Unique",
+  "rangeDistance": 0,
+  "setAsideBody": [
+   "For each adjacent land, 1 Damage to a different Invader.",
+   "Push 2 {Dahan}."
+  ],
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "The Fog Closes In"
+ },
+ "UnnervingPall": {
+  "artistName": "Emily Hancock",
+  "body": [
+   "1 {Fear}. Up to 3 damaged Invaders do not participate in Ravage.",
+   "{Or}",
+   "1 {Fear}. Defend 1 per {Presence} you have in target land <i>(when this Power is used)</i>."
+  ],
+  "elementTypes": [
+   "Moon",
+   "Air",
+   "Animal"
+  ],
+  "energyCost": 1,
+  "expansion": "JaggedEarth",
+  "identifier": "UnnervingPall",
+  "powerType": "Unique",
+  "rangeDistance": 0,
+  "setAsideBody": [
+   "1 {Fear}. Up to 3 damaged Invaders do not participate in Ravage.",
+   "{Or}",
+   "1 {Fear}. Defend 2."
+  ],
+  "speed": true,
+  "targetType": "LandWithInvaders",
+  "title": "Unnerving Pall"
+ },
+ "VoiceOfThunder": {
+  "artistName": "Loic Belliau",
+  "body": [
+   "Push up to 4 {Dahan}.",
+   "{Or}",
+   "If Invaders are present, 2 {Fear}."
+  ],
+  "elementTypes": [
+   "Sun",
+   "Air"
+  ],
+  "energyCost": 0,
+  "identifier": "VoiceOfThunder",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Voice of Thunder"
+ },
+ "WashAway": {
+  "artistName": "Nolan Nasser",
+  "body": [
+   "Push up to 3 {Explorer}/{Town}."
+  ],
+  "elementTypes": [
+   "Water",
+   "Earth"
+  ],
+  "energyCost": 1,
+  "identifier": "WashAway",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "speed": false,
+  "targetType": "AnyLand",
+  "title": "Wash Away"
+ },
+ "WordsOfWarning": {
+  "artistName": "Loic Belliau",
+  "body": [
+   "Defend 3.",
+   "During Ravage, {Dahan} in target land deal damage simultaneously with Invaders."
+  ],
+  "elementTypes": [
+   "Sun",
+   "Air",
+   "Animal"
+  ],
+  "energyCost": 1,
+  "identifier": "WordsOfWarning",
+  "powerType": "Unique",
+  "rangeDistance": 1,
+  "speed": true,
+  "targetType": "LandWithDahan",
+  "title": "Words of Warning"
+ }
+}

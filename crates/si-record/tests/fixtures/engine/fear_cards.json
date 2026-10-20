@@ -1,0 +1,30 @@
+{
+ "AngryMobs": {
+  "body": [
+   "Each player may Replace 1 {Town} with 2 {Explorer}. 1 {Fear} per player who does.",
+   "In each land with 2 or more {Explorer}, Destroy 1 {Explorer}/{Town} per 2 {Explorer}.",
+   "In each land with 2 or more {Explorer}, Destroy 1 Invader per 2 {Explorer}."
+  ],
+  "expansion": "PromoPack2",
+  "identifier": "AngryMobs",
+  "title": "Angry Mobs"
+ },
+ "AvoidTheDahan": {
+  "body": [
+   "Skip all Explore Actions in lands with at least 2 {Dahan}.",
+   "Skip all Build Actions in lands where {Dahan} outnumber {Town}/{City} (including lands with no {Town}/{City}).",
+   "Skip Build Actions in lands with {Dahan}."
+  ],
+  "identifier": "AvoidTheDahan",
+  "title": "Avoid the Dahan"
+ },
+ "BeliefTakesRoot": {
+  "body": [
+   "Lands with {Presence} have Defend 2.",
+   "Lands with {Presence} have Defend 2. Each Spirit gains 1 Energy per {SacredSite} they have in lands with Invaders.",
+   "Each player chooses a different land. In each: Remove up to 2 Health worth of Invaders per {Presence}."
+  ],
+  "identifier": "BeliefTakesRoot",
+  "title": "Belief Takes Root"
+ }
+}

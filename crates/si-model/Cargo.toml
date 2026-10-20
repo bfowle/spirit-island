@@ -1,0 +1,8 @@
+[package]
+name = "si-model"
+version.workspace = true
+edition.workspace = true
+description = "Spirit Island as data: island, spirits, powers, decks, setup, state, events, rule modifiers. No I/O, no rules."
+
+[dependencies]
+serde.workspace = true

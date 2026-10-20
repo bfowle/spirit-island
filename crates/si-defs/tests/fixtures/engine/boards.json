@@ -1,0 +1,683 @@
+{
+ "A": {
+  "flipSide": "NorthEast",
+  "identifier": "A",
+  "lands": [
+   {
+    "adjacentLands": [
+     1,
+     2,
+     3
+    ],
+    "boardIdentifier": "A",
+    "landType": "Ocean",
+    "number": 0
+   },
+   {
+    "adjacentLands": [
+     0,
+     2,
+     4,
+     5,
+     6
+    ],
+    "boardIdentifier": "A",
+    "landType": "Mountain",
+    "number": 1
+   },
+   {
+    "adjacentLands": [
+     0,
+     1,
+     3,
+     4
+    ],
+    "boardIdentifier": "A",
+    "initialCities": 1,
+    "initialDahan": 1,
+    "landType": "Wetland",
+    "number": 2
+   },
+   {
+    "adjacentLands": [
+     0,
+     2,
+     4
+    ],
+    "boardIdentifier": "A",
+    "initialDahan": 2,
+    "landType": "Jungle",
+    "number": 3
+   },
+   {
+    "adjacentLands": [
+     1,
+     2,
+     3,
+     5
+    ],
+    "boardIdentifier": "A",
+    "initialBlight": 1,
+    "landType": "Sands",
+    "number": 4
+   },
+   {
+    "adjacentLands": [
+     1,
+     4,
+     6,
+     7,
+     8
+    ],
+    "boardIdentifier": "A",
+    "landType": "Wetland",
+    "number": 5
+   },
+   {
+    "adjacentLands": [
+     1,
+     5,
+     8
+    ],
+    "boardIdentifier": "A",
+    "initialDahan": 1,
+    "landType": "Mountain",
+    "number": 6
+   },
+   {
+    "adjacentLands": [
+     5,
+     8
+    ],
+    "boardIdentifier": "A",
+    "initialDahan": 2,
+    "landType": "Sands",
+    "number": 7
+   },
+   {
+    "adjacentLands": [
+     5,
+     6,
+     7
+    ],
+    "boardIdentifier": "A",
+    "initialTowns": 1,
+    "landType": "Jungle",
+    "number": 8
+   }
+  ],
+  "sides": [
+   {
+    "boardIdentifier": "A",
+    "endMark": 2,
+    "landIdentifier": "MountainA1",
+    "number": 0,
+    "startMark": 0
+   },
+   {
+    "boardIdentifier": "A",
+    "endMark": 4,
+    "landIdentifier": "MountainA6",
+    "number": 0,
+    "startMark": 2
+   },
+   {
+    "boardIdentifier": "A",
+    "endMark": 7,
+    "landIdentifier": "JungleA8",
+    "number": 0,
+    "startMark": 4
+   },
+   {
+    "boardIdentifier": "A",
+    "endMark": 3,
+    "landIdentifier": "JungleA8",
+    "number": 1,
+    "startMark": 0
+   },
+   {
+    "boardIdentifier": "A",
+    "endMark": 7,
+    "landIdentifier": "SandsA7",
+    "number": 1,
+    "startMark": 3
+   },
+   {
+    "boardIdentifier": "A",
+    "endMark": 1,
+    "landIdentifier": "SandsA7",
+    "number": 2,
+    "startMark": 0
+   },
+   {
+    "boardIdentifier": "A",
+    "endMark": 2,
+    "landIdentifier": "WetlandA5",
+    "number": 2,
+    "startMark": 1
+   },
+   {
+    "boardIdentifier": "A",
+    "endMark": 4,
+    "landIdentifier": "SandsA4",
+    "number": 2,
+    "startMark": 2
+   },
+   {
+    "boardIdentifier": "A",
+    "endMark": 7,
+    "landIdentifier": "JungleA3",
+    "number": 2,
+    "startMark": 4
+   }
+  ],
+  "title": "A"
+ },
+ "B": {
+  "flipSide": "East",
+  "identifier": "B",
+  "lands": [
+   {
+    "adjacentLands": [
+     1,
+     2,
+     3
+    ],
+    "boardIdentifier": "B",
+    "landType": "Ocean",
+    "number": 0
+   },
+   {
+    "adjacentLands": [
+     0,
+     2,
+     4,
+     5,
+     6
+    ],
+    "boardIdentifier": "B",
+    "initialDahan": 1,
+    "landType": "Wetland",
+    "number": 1
+   },
+   {
+    "adjacentLands": [
+     0,
+     1,
+     3,
+     4
+    ],
+    "boardIdentifier": "B",
+    "initialCities": 1,
+    "landType": "Mountain",
+    "number": 2
+   },
+   {
+    "adjacentLands": [
+     0,
+     2,
+     4
+    ],
+    "boardIdentifier": "B",
+    "initialDahan": 2,
+    "landType": "Sands",
+    "number": 3
+   },
+   {
+    "adjacentLands": [
+     1,
+     2,
+     3,
+     5,
+     7
+    ],
+    "boardIdentifier": "B",
+    "initialBlight": 1,
+    "landType": "Jungle",
+    "number": 4
+   },
+   {
+    "adjacentLands": [
+     1,
+     4,
+     6,
+     7
+    ],
+    "boardIdentifier": "B",
+    "landType": "Sands",
+    "number": 5
+   },
+   {
+    "adjacentLands": [
+     1,
+     5,
+     7,
+     8
+    ],
+    "boardIdentifier": "B",
+    "initialTowns": 1,
+    "landType": "Wetland",
+    "number": 6
+   },
+   {
+    "adjacentLands": [
+     4,
+     5,
+     6,
+     8
+    ],
+    "boardIdentifier": "B",
+    "initialDahan": 1,
+    "landType": "Mountain",
+    "number": 7
+   },
+   {
+    "adjacentLands": [
+     6,
+     7
+    ],
+    "boardIdentifier": "B",
+    "initialDahan": 2,
+    "landType": "Jungle",
+    "number": 8
+   }
+  ],
+  "sides": [
+   {
+    "boardIdentifier": "B",
+    "endMark": 1,
+    "landIdentifier": "WetlandB1",
+    "number": 0,
+    "startMark": 0
+   },
+   {
+    "boardIdentifier": "B",
+    "endMark": 4,
+    "landIdentifier": "WetlandB6",
+    "number": 0,
+    "startMark": 1
+   },
+   {
+    "boardIdentifier": "B",
+    "endMark": 7,
+    "landIdentifier": "JungleB8",
+    "number": 0,
+    "startMark": 4
+   },
+   {
+    "boardIdentifier": "B",
+    "endMark": 3,
+    "landIdentifier": "JungleB8",
+    "number": 1,
+    "startMark": 0
+   },
+   {
+    "boardIdentifier": "B",
+    "endMark": 7,
+    "landIdentifier": "MountainB7",
+    "number": 1,
+    "startMark": 3
+   },
+   {
+    "boardIdentifier": "B",
+    "endMark": 1,
+    "landIdentifier": "MountainB7",
+    "number": 2,
+    "startMark": 0
+   },
+   {
+    "boardIdentifier": "B",
+    "endMark": 3,
+    "landIdentifier": "JungleB4",
+    "number": 2,
+    "startMark": 1
+   },
+   {
+    "boardIdentifier": "B",
+    "endMark": 7,
+    "landIdentifier": "SandsB3",
+    "number": 2,
+    "startMark": 3
+   }
+  ],
+  "title": "B"
+ },
+ "C": {
+  "flipSide": "NorthWest",
+  "identifier": "C",
+  "lands": [
+   {
+    "adjacentLands": [
+     1,
+     2,
+     3
+    ],
+    "boardIdentifier": "C",
+    "landType": "Ocean",
+    "number": 0
+   },
+   {
+    "adjacentLands": [
+     0,
+     2,
+     5,
+     6
+    ],
+    "boardIdentifier": "C",
+    "initialDahan": 1,
+    "landType": "Jungle",
+    "number": 1
+   },
+   {
+    "adjacentLands": [
+     0,
+     1,
+     3,
+     4,
+     5
+    ],
+    "boardIdentifier": "C",
+    "initialCities": 1,
+    "landType": "Sands",
+    "number": 2
+   },
+   {
+    "adjacentLands": [
+     0,
+     2,
+     4
+    ],
+    "boardIdentifier": "C",
+    "initialDahan": 2,
+    "landType": "Mountain",
+    "number": 3
+   },
+   {
+    "adjacentLands": [
+     2,
+     3,
+     5,
+     7
+    ],
+    "boardIdentifier": "C",
+    "landType": "Jungle",
+    "number": 4
+   },
+   {
+    "adjacentLands": [
+     1,
+     2,
+     4,
+     6,
+     7
+    ],
+    "boardIdentifier": "C",
+    "initialBlight": 1,
+    "initialDahan": 2,
+    "landType": "Wetland",
+    "number": 5
+   },
+   {
+    "adjacentLands": [
+     1,
+     5,
+     7,
+     8
+    ],
+    "boardIdentifier": "C",
+    "initialDahan": 1,
+    "landType": "Sands",
+    "number": 6
+   },
+   {
+    "adjacentLands": [
+     4,
+     5,
+     6,
+     8
+    ],
+    "boardIdentifier": "C",
+    "initialTowns": 1,
+    "landType": "Mountain",
+    "number": 7
+   },
+   {
+    "adjacentLands": [
+     6,
+     7
+    ],
+    "boardIdentifier": "C",
+    "landType": "Wetland",
+    "number": 8
+   }
+  ],
+  "sides": [
+   {
+    "boardIdentifier": "C",
+    "endMark": 2,
+    "landIdentifier": "JungleC1",
+    "number": 0,
+    "startMark": 0
+   },
+   {
+    "boardIdentifier": "C",
+    "endMark": 4,
+    "landIdentifier": "SandsC6",
+    "number": 0,
+    "startMark": 2
+   },
+   {
+    "boardIdentifier": "C",
+    "endMark": 7,
+    "landIdentifier": "WetlandC8",
+    "number": 0,
+    "startMark": 4
+   },
+   {
+    "boardIdentifier": "C",
+    "endMark": 4,
+    "landIdentifier": "WetlandC8",
+    "number": 1,
+    "startMark": 0
+   },
+   {
+    "boardIdentifier": "C",
+    "endMark": 6,
+    "landIdentifier": "MountainC7",
+    "number": 1,
+    "startMark": 4
+   },
+   {
+    "boardIdentifier": "C",
+    "endMark": 7,
+    "landIdentifier": "JungleC4",
+    "number": 1,
+    "startMark": 6
+   },
+   {
+    "boardIdentifier": "C",
+    "endMark": 4,
+    "landIdentifier": "JungleC4",
+    "number": 2,
+    "startMark": 0
+   },
+   {
+    "boardIdentifier": "C",
+    "endMark": 7,
+    "landIdentifier": "MountainC3",
+    "number": 2,
+    "startMark": 4
+   }
+  ],
+  "title": "C"
+ },
+ "D": {
+  "flipSide": "West",
+  "identifier": "D",
+  "lands": [
+   {
+    "adjacentLands": [
+     1,
+     2,
+     3
+    ],
+    "boardIdentifier": "D",
+    "landType": "Ocean",
+    "number": 0
+   },
+   {
+    "adjacentLands": [
+     0,
+     2,
+     5,
+     7,
+     8
+    ],
+    "boardIdentifier": "D",
+    "initialDahan": 2,
+    "landType": "Wetland",
+    "number": 1
+   },
+   {
+    "adjacentLands": [
+     0,
+     1,
+     3,
+     4,
+     5
+    ],
+    "boardIdentifier": "D",
+    "initialCities": 1,
+    "initialDahan": 1,
+    "landType": "Jungle",
+    "number": 2
+   },
+   {
+    "adjacentLands": [
+     0,
+     2,
+     4
+    ],
+    "boardIdentifier": "D",
+    "landType": "Wetland",
+    "number": 3
+   },
+   {
+    "adjacentLands": [
+     2,
+     3,
+     5,
+     6
+    ],
+    "boardIdentifier": "D",
+    "landType": "Sands",
+    "number": 4
+   },
+   {
+    "adjacentLands": [
+     1,
+     2,
+     4,
+     6,
+     7
+    ],
+    "boardIdentifier": "D",
+    "initialBlight": 1,
+    "initialDahan": 1,
+    "landType": "Mountain",
+    "number": 5
+   },
+   {
+    "adjacentLands": [
+     4,
+     5,
+     7
+    ],
+    "boardIdentifier": "D",
+    "landType": "Jungle",
+    "number": 6
+   },
+   {
+    "adjacentLands": [
+     1,
+     5,
+     6,
+     8
+    ],
+    "boardIdentifier": "D",
+    "initialDahan": 2,
+    "initialTowns": 1,
+    "landType": "Sands",
+    "number": 7
+   },
+   {
+    "adjacentLands": [
+     1,
+     7
+    ],
+    "boardIdentifier": "D",
+    "landType": "Mountain",
+    "number": 8
+   }
+  ],
+  "sides": [
+   {
+    "boardIdentifier": "D",
+    "endMark": 6,
+    "landIdentifier": "WetlandD1",
+    "number": 0,
+    "startMark": 0
+   },
+   {
+    "boardIdentifier": "D",
+    "endMark": 7,
+    "landIdentifier": "MountainD8",
+    "number": 0,
+    "startMark": 6
+   },
+   {
+    "boardIdentifier": "D",
+    "endMark": 3,
+    "landIdentifier": "MountainD8",
+    "number": 1,
+    "startMark": 0
+   },
+   {
+    "boardIdentifier": "D",
+    "endMark": 6,
+    "landIdentifier": "SandsD7",
+    "number": 1,
+    "startMark": 3
+   },
+   {
+    "boardIdentifier": "D",
+    "endMark": 7,
+    "landIdentifier": "JungleD6",
+    "number": 1,
+    "startMark": 6
+   },
+   {
+    "boardIdentifier": "D",
+    "endMark": 2,
+    "landIdentifier": "JungleD6",
+    "number": 2,
+    "startMark": 0
+   },
+   {
+    "boardIdentifier": "D",
+    "endMark": 5,
+    "landIdentifier": "SandsD4",
+    "number": 2,
+    "startMark": 2
+   },
+   {
+    "boardIdentifier": "D",
+    "endMark": 7,
+    "landIdentifier": "WetlandD3",
+    "number": 2,
+    "startMark": 5
+   }
+  ],
+  "title": "D"
+ }
+}

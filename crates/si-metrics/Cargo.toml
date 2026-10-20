@@ -1,0 +1,11 @@
+[package]
+name = "si-metrics"
+version.workspace = true
+edition.workspace = true
+description = "Measurements over a game record: Rei's land tempo and track tempo, build profiles, growth orders."
+
+[dependencies]
+si-model = { path = "../si-model" }
+si-defs = { path = "../si-defs" }
+si-record = { path = "../si-record" }
+serde.workspace = true

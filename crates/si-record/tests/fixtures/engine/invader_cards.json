@@ -1,0 +1,117 @@
+{
+ "Coastal2": {
+  "identifier": "Coastal2",
+  "landTypes": [
+   "Coastal"
+  ],
+  "stage": 2
+ },
+ "Jungle1": {
+  "identifier": "Jungle1",
+  "landTypes": [
+   "Jungle"
+  ],
+  "stage": 1
+ },
+ "Jungle2": {
+  "escalation": true,
+  "identifier": "Jungle2",
+  "landTypes": [
+   "Jungle"
+  ],
+  "stage": 2
+ },
+ "JungleSands3": {
+  "identifier": "JungleSands3",
+  "landTypes": [
+   "Jungle",
+   "Sands"
+  ],
+  "stage": 3
+ },
+ "JungleWetland3": {
+  "identifier": "JungleWetland3",
+  "landTypes": [
+   "Jungle",
+   "Wetland"
+  ],
+  "stage": 3
+ },
+ "Mountain1": {
+  "identifier": "Mountain1",
+  "landTypes": [
+   "Mountain"
+  ],
+  "stage": 1
+ },
+ "Mountain2": {
+  "escalation": true,
+  "identifier": "Mountain2",
+  "landTypes": [
+   "Mountain"
+  ],
+  "stage": 2
+ },
+ "MountainJungle3": {
+  "identifier": "MountainJungle3",
+  "landTypes": [
+   "Mountain",
+   "Jungle"
+  ],
+  "stage": 3
+ },
+ "MountainWetland3": {
+  "identifier": "MountainWetland3",
+  "landTypes": [
+   "Mountain",
+   "Wetland"
+  ],
+  "stage": 3
+ },
+ "Sands1": {
+  "identifier": "Sands1",
+  "landTypes": [
+   "Sands"
+  ],
+  "stage": 1
+ },
+ "Sands2": {
+  "escalation": true,
+  "identifier": "Sands2",
+  "landTypes": [
+   "Sands"
+  ],
+  "stage": 2
+ },
+ "SandsMountain3": {
+  "identifier": "SandsMountain3",
+  "landTypes": [
+   "Sands",
+   "Mountain"
+  ],
+  "stage": 3
+ },
+ "SandsWetland3": {
+  "identifier": "SandsWetland3",
+  "landTypes": [
+   "Sands",
+   "Wetland"
+  ],
+  "stage": 3
+ },
+ "Wetland1": {
+  "identifier": "Wetland1",
+  "landTypes": [
+   "Wetland"
+  ],
+  "stage": 1
+ },
+ "Wetland2": {
+  "escalation": true,
+  "identifier": "Wetland2",
+  "landTypes": [
+   "Wetland"
+  ],
+  "stage": 2
+ }
+}

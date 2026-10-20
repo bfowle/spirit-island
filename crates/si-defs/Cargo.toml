@@ -1,0 +1,12 @@
+[package]
+name = "si-defs"
+version.workspace = true
+edition.workspace = true
+description = "Game definitions (spirits, cards, boards, decks, adversaries) loaded into si-model types, with sourced rule hooks."
+
+[dependencies]
+si-model = { path = "../si-model" }
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+regex.workspace = true

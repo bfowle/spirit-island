@@ -1,0 +1,532 @@
+{
+ "HabsburgMiningExpedition": {
+  "additionalLossCondition": "At the end of the {Fast} Phase, the Invaders win if any land has at least 8 total Invaders/{Blight} <i>(combined)</i>.",
+  "additionalLossConditionTitle": "Land Stripped Bare",
+  "baseDifficulty": 1,
+  "expansion": "NatureIncarnate",
+  "identifier": "HabsburgMiningExpedition",
+  "levels": [
+   {
+    "additionalGameEffectBodies": [
+     "Lands with 3 or more Invaders are <b>Mining lands</b>. In Mining lands:{BR}{Bullet}{Disease} and modifiers to {Disease} affect Ravage Actions as though they were Build Actions.{EndBullet}{BR}{Bullet}During the Build Step, Build Cards cause Ravage Actions (instead of Build Actions).{EndBullet}"
+    ],
+    "additionalGameEffectTitles": [
+     "Ceaseless Mining"
+    ],
+    "difficulty": 3,
+    "fearCardModifiers": "0/0/0",
+    "gameEffectBody": "When {Blight} added by a Ravage Action would cascade, instead Upgrade 1 {Explorer}/{Town} <i>(before {Dahan} counterattack)</i>.",
+    "gameEffectTitle": "Avarice Rewarded",
+    "levelNumber": 1
+   },
+   {
+    "difficulty": 4,
+    "fearCardModifiers": "0/0/1",
+    "gameEffectBody": "<u>Setup:</u> Add 1 {Explorer} in each land with no {Dahan}. On each board, Add <nobr>1 {Disease}</nobr> and <nobr>1 {City}</nobr> in the highest-numbered land with a {Town} Setup symbol.",
+    "gameEffectTitle": "Miners Come From Far and Wide",
+    "levelNumber": 2
+   },
+   {
+    "difficulty": 5,
+    "fearCardModifiers": "0/1/1",
+    "gameEffectBody": "After the Build Step, on each board: Choose a land with {Explorer}. Upgrade 1 {Explorer} there.",
+    "gameEffectTitle": "Mining Boom (I)",
+    "levelNumber": 3
+   },
+   {
+    "additionalInvaderCards": [
+     {
+      "adversaryIdentifier": "HabsburgMiningExpedition",
+      "adversaryLevelNumber": 4,
+      "body": [
+       "Explore/Build Space:",
+       "Non-Mining Lands",
+       "",
+       "Ravage Space:",
+       "Mining Lands",
+       "<size=70%>&",
+       "Do not advance this card</size>"
+      ],
+      "flippedBody": [
+       "This card cannot be removed from the Invader deck"
+      ],
+      "identifier": "SaltDeposits",
+      "landTypes": [
+       "SaltDeposits"
+      ],
+      "stage": 2,
+      "title": "Salt Deposits"
+     }
+    ],
+    "difficulty": 7,
+    "fearCardModifiers": "1/1/1",
+    "gameEffectBody": "<u>Setup:</u> Remove the Stage II \u201cCoastal Lands\u201d card before randomly choosing Stage II cards. Place the \u201cSalt Deposits\u201d card in place of the 2nd Stage II card.{BR}<i>(New Deck Order: 111-2S22-33333, where S is the Salt Deposits card. {Escalation} ignores S.)</i>",
+    "gameEffectTitle": "Untapped Salt Deposits",
+    "levelNumber": 4,
+    "removeInvaderCardBeforeRandomizing": "Coastal2",
+    "replaceInvaderCardPosition": [
+     2,
+     1
+    ],
+    "replaceInvaderCardWithIdentifier": "SaltDeposits"
+   },
+   {
+    "difficulty": 9,
+    "fearCardModifiers": "1/2/1",
+    "gameEffectBody": "Instead of Mining Boom (I), after the Build Step, on each board: Choose a land with {Explorer}. Build there, then Upgrade 1 {Explorer}. <i>(Build normally in a Mining land.)</i>",
+    "gameEffectTitle": "Mining Boom (II)",
+    "levelNumber": 5
+   },
+   {
+    "difficulty": 10,
+    "fearCardModifiers": "1/2/1",
+    "gameEffectBody": "<u>Setup and During the Explore Step:</u> On boards with 3 or fewer {Blight}, Add +1 {Explorer} in each land successfully explored. (Max. 2 lands per board per Explore Card.)",
+    "gameEffectTitle": "The Empire Ascendant",
+    "levelNumber": 6
+   }
+  ],
+  "shortTitle": "Habsburg (Mining)",
+  "stageIIEscalationBody": "After Advancing Invader Cards: On each board, Explore in 2 lands whose terrains don't match a Ravage or Build Card <i>(no source required)</i>.",
+  "stageIIEscalationTitle": "Mining Tunnels",
+  "title": "Habsburg Mining Expedition"
+ },
+ "TheHabsburgMonarchy": {
+  "additionalLossCondition": "Track how many {Blight} come off the Blight Card during Ravages that do 6+ overkill to the land. If that number ever exceeds players, the Invaders win.",
+  "additionalLossConditionTitle": "Irreparable Damage",
+  "baseDifficulty": 2,
+  "expansion": "JaggedEarth",
+  "identifier": "TheHabsburgMonarchy",
+  "levels": [
+   {
+    "difficulty": 3,
+    "fearCardModifiers": "0/1/0",
+    "gameEffectBody": "After the normal Build Step: In each land matching a Build Card, Gather 1 {Town} from a land <b>not</b> matching a Build Card. (In board/land order.)",
+    "gameEffectTitle": "Migratory Herders",
+    "levelNumber": 1
+   },
+   {
+    "addTownToLandNumberOnEachBoard": 2,
+    "difficulty": 5,
+    "fearCardModifiers": "1/2/-1",
+    "gameEffectBody": "During Setup, on each board, add 1 {Town} to land #2 and 1 {Town} to the highest-numbered land without Setup symbols. During Play, when Invaders would Build 1 {City} in an Inland land, they instead Build 2 {Town}.",
+    "gameEffectTitle": "More Rural Than Urban",
+    "levelNumber": 2
+   },
+   {
+    "difficulty": 6,
+    "fearCardModifiers": "1/2/0",
+    "gameEffectBody": "When making the Invader Deck, Remove 1 additional Stage I Card.{BR}<i>(New deck order: 11-2222-33333)</i>",
+    "gameEffectTitle": "Fast Spread",
+    "levelNumber": 3,
+    "removeInvaderCard": 1
+   },
+   {
+    "difficulty": 8,
+    "fearCardModifiers": "1/2/0",
+    "gameEffectBody": "{Town} in lands without {Blight} are <b>Durable</b>: they have +2 Health, and \u201cDestroy {Town}\u201d effects instead deal 2 Damage (to those {Town} only) per {Town} they could Destroy. (\u201dDestroy all {Town}\u201c works normally.)",
+    "gameEffectTitle": "Herds Thrive in Verdant Lands",
+    "levelNumber": 4
+   },
+   {
+    "addReminderCard": "Habsburg",
+    "addReminderCardUnderInvaderCards": 5,
+    "difficulty": 9,
+    "fearCardModifiers": "1/3/0",
+    "gameEffectBody": "Before the initial Explore, put the Habsburg Reminder Card under the top 5 Invader Cards. When revealed, on each board, add 1 {City} to a Coastal land without {City} and 1 {Town} to the 3 Inland lands with the fewest {Blight}.",
+    "gameEffectTitle": "Wave of Immigration",
+    "levelNumber": 5
+   },
+   {
+    "difficulty": 10,
+    "fearCardModifiers": "2/3/0",
+    "gameEffectBody": "Ravages do +2 Damage (total) if any adjacent lands have {Town}. <i>(This does not cause lands without Invaders to Ravage.)</i>",
+    "gameEffectTitle": "Far-Flung Herds",
+    "levelNumber": 6
+   }
+  ],
+  "shortTitle": "Habsburg (Livestock)",
+  "stageIIEscalationBody": "After Exploring: On each board with 4 or fewer {Blight}, add 1 {Town} to a land without {Town}/{Blight}. On each board with 2 or fewer {Blight}, do so again.",
+  "stageIIEscalationTitle": "Seek Prime Territory",
+  "title": "The Habsburg Monarchy (Livestock Colony)"
+ },
+ "TheKingdomOfBrandenburgPrussia": {
+  "identifier": "TheKingdomOfBrandenburgPrussia",
+  "levels": [
+   {
+    "addTownToLandNumberOnEachBoard": 3,
+    "difficulty": 2,
+    "fearCardModifiers": "0/0/0",
+    "gameEffectBody": "During Setup, on each board add 1 {Town} to land #3.",
+    "gameEffectTitle": "Fast Start",
+    "levelNumber": 1
+   },
+   {
+    "difficulty": 4,
+    "fearCardModifiers": "0/0/0",
+    "gameEffectBody": "When making the Invader Deck, put 1 of the Stage III cards between Stage I and Stage II.{BR}<i>(New Deck Order: 111-3-2222-3333)</i>",
+    "gameEffectTitle": "Surge of Colonists",
+    "levelNumber": 2,
+    "moveInvaderCard": [
+     3,
+     1
+    ],
+    "shouldMovedInvaderCardOverrideStage": true
+   },
+   {
+    "difficulty": 6,
+    "fearCardModifiers": "0/1/0",
+    "gameEffectBody": "When making the Invader Deck, remove an additional Stage I card.{BR}<i>(New Deck Order: 11-3-2222-3333)</i>",
+    "gameEffectTitle": "Efficient",
+    "levelNumber": 3,
+    "removeInvaderCard": 1
+   },
+   {
+    "difficulty": 7,
+    "fearCardModifiers": "1/1/0",
+    "gameEffectBody": "When making the Invader Deck, remove an additional Stage II card.{BR}<i>(New Deck Order: 11-3-222-3333)</i>",
+    "gameEffectTitle": "Aggressive Timetable",
+    "levelNumber": 4,
+    "removeInvaderCard": 2
+   },
+   {
+    "difficulty": 9,
+    "fearCardModifiers": "1/1/0",
+    "gameEffectBody": "When making the Invader Deck, remove an additional Stage I card.{BR}<i>(New Deck Order: 1-3-222-3333)</i>",
+    "gameEffectTitle": "Ruthlessly Efficient",
+    "levelNumber": 5,
+    "removeInvaderCard": 1
+   },
+   {
+    "difficulty": 10,
+    "fearCardModifiers": "1/1/1",
+    "gameEffectBody": "When making the Invader Deck, remove all Stage I cards.{BR}<i>(New Deck Order: 3-222-3333)</i>",
+    "gameEffectTitle": "Terrifyingly Efficient",
+    "levelNumber": 6,
+    "removeInvaderCard": 1
+   }
+  ],
+  "shortTitle": "Brandenburg-Prussia",
+  "stageIIEscalationBody": "<i>(Before Exploring)</i> On each board with {Town}/{City}, add 1 {Town} to a land without {Town}.",
+  "stageIIEscalationTitle": "Land Rush",
+  "title": "The Kingdom of Brandenburg-Prussia"
+ },
+ "TheKingdomOfEngland": {
+  "additionalLossCondition": "If 7 or more {Town}/{City} are ever in a single land, the Invaders win.",
+  "additionalLossConditionTitle": "Proud & Mighty Capital",
+  "identifier": "TheKingdomOfEngland",
+  "levels": [
+   {
+    "difficulty": 3,
+    "fearCardModifiers": "0/1/0",
+    "gameEffectBody": "Invader Build actions affect lands without Invaders, if they are adjacent to at least 2 {Town}/{City} before the Build Action.",
+    "gameEffectTitle": "Indentured Servants Earn Land",
+    "levelNumber": 1
+   },
+   {
+    "addCityToLandNumberOnEachBoard": 1,
+    "addTownToLandNumberOnEachBoard": 2,
+    "difficulty": 4,
+    "fearCardModifiers": "1/1/0",
+    "gameEffectBody": "During Setup, on each board add 1 {City} to land #1, and 1 {Town} to land #2.",
+    "gameEffectTitle": "Criminals and Malcontents",
+    "levelNumber": 2
+   },
+   {
+    "addInvaderSlotIdentifier": "HighImmigration",
+    "addInvaderSlotLeftOfPosition": "Ravage",
+    "addInvaderSlotTitle": "High Immigration",
+    "difficulty": 6,
+    "fearCardModifiers": "1/2/1",
+    "gameEffectBody": "Put the \u201cHigh Immigration\u201d tile on the Invader board, to the left of \u201cRavage\u201d. The Invaders take this Build action each Invader phase before Ravaging. Cards slide left from Ravage to it, and from it to the discard pile. Remove the tile when a Stage II card slides onto it, putting that card in the discard.",
+    "gameEffectTitle": "High Immigration (I)",
+    "levelNumber": 3
+   },
+   {
+    "difficulty": 7,
+    "fearCardModifiers": "1/2/2",
+    "gameEffectBody": "The extra Build tile remains out the entire game.",
+    "gameEffectTitle": "High Immigration (full)",
+    "levelNumber": 4
+   },
+   {
+    "cityMaxHealthAdjustment": 1,
+    "difficulty": 9,
+    "fearCardModifiers": "1/2/2",
+    "gameEffectBody": "{Town}/{City} have +1 Health.",
+    "gameEffectTitle": "Local Autonomy",
+    "levelNumber": 5,
+    "townMaxHealthAdjustment": 1
+   },
+   {
+    "difficulty": 10,
+    "extraFearPerPlayer": 1,
+    "fearCardModifiers": "1/2/1",
+    "gameEffectBody": "During Setup, add an additional {Fear} to the Fear Pool per player in the game. During any Invader Phase where you resolve no Fear Cards, perform the Build from High Immigration twice. <i>(This has no effect if no card is on the extra Build slot).</i>",
+    "gameEffectTitle": "Independent Resolve",
+    "levelNumber": 6
+   }
+  ],
+  "shortTitle": "England",
+  "stageIIEscalationBody": "On each board with {Town}/{City}, build in the land with the most {Town}/{City}.",
+  "stageIIEscalationTitle": "Building Boom",
+  "title": "The Kingdom of England"
+ },
+ "TheKingdomOfFrance": {
+  "additionalLossCondition": "There is a limit of <nobr>7 {Town}</nobr> per starting board. Invaders win if you ever cannot place <nobr>a {Town}.</nobr>",
+  "additionalLossConditionTitle": "Sprawling Plantations",
+  "baseDifficulty": 2,
+  "expansion": "BranchAndClaw",
+  "identifier": "TheKingdomOfFrance",
+  "levels": [
+   {
+    "difficulty": 3,
+    "fearCardModifiers": "0/0/0",
+    "gameEffectBody": "Except during Setup: After Invaders successfully Explore into a land which had no {Town}/{City}, add 1 {Explorer} there.",
+    "gameEffectTitle": "Frontier Explorers",
+    "levelNumber": 1
+   },
+   {
+    "difficulty": 5,
+    "fearCardModifiers": "0/1/0",
+    "gameEffectBody": "During Setup, put the \u201cSlave Rebellion\u201d Event under the top 3 cards of the Event Deck. After Invaders Build in a land with 2 {Explorer} or more, replace all but 1 {Explorer} there with an equal number of {Town}.",
+    "gameEffectTitle": "Slave Labor",
+    "levelNumber": 2
+   },
+   {
+    "addTownToHighestNumberLandWithoutTownOnEachBoard": true,
+    "addTownToLandNumberOnEachBoard": 1,
+    "difficulty": 7,
+    "fearCardModifiers": "1/1/0",
+    "gameEffectBody": "During Setup, on each board add 1 {Town} to the highest-numbered land without {Town}. Add 1 {Town} to land #1.",
+    "gameEffectTitle": "Early Plantations",
+    "levelNumber": 3
+   },
+   {
+    "difficulty": 8,
+    "fearCardModifiers": "1/1/1",
+    "gameEffectBody": "Whenever Invaders Build a Coastal {City}, add 1 {Town} to the adjacent land with the fewest {Town}.",
+    "gameEffectTitle": "Triangle Trade",
+    "levelNumber": 4
+   },
+   {
+    "difficulty": 9,
+    "fearCardModifiers": "1/2/1",
+    "gameEffectBody": "When you remove {Blight} from the board, put it here instead of onto the Blight Card. As soon as you have 3 {Blight} per player here, move it all back to the Blight Card.",
+    "gameEffectTitle": "Slow-Healing Ecosystem",
+    "levelNumber": 5
+   },
+   {
+    "difficulty": 10,
+    "fearCardModifiers": "1/2/2",
+    "gameEffectBody": "After resolving an Explore Card, on each board add 1 {Explorer} to a land without any. Fear Card effects never remove {Explorer}. If one would, you may instead Push that {Explorer}.",
+    "gameEffectTitle": "Persistent Explorers",
+    "levelNumber": 6
+   }
+  ],
+  "requiresTokens": [
+   "Strife"
+  ],
+  "shortTitle": "France",
+  "stageIIEscalationBody": "After Exploring, on each board, pick a land of the shown terrain. If it has {Town}/{City}, add 1 {Blight}. Otherwise, add 1 {Town}.",
+  "stageIIEscalationTitle": "Demand for New Cash Crops",
+  "title": "The Kingdom of France (Plantation Colony)"
+ },
+ "TheKingdomOfScotland": {
+  "additionalLossCondition": "If the number of Coastal lands with {City} is ever greater than (2 x # of boards), the Invaders win.",
+  "additionalLossConditionTitle": "Trade Hub",
+  "expansion": "PromoPack2",
+  "identifier": "TheKingdomOfScotland",
+  "levels": [
+   {
+    "difficulty": 3,
+    "fearCardModifiers": "0/1/0",
+    "gameEffectBody": "After Setup, in Coastal lands, Explore Cards add 1 {Town} instead of 1 {Explorer}. <nobr>\u201cCoastal Lands\u201d</nobr> Invader Cards do this for maximum 2 lands per board.",
+    "gameEffectTitle": "Trading Port",
+    "levelNumber": 1
+   },
+   {
+    "addCityToLandNumberOnEachBoard": 2,
+    "difficulty": 4,
+    "fearCardModifiers": "1/1/0",
+    "gameEffectBody": "During Setup, add 1 {City} to land #2. Place \u201cCoastal Lands\u201d as the 3rd <nobr>Stage II Card,</nobr> and move the two Stage II Cards above it up by one.{BR}<i>(New Deck Order: 11-22-1-C2-33333, where C is the Stage II Coastal Lands Card.)</i>",
+    "gameEffectTitle": "Seize Opportunity",
+    "levelNumber": 2,
+    "moveTopInvaderCardPositions": [
+     2,
+     2,
+     1
+    ],
+    "removeInvaderCardBeforeRandomizing": "Coastal2",
+    "replaceInvaderCardPosition": [
+     2,
+     2
+    ],
+    "replaceInvaderCardWithIdentifier": "Coastal2"
+   },
+   {
+    "difficulty": 6,
+    "fearCardModifiers": "1/2/1",
+    "gameEffectBody": "In Coastal lands, Build Cards affect lands without Invaders, so long as there is an adjacent {City}.",
+    "gameEffectTitle": "Chart the Coastline",
+    "levelNumber": 3
+   },
+   {
+    "difficulty": 7,
+    "fearCardModifiers": "2/2/1",
+    "gameEffectBody": "During Setup, replace the bottom Stage I Card with the bottom Stage III Card. <i>(New Deck Order: 11-22-3-C2-3333)</i>",
+    "gameEffectTitle": "Ambition of a Minor Nation",
+    "levelNumber": 4,
+    "moveInvaderCard": [
+     3,
+     1
+    ],
+    "replaceInsteadOfMove": true
+   },
+   {
+    "difficulty": 8,
+    "fearCardModifiers": "2/3/1",
+    "gameEffectBody": "After a Ravage Action adds {Blight} to a Coastal land, add 1 {Blight} to that board\u2019s Ocean (without cascading). Treat the Ocean as a Coastal Wetland for this rule and for {Blight} removal/movement.",
+    "gameEffectTitle": "Runoff and Bilgewater",
+    "levelNumber": 5
+   },
+   {
+    "difficulty": 10,
+    "fearCardModifiers": "3/3/1",
+    "gameEffectBody": "After the Ravage Step, add 1 {Town} to each Inland land that matches a Ravage Card and is within {1Range} of {Town}/{City}.",
+    "gameEffectTitle": "Exports Fuel Inward Growth",
+    "levelNumber": 6
+   }
+  ],
+  "shortTitle": "Scotland",
+  "stageIIEscalationBody": "On the single board with the most Coastal {Town}/{City}, add 1 {Town} to the N lands with the fewest {Town}. (N = # of players.)",
+  "stageIIEscalationTitle": "Ports Sprawl Outward",
+  "title": "The Kingdom of Scotland"
+ },
+ "TheKingdomOfSweden": {
+  "identifier": "TheKingdomOfSweden",
+  "levels": [
+   {
+    "difficulty": 2,
+    "fearCardModifiers": "0/0/0",
+    "gameEffectBody": "When a Ravage does 4+ overkill to the land, add an extra {Blight}. <i>(This does not cause extra cascades / {Presence} destruction.)</i>",
+    "gameEffectTitle": "Heavy Mining",
+    "levelNumber": 1
+   },
+   {
+    "addCityToLandNumberOnEachBoard": 4,
+    "difficulty": 3,
+    "fearCardModifiers": "0/1/0",
+    "gameEffectBody": "During Setup, on each board add 1 {City} to land #4. On boards where land #4 starts with {Blight}, put that {Blight} in land #5 instead.",
+    "gameEffectTitle": "Population Pressure at Home",
+    "levelNumber": 2,
+    "moveBlightFromLandNumberToLandNumber": [
+     4,
+     5
+    ]
+   },
+   {
+    "cityDamageAdjustment": 2,
+    "difficulty": 5,
+    "fearCardModifiers": "0/1/0",
+    "gameEffectBody": "{Town} deal 3 Damage. {City} deal 5 Damage.",
+    "gameEffectTitle": "Fine Steel for Tools and Guns",
+    "levelNumber": 3,
+    "townDamageAdjustment": 1
+   },
+   {
+    "difficulty": 6,
+    "fearCardModifiers": "0/1/1",
+    "gameEffectBody": "At the end of Setup, Accelerate the Invader Deck. <i>(After the initial Explore, discard the topmost card of the lowest Invader Stage in the deck.)</i> On each board, add 1 {Town} to the land matching the discarded card with the fewest Invaders.",
+    "gameEffectTitle": "Royal Backing",
+    "levelNumber": 4
+   },
+   {
+    "difficulty": 7,
+    "fearCardModifiers": "1/1/1",
+    "gameEffectBody": "When Ravaging adds at least 1 {Blight} to a land, also add 1 {Town} to an adjacent land without {Town}/{City}. Cascading {Blight} does not cause this effect.",
+    "gameEffectTitle": "Mining Rush",
+    "levelNumber": 5
+   },
+   {
+    "addBlightToLandNumberOnEachBoard": 8,
+    "addTownToLandNumberOnEachBoard": 8,
+    "difficulty": 8,
+    "fearCardModifiers": "1/1/2",
+    "gameEffectBody": "During Setup, on each board add 1 {Town} and 1 {Blight} to land #8. The {Blight} comes from the box, not the Blight Card.",
+    "gameEffectTitle": "Prospecting Outpost",
+    "levelNumber": 6
+   }
+  ],
+  "shortTitle": "Sweden",
+  "stageIIEscalationBody": "After Invaders Explore into each land, if that land has at least as many Invaders as {Dahan}, replace 1 {Dahan} with 1 {Town}.",
+  "stageIIEscalationTitle": "Swayed by the Invaders",
+  "title": "The Kingdom of Sweden"
+ },
+ "TheTsardomOfRussia": {
+  "additionalLossCondition": "Track {Beast} Destroyed by Adversary rules. If that number ever exceeds the number of {Beast} on the island, the Invaders win.",
+  "additionalLossConditionTitle": "Hunters Swarm the Island",
+  "baseDifficulty": 1,
+  "expansion": "JaggedEarth",
+  "identifier": "TheTsardomOfRussia",
+  "levels": [
+   {
+    "addBeastToHighestNumberLandWithoutTownCityOnEachBoard": true,
+    "addExplorerToHighestNumberLandWithoutTownCityOnEachBoard": true,
+    "difficulty": 3,
+    "explorerDamageAdjustment": 1,
+    "fearCardModifiers": "0/0/1",
+    "gameEffectBody": "During Setup, on each board, add 1 {Beast} and 1 {Explorer} to the highest-numbered land without {Town}/{City}. During Play, {Explorer} do +1 Damage. When Ravage adds {Blight} to a land (including cascades), Destroy 1 {Beast} in that land.",
+    "gameEffectTitle": "Hunters Seek Shell and Hide",
+    "levelNumber": 1
+   },
+   {
+    "difficulty": 4,
+    "fearCardModifiers": "1/0/1",
+    "gameEffectBody": "The first time each Action would Destroy {Explorer}: If possible, 1 of those {Explorer} is instead Pushed; 1 {Fear} when you do so.",
+    "gameEffectTitle": "A Sense for Impending Disaster",
+    "levelNumber": 2
+   },
+   {
+    "difficulty": 6,
+    "fearCardModifiers": "1/1/0",
+    "gameEffectBody": "Ravage Cards also match lands with 3 or more {Explorer}. <i>(If the land already matched the Ravage Card, it still Ravages just once per Card. )</i>",
+    "gameEffectTitle": "Competition Among Hunters",
+    "levelNumber": 3
+   },
+   {
+    "difficulty": 7,
+    "fearCardModifiers": "1/1/1",
+    "gameEffectBody": "When making the Invader Deck, put 1 Stage III Card after each Stage II Card. <i>(New Deck Order: 111-2-3-2-3-2-3-2-33)</i>",
+    "gameEffectTitle": "Accelerated Exploitation",
+    "levelNumber": 4,
+    "moveMultipleInvaderCards": [
+     3,
+     2
+    ]
+   },
+   {
+    "difficulty": 9,
+    "fearCardModifiers": "1/2/1",
+    "gameEffectBody": "Put an unused Stage II Invader Card under the top 3 Fear Cards, and an unused Stage III Card under the top 7 Fear Cards. When one is revealed, immediately place it in the Build space (face-up).",
+    "gameEffectTitle": "Entrench in the Face of Fear",
+    "levelNumber": 5,
+    "putUnusedStageIIIUnderFearCards": 7,
+    "putUnusedStageIIUnderFearCards": 3
+   },
+   {
+    "difficulty": 11,
+    "fearCardModifiers": "2/2/1",
+    "gameEffectBody": "After the Ravage Step of turn 2+, on each board where it added no {Blight}: In the land with the most {Explorer} (min. 1), add 1 {Explorer} and 1 {Town}.",
+    "gameEffectTitle": "Pressure for Fast Profit",
+    "levelNumber": 6
+   }
+  ],
+  "requiresTokens": [
+   "Beast"
+  ],
+  "shortTitle": "Russia",
+  "stageIIEscalationBody": "On each board: Add 2 {Explorer} (total) among lands with {Beast}. If you can\u2019t, instead add 2 {Explorer} among lands with {Beast} on a different board.",
+  "stageIIEscalationTitle": "Stalk the Predators",
+  "title": "The Tsardom of Russia"
+ }
+}

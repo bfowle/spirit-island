@@ -1,0 +1,36 @@
+{
+ "APallUponTheLand": {
+  "expansion": "BranchAndClaw",
+  "flippedBody": [
+   "Any {Blight} removed from the board returns here.",
+   "If there is ever NO {Blight} here, players lose."
+  ],
+  "flippedEffectBody": "Immediately, on each board: destroy 1 {Presence} and remove 1 {Town}.",
+  "flippedEffectTitle": "A Pall Upon the Land",
+  "flippedNumberPerStartingBoard": 3,
+  "healthyIslandBody": [
+   "Any {Blight} removed from the board returns here.",
+   "If there is ever NO {Blight} here, flip this card."
+  ],
+  "healthyIslandNumberPerStartingBoard": 2,
+  "identifier": "APallUponTheLand",
+  "title": "A Pall Upon the Land"
+ },
+ "AidFromLesserSpirits": {
+  "expansion": "BranchAndClaw",
+  "flippedBody": [
+   "Any {Blight} removed from the board returns here.",
+   "If there is ever NO {Blight} here, players lose."
+  ],
+  "flippedEffectBody": "Immediately, draw 1 Minor Power Card per player plus 1 more. Give 1 to each Spirit. They may be used every turn as if played, but cost no Card Plays/Energy. Place unselected card in Minor Powers discard pile.",
+  "flippedEffectTitle": "Aid From Lesser Spirits",
+  "flippedNumberPerStartingBoard": 2,
+  "healthyIslandBody": [
+   "Any {Blight} removed from the board returns here.",
+   "If there is ever NO {Blight} here, flip this card."
+  ],
+  "healthyIslandNumberPerStartingBoard": 2,
+  "identifier": "AidFromLesserSpirits",
+  "title": "Aid From Lesser Spirits"
+ }
+}

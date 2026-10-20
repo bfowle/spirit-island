@@ -1,0 +1,11 @@
+[package]
+name = "si-record"
+version.workspace = true
+edition.workspace = true
+description = "A played game: the digital edition's log as typed events, replayed into a record of turns, lands and spirits."
+
+[dependencies]
+si-model = { path = "../si-model" }
+si-defs = { path = "../si-defs" }
+serde.workspace = true
+anyhow.workspace = true

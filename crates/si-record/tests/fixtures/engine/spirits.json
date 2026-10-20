@@ -1,0 +1,2363 @@
+{
+ "LightningsSwiftStrike": {
+  "artistName": "Rocky Hammer",
+  "aspects": [
+   {
+    "artistName": "Nolan Nasser",
+    "aspectGrowthOption": {
+     "growthType": "Aspect"
+    },
+    "complexityChange": true,
+    "expansion": "PromoPack2",
+    "identifier": "Immense",
+    "specialRules": [
+     {
+      "body": [
+       "* Playing Power Cards during the Spirit Phase costs 2 Card Plays instead of 1. <i>(So if you have 3 Card Plays, you will only be able to play 1 Power Card.)</i>  If you have any unused Card Plays at the end of the Spirit Phase, gain 1 Element of your choice.",
+       "For each Major Power you play, gain 2 different Elements of your choice."
+      ],
+      "identifier": "AnImmenseSpiritToweringAndSlow",
+      "title": "An Immense Spirit, Towering And Slow"
+     }
+    ],
+    "title": "Immense"
+   },
+   {
+    "artistName": "Nolan Nasser",
+    "complexityChange": true,
+    "expansion": "JaggedEarth",
+    "identifier": "Pandemonium",
+    "innatePowers": [
+     {
+      "elementOptions": [
+       {
+        "body": "2 {Fear}. Add 1 {Strife}.",
+        "costAir": 2,
+        "costFire": 3
+       },
+       {
+        "body": "2 {Fear}. Add 1 {Strife}.",
+        "costAir": 3,
+        "costFire": 4
+       },
+       {
+        "body": "3 {Fear}. Add 1 {Strife}.",
+        "costAir": 4,
+        "costFire": 5,
+        "costMoon": 1
+       },
+       {
+        "body": "4 {Fear}. Add 1 {Strife}.",
+        "costAir": 5,
+        "costFire": 5,
+        "costMoon": 2
+       }
+      ],
+      "identifier": "LightningTornSkiesIncitePandemonium",
+      "powerType": "Innate",
+      "rangeDistance": 1,
+      "rangeSacredSite": true,
+      "speed": false,
+      "targetType": "LandWithInvaders",
+      "title": "Lightning-Torn Skies Incite Pandemonium"
+     }
+    ],
+    "replacedInnatePowerIdentifiers": [
+     "ThunderingDestruction"
+    ],
+    "requireTokens": true,
+    "title": "Pandemonium"
+   },
+   {
+    "artistName": "Nolan Nasser",
+    "complexityChange": true,
+    "expansion": "JaggedEarth",
+    "identifier": "Wind",
+    "innatePowers": [
+     {
+      "elementOptions": [
+       {
+        "body": "You and target Spirit may each make one of your non-Major {Slow} Powers {Fast}.",
+        "costAir": 1
+       },
+       {
+        "body": "You and target Spirit each gain {+1Range} with all your Powers this turn.",
+        "costAir": 3
+       },
+       {
+        "body": "You and target Spirit may each Push up to 2 {Explorer} from one of your respective lands.",
+        "costAir": 4,
+        "costWater": 1
+       },
+       {
+        "body": "Repeat this Power.",
+        "costAir": 5,
+        "costWater": 2
+       }
+      ],
+      "identifier": "ExaltationOfTheStormWind",
+      "powerType": "Innate",
+      "speed": true,
+      "targetType": "AnotherSpirit",
+      "title": "Exaltation of the Storm-Wind"
+     }
+    ],
+    "replacedSpecialRuleIdentifiers": [
+     "SwiftnessOfLightning"
+    ],
+    "title": "Wind"
+   }
+  ],
+  "backstory": [
+   "The child of a passing storm-spirit, Lightning's Swift Strike danced off the shores of the island many ages ago, and liked it enough to stay. It spends much of its time resting and quiet, waking up to dance through the sky when the winds blow strong.",
+   "It only concerns itself occasionally with the Dahan, usually appearing out of nowhere to send them off on some obscure errand. The Dahan cooperate - partly out of a wary respect for Lightning's power, but as much for the sake of Thunderspeaker - Lightning's child - who is a patron and ally of their people."
+  ],
+  "complexity": "Low",
+  "complexityValue": 303,
+  "control": 234,
+  "defense": 54,
+  "fear": 359,
+  "growthGroups": [
+   {
+    "groupNumber": 1,
+    "growthOptions": [
+     {
+      "growthType": "ReclaimCards"
+     },
+     {
+      "growthType": "GainPowerCard",
+      "number": 1
+     },
+     {
+      "growthType": "GainEnergy",
+      "number": 1
+     }
+    ]
+   },
+   {
+    "groupNumber": 2,
+    "growthOptions": [
+     {
+      "growthType": "AddPresence",
+      "number": 2
+     },
+     {
+      "growthType": "AddPresence",
+      "number": 0
+     }
+    ]
+   },
+   {
+    "groupNumber": 3,
+    "growthOptions": [
+     {
+      "growthType": "AddPresence",
+      "number": 1
+     },
+     {
+      "growthType": "GainEnergy",
+      "number": 3
+     }
+    ]
+   }
+  ],
+  "identifier": "LightningsSwiftStrike",
+  "innatePowers": [
+   {
+    "elementOptions": [
+     {
+      "body": "Destroy 1 {Town}.",
+      "costAir": 2,
+      "costFire": 3
+     },
+     {
+      "body": "You may instead destroy 1 {City}.",
+      "costAir": 3,
+      "costFire": 4
+     },
+     {
+      "body": "Also, destroy 1 {Town}/{City}.",
+      "costAir": 4,
+      "costFire": 5,
+      "costWater": 1
+     },
+     {
+      "body": "Also, destroy 1 {Town}/{City}.",
+      "costAir": 5,
+      "costFire": 5,
+      "costWater": 2
+     }
+    ],
+    "identifier": "ThunderingDestruction",
+    "powerType": "Innate",
+    "rangeDistance": 1,
+    "rangeSacredSite": true,
+    "speed": false,
+    "targetType": "AnyLand",
+    "title": "Thundering Destruction"
+   }
+  ],
+  "numberOfGrowthGroupsToUse": 1,
+  "offense": 757,
+  "playStyle": [
+   "Virtually all offense to start with: without a more defensive teammate, Blight may become a problem. Excellent at destroying buildings, less good at containing Explorers. Using Thundering Destruction tends to be a burst affair: a turn or two to position and build up Energy, followed by a really big turn.",
+   "Starting Powers are extremely focused on Air and Fire: good for Thundering Destruction, bad for Major Power versatility."
+  ],
+  "powerProgressionIdentifiers": [
+   "DelusionsOfDanger",
+   "CallToBloodshed",
+   "Powerstorm",
+   "PurifyingFlame",
+   "PillarOfLivingFlame",
+   "EntrancingApparitions",
+   "CallToIsolation"
+  ],
+  "presenceTrackNodes": [
+   {
+    "identifier": "LightningsSwiftStrikeEnergy1",
+    "nextNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy2"
+    ],
+    "number": 1,
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "LightningsSwiftStrikeEnergy2",
+    "nextNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy3"
+    ],
+    "number": 1,
+    "requiredNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy1"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "LightningsSwiftStrikeEnergy3",
+    "nextNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy4"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy2"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "LightningsSwiftStrikeEnergy4",
+    "nextNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy5"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy3"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "LightningsSwiftStrikeEnergy5",
+    "nextNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy6"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy4"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "LightningsSwiftStrikeEnergy6",
+    "nextNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy7"
+    ],
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy5"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "LightningsSwiftStrikeEnergy7",
+    "nextNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy8"
+    ],
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy6"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "LightningsSwiftStrikeEnergy8",
+    "number": 5,
+    "requiredNodeIdentifiers": [
+     "LightningsSwiftStrikeEnergy7"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "LightningsSwiftStrikeCardPlays1",
+    "nextNodeIdentifiers": [
+     "LightningsSwiftStrikeCardPlays2"
+    ],
+    "number": 2,
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "LightningsSwiftStrikeCardPlays2",
+    "nextNodeIdentifiers": [
+     "LightningsSwiftStrikeCardPlays3"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "LightningsSwiftStrikeCardPlays1"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "LightningsSwiftStrikeCardPlays3",
+    "nextNodeIdentifiers": [
+     "LightningsSwiftStrikeCardPlays4"
+    ],
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "LightningsSwiftStrikeCardPlays2"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "LightningsSwiftStrikeCardPlays4",
+    "nextNodeIdentifiers": [
+     "LightningsSwiftStrikeCardPlays5"
+    ],
+    "number": 5,
+    "requiredNodeIdentifiers": [
+     "LightningsSwiftStrikeCardPlays3"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "LightningsSwiftStrikeCardPlays5",
+    "number": 6,
+    "requiredNodeIdentifiers": [
+     "LightningsSwiftStrikeCardPlays4"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   }
+  ],
+  "setup": "Put 2 {Presence} on your starting board in the highest-numbered Sands.",
+  "shortTitle": "Lightning",
+  "specialRules": [
+   {
+    "body": [
+     "For every {Air} you have, you may use 1 {Slow} Power as if it were {Fast}. (Power Cards or your Innate Powers)"
+    ],
+    "identifier": "SwiftnessOfLightning",
+    "title": "Swiftness of Lightning"
+   }
+  ],
+  "title": "Lightning's Swift Strike",
+  "uniquePowerCardIdentifiers": [
+   "HarbingersOfTheLightning",
+   "LightningsBoon",
+   "ShatterHomesteads",
+   "RagingStorm"
+  ],
+  "utility": 274
+ },
+ "ManyMindsMoveAsOne": {
+  "artistName": "Moro Rogers",
+  "backstory": [
+   "A Spirit of flocks, swarms, schools, and packs, where the whole moves together in concert to accomplish what the individuals in it could not do alone. Unlike Weaves a Web of Souls, its nature leans towards smaller and simpler creatures, and it regards other sorts of animals \u2212 including humans \u2212 as bizarrely alien in their individuality; while it will communicate with the Dahan, it has shown no ability (or inclination) to integrate them into itself.",
+   "While it is willing to sacrifice individuals to protect the whole, it is not a Spirit of sacrifice per se \u2212 that is a tactic it employs, not the essence of its nature."
+  ],
+  "complexity": "Moderate",
+  "complexityValue": 1387,
+  "control": 815,
+  "defense": 489,
+  "expansion": "JaggedEarth",
+  "fear": 504,
+  "growthGroups": [
+   {
+    "groupNumber": 1,
+    "growthOptions": [
+     {
+      "growthType": "ReclaimCards"
+     },
+     {
+      "growthType": "GainPowerCard",
+      "number": 1
+     }
+    ]
+   },
+   {
+    "groupNumber": 2,
+    "growthOptions": [
+     {
+      "growthType": "AddPresence",
+      "number": 1
+     },
+     {
+      "growthType": "AddPresence",
+      "number": 0
+     }
+    ]
+   },
+   {
+    "groupNumber": 3,
+    "growthOptions": [
+     {
+      "basicGrowthType": "AddPresence",
+      "growthType": "AddPresenceAndBeasts",
+      "number": 3
+     },
+     {
+      "growthType": "GainEnergy",
+      "number": 1
+     },
+     {
+      "basicGrowthType": "GatherPieces",
+      "growthType": "GatherBeasts",
+      "number": 2,
+      "optional": true
+     }
+    ]
+   }
+  ],
+  "identifier": "ManyMindsMoveAsOne",
+  "innatePowers": [
+   {
+    "elementOptions": [
+     {
+      "body": "Gather up to 1 {Beast}.",
+      "costAir": 2,
+      "costAnimal": 1
+     },
+     {
+      "body": "Instead, Gather up to 1 {Beast} per {Air} you have.",
+      "costAir": 3,
+      "costAnimal": 2,
+      "costWater": 1,
+      "importantElements": [
+       "Air"
+      ]
+     },
+     {
+      "body": "Push up to 3 {Beast}.",
+      "costAir": 4,
+      "costAnimal": 2,
+      "costFire": 1
+     }
+    ],
+    "identifier": "TheTeemingHostArrives",
+    "powerType": "Innate",
+    "rangeDistance": 2,
+    "speed": true,
+    "targetType": "AnyLand",
+    "title": "The Teeming Host Arrives"
+   },
+   {
+    "body": [
+     "{Beast} (below) checks the number of {Beast} in target land."
+    ],
+    "elementOptions": [
+     {
+      "body": "2 {Fear} and Defend 2.",
+      "costAir": 1,
+      "costAnimal": 2,
+      "costBeast": 2
+     },
+     {
+      "body": "Instead, 3 {Fear} and Defend 4.",
+      "costAir": 2,
+      "costAnimal": 3,
+      "costBeast": 3
+     },
+     {
+      "body": "Instead, 4 {Fear} and Defend 7.",
+      "costAir": 3,
+      "costAnimal": 4,
+      "costBeast": 4
+     },
+     {
+      "body": "Instead, 6 {Fear} and Defend 10.",
+      "costAir": 4,
+      "costAnimal": 5,
+      "costBeast": 5,
+      "costEarth": 1
+     }
+    ],
+    "identifier": "BesetAndConfoundTheInvaders",
+    "powerType": "Innate",
+    "rangeDistance": 2,
+    "speed": true,
+    "targetType": "LandWithInvaders",
+    "title": "Beset and Confound the Invaders"
+   }
+  ],
+  "numberOfGrowthGroupsToUse": 1,
+  "offense": 34,
+  "playStyle": [
+   "Requires heavy spatial thought for {Beast} movement, due to its improved Push/Gather and large numbers of {Beast}.",
+   "Has no offense to start with, but an excellent stalling defense combined with {Fear} generation; outright Fear victories may be plausible in smaller games. Both Fear Cards and {Beast} events are unpredictable, however, so swings of fortune are apt to be more relevant than usual."
+  ],
+  "presenceTrackNodes": [
+   {
+    "identifier": "ManyMindsMoveAsOneEnergy1",
+    "nextNodeIdentifiers": [
+     "ManyMindsMoveAsOneEnergy2"
+    ],
+    "number": 0,
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "ManyMindsMoveAsOneEnergy2",
+    "nextNodeIdentifiers": [
+     "ManyMindsMoveAsOneEnergy3"
+    ],
+    "number": 1,
+    "requiredNodeIdentifiers": [
+     "ManyMindsMoveAsOneEnergy1"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "elementTypes": [
+     "Air"
+    ],
+    "identifier": "ManyMindsMoveAsOneEnergy3",
+    "nextNodeIdentifiers": [
+     "ManyMindsMoveAsOneEnergy4"
+    ],
+    "requiredNodeIdentifiers": [
+     "ManyMindsMoveAsOneEnergy2"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "ManyMindsMoveAsOneEnergy4",
+    "nextNodeIdentifiers": [
+     "ManyMindsMoveAsOneEnergy5"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "ManyMindsMoveAsOneEnergy3"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "elementTypes": [
+     "Animal"
+    ],
+    "identifier": "ManyMindsMoveAsOneEnergy5",
+    "nextNodeIdentifiers": [
+     "ManyMindsMoveAsOneEnergy6"
+    ],
+    "requiredNodeIdentifiers": [
+     "ManyMindsMoveAsOneEnergy4"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "ManyMindsMoveAsOneEnergy6",
+    "nextNodeIdentifiers": [
+     "ManyMindsMoveAsOneEnergy7"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "ManyMindsMoveAsOneEnergy5"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "ManyMindsMoveAsOneEnergy7",
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "ManyMindsMoveAsOneEnergy6"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "ManyMindsMoveAsOneCardPlays1",
+    "nextNodeIdentifiers": [
+     "ManyMindsMoveAsOneCardPlays2"
+    ],
+    "number": 1,
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "ManyMindsMoveAsOneCardPlays2",
+    "nextNodeIdentifiers": [
+     "ManyMindsMoveAsOneCardPlays3"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "ManyMindsMoveAsOneCardPlays1"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "growthOption": {
+     "energyCost": 2,
+     "growthType": "GainPowerCard",
+     "number": 1
+    },
+    "identifier": "ManyMindsMoveAsOneCardPlays3",
+    "nextNodeIdentifiers": [
+     "ManyMindsMoveAsOneCardPlays4"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "ManyMindsMoveAsOneCardPlays2"
+    ],
+    "trackNodeType": "PayEnergyToGainPowerCard"
+   },
+   {
+    "identifier": "ManyMindsMoveAsOneCardPlays4",
+    "nextNodeIdentifiers": [
+     "ManyMindsMoveAsOneCardPlays5"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "ManyMindsMoveAsOneCardPlays3"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "ManyMindsMoveAsOneCardPlays5",
+    "nextNodeIdentifiers": [
+     "ManyMindsMoveAsOneCardPlays6"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "ManyMindsMoveAsOneCardPlays4"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "ManyMindsMoveAsOneCardPlays6",
+    "nextNodeIdentifiers": [
+     "ManyMindsMoveAsOneCardPlays7"
+    ],
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "ManyMindsMoveAsOneCardPlays5"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "ManyMindsMoveAsOneCardPlays7",
+    "number": 5,
+    "requiredNodeIdentifiers": [
+     "ManyMindsMoveAsOneCardPlays6"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   }
+  ],
+  "requiresTokens": [
+   "Beast"
+  ],
+  "setup": "Put 1 {Presence} and 1 {Beast} on your starting board, in a land with {Beast}. Note that you have 5 Unique Power Cards.",
+  "shortTitle": "Many Minds",
+  "specialRules": [
+   {
+    "body": [
+     "When you Gather or Push {Beast}, they may come from or go to lands up to 2 distant <i>(rather than adjacent only)</i>."
+    ],
+    "identifier": "FlyFastAsThought",
+    "title": "Fly Fast as Thought"
+   },
+   {
+    "body": [
+     "Your {SacredSite} may also count as {Beast}. <i>(<b>Note:</b> You never have more than 1 {SacredSite} in a land, no matter how many {Presence} you have there.)</i>",
+     "<i>(If something changes a {Beast} that is your {SacredSite}, it affects 2 of your {Presence} there - e.g., Push 1 {Beast} will push 2 of your {Presence} together.)</i>"
+    ],
+    "identifier": "AJoiningOfSwarmsAndFlocks",
+    "title": "A Joining of Swarms and Flocks"
+   }
+  ],
+  "title": "Many Minds Move as One",
+  "uniquePowerCardIdentifiers": [
+   "ADreadfulTideOfScurryingFlesh",
+   "BoonOfSwarmingBedevilment",
+   "EverMultiplyingSwarm",
+   "GuideTheWayOnFeatheredWings",
+   "PursueWithScratchesPecksAndStings"
+  ],
+  "utility": 43
+ },
+ "RiverSurgesInSunlight": {
+  "artistName": "Nolan Nasser",
+  "aspects": [
+   {
+    "artistName": "Nolan Nasser",
+    "complexityChange": true,
+    "expansion": "NatureIncarnate",
+    "identifier": "Haven",
+    "innatePowers": [
+     {
+      "body": [
+       "E is the highest uncovered number on your Energy track."
+      ],
+      "elementOptions": [
+       {
+        "body": "Defend E.",
+        "costSun": 1,
+        "costWater": 1
+       },
+       {
+        "body": "In an adjacent land with your {Presence}, Defend E.",
+        "costEarth": 1,
+        "costSun": 1,
+        "costWater": 2
+       },
+       {
+        "body": "In target land or adjacent land with your {Presence}, Gather up to E {Dahan}.",
+        "costAnimal": 1,
+        "costSun": 1
+       },
+       {
+        "body": "Remove up to E Health worth of Invaders.",
+        "costPlant": 2,
+        "costSun": 1,
+        "costWater": 1
+       }
+      ],
+      "identifier": "CallToASunlitHaven",
+      "powerType": "Innate",
+      "rangeDistance": 0,
+      "rangeSacredSite": true,
+      "speed": true,
+      "targetType": "AnyLand",
+      "title": "Call to a Sunlit Haven"
+     }
+    ],
+    "replacedInnatePowerIdentifiers": [
+     "MassiveFlooding"
+    ],
+    "title": "Haven"
+   },
+   {
+    "additionalSetup": [
+     "Remove Boon of Vigor from the game. Gain 1 Energy."
+    ],
+    "artistName": "Nolan Nasser",
+    "complexityChange": true,
+    "expansion": "JaggedEarth",
+    "identifier": "Sunshine",
+    "innatePowers": [
+     {
+      "elementOptions": [
+       {
+        "body": "Target Spirit gains Energy equal to 1 less than the highest uncovered number on your Energy track.",
+        "costSun": 2
+       },
+       {
+        "body": "You also gain that much Energy.",
+        "costSun": 3,
+        "costWater": 1
+       },
+       {
+        "body": "Target Spirit may Remove 1 {Blight} from one of their lands with {Dahan}.",
+        "costSun": 4,
+        "costWater": 2
+       }
+      ],
+      "identifier": "BoonOfSunshinesPromise",
+      "powerType": "Innate",
+      "speed": true,
+      "targetType": "AnotherSpirit",
+      "title": "Boon of Sunshine's Promise"
+     }
+    ],
+    "removedUniquePowerCardIdentifiers": [
+     "BoonOfVigor"
+    ],
+    "title": "Sunshine"
+   },
+   {
+    "artistName": "Nolan Nasser",
+    "aspectGrowthOption": {
+     "growthType": "Aspect"
+    },
+    "complexityChange": true,
+    "expansion": "PromoPack2",
+    "identifier": "Travel",
+    "replacedSpecialRuleIdentifiers": [
+     "RiversDomain"
+    ],
+    "specialRules": [
+     {
+      "activationText": "<space=.2em><size=180%><voffset=1.7em>{Dahan}<voffset=1.4em><space=-1.3em>{CurvedArrow}",
+      "body": [
+       "After Growth, choose up to 2 {Dahan} among your lands. Move each of them to any land contiguously connected by your {Presence}."
+      ],
+      "identifier": "TravelOnTheRiversBack",
+      "title": "Travel On The River's Back"
+     },
+     {
+      "body": [
+       "Your lands with 4 or more {Dahan} are considered {SacredSite}, and have Defend 1."
+      ],
+      "identifier": "PeopleTendToTheRiverRiverTendsToThePeople",
+      "title": "People Tend To The River, River Tends To The People"
+     }
+    ],
+    "title": "Travel"
+   }
+  ],
+  "backstory": [
+   "On most of Spirit Island, the rivers run high during the rainy season, as one would expect. There is one exception: the lingering remains of an ancient curse keep a high ridge shrouded in ice, and when the sun beats down, it feeds a single river with abundant meltwater.",
+   "River Surges in Sunlight is a spirit of rushing water, inundation, and bounty out of season.",
+   "It gets along well with the Dahan who farm along its banks; they reap the benefit of good harvests, and tend to the health of the river in its drier times. Both gain."
+  ],
+  "complexity": "Low",
+  "complexityValue": 403,
+  "control": 717,
+  "defense": 64,
+  "fear": 69,
+  "growthGroups": [
+   {
+    "groupNumber": 1,
+    "growthOptions": [
+     {
+      "growthType": "ReclaimCards"
+     },
+     {
+      "growthType": "GainPowerCard",
+      "number": 1
+     },
+     {
+      "growthType": "GainEnergy",
+      "number": 1
+     }
+    ]
+   },
+   {
+    "groupNumber": 2,
+    "growthOptions": [
+     {
+      "growthType": "AddPresence",
+      "number": 1
+     },
+     {
+      "growthType": "AddPresence",
+      "number": 1
+     }
+    ]
+   },
+   {
+    "groupNumber": 3,
+    "growthOptions": [
+     {
+      "growthType": "GainPowerCard",
+      "number": 1
+     },
+     {
+      "growthType": "AddPresence",
+      "number": 2
+     }
+    ]
+   }
+  ],
+  "identifier": "RiverSurgesInSunlight",
+  "innatePowers": [
+   {
+    "elementOptions": [
+     {
+      "body": "Push 1 {Explorer}/{Town}.",
+      "costSun": 1,
+      "costWater": 2
+     },
+     {
+      "body": "Instead, 2 Damage. Push up to 3 {Explorer}/{Town}.",
+      "costSun": 2,
+      "costWater": 3
+     },
+     {
+      "body": "Instead, 2 Damage to each Invader.",
+      "costEarth": 1,
+      "costSun": 3,
+      "costWater": 4
+     }
+    ],
+    "identifier": "MassiveFlooding",
+    "powerType": "Innate",
+    "rangeDistance": 1,
+    "rangeSacredSite": true,
+    "speed": false,
+    "targetType": "AnyLand",
+    "title": "Massive Flooding"
+   }
+  ],
+  "numberOfGrowthGroupsToUse": 1,
+  "offense": 497,
+  "playStyle": [
+   "While capable of some direct offense, River Surges in Sunlight is best at flooding out Explorers and Towns, displacing them from lands where they might Build or Ravage.",
+   "The ability to get free Sacred Sites makes a wide range of Powers more useful."
+  ],
+  "powerProgressionIdentifiers": [
+   "UncannyMelting",
+   "NaturesResilience",
+   "PullBeneathTheHungryEarth",
+   "AcceleratedRot",
+   "SongOfSanctity",
+   "Tsunami",
+   "EncompassingWard"
+  ],
+  "presenceTrackNodes": [
+   {
+    "identifier": "RiverSurgesInSunlightEnergy1",
+    "nextNodeIdentifiers": [
+     "RiverSurgesInSunlightEnergy2"
+    ],
+    "number": 1,
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "RiverSurgesInSunlightEnergy2",
+    "nextNodeIdentifiers": [
+     "RiverSurgesInSunlightEnergy3"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "RiverSurgesInSunlightEnergy1"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "RiverSurgesInSunlightEnergy3",
+    "nextNodeIdentifiers": [
+     "RiverSurgesInSunlightEnergy4"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "RiverSurgesInSunlightEnergy2"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "RiverSurgesInSunlightEnergy4",
+    "nextNodeIdentifiers": [
+     "RiverSurgesInSunlightEnergy5"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "RiverSurgesInSunlightEnergy3"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "RiverSurgesInSunlightEnergy5",
+    "nextNodeIdentifiers": [
+     "RiverSurgesInSunlightEnergy6"
+    ],
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "RiverSurgesInSunlightEnergy4"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "RiverSurgesInSunlightEnergy6",
+    "nextNodeIdentifiers": [
+     "RiverSurgesInSunlightEnergy7"
+    ],
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "RiverSurgesInSunlightEnergy5"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "RiverSurgesInSunlightEnergy7",
+    "number": 5,
+    "requiredNodeIdentifiers": [
+     "RiverSurgesInSunlightEnergy6"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "RiverSurgesInSunlightCardPlays1",
+    "nextNodeIdentifiers": [
+     "RiverSurgesInSunlightCardPlays2"
+    ],
+    "number": 1,
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "RiverSurgesInSunlightCardPlays2",
+    "nextNodeIdentifiers": [
+     "RiverSurgesInSunlightCardPlays3"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "RiverSurgesInSunlightCardPlays1"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "RiverSurgesInSunlightCardPlays3",
+    "nextNodeIdentifiers": [
+     "RiverSurgesInSunlightCardPlays4"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "RiverSurgesInSunlightCardPlays2"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "RiverSurgesInSunlightCardPlays4",
+    "nextNodeIdentifiers": [
+     "RiverSurgesInSunlightCardPlays5"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "RiverSurgesInSunlightCardPlays3"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "growthOption": {
+     "growthType": "ReclaimCards",
+     "number": 1
+    },
+    "identifier": "RiverSurgesInSunlightCardPlays5",
+    "nextNodeIdentifiers": [
+     "RiverSurgesInSunlightCardPlays6"
+    ],
+    "number": 1,
+    "requiredNodeIdentifiers": [
+     "RiverSurgesInSunlightCardPlays4"
+    ],
+    "trackNodeType": "ReclaimCards"
+   },
+   {
+    "identifier": "RiverSurgesInSunlightCardPlays6",
+    "nextNodeIdentifiers": [
+     "RiverSurgesInSunlightCardPlays7"
+    ],
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "RiverSurgesInSunlightCardPlays5"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "RiverSurgesInSunlightCardPlays7",
+    "number": 5,
+    "requiredNodeIdentifiers": [
+     "RiverSurgesInSunlightCardPlays6"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   }
+  ],
+  "setup": "Put 1 {Presence} on your starting board in the highest-numbered Wetlands.",
+  "shortTitle": "River",
+  "specialRules": [
+   {
+    "body": [
+     "Your {Presence} in Wetlands counts as your {SacredSite}."
+    ],
+    "identifier": "RiversDomain",
+    "title": "River's Domain"
+   }
+  ],
+  "title": "River Surges in Sunlight",
+  "uniquePowerCardIdentifiers": [
+   "BoonOfVigor",
+   "FlashFloods",
+   "RiversBounty",
+   "WashAway"
+  ],
+  "utility": 497
+ },
+ "ShroudOfSilentMist": {
+  "artistName": "Emily Hancock",
+  "aspects": [
+   {
+    "artistName": "Nolan Nasser",
+    "complexityChange": false,
+    "expansion": "NatureIncarnate",
+    "identifier": "Stranded",
+    "replacedSpecialRuleIdentifiers": [
+     "MistsShiftAndFlow"
+    ],
+    "specialRules": [
+     {
+      "activationText": "<voffset=.3em><size=80%>{Presence}</size></voffset><space=-1.3em>{PushFromLand}",
+      "body": [
+       "Up to twice during the {Fast} phase and up to twice during the {Slow} phase, Push 1 of your {Presence}."
+      ],
+      "identifier": "MistsSteadilyDrift",
+      "requiresActivation": true,
+      "title": "Mists Steadily Drift"
+     },
+     {
+      "activationText": "{Isolate}",
+      "body": [
+       "Once each {Fast} phase, Isolate one of your lands."
+      ],
+      "identifier": "StrandedInTheShiftingMist",
+      "requiresActivation": true,
+      "title": "Stranded in the Shifting Mist"
+     }
+    ],
+    "title": "Stranded"
+   }
+  ],
+  "backstory": [
+   "A Spirit of dissolution and the cold silence of death, creeping quietly down from the hills and across the open waters. Its trail is adorned with dew-covered leaves and the bones of small animals.",
+   "Some legends say Shroud of Silent Mist came from the final breath of a Dahan Spirit-speaker who spoke too freely of secrets entrusted to him, for which his soulform was afflicted with a death-bringing curse. Others claim it was born from legends and tales rather than from any actual person, for the story of Kadura shows that human and Spirit do not so readily transform into each other."
+  ],
+  "complexity": "High",
+  "complexityValue": 1664,
+  "control": 488,
+  "defense": 208,
+  "expansion": "JaggedEarth",
+  "fear": 592,
+  "growthGroups": [
+   {
+    "groupNumber": 1,
+    "growthOptions": [
+     {
+      "growthType": "ReclaimCards"
+     },
+     {
+      "growthType": "GainPowerCard",
+      "number": 1
+     }
+    ]
+   },
+   {
+    "groupNumber": 2,
+    "growthOptions": [
+     {
+      "growthType": "AddPresence",
+      "number": 0
+     },
+     {
+      "growthType": "AddPresence",
+      "number": 0
+     }
+    ]
+   },
+   {
+    "groupNumber": 3,
+    "growthOptions": [
+     {
+      "growthType": "GainPowerCard",
+      "number": 1
+     },
+     {
+      "basicGrowthType": "AddPresence",
+      "growthType": "AddPresenceMountainWetland",
+      "number": 3
+     }
+    ]
+   }
+  ],
+  "identifier": "ShroudOfSilentMist",
+  "innatePowers": [
+   {
+    "elementOptions": [
+     {
+      "body": "1 Damage.",
+      "costAir": 2,
+      "costMoon": 1,
+      "costWater": 1
+     },
+     {
+      "body": "For each adjacent land with your {Presence}, 1 Damage to a different Invader.",
+      "costAir": 3,
+      "costMoon": 2,
+      "costWater": 2
+     },
+     {
+      "body": "1 Damage.",
+      "costAir": 4,
+      "costMoon": 4,
+      "costWater": 3
+     },
+     {
+      "body": "1 Damage to each Invader.",
+      "costAir": 6,
+      "costMoon": 5,
+      "costWater": 4
+     }
+    ],
+    "identifier": "SuffocatingShroud",
+    "powerType": "Innate",
+    "rangeDistance": 0,
+    "speed": false,
+    "targetType": "AnyLand",
+    "title": "Suffocating Shroud"
+   },
+   {
+    "elementOptions": [
+     {
+      "body": "Push up to 1 {Dahan}.",
+      "costAir": 1,
+      "costWater": 2
+     },
+     {
+      "body": "Push up to 2 {Explorer}/{Dahan}.",
+      "costAir": 2,
+      "costWater": 3
+     },
+     {
+      "body": "Push up to 2 {Explorer}/{Dahan}.",
+      "costAir": 3,
+      "costWater": 4
+     }
+    ],
+    "identifier": "LostInTheSwirlingHaze",
+    "powerType": "Innate",
+    "rangeDistance": 0,
+    "speed": false,
+    "targetType": "AnyLand",
+    "title": "Lost in the Swirling Haze"
+   }
+  ],
+  "numberOfGrowthGroupsToUse": 1,
+  "offense": 488,
+  "playStyle": [
+   "Constantly shifting and moving its {Presence} around the board. Hurt more than most by {Presence} loss due to its desire to surround and envelop the Invaders.",
+   "Can (slowly) clear the most built-up of lands, but its real strength is the free Fear from <i>Slow and Silent Death</i>.",
+   "Extremely limited Energy income, but can stretch to Major Powers if it manages to gather enough Energy from its Special Rules."
+  ],
+  "presenceTrackNodes": [
+   {
+    "identifier": "ShroudOfSilentMistEnergy1",
+    "nextNodeIdentifiers": [
+     "ShroudOfSilentMistEnergy2"
+    ],
+    "number": 0,
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "ShroudOfSilentMistEnergy2",
+    "nextNodeIdentifiers": [
+     "ShroudOfSilentMistEnergy3"
+    ],
+    "number": 1,
+    "requiredNodeIdentifiers": [
+     "ShroudOfSilentMistEnergy1"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "elementTypes": [
+     "Water"
+    ],
+    "identifier": "ShroudOfSilentMistEnergy3",
+    "nextNodeIdentifiers": [
+     "ShroudOfSilentMistEnergy4"
+    ],
+    "requiredNodeIdentifiers": [
+     "ShroudOfSilentMistEnergy2"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "ShroudOfSilentMistEnergy4",
+    "nextNodeIdentifiers": [
+     "ShroudOfSilentMistEnergy5"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "ShroudOfSilentMistEnergy3"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "elementTypes": [
+     "Air"
+    ],
+    "identifier": "ShroudOfSilentMistEnergy5",
+    "requiredNodeIdentifiers": [
+     "ShroudOfSilentMistEnergy4"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "ShroudOfSilentMistCardPlays1",
+    "nextNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays2"
+    ],
+    "number": 1,
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "ShroudOfSilentMistCardPlays2",
+    "nextNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays3"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays1"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "growthOption": {
+     "basicGrowthType": "AddPresence",
+     "growthType": "MovePresence",
+     "number": 1
+    },
+    "identifier": "ShroudOfSilentMistCardPlays3",
+    "nextNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays4"
+    ],
+    "requiredNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays2"
+    ],
+    "trackNodeType": "GrowthOption"
+   },
+   {
+    "elementTypes": [
+     "Moon"
+    ],
+    "identifier": "ShroudOfSilentMistCardPlays4",
+    "nextNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays5"
+    ],
+    "requiredNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays3"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "ShroudOfSilentMistCardPlays5",
+    "nextNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays6"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays4"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "ShroudOfSilentMistCardPlays6",
+    "nextNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays7"
+    ],
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays5"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "growthOption": {
+     "growthType": "ReclaimCards",
+     "number": 1
+    },
+    "identifier": "ShroudOfSilentMistCardPlays7",
+    "nextNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays8"
+    ],
+    "number": 1,
+    "requiredNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays6"
+    ],
+    "trackNodeType": "ReclaimCards"
+   },
+   {
+    "identifier": "ShroudOfSilentMistCardPlays8",
+    "number": 5,
+    "requiredNodeIdentifiers": [
+     "ShroudOfSilentMistCardPlays7"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   }
+  ],
+  "setup": "Put 2 {Presence} on your starting board: 1 in the highest-numbered Wetland and 1 in the highest-numbered Mountain.",
+  "shortTitle": "Shroud",
+  "specialRules": [
+   {
+    "body": [
+     "Once per turn, when you Gain a Power Card without {Fire}, gain <nobr>1 Energy.</nobr>"
+    ],
+    "identifier": "GatherPowerFromTheCoolAndDark",
+    "title": "Gather Power From the Cool and Dark"
+   },
+   {
+    "body": [
+     "When targeting a land with a Power, you may Gather 1 of your {Presence} into the target or an adjacent land. This can enable you to meet Range and targeting requirements."
+    ],
+    "identifier": "MistsShiftAndFlow",
+    "title": "Mists Shift and Flow"
+   },
+   {
+    "body": [
+     "Invaders and {Dahan} in your lands don't heal Damage.",
+     "<b>During Time Passes</b>: 1 {Fear} (max. 5) per land of yours with Damaged Invaders. Gain 1 Energy per 3 lands of yours with Damaged Invaders."
+    ],
+    "identifier": "SlowAndSilentDeath",
+    "title": "Slow and Silent Death"
+   }
+  ],
+  "title": "Shroud of Silent Mist",
+  "uniquePowerCardIdentifiers": [
+   "DissolvingVapors",
+   "FlowingAndSilentFormsDartBy",
+   "TheFogClosesIn",
+   "UnnervingPall"
+  ],
+  "utility": 14
+ },
+ "Thunderspeaker": {
+  "artistName": "Loic Belliau",
+  "aspects": [
+   {
+    "artistName": "Nolan Nasser",
+    "expansion": "NatureIncarnate",
+    "growthGroups": [
+     {
+      "groupNumber": 3,
+      "growthOptions": [
+       {
+        "growthType": "GainPowerCard",
+        "number": 1
+       },
+       {
+        "growthType": "AddPresence",
+        "number": 0
+       },
+       {
+        "growthType": "GainEnergy",
+        "number": 1
+       },
+       {
+        "elementTypes": [
+         "Sun",
+         "Fire"
+        ],
+        "growthType": "GainElements",
+        "number": 1
+       }
+      ]
+     }
+    ],
+    "identifier": "Tactician",
+    "title": "Tactician"
+   }
+  ],
+  "backstory": [
+   "Child of the Lightning, once known as Bright Thunder Roars in the days when it tore across the land as an avalanche of sound and chaos. It lost that form when Stalker of Hidden Secrets imprisoned it in a canyon, binding it to echo perpetually back and forth until its thunder died out or the stones of the island wore away.",
+   "The Dahan freed it from that imprisonment. Weakened but grateful, Bright Thunder Roars bound itself to aid the Dahan until a generation had passed for every year of its imprisonment, and in so binding changed its nature, becoming both less and more than it had been. It often takes human form, now, and with centuries' practice wears it with ease.",
+   "Chiefs call on the Thunderspeaker only in times of great need; it has not been much seen since the destruction of the Servant Cults."
+  ],
+  "complexity": "Moderate",
+  "complexityValue": 1387,
+  "control": 717,
+  "defense": 162,
+  "fear": 248,
+  "growthGroups": [
+   {
+    "groupNumber": 1,
+    "growthOptions": [
+     {
+      "growthType": "ReclaimCards"
+     },
+     {
+      "growthType": "GainPowerCard",
+      "number": 1
+     },
+     {
+      "growthType": "GainPowerCard",
+      "number": 1
+     }
+    ]
+   },
+   {
+    "groupNumber": 2,
+    "growthOptions": [
+     {
+      "basicGrowthType": "AddPresence",
+      "growthType": "AddPresenceDahan",
+      "number": 2
+     },
+     {
+      "basicGrowthType": "AddPresence",
+      "growthType": "AddPresenceDahan",
+      "number": 1
+     }
+    ]
+   },
+   {
+    "groupNumber": 3,
+    "growthOptions": [
+     {
+      "growthType": "AddPresence",
+      "number": 1
+     },
+     {
+      "growthType": "GainEnergy",
+      "number": 4
+     }
+    ]
+   }
+  ],
+  "identifier": "Thunderspeaker",
+  "innatePowers": [
+   {
+    "elementOptions": [
+     {
+      "body": "This Power may be {Fast}.",
+      "costAir": 4,
+      "requiresAnotherElementOption": true
+     },
+     {
+      "body": "Gather up to 1 {Dahan} per {Air} you have. Push up to 1 {Dahan} per {Sun} you have.",
+      "costAnimal": 1,
+      "importantElements": [
+       "Air",
+       "Sun"
+      ]
+     }
+    ],
+    "identifier": "GatherTheWarriors",
+    "powerType": "Innate",
+    "rangeDistance": 1,
+    "speed": false,
+    "targetType": "AnyLand",
+    "title": "Gather the Warriors"
+   },
+   {
+    "elementOptions": [
+     {
+      "body": "This power may be {Fast}.",
+      "costAir": 4,
+      "requiresAnotherElementOption": true
+     },
+     {
+      "body": "Destroy 1 {Town} for every 2 {Dahan} in target land.",
+      "costFire": 1,
+      "costSun": 2
+     },
+     {
+      "body": "Destroy 1 {City} for every 3 {Dahan} in target land.",
+      "costFire": 3,
+      "costSun": 4
+     }
+    ],
+    "identifier": "LeadTheFuriousAssault",
+    "powerType": "Innate",
+    "rangeDistance": 0,
+    "speed": false,
+    "targetType": "AnyLand",
+    "title": "Lead the Furious Assault"
+   }
+  ],
+  "numberOfGrowthGroupsToUse": 1,
+  "offense": 592,
+  "playStyle": [
+   "Has a keen interest in where the Dahan are - partly because so many of its starting powers work through them, partly because its Presence can move along with them. When picking new Power Cards, it will often want to take good Dahan-centric Powers, but it can also branch out into other areas."
+  ],
+  "presenceTrackNodes": [
+   {
+    "identifier": "ThunderspeakerEnergy1",
+    "nextNodeIdentifiers": [
+     "ThunderspeakerEnergy2"
+    ],
+    "number": 1,
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "elementTypes": [
+     "Air"
+    ],
+    "identifier": "ThunderspeakerEnergy2",
+    "nextNodeIdentifiers": [
+     "ThunderspeakerEnergy3"
+    ],
+    "requiredNodeIdentifiers": [
+     "ThunderspeakerEnergy1"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "ThunderspeakerEnergy3",
+    "nextNodeIdentifiers": [
+     "ThunderspeakerEnergy4"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "ThunderspeakerEnergy2"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "elementTypes": [
+     "Fire"
+    ],
+    "identifier": "ThunderspeakerEnergy4",
+    "nextNodeIdentifiers": [
+     "ThunderspeakerEnergy5"
+    ],
+    "requiredNodeIdentifiers": [
+     "ThunderspeakerEnergy3"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "elementTypes": [
+     "Sun"
+    ],
+    "identifier": "ThunderspeakerEnergy5",
+    "nextNodeIdentifiers": [
+     "ThunderspeakerEnergy6"
+    ],
+    "requiredNodeIdentifiers": [
+     "ThunderspeakerEnergy4"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "ThunderspeakerEnergy6",
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "ThunderspeakerEnergy5"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "ThunderspeakerCardPlays1",
+    "nextNodeIdentifiers": [
+     "ThunderspeakerCardPlays2"
+    ],
+    "number": 1,
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "ThunderspeakerCardPlays2",
+    "nextNodeIdentifiers": [
+     "ThunderspeakerCardPlays3"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "ThunderspeakerCardPlays1"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "ThunderspeakerCardPlays3",
+    "nextNodeIdentifiers": [
+     "ThunderspeakerCardPlays4"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "ThunderspeakerCardPlays2"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "ThunderspeakerCardPlays4",
+    "nextNodeIdentifiers": [
+     "ThunderspeakerCardPlays5"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "ThunderspeakerCardPlays3"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "growthOption": {
+     "growthType": "ReclaimCards",
+     "number": 1
+    },
+    "identifier": "ThunderspeakerCardPlays5",
+    "nextNodeIdentifiers": [
+     "ThunderspeakerCardPlays6"
+    ],
+    "number": 1,
+    "requiredNodeIdentifiers": [
+     "ThunderspeakerCardPlays4"
+    ],
+    "trackNodeType": "ReclaimCards"
+   },
+   {
+    "identifier": "ThunderspeakerCardPlays6",
+    "nextNodeIdentifiers": [
+     "ThunderspeakerCardPlays7"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "ThunderspeakerCardPlays5"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "ThunderspeakerCardPlays7",
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "ThunderspeakerCardPlays6"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   }
+  ],
+  "setup": "Put 2 {Presence} on your starting board: 1 in each of the 2 lands with the most {Dahan}.",
+  "shortTitle": "Thunderspeaker",
+  "specialRules": [
+   {
+    "body": [
+     "Your {Presence} may move with {Dahan}. <i>(Whenever a {Dahan} moves from 1 of your lands to another land, you may move 1 {Presence} along with it.)</i>"
+    ],
+    "identifier": "AllyOfTheDahan",
+    "title": "Ally of the Dahan"
+   },
+   {
+    "body": [
+     "After Invaders destroy {Dahan} during a Ravage, for each destroyed {Dahan} Destroy 1 of your {Presence} within {1Range}.",
+     "<i>(Resolve the entire Ravage in that land \u2013 including, if relevant, losing {Presence} to {Blight}, cascading, and counterattack \u2013 before destroying {Presence} from this special rule.)</i>"
+    ],
+    "identifier": "SwornToVictory",
+    "title": "Sworn to Victory"
+   }
+  ],
+  "title": "Thunderspeaker",
+  "uniquePowerCardIdentifiers": [
+   "VoiceOfThunder",
+   "WordsOfWarning",
+   "SuddenAmbush",
+   "ManifestationOfPowerAndGlory"
+  ],
+  "utility": 1
+ },
+ "VengeanceAsABurningPlague": {
+  "artistName": "Damon Westenhofer",
+  "backstory": [
+   "A Spirit of vengeance, anger, and retribution. In its incarnation as Burning Plague, it slumbers in a simmering volcanic pool, awakening at unpredictable intervals...or when roused through supplication by one wronged. Most Dahan consider this foolhardy, for it vents its wrath on entire communities, and its pestilence may spread anywhere. Clans with a close relationship to Hearth-Vigil have less to fear, but still deem it wise \u2212 and humane \u2212 not to push their luck.",
+   "It is unclear whether its recent waking is due directly to the ravaging of the Invaders or to some Spirit\u2019s pleas."
+  ],
+  "complexity": "High",
+  "complexityValue": 2083,
+  "control": 150,
+  "defense": 237,
+  "expansion": "JaggedEarth",
+  "fear": 323,
+  "growthGroups": [
+   {
+    "groupNumber": 1,
+    "growthOptions": [
+     {
+      "growthType": "ReclaimCards"
+     },
+     {
+      "growthType": "GainPowerCard",
+      "number": 1
+     },
+     {
+      "growthType": "GainEnergy",
+      "number": 1
+     }
+    ]
+   },
+   {
+    "groupNumber": 2,
+    "growthOptions": [
+     {
+      "basicGrowthType": "AddPresence",
+      "growthType": "AddPresenceTownCityBlight",
+      "number": 2
+     },
+     {
+      "basicGrowthType": "AddPresence",
+      "growthType": "AddPresenceTownCityBlight",
+      "number": 2
+     }
+    ]
+   },
+   {
+    "groupNumber": 3,
+    "growthOptions": [
+     {
+      "growthType": "GainPowerCard",
+      "number": 1
+     },
+     {
+      "basicGrowthType": "AddPresence",
+      "growthType": "AddPresenceOrDisease",
+      "number": 1
+     },
+     {
+      "growthType": "GainEnergy",
+      "number": 1
+     }
+    ]
+   }
+  ],
+  "identifier": "VengeanceAsABurningPlague",
+  "innatePowers": [
+   {
+    "body": [
+     "This Power\u2019s Damage is done (separately) to both Invaders and {Dahan}."
+    ],
+    "elementOptions": [
+     {
+      "body": "1 Damage per {Disease}.",
+      "costAnimal": 3,
+      "costFire": 1
+     },
+     {
+      "body": "+1 Damage per {Disease}.",
+      "costAnimal": 4,
+      "costFire": 2,
+      "costWater": 1
+     },
+     {
+      "body": "+1 Damage per {Disease}. 1 {Fear} per {Disease} (max. 5). Remove <nobr>1 {Disease}.</nobr>",
+      "costAnimal": 5,
+      "costFire": 3,
+      "costWater": 3
+     }
+    ],
+    "identifier": "EpidemicsRunRampant",
+    "powerType": "Innate",
+    "rangeDistance": 1,
+    "speed": true,
+    "targetType": "LandWithDisease",
+    "title": "Epidemics Run Rampant"
+   },
+   {
+    "elementOptions": [
+     {
+      "body": "This Power has {+1Range}.",
+      "costAir": 3,
+      "requiresAnotherElementOption": true
+     },
+     {
+      "body": "1 Damage.",
+      "costAnimal": 1,
+      "costFire": 3
+     },
+     {
+      "body": "+2 Damage.",
+      "costAnimal": 2,
+      "costFire": 4
+     },
+     {
+      "body": "+3 Damage.",
+      "costAir": 2,
+      "costAnimal": 2,
+      "costFire": 5
+     }
+    ],
+    "identifier": "SavageRevenge",
+    "powerType": "Innate",
+    "rangeDistance": 0,
+    "speed": false,
+    "targetType": "LandWithTownCity",
+    "title": "Savage Revenge"
+   }
+  ],
+  "numberOfGrowthGroupsToUse": 1,
+  "offense": 880,
+  "playStyle": [
+   "Not so powerful early, but can be a late-game juggernaut, especially if things are going badly: {Blight} adds to its Damage and its {Presence} being Destroyed adds {Disease}. It may even want to engineer these situations, which can make other Spirits nervous (and be risky if things go poorly).",
+   "Faces a variety of tradeoffs: which Innate to focus on, and whether to use {Disease} to stop Builds vs. keeping it on the board for {Fear} or Power use."
+  ],
+  "presenceTrackNodes": [
+   {
+    "identifier": "VengeanceAsABurningPlagueEnergy1",
+    "nextNodeIdentifiers": [
+     "VengeanceAsABurningPlagueEnergy2"
+    ],
+    "number": 1,
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "VengeanceAsABurningPlagueEnergy2",
+    "nextNodeIdentifiers": [
+     "VengeanceAsABurningPlagueEnergy3"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "VengeanceAsABurningPlagueEnergy1"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "elementTypes": [
+     "Animal"
+    ],
+    "identifier": "VengeanceAsABurningPlagueEnergy3",
+    "nextNodeIdentifiers": [
+     "VengeanceAsABurningPlagueEnergy4"
+    ],
+    "requiredNodeIdentifiers": [
+     "VengeanceAsABurningPlagueEnergy2"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "VengeanceAsABurningPlagueEnergy4",
+    "nextNodeIdentifiers": [
+     "VengeanceAsABurningPlagueEnergy5"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "VengeanceAsABurningPlagueEnergy3"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "VengeanceAsABurningPlagueEnergy5",
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "VengeanceAsABurningPlagueEnergy4"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "VengeanceAsABurningPlagueCardPlays1",
+    "nextNodeIdentifiers": [
+     "VengeanceAsABurningPlagueCardPlays2"
+    ],
+    "number": 1,
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "VengeanceAsABurningPlagueCardPlays2",
+    "nextNodeIdentifiers": [
+     "VengeanceAsABurningPlagueCardPlays3"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "VengeanceAsABurningPlagueCardPlays1"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "elementTypes": [
+     "Fire"
+    ],
+    "identifier": "VengeanceAsABurningPlagueCardPlays3",
+    "nextNodeIdentifiers": [
+     "VengeanceAsABurningPlagueCardPlays4"
+    ],
+    "requiredNodeIdentifiers": [
+     "VengeanceAsABurningPlagueCardPlays2"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "VengeanceAsABurningPlagueCardPlays4",
+    "nextNodeIdentifiers": [
+     "VengeanceAsABurningPlagueCardPlays5"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "VengeanceAsABurningPlagueCardPlays3"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "VengeanceAsABurningPlagueCardPlays5",
+    "nextNodeIdentifiers": [
+     "VengeanceAsABurningPlagueCardPlays6"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "VengeanceAsABurningPlagueCardPlays4"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "VengeanceAsABurningPlagueCardPlays6",
+    "nextNodeIdentifiers": [
+     "VengeanceAsABurningPlagueCardPlays7"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "VengeanceAsABurningPlagueCardPlays5"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "identifier": "VengeanceAsABurningPlagueCardPlays7",
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "VengeanceAsABurningPlagueCardPlays6"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   }
+  ],
+  "requiresTokens": [
+   "Disease"
+  ],
+  "setup": "1 of your {Presence} starts the game already Destroyed. Put 2 {Presence} on your starting board: 1 in a land with {Blight}, 1 in a Wetland without {Dahan}.",
+  "shortTitle": "Vengeance",
+  "specialRules": [
+   {
+    "body": [
+     "When {Disease} would prevent a Build on a board with your {Presence}, you may let the Build happen (Removing no {Disease}). If you do, 1 {Fear}."
+    ],
+    "identifier": "TheTerrorOfASlowlyUnfoldingPlague",
+    "title": "The Terror of a Slowly Unfolding Plague"
+   },
+   {
+    "body": [
+     "When your {Presence} is Destroyed by anything except a Spirit Action, add <nobr>1 {Disease}</nobr> where each {DestroyedPresenceNew} was."
+    ],
+    "identifier": "LingeringPestilence",
+    "title": "Lingering Pestilence"
+   },
+   {
+    "body": [
+     "Your Actions treat {Blight} on the island as also being {Badlands}."
+    ],
+    "identifier": "WreakVengeanceForTheLandsCorruption",
+    "title": "Wreak Vengeance for the Land's Corruption"
+   }
+  ],
+  "title": "Vengeance as a Burning Plague",
+  "uniquePowerCardIdentifiers": [
+   "FetidBreathSpreadsInfection",
+   "FieryVengeance",
+   "Plaguebearers",
+   "StrikeLowWithSuddenFevers"
+  ],
+  "utility": 25
+ },
+ "VolcanoLoomingHigh": {
+  "artistName": "Moro Rogers",
+  "backstory": [
+   "A Spirit of fire and earth stretching upwards to the sky, casting a long and dangerous shadow across the land. The deeper Spirits of vulcanism are too powerful and slow, too removed to respond to the Invaders \u2212 but not so this one.",
+   "It doesn\u2019t <b>dislike</b> humans per se, but neither does it have much use for them, so the Dahan tend to keep away from it as much as possible, and will not quarry stone in its shadow. Of course, larger eruptions can impact a good chunk of the island, so they sometimes end up dealing with its temper whether they want to or not."
+  ],
+  "complexity": "Moderate",
+  "complexityValue": 1622,
+  "control": 82,
+  "defense": 83,
+  "expansion": "JaggedEarth",
+  "fear": 167,
+  "growthGroups": [
+   {
+    "groupNumber": 1,
+    "growthOptions": [
+     {
+      "growthType": "ReclaimCards"
+     },
+     {
+      "growthType": "GainPowerCard",
+      "number": 1
+     },
+     {
+      "growthType": "GainEnergy",
+      "number": 3
+     }
+    ]
+   },
+   {
+    "groupNumber": 2,
+    "growthOptions": [
+     {
+      "growthType": "AddPresence",
+      "number": 0
+     },
+     {
+      "growthType": "AddPresence",
+      "number": 0
+     }
+    ]
+   },
+   {
+    "groupNumber": 3,
+    "growthOptions": [
+     {
+      "growthType": "GainPowerCard",
+      "number": 1
+     },
+     {
+      "growthType": "AddPresence",
+      "number": 4
+     },
+     {
+      "growthType": "CardPlayThisTurn",
+      "number": 1
+     },
+     {
+      "growthType": "GainEnergy",
+      "number": 2
+     }
+    ]
+   }
+  ],
+  "identifier": "VolcanoLoomingHigh",
+  "innatePowers": [
+   {
+    "body": [
+     "Destroy X (1 or more) of your {Presence} in target land. <nobr>{DestroyedPresence} (below)</nobr> checks how many were Destroyed. This Power's Damage is done (separately) to both Invaders and {Dahan}. The Ranges below can't be increased."
+    ],
+    "elementOptions": [
+     {
+      "body": "In one land within {1Range}, X Damage.",
+      "costDestroyedPresence": 2,
+      "costEarth": 2,
+      "costFire": 2
+     },
+     {
+      "body": "X {Fear}.",
+      "costDestroyedPresence": 4,
+      "costEarth": 3,
+      "costFire": 3
+     },
+     {
+      "body": "In each land within {1Range}, <nobr>4 Damage.</nobr>{BR}Add <nobr>1 {Blight}</nobr> to target land; doing so does not Destroy your {Presence}.",
+      "costAir": 2,
+      "costDestroyedPresence": 6,
+      "costEarth": 4,
+      "costFire": 4
+     },
+     {
+      "body": "In each land within {2Range}, <nobr>4 Damage.</nobr>{BR}In each land adjacent to the target, add <nobr>1 {Blight}</nobr> if it doesn't have any.",
+      "costAir": 3,
+      "costDestroyedPresence": 10,
+      "costEarth": 5,
+      "costFire": 5
+     }
+    ],
+    "identifier": "ExplosiveEruption",
+    "powerType": "Innate",
+    "rangeDistance": 0,
+    "requiresElements": false,
+    "speed": true,
+    "targetType": "AnyLand",
+    "textRanges": [
+     1,
+     1,
+     2
+    ],
+    "title": "Explosive Eruption"
+   },
+   {
+    "elementOptions": [
+     {
+      "body": "Add 1 of your {DestroyedPresenceNew}.",
+      "costEarth": 3
+     },
+     {
+      "body": "Gain a Power Card.",
+      "costEnergy": 2,
+      "costFire": 3
+     },
+     {
+      "body": "Move up to 2 of your {Presence} from other lands to target land.",
+      "costEarth": 4,
+      "costFire": 4
+     },
+     {
+      "body": "Return up to 2 of your {DestroyedPresenceNew} to your <nobr>{Presence} tracks.</nobr>",
+      "costFire": 5
+     }
+    ],
+    "identifier": "PoweredByTheFurnaceOfTheEarth",
+    "powerType": "Innate",
+    "rangeDistance": 0,
+    "speed": false,
+    "targetType": "AnyLand",
+    "title": "Powered by the Furnace of the Earth"
+   }
+  ],
+  "numberOfGrowthGroupsToUse": 1,
+  "offense": 901,
+  "playStyle": [
+   "Benefits more than most from getting {Presence} onto the board; in addition to the usual benefits, it can fuel an Explosive Eruption. This can result in a huge turn, but if overdone the following turn or two may be very constrained.",
+   "Bigger eruptions are extremely powerful, but cause {Blight}, and the Invaders may not provide the luxury of enough time to build up the desired pressure \u2212 judging the timing of when to erupt and for how much is a key part of playing this Spirit."
+  ],
+  "presenceTrackNodes": [
+   {
+    "identifier": "VolcanoLoomingHighEnergy1",
+    "nextNodeIdentifiers": [
+     "VolcanoLoomingHighEnergy2"
+    ],
+    "number": 1,
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "VolcanoLoomingHighEnergy2",
+    "nextNodeIdentifiers": [
+     "VolcanoLoomingHighEnergy3"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "VolcanoLoomingHighEnergy1"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "elementTypes": [
+     "Earth"
+    ],
+    "identifier": "VolcanoLoomingHighEnergy3",
+    "nextNodeIdentifiers": [
+     "VolcanoLoomingHighEnergy4"
+    ],
+    "requiredNodeIdentifiers": [
+     "VolcanoLoomingHighEnergy2"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "VolcanoLoomingHighEnergy4",
+    "nextNodeIdentifiers": [
+     "VolcanoLoomingHighEnergy5"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "VolcanoLoomingHighEnergy3"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "VolcanoLoomingHighEnergy5",
+    "nextNodeIdentifiers": [
+     "VolcanoLoomingHighEnergy6"
+    ],
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "VolcanoLoomingHighEnergy4"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "VolcanoLoomingHighEnergy6",
+    "number": 5,
+    "requiredNodeIdentifiers": [
+     "VolcanoLoomingHighEnergy5"
+    ],
+    "trackNodeType": "EnergyPerTurn"
+   },
+   {
+    "identifier": "VolcanoLoomingHighCardPlays1",
+    "nextNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays2"
+    ],
+    "number": 1,
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "elementTypes": [
+     "Fire"
+    ],
+    "identifier": "VolcanoLoomingHighCardPlays2",
+    "nextNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays3"
+    ],
+    "requiredNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays1"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "elementTypes": [
+     "Earth"
+    ],
+    "identifier": "VolcanoLoomingHighCardPlays3",
+    "nextNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays4"
+    ],
+    "requiredNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays2"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "VolcanoLoomingHighCardPlays4",
+    "nextNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays5"
+    ],
+    "number": 2,
+    "requiredNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays3"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "elementTypes": [
+     "Air"
+    ],
+    "identifier": "VolcanoLoomingHighCardPlays5",
+    "nextNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays6"
+    ],
+    "requiredNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays4"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "VolcanoLoomingHighCardPlays6",
+    "nextNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays7"
+    ],
+    "number": 3,
+    "requiredNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays5"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   },
+   {
+    "elementTypes": [
+     "Fire"
+    ],
+    "identifier": "VolcanoLoomingHighCardPlays7",
+    "nextNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays8"
+    ],
+    "requiredNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays6"
+    ],
+    "trackNodeType": "Element"
+   },
+   {
+    "identifier": "VolcanoLoomingHighCardPlays8",
+    "number": 4,
+    "requiredNodeIdentifiers": [
+     "VolcanoLoomingHighCardPlays7"
+    ],
+    "trackNodeType": "CardPlaysPerTurn"
+   }
+  ],
+  "setup": "Put 1 {Presence} and 1 {Badlands} on your starting board in a Mountain of your choice. Push all {Dahan} from that land.",
+  "setupPriority": "High",
+  "shortTitle": "Volcano",
+  "specialRules": [
+   {
+    "body": [
+     "Your {Presence} may only be added or moved into Mountains."
+    ],
+    "identifier": "MountainHome",
+    "title": "Mountain Home"
+   },
+   {
+    "body": [
+     "When your {Presence} is Destroyed, in that land, deal 1 Damage per Destroyed {Presence} to both Invaders and to {Dahan}."
+    ],
+    "identifier": "CollapseInABlastOfLavaAndSteam",
+    "title": "Collapse in a Blast of Lava and Steam"
+   },
+   {
+    "body": [
+     "Your Power Cards gain {+1Range} if you have 3 or more {Presence} in the origin land."
+    ],
+    "identifier": "VolcanicPeaksTowerOverTheLandscape",
+    "title": "Volcanic Peaks Tower Over the Landscape"
+   }
+  ],
+  "title": "Volcano Looming High",
+  "uniquePowerCardIdentifiers": [
+   "ExaltationOfMoltenStone",
+   "LavaFlows",
+   "PyroclasticBombardment",
+   "RainOfAsh"
+  ],
+  "utility": 430
+ }
+}

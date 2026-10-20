@@ -1,0 +1,17 @@
+[package]
+name = "si-cli"
+version.workspace = true
+edition.workspace = true
+description = "The one binary: replay a game log into a record and report on it."
+
+[[bin]]
+name = "si"
+path = "src/main.rs"
+
+[dependencies]
+si-model = { path = "../si-model" }
+si-defs = { path = "../si-defs" }
+si-record = { path = "../si-record" }
+si-metrics = { path = "../si-metrics" }
+anyhow.workspace = true
+serde_json.workspace = true

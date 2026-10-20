@@ -1,0 +1,100 @@
+{
+ "ADiversityOfSpirits": {
+  "backBodySections": [
+   {
+    "body": [
+     "<b>Difficulty Communicating (Online Multiplayer):</b>",
+     "{Bullet}For <b>planning</b> and <b>discussing strategy</b>, Spirits may not use any language shared in common, and may not look at each others' Power Cards in the Spirit Phase.  <i>(Once the {Fast} phase starts, played cards become visible.)</i>{EndBullet}",
+     "{Bullet}A limited set of emoticons is available via text chat.{EndBullet}",
+     "{Bullet}Planning markers may be used as usual.{EndBullet}",
+     "{Bullet}When performing game effects not associated with a particular Spirit, player, or board, individual Spirits are assigned to make decisions, instead of voting.{EndBullet}",
+     "{Bullet}Roleplaying is not required, but can add to the atmosphere if your group enjoys such things.{EndBullet}",
+     "{Bullet}Players may not normally control more than one Spirit in this Scenario. If you end up controlling multiple Spirits due to a disconnection, do your best to act as if your Spirits are limited as intended.{EndBullet}",
+     "",
+     "",
+     "<b>Difficulty Coordinating (Multihanded Solo):</b>",
+     "{Bullet}You may only view one Spirit at a time, and while doing so, you may not look at any information pertaining to the other Spirits.{EndBullet}",
+     "{Bullet}In the Spirit Phase, you must perform the whole phase for each Spirit, one at a time, in a randomly determined order.{EndBullet}",
+     "{Bullet}In the {Fast} and {Slow} Phases, one at a time, a Spirit is randomly chosen to use a Power, use a Special Rule, or gain a flexible Element (or pass and take no more actions), until all actions are used or all Spirits pass.{EndBullet}"
+    ],
+    "title": "Rules Changes"
+   },
+   {
+    "body": [
+     "<b>Strength in Diversity</b>",
+     "After Growth, if you added 1 or more {Presence} to lands with another Spirits' {Presence}: Gain 1 Energy or Reclaim 1 non-Major Power Card."
+    ]
+   }
+  ],
+  "difficulty": 0,
+  "expansion": "PromoPack2",
+  "flavorText": "Why should a Spirit of the open air speak the same language as a Spirit of flame and renewal or understand the deep voice of a mountain? The Spirits defending the island are strong in their own nature and have difficulty communicating nuanced information to each other as a result.",
+  "frontBodySections": [
+   {
+    "body": [
+     "{Bullet}This Scenario is less about mechanical changes and more about altering the experience of the game. Some players love it, but it's not for everyone.{EndBullet}"
+    ],
+    "title": "Recommendations & Notes"
+   },
+   {
+    "body": [
+     "{Bullet}...for groups where the players are highly familiar with each others' playstyles and/or highly familiar with all Spirits being played.{EndBullet}"
+    ],
+    "title": "This scenario is notably easier..."
+   },
+   {
+    "body": [
+     "{Bullet}...when playing a Spirit new to you, or a Spirit you don't recall well.  <i>(And less fun, because you lose some of the collaboration in exploring a Spirit's capabilities.)</i>{EndBullet}",
+     "{Bullet} ...for Spirits with restrictive {Presence} placement.{EndBullet}"
+    ],
+    "title": "This scenario is notably harder..."
+   }
+  ],
+  "identifier": "ADiversityOfSpirits",
+  "scenarioGrowthOptionDefinition": {
+   "growthType": "Scenario"
+  },
+  "title": "A Diversity of Spirits"
+ },
+ "Blitz": {
+  "backBodySections": [
+   {
+    "body": [
+     "This Scenario can be fun for anyone to try, but is particularly meant for players who find they prefer a more play-and-resolve style of game to the planning ahead required by Spirits' {Slow} Powers.",
+     ""
+    ]
+   },
+   {
+    "body": [
+     "All Powers are {Fast}.",
+     "Powers which were already {Fast} (or made {Fast}) cost 1 less Energy. <i>(For Innate Powers and Power Cards costing 0, instead gain 1 Energy.)</i>",
+     "When Exploring, once per board, add an additional {Explorer}.",
+     "If the Island becomes \u201cBlighted\u201d, put 1 less {Blight} per starting board on the Blight Card.",
+     ""
+    ],
+    "title": "Rules Changes"
+   },
+   {
+    "body": [
+     "Put an additional {Blight} per board on the Blight Card.",
+     "The Invaders get an additional set of actions at the end of Setup. <i>(So they will Explore, then Build and Explore.)</i>"
+    ],
+    "title": "Setup Changes"
+   }
+  ],
+  "blightCardBlightPerBoardAdjustment": 1,
+  "difficulty": 0,
+  "flavorText": "Perhaps the Spirits of the Island are not so slow after all. But still, the Invaders are faster.",
+  "frontBodySections": [
+   {
+    "body": [
+     "{Bullet}...for slow-developing Spirits <i>(e.g., Serpent Slumbering Beneath the Island)</i>{EndBullet}",
+     "{Bullet}...if paired with Brandenburg-Prussia <i>(which pushes tempo in a different way)</i>{EndBullet}"
+    ],
+    "title": "This scenario is notably harder..."
+   }
+  ],
+  "identifier": "Blitz",
+  "title": "Blitz"
+ }
+}
