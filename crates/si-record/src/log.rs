@@ -2,6 +2,7 @@
 //! edition's logs on 2026-10-20 (EndGame--*.txt and the recorder's
 //! log-stream.txt, which prefixes a clock).
 
+use crate::record::Choice;
 use si_model::event::{Event, InvaderStep, PieceMove};
 use si_model::game::{Ending, Phase};
 use si_model::island::{LandId, PieceKind, TokenKind};
@@ -116,8 +117,10 @@ pub enum Marker {
     GrowthOption { spirit: String, option: String, undo: bool },
     /// `UsePowerActivation … PhaseType=FastPower`: the phase the power is used in.
     PowerPhase { power: String, phase: Phase },
-    /// A decision the player made among cards (`SelectCardActivation: Reason=GainPower, Selected=…`).
-    CardChoice { reason: String, selected: String },
+    /// A decision the player made among cards (`SelectCardActivation: CardChoices=…, SelectedCard=…, SelectCardReason=GainPower`).
+    CardChoice { reason: String, selected: String, choices: Vec<String> },
+    /// Any other decision the engine asked for, with the options (`Select…Activation`, `ChooseNumberActivation`).
+    Choice(Choice),
     /// `SelectGrowthGroupActivation: Selected=<SpiritId> Growth Group 2`
     GrowthGroup { spirit: String, group: u8 },
     /// `Building Adjacency Matrix: [C, E] / []`: the boards in play, as the
@@ -179,6 +182,32 @@ fn between<'a>(s: &'a str, start: &str, ends: &[&str]) -> Option<&'a str> {
     let rest = &s[i..];
     let j = ends.iter().filter_map(|e| rest.find(e)).min().unwrap_or(rest.len());
     Some(rest[..j].trim())
+}
+
+/// `Key=Value Key2=Value with spaces, NumberOfUses=` → pairs. Keys are the
+/// identifier-like tokens directly before an `=`; a value runs to the next key.
+fn status_params(s: &str) -> std::collections::BTreeMap<String, String> {
+    let mut out = std::collections::BTreeMap::new();
+    let bytes: Vec<char> = s.chars().collect();
+    let mut keys: Vec<(usize, usize)> = Vec::new(); // (key start, '=' index)
+    for (i, c) in bytes.iter().enumerate() {
+        if *c == '=' && i > 0 {
+            let mut j = i;
+            while j > 0 && (bytes[j - 1].is_ascii_alphanumeric() || bytes[j - 1] == '(' || bytes[j - 1] == ')') {
+                j -= 1;
+            }
+            if j < i && bytes[j].is_ascii_alphabetic() {
+                keys.push((j, i));
+            }
+        }
+    }
+    for (n, (ks, eq)) in keys.iter().enumerate() {
+        let key: String = bytes[*ks..*eq].iter().collect();
+        let end = keys.get(n + 1).map(|(nks, _)| *nks).unwrap_or(bytes.len());
+        let value: String = bytes[eq + 1..end].iter().collect::<String>().trim().trim_end_matches(|c| c == ',' || c == ']' || c == ' ').trim().to_string();
+        out.insert(key, value);
+    }
+    out
 }
 
 fn land(s: &str) -> Option<LandId> {
@@ -249,6 +278,27 @@ fn action(body: &str) -> Option<Event> {
         }
         "AdvanceInvaderCardsAction" => Event::SlotsAdvanced { moves: card_moves(between(body, "CardMovements=", &["]"])?) },
         "RavageAction" => Event::Ravaged { land: land(between(body, "LandTarget: ", &[","])?)? },
+        "CancelAction" => {
+            let inner = between(body, "GameAction=[", &["]"])?;
+            let step = match inner.split(':').next()?.trim() {
+                "BuildAction" => InvaderStep::Build,
+                "RavageAction" => InvaderStep::Ravage,
+                "ExploreAction" => InvaderStep::Explore,
+                "ResolveInvaderCardAction" => InvaderStep::parse(between(inner, "InvaderActionType: ", &[","])?)?,
+                _ => return None,
+            };
+            let land = between(inner, "LandTarget: ", &[","]).and_then(land);
+            let source = body.rsplit("] Source: ").next().unwrap_or("").trim_end_matches(']').trim().to_string();
+            Event::Canceled { step, land, source }
+        }
+        "AddStatusEffectAction" => {
+            let rest = between(body, "StatusEffect=", &[])?;
+            let rest = rest.trim_start_matches('[').trim_start_matches('$');
+            let kind = rest.split(':').next()?.trim().to_string();
+            let params = status_params(rest);
+            let source = params.get("Source").cloned().unwrap_or_default();
+            Event::StatusEffect { kind, source, params }
+        }
         "AddIslandPiecesAction" => Event::PiecesAdded { moves: piece_moves(between(body, "PieceMovements=", &[])?) },
         "MovePiecesAction" => Event::PiecesMoved { moves: piece_moves(between(body, "PieceMovements=", &[])?) },
         "AddTokensAction" => {
@@ -335,7 +385,6 @@ fn action(body: &str) -> Option<Event> {
         "AddNewCardAction" => return None,
         "GameOverAction" => Event::GameOver { ending: Ending::parse(between(body, "EndingResult=", &["]", ","])?) },
         "TimePassesAction" => Event::TimePassed,
-        "AddStatusEffectAction" => Event::StatusAdded { text: between(body, "StatusEffect=", &[", NumberOfUses", "]"]).unwrap_or("").chars().take(120).collect() },
         "CompleteSetupAction" => Event::Setup { text: "setup complete".into() },
         _ => return None,
     })
@@ -387,9 +436,54 @@ fn activation(t: &str) -> Option<Marker> {
         let phase = between(t, "PhaseType=", &[",", "]"]).map(Phase::parse)?;
         return Some(Marker::PowerPhase { power: p.to_string(), phase });
     }
-    if let Some(reason) = between(t, "SelectCardActivation: Reason=", &[","]) {
-        let selected = between(t, "Selected=", &[", InstanceNumber", ","])?.to_string();
-        return Some(Marker::CardChoice { reason: reason.to_string(), selected });
+    for kind in ["SelectLocationActivation", "SelectEffectActivation", "SelectPieceActivation", "SelectSpiritActivation", "SelectBoardActivation", "ChooseNumberActivation"] {
+        let Some(start) = t.find(&format!("[{kind}:")) else { continue };
+        let body = &t[start + kind.len() + 2..];
+        // a line without a selection is the prompt being enabled, not the decision
+        let Some(selected) = between(body, "Selected=", &[", InstanceNumber", ", InstanceIdentifier"]) else { continue };
+        if selected.is_empty() {
+            continue;
+        }
+        let reason = between(body, "Reason=", &[","]).unwrap_or("").to_string();
+        let instance: u32 = between(body, "InstanceNumber: ", &[" "]).and_then(|n| n.parse().ok()).unwrap_or(0);
+        let ident = between(body, "InstanceIdentifier: ", &[" Source:"]).unwrap_or("");
+        let raw_source = between(body, " Source: ", &[" IsOptional:", " IsEnabled:"]).unwrap_or("");
+        let source = if raw_source.starts_with('[') || raw_source.contains("Activation") || raw_source.len() > 80 {
+            between(body, "UsePower=", &[" ", ","]).or_else(|| between(body, "SpiritWithRule=", &[" ", ","])).unwrap_or("").to_string()
+        } else {
+            raw_source.trim_end_matches(']').trim().to_string()
+        };
+        let mut choices: Vec<String> = between(body, "Choices: ", &["]"]).map(|c| c.split(',').map(|x| x.trim().to_string()).filter(|x| !x.is_empty()).collect()).unwrap_or_default();
+        if choices.is_empty() && kind == "SelectLocationActivation" {
+            // the identifier carries the lands as `JungleC1/MountainC3/SandsC2`
+            if let Some(seg) = ident.split('-').find(|seg| seg.contains('/') && seg.chars().next().is_some_and(|c| c.is_ascii_uppercase())) {
+                choices = seg.split('/').map(|x| x.to_string()).collect();
+            }
+        }
+        let source_kind = if ident.contains("ResolveEventCardAction") || ident.contains("EventAction") {
+            "Event"
+        } else if ident.contains("ResolveFearCardAction") {
+            "Fear"
+        } else if ident.contains("UsePowerAction") {
+            "Power"
+        } else if ident.contains("ResolveInvaderCardAction") {
+            "Invader"
+        } else if ident.contains("AddBlightAction") {
+            "Blight"
+        } else if ident.contains("SpiritUniqueAction") || ident.contains("SpecialRule") || ident.contains("SpiritAction") {
+            "Spirit"
+        } else {
+            "Rule"
+        };
+        let optional = between(body, "IsOptional: ", &[" ", "]"]).is_some_and(|v| v == "True");
+        let kind_name = kind.trim_start_matches("Select").trim_start_matches("Choose").trim_end_matches("Activation").to_string();
+        return Some(Marker::Choice(Choice { phase: Phase::SpiritPhase, kind: kind_name, reason, selected: selected.to_string(), choices, source, source_kind: source_kind.to_string(), optional, spirit: None, instance }));
+    }
+    if t.contains("SelectCardActivation:") {
+        let reason = between(t, "SelectCardReason=", &[","]).or_else(|| between(t, "SelectCardActivation: Reason=", &[","]))?.to_string();
+        let selected = between(t, "SelectedCard=", &[", InstanceNumber", ", SelectCardReason", ","]).or_else(|| between(t, "Selected=", &[", InstanceNumber", ","]))?.to_string();
+        let choices: Vec<String> = between(t, "CardChoices=", &[", Selected"]).map(|c| c.split(',').map(|x| x.trim().to_string()).filter(|x| !x.is_empty()).collect()).unwrap_or_default();
+        return Some(Marker::CardChoice { reason, selected, choices });
     }
     None
 }

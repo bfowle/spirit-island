@@ -17,6 +17,8 @@ pub enum Phase {
     BlightedIsland,
     Event,
     Fear,
+    /// England's extra Build slot, resolved before the Ravage.
+    HighImmigration,
     Ravage,
     Build,
     Explore,
@@ -37,6 +39,7 @@ impl Phase {
             "BlightedIsland" => Phase::BlightedIsland,
             "Event" => Phase::Event,
             "Fear" => Phase::Fear,
+            "HighImmigration" => Phase::HighImmigration,
             "Ravage" => Phase::Ravage,
             "Build" => Phase::Build,
             "Explore" => Phase::Explore,
@@ -49,7 +52,7 @@ impl Phase {
     }
 
     pub fn is_invader_step(self) -> bool {
-        matches!(self, Phase::Ravage | Phase::Build | Phase::Explore)
+        matches!(self, Phase::HighImmigration | Phase::Ravage | Phase::Build | Phase::Explore)
     }
 
     pub fn name(self) -> &'static str {
@@ -61,6 +64,7 @@ impl Phase {
             Phase::BlightedIsland => "Blighted Island",
             Phase::Event => "Event",
             Phase::Fear => "Fear",
+            Phase::HighImmigration => "HighImmigration",
             Phase::Ravage => "Ravage",
             Phase::Build => "Build",
             Phase::Explore => "Explore",

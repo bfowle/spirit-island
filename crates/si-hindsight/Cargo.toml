@@ -1,0 +1,13 @@
+[package]
+name = "si-hindsight"
+version.workspace = true
+edition.workspace = true
+description = "After a game: each turn's Fast-phase choice against what the hand could have done, scored on the Invader steps that followed."
+
+[dependencies]
+si-model = { path = "../si-model" }
+si-defs = { path = "../si-defs" }
+si-record = { path = "../si-record" }
+si-metrics = { path = "../si-metrics" }
+si-rules = { path = "../si-rules" }
+serde.workspace = true

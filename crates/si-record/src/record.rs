@@ -21,6 +21,13 @@ pub struct GameMeta {
     /// The adversary named in the log (level is not logged).
     #[serde(default)]
     pub adversary: Option<String>,
+    /// From the engine save beside the log, when one was read.
+    #[serde(default)]
+    pub adversary_level: Option<u8>,
+    #[serde(default)]
+    pub difficulty: Option<i64>,
+    #[serde(default)]
+    pub scenario: Option<String>,
 }
 
 /// One Invader step in one land.
@@ -87,6 +94,26 @@ pub enum TouchKind {
     Moved { out: u32, into: u32 },
     /// Blight removed here.
     Recover(u32),
+}
+
+/// A decision the engine asked the player to make and what was on offer:
+/// a land for an Event or Fear effect, an "or" branch of a Power, a piece to
+/// Strife, a card to gain or forget. `source` is the card or rule that asked;
+/// `source_kind` is Event, Fear, Power, Spirit, Invader, Blight or Rule.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Choice {
+    pub phase: Phase,
+    /// Location, Effect, Piece, Spirit, Board, Number, Card.
+    pub kind: String,
+    pub reason: String,
+    pub selected: String,
+    pub choices: Vec<String>,
+    pub source: String,
+    pub source_kind: String,
+    pub optional: bool,
+    pub spirit: Option<String>,
+    /// The engine's activation number, for telling repeats apart.
+    pub instance: u32,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -156,6 +183,9 @@ pub struct SpiritTurn {
     /// Where this spirit's presence stood at the end of the turn (for range).
     #[serde(default)]
     pub presence_after: BTreeMap<LandId, u32>,
+    /// The Power Cards offered at this turn's gain (the draft the player chose from).
+    #[serde(default)]
+    pub offered: Vec<String>,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -164,6 +194,33 @@ pub struct TurnRecord {
     pub explore: Vec<String>,
     pub build: Vec<String>,
     pub ravage: Vec<String>,
+    /// Cards that built from England's High Immigration slot (before the Ravage).
+    #[serde(default)]
+    pub high_immigration: Vec<String>,
+    /// Every land as it stood when the first Invader step of the turn began
+    /// (after the Event and Fear cards), for the rules simulator.
+    #[serde(default)]
+    pub before_invaders: BTreeMap<LandId, Counts>,
+    /// Defend in force per land at that moment.
+    #[serde(default)]
+    pub defend: BTreeMap<LandId, u32>,
+    /// Every land as it stood when the Fast phase began (after Growth) and
+    /// when the Slow phase began (after the Invader steps), for verifying
+    /// Spirit actions.
+    #[serde(default)]
+    pub before_fast: BTreeMap<LandId, Counts>,
+    #[serde(default)]
+    pub before_slow: BTreeMap<LandId, Counts>,
+    /// Rules the engine put in force this turn (skips, cancels, Defend
+    /// grants, extra Explorers, health and damage changes), as logged.
+    #[serde(default)]
+    pub status_effects: Vec<StatusEffect>,
+    /// Every choice the player was asked to make this turn, with what was offered.
+    #[serde(default)]
+    pub choices: Vec<Choice>,
+    /// Invader steps the engine canceled this turn, with the source.
+    #[serde(default)]
+    pub canceled: Vec<Canceled>,
     pub fear_generated: i32,
     pub fear_cards_earned: u32,
     pub terror_after: u8,
@@ -173,6 +230,20 @@ pub struct TurnRecord {
     pub fear_cards: Vec<String>,
     pub board_after: Counts,
     pub lands_with_invaders_after: u32,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct StatusEffect {
+    pub kind: String,
+    pub source: String,
+    pub params: BTreeMap<String, String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Canceled {
+    pub step: InvaderStep,
+    pub land: Option<LandId>,
+    pub source: String,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]

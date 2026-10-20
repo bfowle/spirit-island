@@ -18,6 +18,9 @@ pub fn for_rule(spirit: &str, rule_id: &str, title: &str) -> Vec<RuleHook> {
         ("Thunderspeaker", "Sworn to Victory") => vec![RuleHook::PresenceDestroyedPerDahanKilled { range: 1 }],
         // Stone's Unyielding Defiance
         ("StonesUnyieldingDefiance", "Bestow the Endurance of Bedrock") => vec![RuleHook::BlightDoesNotCascadeUnlessOutnumbered],
+        ("VengeanceAsABurningPlague", "The Terror of a Slowly Unfolding Plague") => vec![RuleHook::DiseaseBuildForFear { fear: 1 }],
+        ("VengeanceAsABurningPlague", "Lingering Pestilence") => vec![RuleHook::DiseaseOnPresenceDestroyed],
+        ("VengeanceAsABurningPlague", "Wreak Vengeance for the Land's Corruption") => vec![RuleHook::BlightCountsAsBadlands],
         _ => {
             let _ = rule_id;
             vec![RuleHook::Untyped]

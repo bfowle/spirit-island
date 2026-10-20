@@ -81,11 +81,11 @@ pub fn island_for(rec: &GameRecord, defs: &Definitions) -> Island {
 }
 
 /// The land's pieces as they stood after the last Invader step up to `turn`.
-fn state_after(rec: &GameRecord, land: &LandId, turn: u32) -> Counts {
+pub fn state_after(rec: &GameRecord, land: &LandId, turn: u32) -> Counts {
     rec.lands.get(land).and_then(|l| l.visits.iter().filter(|v| v.turn <= turn).last().map(|v| v.after)).or_else(|| rec.setup.get(land).copied()).unwrap_or_default()
 }
 
-fn speed_fits(c: &PowerCard, fast_window: bool) -> bool {
+pub fn speed_fits(c: &PowerCard, fast_window: bool) -> bool {
     match (c.speed, fast_window) {
         (Speed::Fast, true) | (Speed::Slow, false) => true,
         (Speed::Slow, true) => c.all_effects().any(|e| matches!(e, Effect::MayBeFast { .. })),
@@ -93,7 +93,7 @@ fn speed_fits(c: &PowerCard, fast_window: bool) -> bool {
     }
 }
 
-fn range_ok(c: &PowerCard, presence: &BTreeMap<LandId, u32>, land: &LandId, island: &Island) -> Option<bool> {
+pub fn range_ok(c: &PowerCard, presence: &BTreeMap<LandId, u32>, land: &LandId, island: &Island) -> Option<bool> {
     let Some(r) = &c.range else {
         // a Spirit-targeting card works in the Spirit's own lands
         return Some(presence.get(land).is_some_and(|n| *n > 0));
@@ -118,7 +118,7 @@ fn range_ok(c: &PowerCard, presence: &BTreeMap<LandId, u32>, land: &LandId, isla
     if unknown { None } else { Some(false) }
 }
 
-fn target_ok(t: &TargetKind, st: &Counts, terrain: Option<Terrain>, coastal: Option<bool>) -> bool {
+pub fn target_ok(t: &TargetKind, st: &Counts, terrain: Option<Terrain>, coastal: Option<bool>) -> bool {
     if t.is_spirit() {
         return true;
     }

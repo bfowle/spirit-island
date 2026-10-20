@@ -224,6 +224,9 @@ pub struct Innate {
     pub range: Option<Range>,
     pub target: TargetKind,
     pub tiers: Vec<Tier>,
+    /// Sentences printed on the innate above its tiers ("This Power's Damage is done (separately) to both Invaders and Dahan").
+    #[serde(default)]
+    pub rider: Vec<String>,
 }
 
 impl Innate {
@@ -276,6 +279,9 @@ pub enum RuleHook {
     /// Disease lets a Build happen for Fear instead of being blocked
     /// (Vengeance).
     DiseaseBuildForFear { fear: u8 },
+    /// The spirit's actions treat Blight on the island as Badlands too
+    /// (Vengeance: Wreak Vengeance for the Land's Corruption).
+    BlightCountsAsBadlands,
     /// Not yet typed; the text is still carried on the rule.
     Untyped,
 }
@@ -302,6 +308,23 @@ pub struct Aspect {
     pub expansion: String,
 }
 
+/// What a spirit's own rules say about the ledger: how much a Dahan or a
+/// presence lost weighs for it, relative to the generic weight (1.0). Derived
+/// from the panel's typed hooks and innates; each factor carries its reason.
+/// Consumers (hindsight, the companion) read this instead of naming spirits.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Priorities {
+    pub dahan: f64,
+    pub presence: f64,
+    pub reasons: Vec<String>,
+}
+
+impl Default for Priorities {
+    fn default() -> Self {
+        Priorities { dahan: 1.0, presence: 1.0, reasons: vec![] }
+    }
+}
+
 /// A spirit as printed.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SpiritPanel {
@@ -323,6 +346,32 @@ pub struct SpiritPanel {
 }
 
 /// Energy income, card plays and elements for a set of revealed slots.
+impl SpiritPanel {
+    /// Every typed hook on the panel's special rules.
+    pub fn hooks(&self) -> impl Iterator<Item = &RuleHook> {
+        self.special_rules.iter().flat_map(|r| r.hooks.iter())
+    }
+
+    /// The ledger factors the panel's rules imply.
+    pub fn priorities(&self) -> Priorities {
+        let mut p = Priorities::default();
+        if self.hooks().any(|h| matches!(h, RuleHook::DiseaseOnPresenceDestroyed)) {
+            p.presence = 0.5;
+            p.reasons.push("presence destroyed by a Ravage leaves Disease behind (Lingering Pestilence): half a loss".into());
+        }
+        if self.hooks().any(|h| matches!(h, RuleHook::PresenceMovesWithDahan | RuleHook::PresenceDestroyedPerDahanKilled { .. })) {
+            p.dahan = 1.5;
+            p.reasons.push("presence moves with the Dahan and dies with them (Ally of the Dahan, Sworn to Victory): a Dahan lost weighs more".into());
+        }
+        // an innate whose Damage also hits the Dahan: the spirit does not fight beside them
+        if self.innates.iter().any(|i| i.rider.iter().any(|r| r.contains("both Invaders and {Dahan}"))) {
+            p.dahan = 0.5;
+            p.reasons.push("its innate's Damage hits the Dahan too (Epidemics Run Rampant): Dahan are not its allies, half a loss".into());
+        }
+        p
+    }
+}
+
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TrackState {
     pub income: i64,
@@ -536,6 +585,7 @@ mod tests {
                 tier(&[(Element::Air, 2), (Element::Fire, 1)], "Gather 2 Dahan"),
                 Tier { modifier: true, ..tier(&[(Element::Air, 4)], "This Power may be Fast") },
             ],
+            rider: vec![],
         };
         let mut have = ElementSet::new();
         have.add(Element::Air, 2);

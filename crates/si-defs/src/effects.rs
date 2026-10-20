@@ -15,15 +15,58 @@ macro_rules! re {
     };
 }
 
-re!(TAGS, r"<i>.*?</i>|<[^>]+>|\{BR\}|\{Bullet\}|\{EndBullet\}|\((?:max|min|count max)\.?[^)]*\)|\(\d+x/game\)");
+re!(TAGS, r"<i>.*?</i>|<[^>]+>|\{BR\}|\{Bullet\}|\{EndBullet\}|\((?:[Mm]ax|[Mm]in|[Cc]ount max)\.?[^)]*\)|\(\d+x/game\)");
 re!(SPACES, r"\s+");
-re!(LEADERS, r"^(?:Then,? |Then: |First, |Also, |Now: |Ongoing: |Bargain: |Instead: )");
+re!(LEADERS, r"^(?:Then,? |Then: |First, |Also, |Now: |Ongoing: |Bargain: |Instead: |Instead, |Otherwise, |If you do, )");
 re!(FEAR, r"^\+?(\d+) \{Fear\}(?:, before the Terror Level check| there)?$");
 re!(FEAR_IF_ANY, r"^(\d+) \{Fear\} if (.+)$");
-re!(AFTER, r"^After (.+?), (.+)$");
+re!(AFTER, r"^After (.+?)[,:] (.+)$");
 re!(CHOOSE, r"^Choose (?:up to )?\d+ (?:different )?(?:Invaders|(?:\{\w+\}/?)+)$");
 re!(FEAR_IF, r"^(\d+) \{Fear\} if Invaders are present(?: or adjacent)?$|^If Invaders are present, (\d+) \{Fear\}$");
-re!(FEAR_PER, r"^\+?(\d+) \{Fear\} (?:for each|per) (\{\w+\}|Invader|type of Invader present|\d+ \{\w+\})");
+re!(FEAR_PER, r"^\+?(\d+) \{Fear\} (?:for each|per) ((?:\{\w+\}/?)+|Invader|type of Invader present|\d+ \{\w+\})(?: in target land)?(?: and (?:for each|per) (?:of your )?(\{\w+\}))?");
+re!(SPREAD, r"^Add (\d+) \{(\w+)\} among (.+)$");
+re!(RAVAGE, r"^(?:Then,? )?Invaders in target land Ravage");
+re!(TRIGGER_DESTROYED, r"^The next time an Invader is destroyed in target land this turn,? (.+)$");
+re!(TRIGGER_AFTER_POWER, r"^Once this turn, after target Spirit uses a Power targeting a land, they may (.+)$");
+re!(TRIGGER_FEAR, r"^When Powers generate \{Fear\} in target land, (.+)$");
+re!(TRIGGER_NO_CASCADE, r"^When \{Blight\} is added to target land, it doesn't cascade$");
+re!(CHOOSE_LAND, r"^Choose (one of (?:target|Target) Spirit's lands|a land where you and target Spirit both have \{Presence\}|one of your lands)$");
+re!(TOKEN_CHOICE, r"^Choose a type of token from ((?:\{\w+\}/?)+) that exists in an adjacent land(?:; choosing \{Disease\} costs (\d+) Energy)?$");
+re!(ADD_CHOSEN, r"^Add (\d+) of that type of token to target land$");
+re!(ADD_EACH_ADJACENT, r"^(?:They |Target Spirit |You )?[Aa]dds? (\d+) \{(\w+)\} to each adjacent land$");
+re!(REPEAT_TARGET, r"^(?:Once (?:this turn|per turn), )?[Tt]arget(?: Spirit)? may Repeat (?:a|one|\d+|up to \d+ other|the lowest-cost) Power Cards?");
+re!(PLAY_ANOTHER, r"^(?:Target Spirit may (?:immediately )?|They may |You may )?[Pp]lay (?:another Power Card|a Power Card|it|the Major Power)(?: immediately)? by paying its cost");
+re!(MAKE_FAST, r"^(?:This turn, )?[Tt]arget Spirit may (?:use (?:up to )?(\d+) \{Slow\} Powers? as if (?:they were|it were) \{Fast\}|make (\d+) Power which says .+ \{Fast\})");
+re!(RECLAIM_N, r"^(?:Target Spirit may |You may )?Reclaims? (?:up to )?(\d+) (?:Power )?[Cc]ards?");
+re!(RECLAIM_OR_REGAIN, r"^Target Spirit either Reclaims (\d+) Power Card or re-gains a Unique Power they previously forgot$");
+re!(ENERGY_PER, r"^(?:Otherwise, )?(?:[Tt]arget Spirit |[Yy]ou )?gains? (\d+) Energy per (.+)$");
+re!(ENERGY_EQUAL, r"gain Energy equal to (\{\w+\})");
+re!(INVADER_RULE, r"^(?:During Ravage(?: actions)?,? .+|Invaders do not heal Damage at end of turn|\{Explorer\} fight alongside \{Dahan\}.*|\{Dahan\} in target land do not fight back|\{Dahan\} in target land cannot be changed|\{Blight\} cannot be added|This Power ignores Health bonuses|Do not destroy any \{Dahan\}|Also deal half of the Damage Invaders did to the land.*|In your lands, Invaders and \{Dahan\} have -\d+ Health.*|[Ii]f Invaders Ravage in target land, they Damage Invaders in adjacent lands.*|Before Pushing, \{Explorer\} and \{Town\}/\{City\} do damage to each other)$");
+re!(DESTROY_PRESENCE, r"^(?:Destroy|Remove) (\d+) of your \{Presence\}(?: on the island from the game)?$");
+re!(REMOVE_HEALTH, r"^Remove up to (\d+) Health worth of Invaders per \{Dahan\}$");
+re!(INFIGHTING, r"^(?:Each|(\d+)) Invaders? with \{Strife\} deals? Damage to other Invaders(?: in target land)?$");
+re!(DUEL, r"^(\d+) Invaders? and (\d+) \{Dahan\} deal Damage to each other$");
+re!(NO_BLIGHT, r"^When \{Blight\} would be added to target land, instead leave it on the card$");
+re!(BLIGHT_ADJ_IF_NONE, r"^In each land adjacent to the target, (.+) if it doesn't have any$");
+re!(ADD_PRESENCE_ANY, r"[Aa]dds? (?:up to )?(\d+) (?:of (?:their|your) )?\{DestroyedPresenceNew\}");
+re!(GATHER_ANOTHER, r"^(?:[Yy]ou may )?Gather another (\{\w+\})$");
+re!(REMOVE_AN_INVADER, r"^(?:[Yy]ou may )?Remove an Invader(.*)$");
+re!(REMOVE_ANOTHER_BLIGHT, r"^Remove another \{Blight\}$");
+re!(MAY_SLOW, r"^This [Pp]ower may be \{Slow\}$");
+re!(BUILD_THEN_RAVAGE, r"^they Build, then Ravage$");
+re!(DESTROY_THEM, r"^Destroy them$");
+re!(FOR_EACH_ELEMENTS, r"^For each ((?:\d+ )?\{\w+\}(?: (?:\d+ )?\{\w+\})*)(?: pair)? you have, (.+)$");
+re!(IF_GATHER_DO_SO, r"^If you can Gather (\d+) \{Beast\}, do so, then (.+)$");
+re!(VARIABLE, r"^X (Damage|\{Fear\})(?:, where X is (.+))?$");
+re!(CHOOSE_PIECE, r"^(?:For each \{\w+\} present, )?choose a different Invader$|^Choose a Spirit with \{Presence\} in target land$|^Target Spirit may choose one of their \{SacredSite\}$|^Choose (?:any|one) land");
+re!(RANGE_BONUS, r"\{\+(\d)Range\}");
+re!(TIMING, r"^(?i)(at end of turn[^:,]*|during time passes|each \{slow\} phase|each slow phase|once per turn|when [^,:]+|after [^,:]+|before [^,:]+)[,:]?\s*(.*)$");
+re!(ICON_ONLY, r"^(?:\{\w+\}(?:/\{\w+\})*\s*)+$");
+re!(MARK_IT, r"^Mark it$");
+re!(USE_ITS_TEXT, r"^Use its text effects on target land immediately");
+re!(DAHAN_HEALTH, r"^\{Dahan\} have \+(\d+) Health(?: while in target land)?$");
+re!(UNMODELED, r"^(?:Destroy the board containing target land|.*Add a random new Island Board|Swap the top card of the Invader Deck|Target land and a land adjacent to it become a single land|Until the end of the \{Slow\} phase, target land and everything in it cease to exist|On the board moved (?:from|to): .+|From now on, Build Cards .+|Turn the top card of the Fear Deck face-up|Discard the top card of the Minor Power Deck|Remove all pieces, then Add the pieces matching target land's Setup symbols|Mark both target land and another land .+|Mark it .+|Ignore its Setup icons.+)");
+re!(FEAR_DECK_REMOVE, r"^Spirits may jointly spend (\d+) Energy per player .*to remove the top card of the Fear Deck from the game");
 re!(DAMAGE, r"^(?:deal |do )?(\+)?(\d+) Damage(.*)$");
 re!(DAMAGE_EQUAL, r"^Damage equal to");
 re!(DOES_BONUS, r"^(?:Target Spirit |You |They )?(?:does|do|deal|deals) \+(\d+) Damage");
@@ -31,20 +74,20 @@ re!(DEFEND, r"^(?:In one of (?:t|T)arget Spirit's lands, )?Defend (\d+)(?: in ta
 re!(DEFEND_BONUS, r"^(?:Defend \+(\d+)|\+(\d+) Defend)$");
 re!(DEFEND_PER, r"^(?:In one of (?:t|T)arget Spirit's lands, )?Defend (\d+) per (\{\w+\}|Invader)");
 re!(DEFEND_GRANT, r"(?:grants|provides) Defend (\d+)");
-re!(PUSH, r"^(?:You may |Target Spirit may )?(?:Gather or )?Push (?:up to |another )?(\d+|all|any number of) (?:of (?:your|their) )?((?:(?:\{\w+\}|Invaders?)/?)+)(?: and (?:up to )?(\d+) ((?:(?:\{\w+\}|Invaders?)/?)+))?(?: per (\{\w+\}))?");
+re!(PUSH, r"^(?:[Yy]ou may |Target Spirit may |may )?(?:Gather or )?Push (?:up to |another )?(\d+|all|any number of) (?:those |of (?:your|their) )?((?:(?:\{\w+\}|Invaders?)/?)+)(?: and (?:up to )?(\d+) ((?:(?:\{\w+\}|Invaders?)/?)+))?(?: per (\{\w+\}))?");
 re!(PUSH_HALF, r"^Push up to half \(round (?:up|down)\) of (\{\w+\}|Invaders)");
 re!(PUSH_IT, r"^(?:You may )?Push (?:that|it|them|the) ?(\{\w+\})?(?: you added \{\w+\} to)?$");
-re!(GATHER, r"^(?:You may |Target Spirit )?Gathers? (?:up to )?(\d+|all) (?:of (?:your|their) )?((?:(?:\{\w+\}|Invaders?)/?)+)(?: and (?:up to )?(\d+) ((?:(?:\{\w+\}|Invaders?)/?)+))?(?: per (\{\w+\}))?");
+re!(GATHER, r"^(?:[Yy]ou may |Target Spirit )?Gathers? (?:up to )?(\d+|all) (?:of (?:your|their) )?((?:(?:\{\w+\}|Invaders?)/?)+)(?: and (?:up to )?(\d+) ((?:(?:\{\w+\}|Invaders?)/?)+))?(?: per (\{\w+\}))?");
 re!(MOVE, r"^(?:You may )?Move (?:up to )?(\d+) (?:of (?:your|their|target Spirit's) )?((?:(?:\{\w+\}|Invaders?)/?)+)");
 re!(ADD, r"^(?:Target Spirit |They |You )?(?:Add|add)s? ((?:(?:up to )?\d+ (?:additional )?\{\w+\}(?:, | and |, and )?)+)");
 re!(PIECE_N, r"(\d+) (?:additional )?\{(\w+)\}");
 re!(REMOVE, r"^(?:Remove|remove) (?:up to )?(\d+|all|any number of) (?:Damaged )?((?:(?:\{\w+\}|Invaders?)/?)+)");
 re!(REMOVE_HALF, r"^Remove up to half \(round (?:up|down)\) of (\{\w+\}|Invaders)");
 re!(ABDUCT, r"^Abduct (?:up to )?(\d+|it) ?((?:(?:\{\w+\}|Invaders?)/?)*)");
-re!(DESTROY, r"^(?:Destroy|destroy) (all|\d+) ((?:(?:\{\w+\}|Invaders?)/?)+)");
+re!(DESTROY, r"^(?:Destroy|destroy) (?:up to )?(all|\d+) ((?:(?:\{\w+\}|Invaders?)/?)+)(?: per ((?:\{\w+\}/?)+))?");
 re!(DROWN, r"^Drown (.+)$");
-re!(REPLACE, r"^(?:You may )?Replace (\d+) (?:additional )?\{(\w+)\} with (?:(\d+) )?\{(\w+)\}");
-re!(ENERGY, r"^(?:[Tt]arget Spirit |they |you |They |You )?(?:also )?(?:gains?|Gain) (\d+) Energy$");
+re!(REPLACE, r"^(?:[Yy]ou may )?(?:Replace|replace) (\d+|each|all) (?:additional |of (?:their|your) )?\{(\w+)\} with (?:(\d+) )?\{(\w+)\}");
+re!(ENERGY, r"^(?:[Tt]arget Spirit |they |you |They |You )?(?:also )?(?:gains?|Gain) \+?(\d+) Energy$");
 re!(CARD, r"^(?:[Tt]arget Spirit |they |you |They |You )?(?:also )?(?:gains?|Gain) an? (Minor|Major)? ?Power(?: Card)?$");
 re!(ELEMENT, r"^(?:[Tt]arget Spirit |you |You )?(?:gains?|Gain) (\d+) (?:different Elements|\{\w+\})|^Prepare (\d+) Element Marker|^Target Spirit gains those Elements");
 re!(RANGE, r"^(?:Target Spirit gets|[Tt]his Power has|Increase this Power's Range to) \{\+?(\d+)Range\}");
@@ -55,16 +98,16 @@ re!(SKIP_N, r"^(?:Invaders )?[Ss]kip (?:up to )?(\d+|one) (?:Invader |Ravage/Bui
 re!(FAST_COST, r"^You may pay (\d+) Energy to make this [Pp]ower \{Fast\}$");
 re!(FAST, r"^This [Pp]ower (?:may be|is) \{Fast\}$");
 re!(TERROR, r"^\{(Terror\w+)\} ?: ?(.+)$");
-re!(FOR_EACH, r"^For (?:each|every) (\{\w+\}(?:/\{\w+\})?|Invader|type of token you added|token removed|of your \{SacredSite\}|adjacent land with your \{Presence\})(?: in target land| present| Removed| you have| in/adjacent to target land| on your “Deep Slumber” track)?,? (.+)$");
+re!(FOR_EACH, r"^For (?:each|every) (\{\w+\}(?:/\{\w+\})?|Invader|type of token you added|token removed|of your \{SacredSite\}|adjacent land with your \{Presence\})( in target land| present| Removed| you have| in/adjacent to target land| in or adjacent to target land| in adjacent lands| past the first| Pushed by this Power| on your “Deep Slumber” track)?,? (.+)$");
 re!(EACH_DOES, r"^Each (?:remaining )?(\{\w+\}|Invader) (does|deals|takes|destroys) (.+)$");
-re!(IF_COMMA, r"^If (.+?), (.+)$");
+re!(IF_COMMA, r"^[Ii]f (.+?), (.+)$");
 re!(IF_COLON, r"^If (.+?): ?(.+)$");
 re!(OTHERWISE, r"^Otherwise,? ?:? ?(.+)$");
 re!(INSTEAD, r"^[Ii]nstead,? (.+)$");
 re!(MAY_INSTEAD, r"^(?:You|you|They|they|Target Spirit|target Spirit) may instead (.+)$");
 re!(PAY, r"^(?:You may |Target Spirit may |Spirits may )?[Pp]ay (\d+) Energy to (?:instead )?(.+)$");
-re!(AREA, r"^In (each adjacent land|both origin land and target land|up to \d+ adjacent lands(?: with \{\w+\})?|a land adjacent to both origin and target|each other Coastal land on the same board|lands where you did Damage|that land and each adjacent land|one of (?:target|Target) Spirit's lands|one of your lands|each target land|that land|lands you Pushed \{Dahan\} to|any \d+ lands with \d+ or more Invaders|any \d+ lands on the island|both target and one adjacent land|a single land within \{\d+Range\} of your \{Presence\})[,:]? ?(.+)$");
-re!(SOMEONE_MAY, r"^(?:Target Spirit|They|You) (?:may |also |now |may also )(.+)$");
+re!(AREA, r"^In (each land within \{\d+Range\}|one land within \{\d+Range\}|any number of lands with \{\w+\}|every land in the game|a land with \{Blight\} where you have \{Presence\}|each land where you removed \{\w+\}|your lands|each adjacent land|both origin land and target land|up to \d+ adjacent lands(?: with \{\w+\})?|a land adjacent to both origin and target|each other Coastal land on the same board|lands where you did Damage|that land and each adjacent land|one of (?:target|Target) Spirit's lands|one of your lands|each target land|that land|lands you Pushed \{Dahan\} to|any \d+ lands with \d+ or more Invaders|any \d+ lands on the island|both target and one adjacent land|a single land within \{\d+Range\} of your \{Presence\})[,:]? ?(.+)$");
+re!(SOMEONE_MAY, r"^(?:Target Spirit|They|You|you) (?:may |also |now |may also )(.+)$");
 
 /// Strip the engine's markup, reminder text and "(max. N)" notes, collapse whitespace.
 pub fn clean(s: &str) -> String {
@@ -78,14 +121,33 @@ fn sentences(line: &str) -> Vec<String> {
     let chars: Vec<char> = text.chars().collect();
     let mut out = Vec::new();
     let mut start = 0;
+    let mut depth = 0i32;
     for i in 0..chars.len() {
-        if chars[i] == '.' && i + 2 < chars.len() && chars[i + 1] == ' ' && (chars[i + 2].is_ascii_uppercase() || matches!(chars[i + 2], '{' | '+') || chars[i + 2].is_ascii_digit()) {
+        match chars[i] {
+            '(' => depth += 1,
+            ')' => depth -= 1,
+            _ => {}
+        }
+        if depth <= 0 && chars[i] == '.' && i + 2 < chars.len() && chars[i + 1] == ' ' && (chars[i + 2].is_ascii_uppercase() || matches!(chars[i + 2], '{' | '+' | '(') || chars[i + 2].is_ascii_digit()) {
             out.push(chars[start..=i].iter().collect::<String>());
             start = i + 2;
         }
     }
     out.push(chars[start..].iter().collect::<String>());
-    out.into_iter().map(|s| s.trim().trim_end_matches('.').trim().to_string()).filter(|s| !s.is_empty() && *s != "{Or}").collect()
+    // a parenthetical at the end of a sentence is a clarification of its own
+    let mut split: Vec<String> = Vec::new();
+    for s in out {
+        let s = s.trim().trim_end_matches('.').trim().to_string();
+        if let Some(i) = s.rfind(" (") {
+            if s.ends_with(')') && !s.starts_with('(') {
+                split.push(s[..i].trim().trim_end_matches('.').to_string());
+                split.push(s[i + 1..].to_string());
+                continue;
+            }
+        }
+        split.push(s);
+    }
+    split.into_iter().filter(|s| !s.is_empty() && *s != "{Or}").collect()
 }
 
 /// Parse a body (one string per printed line). `{Or}` lines split the body
@@ -147,12 +209,55 @@ pub fn parse_sentence(raw: &str) -> Vec<Effect> {
     if s.ends_with(':') {
         return vec![];
     }
+    if let Some(e) = fallback(&s) {
+        return vec![e];
+    }
     vec![Effect::Other(s)]
+}
+
+/// The last resort: a typed kind from what the sentence talks about. Each kind
+/// says what it is (Spirit economy, a special token, timing, movement, a deck,
+/// a distribution, rules text); none of them hides board effects.
+fn fallback(s: &str) -> Option<Effect> {
+    let t = s.trim();
+    let lower = t.to_ascii_lowercase();
+    if t.starts_with('(') || (t.ends_with(')') && !t.contains('(')) || ICON_ONLY.is_match(t) || t == "If the Terror Level is" {
+        return Some(Effect::Clarification(t.to_string()));
+    }
+    for tok in ["{Quake}", "{Impending}", "{MarkedBeast}", "{BreathOfDarknessDownYourSpine}", "{TheEndlessDark}", "{WanderingVoiceKeensDelirium}", "{Vitality}", "Absorbed", "Empower"] {
+        if t.contains(tok) {
+            return Some(Effect::SpecialToken { token: tok.trim_matches(|c| c == '{' || c == '}').to_string(), text: t.to_string() });
+        }
+    }
+    if let Some(c) = TIMING.captures(t) {
+        return Some(Effect::Timing { when: c[1].trim().to_string(), text: c[2].trim().to_string() });
+    }
+    let has = |ws: &[&str]| ws.iter().any(|w| lower.contains(w));
+    if has(&["energy", "power card", "element", "reclaim", "forget", "repeat", "major power", "minor power", "presence track", "{presence} track", "play it", "play a power", "resolve 1 {slow}", "gift each other", "use each other's", "take a minor power", "unique power", "they draw", "did not keep", "do likewise"]) {
+        return Some(Effect::SpiritEffect(t.to_string()));
+    }
+    if has(&["deck", "discard pile", "face-up", "face-down", "look at the top card", "shuffle"]) {
+        return Some(Effect::DeckEffect(t.to_string()));
+    }
+    if has(&["split", "however desired", "may be dealt in adjacent", "divide", "more within"]) {
+        return Some(Effect::Distribution(t.to_string()));
+    }
+    if has(&["move", "push", "gather", "bring along", "brings", "drowning", "return up to"]) {
+        return Some(Effect::Movement(t.to_string()));
+    }
+    if has(&["ravage", "health", "damage invaders did"]) {
+        return Some(Effect::InvaderRule(t.to_string()));
+    }
+    if has(&["cannot", "can't", "can target", "ignoring", "do not affect", "does not", "don't", "may count as", "ignores", "removed from the game", "leaves the game", "is not considered", "treat all", "must be used", "elemental thresholds", "the cost is", "cost limit", "may not", "no effect", "not by adding"]) {
+        return Some(Effect::Clarification(t.to_string()));
+    }
+    None
 }
 
 fn count(s: &str) -> u8 {
     match s {
-        "all" | "any number of" => 255,
+        "all" | "any number of" | "each" => 255,
+        "an" | "a" | "another" => 1,
         "one" => 1,
         n => n.parse().unwrap_or(1),
     }
@@ -183,6 +288,9 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     }
     if lower.contains("may be immediately pushed") {
         return one(Effect::Push { count: 255, what: vec![PieceFilter::AnyInvader] });
+    }
+    if lower.contains("may move with each pushed piece") {
+        return one(Effect::Move { count: 1, what: vec![PieceFilter::Token(TokenKind::Disease)] });
     }
     if let Some(c) = FEAR_IF.captures(s) {
         return one(Effect::FearIfInvaders(count(c.get(1).or(c.get(2)).unwrap().as_str())));
@@ -223,6 +331,155 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     if FAST.is_match(s) {
         return one(Effect::MayBeFast { cost: None });
     }
+    // --- board effects with their own shapes ------------------------------
+    if let Some(c) = DESTROY_PRESENCE.captures(s) {
+        return one(Effect::DestroyPresence(count(&c[1])));
+    }
+    if let Some(c) = REMOVE_HEALTH.captures(s) {
+        return one(Effect::Per { per: PieceFilter::Piece(si_model::island::PieceKind::Dahan), then: vec![Effect::RemoveHealth(count(&c[1]))] });
+    }
+    if let Some(c) = INFIGHTING.captures(s) {
+        return one(Effect::Infighting(c.get(1).map(|m| count(m.as_str())).unwrap_or(255)));
+    }
+    if let Some(c) = DUEL.captures(s) {
+        return one(Effect::Duel { invaders: count(&c[1]), dahan: count(&c[2]) });
+    }
+    if NO_BLIGHT.is_match(s) {
+        return one(Effect::NoBlight);
+    }
+    if let Some(c) = BLIGHT_ADJ_IF_NONE.captures(s) {
+        let then = parse_sentence(&c[1]);
+        if typed(&then) {
+            return one(Effect::Area { scope: "each adjacent land".into(), then: vec![Effect::Conditional { condition: "the land has no {blight}".into(), then }] });
+        }
+    }
+    if let Some(c) = GATHER_ANOTHER.captures(s) {
+        return one(Effect::Gather { count: 1, what: vec![PieceFilter::parse(&c[1])] });
+    }
+    if REMOVE_AN_INVADER.is_match(s) {
+        return one(Effect::Remove { count: 1, what: vec![PieceFilter::AnyInvader] });
+    }
+    if REMOVE_ANOTHER_BLIGHT.is_match(s) {
+        return one(Effect::RemoveBlight(1));
+    }
+    if MAY_SLOW.is_match(s) {
+        return one(Effect::MaySlow);
+    }
+    if BUILD_THEN_RAVAGE.is_match(s) {
+        return Some(vec![Effect::Build, Effect::Ravage]);
+    }
+    if DESTROY_THEM.is_match(s) {
+        return one(Effect::Destroy { count: 255, what: vec![PieceFilter::AnyInvader, PieceFilter::Piece(si_model::island::PieceKind::Dahan)] });
+    }
+    if let Some(c) = FOR_EACH_ELEMENTS.captures(s) {
+        let then = parse_sentence(&c[2]);
+        if typed(&then) {
+            return one(Effect::Per { per: PieceFilter::Other(format!("elements: {}", &c[1])), then });
+        }
+    }
+    if let Some(c) = IF_GATHER_DO_SO.captures(s) {
+        let mut then = vec![Effect::Gather { count: count(&c[1]), what: vec![PieceFilter::Token(TokenKind::Beast)] }];
+        let rest = parse_sentence(&c[2]);
+        if typed(&rest) {
+            then.extend(rest);
+            return one(Effect::Conditional { condition: "a {beast} can be gathered".into(), then });
+        }
+    }
+    if let Some(c) = VARIABLE.captures(s) {
+        return one(Effect::Variable { what: c[1].replace(['{', '}'], ""), by: c.get(2).map(|m| m.as_str().to_string()).unwrap_or_else(|| "X as the card defines it".into()) });
+    }
+    if CHOOSE_PIECE.is_match(s) {
+        return one(Effect::Choose(s.to_string()));
+    }
+    if MARK_IT.is_match(s) {
+        return one(Effect::SpecialToken { token: "MarkedBeast".into(), text: s.to_string() });
+    }
+    if USE_ITS_TEXT.is_match(s) {
+        return one(Effect::Unmodeled(s.to_string()));
+    }
+    if let Some(c) = ADD_PRESENCE_ANY.captures(s) {
+        return one(Effect::AddPresence(count(&c[1])));
+    }
+    // --- triggers, choices, spirit economy, rules, out-of-reach ----------
+    if let Some(c) = TRIGGER_DESTROYED.captures(s) {
+        let then = parse_sentence(&c[1]);
+        if typed(&then) {
+            return one(Effect::Trigger { when: "an Invader is destroyed in target land".into(), then, once: true });
+        }
+    }
+    if let Some(c) = TRIGGER_AFTER_POWER.captures(s) {
+        let then = parse_sentence(&c[1]);
+        if typed(&then) {
+            return one(Effect::Trigger { when: "after target Spirit uses a Power targeting a land".into(), then, once: true });
+        }
+    }
+    if let Some(c) = TRIGGER_FEAR.captures(s) {
+        let then = parse_sentence(&c[1]);
+        if typed(&then) {
+            return one(Effect::Trigger { when: "Powers generate {Fear} in target land".into(), then, once: false });
+        }
+    }
+    if TRIGGER_NO_CASCADE.is_match(s) {
+        return one(Effect::Trigger { when: "{Blight} is added to target land".into(), then: vec![Effect::NoCascade], once: false });
+    }
+    if let Some(c) = CHOOSE_LAND.captures(s) {
+        return one(Effect::ChooseLand(c[1].to_string()));
+    }
+    if let Some(c) = TOKEN_CHOICE.captures(s) {
+        let options: Vec<TokenKind> = c[1].split('/').filter_map(|w| match PieceFilter::parse(w) { PieceFilter::Token(k) => Some(k), _ => None }).collect();
+        return one(Effect::TokenChoice { options, disease_cost: c.get(2).map(|m| count(m.as_str())).unwrap_or(0) });
+    }
+    if let Some(c) = ADD_CHOSEN.captures(s) {
+        return one(Effect::AddChosenToken(count(&c[1])));
+    }
+    if let Some(c) = ADD_EACH_ADJACENT.captures(s) {
+        let n = count(&c[1]);
+        let inner = match &c[2] {
+            "Presence" | "DestroyedPresenceNew" => Effect::AddPresence(n),
+            "Dahan" => Effect::AddDahan(n),
+            "Blight" => Effect::AddBlight(n),
+            w => match TokenKind::parse(w) {
+                Some(k) => Effect::AddToken { kind: k, count: n },
+                None => Effect::Other(s.to_string()),
+            },
+        };
+        return one(Effect::Area { scope: "each adjacent land".into(), then: vec![inner] });
+    }
+    if REPEAT_TARGET.is_match(s) {
+        return one(Effect::Repeat);
+    }
+    if PLAY_ANOTHER.is_match(s) {
+        return one(Effect::PlayAnother);
+    }
+    if let Some(c) = MAKE_FAST.captures(s) {
+        return one(Effect::MakeFast(c.get(1).or(c.get(2)).map(|m| count(m.as_str())).unwrap_or(1)));
+    }
+    if let Some(c) = RECLAIM_OR_REGAIN.captures(s) {
+        return one(Effect::Choice(vec![vec![Effect::Reclaim(count(&c[1]))], vec![Effect::RegainForgotten]]));
+    }
+    if let Some(c) = RECLAIM_N.captures(s) {
+        return one(Effect::Reclaim(count(&c[1])));
+    }
+    if let Some(c) = ENERGY_PER.captures(s) {
+        return one(Effect::EnergyPer { n: count(&c[1]), per: c[2].trim_end_matches('.').to_string() });
+    }
+    if let Some(c) = ENERGY_EQUAL.captures(s) {
+        return one(Effect::EnergyPer { n: 1, per: c[1].to_string() });
+    }
+    if let Some(c) = DAHAN_HEALTH.captures(s) {
+        return one(Effect::DahanHealth(count(&c[1])));
+    }
+    if INVADER_RULE.is_match(s) {
+        return one(Effect::InvaderRule(s.to_string()));
+    }
+    if UNMODELED.is_match(s) {
+        return one(Effect::Unmodeled(s.to_string()));
+    }
+    if let Some(c) = RANGE_BONUS.captures(s) {
+        if s.len() < 120 {
+            return one(Effect::RangeBonus(count(&c[1])));
+        }
+    }
     // --- structure ------------------------------------------------------
     if let Some(c) = TERROR.captures(s) {
         let then = parse_sentence(&c[2]);
@@ -231,9 +488,14 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
         }
     }
     if let Some(c) = FOR_EACH.captures(s) {
-        let then = parse_sentence(&c[2]);
+        let then = parse_sentence(&c[3]);
         if typed(&then) {
-            return one(Effect::Per { per: PieceFilter::parse(c[1].split(' ').next().unwrap()), then });
+            let suffix = c.get(2).map(|m| m.as_str().trim()).unwrap_or("");
+            let per = match suffix {
+                "in or adjacent to target land" | "in adjacent lands" | "past the first" | "Pushed by this Power" => PieceFilter::Other(format!("{} {}", &c[1], suffix)),
+                _ => PieceFilter::parse(c[1].split(' ').next().unwrap()),
+            };
+            return one(Effect::Per { per, then });
         }
     }
     if let Some(c) = EACH_DOES.captures(s) {
@@ -255,7 +517,7 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     if let Some(c) = AREA.captures(s) {
         let then = parse_sentence(&c[2]);
         if typed(&then) {
-            return one(Effect::Conditional { condition: format!("in {}", &c[1]), then });
+            return one(Effect::Area { scope: c[1].to_string(), then });
         }
     }
     if let Some(c) = PAY.captures(s) {
@@ -281,7 +543,23 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
         return one(Effect::Fear(count(&c[1])));
     }
     if let Some(c) = FEAR_PER.captures(s) {
-        return one(Effect::Per { per: PieceFilter::parse(c[2].split(' ').last().unwrap()), then: vec![Effect::Fear(count(&c[1]))] });
+        let n = count(&c[1]);
+        let mut out: Vec<Effect> = c[2].split('/').map(|w| Effect::Per { per: PieceFilter::parse(w.split(' ').last().unwrap()), then: vec![Effect::Fear(n)] }).collect();
+        if let Some(extra) = c.get(3) {
+            out.push(Effect::Per { per: PieceFilter::parse(extra.as_str()), then: vec![Effect::Fear(n)] });
+        }
+        return Some(out);
+    }
+    if RAVAGE.is_match(s) {
+        return one(Effect::Ravage);
+    }
+    if let Some(c) = FEAR_DECK_REMOVE.captures(s) {
+        return one(Effect::FearDeckRemove { energy_per_player: count(&c[1]) });
+    }
+    if let Some(c) = SPREAD.captures(s) {
+        if let PieceFilter::Token(kind) = PieceFilter::parse(&format!("{{{}}}", &c[2])) {
+            return one(Effect::Spread { kind, count: count(&c[1]), scope: c[3].trim_end_matches('.').to_string() });
+        }
     }
     if let Some(c) = DEFEND_PER.captures(s) {
         return one(Effect::Per { per: PieceFilter::parse(&c[2]), then: vec![Effect::Defend(count(&c[1]))] });
@@ -357,7 +635,7 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
                 "Presence" | "DestroyedPresenceNew" => Effect::AddPresence(n),
                 w => match TokenKind::parse(w) {
                     Some(kind) => Effect::AddToken { kind, count: n },
-                    None => Effect::Other(s.to_string()),
+                    None => Effect::SpecialToken { token: w.to_string(), text: s.to_string() },
                 },
             });
         }
@@ -371,11 +649,17 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     if let Some(c) = REMOVE.captures(s) {
         let n = count(&c[1]);
         let what = filters(&c[2]);
-        return one(match what.as_slice() {
+        let mut out = vec![match what.as_slice() {
             [PieceFilter::Blight] => Effect::RemoveBlight(n),
             [PieceFilter::Token(kind)] => Effect::RemoveToken { kind: *kind, count: n },
             _ => Effect::Remove { count: n, what },
-        });
+        }];
+        // "Remove 1 City, 1 Town, and 1 Explorer": the list after the first item
+        let rest = &s[c.get(0).unwrap().end()..];
+        for p in PIECE_N.captures_iter(rest) {
+            out.push(Effect::Remove { count: count(&p[1]), what: vec![PieceFilter::parse(&p[2])] });
+        }
+        return Some(out);
     }
     if let Some(c) = REMOVE_HALF.captures(s) {
         return one(match filters(&c[1]).as_slice() {
@@ -388,7 +672,11 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
         return one(Effect::Remove { count: if &c[1] == "it" { 1 } else { count(&c[1]) }, what });
     }
     if let Some(c) = DESTROY.captures(s) {
-        return one(Effect::Destroy { count: count(&c[1]), what: filters(&c[2]) });
+        let d = Effect::Destroy { count: count(&c[1]), what: filters(&c[2]) };
+        return one(match c.get(3) {
+            Some(per) => Effect::Per { per: PieceFilter::Other(per.as_str().to_string()), then: vec![d] },
+            None => d,
+        });
     }
     if let Some(c) = DROWN.captures(s) {
         let out: Vec<Effect> = PIECE_N.captures_iter(&c[1]).map(|p| Effect::Destroy { count: count(&p[1]), what: vec![PieceFilter::parse(&p[2])] }).collect();
@@ -397,7 +685,16 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
         }
     }
     if let Some(c) = REPLACE.captures(s) {
-        return one(Effect::Replace { count: count(&c[1]), from: PieceFilter::parse(&c[2]), to: PieceFilter::parse(&c[4]) });
+        let n = count(&c[1]);
+        let to = PieceFilter::parse(&c[4]);
+        let mut out = vec![Effect::Replace { count: n, from: PieceFilter::parse(&c[2]), to: to.clone() }];
+        if let (Some(m), PieceFilter::Piece(kind)) = (c.get(3), &to) {
+            let total = count(m.as_str());
+            if total > n && n != 255 {
+                out.push(Effect::AddInvaders { kind: *kind, count: total - n });
+            }
+        }
+        return Some(out);
     }
     if let Some(c) = DOWNGRADE.captures(s) {
         return one(Effect::Downgrade(count(&c[1])));
@@ -451,7 +748,7 @@ mod tests {
     #[test]
     fn plain_sentences() {
         assert_eq!(p(&["1 {Fear}.", "Invaders skip Ravage Actions."]), vec![Effect::Fear(1), Effect::SkipRavage]);
-        assert_eq!(p(&["Defend 3.", "During Ravage, {Dahan} in target land deal damage simultaneously with Invaders."]), vec![Effect::Defend(3), Effect::Other("During Ravage, {Dahan} in target land deal damage simultaneously with Invaders".into())]);
+        assert_eq!(p(&["Defend 3.", "During Ravage, {Dahan} in target land deal damage simultaneously with Invaders."]), vec![Effect::Defend(3), Effect::InvaderRule("During Ravage, {Dahan} in target land deal damage simultaneously with Invaders".into())]);
         assert_eq!(p(&["1 {Fear}.", "1 Damage to each Invader.", "1 Damage to each {Dahan}."]), vec![Effect::Fear(1), Effect::Damage { amount: 1, to: DamageTarget::EachInvader }, Effect::Damage { amount: 1, to: DamageTarget::EachDahan }]);
         assert_eq!(p(&["Push up to 3 {Explorer}/{Town}."]), vec![Effect::Push { count: 3, what: vec![PieceFilter::Piece(PieceKind::Explorer), PieceFilter::Piece(PieceKind::Town)] }]);
         assert_eq!(p(&["Add 1 {Badlands} and 1 {Wilds}."]), vec![Effect::AddToken { kind: TokenKind::Badlands, count: 1 }, Effect::AddToken { kind: TokenKind::Wilds, count: 1 }]);
@@ -482,7 +779,7 @@ mod tests {
         let terror = p(&["{TerrorI} : 1 {Fear}.", "{TerrorII} : 2 {Fear} or add 1 {Strife}."]);
         assert!(matches!(&terror[1], Effect::Conditional { condition, then } if condition == "TerrorII" && matches!(then[0], Effect::Choice(_))));
         let manifest = p(&["1 {Fear}.", "Each {Dahan} deals Damage equal to the number of your {Presence} in target land."]);
-        assert!(matches!(&manifest[1], Effect::Per { per: PieceFilter::Piece(PieceKind::Dahan), .. }));
+        assert!(matches!(&manifest[1], Effect::Per { per: PieceFilter::Piece(si_model::island::PieceKind::Dahan), .. }));
         let sea = p(&["If Invaders are present, 2 {Fear} per {Beast} (max. 6 {Fear})."]);
         assert!(matches!(&sea[0], Effect::Conditional { then, .. } if matches!(&then[0], Effect::Per { per: PieceFilter::Token(TokenKind::Beast), .. })));
     }

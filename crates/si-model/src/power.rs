@@ -103,6 +103,78 @@ pub enum Effect {
     /// Remove pieces without Destroying them (no Fear, no counterattack).
     /// `count` 255 is "all", 128 is "half".
     Remove { count: u8, what: Vec<PieceFilter> },
+    /// Tokens added among other lands of the player's choosing ("Add 4 Disease
+    /// among Coastal lands other than target land"); `scope` is the printed scope.
+    Spread { kind: TokenKind, count: u8, scope: String },
+    /// "Invaders in target land Ravage": a Ravage the Power forces now.
+    Ravage,
+    /// Spirits may jointly pay Energy to remove the top card of the Fear Deck
+    /// from the game (Plague Ships Sail to Distant Ports). Optional.
+    FearDeckRemove { energy_per_player: u8 },
+    /// Effects that apply over a scope of lands ("In each adjacent land", "In that
+    /// land and each adjacent land", "both target and one adjacent land").
+    Area { scope: String, then: Vec<Effect> },
+    /// Effects that fire later this turn on an event ("The next time an Invader is
+    /// destroyed in target land", "after target Spirit uses a Power targeting a land").
+    Trigger { when: String, then: Vec<Effect>, once: bool },
+    /// Blight added to the land does not cascade (Entrap the Forces of Corruption).
+    NoCascade,
+    /// The player picks the land the rest of the card acts on ("Choose one of target Spirit's lands").
+    ChooseLand(String),
+    /// Pick a token type present in an adjacent land (Hazards Spread Across the Island).
+    TokenChoice { options: Vec<TokenKind>, disease_cost: u8 },
+    /// Add N of the chosen token type to the target land.
+    AddChosenToken(u8),
+    /// Play another Power Card by paying its cost.
+    PlayAnother,
+    /// Up to N Slow Powers may be used as Fast this turn.
+    MakeFast(u8),
+    /// Reclaim N Power Cards.
+    Reclaim(u8),
+    /// Re-gain a forgotten Unique Power.
+    RegainForgotten,
+    /// Gain N Energy per something ("per Power Card they played", "equal to Dahan").
+    EnergyPer { n: u8, per: String },
+    /// A rule for the Invader phase in words ("During Ravage, Dahan deal damage simultaneously").
+    InvaderRule(String),
+    /// Dahan in the land have +N Health.
+    DahanHealth(u8),
+    /// Typed as out of the model's reach (boards appear, lands merge, decks are rearranged).
+    Unmodeled(String),
+    /// Acts on a Spirit's economy (Energy, cards, elements, presence on the tracks), not on the board.
+    SpiritEffect(String),
+    /// Rules text with nothing to execute ("This cannot target an Ocean", a parenthetical).
+    Clarification(String),
+    /// An expansion spirit's own token or marker (Quake, Impending, the Wandering Voice…).
+    SpecialToken { token: String, text: String },
+    /// Something that happens in a later phase or on a later event this turn or game.
+    Timing { when: String, text: String },
+    /// Movement beyond a plain Push or Gather (pieces travel with presence, Dahan ride along…).
+    Movement(String),
+    /// Looks at, reorders or discards from a deck.
+    DeckEffect(String),
+    /// The player distributes this Power's Damage or pieces among lands; the simulator keeps them on the target.
+    Distribution(String),
+    /// Destroy N of your own presence in the land.
+    DestroyPresence(u8),
+    /// Remove Invaders worth up to N Health, cheapest first.
+    RemoveHealth(u8),
+    /// Invaders with Strife (N of them, 255 = each) deal their Damage to the other Invaders in the land.
+    Infighting(u8),
+    /// N Invaders and N Dahan deal Damage to each other.
+    Duel { invaders: u8, dahan: u8 },
+    /// Blight is not added to the land this turn (it stays on the card).
+    NoBlight,
+    /// Add Invader pieces (a Replace that yields more than one).
+    AddInvaders { kind: PieceKind, count: u8 },
+    /// Invaders in the land Build now.
+    Build,
+    /// The Power may be used in the Slow phase.
+    MaySlow,
+    /// An amount that depends on something the card names ("X Damage, where X is …").
+    Variable { what: String, by: String },
+    /// The player picks a piece or Spirit the rest of the card acts on.
+    Choose(String),
     /// Move pieces between lands (not a Push or Gather from the target).
     Move { count: u8, what: Vec<PieceFilter> },
     Isolate,
@@ -138,6 +210,203 @@ pub enum Effect {
     Choice(Vec<Vec<Effect>>),
     Conditional { condition: String, then: Vec<Effect> },
     Other(String),
+}
+
+impl Effect {
+    /// The effect in game words: "3 Damage to Invaders", "Push 1 Explorer and 1 Town",
+    /// "for each Disease: 1 Damage". What `si cards` prints beside the printed text.
+    pub fn words(&self) -> String {
+        use Effect::*;
+        let n = |c: u8| -> String {
+            match c {
+                255 => "all".into(),
+                128 => "half of the".into(),
+                c => c.to_string(),
+            }
+        };
+        let list = |what: &[PieceFilter]| what.iter().map(PieceFilter::words).collect::<Vec<_>>().join("/");
+        match self {
+            Damage { amount, to } => format!("{amount} Damage {}", to.words()),
+            DamageBonus(a) => format!("+{a} Damage"),
+            Defend(d) => format!("Defend {d}"),
+            Push { count, what } => format!("Push {} {}", n(*count), list(what)),
+            Gather { count, what } => format!("Gather {} {}", n(*count), list(what)),
+            Fear(f) => format!("{f} Fear"),
+            FearIfInvaders(f) => format!("{f} Fear if Invaders are present"),
+            RemoveBlight(b) => format!("remove {b} Blight"),
+            AddBlight(b) => format!("add {b} Blight"),
+            AddDahan(d) => format!("add {d} Dahan"),
+            AddPresence(p) => format!("add {p} presence"),
+            AddToken { kind, count } => format!("add {count} {}", token_word(*kind)),
+            RemoveToken { kind, count } => format!("remove {count} {}", token_word(*kind)),
+            Remove { count, what } => format!("remove {} {} (not destroyed: no Fear)", n(*count), list(what)),
+            Spread { kind, count, scope } => format!("add {count} {} among {scope} (player's choice of lands)", token_word(*kind)),
+            Ravage => "Invaders in the target land Ravage now".into(),
+            FearDeckRemove { energy_per_player } => format!("optional: {energy_per_player} Energy per player to remove the top Fear card from the game"),
+            Move { count, what } => format!("move {} {}", n(*count), list(what)),
+            Isolate => "Isolate the land".into(),
+            SkipRavage => "Invaders skip their Ravage here".into(),
+            SkipBuild => "Invaders skip their Build here".into(),
+            SkipExplore => "Invaders skip their Explore here".into(),
+            SkipAll => "Invaders skip every Action here this turn".into(),
+            SkipAction(k) => format!("skip {k} Invader Action(s) of your choice"),
+            NoParticipation(k) if *k == 255 => "Invaders with Strife do not take part in the Ravage".into(),
+            NoParticipation(k) => format!("{k} Invader(s) do not take part in the Ravage"),
+            DahanImmune => "Dahan take no damage from the Ravage".into(),
+            InvaderDamageMinus(k) => format!("Invaders do -{k} Damage on their Ravage"),
+            Destroy { count, what } => format!("destroy {} {}", n(*count), list(what)),
+            Replace { count, from, to } => format!("replace {count} {} with {}", from.words(), to.words()),
+            Downgrade(k) => format!("downgrade {k} Invader(s): City to Town, Town to Explorer, Explorer destroyed"),
+            GainEnergy(e) => format!("gain {e} Energy"),
+            GainPowerCard { kind: Some(k) } => format!("gain a {k:?} Power Card"),
+            GainPowerCard { kind: None } => "gain a Power Card".into(),
+            GainElement(k) => format!("gain {k} element(s)"),
+            RangeBonus(k) => format!("+{k} Range"),
+            MayBeFast { cost: Some(c) } => format!("may be Fast for {c} Energy"),
+            MayBeFast { cost: None } => "may be Fast".into(),
+            Repeat => "repeat this Power".into(),
+            Both => "you may do both".into(),
+            Per { per, then } => format!("for each {}: {}", per.words(), then.iter().map(Effect::words).collect::<Vec<_>>().join("; ")),
+            Choice(branches) => format!("either {}", branches.iter().map(|b| b.iter().map(Effect::words).collect::<Vec<_>>().join(", ")).collect::<Vec<_>>().join(" — or — ")),
+            Conditional { condition, then } => format!("{condition}: {}", then.iter().map(Effect::words).collect::<Vec<_>>().join("; ")),
+            Area { scope, then } => format!("in {scope}: {}", then.iter().map(Effect::words).collect::<Vec<_>>().join("; ")),
+            Trigger { when, then, once } => format!("{}when {when}: {}", if *once { "once, " } else { "" }, then.iter().map(Effect::words).collect::<Vec<_>>().join("; ")),
+            NoCascade => "Blight added here does not cascade".into(),
+            ChooseLand(scope) => format!("choose {scope} (the card acts there)"),
+            TokenChoice { options, disease_cost } => format!("choose a token type present in an adjacent land from {}{}", options.iter().map(|k| token_word(*k)).collect::<Vec<_>>().join("/"), if *disease_cost > 0 { format!(" (Disease costs {disease_cost} Energy)") } else { String::new() }),
+            AddChosenToken(k) => format!("add {k} of the chosen token"),
+            PlayAnother => "play another Power Card by paying its cost".into(),
+            MakeFast(k) => format!("up to {k} Slow Power(s) may be used as Fast"),
+            Reclaim(k) => format!("Reclaim {k} Power Card(s)"),
+            RegainForgotten => "re-gain a forgotten Unique Power".into(),
+            EnergyPer { n, per } => format!("gain {n} Energy per {per}"),
+            InvaderRule(r) => format!("Invader-phase rule: {r}"),
+            DahanHealth(k) => format!("Dahan here have +{k} Health"),
+            Unmodeled(r) => format!("out of the model's reach: {r}"),
+            SpiritEffect(t) => format!("Spirit economy: {t}"),
+            Clarification(t) => format!("rules text: {t}"),
+            SpecialToken { token, text } => format!("{token} token: {text}"),
+            Timing { when, text } => format!("{when}: {text}"),
+            Movement(t) => format!("movement: {t}"),
+            DeckEffect(t) => format!("deck: {t}"),
+            Distribution(t) => format!("distribution (player's choice; kept on the target here): {t}"),
+            DestroyPresence(k) => format!("destroy {k} of your presence"),
+            RemoveHealth(k) => format!("remove Invaders worth up to {k} Health"),
+            Infighting(k) if *k == 255 => "each Invader with Strife deals its Damage to the other Invaders".into(),
+            Infighting(k) => format!("{k} Invader(s) with Strife deal their Damage to the other Invaders"),
+            Duel { invaders, dahan } => format!("{invaders} Invader(s) and {dahan} Dahan deal Damage to each other"),
+            NoBlight => "Blight is not added here (it stays on the card)".into(),
+            AddInvaders { kind, count } => format!("add {count} {kind:?}"),
+            Build => "Invaders in the land Build now".into(),
+            MaySlow => "may be Slow".into(),
+            Variable { what, by } => format!("X {what}, X = {by}"),
+            Choose(t) => format!("choose: {t}"),
+            Other(s) => format!("NOT READ: \"{s}\""),
+        }
+    }
+
+    /// Does the simulator execute this effect? Typed effects it only names are
+    /// reported as caveats (`PowerCard::not_simulated`), unread ones block judgment.
+    pub fn simulated(&self) -> bool {
+        use Effect::*;
+        match self {
+            Other(_) | Unmodeled(_) | Repeat | PlayAnother | MakeFast(_) | Reclaim(_) | RegainForgotten | EnergyPer { .. } | InvaderRule(_) | FearDeckRemove { .. } | GainPowerCard { .. } | GainElement(_) | RangeBonus(_) | MayBeFast { .. } | Both | GainEnergy(_) | TokenChoice { .. } | ChooseLand(_) => false,
+            SpiritEffect(_) | SpecialToken { .. } | Timing { .. } | Movement(_) | DeckEffect(_) | Variable { .. } | Choose(_) => false,
+            Clarification(_) | Distribution(_) | MaySlow => true,
+            Per { per: PieceFilter::Other(s), then } => {
+                let l = s.to_ascii_lowercase();
+                (l.starts_with("elements:") || l.contains("adjacent") || l.contains("past the first") || l.contains('{')) && then.iter().all(Effect::simulated)
+            }
+            Conditional { condition, then } => !condition.to_ascii_lowercase().starts_with("after") && then.iter().all(Effect::simulated),
+            Trigger { when, then, .. } => {
+                let w = when.to_ascii_lowercase();
+                (w.contains("invader is destroyed") || w.contains("uses a power targeting a land") || w.contains("{blight} is added")) && then.iter().all(Effect::simulated)
+            }
+            Area { then, .. } | Per { then, .. } => then.iter().all(Effect::simulated),
+            Choice(b) => b.iter().all(|x| x.iter().all(Effect::simulated)),
+            _ => true,
+        }
+    }
+}
+
+fn token_word(k: TokenKind) -> &'static str {
+    match k {
+        TokenKind::Beast => "Beasts",
+        TokenKind::Wilds => "Wilds",
+        TokenKind::Disease => "Disease",
+        TokenKind::Strife => "Strife",
+        TokenKind::Badlands => "Badlands",
+        TokenKind::Vitality => "Vitality",
+        TokenKind::Isolate => "Isolate",
+    }
+}
+
+impl DamageTarget {
+    pub fn words(self) -> &'static str {
+        match self {
+            DamageTarget::Invaders => "to Invaders",
+            DamageTarget::Dahan => "to Dahan",
+            DamageTarget::EachDahan => "to each Dahan",
+            DamageTarget::EachInvader => "to each Invader",
+            DamageTarget::EachTownCity => "to each Town and City",
+            DamageTarget::TownCityOnly => "to a Town or City",
+            DamageTarget::ExplorerTownOnly => "to an Explorer or Town",
+            DamageTarget::Town => "to a Town",
+        }
+    }
+}
+
+impl PieceFilter {
+    pub fn words(&self) -> String {
+        match self {
+            PieceFilter::Piece(PieceKind::Explorer) => "Explorer".into(),
+            PieceFilter::Piece(PieceKind::Town) => "Town".into(),
+            PieceFilter::Piece(PieceKind::City) => "City".into(),
+            PieceFilter::Piece(PieceKind::Dahan) => "Dahan".into(),
+            PieceFilter::Token(k) => token_word(*k).into(),
+            PieceFilter::Presence => "presence".into(),
+            PieceFilter::Blight => "Blight".into(),
+            PieceFilter::AnyInvader => "Invader".into(),
+            PieceFilter::Other(s) => format!("\"{s}\""),
+        }
+    }
+}
+
+impl Range {
+    pub fn words(&self) -> String {
+        let mut w = format!("Range {}", self.distance);
+        if self.from_sacred_site {
+            w.push_str(" from a Sacred Site");
+        }
+        if !self.origin_terrains.is_empty() {
+            w.push_str(&format!(" from {}", self.origin_terrains.iter().map(|t| t.name()).collect::<Vec<_>>().join("/")));
+        }
+        w
+    }
+}
+
+impl TargetKind {
+    /// The engine's target name in words: `CoastalLandWithCity` → "a Coastal land with a City".
+    pub fn words(&self) -> String {
+        let mut out = String::new();
+        for (i, ch) in self.0.chars().enumerate() {
+            if ch.is_ascii_uppercase() && i > 0 {
+                out.push(' ');
+            }
+            out.push(ch);
+        }
+        let lower = out.to_lowercase();
+        let lower = lower.replace("any land", "any land").replace(" with ", " with a ").replace("land with a dahan", "land with Dahan").replace("land with a blight", "land with Blight").replace("land with a disease", "land with Disease").replace("land with a wilds", "land with Wilds").replace("land with a beast", "land with Beasts").replace("land with a presence", "land with your presence").replace("land with a invaders", "land with Invaders").replace("land with a town city", "land with a Town or City").replace("land with a city", "land with a City").replace("land with a town", "land with a Town").replace("land with a explorer", "land with an Explorer");
+        if self.is_spirit() {
+            match self.0.as_str() {
+                "You" => "yourself".into(),
+                "AnotherSpirit" => "another Spirit".into(),
+                _ => "any Spirit".into(),
+            }
+        } else {
+            format!("a {lower}").replace("a any land", "any land")
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -229,11 +498,15 @@ impl Effect {
         use Effect::*;
         match self {
             Choice(branches) => branches.iter().any(|b| b.iter().any(|e| e.acts_on(slot))),
-            Conditional { then, .. } | Per { then, .. } => then.iter().any(|e| e.acts_on(slot)),
+            Conditional { then, .. } | Per { then, .. } | Area { then, .. } | Trigger { then, .. } => then.iter().any(|e| e.acts_on(slot)),
             SkipAll | SkipAction(_) => true,
+            NoCascade | DahanHealth(_) | NoBlight | Infighting(_) | Duel { .. } | RemoveHealth(_) => slot == Slot::Ravage,
+            Build => slot == Slot::Build,
+            InvaderRule(r) => slot == Slot::Ravage && r.to_ascii_lowercase().contains("ravage"),
             _ => match slot {
                 Slot::Ravage => match self {
-                    Defend(_) | DamageBonus(_) | SkipRavage | NoParticipation(_) | AddDahan(_) | Downgrade(_) | InvaderDamageMinus(_) => true,
+                    Defend(_) | DamageBonus(_) | SkipRavage | NoParticipation(_) | AddDahan(_) | Downgrade(_) | InvaderDamageMinus(_) | Ravage => true,
+                    Spread { kind: TokenKind::Strife, .. } => true,
                     Damage { to, .. } => to.hits_invaders(),
                     Push { what, .. } | Destroy { what, .. } | Remove { what, .. } | Move { what, .. } => what.iter().any(PieceFilter::is_invader),
                     Gather { what, .. } => what.iter().any(PieceFilter::is_dahan),
@@ -243,13 +516,14 @@ impl Effect {
                 },
                 Slot::Build => match self {
                     SkipBuild | Downgrade(_) => true,
+                    Spread { kind: TokenKind::Disease, .. } => true,
                     Damage { to, .. } => to.hits_explorers(),
                     Push { what, .. } | Destroy { what, .. } | Remove { what, .. } | Move { what, .. } => what.iter().any(PieceFilter::is_explorer),
                     AddToken { kind: TokenKind::Disease, .. } => true,
                     Replace { from, .. } => from.is_explorer(),
                     _ => false,
                 },
-                Slot::Explore => matches!(self, SkipExplore | Isolate | AddToken { kind: TokenKind::Wilds, .. }),
+                Slot::Explore => matches!(self, SkipExplore | Isolate | AddToken { kind: TokenKind::Wilds, .. } | Spread { kind: TokenKind::Wilds, .. }),
             },
         }
     }
@@ -263,7 +537,7 @@ impl Effect {
         match self {
             Effect::Other(s) => out.push(s),
             Effect::Choice(b) => b.iter().flatten().for_each(|e| e.others(out)),
-            Effect::Conditional { then, .. } | Effect::Per { then, .. } => then.iter().for_each(|e| e.others(out)),
+            Effect::Conditional { then, .. } | Effect::Per { then, .. } | Effect::Area { then, .. } | Effect::Trigger { then, .. } => then.iter().for_each(|e| e.others(out)),
             _ => {}
         }
     }
@@ -318,6 +592,8 @@ impl Features {
             }
             DamageBonus(a) => self.damage += *a as u32,
             Defend(d) => self.defend += *d as u32,
+            Spread { count, .. } => self.tokens_added += n(*count),
+            Ravage | FearDeckRemove { .. } => {}
             Push { count, what } | Move { count, what } => {
                 if what.iter().any(PieceFilter::is_invader) {
                     self.push_invaders += n(*count)
@@ -344,7 +620,23 @@ impl Features {
             Isolate | SkipRavage | SkipBuild | SkipExplore | SkipAll | SkipAction(_) | NoParticipation(_) | DahanImmune | InvaderDamageMinus(_) => self.skip += 1,
             GainEnergy(e) => self.energy += *e as u32,
             GainPowerCard { .. } | GainElement(_) => self.cards += 1,
-            RangeBonus(_) | Repeat | MayBeFast { .. } | Both => self.other += 1,
+            RangeBonus(_) | Repeat | MayBeFast { .. } | Both | MakeFast(_) | Unmodeled(_) | SpiritEffect(_) | SpecialToken { .. } | Timing { .. } | Movement(_) | DeckEffect(_) | Variable { .. } | Choose(_) | MaySlow => self.other += 1,
+            Clarification(_) | Distribution(_) | Build => {}
+            DestroyPresence(_) | NoBlight => self.skip += 1,
+            RemoveHealth(k) => self.destroy += *k as u32,
+            Infighting(_) | Duel { .. } => self.damage += 1,
+            AddInvaders { .. } => self.tokens_added += 1,
+            Area { then, .. } => then.iter().for_each(|e| self.add(e)),
+            Trigger { then, .. } => {
+                self.conditional += 1;
+                then.iter().for_each(|e| self.add(e));
+            }
+            NoCascade | DahanHealth(_) | InvaderRule(_) => self.skip += 1,
+            ChooseLand(_) | TokenChoice { .. } => {}
+            AddChosenToken(k) => self.tokens_added += *k as u32,
+            PlayAnother | RegainForgotten => self.cards += 1,
+            Reclaim(k) => self.cards += *k as u32,
+            EnergyPer { n, .. } => self.energy += *n as u32,
             Per { then, .. } => {
                 self.per += 1;
                 then.iter().for_each(|e| self.add(e));
@@ -420,6 +712,37 @@ impl Features {
             .collect()
     }
 
+    /// The non-zero features in words, for the price fit: "3 Damage, 1 Fear, destroys 1".
+    pub fn words(&self) -> String {
+        let mut p: Vec<String> = Vec::new();
+        let mut add = |n: u32, one: &str, many: &str| {
+            if n > 0 {
+                p.push(if n == 1 { one.to_string() } else { many.replace("N", &n.to_string()) });
+            }
+        };
+        add(self.damage, "1 Damage", "N Damage");
+        add(self.damage_each, "1 Damage to each", "N Damage to each");
+        add(self.defend, "Defend 1", "Defend N");
+        add(self.push_invaders, "pushes 1 Invader", "pushes N Invaders");
+        add(self.push_dahan, "pushes 1 Dahan", "pushes N Dahan");
+        add(self.gather_dahan, "gathers 1 Dahan", "gathers N Dahan");
+        add(self.gather_invaders, "gathers 1 Invader", "gathers N Invaders");
+        add(self.fear, "1 Fear", "N Fear");
+        add(self.fear_conditional, "1 conditional Fear", "N conditional Fear");
+        add(self.blight_removed, "removes 1 Blight", "removes N Blight");
+        add(self.blight_added, "adds 1 Blight", "adds N Blight");
+        add(self.tokens_added, "adds 1 token", "adds N tokens");
+        add(self.destroy, "destroys or removes 1", "destroys or removes N");
+        add(self.skip, "1 skip", "N skips");
+        add(self.energy, "1 Energy", "N Energy");
+        add(self.cards, "1 card", "N cards");
+        add(self.conditional, "1 condition", "N conditions");
+        add(self.per, "1 per-piece effect", "N per-piece effects");
+        add(self.choice, "1 choice", "N choices");
+        add(self.other, "1 sentence not read", "N sentences not read");
+        if p.is_empty() { "nothing counted".into() } else { p.join(", ") }
+    }
+
     pub const NAMES: [&'static str; 19] = ["damage", "damage_each", "defend", "push_invaders", "push_dahan", "gather_dahan", "gather_invaders", "fear", "fear_conditional", "blight_removed", "blight_added", "tokens_added", "destroy", "skip", "energy", "cards", "conditional", "per", "choice"];
 }
 
@@ -465,6 +788,11 @@ impl PowerCard {
     /// True when every effect is typed (no `Other`), thresholds included.
     pub fn fully_parsed(&self) -> bool {
         !self.effects.is_empty() && self.unparsed().is_empty()
+    }
+
+    /// Typed effects the simulator does not execute yet, in words (base text and thresholds).
+    pub fn not_simulated(&self) -> Vec<String> {
+        self.all_effects().filter(|e| !e.is_other() && !e.simulated()).map(Effect::words).collect()
     }
 
     /// Every sentence the parser left as `Other`, base text and thresholds.

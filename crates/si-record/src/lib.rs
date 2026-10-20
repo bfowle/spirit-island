@@ -6,8 +6,9 @@
 //! spirit did and held, and what the board looked like after each turn.
 
 pub mod log;
+pub mod notation;
 pub mod record;
 pub mod replay;
 
-pub use record::{Counts, Coverage, GameMeta, GameRecord, InvaderVisit, LandLedger, SpiritTurn, Touch, TouchKind, TurnRecord};
+pub use record::{Choice, Counts, Coverage, GameMeta, GameRecord, InvaderVisit, LandLedger, SpiritTurn, Touch, TouchKind, TurnRecord};
 pub use replay::Replay;

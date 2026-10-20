@@ -111,9 +111,16 @@ struct Walk<'d> {
     step_dahan_lost: BTreeMap<LandId, u32>,
     step_invaders_destroyed: BTreeMap<LandId, u32>,
     defend_this_turn: BTreeMap<LandId, u32>,
+    /// Piece ids a move already took off the island this step (the engine
+    /// logs a destroyed piece as a move out and then a destroy).
+    gone_this_step: BTreeSet<String>,
     power_phase: BTreeMap<String, Phase>,
     spirit_names: BTreeMap<String, String>,
     single_spirit: Option<String>,
+}
+
+fn si_record_canceled(step: si_model::event::InvaderStep, land: Option<LandId>, source: String) -> crate::record::Canceled {
+    crate::record::Canceled { step, land, source }
 }
 
 impl<'d> Replay<'d> {
@@ -151,6 +158,7 @@ impl<'d> Replay<'d> {
             step_dahan_lost: BTreeMap::new(),
             step_invaders_destroyed: BTreeMap::new(),
             defend_this_turn: BTreeMap::new(),
+            gone_this_step: BTreeSet::new(),
             power_phase: BTreeMap::new(),
             spirit_names: BTreeMap::new(),
             single_spirit: None,
@@ -511,7 +519,32 @@ impl<'d> Walk<'d> {
                     self.seed_boards();
                 }
             }
-            Marker::GameViewStart | Marker::Saving | Marker::LoadedUndo(_) | Marker::LoadedContinue | Marker::CardChoice { .. } => {}
+            Marker::CardChoice { reason, selected, choices } => {
+                if self.turn > 0 {
+                    let spirit = self.single_spirit.clone().or_else(|| self.rec.spirits.iter().rev().find(|s| s.turn == self.turn).map(|s| s.spirit.clone()));
+                    if reason == "GainPower" && !choices.is_empty() {
+                        if let Some(id) = &spirit {
+                            self.spirit_turn(id).offered = choices.clone();
+                        }
+                    }
+                    let c = Choice { phase: self.phase, kind: "Card".into(), reason, selected, choices, source: String::new(), source_kind: "Spirit".into(), optional: false, spirit, instance: 0 };
+                    let t = self.turn_rec();
+                    if !t.choices.iter().any(|x| x.kind == c.kind && x.reason == c.reason && x.selected == c.selected && x.choices == c.choices) {
+                        t.choices.push(c);
+                    }
+                }
+            }
+            Marker::Choice(mut c) => {
+                if self.turn > 0 {
+                    c.phase = self.phase;
+                    c.spirit = self.single_spirit.clone();
+                    let t = self.turn_rec();
+                    if !t.choices.iter().any(|x| x.kind == c.kind && x.instance == c.instance && x.selected == c.selected && x.source == c.source) {
+                        t.choices.push(c);
+                    }
+                }
+            }
+            Marker::GameViewStart | Marker::Saving | Marker::LoadedUndo(_) | Marker::LoadedContinue => {}
         }
     }
 
@@ -520,6 +553,25 @@ impl<'d> Walk<'d> {
             Event::PhaseChanged { to, .. } => {
                 if to == Phase::PlayerSetup {
                     self.rec.meta.from_setup = true;
+                }
+                if (to == Phase::FastPower || to == Phase::SlowPower) && self.turn > 0 {
+                    let lands: BTreeSet<LandId> = self.pieces.values().map(|(l, _)| l.clone()).chain(self.blight.keys().cloned()).chain(self.presence.keys().cloned()).chain(self.tokens.keys().cloned()).collect();
+                    let snapshot: BTreeMap<LandId, Counts> = lands.iter().map(|l| (l.clone(), self.counts_of(l))).collect();
+                    let t = self.turn_rec();
+                    if to == Phase::FastPower {
+                        t.before_fast = snapshot;
+                    } else {
+                        t.before_slow = snapshot;
+                    }
+                }
+                if to.is_invader_step() && !self.invaded && self.turn > 0 {
+                    // the state the Invader steps start from
+                    let lands: BTreeSet<LandId> = self.pieces.values().map(|(l, _)| l.clone()).chain(self.blight.keys().cloned()).chain(self.presence.keys().cloned()).chain(self.tokens.keys().cloned()).collect();
+                    let snapshot: BTreeMap<LandId, Counts> = lands.iter().map(|l| (l.clone(), self.counts_of(l))).collect();
+                    let defend = self.defend_this_turn.clone();
+                    let t = self.turn_rec();
+                    t.before_invaders = snapshot;
+                    t.defend = defend;
                 }
                 if to.is_invader_step() {
                     self.invaded = true;
@@ -541,6 +593,7 @@ impl<'d> Walk<'d> {
                     self.finish_turn();
                 }
                 self.phase = to;
+                self.gone_this_step.clear();
                 self.step_adds.clear();
                 self.step_ravaged.clear();
                 self.step_blight.clear();
@@ -556,7 +609,9 @@ impl<'d> Walk<'d> {
                     InvaderStep::Ravage => self.step_ravaged.clone(),
                     _ => self.step_adds.iter().map(|(l, _)| l.clone()).collect::<BTreeSet<_>>().into_iter().collect(),
                 };
+                let high_immigration = self.phase == Phase::HighImmigration;
                 match step {
+                    InvaderStep::Build if high_immigration => self.turn_rec().high_immigration.push(card.clone()),
                     InvaderStep::Build => self.turn_rec().build.push(card.clone()),
                     InvaderStep::Ravage => self.turn_rec().ravage.push(card.clone()),
                     InvaderStep::Explore => {}
@@ -592,6 +647,16 @@ impl<'d> Walk<'d> {
                     self.step_ravaged.push(land);
                 }
             }
+            Event::Canceled { step, land, source } => {
+                if self.turn > 0 {
+                    self.turn_rec().canceled.push(si_record_canceled(step, land, source));
+                }
+            }
+            Event::StatusEffect { kind, source, params } => {
+                if self.turn > 0 {
+                    self.turn_rec().status_effects.push(crate::record::StatusEffect { kind, source, params });
+                }
+            }
             Event::PiecesAdded { moves } => {
                 for m in moves {
                     if let (Some(to), Some(kind)) = (&m.to, m.kind) {
@@ -622,8 +687,20 @@ impl<'d> Walk<'d> {
                             *into.entry(to.clone()).or_insert(0) += 1;
                             self.ledger(to);
                         }
-                        (None, Some(_)) => {
+                        (None, Some(kind)) => {
+                            // off the island: in an Invader step this is a
+                            // death (the destroy line follows and is skipped)
                             self.pieces.remove(&m.piece);
+                            self.gone_this_step.insert(m.piece.clone());
+                            if self.phase.is_invader_step() {
+                                if let Some(p) = &prev {
+                                    if kind == PieceKind::Dahan {
+                                        *self.step_dahan_lost.entry(p.clone()).or_insert(0) += 1;
+                                    } else {
+                                        *self.step_invaders_destroyed.entry(p.clone()).or_insert(0) += 1;
+                                    }
+                                }
+                            }
                         }
                         (to, None) => {
                             if let Some(tk) = TokenKind::parse(&m.piece) {
@@ -636,8 +713,8 @@ impl<'d> Walk<'d> {
                             }
                         }
                     }
-                    if let Some(p) = prev {
-                        if m.to.as_ref() != Some(&p) {
+                    if let (Some(p), Some(to)) = (prev, &m.to) {
+                        if to != &p {
                             *out.entry(p).or_insert(0) += 1;
                         }
                     }
@@ -657,6 +734,9 @@ impl<'d> Walk<'d> {
                 // only land holding such a piece
                 let named: Option<LandId> = source.split("LandTarget: ").nth(1).and_then(|r| r.split(',').next()).and_then(|l| l.trim().parse().ok());
                 for (id, _) in pieces {
+                    if self.gone_this_step.contains(&id) {
+                        continue;
+                    }
                     if !self.pieces.contains_key(&id) {
                         if let Some(kind) = PieceKind::parse(&id) {
                             let holders: Vec<LandId> = self.pieces.iter().filter(|(pid, (_, k))| pid.starts_with("init:") && *k == kind).map(|(_, (l, _))| l.clone()).collect::<BTreeSet<_>>().into_iter().collect();

@@ -16,16 +16,20 @@ Second pass over the same logs, after four changes to the measuring:
 3. The replay **places each board's printed pieces** (Dahan, the setup City and Town,
    starting Blight and tokens). The log never records them, so every land count before
    this pass was short by them.
-4. The **adversary level** is inferred from the Invader deck order, the Fear deck's size
-   per Terror Level and the setup additions, as the set of levels consistent with all
-   three.
+4. The **adversary level** comes from the engine save when one exists; otherwise it
+   is inferred from the Invader deck order, the Fear deck's size per Terror Level and
+   the setup additions, as the set of levels consistent with all three. (The inference
+   read Sweden 5 where the save says 4; the Fear-deck sizes per level need checking.)
 
 ## What was measured
 
-20 distinct games (15 from recorder captures with an exact undo clock, 5 from bare
-EndGame logs with the repaired heuristic), 17 finished. The same game recorded twice
+21 distinct games (15 from recorder captures with an exact undo clock, 6 from bare
+EndGame logs with the repaired heuristic), 18 finished. The same game recorded twice
 (a capture and its EndGame log) is counted once; 14 EndGame logs were duplicates, one
-capture was too short (1 turn).
+capture was too short (1 turn). Where the engine's `EndGame--<id>.dat` save exists
+(beside the log, or matched to a capture by game id) the adversary, its level and the
+game difficulty are read from it; four games the log never named an adversary for
+turned out to be adversary games.
 
 How to read a row:
 
@@ -65,48 +69,50 @@ not significance.
 
 | spirit | board | adversary | level | diff | result | turns | undo | scaling | stance | pres T3 | cards T3 | reclaim | spike | above | on | gambled | failed | sacrificed | untouched | late | blight T4 | blight end | blight shape | fear cards T4 | weak turns |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Green | A | Russia | 4-5 | 7-9 | lost | 6 | exact | Fast | Above | 7/3 | 3 | T4 | - | 5 | 3 | 4 | 2 | 0 | 0 | 0 | 1 | 3 | quadratic | 2 | 2 |
-| Behemoth | G | - | - | - | lost | 7 | heuristic | Fast | Above | 5/6 | 3 | T4 | - | 8 | 5 | 3 | 3 | 0 | 1 | 0 | 4 | 6 | linear | 3 | 7 |
+| Green | A | Russia | 5 | 9 | lost | 6 | exact | Fast | Above | 7/3 | 3 | T4 | - | 5 | 3 | 4 | 2 | 0 | 0 | 0 | 1 | 3 | quadratic | 2 | 2 |
+| Behemoth | G | BrandenburgPrussia | 6 | 10 | lost | 7 | heuristic | Fast | Above | 5/6 | 3 | T4 | - | 8 | 5 | 3 | 2 | 1 | 1 | 0 | 4 | 6 | linear | 3 | 7 |
 | Days | A | - | - | - | won | 10 | exact | Minus | On | 1/3 | 3 | T4 | - | 6 | 3 | 4 | 6 | 0 | 0 | 0 | 2 | 9 | linear | 2 | 3 |
 | Trickster | F | - | - | - | won | 8 | exact | Minus | On | 3/6 | 3 | T5 | - | 3 | 5 | 2 | 4 | 0 | 0 | 0 | 2 | 4 | quadratic | 2 | 3 |
-| Lightning+River | NWNE | HabsburgMining | 1-6 | 3-10 | lost | 4 | exact | Problematic | On | 3/6 | 1 | T3 | - | 2 | 4 | 1 | 3 | 0 | 0 | 0 | 4 | 4 | linear | 1 | 1 |
+| Lightning+River | NWNE | HabsburgMining | 4 | 7 | lost | 4 | exact | Problematic | On | 3/6 | 1 | T3 | - | 2 | 4 | 1 | 3 | 0 | 0 | 0 | 4 | 4 | linear | 1 | 1 |
 | Lure | D | - | - | - | won | 6 | exact | Problematic | Above | 2/6 | 1 | T3 | - | 3 | 2 | 1 | 2 | 1 | 0 | 0 | 1 | 5 | quadratic | 3 | 2 |
 | Many Minds | C | - | - | - | won | 6 | exact | Fast | On | 6/6 | 2 | T4 | 2/4cp never | 4 | 7 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | constant | 4 | 0 |
-| Ocean | D | England | 3-6 | 6-10 | won | 8 | exact | Minus | On | 4/6 | 3 | T5 | - | 5 | 6 | 3 | 2 | 1 | 0 | 0 | 1 | 4 | linear | 5 | 1 |
-| Ocean | D | - | - | - | open | 3 | exact | Fast | Unknown | 7/6 | 3 | - | - | 0 | 0 | 0 | 2 | 0 | 0 | 0 | 3 | 3 | linear | 1 | 1 |
-| Shadows | CE | BrandenburgPrussia | ? | - | lost | 7 | heuristic | Minus | On | 4/3 | 3 | T4 | - | 6 | 8 | 6 | 2 | 4 | 0 | 0 | 4 | 13 | linear | 2 | 1 |
-| Shadows | A | - | - | - | won | 5 | heuristic | Minus | Above | 3/3 | 2 | T5 | - | 3 | 3 | 2 | 0 | 0 | 0 | 0 | 0 | 2 | quadratic | 5 | 5 |
-| Shadows | B | - | - | - | won | 6 | heuristic | Fast | Above | 3/3 | 3 | T4 | - | 6 | 3 | 4 | 3 | 0 | 0 | 0 | 3 | 3 | quadratic | 5 | 6 |
+| Ocean | D | England | 3 | 6 | won | 8 | exact | Minus | On | 4/6 | 3 | T5 | - | 5 | 6 | 3 | 2 | 1 | 0 | 0 | 1 | 4 | linear | 5 | 1 |
+| Ocean | D | - | - | - | open | 3 | exact | Fast | Unknown | 7/6 | 3 | - | - | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 3 | 3 | linear | 1 | 1 |
+| Shadows | CE | BrandenburgPrussia | 2 | 4 | lost | 7 | heuristic | Minus | On | 4/3 | 3 | T4 | - | 6 | 8 | 6 | 2 | 4 | 0 | 0 | 4 | 13 | linear | 2 | 1 |
+| Shadows | A | BrandenburgPrussia | ? | - | won | 5 | heuristic | Minus | Above | 3/3 | 2 | T5 | - | 3 | 3 | 2 | 0 | 0 | 0 | 0 | 0 | 2 | quadratic | 5 | 5 |
+| Shadows | B | BrandenburgPrussia | 6 | 10 | won | 6 | heuristic | Fast | Above | 3/3 | 3 | T4 | - | 6 | 3 | 4 | 3 | 0 | 0 | 0 | 3 | 3 | quadratic | 5 | 6 |
 | Memory | B | - | - | - | won | 6 | exact | Fast | On | 3/3 | 3 | T5 | - | 2 | 7 | 0 | 1 | 0 | 0 | 0 | 1 | 1 | linear | 4 | 0 |
 | Shroud | D | - | - | - | won | 6 | exact | Fast | Above | 5/6 | 1 | T4 | 1/3cp never | 3 | 3 | 0 | 3 | 1 | 0 | 1 | 4 | 6 | linear | 3 | 1 |
 | Starlight | C | - | - | - | open | 7 | exact | Problematic | On | 3/9 | 3 | T3 | - | 0 | 8 | 0 | 1 | 0 | 0 | 0 | 0 | 1 | linear | 1 | 0 |
-| Stone | A | - | - | - | won | 7 | heuristic | Minus | Above | 5/3 | 3 | T4 | - | 4 | 4 | 2 | 3 | 0 | 1 | 1 | 3 | 5 | linear | 2 | 7 |
+| Stone | A | Scotland | 1 | 3 | won | 7 | heuristic | Minus | Above | 5/3 | 3 | T4 | - | 4 | 4 | 2 | 3 | 0 | 1 | 1 | 3 | 5 | linear | 2 | 7 |
 | Thunderspeaker | A | - | - | - | open | 3 | exact | Problematic | Unknown | 3/6 | 3 | T3 | - | 0 | 1 | 0 | 1 | 2 | 0 | 0 | 3 | 3 | linear | 1 | 0 |
-| Thunderspeaker | F | Sweden | 5 | 7 | lost | 7 | exact | Problematic | On | 3/6 | 2 | T3 | - | 3 | 5 | 2 | 2 | 0 | 0 | 0 | 2 | 6 | linear | 2 | 2 |
+| Thunderspeaker | F | Sweden | 4 | 6 | lost | 7 | exact | Problematic | On | 3/6 | 2 | T3 | - | 3 | 5 | 2 | 2 | 0 | 0 | 0 | 2 | 6 | linear | 2 | 2 |
 | Vengeance | C | BrandenburgPrussia | 2 | 4 | lost | 4 | exact | Fast | On | 6/6 | 0 | T4 | 3/3cp never | 0 | 3 | 2 | 2 | 2 | 1 | 0 | 7 | 7 | linear | 4 | 2 |
+| Vengeance | C | England | 4 | 7 | lost | 6 | heuristic | Fast | On | 5/6 | 1 | T4 | 3/3cp T6 | 2 | 3 | 1 | 0 | 3 | 1 | 1 | 5 | 7 | linear | 7 | 2 |
 | Volcano | A | - | - | - | won | 6 | exact | Fast | Above | 5/6 | 4 | T6 | - | 4 | 3 | 2 | 0 | 0 | 0 | 0 | 1 | 2 | linear | 3 | 1 |
 
-## Groupings (17 finished games; counts, not significance)
+## Groupings (18 finished games; counts, not significance)
 
 | grouping | games | won |
 |---|---|---|
-| scaling Fast | 8 | 5 |
+| scaling Fast | 9 | 5 |
 | scaling Minus | 6 | 5 |
 | scaling Problematic | 3 | 1 |
 | stance Above | 8 | 6 |
-| stance On | 9 | 5 |
-| Blight by T4 at most 2 | 10 | 8 |
-| Blight by T4 3 to 4 | 6 | 3 |
-| Blight by T4 at least 5 | 1 | 0 |
-| adversary difficulty at most 4 (lowest candidate) | 2 | 0 |
-| adversary difficulty 5 to 7 | 3 | 1 |
-| no adversary | 11 | 10 |
-| Blight grows constant | 1 | 1 |
-| Blight grows linear | 11 | 6 |
-| Blight grows quadratic | 5 | 4 |
+| stance On | 10 | 5 |
+| blight by T4 at most 2 | 10 | 8 |
+| blight by T4 3 to 4 | 6 | 3 |
+| blight by T4 at least 5 | 2 | 0 |
+| adversary difficulty at most 4 (lowest candidate) | 3 | 1 |
+| adversary difficulty 5 to 7 | 4 | 1 |
+| adversary difficulty at least 8 | 3 | 1 |
+| no adversary | 7 | 7 |
+| blight grows constant | 1 | 1 |
+| blight grows linear | 12 | 6 |
+| blight grows quadratic | 5 | 4 |
 | no Sacrificed or Untouched chains | 10 | 7 |
 | 1 to 2 Sacrificed or Untouched | 5 | 4 |
-| 3 or more Sacrificed or Untouched | 2 | 0 |
+| 3+ Sacrificed or Untouched | 3 | 0 |
 
 ## Readings
 
@@ -121,18 +127,19 @@ Blight by turn 4. Rei's Fast Minors path takes the minor on turn 1 and the two b
 slots on turns 2 and 3, reaching 2/3cp on turn 3 before the Reclaim. Three plays never
 came.
 
-**Leaving lands to Blight.** With reach computed, the Vengeance game's three unhandled
+**Leaving lands to Blight.** With reach computed, the Prussia 2 Vengeance game's three unhandled
 chains split: two *Sacrificed* (Plaguebearers was the only Slow card in hand and needs
 Disease in the land) and one *Untouched* (Fiery Vengeance could have put 1 Damage into
 Wetland C5 in turn 1's Fast phase with a play to spare; 1 Damage would not have saved a
-land with a Town, so this is a capability, not a save). Both games with three or more
+land with a Town, so this is a capability, not a save). All three games with three or more
 left-to-Blight chains were lost; Prussia 2 is one of them.
 
-**Adversaries.** Prussia 2 (difficulty 4), Sweden 5 (7), England between 3 and 6, Russia
-4 or 5. Both adversary games whose lowest candidate difficulty is 4 or less were lost;
-one of three at difficulty 5 to 7 was won (Ocean vs England). Ten of the eleven games
-without an adversary were won. The corpus is mostly adversary-free wins; the losses
-are the adversary games.
+**Adversaries.** Read from the saves: Prussia 6 three times (Behemoth on G lost, Shadows
+on B won, Shadows on A unknown level), Prussia 2 twice (both lost), England 4 (lost),
+England 3 (Ocean, won), Russia 5 (lost), Sweden 4 (lost), Habsburg Mining 4 (lost),
+Scotland 1 (Stone, won). All seven games without an adversary were won; three of the
+eleven adversary games were. The losses are the adversary games at difficulty 4 and
+up, with the Shadows win against Prussia 6 the exception worth a hindsight pass.
 
 **Forced Reclaims.** Thunderspeaker reclaimed on turn 3 in both games with the hand
 short of the plays, Rei's Problematic shape; the Sweden 5 game was lost, the other is
@@ -166,8 +173,12 @@ yet valued, so these are the first residuals to read, not verdicts.
 
 ## Limits
 
-- The adversary level is a candidate set; bare logs whose Fear-card counts were
-  disturbed by undo re-logging read `?`. Scenarios are not detected.
+- Without a save the adversary level is a candidate set, and bare logs whose
+  Fear-card counts were disturbed by undo re-logging read `?`. Scenarios are read
+  from the save only.
+- 41 of Brett's 61 finished games have a save but no text log; they are not in this
+  table yet. The save carries the engine's journal of the whole game, which the
+  hindsight spec names as the next source.
 - *Untouched* says a held card could act at that step with a play to spare, not that
   it would have saved the land. Across two boards the layout is not logged, so range
   between boards is unknown and the plays-left reading stays.

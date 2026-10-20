@@ -187,3 +187,4 @@ All decided by Brett on 2026-10-20:
 - A2 — one repo: Rust at `crates/`, the Vue app at `apps/web`.
 - A3 — commit the worktree as it stands (grouped commits, no split review).
 - A4 — replay-and-verify only until coverage says the effects language covers the cards Brett plays; simulation and Rei-as-policy after.
+- A5 (Brett, 2026-10-20) — hindsight analysis of a finished game: per turn, the actual play against the best play on what was knowable and the best play with the hidden cards known; mistakes separated from luck. Design in `2026-10-20-hindsight-analysis.md`; it is the first consumer of the simulate mode and sets the verification order (Invader phase → Spirit actions → search).

@@ -30,3 +30,6 @@ data/steam-history/
 
 # Rust workspace build output
 /target/
+
+# Engine definition tables extracted from the game DLL (si-steam-dump defs); regenerate, do not commit
+data/engine-defs/

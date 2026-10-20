@@ -2498,11 +2498,15 @@ name = "si-cli"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "regex",
  "serde_json",
  "si-defs",
+ "si-hindsight",
  "si-metrics",
  "si-model",
  "si-record",
+ "si-rules",
+ "si-steam",
 ]
 
 [[package]]
@@ -2524,6 +2528,18 @@ dependencies = [
  "serde",
  "serde_json",
  "si-model",
+]
+
+[[package]]
+name = "si-hindsight"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "si-defs",
+ "si-metrics",
+ "si-model",
+ "si-record",
+ "si-rules",
 ]
 
 [[package]]
@@ -2564,6 +2580,16 @@ dependencies = [
  "serde",
  "si-defs",
  "si-model",
+]
+
+[[package]]
+name = "si-rules"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "si-defs",
+ "si-model",
+ "si-record",
 ]
 
 [[package]]

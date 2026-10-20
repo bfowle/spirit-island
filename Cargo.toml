@@ -5,6 +5,8 @@ members = [
     "crates/si-defs",
     "crates/si-record",
     "crates/si-metrics",
+    "crates/si-rules",
+    "crates/si-hindsight",
     "crates/si-cli",
     "crates/si-common",
     "crates/si-backend",
@@ -16,6 +18,13 @@ members = [
 # The native app (ui, app) builds for Windows with app/build-windows.sh; a
 # plain `cargo build` / `cargo test` keeps to the server crates.
 default-members = [
+    "crates/si-model",
+    "crates/si-defs",
+    "crates/si-record",
+    "crates/si-metrics",
+    "crates/si-rules",
+    "crates/si-hindsight",
+    "crates/si-cli",
     "crates/si-common",
     "crates/si-backend",
     "crates/si-mcp",

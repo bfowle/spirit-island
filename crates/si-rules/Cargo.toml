@@ -1,0 +1,11 @@
+[package]
+name = "si-rules"
+version.workspace = true
+edition.workspace = true
+description = "The turn as rules: the Invader phase simulated and verified against recorded games."
+
+[dependencies]
+si-model = { path = "../si-model" }
+si-defs = { path = "../si-defs" }
+si-record = { path = "../si-record" }
+serde.workspace = true

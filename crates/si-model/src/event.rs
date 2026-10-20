@@ -83,6 +83,12 @@ pub enum Event {
     CardForgotten { spirit: Option<SpiritId>, card: CardId },
     CardsDiscarded { spirit: Option<SpiritId>, cards: Vec<CardId> },
     TokensAdded { land: Option<LandId>, kind: Option<TokenKind>, count: u32 },
+    /// The engine canceled an Invader step in a land (Disease, a Spirit rule,
+    /// a Fear or Event card); `land` None cancels the whole card.
+    Canceled { step: InvaderStep, land: Option<LandId>, source: String },
+    /// A rule the engine put in force (`AddStatusEffectAction`): skips,
+    /// cancels, extra Explorers, Defend grants, health and damage changes.
+    StatusEffect { kind: String, source: String, params: std::collections::BTreeMap<String, String> },
     StatusAdded { text: String },
     TimePassed,
     GameOver { ending: Ending },
@@ -128,6 +134,8 @@ impl Event {
             Event::CardForgotten { .. } => "CardForgotten",
             Event::CardsDiscarded { .. } => "CardsDiscarded",
             Event::TokensAdded { .. } => "TokensAdded",
+            Event::Canceled { .. } => "Canceled",
+            Event::StatusEffect { .. } => "StatusEffect",
             Event::StatusAdded { .. } => "StatusAdded",
             Event::TimePassed => "TimePassed",
             Event::GameOver { .. } => "GameOver",

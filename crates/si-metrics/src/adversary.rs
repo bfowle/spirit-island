@@ -117,6 +117,10 @@ fn setup_consistent(rec: &GameRecord, defs: &Definitions, adv: &Adversary, level
 pub fn estimate(rec: &GameRecord, defs: &Definitions) -> Option<LevelEstimate> {
     let id = rec.meta.adversary.as_ref()?;
     let adv = defs.adversaries.get(id)?;
+    if let Some(level) = rec.meta.adversary_level {
+        let difficulty = adv.level(level).map(|l| (l.difficulty, l.difficulty));
+        return Some(LevelEstimate { adversary: id.clone(), candidates: vec![level], difficulty, evidence: vec!["stated by the engine save beside the log".into()] });
+    }
     let mut seen: Vec<String> = Vec::new();
     for c in rec.turns.iter().flat_map(|t| t.explore.iter()) {
         if !seen.contains(c) {

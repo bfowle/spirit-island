@@ -13,5 +13,9 @@ si-model = { path = "../si-model" }
 si-defs = { path = "../si-defs" }
 si-record = { path = "../si-record" }
 si-metrics = { path = "../si-metrics" }
+si-rules = { path = "../si-rules" }
+si-hindsight = { path = "../si-hindsight" }
+si-steam = { path = "../si-steam" }
 anyhow.workspace = true
+regex.workspace = true
 serde_json.workspace = true

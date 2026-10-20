@@ -305,6 +305,7 @@ fn innate(v: &Value) -> Innate {
         range: range_of(v),
         target: TargetKind(str_of(v, "targetType")),
         tiers,
+        rider: strings(v, "body"),
     }
 }
 

@@ -122,13 +122,14 @@ fn phase_order(p: Phase) -> u8 {
         Phase::BlightedIsland => 3,
         Phase::Event => 4,
         Phase::Fear => 5,
-        Phase::Ravage => 6,
-        Phase::Build => 7,
-        Phase::Explore => 8,
-        Phase::AdvanceInvaderCards => 9,
-        Phase::SlowPower => 10,
-        Phase::TimePasses => 11,
-        Phase::GameOver | Phase::Other => 12,
+        Phase::HighImmigration => 6,
+        Phase::Ravage => 7,
+        Phase::Build => 8,
+        Phase::Explore => 9,
+        Phase::AdvanceInvaderCards => 10,
+        Phase::SlowPower => 11,
+        Phase::TimePasses => 12,
+        Phase::GameOver | Phase::Other => 13,
     }
 }
 
