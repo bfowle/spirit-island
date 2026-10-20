@@ -97,7 +97,7 @@ FAQ rulings that clarify without changing text (e.g. Jagged Earth p.7
 | D2 | **Printed text in a public repo (Brett)** | The repo is public. Commit IDs, numbers, elements, our own tags, and our own one-line rule summaries with citations. Keep full printed card and rulebook text in a local layer (`data/corpus/local/`, gitignored) rebuilt from Brett's installed game and sources. Note: `data/decks/*.json` already commits Wiki card text; decide whether that stays. |
 | D3 | Format | JSON per item kind, validated by JSON Schema (`data/corpus/schema/`). Rust types generated or hand-written to match; Python and TypeScript read the JSON directly. |
 | D4 | LLM pages | Generated `data/corpus/pages/<kind>/<id>.md`: front matter with the facts, then a short body with citations. Never edited by hand. |
-| D5 | Builder | A Rust binary `si-corpus` in the `tools/si-live` workspace (reuses `engine_defs`, the NRBF decoder and the JSON types): `build`, `diff`, `check`, `pages`. Wiki and FAQ fetching stays in Python scripts that write local caches only. |
+| D5 | Builder | A Rust binary `si-corpus` in the `crates/` workspace (reuses `engine_defs`, the NRBF decoder and the JSON types): `build`, `diff`, `check`, `pages`. Wiki and FAQ fetching stays in Python scripts that write local caches only. |
 | D6 | **Branch (Brett)** | Build on a new branch cut from a freshly fetched `origin/main` once `steam-companion` is merged, or stack on `steam-companion` if it isn't merged by then. |
 | D7 | Review | Printed facts carry no review status; Brett only sees disagreements. The disagreement report (`data/corpus/review.md`) lists each field where sources differ, in the open-questions format; his answer becomes a correction on that item. Rules (layer 3) keep a review status. |
 

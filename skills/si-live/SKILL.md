@@ -12,14 +12,14 @@ Interactive Spirit Island board-state tool. Eliminates typed shorthand from the 
 
 - Rust toolchain (for backend + MCP server).
 - Node 18+ / npm (for Vue 3 frontend).
-- One-time frontend install: `cd tools/si-live/frontend && npm install`.
+- One-time frontend install: `cd apps/web && npm install`.
 
 ## How to launch (manual)
 
 The server needs to run outside the Claude Code process — Claude's skills are stdin/stdout and can't host a long-lived web server. Brett launches it once per session:
 
 ```bash
-./tools/si-live/start.sh
+./scripts/si-live-start.sh
 ```
 
 Opens two processes:
@@ -30,7 +30,7 @@ Brett opens the frontend URL in a browser, sets up the game (adversary, spirits,
 
 ## How Claude uses this skill
 
-**Phase A (current — file read):** every skill that needs live board state (`si-at-the-table`, `si-post-game`) reads `data/current-game.json` directly. Schema is documented at `tools/si-live/common/src/schema.rs`.
+**Phase A (current — file read):** every skill that needs live board state (`si-at-the-table`, `si-post-game`) reads `data/current-game.json` directly. Schema is documented at `crates/si-common/src/schema.rs`.
 
 **Phase B (planned — MCP):** the `si-mcp` binary exposes `get_game_state`, `compute_innate_threshold`, `compute_draw_probability`, etc. as MCP tools. Skills switch to MCP calls instead of file reads. File-read remains the fallback.
 
@@ -40,11 +40,11 @@ Brett opens the frontend URL in a browser, sets up the game (adversary, spirits,
 - User says "launch the tool" / "start si-live" / "open the board".
 - `si-at-the-table` detects the state file is stale or missing and wants to prompt launch.
 
-Do not auto-launch on every Claude invocation — Brett runs the tool when he wants it up. If the state file is missing or stale, tell Brett to run `./tools/si-live/start.sh`; don't try to spawn it yourself.
+Do not auto-launch on every Claude invocation — Brett runs the tool when he wants it up. If the state file is missing or stale, tell Brett to run `./scripts/si-live-start.sh`; don't try to spawn it yourself.
 
 ## State schema summary
 
-See `tools/si-live/common/src/schema.rs` for the authoritative types. Key shapes:
+See `crates/si-common/src/schema.rs` for the authoritative types. Key shapes:
 
 - `GameState`: `{ version, round, phase, setup, pools, spirits, board_state, log }`
 - `Spirit`: `{ energy, card_plays, presence_on_board, presence_on_track_energy, presence_on_track_cardplay, elements_this_turn, hand, discard, forgotten, played_this_turn, growth_options }`

@@ -1,0 +1,51 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/si-common",
+    "crates/si-backend",
+    "crates/si-mcp",
+    "crates/si-steam",
+    "crates/si-ui",
+    "crates/si-app",
+]
+# The native app (ui, app) builds for Windows with app/build-windows.sh; a
+# plain `cargo build` / `cargo test` keeps to the server crates.
+default-members = [
+    "crates/si-common",
+    "crates/si-backend",
+    "crates/si-mcp",
+    "crates/si-steam",
+    "crates/si-ui",
+    "crates/si-app",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.90"
+authors = ["Brett Fowle"]
+license = "MIT"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+anyhow = "1"
+thiserror = "2"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# backend-only
+axum = { version = "0.7", features = ["ws"] }
+tower-http = { version = "0.6", features = ["cors", "fs", "trace"] }
+notify = "7"
+
+# shared rule engine owns its own data models
+
+# The companion decodes ~250 KB saves several times a second and recomputes
+# its stats on each; optimize those two crates even in dev builds.
+[profile.dev.package.si-steam]
+opt-level = 2
+
+[profile.dev.package.si-common]
+opt-level = 2

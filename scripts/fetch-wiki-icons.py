@@ -6,7 +6,7 @@ The si-live frontend uses these for the UI — elements, units, tokens,
 resources, speed markers, terrain symbols. They're @ Greater Than Games;
 we use them for this personal guide under fair-use + attribution.
 
-Outputs to `tools/si-live/frontend/src/assets/icons/<slug>.svg|.png`.
+Outputs to `apps/web/src/assets/icons/<slug>.svg|.png`.
 
 Usage:
     python3 scripts/fetch-wiki-icons.py

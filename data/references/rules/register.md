@@ -7,7 +7,7 @@ Brett`, 29 are `sourced`, 242 are still `unreviewed`** (all 310 Status
 lines, including the one-line Event, Fear, Blight-card and loss-condition
 entries; an entry with both a Brett answer and a sourced one counts as
 reviewed). Status values are defined in section 0. Machine-readable twin:
-`tools/si-live/common/data/invader-rules.json` (the adversary, spirit,
+`crates/si-common/data/invader-rules.json` (the adversary, spirit,
 scenario and Event entries; its `status` field keeps the engine-vs-Wiki
 agreement, and a `review` field, plus `resolution` for a settled conflict,
 carries the review). Open questions found in this pass are in section 8; they

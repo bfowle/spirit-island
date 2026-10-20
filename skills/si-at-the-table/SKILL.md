@@ -20,7 +20,7 @@ Brett is playing *right now*. He has 30 seconds of your attention. Give him deci
 ## State input — three paths in priority order
 
 1. **MCP tool** (preferred — live + structured): if the `si-live` MCP server is registered and healthy, call `get_game_state` to retrieve the full current game state. Detect this by looking for a `mcp__si-live__get_game_state` tool in the session's tool list. Phase B registration: `claude mcp add si-live --scope user --env SI_STATE_PATH=/path/to/data/current-game.json -- /path/to/si-mcp`.
-2. **State file read** (Phase A fallback): if the MCP tool isn't available, read `data/current-game.json` directly with the Read tool. The file matches the schema defined in `tools/si-live/common/src/schema.rs`. Update interactively by having Brett click in the si-live web UI; the backend persists each change debounced.
+2. **State file read** (Phase A fallback): if the MCP tool isn't available, read `data/current-game.json` directly with the Read tool. The file matches the schema defined in `crates/si-common/src/schema.rs`. Update interactively by having Brett click in the si-live web UI; the backend persists each change debounced.
 3. **Typed shorthand** (last resort): if neither MCP nor state file is available (tool not running, file missing), fall back to parsing Brett's shorthand sentence. Use the format below and ask for one clarifying line if required.
 
 ### Typed-shorthand format (path 3)
@@ -36,7 +36,7 @@ Parse:
 - fear → 3 of 8 (Terror 1 still)
 - question → play Mantle or not?
 
-Before committing to typed-shorthand: remind Brett once that the si-live tool (`./tools/si-live/start.sh`) eliminates this friction. Don't belabor it.
+Before committing to typed-shorthand: remind Brett once that the si-live tool (`./scripts/si-live-start.sh`) eliminates this friction. Don't belabor it.
 
 ## Response Algorithm
 

@@ -123,7 +123,7 @@ If a previously-authored chapter has a T1 block:
 
 - `data/references/wiki/{slug}.json` — parsed spirit data (start tracks, growth options, unique cards).
 - `scripts/wiki-fetch.py` — re-fetch if data is stale.
-- Future: `tools/si-live/common/` Rust crate — canonical rule engine (Phase A+).
+- Future: `crates/si-common/` Rust crate — canonical rule engine (Phase A+).
 
 ## Rules this skill enforces
 

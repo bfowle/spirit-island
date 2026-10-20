@@ -16,9 +16,9 @@ data/current-game.json
 # Archived saved games, user-private
 data/games/
 # © GTG Wiki board PNGs, do not redistribute
-tools/si-live/frontend/public/board-images/*.png
+apps/web/public/board-images/*.png
 # Vite build output
-tools/si-live/frontend/dist/
+apps/web/dist/
 
 # Ad-hoc exports
 si-live-v0-brief.zip
@@ -27,3 +27,6 @@ si-live-v0-brief.zip
 data/steam-capture/
 data/steam-game.json
 data/steam-history/
+
+# Rust workspace build output
+/target/

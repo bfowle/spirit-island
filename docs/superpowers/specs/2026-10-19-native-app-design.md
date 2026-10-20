@@ -2,8 +2,8 @@
 
 Date: 2026-10-19
 Status: rev 3. N0 done: the spike window opened on Brett's desktop (Vulkan,
-AMD Radeon RX 7900 XTX). N1 built: `tools/si-live/ui` (`si-ui`) and
-`tools/si-live/app` (`si-companion.exe`), replaying captures and following
+AMD Radeon RX 7900 XTX). N1 built: `crates/si-ui` (`si-ui`) and
+`crates/si-app` (`si-companion.exe`), replaying captures and following
 the live Steam game in-process. N2 built: the center view follows the phase
 (Spirit/Fast, Event, Fear, Invaders, Slow) and a Rules view explains what is
 in play.
@@ -160,7 +160,7 @@ where it sets visual direction for the tabletop, the native theme follows it.
 ## 6.1 Build and run (N1)
 
 ```
-tools/si-live/app/build-windows.sh            # → tools/si-live/target/si-companion/
+crates/si-app/build-windows.sh            # → target/si-companion/
 si-companion.exe                              # live: follows the Steam game
 si-companion.exe --capture <dir> [--at T6/FastPower]     # replay: ← → step (Shift ×10), Space play
 si-companion.exe --capture <dir> --at T6/FastPower --screenshot out.png [--size 1920x1080]

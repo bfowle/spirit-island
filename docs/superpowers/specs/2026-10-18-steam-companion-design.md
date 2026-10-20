@@ -97,8 +97,8 @@ SpiritIsland.exe (Windows, Mono)
 ### Crates and units
 
 Dependency direction: `si-common` ← `si-steam` ← `backend`. Folders:
-`si-common` is `tools/si-live/common/`; the new `si-steam` crate is
-`tools/si-live/steam/`. File paths below are relative to those folders. The
+`si-common` is `crates/si-common/`; the new `si-steam` crate is
+`crates/si-steam/`. File paths below are relative to those folders. The
 MCP server is not changed in v1 (see Non-goals).
 
 | Unit | Crate / file | Job |
@@ -797,7 +797,7 @@ Disease-stopped Build becomes the player's choice) and Lingering Pestilence
   hash is `#/companion`, and `App.vue` otherwise. `App.vue` (with its state
   load, watchers, and `saveState` timer) never mounts on the companion route,
   so the companion cannot write tabletop state.
-- New folder `tools/si-live/frontend/src/companion/`: `CompanionApp.vue`,
+- New folder `apps/web/src/companion/`: `CompanionApp.vue`,
   `CompanionDashboard.vue`, one panel per stat family, `SourceStatus.vue`,
   `IslandHeatMap.vue`, and `useCompanionStream.ts` (SSE client with
   reconnect). The companion keeps its own SSE-fed ref.

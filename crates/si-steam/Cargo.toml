@@ -1,0 +1,19 @@
+[package]
+name = "si-steam"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+si-common = { path = "../si-common" }
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+tokio.workspace = true
+sha2 = "0.10"
+flate2 = "1"
+
+[[bin]]
+name = "si-steam-dump"
+path = "src/bin/dump.rs"

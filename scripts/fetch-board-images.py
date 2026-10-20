@@ -7,7 +7,7 @@ Thematic) for base-game boards A-D and Jagged Earth boards E-H. We use
 these as authentic backdrops for the si-live map view instead of the
 synthetic hex layout.
 
-Outputs to `tools/si-live/frontend/public/board-images/<boardId>-<variant>.png`.
+Outputs to `apps/web/public/board-images/<boardId>-<variant>.png`.
 
 Usage:
     python3 scripts/fetch-board-images.py
