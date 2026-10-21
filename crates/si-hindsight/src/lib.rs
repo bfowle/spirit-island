@@ -308,7 +308,7 @@ impl Outcome {
                 format!("| then{}{}", if self.next2_blight > 0.05 { format!(" Bl{:.1}", self.next2_blight) } else { String::new() }, if self.next2_dahan_lost > 0.05 { format!(" Dh{:.1}", self.next2_dahan_lost) } else { String::new() })
             });
         }
-        if p.is_empty() { "-".into() } else { p.join(" ") }
+        if p.is_empty() { "-".into() } else { p.join(if long { ", " } else { " " }) }
     }
 }
 
@@ -464,7 +464,7 @@ fn annotate_elements(line: &mut Line, defs: &Definitions, s2: &SpiritTurn) {
         .collect();
 }
 
-fn growth_words(tokens: &[String], code: &dyn Fn(&str) -> String) -> String {
+pub fn growth_words(tokens: &[String], code: &dyn Fn(&str) -> String) -> String {
     tokens
         .iter()
         .map(|t| {
@@ -568,10 +568,6 @@ pub struct ReviewOptions {
     pub max_innate_options: usize,
     /// Lines kept per position after scoring.
     pub keep_per_position: usize,
-    /// Print a line per turn on stderr while working.
-    pub progress: bool,
-    /// Color the progress line (stderr is a terminal and color is on).
-    pub progress_color: bool,
     /// Lines (best by hindsight, plus the actual) that get the informed score and are ranked by it.
     pub informed_lines: usize,
     /// The measured constants; None takes the built-in ones.
@@ -582,7 +578,7 @@ pub struct ReviewOptions {
 
 impl Default for ReviewOptions {
     fn default() -> Self {
-        ReviewOptions { growth: true, max_positions: 100, max_lines_per_position: 3000, innate_beam: 40, max_innate_options: 60, keep_per_position: 300, progress: false, progress_color: false, informed_lines: 30, calibration: None, actual_only: false }
+        ReviewOptions { growth: true, max_positions: 100, max_lines_per_position: 3000, innate_beam: 40, max_innate_options: 60, keep_per_position: 300, informed_lines: 30, calibration: None, actual_only: false }
     }
 }
 
@@ -1124,8 +1120,28 @@ pub fn review(rec: &GameRecord, defs: &Definitions) -> Review {
     review_with(rec, defs, &ReviewOptions::default())
 }
 
-/// Review every turn of the game.
+/// What a review reports while it works (one turn at a time; `Positions` from any thread).
+#[derive(Debug, Clone, PartialEq)]
+pub enum Progress {
+    /// A turn's enumeration starts: how many growth positions it will try.
+    Start { turn: u32, positions: usize },
+    /// One more growth position done.
+    Positions { turn: u32, done: usize, total: usize },
+    /// Enumeration done: play sets tried and lines kept; the ranking over the Explore cards starts.
+    Ranking { turn: u32, play_sets: usize, lines: usize },
+    /// The turn is reviewed.
+    Done { turn: u32, lines: usize, explore_cards: usize, seconds: f64 },
+}
+
+/// Review every turn (with the options) and report nothing.
 pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -> Review {
+    review_turns(rec, defs, opts, None, &|_| {})
+}
+
+/// Review every turn of the game.
+/// Review the turns in `only` (every turn when None), reporting progress through
+/// `on_progress`; the TUI reviews one turn per call in a worker thread.
+pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, only: Option<&[u32]>, on_progress: &(dyn Fn(Progress) + Sync)) -> Review {
     let spirit = rec.meta.spirits.first().cloned().unwrap_or_default();
     let cal = opts.calibration.clone().unwrap_or_default();
     let mut values = Values::for_panel(defs.spirits.get(&spirit));
@@ -1145,7 +1161,7 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
     let enumerate_growth = opts.growth && pick <= 1 && !opts.actual_only;
     let all_innates = innates_of(defs, &spirit);
     let mut turns = Vec::new();
-    for t in rec.turns.iter().filter(|t| t.turn >= 1 && !t.before_fast.is_empty()) {
+    for t in rec.turns.iter().filter(|t| t.turn >= 1 && !t.before_fast.is_empty() && only.is_none_or(|o| o.contains(&t.turn))) {
         let Some(s) = rec.spirits.iter().find(|s| s.turn == t.turn && s.spirit == spirit) else { continue };
         let ended_before_slow = t.before_slow.is_empty();
         let next_turn = rec.turns.iter().find(|n| n.turn == t.turn + 1);
@@ -1179,14 +1195,9 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             positions.truncate(opts.max_positions.max(1));
         }
         let started = std::time::Instant::now();
-        // one bar per turn, 40 cells, filled as growth positions complete (any thread)
-        const BAR: usize = 40;
         let done = std::sync::atomic::AtomicUsize::new(0);
         let total = positions.len().max(1);
-        let (bold, cyan, dim, reset) = if opts.progress_color { ("\x1b[1m", "\x1b[36m", "\x1b[2m", "\x1b[0m") } else { ("", "", "", "") };
-        if opts.progress {
-            eprint!("  {bold}T{:<2}{reset} {dim}[{reset}{cyan}", t.turn);
-        }
+        on_progress(Progress::Start { turn: t.turn, positions: positions.len() });
         // the actual line, as recorded (targets included)
         let actual_plays: Vec<Play> = s
             .cards_played
@@ -1414,14 +1425,8 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             for l in lines.iter_mut() {
                 annotate_elements(l, defs, &s2);
             }
-            if opts.progress {
-                let d = done.fetch_add(1, std::sync::atomic::Ordering::SeqCst) + 1;
-                let before = (d - 1) * BAR / total;
-                let after = (d * BAR / total).min(BAR);
-                if after > before {
-                    eprint!("{}", "#".repeat(after - before));
-                }
-            }
+            let d = done.fetch_add(1, std::sync::atomic::Ordering::SeqCst) + 1;
+            on_progress(Progress::Positions { turn: t.turn, done: d, total });
             (tried, lines)
         };
         let threads = std::thread::available_parallelism().map(|n| n.get()).unwrap_or(1).clamp(1, 16).min(positions.len().max(1));
@@ -1493,10 +1498,7 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             lines.push(actual_line.clone());
         }
         lines.sort_by(|a, b| b.score.partial_cmp(&a.score).unwrap().then(a.plays.len().cmp(&b.plays.len())).then(b.actual.cmp(&a.actual)));
-        if opts.progress {
-            let filled = done.load(std::sync::atomic::Ordering::SeqCst) * BAR / total;
-            eprint!("{}{reset}{dim}]{reset} {:>4} position{} {:>6} play sets {:>5} lines  {dim}ranking{reset}", " ".repeat(BAR.saturating_sub(filled)), positions.len(), if positions.len() == 1 { " " } else { "s" }, count, lines.len());
-        }
+        on_progress(Progress::Ranking { turn: t.turn, play_sets: count, lines: lines.len() });
         // the informed score: the best lines by hindsight and the actual one, each averaged
         // over the Explore cards that could have come, with the Event and Fear effects left out
         let cands = explore_candidates(rec, defs, t);
@@ -1563,7 +1565,22 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             };
         }
         top.sort_by(|a, b| b.informed.partial_cmp(&a.informed).unwrap().then(b.score.partial_cmp(&a.score).unwrap()).then(b.actual.cmp(&a.actual)));
-        let lines = top;
+        // lines with the same growth, the same cards and innates and the same two scores
+        // differ only in a target that changes nothing: one row, `+N alike`
+        let same_powers = |l: &Line| -> (Vec<String>, Vec<(String, bool, bool)>) {
+            let mut k: Vec<(String, bool, bool)> = l.plays.iter().map(|p| (p.power.clone(), p.fast, p.innate)).collect();
+            k.sort();
+            (l.growth.clone(), k)
+        };
+        let mut folded: Vec<Line> = Vec::new();
+        for l in top {
+            if let Some(prev) = folded.iter_mut().find(|p| !p.actual && !l.actual && (p.informed - l.informed).abs() < 1e-6 && (p.score - l.score).abs() < 1e-6 && same_powers(p) == same_powers(&l)) {
+                prev.ties += 1 + l.ties;
+                continue;
+            }
+            folded.push(l);
+        }
+        let lines = folded;
         let actual_line = lines.iter().find(|l| l.actual).cloned().unwrap_or(actual_line);
         let best_hindsight = lines.iter().map(|l| l.score).fold(actual_line.score, f64::max);
         let best_informed = lines.iter().map(|l| l.informed).fold(actual_line.informed, f64::max);
@@ -1733,9 +1750,7 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             v.dedup();
             v
         };
-        if opts.progress {
-            eprintln!(" {} lines x {} Explore card{}  {dim}{:.1}s{reset}", lines.len(), cands.len().max(1), if cands.len() == 1 { "" } else { "s" }, started.elapsed().as_secs_f64());
-        }
+        on_progress(Progress::Done { turn: t.turn, lines: lines.len(), explore_cards: cands.len().max(1), seconds: started.elapsed().as_secs_f64() });
         let actual_luck = actual_line.luck;
         // calibration material: the next turn's threat with no Spirit action against what it took
         let (next_threat, next_actual) = match next_turn {

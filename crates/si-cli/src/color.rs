@@ -83,7 +83,7 @@ fn c256u(n: u8, s: &str) -> String {
 
 /// Element abbreviations as the hindsight prints them: `Su1 Mo1 Fi2 Ai1 Wa1 Ea1 Pl1 An2`.
 /// Sun yellow, Moon white, Fire orange, Air purple, Water blue, Earth grey, Plant green, Animal red.
-const ELEMENT_COLORS: [u8; 8] = [220, 255, 208, 135, 33, 245, 34, 196];
+pub(crate) const ELEMENT_COLORS: [u8; 8] = [220, 255, 208, 135, 33, 245, 34, 196];
 
 const MOUNTAIN: u8 = 245;
 const SANDS: u8 = 220;

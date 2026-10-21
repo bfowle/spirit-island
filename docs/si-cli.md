@@ -280,6 +280,62 @@ hundred games they get fitted to win probability (decision-structure spec, secti
 Re-run after `si import` or a batch of new captures; the pass takes a few seconds (the
 actual line only, three passes).
 
+## 5g. Study: the review as screens
+
+```
+si study <game>                           # the hindsight review, turn by turn, in the terminal
+si study <game> --fixed-growth            # growth as played: the review lands in seconds
+si study "$STEAM/EndGame--n.txt" --seed <save>   # a branch played from a checkpoint
+```
+
+`si study` opens the same review `si hindsight` prints as screens to move through
+(ratatui, the stack adroit uses). The record draws at once; the review runs in a
+worker thread one turn at a time and each turn appears as it finishes, the footer
+showing the turn and the growth positions tried so far.
+
+- A tab bar across the top of both screens: each turn as a folder tab with its verdict
+  (`sound`, `better 0.7`, `MISTAKE 3.6`, colored green, yellow, red), the current turn
+  open into the screen below, and the Turn and Pacing screens as tabs at the right end.
+- **Turn** screen: nine panels. On a terminal 150 columns or wider the
+  decision runs down the left (LINES, READING, LINE), the island down the right
+  (POSITION, INVADER PHASE, FORECAST) and the spirit's resources across the bottom
+  (SPIRIT, GROWTH, HAND), each panel as tall as its content; narrower, the same panels
+  stack in rows. LINES: the actual line first, then each growth (`best`, `then`) carrying
+  its best play set's numbers and `[N play sets]`, under it each play set by card names
+  with `[N targetings]`, under that each targeting with its lands; the best growth
+  starts open to its play sets; Enter or Space opens or closes the group under the
+  cursor, `e`/`c` open or close them all. READING: the verdict with the decision, luck
+  and gap numbers and what the hidden cards were worth. LINE: the selected row in words.
+  POSITION: the island at the Fast phase, one row per land with its pieces, the Invader
+  steps reaching it this turn (`R B X50%`), the selected row's plays aimed there (`line`,
+  the row lit) and what the steps did there (`result`). INVADER PHASE: the face-up cards
+  and their lands, the Explore's pool and the card that came, the Event and Fear cards
+  with the choices they asked and each one's verdict, the Blight card, the board after.
+  FORECAST: the deck per coming turn. SPIRIT: Energy, plays, track elements, presence,
+  and each innate's tiers lit where the selected row reaches them. Elements are always
+  the eight in printed order (Sun Moon Fire Air Water Earth Plant Animal) as `Su1 Mo3
+  Fi1 Ai0 Wa1 Ea0 Pl5 An0`, each in its element's color with a zero count dimmed; an
+  innate's threshold lists only the elements it needs. GROWTH: the panel's
+  groups in yield words, the one taken and the best line's, the draft offered. HAND:
+  every card with cost, speed, range, target, elements and who plays it (actual, row,
+  both). `h`/`l` or the arrows move between turns, `1`-`9` jump, `j`/`k` move along the
+  rows; the row under the cursor drives the POSITION, SPIRIT, HAND and LINE panels.
+- **Pacing** screen (`Tab`): six charts over the turns from the record and the review:
+  Blight on the island, added per turn and left on the card (the loss clock); Explorers,
+  Towns, Cities and lands with Invaders; Fear cards per turn and cumulative with the
+  Terror Level (the win clock); the spirit's Energy, plays, cards played and presence on
+  the island (Rei's curve); your line's informed and hindsight against the best informed
+  line per turn; and the decision gap and luck per turn as bars (luck green when the
+  cards helped, red when they cost). Block and half-block markers only.
+- `t` opens a prompt for a line in notation (`SLSF>C8 MI`); it is scored like `--try`
+  and shown as a `try` row. `i` loads the current turn's start-of-turn checkpoint into
+  the running game by running `si inject <capture> --turn n --phase SpiritPhase` as a
+  child process and shows what it printed; a bare EndGame log has no checkpoints and
+  the panel says so. `?` shows the keys, `q` quits.
+
+Spec: `docs/superpowers/specs/2026-10-20-study-tui.md`. Not yet: the board drawn from
+the recorded snapshots, picking a target on it, several spirits.
+
 ## 5e. Checkpoints and live replay
 
 ```

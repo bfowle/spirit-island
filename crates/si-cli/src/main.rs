@@ -5,6 +5,7 @@
 //! directory `si-steam-dump defs` writes).
 
 mod color;
+mod tui;
 
 use std::path::{Path, PathBuf};
 
@@ -34,6 +35,7 @@ fn main() -> Result<()> {
         "hindsight" => hindsight(&args[1..]),
         "import" => import(&args[1..]),
         "calibrate" => calibrate(&args[1..]),
+        "study" => tui::run(&args[1..]),
         _ => usage(),
     }
 }
@@ -49,6 +51,7 @@ fn usage() -> Result<()> {
     eprintln!("       si verify <EndGame.txt | capture dir> [--defs <dir>] [--level n] [--all]   simulate each turn's Invader phase and compare with the log");
     eprintln!("       si cards [--defs <dir>] [--unparsed [n]] [--card <title>] [--features] [--fit]   effect-parser coverage; one card's parse; the feature table; the pricing fit");
     eprintln!("       si import <EndGame--n.txt> [--out <steam-capture dir>]   build a live-<game id>/ capture from an EndGame log and the saves the app still has (its final .dat, any save-Feedback/Undo of that game); the recorder makes the full one");
+    eprintln!("       si study <EndGame.txt | capture dir> [--defs <dir>] [--fixed-growth] [--seed <save.dat>] [--calibration <json>]   the hindsight review as screens: turn by turn with the lines table, reading, hidden cards and deck forecast; a pacing screen of charts; t types a line to score, i loads the turn's checkpoint into the running game");
     eprintln!("       si calibrate [<path>...] [--defs <dir>] [--out <json>] [--dry-run]   measure over the corpus what hindsight has no rule for: the Event and Fear cards' mean ledger effect, the next-turn weight, a turn's luck spread, the ledger against results; writes data/calibration.json (default corpus: the captures and the Steam folder)");
     Ok(())
 }
@@ -196,6 +199,40 @@ fn defs_from(args: &[String]) -> Result<Option<Definitions>> {
             Ok(Some(defs))
         }
         None => Ok(None),
+    }
+}
+
+/// One progress line per turn on stderr: a 40-cell bar filled as growth positions
+/// complete (from any thread), the counts, `ranking`, then the turn's time.
+fn progress_bars(colored: bool) -> impl Fn(si_hindsight::Progress) + Sync {
+    use std::io::Write;
+    const BAR: usize = 40;
+    let filled = std::sync::Mutex::new(0usize);
+    move |p: si_hindsight::Progress| {
+        let (bold, cyan, dim, reset) = if colored { ("\x1b[1m", "\x1b[36m", "\x1b[2m", "\x1b[0m") } else { ("", "", "", "") };
+        let mut err = std::io::stderr().lock();
+        match p {
+            si_hindsight::Progress::Start { turn, .. } => {
+                *filled.lock().unwrap() = 0;
+                let _ = write!(err, "  {bold}T{turn:<2}{reset} {dim}[{reset}{cyan}");
+            }
+            si_hindsight::Progress::Positions { done, total, .. } => {
+                let after = (done * BAR / total.max(1)).min(BAR);
+                let mut f = filled.lock().unwrap();
+                if after > *f {
+                    let _ = write!(err, "{}", "#".repeat(after - *f));
+                    *f = after;
+                }
+            }
+            si_hindsight::Progress::Ranking { play_sets, lines, .. } => {
+                let f = *filled.lock().unwrap();
+                let _ = write!(err, "{}{reset}{dim}]{reset} {play_sets:>6} play sets {lines:>5} lines  {dim}ranking{reset}", " ".repeat(BAR.saturating_sub(f)));
+            }
+            si_hindsight::Progress::Done { lines, explore_cards, seconds, .. } => {
+                let _ = writeln!(err, " {lines} lines x {explore_cards} Explore card{}  {dim}{seconds:.1}s{reset}", if explore_cards == 1 { "" } else { "s" });
+            }
+        }
+        let _ = err.flush();
     }
 }
 
@@ -521,11 +558,11 @@ fn hindsight(args: &[String]) -> Result<()> {
     color::set_boards(&rec.meta.boards);
     let progress = std::io::IsTerminal::is_terminal(&std::io::stderr());
     let calibration = calibration_from(args);
-    let opts = si_hindsight::ReviewOptions { growth: !fixed_growth, progress, progress_color: color::enabled(), calibration, ..Default::default() };
+    let opts = si_hindsight::ReviewOptions { growth: !fixed_growth, calibration, ..Default::default() };
     if progress {
         eprintln!("hindsight  {} turns; each bar fills as the turn's growth positions are tried with every play set, then the ranking runs{}", rec.turns.iter().filter(|t| t.turn >= 1 && !t.before_fast.is_empty()).count(), if fixed_growth { " (--fixed-growth: the growth as played)" } else { " (--fixed-growth keeps the growth as played and is much faster)" });
     }
-    let review = si_hindsight::review_with(&rec, &defs, &opts);
+    let review = if progress { si_hindsight::review_turns(&rec, &defs, &opts, None, &progress_bars(color::enabled())) } else { si_hindsight::review_with(&rec, &defs, &opts) };
     let pool_at = blight_pool_by_turn(Path::new(path));
     // the game in a small table; the key to every column and term is a table at the end
     use comfy_table::{ColumnConstraint, Width};
