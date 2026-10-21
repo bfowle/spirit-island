@@ -1,0 +1,442 @@
+23:15:10.731  GameView Start
+23:15:10.731  Building Adjacency Matrix: [D] / [] 
+23:15:11.606  ***** SAVING *****
+23:15:13.065  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:15:13.065  DidPerformAction: [ChangeStateAction: From=null, To=PlayerSetup/PlayerSetup, Enter=False]
+23:15:13.362  ***** SAVING *****
+23:15:13.362  DidPerformAction: [MovePresenceAction: PieceMovements=[ShroudPresence12 ( Shroud of Silent Mist's Forgotten Powers => WetlandD3)]
+23:15:13.701  DidPerformAction: [MovePresenceAction: PieceMovements=[ShroudPresence13 ( Shroud of Silent Mist's Forgotten Powers => MountainD8)]
+23:15:13.997  DidPerformAction: [AdjustCardPlaysAction: Source: [PlayerSetupStateController: State=[State: PhaseType=StartOfGame, StateType=PlayerSetup]]
+23:15:14.298  DidPerformAction: [ChangeStateAction: From=PlayerSetup/PlayerSetup, To=InvadersStartingAction/InvadersStartingAction, Enter=False]
+23:15:14.298  ***** SAVING *****
+23:15:14.298  ***** CLEARING UNDO FILES *****
+23:15:14.298  ***** SAVING *****
+23:15:14.298  DidPerformAction: [FlipCardAction: Source=ResolveInvaderCardAction-, CardBeingFlipped=Mountain1
+23:15:15.513  ***** CLEARING UNDO FILES *****
+23:15:15.513  DidPerformAction: [AddIslandPiecesAction: PieceMovements=[Explorer1 ( Out of Game => MountainD5)]
+23:15:15.564  DidPerformAction: [AddIslandPiecesAction: PieceMovements=[Explorer2 ( Out of Game => MountainD8)]
+23:15:16.159  DidPerformAction: [ResolveInvaderCardAction: Source: Stage I Mountain, InvaderActionType: Explore, InvaderCard: Mountain1]
+23:15:16.159  DidPerformAction: [AdvanceInvaderCardsAction: CardMovements=(Stage I Mountain, Invader Deck, Build Space)]
+23:15:16.466  DidPerformAction: [CompleteSetupAction: Source: [InvadersStartingActionStateController: State=[State: PhaseType=StartOfGame, StateType=InvadersStartingAction]]
+23:15:16.466  ***** SAVING *****
+23:15:17.095  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=, ToSpiritPhaseStatus=Grow]
+23:15:17.095  DidPerformAction: [ChangeStateAction: From=InvadersStartingAction/InvadersStartingAction, To=SpiritPhase/SpiritPhase, Enter=False]
+23:15:17.391  ***** SAVING *****
+23:18:12.382  IntentManager calling Proceed: [SelectGrowthGroupActivation: Selected=ShroudOfSilentMist Growth Group 2, InstanceNumber: 1 InstanceIdentifier: GrowthGroup-Spirit:ShroudOfSilentMist-1-2-3-0 Source: [GrowStateController: State=[State: PhaseType=Spirit, StateType=Grow] IsOptional: False Choices: ShroudOfSilentMistGroup1, ShroudOfSilentMistGroup2, ShroudOfSilentMistGroup3]
+23:18:13.008  IntentManager calling Proceed: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=0]
+23:18:22.474  IntentManager calling Proceed: [MovePresenceActivation: InstanceNumber: 6 InstanceIdentifier: MovePresenceActivation-1-Shroud-0-SpiritPhaseActivation-ShroudOfSilentMist-Group:2-OptionIndex:0-Node:-Type:AddPresence-OptionNumber:0-OptionUsed:1-OptionUndone:0-GroupUsed:1-OwnerSpecialRule:- Source: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=1] IsOptional: False IsEnabled: True]
+23:18:22.474  DidPerformAction: [MovePresenceAction: PieceMovements=[ShroudPresence1 ( ShroudOfSilentMistEnergy2 => MountainD8)]
+23:18:22.775  ***** SAVING *****
+23:18:24.298  IntentManager calling Proceed: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=0]
+23:18:30.871  IntentManager calling Proceed: [MovePresenceActivation: InstanceNumber: 7 InstanceIdentifier: MovePresenceActivation-1-Shroud-0-SpiritPhaseActivation-ShroudOfSilentMist-Group:2-OptionIndex:1-Node:-Type:AddPresence-OptionNumber:0-OptionUsed:1-OptionUndone:0-GroupUsed:1-OwnerSpecialRule:- Source: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=1] IsOptional: False IsEnabled: True]
+23:18:30.871  DidPerformAction: [MovePresenceAction: PieceMovements=[ShroudPresence2 ( ShroudOfSilentMistEnergy3 => MountainD8)]
+23:18:31.176  DidPerformAction: [GainElementsAction: Source: [MovePresenceAction: PieceMovements=[ShroudPresence2 ( ShroudOfSilentMistEnergy3 => MountainD8)]]
+23:18:31.630  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=Grow, ToSpiritPhaseStatus=GainEnergy]
+23:18:31.630  ***** SAVING *****
+23:18:31.630  IntentManager calling Proceed: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Gain  Energy, IsUndoActivation=False, ShouldUseActivationAutomatically=True, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=0]
+23:18:31.630  DidPerformAction: [GainEnergyAction: SpiritGainingEnergy:ShroudOfSilentMist Amount:1, Source: [RuleAction: RuleActionOfType=SpiritAction, SourceController=[SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Gain  Energy, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=1], JournalIndex=36, AssociatedIslandLocations=[Wetland D1, Jungle D2, Wetland D3, Sands D4, Mountain D5, Jungle D6, Sands D7, Mountain D8], AffectedPieceTypes=[, IslandLocationTarget=]]]
+23:18:31.970  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=GainEnergy, ToSpiritPhaseStatus=PlayPayPower]
+23:18:31.970  ***** SAVING *****
+23:18:55.514  IntentManager calling Proceed: [PlayPowerCardActivation: InstanceNumber: 12 InstanceIdentifier: PlayPowerCard-TheFogClosesIn-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: True]
+23:18:55.514  DidPerformAction: [PayEnergyAction: SpiritPayingEnergy:ShroudOfSilentMist Amount:1, Source: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 12 InstanceIdentifier: PlayPowerCard-TheFogClosesIn-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: True]]]
+23:18:55.835  DidPerformAction: [MoveCardAction: CardBeingMoved=TheFogClosesIn, To=Shroud of Silent Mist's Play Area, From=Shroud of Silent Mist's Hand, Offset=]
+23:18:55.835  DidPerformAction: [GainElementsAction: Source: [MoveCardAction: CardBeingMoved=TheFogClosesIn, To=Shroud of Silent Mist's Play Area, From=Shroud of Silent Mist's Hand, Offset=]]
+23:18:56.334  DidPerformAction: [AdjustCardPlaysAction: Source: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 12 InstanceIdentifier: PlayPowerCard-TheFogClosesIn-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: False]]]
+23:18:56.334  DidPerformAction: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 12 InstanceIdentifier: PlayPowerCard-TheFogClosesIn-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: False]]
+23:18:56.334  ***** SAVING *****
+23:18:59.672  IntentManager calling Proceed: [ContinueActivation: ActivationString=Continue-FinishedPlayingPowerCards-3-- Title=A decision will be made...]
+23:18:59.672  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=PlayPayPower, ToSpiritPhaseStatus=Complete]
+23:19:00.598  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=Complete, ToSpiritPhaseStatus=]
+23:19:00.598  DidPerformAction: [ChangeStateAction: From=SpiritPhase/SpiritPhase, To=FastPower/FastPower, Enter=False]
+23:19:00.598  ***** SAVING *****
+23:19:00.907  DidPerformAction: [ChangeStateAction: From=FastPower/FastPower, To=BlightedIsland/BlightedIsland, Enter=False]
+23:19:00.907  ***** SAVING *****
+23:19:01.422  DidPerformAction: [ChangeStateAction: From=BlightedIsland/BlightedIsland, To=Event/Event, Enter=False]
+23:19:01.422  ***** SAVING *****
+23:19:01.422  DidPerformAction: [MoveCardAction: CardBeingMoved=TightKnitCommunities, To=Event Discard, From=Event Deck, Offset=]
+23:19:01.422  DidPerformAction: [ChangeStateAction: From=Event/Event, To=Fear/Fear, Enter=False]
+23:19:01.422  ***** SAVING *****
+23:19:01.769  DidPerformAction: [ChangeStateAction: From=Fear/Fear, To=Ravage/Ravage, Enter=False]
+23:19:01.769  ***** SAVING *****
+23:19:03.294  DidPerformAction: [ChangeStateAction: From=Ravage/Ravage, To=Build/Build, Enter=False]
+23:19:03.614  ***** SAVING *****
+23:19:03.614  DidPerformAction: [AddIslandPiecesAction: PieceMovements=[Town2 ( Out of Game => MountainD5)]
+23:19:03.949  DidPerformAction: [AddIslandPiecesAction: PieceMovements=[Town3 ( Out of Game => MountainD8)]
+23:19:04.581  DidPerformAction: [ResolveInvaderCardAction: Source: Stage I Mountain, InvaderActionType: Build, InvaderCard: Mountain1]
+23:19:04.581  DidPerformAction: [ChangeStateAction: From=Build/Build, To=Explore/Explore, Enter=False]
+23:19:04.581  ***** SAVING *****
+23:19:06.118  ***** CLEARING UNDO FILES *****
+23:19:06.118  ***** SAVING *****
+23:19:06.118  DidPerformAction: [FlipCardAction: Source=ResolveInvaderCardAction-, CardBeingFlipped=Jungle1
+23:19:06.613  ***** CLEARING UNDO FILES *****
+23:19:06.613  DidPerformAction: [AddIslandPiecesAction: PieceMovements=[Explorer3 ( Out of Game => JungleD2)]
+23:19:07.211  DidPerformAction: [AddIslandPiecesAction: PieceMovements=[Explorer4 ( Out of Game => JungleD6)]
+23:19:08.097  DidPerformAction: [ResolveInvaderCardAction: Source: Stage I Jungle, InvaderActionType: Explore, InvaderCard: Jungle1]
+23:19:08.393  DidPerformAction: [ChangeStateAction: From=Explore/Explore, To=AdvanceInvaderCards/AdvanceInvaderCards, Enter=False]
+23:19:08.393  ***** SAVING *****
+23:19:08.393  DidPerformAction: [AdvanceInvaderCardsAction: CardMovements=(Stage I Mountain, Build Space, Ravage Space)]
+23:19:08.719  DidPerformAction: [AdvanceInvaderCardsAction: CardMovements=(Stage I Jungle, Invader Deck, Build Space)]
+23:19:09.905  DidPerformAction: [ChangeStateAction: From=AdvanceInvaderCards/AdvanceInvaderCards, To=SlowPower/SlowPower, Enter=False]
+23:19:09.905  ***** SAVING *****
+23:19:23.443  IntentManager calling Proceed: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Mountain D8, Jungle D2, Sands D4, Wetland D1, Sands D7]]
+23:19:23.767  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence13 ( Mountain D8 => WetlandD1)]
+23:19:26.273  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=WetlandD1]
+23:19:26.273  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan2 ( Wetland D1 => MountainD5)]
+23:19:26.568  DidPerformAction: [UsePowerAction: Source: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=False, CannotUsePowerReason=AlreadyUsed, TARGETS: [Wetland D1, Wetland D3, Mountain D8, Jungle D2, Sands D4, Sands D7]], PowerToUse:LostInTheSwirlingHaze, PowerTarget: WetlandD1]
+23:19:26.568  ***** SAVING *****
+23:19:29.860  IntentManager calling Proceed: [UsePowerActivation: UsePower=TheFogClosesIn Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], The Fog Closes In, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D1, Wetland D3, Mountain D8, Jungle D2, Mountain D5, Sands D7, Sands D4]]
+23:19:30.179  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence13 ( Wetland D1 => MountainD5)]
+23:19:30.490  The damage amount was 0, so no damage was dealt.
+23:19:38.488  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=MountainD5]
+23:19:38.793  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan4 ( Mountain D5 => JungleD6), Dahan2 ( Mountain D5 => JungleD6)]
+23:19:39.383  DidPerformAction: [UsePowerAction: Source: The Fog Closes In, PowerToUse:TheFogClosesIn, PowerTarget: MountainD5]
+23:19:39.383  ***** SAVING *****
+23:19:40.904  ***** LOADED FILE: save-Undo-001.dat *****
+23:19:40.509  ***** SAVING *****
+23:19:40.956  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:19:51.270  ***** LOADED FILE: save-Undo-000.dat *****
+23:19:51.857  ***** SAVING *****
+23:19:51.857  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:19:57.073  IntentManager calling Proceed: [UsePowerActivation: UsePower=TheFogClosesIn Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], The Fog Closes In, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Mountain D8, Jungle D2, Sands D4, Wetland D1, Sands D7]]
+23:19:57.073  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence13 ( Mountain D8 => SandsD7)]
+23:19:57.686  DidPerformAction: [DealDamageAction: Source=DealDamageActivation: DamageSources=[TheFogClosesIn], DamageTargets=[Town1-D7], DamageAmount=1], DamageAmountsBySource=[TheFogClosesIn-1], DamageDistribution=Town1 => 1]
+23:20:02.001  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=SandsD7]
+23:20:02.001  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan6 ( Sands D7 => MountainD5), Dahan5 ( Sands D7 => JungleD6)]
+23:20:02.594  DidPerformAction: [UsePowerAction: Source: The Fog Closes In, PowerToUse:TheFogClosesIn, PowerTarget: SandsD7]
+23:20:02.896  ***** SAVING *****
+23:20:08.943  IntentManager calling Proceed: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Mountain D5, Jungle D6]]
+23:20:08.943  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence13 ( Sands D7 => MountainD5)]
+23:20:12.040  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=MountainD5]
+23:20:12.040  DidPerformAction: [UsePowerAction: Source: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=False, CannotUsePowerReason=AlreadyUsed, TARGETS: [Wetland D3, Mountain D5, Mountain D8, Jungle D2, Sands D4, Wetland D1, Jungle D6]], PowerToUse:LostInTheSwirlingHaze, PowerTarget: MountainD5]
+23:20:12.040  ***** SAVING *****
+23:20:14.896  ***** LOADED FILE: save-Undo-001.dat *****
+23:20:15.482  ***** SAVING *****
+23:20:15.482  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:20:22.224  ***** LOADED FILE: save-Undo-000.dat *****
+23:20:22.819  ***** SAVING *****
+23:20:22.819  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:20:26.064  IntentManager calling Proceed: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Mountain D8, Jungle D2, Sands D4, Wetland D1, Sands D7]]
+23:20:26.064  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence13 ( Mountain D8 => SandsD7)]
+23:20:27.975  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=SandsD7]
+23:20:28.278  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan6 ( Sands D7 => MountainD5)]
+23:20:28.580  DidPerformAction: [UsePowerAction: Source: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=False, CannotUsePowerReason=AlreadyUsed, TARGETS: [Wetland D3, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1]], PowerToUse:LostInTheSwirlingHaze, PowerTarget: SandsD7]
+23:20:28.580  ***** SAVING *****
+23:20:33.758  IntentManager calling Proceed: [UsePowerActivation: UsePower=TheFogClosesIn Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], The Fog Closes In, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Mountain D5, Jungle D6]]
+23:20:40.771  GameViewController calling exclusive Proceed: [SelectLocationActivation: Reason=Gather, Selected=Wetland D1, InstanceNumber: 27 InstanceIdentifier: SelectLocation-0-ShroudOfSilentMist-Gather-SandsD7/WetlandD1-22/UsePower-TheFogClosesIn-r=-i=0-Source--0-0- Source: The Fog Closes In IsOptional: True Choices: WetlandD1, SandsD7]
+23:20:42.675  GameViewController calling exclusive Proceed: GatherPiecesActivation: LandToGatherInto=WetlandD1]
+23:20:42.675  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence2 ( Mountain D8 => WetlandD1)]
+23:20:43.274  DidPerformAction: [DealDamageAction: Source=DealDamageActivation: DamageSources=[TheFogClosesIn], DamageTargets=[Town1-D7], DamageAmount=2], DamageAmountsBySource=[TheFogClosesIn-2], DamageDistribution=Town1 => 1]
+23:20:48.872  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=SandsD7]
+23:20:48.872  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan5 ( Sands D7 => MountainD8)]
+23:20:49.171  DidPerformAction: [UsePowerAction: Source: The Fog Closes In, PowerToUse:TheFogClosesIn, PowerTarget: SandsD7]
+23:20:49.473  ***** SAVING *****
+23:20:50.989  ***** LOADED FILE: save-Undo-001.dat *****
+23:20:51.712  ***** SAVING *****
+23:20:51.712  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:20:52.323  ***** LOADED FILE: save-Undo-000.dat *****
+23:20:52.924  ***** SAVING *****
+23:20:52.924  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:20:57.219  IntentManager calling Proceed: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Mountain D8, Jungle D2, Sands D4, Wetland D1, Sands D7]]
+23:20:58.742  ***** LOADED FILE: save-Undo-000.dat *****
+23:20:59.336  ***** SAVING *****
+23:20:59.660  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:21:00.840  IntentManager calling Proceed: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Mountain D8, Jungle D2, Sands D4, Wetland D1, Sands D7]]
+23:21:00.840  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence13 ( Mountain D8 => SandsD7)]
+23:21:02.472  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=SandsD7]
+23:21:02.767  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan6 ( Sands D7 => MountainD8)]
+23:21:03.072  DidPerformAction: [UsePowerAction: Source: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=False, CannotUsePowerReason=AlreadyUsed, TARGETS: [Wetland D3, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1]], PowerToUse:LostInTheSwirlingHaze, PowerTarget: SandsD7]
+23:21:03.072  ***** SAVING *****
+23:21:06.359  IntentManager calling Proceed: [UsePowerActivation: UsePower=TheFogClosesIn Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], The Fog Closes In, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Mountain D5, Jungle D6]]
+23:21:10.934  GameViewController calling exclusive Proceed: [SelectLocationActivation: Reason=Gather, Selected=Wetland D1, InstanceNumber: 27 InstanceIdentifier: SelectLocation-0-ShroudOfSilentMist-Gather-SandsD7/WetlandD1-22/UsePower-TheFogClosesIn-r=-i=0-Source--0-0- Source: The Fog Closes In IsOptional: True Choices: WetlandD1, SandsD7]
+23:21:12.283  GameViewController calling exclusive Proceed: GatherPiecesActivation: LandToGatherInto=WetlandD1]
+23:21:12.283  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence2 ( Mountain D8 => WetlandD1)]
+23:21:12.878  DidPerformAction: [DealDamageAction: Source=DealDamageActivation: DamageSources=[TheFogClosesIn], DamageTargets=[Town1-D7], DamageAmount=2], DamageAmountsBySource=[TheFogClosesIn-2], DamageDistribution=Town1 => 1]
+23:21:14.934  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=SandsD7]
+23:21:14.934  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan5 ( Sands D7 => MountainD8)]
+23:21:14.238  DidPerformAction: [UsePowerAction: Source: The Fog Closes In, PowerToUse:TheFogClosesIn, PowerTarget: SandsD7]
+23:21:14.238  ***** SAVING *****
+23:21:15.152  DidPerformAction: [ChangeStateAction: From=SlowPower/SlowPower, To=TimePasses/TimePasses, Enter=False]
+23:21:15.152  DidPerformAction: [AdjustFearGeneratedAction: AmountOfFearBeingGenerated=1,Source=[ChangeStateAction: From=SlowPower/SlowPower, To=TimePasses/TimePasses, Enter=False],AmountOfGeneratedFearBeforeAction=0,AmountOfGeneratedFearAfterAction=1,IslandLocationGeneratingFear=Sands D7]
+23:21:15.749  ***** SAVING *****
+23:21:15.749  DidPerformAction: [DiscardCardsAction: CardMovements=(The Fog Closes In, Shroud of Silent Mist's Play Area, Shroud of Silent Mist's Discard)]
+23:21:16.080  DidPerformAction: [ModifyPowersAction: PowersToModify=[TheFogClosesIn] ResetPower=True PowerSpeed=]
+23:21:16.080  DidPerformAction: [LoseElementsAction: Source: [DiscardCardsAction: CardMovements=(The Fog Closes In, Shroud of Silent Mist's Play Area, Shroud of Silent Mist's Discard)]]
+23:21:16.527  DidPerformAction: [AdjustCardPlaysAction: Source: [TimePassesAction: Source: [TimePassesStateController: State=[State: PhaseType=TimePasses, StateType=TimePasses]]]
+23:21:16.527  DidPerformAction: [ModifyPowersAction: PowersToModify=[SuffocatingShroud, LostInTheSwirlingHaze] ResetPower=True PowerSpeed=]
+23:21:16.527  DidPerformAction: [ModifyPowersAction: PowersToModify=[] ResetPower=True PowerSpeed=]
+23:21:16.527  DidPerformAction: [TimePassesAction: Source: [TimePassesStateController: State=[State: PhaseType=TimePasses, StateType=TimePasses]]
+23:21:18.586  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=, ToSpiritPhaseStatus=Grow]
+23:21:18.586  DidPerformAction: [ChangeStateAction: From=TimePasses/TimePasses, To=SpiritPhase/SpiritPhase, Enter=False]
+23:21:18.586  ***** SAVING *****
+23:21:35.602  IntentManager calling Proceed: [SelectGrowthGroupActivation: Selected=ShroudOfSilentMist Growth Group 2, InstanceNumber: 31 InstanceIdentifier: GrowthGroup-Spirit:ShroudOfSilentMist-1-2-3-0 Source: [GrowStateController: State=[State: PhaseType=Spirit, StateType=Grow] IsOptional: False Choices: ShroudOfSilentMistGroup1, ShroudOfSilentMistGroup2, ShroudOfSilentMistGroup3]
+23:21:36.803  IntentManager calling Proceed: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=0]
+23:21:39.311  IntentManager calling Proceed: [MovePresenceActivation: InstanceNumber: 36 InstanceIdentifier: MovePresenceActivation-1-Shroud-0-SpiritPhaseActivation-ShroudOfSilentMist-Group:2-OptionIndex:0-Node:-Type:AddPresence-OptionNumber:0-OptionUsed:1-OptionUndone:0-GroupUsed:1-OwnerSpecialRule:- Source: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=1] IsOptional: False IsEnabled: True]
+23:21:39.609  DidPerformAction: [MovePresenceAction: PieceMovements=[ShroudPresence3 ( ShroudOfSilentMistEnergy4 => SandsD7)]
+23:21:39.906  ***** SAVING *****
+23:21:40.529  IntentManager calling Proceed: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=0]
+23:21:42.752  IntentManager calling Proceed: [MovePresenceActivation: InstanceNumber: 37 InstanceIdentifier: MovePresenceActivation-1-Shroud-0-SpiritPhaseActivation-ShroudOfSilentMist-Group:2-OptionIndex:1-Node:-Type:AddPresence-OptionNumber:0-OptionUsed:1-OptionUndone:0-GroupUsed:1-OwnerSpecialRule:- Source: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=1] IsOptional: False IsEnabled: True]
+23:21:43.050  DidPerformAction: [MovePresenceAction: PieceMovements=[ShroudPresence4 ( ShroudOfSilentMistEnergy5 => MountainD8)]
+23:21:43.050  DidPerformAction: [GainElementsAction: Source: [MovePresenceAction: PieceMovements=[ShroudPresence4 ( ShroudOfSilentMistEnergy5 => MountainD8)]]
+23:21:43.352  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=Grow, ToSpiritPhaseStatus=GainEnergy]
+23:21:43.352  ***** SAVING *****
+23:21:43.688  IntentManager calling Proceed: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Gain  Energy, IsUndoActivation=False, ShouldUseActivationAutomatically=True, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=0]
+23:21:43.688  DidPerformAction: [GainEnergyAction: SpiritGainingEnergy:ShroudOfSilentMist Amount:2, Source: [RuleAction: RuleActionOfType=SpiritAction, SourceController=[SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Gain  Energy, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=1], JournalIndex=125, AssociatedIslandLocations=[Wetland D1, Jungle D2, Wetland D3, Sands D4, Mountain D5, Jungle D6, Sands D7, Mountain D8], AffectedPieceTypes=[, IslandLocationTarget=]]]
+23:21:43.688  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=GainEnergy, ToSpiritPhaseStatus=PlayPayPower]
+23:21:44.013  ***** SAVING *****
+23:21:50.641  ***** LOADED FILE: save-Undo-001.dat *****
+23:21:51.244  ***** SAVING *****
+23:21:51.570  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:21:53.213  IntentManager calling Proceed: [UsePowerActivation: UsePower=TheFogClosesIn Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], The Fog Closes In, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Mountain D5, Jungle D6]]
+23:21:54.716  GameViewController calling exclusive Proceed: [SelectLocationActivation: Reason=Gather, Selected=Wetland D1, InstanceNumber: 31 InstanceIdentifier: SelectLocation-0-ShroudOfSilentMist-Gather-SandsD7/WetlandD1-29/UsePower-TheFogClosesIn-r=-i=0-Source--0-0- Source: The Fog Closes In IsOptional: True Choices: WetlandD1, SandsD7]
+23:21:56.206  GameViewController calling exclusive Proceed: GatherPiecesActivation: LandToGatherInto=WetlandD1]
+23:21:56.206  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence2 ( Mountain D8 => WetlandD1)]
+23:21:56.797  DidPerformAction: [DealDamageAction: Source=DealDamageActivation: DamageSources=[TheFogClosesIn], DamageTargets=[Town1-D7], DamageAmount=2], DamageAmountsBySource=[TheFogClosesIn-2], DamageDistribution=Town1 => 1]
+23:21:58.999  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=SandsD7]
+23:21:58.999  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan5 ( Sands D7 => MountainD8)]
+23:21:59.603  DidPerformAction: [UsePowerAction: Source: The Fog Closes In, PowerToUse:TheFogClosesIn, PowerTarget: SandsD7]
+23:21:59.603  ***** SAVING *****
+23:22:01.714  ***** LOADED FILE: save-Undo-001.dat *****
+23:22:02.479  ***** SAVING *****
+23:22:02.479  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:22:04.872  IntentManager calling Proceed: [UsePowerActivation: UsePower=TheFogClosesIn Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], The Fog Closes In, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Mountain D5, Jungle D6]]
+23:22:05.194  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence13 ( Sands D7 => MountainD5)]
+23:22:05.500  The damage amount was 0, so no damage was dealt.
+23:22:08.306  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=MountainD5]
+23:22:08.306  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan4 ( Mountain D5 => SandsD7)]
+23:22:08.609  DidPerformAction: [UsePowerAction: Source: The Fog Closes In, PowerToUse:TheFogClosesIn, PowerTarget: MountainD5]
+23:22:08.609  ***** SAVING *****
+23:22:09.517  ***** LOADED FILE: save-Undo-001.dat *****
+23:22:10.105  ***** SAVING *****
+23:22:10.105  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:22:20.059  IntentManager calling Proceed: [UsePowerActivation: UsePower=TheFogClosesIn Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], The Fog Closes In, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Mountain D5, Jungle D6]]
+23:22:21.271  GameViewController calling exclusive Proceed: [SelectLocationActivation: Reason=Gather, Selected=Sands D7, InstanceNumber: 31 InstanceIdentifier: SelectLocation-0-ShroudOfSilentMist-Gather-SandsD7/WetlandD1-29/UsePower-TheFogClosesIn-r=-i=0-Source--0-0- Source: The Fog Closes In IsOptional: True Choices: WetlandD1, SandsD7]
+23:22:22.621  GameViewController calling exclusive Proceed: GatherPiecesActivation: LandToGatherInto=SandsD7]
+23:22:22.621  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence2 ( Mountain D8 => SandsD7)]
+23:22:23.222  DidPerformAction: [DealDamageAction: Source=DealDamageActivation: DamageSources=[TheFogClosesIn], DamageTargets=[Town1-D7], DamageAmount=1], DamageAmountsBySource=[TheFogClosesIn-1], DamageDistribution=Town1 => 1]
+23:22:25.010  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=SandsD7]
+23:22:25.010  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan5 ( Sands D7 => MountainD8)]
+23:22:25.319  DidPerformAction: [UsePowerAction: Source: The Fog Closes In, PowerToUse:TheFogClosesIn, PowerTarget: SandsD7]
+23:22:25.319  ***** SAVING *****
+23:22:26.543  DidPerformAction: [ChangeStateAction: From=SlowPower/SlowPower, To=TimePasses/TimePasses, Enter=False]
+23:22:26.543  DidPerformAction: [AdjustFearGeneratedAction: AmountOfFearBeingGenerated=1,Source=[ChangeStateAction: From=SlowPower/SlowPower, To=TimePasses/TimePasses, Enter=False],AmountOfGeneratedFearBeforeAction=0,AmountOfGeneratedFearAfterAction=1,IslandLocationGeneratingFear=Sands D7]
+23:22:27.143  ***** SAVING *****
+23:22:27.143  DidPerformAction: [DiscardCardsAction: CardMovements=(The Fog Closes In, Shroud of Silent Mist's Play Area, Shroud of Silent Mist's Discard)]
+23:22:27.601  DidPerformAction: [ModifyPowersAction: PowersToModify=[TheFogClosesIn] ResetPower=True PowerSpeed=]
+23:22:27.601  DidPerformAction: [LoseElementsAction: Source: [DiscardCardsAction: CardMovements=(The Fog Closes In, Shroud of Silent Mist's Play Area, Shroud of Silent Mist's Discard)]]
+23:22:27.601  DidPerformAction: [AdjustCardPlaysAction: Source: [TimePassesAction: Source: [TimePassesStateController: State=[State: PhaseType=TimePasses, StateType=TimePasses]]]
+23:22:27.906  DidPerformAction: [ModifyPowersAction: PowersToModify=[SuffocatingShroud, LostInTheSwirlingHaze] ResetPower=True PowerSpeed=]
+23:22:27.906  DidPerformAction: [ModifyPowersAction: PowersToModify=[] ResetPower=True PowerSpeed=]
+23:22:27.906  DidPerformAction: [TimePassesAction: Source: [TimePassesStateController: State=[State: PhaseType=TimePasses, StateType=TimePasses]]
+23:22:29.101  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=, ToSpiritPhaseStatus=Grow]
+23:22:29.101  DidPerformAction: [ChangeStateAction: From=TimePasses/TimePasses, To=SpiritPhase/SpiritPhase, Enter=False]
+23:22:29.101  ***** SAVING *****
+23:22:30.891  IntentManager calling Proceed: [SelectGrowthGroupActivation: Selected=ShroudOfSilentMist Growth Group 2, InstanceNumber: 35 InstanceIdentifier: GrowthGroup-Spirit:ShroudOfSilentMist-1-2-3-0 Source: [GrowStateController: State=[State: PhaseType=Spirit, StateType=Grow] IsOptional: False Choices: ShroudOfSilentMistGroup1, ShroudOfSilentMistGroup2, ShroudOfSilentMistGroup3]
+23:22:31.510  IntentManager calling Proceed: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=0]
+23:22:33.709  IntentManager calling Proceed: [MovePresenceActivation: InstanceNumber: 40 InstanceIdentifier: MovePresenceActivation-1-Shroud-0-SpiritPhaseActivation-ShroudOfSilentMist-Group:2-OptionIndex:0-Node:-Type:AddPresence-OptionNumber:0-OptionUsed:1-OptionUndone:0-GroupUsed:1-OwnerSpecialRule:- Source: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=1] IsOptional: False IsEnabled: True]
+23:22:34.006  DidPerformAction: [MovePresenceAction: PieceMovements=[ShroudPresence5 ( ShroudOfSilentMistCardPlays2 => MountainD8)]
+23:22:34.006  DidPerformAction: [AdjustCardPlaysAction: Source: [MovePresenceAction: PieceMovements=[ShroudPresence5 ( ShroudOfSilentMistCardPlays2 => MountainD8)]]
+23:22:34.302  ***** SAVING *****
+23:22:34.920  IntentManager calling Proceed: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=0]
+23:22:38.051  IntentManager calling Proceed: [MovePresenceActivation: InstanceNumber: 41 InstanceIdentifier: MovePresenceActivation-1-Shroud-0-SpiritPhaseActivation-ShroudOfSilentMist-Group:2-OptionIndex:1-Node:-Type:AddPresence-OptionNumber:0-OptionUsed:1-OptionUndone:0-GroupUsed:1-OwnerSpecialRule:- Source: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=1] IsOptional: False IsEnabled: True]
+23:22:38.051  DidPerformAction: [MovePresenceAction: PieceMovements=[ShroudPresence3 ( ShroudOfSilentMistEnergy4 => SandsD7)]
+23:22:38.354  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=Grow, ToSpiritPhaseStatus=GainEnergy]
+23:22:38.354  ***** SAVING *****
+23:22:38.354  IntentManager calling Proceed: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Gain  Energy, IsUndoActivation=False, ShouldUseActivationAutomatically=True, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=0]
+23:22:38.354  DidPerformAction: [GainEnergyAction: SpiritGainingEnergy:ShroudOfSilentMist Amount:2, Source: [RuleAction: RuleActionOfType=SpiritAction, SourceController=[SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Gain  Energy, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=1], JournalIndex=125, AssociatedIslandLocations=[Wetland D1, Jungle D2, Wetland D3, Sands D4, Mountain D5, Jungle D6, Sands D7, Mountain D8], AffectedPieceTypes=[, IslandLocationTarget=]]]
+23:22:38.696  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=GainEnergy, ToSpiritPhaseStatus=PlayPayPower]
+23:22:38.696  ***** SAVING *****
+23:22:39.619  IntentManager calling Proceed: [PlayPowerCardActivation: InstanceNumber: 46 InstanceIdentifier: PlayPowerCard-UnnervingPall-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: True]
+23:22:39.619  DidPerformAction: [PayEnergyAction: SpiritPayingEnergy:ShroudOfSilentMist Amount:1, Source: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 46 InstanceIdentifier: PlayPowerCard-UnnervingPall-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: True]]]
+23:22:39.943  DidPerformAction: [MoveCardAction: CardBeingMoved=UnnervingPall, To=Shroud of Silent Mist's Play Area, From=Shroud of Silent Mist's Hand, Offset=]
+23:22:39.943  DidPerformAction: [GainElementsAction: Source: [MoveCardAction: CardBeingMoved=UnnervingPall, To=Shroud of Silent Mist's Play Area, From=Shroud of Silent Mist's Hand, Offset=]]
+23:22:40.240  DidPerformAction: [AdjustCardPlaysAction: Source: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 46 InstanceIdentifier: PlayPowerCard-UnnervingPall-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: False]]]
+23:22:40.240  DidPerformAction: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 46 InstanceIdentifier: PlayPowerCard-UnnervingPall-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: False]]
+23:22:40.240  ***** SAVING *****
+23:22:40.570  IntentManager calling Proceed: [PlayPowerCardActivation: InstanceNumber: 45 InstanceIdentifier: PlayPowerCard-FlowingAndSilentFormsDartBy-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: True]
+23:22:40.570  DidPerformAction: [MoveCardAction: CardBeingMoved=FlowingAndSilentFormsDartBy, To=Shroud of Silent Mist's Play Area, From=Shroud of Silent Mist's Hand, Offset=]
+23:22:40.570  DidPerformAction: [GainElementsAction: Source: [MoveCardAction: CardBeingMoved=FlowingAndSilentFormsDartBy, To=Shroud of Silent Mist's Play Area, From=Shroud of Silent Mist's Hand, Offset=]]
+23:22:40.899  DidPerformAction: [AdjustCardPlaysAction: Source: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 45 InstanceIdentifier: PlayPowerCard-FlowingAndSilentFormsDartBy-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: False]]]
+23:22:40.899  DidPerformAction: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 45 InstanceIdentifier: PlayPowerCard-FlowingAndSilentFormsDartBy-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: False]]
+23:22:40.899  ***** SAVING *****
+23:23:39.541  IntentManager calling Proceed: [ContinueActivation: ActivationString=Continue-FinishedPlayingPowerCards-14-- Title=A decision will be made...]
+23:23:39.541  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=PlayPayPower, ToSpiritPhaseStatus=Complete]
+23:23:39.872  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=Complete, ToSpiritPhaseStatus=]
+23:23:39.872  DidPerformAction: [ChangeStateAction: From=SpiritPhase/SpiritPhase, To=FastPower/FastPower, Enter=False]
+23:23:40.171  ***** SAVING *****
+23:23:41.108  IntentManager calling Proceed: [UsePowerActivation: UsePower=FlowingAndSilentFormsDartBy Sources=[FastPowerStateController: State=[State: PhaseType=FastPower, StateType=FastPower], Flowing And Silent Forms Dart By, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Mountain D5, Jungle D6]]
+23:23:41.108  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence13 ( Sands D7 => MountainD5)]
+23:23:41.741  DidPerformAction: [AdjustFearGeneratedAction: AmountOfFearBeingGenerated=2,Source=[UsePowerAction: Source: Flowing And Silent Forms Dart By, PowerToUse:FlowingAndSilentFormsDartBy, PowerTarget: MountainD5],AmountOfGeneratedFearBeforeAction=1,AmountOfGeneratedFearAfterAction=3,IslandLocationGeneratingFear=Mountain D5]
+23:23:42.350  DidPerformAction: [AddStatusEffectAction: StatusEffectController=[ReflectionStatusEffectController: StatusEffect=[ReflectionStatusEffect: Source=Flowing And Silent Forms Dart By, NumberOfUses=, BaseWithController=Flowing And Silent Forms Dart By, SpiritWithPower=Shroud of Silent Mist, BeforeOrAfter=First, PowerTarget=Mountain D5, UseElements=False, ActiveEventSection=, ActionModifierType=InsteadReplacement, ThresholdsInUse=], NumberOfUses=]]
+23:23:42.350  There are no {Presence}/{SacredSite} of another Spirit in lands adjacent to MountainD5 for Flowing And Silent Forms Dart By to gather.
+23:23:42.350  DidPerformAction: [UsePowerAction: Source: Flowing And Silent Forms Dart By, PowerToUse:FlowingAndSilentFormsDartBy, PowerTarget: MountainD5]
+23:23:42.350  ***** SAVING *****
+23:23:45.208  IntentManager calling Proceed: [UsePowerActivation: UsePower=UnnervingPall Sources=[FastPowerStateController: State=[State: PhaseType=FastPower, StateType=FastPower], Unnerving Pall, Enabled=True, CannotUsePowerReason=, TARGETS: [Mountain D5, Sands D7, Mountain D8, Jungle D2, Jungle D6]]
+23:23:47.939  GameViewController calling exclusive Proceed: [SelectLocationActivation: Reason=Gather, Selected=Mountain D5, InstanceNumber: 57 InstanceIdentifier: SelectLocation-0-ShroudOfSilentMist-Gather-JungleD2/JungleD6/MountainD5/SandsD4/SandsD7/WetlandD1-52/UsePower-UnnervingPall-r=-i=0-Source--0-0- Source: Unnerving Pall IsOptional: True Choices: WetlandD1, JungleD2, SandsD4, MountainD5, JungleD6, SandsD7]
+23:23:49.005  GameViewController calling exclusive Proceed: GatherPiecesActivation: LandToGatherInto=MountainD5]
+23:23:49.005  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence3 ( Sands D7 => MountainD5)]
+23:23:51.120  GameViewController calling exclusive Proceed: [SelectEffectActivation: Selected=Defend per {Presence}, InstanceNumber: 59 InstanceIdentifier: SelectEffect-ShroudOfSilentMist-Remove Invaders from Ravage, Defend per {Presence}-MountainD5--UsePowerAction-ShroudOfSilentMist-UnnervingPall-MountainD5-()-0-0-1----- Source: Unnerving Pall IsOptional: False Choices: Remove Invaders from Ravage, Defend per {Presence}]
+23:23:51.120  DidPerformAction: [AdjustFearGeneratedAction: AmountOfFearBeingGenerated=1,Source=[UsePowerAction: Source: Unnerving Pall, PowerToUse:UnnervingPall, PowerTarget: MountainD5],AmountOfGeneratedFearBeforeAction=3,AmountOfGeneratedFearAfterAction=4,IslandLocationGeneratingFear=Mountain D5]
+23:23:50.689  DidPerformAction: [MoveCardAction: CardBeingMoved=TallTalesOfSavagery, To=Fear Earned, From=Fear Deck, Offset=]
+23:23:50.689  DidPerformAction: [AdjustFearGeneratedAction: AmountOfFearBeingGenerated=-4,Source=[UsePowerAction: Source: Unnerving Pall, PowerToUse:UnnervingPall, PowerTarget: MountainD5],AmountOfGeneratedFearBeforeAction=4,AmountOfGeneratedFearAfterAction=0,IslandLocationGeneratingFear=]
+23:23:50.689  DidPerformAction: [DefendAction: SourceModel=Unnerving Pall, IslandLocationsToDefend=[Mountain D5], Amount=2]
+23:23:50.996  DidPerformAction: [UsePowerAction: Source: Unnerving Pall, PowerToUse:UnnervingPall, PowerTarget: MountainD5]
+23:23:50.996  ***** SAVING *****
+23:23:50.996  DidPerformAction: [ChangeStateAction: From=FastPower/FastPower, To=BlightedIsland/BlightedIsland, Enter=False]
+23:23:51.323  ***** SAVING *****
+23:23:52.268  DidPerformAction: [ChangeStateAction: From=BlightedIsland/BlightedIsland, To=Event/Event, Enter=False]
+23:23:52.268  ***** SAVING *****
+23:23:52.268  DidPerformAction: [MoveCardAction: CardBeingMoved=InvestigationOfDangers, To=Play Area, From=Event Deck, Offset=]
+23:23:52.268  DidPerformAction: [FlipCardAction: Source=ResolveEventCardAction-, CardBeingFlipped=InvestigationOfDangers
+23:24:42.808  ***** CLEARING UNDO FILES *****
+23:24:42.808  ***** SAVING *****
+23:24:49.325  GameViewController calling exclusive Proceed: [SelectLocationActivation: Reason=AddingExplorer, Selected=Wetland D3, InstanceNumber: 60 InstanceIdentifier: SelectLocation-0-ShroudOfSilentMist-AddingExplorer-SandsD4/WetlandD3-ResolveEventCardAction- Source: Investigation of Dangers IsOptional: False Choices: WetlandD3, SandsD4]
+23:24:49.325  DidPerformAction: [AddIslandPiecesAction: PieceMovements=[Explorer5 ( Out of Game => WetlandD3)]
+23:24:49.655  ***** SAVING *****
+23:24:52.066  DidPerformAction: [MovePiecesAction: PieceMovements=[Explorer5 ( Wetland D3 => OutOfGame)]
+23:24:52.365  DidPerformAction: [DestroyPiecesAction: SourceController=[SelectPieceActivation: Reason=DestroyPiece, Selected=Explorer 5, InstanceNumber: 62 InstanceIdentifier: SelectPieceActivation-Explorer5-DestroyPiece-1- Source: Investigation of Dangers IsOptional: False Choices: Explorer5], PiecesBeingDestroyed=Explorer5]
+23:24:52.662  Message: There were no Boards without {Beast} to select.
+23:24:52.662  DidPerformAction: [MessageAction: Source: Investigation of Dangers]
+23:24:53.262  ***** SAVING *****
+23:25:03.656  GameViewController calling exclusive Proceed: [UsePowerActivation: UsePower=SuffocatingShroud Sources=[ResolveEventCardAction: Source: Investigation of Dangers, EventCard: InvestigationOfDangers], Suffocating Shroud, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Mountain D5, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Jungle D6]]
+23:25:07.845  GameViewController calling exclusive Proceed: [SelectLocationActivation: Reason=Gather, InstanceNumber: 66 InstanceIdentifier: SelectLocation-0-ShroudOfSilentMist-Gather-JungleD2/JungleD6/MountainD5/SandsD4/SandsD7/WetlandD1-63/UsePower-SuffocatingShroud-r=-i=0-Source-InvestigationOfDangers-Investigation of Dangers-0-0- Source: Investigation of Dangers IsOptional: True Choices: WetlandD1, JungleD2, SandsD4, MountainD5, JungleD6, SandsD7]
+23:25:09.209  GameViewController calling exclusive Proceed: DealDamageActivation: DamageSources=[SuffocatingShroud], DamageTargets=[Explorer1-D5/Town2-D5], DamageAmount=1]
+23:25:09.209  DidPerformAction: [DealDamageAction: Source=DealDamageActivation: DamageSources=[SuffocatingShroud], DamageTargets=[Explorer1-D5/Town2-D5], DamageAmount=1], DamageAmountsBySource=[SuffocatingShroud-1], DamageDistribution=Explorer1 => 1]
+23:25:09.505  DidPerformAction: [MovePiecesAction: PieceMovements=[Explorer1 ( Mountain D5 => OutOfGame)]
+23:25:09.808  DidPerformAction: [DestroyPiecesAction: SourceController=[DealDamageAction: Source=DealDamageActivation: DamageSources=[SuffocatingShroud], DamageTargets=[Explorer1-/Town2-D5], DamageAmount=1], DamageAmountsBySource=[SuffocatingShroud-1], DamageDistribution=Explorer1 => 1], PiecesBeingDestroyed=Explorer1]
+23:25:09.808  DidPerformAction: [UsePowerAction: Source: Investigation of Dangers, PowerToUse:SuffocatingShroud, PowerTarget: MountainD5]
+23:25:10.111  DidPerformAction: [DiscardCardsAction: CardMovements=(Investigation of Dangers, Play Area, Event Discard)]
+23:25:10.111  DidPerformAction: [ResolveEventCardAction: Source: Investigation of Dangers, EventCard: InvestigationOfDangers]
+23:25:11.295  DidPerformAction: [ChangeStateAction: From=Event/Event, To=Fear/Fear, Enter=False]
+23:25:11.295  ***** SAVING *****
+23:25:11.295  ***** SAVING *****
+23:25:11.295  DidPerformAction: [FlipCardAction: Source=ResolveFearCardAction-, CardBeingFlipped=TallTalesOfSavagery
+23:25:13.117  ***** CLEARING UNDO FILES *****
+23:25:13.117  ***** SAVING *****
+23:25:21.953  GameViewController calling exclusive Proceed: [SelectLocationActivation: Reason=RemovingInvaders, Selected=Mountain D8, InstanceNumber: 68 InstanceIdentifier: SelectLocation-0-ShroudOfSilentMist-RemovingInvaders-JungleD2/MountainD8-RuleAction-197 Source: Tall Tales of Savagery IsOptional: False Choices: JungleD2, MountainD8]
+23:25:22.280  DidPerformAction: [MovePiecesAction: PieceMovements=[Explorer2 ( Mountain D8 => OutOfGame)]
+23:25:22.576  DidPerformAction: [RemoveIslandPiecesAction: Source: Tall Tales of Savagery]
+23:25:22.875  DidPerformAction: [DiscardCardsAction: CardMovements=(Tall Tales of Savagery, Fear Earned, Fear Discard)]
+23:25:22.875  DidPerformAction: [ResolveFearCardAction: Source: Tall Tales of Savagery, FearCard: TallTalesOfSavagery]
+23:25:23.770  DidPerformAction: [ChangeStateAction: From=Fear/Fear, To=Ravage/Ravage, Enter=False]
+23:25:23.770  ***** SAVING *****
+23:25:24.513  GameViewController calling exclusive Proceed: [SelectLocationActivation: Reason=RavageLand, Selected=Mountain D5, InstanceNumber: 70 InstanceIdentifier: SelectLocation-0-ShroudOfSilentMist-RavageLand-MountainD5/MountainD8-ResolveInvaderCardAction- Source: Stage I Mountain IsOptional: True Choices: MountainD5, MountainD8]
+23:25:23.848  The damage amount was 0, so no damage was dealt.
+23:25:23.848  DidPerformAction: [DealDamageAction: Source=[RavageAction: LandTarget: Mountain D5, Source: Stage I Mountain], DamageAmountsBySource=[Town2-2], DamageDistribution=MountainD5 => 0]
+23:25:23.848  DidPerformAction: [DealDamageAction: Source=DealDamageActivation: DamageSources=[Dahan4], DamageTargets=[Town2-D5], DamageAmount=2], DamageAmountsBySource=[Dahan4-2], DamageDistribution=Town2 => 2]
+23:25:24.146  DidPerformAction: [MovePiecesAction: PieceMovements=[Town2 ( Mountain D5 => OutOfGame)]
+23:25:24.453  DidPerformAction: [DestroyPiecesAction: SourceController=[DealDamageAction: Source=DealDamageActivation: DamageSources=[Dahan4], DamageTargets=[Town2-], DamageAmount=2], DamageAmountsBySource=[Dahan4-2], DamageDistribution=Town2 => 2], PiecesBeingDestroyed=Town2]
+23:25:24.453  DidPerformAction: [AdjustFearGeneratedAction: AmountOfFearBeingGenerated=1,Source=[DestroyPiecesAction: SourceController=[DealDamageAction: Source=DealDamageActivation: DamageSources=[Dahan4], DamageTargets=[Town2-], DamageAmount=2], DamageAmountsBySource=[Dahan4-2], DamageDistribution=Town2 => 2], PiecesBeingDestroyed=Town2],AmountOfGeneratedFearBeforeAction=0,AmountOfGeneratedFearAfterAction=1,IslandLocationGeneratingFear=Mountain D5]
+23:25:25.060  DidPerformAction: [RavageAction: LandTarget: Mountain D5, Source: Stage I Mountain]
+23:25:25.368  DidPerformAction: [DealDamageAction: Source=[RavageAction: LandTarget: Mountain D8, Source: Stage I Mountain], DamageAmountsBySource=[Town3-2], DamageDistribution=Dahan6 => 2, MountainD8 => 2]
+23:25:25.368  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan6 ( Mountain D8 => OutOfGame)]
+23:25:25.672  DidPerformAction: [DestroyPiecesAction: SourceController=[DealDamageAction: Source=[RavageAction: LandTarget: Mountain D8, Source: Stage I Mountain], DamageAmountsBySource=[Town3-2], DamageDistribution=Dahan6 => 2, MountainD8 => 2], PiecesBeingDestroyed=Dahan6]
+23:25:25.971  DidPerformAction: [AddBlightAction: Source: Stage I Mountain, Destination: Mountain D8, WillCascade: False, IsFromCascade: False, AmountOfBlight: 1]
+23:25:26.274  DidPerformAction: [MovePresenceAction: PieceMovements=[ShroudPresence1 ( Mountain D8 => ShroudOfSilentMistOutOfGame)]
+23:25:26.274  DidPerformAction: [DestroyPiecesAction: SourceController=[AddBlightAction: Source: Stage I Mountain, Destination: Mountain D8, WillCascade: False, IsFromCascade: False, AmountOfBlight: 1], PiecesBeingDestroyed=ShroudPresence1]
+23:25:26.576  DidPerformAction: [DealDamageAction: Source=DealDamageActivation: DamageSources=[Dahan5], DamageTargets=[Town3-D8], DamageAmount=2], DamageAmountsBySource=[Dahan5-2], DamageDistribution=Town3 => 2]
+23:25:26.879  DidPerformAction: [MovePiecesAction: PieceMovements=[Town3 ( Mountain D8 => OutOfGame)]
+23:25:27.177  DidPerformAction: [DestroyPiecesAction: SourceController=[DealDamageAction: Source=DealDamageActivation: DamageSources=[Dahan5], DamageTargets=[Town3-], DamageAmount=2], DamageAmountsBySource=[Dahan5-2], DamageDistribution=Town3 => 2], PiecesBeingDestroyed=Town3]
+23:25:27.177  DidPerformAction: [AdjustFearGeneratedAction: AmountOfFearBeingGenerated=1,Source=[DestroyPiecesAction: SourceController=[DealDamageAction: Source=DealDamageActivation: DamageSources=[Dahan5], DamageTargets=[Town3-], DamageAmount=2], DamageAmountsBySource=[Dahan5-2], DamageDistribution=Town3 => 2], PiecesBeingDestroyed=Town3],AmountOfGeneratedFearBeforeAction=1,AmountOfGeneratedFearAfterAction=2,IslandLocationGeneratingFear=Mountain D8]
+23:25:27.784  DidPerformAction: [RavageAction: LandTarget: Mountain D8, Source: Stage I Mountain]
+23:25:27.784  DidPerformAction: [ResolveInvaderCardAction: Source: Stage I Mountain, InvaderActionType: Ravage, InvaderCard: Mountain1]
+23:25:28.802  DidPerformAction: [ChangeStateAction: From=Ravage/Ravage, To=Build/Build, Enter=False]
+23:25:28.802  ***** SAVING *****
+23:25:29.140  DidPerformAction: [MovePiecesAction: PieceMovements=[Disease1 ( Jungle D2 => OutOfGame)]
+23:25:29.436  DidPerformAction: [CancelAction: GameAction=[BuildAction: LandTarget: Jungle D2, Source: Stage I Jungle] Source: Stage I Jungle]
+23:25:29.734  DidPerformAction: [AddIslandPiecesAction: PieceMovements=[Town4 ( Out of Game => JungleD6)]
+23:25:30.031  DidPerformAction: [ResolveInvaderCardAction: Source: Stage I Jungle, InvaderActionType: Build, InvaderCard: Jungle1]
+23:25:30.329  DidPerformAction: [ChangeStateAction: From=Build/Build, To=Explore/Explore, Enter=False]
+23:25:30.329  ***** SAVING *****
+23:25:30.961  ***** CLEARING UNDO FILES *****
+23:25:30.961  ***** SAVING *****
+23:25:31.283  DidPerformAction: [FlipCardAction: Source=ResolveInvaderCardAction-, CardBeingFlipped=Wetland1
+23:25:31.283  ***** CLEARING UNDO FILES *****
+23:25:31.582  DidPerformAction: [AddIslandPiecesAction: PieceMovements=[Explorer6 ( Out of Game => WetlandD1)]
+23:25:32.176  DidPerformAction: [AddIslandPiecesAction: PieceMovements=[Explorer7 ( Out of Game => WetlandD3)]
+23:25:33.062  DidPerformAction: [ResolveInvaderCardAction: Source: Stage I Wetland, InvaderActionType: Explore, InvaderCard: Wetland1]
+23:25:33.369  DidPerformAction: [ChangeStateAction: From=Explore/Explore, To=AdvanceInvaderCards/AdvanceInvaderCards, Enter=False]
+23:25:33.369  ***** SAVING *****
+23:25:33.369  DidPerformAction: [AdvanceInvaderCardsAction: CardMovements=(Stage I Mountain, Ravage Space, Invader Discard)]
+23:25:33.830  DidPerformAction: [AdvanceInvaderCardsAction: CardMovements=(Stage I Jungle, Build Space, Ravage Space)]
+23:25:33.830  DidPerformAction: [AdvanceInvaderCardsAction: CardMovements=(Stage I Wetland, Invader Deck, Build Space)]
+23:25:34.418  DidPerformAction: [ChangeStateAction: From=AdvanceInvaderCards/AdvanceInvaderCards, To=SlowPower/SlowPower, Enter=False]
+23:25:34.418  ***** SAVING *****
+23:25:37.401  IntentManager calling Proceed: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Mountain D5, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Jungle D6]]
+23:25:40.849  GameViewController calling exclusive Proceed: [SelectLocationActivation: Reason=Gather, Selected=Mountain D8, InstanceNumber: 80 InstanceIdentifier: SelectLocation-0-ShroudOfSilentMist-Gather-MountainD8/SandsD7/WetlandD1-76/UsePower-LostInTheSwirlingHaze-r=-i=0-Source--0-0- Source: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=False, CannotUsePowerReason=, TARGETS: [Wetland D3, Mountain D5, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Jungle D6]] IsOptional: True Choices: WetlandD1, SandsD7, MountainD8]
+23:25:40.849  DidPerformAction: [MovePiecesAction: PieceMovements=[ShroudPresence2 ( Sands D7 => MountainD8)]
+23:25:42.339  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=MountainD8]
+23:25:42.339  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan5 ( Mountain D8 => SandsD7)]
+23:25:42.937  DidPerformAction: [UsePowerAction: Source: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=False, CannotUsePowerReason=AlreadyUsed, TARGETS: [Wetland D3, Mountain D5, Mountain D8, Jungle D2, Sands D4, Wetland D1, Jungle D6]], PowerToUse:LostInTheSwirlingHaze, PowerTarget: MountainD8]
+23:25:42.937  ***** SAVING *****
+23:25:44.284  ***** LOADED FILE: save-Undo-000.dat *****
+23:25:44.881  ***** SAVING *****
+23:25:45.210  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:25:48.476  IntentManager calling Proceed: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Mountain D5, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Jungle D6]]
+23:25:51.627  GameViewController calling exclusive Proceed: [SelectLocationActivation: Reason=Gather, InstanceNumber: 80 InstanceIdentifier: SelectLocation-0-ShroudOfSilentMist-Gather-JungleD2/JungleD6/MountainD5/SandsD4/SandsD7/WetlandD1-76/UsePower-LostInTheSwirlingHaze-r=-i=0-Source--0-0- Source: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=False, CannotUsePowerReason=, TARGETS: [Wetland D3, Mountain D5, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Jungle D6]] IsOptional: True Choices: WetlandD1, JungleD2, SandsD4, MountainD5, JungleD6, SandsD7]
+23:25:54.002  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=MountainD5]
+23:25:54.002  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan4 ( Mountain D5 => SandsD7)]
+23:25:54.739  DidPerformAction: [UsePowerAction: Source: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=False, CannotUsePowerReason=AlreadyUsed, TARGETS: [Wetland D3, Mountain D5, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Jungle D6]], PowerToUse:LostInTheSwirlingHaze, PowerTarget: MountainD5]
+23:25:54.739  ***** SAVING *****
+23:25:56.438  ***** LOADED FILE: save-Undo-000.dat *****
+23:25:57.039  ***** SAVING *****
+23:25:57.039  IntentManager calling Proceed: [StartOfGameActivation: InstanceNumber: 0 InstanceIdentifier: StartOfGame- Source: GameController IsOptional: True IsEnabled: True]
+23:25:58.989  IntentManager calling Proceed: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=True, CannotUsePowerReason=, TARGETS: [Wetland D3, Mountain D5, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Jungle D6]]
+23:25:59.625  GameViewController calling exclusive Proceed: [SelectLocationActivation: Reason=Gather, InstanceNumber: 80 InstanceIdentifier: SelectLocation-0-ShroudOfSilentMist-Gather-JungleD2/JungleD6/MountainD5/SandsD4/SandsD7/WetlandD1-76/UsePower-LostInTheSwirlingHaze-r=-i=0-Source--0-0- Source: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=False, CannotUsePowerReason=, TARGETS: [Wetland D3, Mountain D5, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Jungle D6]] IsOptional: True Choices: WetlandD1, JungleD2, SandsD4, MountainD5, JungleD6, SandsD7]
+23:26:00.817  GameViewController calling exclusive Proceed: PushPiecesActivation: IslandLocationToPushFrom=MountainD5]
+23:26:00.817  DidPerformAction: [MovePiecesAction: PieceMovements=[Dahan4 ( Mountain D5 => JungleD2)]
+23:26:01.118  DidPerformAction: [UsePowerAction: Source: [UsePowerActivation: UsePower=LostInTheSwirlingHaze Sources=[SlowPowerStateController: State=[State: PhaseType=SlowPower, StateType=SlowPower], Lost in the Swirling Haze, Enabled=False, CannotUsePowerReason=AlreadyUsed, TARGETS: [Wetland D3, Mountain D5, Sands D7, Mountain D8, Jungle D2, Sands D4, Wetland D1, Jungle D6]], PowerToUse:LostInTheSwirlingHaze, PowerTarget: MountainD5]
+23:26:01.118  ***** SAVING *****
+23:26:02.036  DidPerformAction: [ChangeStateAction: From=SlowPower/SlowPower, To=TimePasses/TimePasses, Enter=False]
+23:26:02.036  DidPerformAction: [AdjustFearGeneratedAction: AmountOfFearBeingGenerated=1,Source=[ChangeStateAction: From=SlowPower/SlowPower, To=TimePasses/TimePasses, Enter=False],AmountOfGeneratedFearBeforeAction=2,AmountOfGeneratedFearAfterAction=3,IslandLocationGeneratingFear=Sands D7]
+23:26:02.340  ***** SAVING *****
+23:26:02.637  DidPerformAction: [DiscardCardsAction: CardMovements=(Unnerving Pall, Shroud of Silent Mist's Play Area, Shroud of Silent Mist's Discard), (Flowing And Silent Forms Dart By, Shroud of Silent Mist's Play Area, Shroud of Silent Mist's Discard)]
+23:26:02.969  DidPerformAction: [ModifyPowersAction: PowersToModify=[UnnervingPall, FlowingAndSilentFormsDartBy] ResetPower=True PowerSpeed=]
+23:26:02.969  DidPerformAction: [LoseElementsAction: Source: [DiscardCardsAction: CardMovements=(Unnerving Pall, Shroud of Silent Mist's Play Area, Shroud of Silent Mist's Discard), (Flowing And Silent Forms Dart By, Shroud of Silent Mist's Play Area, Shroud of Silent Mist's Discard)]]
+23:26:02.969  DidPerformAction: [ExpireStatusEffectAction: StatusEffectController=[ReflectionStatusEffectController: StatusEffect=[ReflectionStatusEffect: Source=Flowing And Silent Forms Dart By, NumberOfUses=, BaseWithController=Flowing And Silent Forms Dart By, SpiritWithPower=Shroud of Silent Mist, BeforeOrAfter=First, PowerTarget=Mountain D5, UseElements=False, ActiveEventSection=, ActionModifierType=InsteadReplacement, ThresholdsInUse=], NumberOfUses=]]
+23:26:03.276  DidPerformAction: [AdjustCardPlaysAction: Source: [TimePassesAction: Source: [TimePassesStateController: State=[State: PhaseType=TimePasses, StateType=TimePasses]]]
+23:26:03.276  DidPerformAction: [ModifyPowersAction: PowersToModify=[SuffocatingShroud, LostInTheSwirlingHaze] ResetPower=True PowerSpeed=]
+23:26:03.276  DidPerformAction: [ModifyPowersAction: PowersToModify=[] ResetPower=True PowerSpeed=]
+23:26:03.276  DidPerformAction: [TimePassesAction: Source: [TimePassesStateController: State=[State: PhaseType=TimePasses, StateType=TimePasses]]
+23:26:04.321  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=, ToSpiritPhaseStatus=Grow]
+23:26:04.321  DidPerformAction: [ChangeStateAction: From=TimePasses/TimePasses, To=SpiritPhase/SpiritPhase, Enter=False]
+23:26:04.321  ***** SAVING *****
+23:26:16.812  IntentManager calling Proceed: [SelectGrowthGroupActivation: Selected=ShroudOfSilentMist Growth Group 3, InstanceNumber: 82 InstanceIdentifier: GrowthGroup-Spirit:ShroudOfSilentMist-1-2-3-0 Source: [GrowStateController: State=[State: PhaseType=Spirit, StateType=Grow] IsOptional: False Choices: ShroudOfSilentMistGroup1, ShroudOfSilentMistGroup2, ShroudOfSilentMistGroup3]
+23:26:17.728  IntentManager calling Proceed: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Gain Power Card, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=0]
+23:26:19.644  IntentManager calling Proceed: [SelectLocationActivation: Reason=PowerDeckToDrawFrom, Selected=Minor Power Deck, InstanceNumber: 87 InstanceIdentifier: SelectLocation-1-ShroudOfSilentMist-PowerDeckToDrawFrom-MajorPowerDeck/MinorPowerDeck-RuleAction-279 Source: [RuleAction: RuleActionOfType=SpiritAction, SourceController=[SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Gain Power Card, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=1], JournalIndex=279, AssociatedIslandLocations=[Wetland D1, Jungle D2, Wetland D3, Sands D4, Mountain D5, Jungle D6, Sands D7, Mountain D8], AffectedPieceTypes=[, IslandLocationTarget=]] IsOptional: False Choices: MajorPowerDeck, MinorPowerDeck]
+23:26:19.644  ***** CLEARING UNDO FILES *****
+23:26:19.644  DidPerformAction: [RevealCardsAction: CardMovements=(Steam Vents, Minor Power Deck, Shroud of Silent Mist's Reveal Location), (Gold's Allure, Minor Power Deck, Shroud of Silent Mist's Reveal Location), (Animated Wrackroot, Minor Power Deck, Shroud of Silent Mist's Reveal Location), (Rites of the Land's Rejection, Minor Power Deck, Shroud of Silent Mist's Reveal Location)]
+23:26:20.238  ***** SAVING *****
+23:26:42.953  IntentManager calling Proceed: [SelectCardActivation: CardChoices=SteamVents, GoldsAllure, AnimatedWrackroot, RitesOfTheLandsRejection, SelectedCard=Animated Wrackroot, SelectCardReason=GainPower, IsEnabled=True]
+23:26:43.277  DidPerformAction: [MoveCardAction: CardBeingMoved=AnimatedWrackroot, To=Shroud of Silent Mist's Hand, From=Shroud of Silent Mist's Reveal Location, Offset=]
+23:26:43.580  DidPerformAction: [MoveCardsAction: CardMovements=(Steam Vents, Shroud of Silent Mist's Reveal Location, Minor Power Discard), (Gold's Allure, Shroud of Silent Mist's Reveal Location, Minor Power Discard), (Rites of the Land's Rejection, Shroud of Silent Mist's Reveal Location, Minor Power Discard)]
+23:26:43.580  ***** SAVING *****
+23:26:46.417  IntentManager calling Proceed: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence to Mountain or Wetland, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=0]
+23:26:54.286  IntentManager calling Proceed: [MovePresenceActivation: InstanceNumber: 89 InstanceIdentifier: MovePresenceActivation-1-Shroud-3-SpiritPhaseActivation-ShroudOfSilentMist-Group:3-OptionIndex:1-Node:-Type:AddPresenceMountainWetland-OptionNumber:3-OptionUsed:1-OptionUndone:0-GroupUsed:1-OwnerSpecialRule:- Source: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Add a Presence to Mountain or Wetland, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=1] IsOptional: False IsEnabled: True]
+23:26:54.286  DidPerformAction: [MovePresenceAction: PieceMovements=[ShroudPresence4 ( ShroudOfSilentMistEnergy5 => WetlandD1)]
+23:26:54.589  DidPerformAction: [GainElementsAction: Source: [MovePresenceAction: PieceMovements=[ShroudPresence4 ( ShroudOfSilentMistEnergy5 => WetlandD1)]]
+23:26:54.589  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=Grow, ToSpiritPhaseStatus=GainEnergy]
+23:26:55.053  ***** SAVING *****
+23:26:55.053  IntentManager calling Proceed: [SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Gain  Energy, IsUndoActivation=False, ShouldUseActivationAutomatically=True, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=0]
+23:26:55.053  DidPerformAction: [GainEnergyAction: SpiritGainingEnergy:ShroudOfSilentMist Amount:2, Source: [RuleAction: RuleActionOfType=SpiritAction, SourceController=[SpiritPhaseActivation: SpiritWithGrowth=Shroud, GrowthOptionController=Gain  Energy, IsUndoActivation=False, ShouldUseActivationAutomatically=False, HasGrowthOptionFinished=False, NumberOfTimesGrowthUsed=1], JournalIndex=298, AssociatedIslandLocations=[Wetland D1, Jungle D2, Wetland D3, Sands D4, Mountain D5, Jungle D6, Sands D7, Mountain D8], AffectedPieceTypes=[, IslandLocationTarget=]]]
+23:26:55.053  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=GainEnergy, ToSpiritPhaseStatus=PlayPayPower]
+23:26:55.053  ***** SAVING *****
+23:26:56.340  IntentManager calling Proceed: [PlayPowerCardActivation: InstanceNumber: 92 InstanceIdentifier: PlayPowerCard-DissolvingVapors-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: True]
+23:26:56.340  DidPerformAction: [PayEnergyAction: SpiritPayingEnergy:ShroudOfSilentMist Amount:2, Source: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 92 InstanceIdentifier: PlayPowerCard-DissolvingVapors-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: True]]]
+23:26:56.340  DidPerformAction: [MoveCardAction: CardBeingMoved=DissolvingVapors, To=Shroud of Silent Mist's Play Area, From=Shroud of Silent Mist's Hand, Offset=]
+23:26:56.680  DidPerformAction: [GainElementsAction: Source: [MoveCardAction: CardBeingMoved=DissolvingVapors, To=Shroud of Silent Mist's Play Area, From=Shroud of Silent Mist's Hand, Offset=]]
+23:26:56.680  DidPerformAction: [AdjustCardPlaysAction: Source: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 92 InstanceIdentifier: PlayPowerCard-DissolvingVapors-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: False]]]
+23:26:56.978  DidPerformAction: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 92 InstanceIdentifier: PlayPowerCard-DissolvingVapors-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: False]]
+23:26:56.978  ***** SAVING *****
+23:26:57.318  IntentManager calling Proceed: [PlayPowerCardActivation: InstanceNumber: 93 InstanceIdentifier: PlayPowerCard-AnimatedWrackroot-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: True]
+23:26:57.318  DidPerformAction: [MoveCardAction: CardBeingMoved=AnimatedWrackroot, To=Shroud of Silent Mist's Play Area, From=Shroud of Silent Mist's Hand, Offset=]
+23:26:57.656  DidPerformAction: [GainElementsAction: Source: [MoveCardAction: CardBeingMoved=AnimatedWrackroot, To=Shroud of Silent Mist's Play Area, From=Shroud of Silent Mist's Hand, Offset=]]
+23:26:57.656  DidPerformAction: [AdjustCardPlaysAction: Source: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 93 InstanceIdentifier: PlayPowerCard-AnimatedWrackroot-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: False]]]
+23:26:57.656  DidPerformAction: [PlayPowerCardAction: Source: [PlayPowerCardActivation: InstanceNumber: 93 InstanceIdentifier: PlayPowerCard-AnimatedWrackroot-0-0-0- Source: [PlayPayPowerStateController: State=[State: PhaseType=Spirit, StateType=PlayPayPower] IsOptional: True IsEnabled: False]]
+23:26:57.656  ***** SAVING *****
+23:26:57.577  IntentManager calling Proceed: [ContinueActivation: ActivationString=Continue-FinishedPlayingPowerCards-25-- Title=A decision will be made...]
+23:26:57.577  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=PlayPayPower, ToSpiritPhaseStatus=Complete]
+23:26:58.219  DidPerformAction: [ChangeSpiritPhaseStatusAction: SpiritChangingStatus=Shroud of Silent Mist, FromSpiritPhaseStatus=Complete, ToSpiritPhaseStatus=]
+23:26:58.219  DidPerformAction: [ChangeStateAction: From=SpiritPhase/SpiritPhase, To=FastPower/FastPower, Enter=False]
+23:26:58.219  ***** SAVING *****
+23:26:58.555  DidPerformAction: [ChangeStateAction: From=FastPower/FastPower, To=BlightedIsland/BlightedIsland, Enter=False]
+23:26:58.555  ***** SAVING *****

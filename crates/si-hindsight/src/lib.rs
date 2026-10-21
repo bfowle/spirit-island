@@ -30,6 +30,7 @@
 //! Event and Fear decks simulated card by card, growth for spirits that pick two groups.
 
 pub mod deck;
+pub mod live;
 
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -238,6 +239,9 @@ pub struct Outcome {
     /// The Slow plays with the targets chosen after the Invader steps (`resolve_slow`).
     #[serde(default)]
     pub slow: Vec<Play>,
+    /// Every land as the simulation left it (the live POSITION panel's `after` column).
+    #[serde(default)]
+    pub after: BTreeMap<LandId, Counts>,
     pub notes: Vec<String>,
 }
 
@@ -368,6 +372,13 @@ pub struct Line {
     /// Each innate and the tier its elements reach: ("Epidemics Run Rampant", 2, 3) = tier 2 of 3; 0 = not reached.
     #[serde(default)]
     pub tiers: Vec<(String, u8, u8)>,
+    /// What `informed` added for the face-down Event and Fear cards (`Calibration::expected_exogenous`).
+    #[serde(default)]
+    pub expected: f64,
+    /// The informed score under each candidate Explore card, in `explore_candidates` order
+    /// (empty for lines that were not ranked); the live `vs none` reads it.
+    #[serde(default)]
+    pub per_card: Vec<f64>,
     pub plays: Vec<Play>,
     pub outcome: Outcome,
     pub score: f64,
@@ -450,7 +461,7 @@ pub const ELEMENT_ORDER: [&str; 8] = ["Sun", "Moon", "Fire", "Air", "Water", "Ea
 
 /// The legend, printed once per report.
 /// Fill a line's elements and innate tiers from its plays and the position's track.
-fn annotate_elements(line: &mut Line, defs: &Definitions, s2: &SpiritTurn) {
+pub(crate) fn annotate_elements(line: &mut Line, defs: &Definitions, s2: &SpiritTurn) {
     let played: Vec<&PowerCard> = line.plays.iter().filter(|p| !p.innate).filter_map(|p| defs.cards.get(&p.power)).collect();
     let elements = elements_for(defs, s2, &played);
     line.elements = element_short(&elements);
@@ -608,7 +619,7 @@ fn is_power_source(defs: &Definitions, source: &str) -> bool {
 /// score averages over the cards still in the stage). `exogenous`: apply what the
 /// Event and Fear cards did (status effects, Defend) as the log shows; off for the
 /// informed score, since they were face down when the choice was made.
-fn invader_phase(island: &mut Island, rec: &GameRecord, t: &TurnRecord, defs: &Definitions, base_rules: &Rules, out: &mut Outcome, explore: Option<&[String]>, exogenous: bool) {
+pub(crate) fn invader_phase(island: &mut Island, rec: &GameRecord, t: &TurnRecord, defs: &Definitions, base_rules: &Rules, out: &mut Outcome, explore: Option<&[String]>, exogenous: bool) {
     let mut rules = base_rules.clone();
     let mut filtered = t.clone();
     filtered.status_effects.retain(|se| exogenous && !is_power_source(defs, &se.source));
@@ -651,7 +662,7 @@ fn invader_phase(island: &mut Island, rec: &GameRecord, t: &TurnRecord, defs: &D
     }
 }
 
-fn apply_plays(island: &mut Island, defs: &Definitions, plays: &[Play], fast: bool, elements: &ElementSet, rules: &Rules, spirit: &str, t: &TurnRecord, armed: &mut Vec<effects::TriggerArmed>, out: &mut Outcome) {
+pub(crate) fn apply_plays(island: &mut Island, defs: &Definitions, plays: &[Play], fast: bool, elements: &ElementSet, rules: &Rules, spirit: &str, t: &TurnRecord, armed: &mut Vec<effects::TriggerArmed>, out: &mut Outcome) {
     for p in plays.iter().filter(|p| p.fast == fast) {
         // a Spirit-target card with no land acts in the Spirit's lands (an Area over its
         // presence): anchored on one of them, the Area reaches the rest
@@ -743,7 +754,7 @@ fn fold_applied(out: &mut Outcome, a: &effects::Applied) {
 /// `informed_build`: for the informed score, the next turn's Build is this turn's
 /// assumed Explore card, its Explore is unknown (not run) and its Event and Fear
 /// effects are not applied; `None` runs the next turn as it came.
-fn lookahead(island: &mut Island, rec: &GameRecord, next: Option<&TurnRecord>, defs: &Definitions, rules: &Rules, out: &mut Outcome, informed_build: Option<&[String]>, deep: Option<&Deep>) {
+pub(crate) fn lookahead(island: &mut Island, rec: &GameRecord, next: Option<&TurnRecord>, defs: &Definitions, rules: &Rules, out: &mut Outcome, informed_build: Option<&[String]>, deep: Option<&Deep>) {
     let Some(n) = next else { return };
     let mut probe = Outcome::default();
     match informed_build {
@@ -794,9 +805,12 @@ fn lookahead(island: &mut Island, rec: &GameRecord, next: Option<&TurnRecord>, d
 }
 
 /// The Explore cards that could have come this turn, as far as was knowable: every
-/// card of the stage the deck order put next that had not been drawn yet.
-pub fn explore_candidates(rec: &GameRecord, defs: &Definitions, t: &TurnRecord) -> Vec<Vec<String>> {
-    let Some(first) = t.explore.first() else { return vec![] };
+/// card of the stage the deck order put next that had not been drawn yet. On an open
+/// turn (no Explore recorded) the stage comes from the deck order.
+pub fn explore_candidates(rec: &GameRecord, defs: &Definitions, deck: &deck::Deck, t: &TurnRecord) -> Vec<Vec<String>> {
+    let Some(first) = t.explore.first() else {
+        return deck::pool(rec, defs, deck, t, t.turn).map(|(_, cards)| cards.into_iter().map(|c| vec![c]).collect()).unwrap_or_default();
+    };
     let Some(card) = defs.invader_cards.get(first) else { return vec![] };
     let mut drawn: BTreeSet<String> = BTreeSet::new();
     for u in rec.turns.iter().filter(|u| u.turn < t.turn) {
@@ -826,7 +840,7 @@ fn growth_energy_of(panel: &si_model::spirit::SpiritPanel, groups: &[u8]) -> i64
     chosen + always
 }
 
-fn energy_available(rec: &GameRecord, defs: &Definitions, s: &SpiritTurn, prev_after: i64) -> i64 {
+pub(crate) fn energy_available(rec: &GameRecord, defs: &Definitions, s: &SpiritTurn, prev_after: i64) -> i64 {
     let _ = rec;
     let growth_energy: i64 = defs.spirits.get(&s.spirit).map(|p| growth_energy_of(p, &s.growth_groups)).unwrap_or(0);
     let from_track = prev_after + s.income.unwrap_or(0) + growth_energy;
@@ -834,7 +848,7 @@ fn energy_available(rec: &GameRecord, defs: &Definitions, s: &SpiritTurn, prev_a
     from_track.min(from_log).max(s.energy_after)
 }
 
-fn elements_for(defs: &Definitions, s: &SpiritTurn, played: &[&PowerCard]) -> ElementSet {
+pub(crate) fn elements_for(defs: &Definitions, s: &SpiritTurn, played: &[&PowerCard]) -> ElementSet {
     let mut set = defs.spirits.get(&s.spirit).map(|p| p.track_state(&s.revealed_after).elements).unwrap_or_default();
     for c in played {
         set.extend(&c.elements);
@@ -956,7 +970,7 @@ fn innate_targets(innate: &si_model::spirit::Innate, s: &SpiritTurn, before: &BT
 /// legal target; a Spirit-target card that places presence at each land the presence may
 /// go; any other Spirit-target card once, with no land (it acts on the Spirit, or in all
 /// the Spirit's lands as an Area).
-fn play_options(c: &PowerCard, presence: &BTreeMap<LandId, u32>, before: &BTreeMap<LandId, Counts>, graph: &si_model::island::Island) -> Vec<Play> {
+pub(crate) fn play_options(c: &PowerCard, presence: &BTreeMap<LandId, u32>, before: &BTreeMap<LandId, Counts>, graph: &si_model::island::Island) -> Vec<Play> {
     let fast = c.speed == Speed::Fast;
     let one = |target: Option<LandId>, places: bool| Play { power: c.id.clone(), target, fast, innate: false, cost: c.cost, places };
     if (c.range.is_some() || acts_in_one_land(c)) && !fast {
@@ -1037,7 +1051,7 @@ fn candidate_plays(hand: &[&PowerCard], plays: usize, energy: i64, s: &SpiritTur
 /// `rechoose` (the informed score, where the recorded target was chosen for another
 /// Explore card). A Spirit-target card keeps its anchor; a play with no legal target is
 /// left untargeted and skipped.
-fn resolve_slow(island: &Island, defs: &Definitions, plays: &[Play], rechoose: bool, s: &SpiritTurn, graph: &si_model::island::Island, innates: &[&si_model::spirit::Innate], eval: &dyn Fn(&[Play]) -> f64) -> Vec<Play> {
+pub(crate) fn resolve_slow(island: &Island, defs: &Definitions, plays: &[Play], rechoose: bool, s: &SpiritTurn, graph: &si_model::island::Island, innates: &[&si_model::spirit::Innate], eval: &dyn Fn(&[Play]) -> f64) -> Vec<Play> {
     let presence: BTreeMap<LandId, u32> = island.lands.iter().filter(|(_, l)| l.c.presence > 0).map(|(id, l)| (id.clone(), l.c.presence)).collect();
     let counts: BTreeMap<LandId, Counts> = island.lands.iter().map(|(id, l)| (id.clone(), l.c)).collect();
     let mut now = s.clone();
@@ -1073,7 +1087,7 @@ fn resolve_slow(island: &Island, defs: &Definitions, plays: &[Play], rechoose: b
 
 /// The line's plays with the Slow targets the simulation chose under the Explore card
 /// that came (Fast plays as given, then the resolved Slow plays).
-fn with_slow(plays: &[Play], out: &Outcome) -> Vec<Play> {
+pub(crate) fn with_slow(plays: &[Play], out: &Outcome) -> Vec<Play> {
     if out.slow.is_empty() {
         return plays.to_vec();
     }
@@ -1090,23 +1104,22 @@ pub struct Deep {
     pub pool: Vec<String>,
 }
 
-fn deep_for(rec: &GameRecord, defs: &Definitions, deck: &deck::Deck, t: &TurnRecord, assumed: &[String], informed: bool) -> Option<Deep> {
-    rec.turns.iter().find(|n| n.turn == t.turn + 1)?;
+pub(crate) fn deep_for(rec: &GameRecord, defs: &Definitions, deck: &deck::Deck, t: &TurnRecord, assumed: &[String], informed: bool) -> Option<Deep> {
     if informed {
         // the next turn's Explore is face down: average over its stage's remaining cards
         // (this turn's assumed card cannot come twice); the turn after's Ravage is this
-        // turn's assumed Explore
+        // turn's assumed Explore. No recorded next turn is needed: an open turn has none.
         let mut pool = deck::pool(rec, defs, deck, t, t.turn + 1).map(|(_, c)| c).unwrap_or_default();
         pool.retain(|c| !assumed.contains(c));
-        Some(Deep { ravage: assumed.to_vec(), high_immigration: vec![], pool })
-    } else {
-        // the next turn ran as recorded; the turn after as recorded when the record has
-        // it, else from this turn's Explore card
-        let after = rec.turns.iter().find(|n| n.turn == t.turn + 2);
-        let ravage = after.map(|a| a.ravage.clone()).filter(|r| !r.is_empty()).unwrap_or_else(|| assumed.to_vec());
-        let high_immigration = after.map(|a| a.high_immigration.clone()).unwrap_or_default();
-        Some(Deep { ravage, high_immigration, pool: vec![] })
+        return Some(Deep { ravage: assumed.to_vec(), high_immigration: vec![], pool });
     }
+    rec.turns.iter().find(|n| n.turn == t.turn + 1)?;
+    // the next turn ran as recorded; the turn after as recorded when the record has
+    // it, else from this turn's Explore card
+    let after = rec.turns.iter().find(|n| n.turn == t.turn + 2);
+    let ravage = after.map(|a| a.ravage.clone()).filter(|r| !r.is_empty()).unwrap_or_else(|| assumed.to_vec());
+    let high_immigration = after.map(|a| a.high_immigration.clone()).unwrap_or_default();
+    Some(Deep { ravage, high_immigration, pool: vec![] })
 }
 
 /// The Slow plays with their lands cleared, for the simulator to choose (presence
@@ -1131,6 +1144,43 @@ pub enum Progress {
     Ranking { turn: u32, play_sets: usize, lines: usize },
     /// The turn is reviewed.
     Done { turn: u32, lines: usize, explore_cards: usize, seconds: f64 },
+}
+
+/// The plays the journal records for the spirit this turn, cards and innates apart, each
+/// with its target as recorded (or recovered from where it acted).
+pub(crate) fn recorded_plays(rec: &GameRecord, defs: &Definitions, s: &SpiritTurn, t: &TurnRecord, all_innates: &[&si_model::spirit::Innate]) -> (Vec<Play>, Vec<Play>) {
+    let cards: Vec<Play> = s
+        .cards_played
+        .iter()
+        .map(|c| {
+            let card = defs.cards.get(c);
+            let fast = card.is_some_and(|c| c.speed == Speed::Fast);
+            let mut target = s.powers_used.iter().find(|(p, pw, _)| (*p == Phase::FastPower || *p == Phase::SlowPower) && pw == c).and_then(|(_, _, t)| t.clone());
+            if target.is_none() {
+                // a Spirit-target card that placed presence: where it went
+                target = s.presence_by_power.iter().find(|(pw, _, _)| pw == c).and_then(|(_, _, l)| l.clone());
+            }
+            if target.is_none() {
+                // a Spirit-target card (Fiery Vengeance) names its land only in the damage it dealt
+                target = rec.lands.values().find(|l| l.touches.iter().any(|x| x.turn == t.turn && x.by == *c)).map(|l| l.land.clone());
+            }
+            if target.is_none() {
+                // a card whose land the player chose (Solidify Echoes: "Choose one of target Spirit's lands"):
+                // the recorded choice, the Defend or chosen-land prompt before any "Adding…" one
+                let placed = verify::placements_of(defs, t, c);
+                target = placed.iter().find(|(r, _)| !r.starts_with("Adding")).or(placed.first()).map(|(_, l)| l.clone());
+            }
+            Play { power: c.clone(), target, fast, innate: false, cost: card.map(|c| c.cost).unwrap_or(0), places: card.is_some_and(adds_presence) }
+        })
+        .collect();
+    let innates: Vec<Play> = s.powers_used.iter().filter(|(p, pw, _)| (*p == Phase::FastPower || *p == Phase::SlowPower) && all_innates.iter().any(|i| i.id == *pw)).map(|(p, pw, t)| Play { power: pw.clone(), target: t.clone(), fast: *p == Phase::FastPower, innate: true, cost: 0, places: false }).collect();
+    (cards, innates)
+}
+
+/// The turns a review can judge: every turn before the journal's last, and the last when
+/// the game ended in it. The turn being played is never one of them.
+pub fn closed_turns(rec: &GameRecord) -> Vec<u32> {
+    rec.turns.iter().filter(|t| t.turn >= 1 && !t.before_fast.is_empty() && (t.turn < rec.meta.turns || rec.meta.ending.is_some())).map(|t| t.turn).collect()
 }
 
 /// Review every turn (with the options) and report nothing.
@@ -1161,7 +1211,8 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
     let enumerate_growth = opts.growth && pick <= 1 && !opts.actual_only;
     let all_innates = innates_of(defs, &spirit);
     let mut turns = Vec::new();
-    for t in rec.turns.iter().filter(|t| t.turn >= 1 && !t.before_fast.is_empty() && only.is_none_or(|o| o.contains(&t.turn))) {
+    let closed = closed_turns(rec);
+    for t in rec.turns.iter().filter(|t| closed.contains(&t.turn) && only.is_none_or(|o| o.contains(&t.turn))) {
         let Some(s) = rec.spirits.iter().find(|s| s.turn == t.turn && s.spirit == spirit) else { continue };
         let ended_before_slow = t.before_slow.is_empty();
         let next_turn = rec.turns.iter().find(|n| n.turn == t.turn + 1);
@@ -1199,31 +1250,7 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
         let total = positions.len().max(1);
         on_progress(Progress::Start { turn: t.turn, positions: positions.len() });
         // the actual line, as recorded (targets included)
-        let actual_plays: Vec<Play> = s
-            .cards_played
-            .iter()
-            .map(|c| {
-                let card = defs.cards.get(c);
-                let fast = card.is_some_and(|c| c.speed == Speed::Fast);
-                let mut target = s.powers_used.iter().find(|(p, pw, _)| (*p == Phase::FastPower || *p == Phase::SlowPower) && pw == c).and_then(|(_, _, t)| t.clone());
-                if target.is_none() {
-                    // a Spirit-target card that placed presence: where it went
-                    target = s.presence_by_power.iter().find(|(pw, _, _)| pw == c).and_then(|(_, _, l)| l.clone());
-                }
-                if target.is_none() {
-                    // a Spirit-target card (Fiery Vengeance) names its land only in the damage it dealt
-                    target = rec.lands.values().find(|l| l.touches.iter().any(|x| x.turn == t.turn && x.by == *c)).map(|l| l.land.clone());
-                }
-                if target.is_none() {
-                    // a card whose land the player chose (Solidify Echoes: "Choose one of target Spirit's lands"):
-                    // the recorded choice, the Defend or chosen-land prompt before any "Adding…" one
-                    let placed = verify::placements_of(defs, t, c);
-                    target = placed.iter().find(|(r, _)| !r.starts_with("Adding")).or(placed.first()).map(|(_, l)| l.clone());
-                }
-                Play { power: c.clone(), target, fast, innate: false, cost: card.map(|c| c.cost).unwrap_or(0), places: card.is_some_and(adds_presence) }
-            })
-            .collect();
-        let actual_innates: Vec<Play> = s.powers_used.iter().filter(|(p, pw, _)| (*p == Phase::FastPower || *p == Phase::SlowPower) && all_innates.iter().any(|i| i.id == *pw)).map(|(p, pw, t)| Play { power: pw.clone(), target: t.clone(), fast: *p == Phase::FastPower, innate: true, cost: 0, places: false }).collect();
+        let (actual_plays, actual_innates) = recorded_plays(rec, defs, s, t, &all_innates);
         // Event and Fear choices whose effect the simulator can place in another land
         let scorable: Vec<(usize, LandId, ChoiceEffect)> = t
             .choices
@@ -1406,7 +1433,7 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
                     options.truncate(opts.max_innate_options.max(1));
                     for inn in options {
                         if inn.is_empty() {
-                            lines.push(Line { growth: pos.growth.clone(), growth_actual: pi == 0, growth_value: gv, ties: 0, informed: score0, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: pi, elements: String::new(), tiers: vec![], plays: with_slow(&cand, &out0), outcome: out0.clone(), score: score0, actual: false });
+                            lines.push(Line { growth: pos.growth.clone(), growth_actual: pi == 0, growth_value: gv, ties: 0, informed: score0, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: pi, elements: String::new(), tiers: vec![], plays: with_slow(&cand, &out0), outcome: out0.clone(), score: score0, expected: 0.0, per_card: vec![], actual: false });
                             continue;
                         }
                         let out = simulate(&cand, &inn, &s2, None, None, false, &[], false);
@@ -1414,10 +1441,10 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
                         let mut plays = cand.clone();
                         plays.extend(inn);
                         let plays = with_slow(&plays, &out);
-                        lines.push(Line { growth: pos.growth.clone(), growth_actual: pi == 0, growth_value: gv, ties: 0, informed: score, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: pi, elements: String::new(), tiers: vec![], plays, outcome: out, score, actual: false });
+                        lines.push(Line { growth: pos.growth.clone(), growth_actual: pi == 0, growth_value: gv, ties: 0, informed: score, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: pi, elements: String::new(), tiers: vec![], plays, outcome: out, score, expected: 0.0, per_card: vec![], actual: false });
                     }
                 } else {
-                    lines.push(Line { growth: pos.growth.clone(), growth_actual: pi == 0, growth_value: gv, ties: 0, informed: score0, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: pi, elements: String::new(), tiers: vec![], plays: with_slow(&cand, &out0), outcome: out0, score: score0, actual: false });
+                    lines.push(Line { growth: pos.growth.clone(), growth_actual: pi == 0, growth_value: gv, ties: 0, informed: score0, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: pi, elements: String::new(), tiers: vec![], plays: with_slow(&cand, &out0), outcome: out0, score: score0, expected: 0.0, per_card: vec![], actual: false });
                 }
             }
             lines.sort_by(|a, b| b.score.partial_cmp(&a.score).unwrap());
@@ -1461,7 +1488,7 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
             let o = simulate(&cleared(&actual_plays), &cleared(&actual_innates), s, None, None, false, &[], false);
             ((o.score(&values) - actual_out.score(&values)).max(0.0), o.slow)
         };
-        let mut actual_line = Line { growth: actual_pos.growth.clone(), growth_actual: true, growth_value: actual_gv, ties: 0, informed: 0.0, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: 0, elements: String::new(), tiers: vec![], plays: actual_plays.iter().cloned().chain(actual_innates.iter().cloned()).collect(), outcome: actual_out.clone(), score: actual_out.score(&values) + actual_gv, actual: true };
+        let mut actual_line = Line { growth: actual_pos.growth.clone(), growth_actual: true, growth_value: actual_gv, ties: 0, informed: 0.0, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: 0, elements: String::new(), tiers: vec![], plays: actual_plays.iter().cloned().chain(actual_innates.iter().cloned()).collect(), outcome: actual_out.clone(), score: actual_out.score(&values) + actual_gv, expected: 0.0, per_card: vec![], actual: true };
         actual_line.slow_gap = slow_gap;
         actual_line.slow_best = slow_best;
         annotate_elements(&mut actual_line, defs, s);
@@ -1501,7 +1528,7 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
         on_progress(Progress::Ranking { turn: t.turn, play_sets: count, lines: lines.len() });
         // the informed score: the best lines by hindsight and the actual one, each averaged
         // over the Explore cards that could have come, with the Event and Fear effects left out
-        let cands = explore_candidates(rec, defs, t);
+        let cands = explore_candidates(rec, defs, &deck, t);
         // the face-down Event and Fear cards: what a player should have expected of them
         let tl_start = rec.turns.iter().filter(|u| u.turn < t.turn).map(|u| u.terror_after).max().unwrap_or(1).clamp(1, 3);
         let fear_k = if t.fear_cards.is_empty() { t.fear_cards_earned } else { t.fear_cards.len() as u32 };
@@ -1551,6 +1578,8 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
         for (i, l) in top.iter_mut().enumerate() {
             let mean = per_card[i].iter().sum::<f64>() / per_card[i].len() as f64 + expected_exo;
             l.informed = mean;
+            l.expected = expected_exo;
+            l.per_card = per_card[i].clone();
             l.luck = l.score + l.slow_gap - mean;
             // how sure the line beats the actual one: under each possible Explore card, the
             // chance the gap outweighs the simulator's own error (two scores, each off by
@@ -2018,16 +2047,9 @@ fn apply_delta(island: &mut Island, d: &Delta) {
     }
 }
 
-pub fn try_line(rec: &GameRecord, defs: &Definitions, turn: u32, text: &str) -> Result<Line, String> {
-    let spirit = rec.meta.spirits.first().cloned().unwrap_or_default();
-    let values = Values::for_panel(defs.spirits.get(&spirit));
-    let t = rec.turns.iter().find(|t| t.turn == turn).ok_or("no such turn")?;
-    let s = rec.spirits.iter().find(|s| s.turn == turn && s.spirit == spirit).ok_or("no spirit turn")?;
-    if t.before_fast.is_empty() {
-        return Err("no Fast-phase state recorded for that turn".into());
-    }
-    let level = rec.meta.adversary_level.or_else(|| si_metrics::adversary::estimate(rec, defs).and_then(|e| e.candidates.first().copied())).unwrap_or(0);
-    let rules = Rules { adversary: rec.meta.adversary.clone(), level, spirits: rec.meta.spirits.clone(), hooks: Rules::hooks_of(defs, &rec.meta.spirits), ..Default::default() };
+/// Plays in notation (`SLSF>C8 MI GP2@A2`): a card or innate by id, title or short code,
+/// `>land` or `@land` for its target.
+pub fn parse_plays(defs: &Definitions, text: &str) -> Result<Vec<Play>, String> {
     let mut codes = si_record::notation::Codes::new(Some(defs), false);
     let mut by_code: BTreeMap<String, String> = BTreeMap::new();
     for id in defs.cards.keys().chain(defs.spirits.values().flat_map(|p| p.innates.iter().map(|i| &i.id))) {
@@ -2057,6 +2079,20 @@ pub fn try_line(rec: &GameRecord, defs: &Definitions, turn: u32, text: &str) -> 
         let places = defs.cards.get(&id).is_some_and(adds_presence);
         plays.push(Play { power: id, target, fast, innate, cost, places });
     }
+    Ok(plays)
+}
+
+pub fn try_line(rec: &GameRecord, defs: &Definitions, turn: u32, text: &str) -> Result<Line, String> {
+    let spirit = rec.meta.spirits.first().cloned().unwrap_or_default();
+    let values = Values::for_panel(defs.spirits.get(&spirit));
+    let t = rec.turns.iter().find(|t| t.turn == turn).ok_or("no such turn")?;
+    let s = rec.spirits.iter().find(|s| s.turn == turn && s.spirit == spirit).ok_or("no spirit turn")?;
+    if t.before_fast.is_empty() {
+        return Err("no Fast-phase state recorded for that turn".into());
+    }
+    let level = rec.meta.adversary_level.or_else(|| si_metrics::adversary::estimate(rec, defs).and_then(|e| e.candidates.first().copied())).unwrap_or(0);
+    let rules = Rules { adversary: rec.meta.adversary.clone(), level, spirits: rec.meta.spirits.clone(), hooks: Rules::hooks_of(defs, &rec.meta.spirits), ..Default::default() };
+    let plays = parse_plays(defs, text)?;
     let cards: Vec<Play> = plays.iter().filter(|p| !p.innate).cloned().collect();
     let innates: Vec<Play> = plays.iter().filter(|p| p.innate).cloned().collect();
     let prev_after = rec.spirits.iter().find(|p| p.spirit == spirit && p.turn == turn - 1).map(|p| p.energy_after).unwrap_or(0);
@@ -2107,7 +2143,7 @@ pub fn try_line(rec: &GameRecord, defs: &Definitions, turn: u32, text: &str) -> 
     out.slow = slow;
     out.notes.extend(out_notes);
     let score = out.score(&values);
-    Ok(Line { growth: vec![], growth_actual: true, growth_value: 0.0, ties: 0, informed: score, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: 0, elements: String::new(), tiers: vec![], plays: all, outcome: out, score, actual: false })
+    Ok(Line { growth: vec![], growth_actual: true, growth_value: 0.0, ties: 0, informed: score, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: 0, elements: String::new(), tiers: vec![], plays: all, outcome: out, score, expected: 0.0, per_card: vec![], actual: false })
 }
 
 // ---- growth: the position a turn starts from, and every growth the panel allows ----

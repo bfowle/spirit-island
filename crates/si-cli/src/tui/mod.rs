@@ -249,7 +249,7 @@ pub fn run(args: &[String]) -> Result<()> {
     let calibration = crate::calibration_from(args);
     let rec = Arc::new(rec);
     let defs = Arc::new(defs);
-    let turns: Vec<u32> = rec.turns.iter().filter(|t| t.turn >= 1 && !t.before_fast.is_empty()).map(|t| t.turn).collect();
+    let turns: Vec<u32> = si_hindsight::closed_turns(&rec);
     let (tx, rx) = mpsc::channel::<Msg>();
     // the worker: one review call per turn, so turns land as they finish
     {

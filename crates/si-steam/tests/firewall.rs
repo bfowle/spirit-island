@@ -237,3 +237,18 @@ fn first_diff(a: &serde_json::Value, b: &serde_json::Value, path: String) -> Str
         _ => format!("{path}: {a} vs {b}"),
     }
 }
+
+#[test]
+fn seed_is_invariant_to_hidden_permutations() {
+    let Some((defs, snaps)) = load() else { return };
+    let mut rng = Lcg(0x5eed);
+    for (name, s) in &snaps {
+        let base = si_steam::seed::from_snapshot(s, name);
+        assert!(!base.lands.is_empty(), "{name}: a seed with no lands");
+        for round in 0..3 {
+            let permuted = permute_hidden(s, &defs, &mut rng);
+            let again = si_steam::seed::from_snapshot(&permuted, name);
+            assert!(base == again, "{name}: permutation {round} changed the seed");
+        }
+    }
+}

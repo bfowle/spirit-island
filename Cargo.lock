@@ -3215,6 +3215,7 @@ dependencies = [
  "si-model",
  "si-record",
  "si-rules",
+ "si-steam",
 ]
 
 [[package]]
@@ -3277,6 +3278,8 @@ dependencies = [
  "serde_json",
  "sha2",
  "si-common",
+ "si-model",
+ "si-record",
  "thiserror 2.0.18",
  "tokio",
  "tracing",

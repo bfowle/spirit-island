@@ -13,4 +13,5 @@ pub mod engine_map;
 pub mod log_parse;
 pub mod nrbf;
 pub mod projection;
+pub mod seed;
 pub mod source;

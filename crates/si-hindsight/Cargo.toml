@@ -11,3 +11,6 @@ si-record = { path = "../si-record" }
 si-metrics = { path = "../si-metrics" }
 si-rules = { path = "../si-rules" }
 serde.workspace = true
+
+[dev-dependencies]
+si-steam = { path = "../si-steam" }

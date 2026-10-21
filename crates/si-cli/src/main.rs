@@ -67,69 +67,12 @@ fn capture_root() -> PathBuf {
 }
 
 /// `WetlandA5` -> `A5`: the engine names a land by terrain and id.
-fn land_id_of(engine: &str) -> Option<si_model::island::LandId> {
-    let short = ["Mountain", "Sands", "Jungle", "Wetland", "Ocean"].iter().find_map(|t| engine.strip_prefix(t)).unwrap_or(engine);
-    short.parse().ok()
-}
-
-/// The state a log that starts mid-game joins at, from the save it was reloaded from.
-fn seed_from_snapshot(snap: &si_steam::engine_map::EngineSnapshot) -> si_record::replay::Seed {
-    use si_steam::engine_map::PieceKind as K;
-    let spirit_of = |s: &str| -> String { snap.spirits.iter().find(|sp| sp.id == s).or_else(|| snap.spirits.iter().find(|sp| sp.id.contains(s) || s.contains(&sp.id))).map(|sp| sp.id.clone()).unwrap_or_else(|| s.to_string()) };
-    let mut lands = Vec::new();
-    for l in &snap.lands {
-        let Some(id) = land_id_of(&l.id) else { continue };
-        let mut c = si_record::Counts::default();
-        let mut presence: std::collections::BTreeMap<String, u32> = std::collections::BTreeMap::new();
-        for p in &l.pieces {
-            match &p.kind {
-                K::Explorer => c.explorers += 1,
-                K::Town => c.towns += 1,
-                K::City => c.cities += 1,
-                K::Dahan => c.dahan += 1,
-                K::Blight => c.blight += 1,
-                K::Presence(s) => *presence.entry(spirit_of(s)).or_insert(0) += 1,
-                K::Token(t) => match t.as_str() {
-                    "Beast" | "Beasts" => c.beasts += 1,
-                    "Disease" => c.disease += 1,
-                    "Strife" => c.strife += 1,
-                    "Wilds" => c.wilds += 1,
-                    "Badlands" => c.badlands += 1,
-                    _ => {}
-                },
-                _ => {}
-            }
-        }
-        c.presence = presence.values().sum();
-        lands.push((id, c, presence.into_iter().collect()));
-    }
-    let spirits = snap
-        .spirits
-        .iter()
-        .map(|sp| si_record::replay::SeedSpirit {
-            id: sp.id.clone(),
-            energy: sp.energy,
-            hand: sp.hand.clone(),
-            play: sp.play_area.clone(),
-            discard: sp.discard.clone(),
-            forgotten: sp.forgotten.clone(),
-            revealed: sp.track_nodes.iter().filter(|(_, covered)| !covered).map(|(id, _)| id.clone()).collect(),
-        })
-        .collect();
-    let mut seen: Vec<String> = snap.invader_discard.iter().chain(snap.ravage_slot.iter()).chain(snap.build_slot.iter()).chain(snap.explore_slot_revealed.iter()).chain(snap.extra_invader_slots.iter().flat_map(|(_, v)| v.iter())).map(|c| c.id.clone()).collect();
-    seen.sort();
-    seen.dedup();
-    let boards: Vec<String> = lands.iter().map(|(id, _, _)| id.board.clone()).collect::<std::collections::BTreeSet<_>>().into_iter().collect();
-    // Terror Level cards leave the game as each level is reached
-    let terror = 1 + snap.out_of_game.iter().filter(|c| c.id.starts_with("TerrorLevel")).count() as u8;
-    si_record::replay::Seed { turn_index: snap.turn_index.max(0) as u32, phase: si_model::game::Phase::parse(&snap.state), boards, lands, spirits, terror, invader_cards_seen: seen }
-}
-
 /// `--seed <save.dat|.gz>`: the save a mid-game log was reloaded from.
 fn seed_from_args(args: &[String]) -> Result<Option<si_record::replay::Seed>> {
     let Some(p) = args.iter().position(|a| a == "--seed").and_then(|i| args.get(i + 1)) else { return Ok(None) };
     let snap = decode_save(Path::new(p)).ok_or_else(|| anyhow::anyhow!("--seed: {p} is not a readable save"))?;
-    Ok(Some(seed_from_snapshot(&snap)))
+    let name = Path::new(p).file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default();
+    Ok(Some(si_steam::seed::from_snapshot(&snap, &name)))
 }
 
 fn decode_save(dat: &Path) -> Option<si_steam::engine_map::EngineSnapshot> {

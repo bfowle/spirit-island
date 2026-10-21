@@ -52,9 +52,11 @@ pub struct Replay<'d> {
 }
 
 /// What a save says and a log that starts mid-game cannot: the board, each spirit's
-/// Energy, piles and revealed track slots, the Invader cards already out of the deck.
-/// Built from the engine snapshot of the save the game was reloaded from.
-#[derive(Debug, Clone)]
+/// Energy, piles and revealed track slots, the Invader cards already out of the deck,
+/// and (for the turn being played) the face-up slots, the Blight card, the Fear counts.
+/// Built from the engine snapshot of a save by si-steam's `seed::from_snapshot`, which
+/// reads only the fields a player can see.
+#[derive(Debug, Clone, PartialEq)]
 pub struct Seed {
     /// The engine's turn index at the save (0 = turn 1) and its phase.
     pub turn_index: u32,
@@ -66,9 +68,30 @@ pub struct Seed {
     pub terror: u8,
     /// Invader cards out of the deck before the join (the slots and the discard).
     pub invader_cards_seen: Vec<String>,
+    /// The save this came from: the engine's game id and the file name.
+    pub game_id: String,
+    pub save_name: String,
+    pub adversary: Option<String>,
+    pub adversary_level: Option<u8>,
+    pub difficulty: Option<i64>,
+    pub scenario: Option<String>,
+    /// The face-up cards: the Ravage and Build slots, and any extra slot (England's High
+    /// Immigration) by the engine's name for it.
+    pub ravage_slot: Vec<String>,
+    pub build_slot: Vec<String>,
+    pub extra_slots: Vec<(String, Vec<String>)>,
+    /// The Blight card's name once it has flipped (hidden before), and its pool.
+    pub blight_card: Option<String>,
+    pub blight_pool: Option<i64>,
+    pub blight_flipped: bool,
+    pub fear_generated: i64,
+    pub fear_required: i64,
+    /// Fear cards earned and waiting face down (their names stay hidden).
+    pub fear_cards_banked: u32,
+    pub ending: Option<String>,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq)]
 pub struct SeedSpirit {
     pub id: String,
     pub energy: i64,
@@ -78,6 +101,31 @@ pub struct SeedSpirit {
     pub forgotten: Vec<String>,
     /// Track slots a presence has left.
     pub revealed: Vec<String>,
+}
+
+impl Seed {
+    /// The board as a record keeps it: counts per land, presence summed over spirits.
+    pub fn board(&self) -> BTreeMap<LandId, Counts> {
+        self.lands.iter().map(|(id, c, _)| (id.clone(), *c)).collect()
+    }
+
+    /// One spirit's presence per land.
+    pub fn presence_of(&self, spirit: &str) -> BTreeMap<LandId, u32> {
+        self.lands.iter().filter_map(|(id, _, p)| p.iter().find(|(s, _)| s == spirit).filter(|(_, n)| *n > 0).map(|(_, n)| (id.clone(), *n))).collect()
+    }
+
+    /// What `apply_save` reads from a sibling EndGame save: the adversary when the log
+    /// never named it, its level, the difficulty, the scenario.
+    pub fn apply_meta(&self, meta: &mut crate::record::GameMeta) {
+        if meta.adversary.is_none() {
+            meta.adversary = self.adversary.clone();
+        }
+        if self.adversary_level.is_some() {
+            meta.adversary_level = self.adversary_level;
+        }
+        meta.difficulty = self.difficulty;
+        meta.scenario = self.scenario.clone();
+    }
 }
 
 /// The digital edition's adversaries: identifier and title, as log lines name

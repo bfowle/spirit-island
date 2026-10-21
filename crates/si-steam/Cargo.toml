@@ -5,6 +5,8 @@ edition.workspace = true
 
 [dependencies]
 si-common = { path = "../si-common" }
+si-model = { path = "../si-model" }
+si-record = { path = "../si-record" }
 serde.workspace = true
 serde_json.workspace = true
 anyhow.workspace = true
