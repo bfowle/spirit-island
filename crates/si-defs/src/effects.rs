@@ -74,6 +74,8 @@ re!(DEFEND, r"^(?:In one of (?:t|T)arget Spirit's lands, )?Defend (\d+)(?: in ta
 re!(DEFEND_BONUS, r"^(?:Defend \+(\d+)|\+(\d+) Defend)$");
 re!(DEFEND_PER, r"^(?:In one of (?:t|T)arget Spirit's lands, )?Defend (\d+) per (\{\w+\}|Invader)");
 re!(DEFEND_GRANT, r"(?:grants|provides) Defend (\d+)");
+re!(DEFEND_EACH_LAND, r"^Target Spirit provides Defend (\d+) in each of its lands\.?$");
+re!(ADD_PRESENCE_RANGE, r"^(?:Target Spirit |You |They )?adds? (\d+) \{Presence\} (?:up to )?\{(\d+)Range\} from (?:their|your) \{Presence\}\.?$");
 re!(PUSH, r"^(?:[Yy]ou may |Target Spirit may |may )?(?:Gather or )?Push (?:up to |another )?(\d+|all|any number of) (?:those |of (?:your|their) )?((?:(?:\{\w+\}|Invaders?)/?)+)(?: and (?:up to )?(\d+) ((?:(?:\{\w+\}|Invaders?)/?)+))?(?: per (\{\w+\}))?");
 re!(PUSH_HALF, r"^Push up to half \(round (?:up|down)\) of (\{\w+\}|Invaders)");
 re!(PUSH_IT, r"^(?:You may )?Push (?:that|it|them|the) ?(\{\w+\})?(?: you added \{\w+\} to)?$");
@@ -397,8 +399,11 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     if USE_ITS_TEXT.is_match(s) {
         return one(Effect::Unmodeled(s.to_string()));
     }
+    if let Some(c) = ADD_PRESENCE_RANGE.captures(s) {
+        return one(Effect::AddPresence { count: count(&c[1]), range: Some(count(&c[2])) });
+    }
     if let Some(c) = ADD_PRESENCE_ANY.captures(s) {
-        return one(Effect::AddPresence(count(&c[1])));
+        return one(Effect::AddPresence { count: count(&c[1]), range: None });
     }
     // --- triggers, choices, spirit economy, rules, out-of-reach ----------
     if let Some(c) = TRIGGER_DESTROYED.captures(s) {
@@ -435,7 +440,7 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     if let Some(c) = ADD_EACH_ADJACENT.captures(s) {
         let n = count(&c[1]);
         let inner = match &c[2] {
-            "Presence" | "DestroyedPresenceNew" => Effect::AddPresence(n),
+            "Presence" | "DestroyedPresenceNew" => Effect::AddPresence { count: n, range: None },
             "Dahan" => Effect::AddDahan(n),
             "Blight" => Effect::AddBlight(n),
             w => match TokenKind::parse(w) {
@@ -570,6 +575,10 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     if let Some(c) = DEFEND_BONUS.captures(s) {
         return one(Effect::Defend(count(c.get(1).or(c.get(2)).unwrap().as_str())));
     }
+    if let Some(c) = DEFEND_EACH_LAND.captures(s) {
+        // a Spirit-target card: Defend in every land where that Spirit has presence
+        return one(Effect::Area { scope: "each land where target Spirit has presence".into(), then: vec![Effect::Defend(count(&c[1]))] });
+    }
     if let Some(c) = DEFEND_GRANT.captures(s) {
         let d = Effect::Defend(count(&c[1]));
         return one(if lower.contains("{presence}") { Effect::Per { per: PieceFilter::Presence, then: vec![d] } } else { d });
@@ -632,7 +641,7 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
             out.push(match &p[2] {
                 "Blight" => Effect::AddBlight(n),
                 "Dahan" => Effect::AddDahan(n),
-                "Presence" | "DestroyedPresenceNew" => Effect::AddPresence(n),
+                "Presence" | "DestroyedPresenceNew" => Effect::AddPresence { count: n, range: None },
                 w => match TokenKind::parse(w) {
                     Some(kind) => Effect::AddToken { kind, count: n },
                     None => Effect::SpecialToken { token: w.to_string(), text: s.to_string() },

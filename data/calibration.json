@@ -1,0 +1,21 @@
+{
+  "source": "si calibrate 2026-10-21 (UTC): 24 games, 149 turns under /home/brett/repos/spirit-island/data/steam-capture, /mnt/c/Users/brett/AppData/LocalLow/Handelabra Games Inc_/Spirit Island",
+  "event_mean": 0.8952318884614745,
+  "event_n": 116,
+  "fear_card_mean": [
+    0.1759760911669478,
+    0.6108104703621462,
+    0.28275782500576296
+  ],
+  "fear_card_n": [
+    70,
+    32,
+    7
+  ],
+  "next_weight": 0.33213644524236985,
+  "next_n": 98,
+  "luck_sd": 1.3699924087782511,
+  "luck_n": 148,
+  "model_sd": 1.4021861339346047,
+  "model_n": 131
+}

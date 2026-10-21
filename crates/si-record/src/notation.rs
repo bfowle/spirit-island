@@ -56,6 +56,11 @@ impl<'d> Codes<'d> {
     pub fn legend(&self) -> String {
         self.used.iter().map(|(c, t)| format!("{c} = {t}")).collect::<Vec<_>>().join(", ")
     }
+
+    /// The codes used so far with their titles, for a table legend.
+    pub fn entries(&self) -> Vec<(String, String)> {
+        self.used.iter().map(|(c, t)| (c.clone(), t.clone())).collect()
+    }
 }
 
 fn code_of(title: &str) -> String {

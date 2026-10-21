@@ -120,50 +120,102 @@ si hindsight <game>                       # every turn: growth and plays against
 si hindsight <game> --turn 5 --top 5      # one turn, five alternatives
 si hindsight <game> --fixed-growth        # the growth as played; only the plays vary (much faster)
 si hindsight <game> --turn 6 --try "SLSF>C8 MI>C1"   # score a line you write (growth as played), beside the actual one
+si hindsight "$STEAM/log.txt"             # mid-game: the app's own journal; every finished turn is reviewed
+si hindsight "$STEAM/EndGame--n.txt" --seed $CAPS/live-…/saves/<the save you loaded>.gz   # a branch played from a checkpoint
+si calibrate [--dry-run]                  # re-measure the constants hindsight has no rule for, over the corpus (section 5f)
 ```
 
-While it runs, stderr shows one line per turn with a dot per growth position tried
-(a full game takes a few seconds on a many-core machine; `--fixed-growth` is near
-instant). The report then prints, per turn:
+`log.txt` beside the saves is the app's live journal in the EndGame format, so a game
+in progress can be reviewed at any time without the recorder; the turn being played is
+not scored until its Invader steps are in the log. A game played on from a reloaded
+checkpoint (`si inject`) writes a log that starts at the load, so its Energy, hand,
+presence and the cards already out of the Invader deck are unknown to the replay:
+`--seed` gives it the save it was loaded from (`si inject` prints the exact flag), and
+the turns then carry their real numbers (T4, T5 … not T1, T2).
+
+While it runs, stderr shows one line per turn: a 40-cell bar that fills as the turn's
+growth positions are tried (in cyan when color is on), then the counts of positions,
+play sets and lines kept, `ranking` while the kept lines are scored over the Explore
+cards, and the turn's time once that is done (a full game takes a couple of minutes
+with the growth enumerated; `--fixed-growth` is near instant). The report then prints,
+per turn:
 
 - the hand, plays and Energy you had, and how many play sets over how many growth
   positions were tried;
-- `actual`, `best`, `then…` rows: the growth in notation (`G2 e4@C4 c2@C4`, `G1 Rc +MI
-  +1E`, `G3 e5@C2 +MI (draft T4) -SLSF +1E` when the gain is taken from a later turn's
-  recorded draft and a card is forgotten for a Major; `(as played)` marks rows that keep
-  your growth; `+6 alike` folds rows with the same plays and score from another
-  placement or slot), then the plays, cards first and innates after `| innate`
-  (`SLSF>C2 FV>C4 | innate ERR>C2 SR>C1`; innates are underlined in color), the score,
-  and what the line produced;
-- under each row, the line's elements as glyphs with counts (`☼1 ▲3 ≋1 ■1 ♞2`: ☼ Sun
-  ☾ Moon ▲ Fire ≋ Air ≈ Water ■ Earth ♣ Plant ♞ Animal, colored) and each innate's
-  tiers as dots (`ERR ●●○` = tier 2 of 3 reached), so a better element pairing shows
-  up as a better innate; outcomes use glyphs too (`☣2 ♙1 ✕1E 2T ☠3 ↷☣1`: Blight,
-  Dahan lost, Invaders destroyed, Fear, next turn), with the legend printed once at
-  the top;
+- a table in the house style (comfy-table as in talaria-cli: box borders, bold header,
+  cells wrap onto more lines rather than being cut; the tag, number, element and tier
+  columns never wrap) with the rows `actual`, `best`, `then…`: the growth in notation (`G1 c5@A5 Rc
+  +SHG -SFFW`: group, each presence's slot and land, Reclaim, card gained, card
+  forgotten; `+MI (draft T4)` when the gain is taken from a later turn's recorded
+  draft; `(as played)` marks rows that keep your growth; `+6 alike` folds rows with
+  the same plays and score from another placement or slot); the cards played and the
+  innates used, each in its own column (`EW GP2@A2 RBST>A2` and `AEG>A2`: `CARD>land`
+  targets the land, `CARD@land` places presence there, a card alone acts on the Spirit
+  or in all its lands at once; a Spirit-target card that acts in one of the Spirit's
+  lands, like Fiery Vengeance, is tried in each presence land and written `FV>C5`;
+  innates are underlined in color); the elements as the eight letters
+  with counts in printed order (`S1 M2 F1 A0 W1 E1 P3 A1`, each in its element's
+  color); each innate's tiers as a fraction (`CTM 2/3` = tier 2 of 3 reached), so a
+  better element pairing shows up as a better innate; and what the line produced in
+  short tokens (`Bl2 Dh1 Pr1 Pr+1 kill 3E push 1 Fr1 built 1T | next Bl1 built 1T`:
+  Blight, Dahan lost, presence lost, presence added, Invaders destroyed, pushed out,
+  Fear, Towns and Cities the Build added, next turn), with
+  `FLIPS`/`LOSES` when the line's Blight reaches the Blight card's pool; the key to
+  every column and token (`KEY`) and the card codes (`CODES`) are tables at the end. No
+  ambiguous-width glyphs (dots, ellipses) anywhere, so the columns align;
 - `same G`: the best line from the growth you actually took, when another growth ranks
   first;
 - four numbers per row: **informed** (the score on what was knowable: averaged over
-  the Explore cards still in the stage, the Event and Fear effects left out, a card
-  taken from a later turn's draft not played), **hindsight** (on the cards that came),
-  **luck** (hindsight minus informed) and **conf** (the share of possible Explore cards
-  under which the line beats the actual one). Rows are ranked by the informed score, so
-  a line that only works because it "knew" the Explore or the draft sinks to the bottom
-  with a 0% confidence while still being shown;
-- `READING`: on the informed scores: Sound, Unlucky (right on what you knew, the hidden
-  cards cost you), Gamble paid (behind on what was known, the hidden cards made it
-  work), Better available, or Mistake on what was known, with the gap split between
-  growth and plays; `Not judged` when the actual or best line plays a card the
-  simulator cannot read in full, or when the log shows a card paid for but never used
-  (un-played after an undo);
-- `CHOICES THE GAME ASKED FOR`: every decision the engine prompted for in the Event
-  and Fear steps (which land takes the Damage, the Blight, the Town, the Strife…), one
-  row each with the effect, the verdict and every option's score, the chosen one
-  marked; prompts the simulator cannot model yet are listed under "also asked";
-- `HIDDEN WHEN YOU CHOSE`: the Explore card, the Event, the Fear cards, the draft
-  offered at the gain, and whether the Event and Fear piece effects were applied from
-  the log;
-- `NOTES`: caveats on the turn (undo re-logging, horizon).
+  the Explore cards still in the stage, the face-down Event and Fear cards counted at
+  their measured average worth (section 5f) rather than at what they turned out to do,
+  a card taken from a later turn's draft not played), **hindsight** (on the cards that
+  came), **luck** (hindsight minus informed: how far the hidden cards ran from their
+  expectation) and **conf** (how sure the review is that the line beats yours: under
+  each possible Explore card, the chance that its lead outweighs the simulator's own
+  error (section 5f; two scores each off by that much), averaged over the cards; a lead
+  of one ledger point reads about 70%, of three about 93%). Rows are ranked by the
+  informed score, so a line that only works because it "knew" the Explore or the draft
+  sinks to the bottom with a low confidence while still being shown. Slow plays are
+  committed before the Explore and
+  their lands chosen after it, as the player does: the table shows the lands chosen
+  under the card that came; under another card the informed score may have placed them
+  elsewhere;
+- `READING`: one line on the informed scores, with the gap measured against a turn's
+  usual luck (the corpus standard deviation, section 5f; Cohen's effect-size bands):
+  Sound (under a fifth of it), Unlucky (sound, and the hidden cards cost more than a
+  whole swing), Gamble paid (behind on what was known, the hidden cards made it the
+  best line), Better available (a fifth to four fifths), or Mistake (more than four
+  fifths), with the gap split between growth and plays; `Not judged` when the actual
+  or best line plays a card the simulator cannot read in full, or when the log shows a
+  card paid for but never used (un-played after an undo);
+- `CHOICES`: a small table, one row per prompt the engine raised in the Event, Fear and
+  Blight steps (which land takes the Damage, the Blight, the Town, the Strife…; a
+  Power's branch): the step, the card, what it asked, the verdict (`best option`,
+  `within 0.2 of best`, `better land open, by 1.5`, or `not scored` when the simulator
+  cannot place that effect yet) and every option with its score, the chosen one marked
+  `<-`;
+- `HIDDEN`: labeled lines for what was face down when you chose: `Explore` (the card
+  and what else it could have been), `Event`, `Fear` (cards resolved), `Effects` (what
+  the Event and Fear cards were worth to your line against what was expected of them,
+  the piece part separately), `Draft` (the four cards offered at the gain);
+- `FORECAST`: the Invader deck from this Fast phase, one row per coming turn: the stage
+  it draws from (the adversary's deck order, lined up with the record), the cards still
+  possible, and each land's chance of an Explore, split into `re-hit` (the land already
+  holds Invaders or Blight, so a second wave lands on the first) and `fresh`, with the
+  expected count of each. A card still in a stage is at any of that stage's future draw
+  positions with the same probability, so the chances are exact; which lands can be
+  explored is read off the board as this turn's face-up Ravage and Build leave it, so
+  later turns undercount lands that later Builds would open;
+- `NOTES`: short caveats on the turn: cards whose text the simulator types but does not
+  execute (`not simulated: …`), a game that ended mid-turn, an undo that re-logged a
+  play, a Slow play whose land was better chosen after the Explore (`Slow targets: 0.8
+  better was open…`, counted as its own gap, not as luck).
+
+The report opens with a `GAME` table (source, spirit, board, adversary and level, the
+deck order by stage, result, a `record` row when a bare log's undo reloads were placed
+one save back) and closes with `KEY`: one short row per term, the ledger's values, the
+spirit's own adjustments, the horizon weights and the calibration constants, all taken
+from the review itself, so the numbers in the key are the numbers that scored the lines.
 
 How the scoring works: every growth the panel allows from the previous turn's end
 state is a position (group; top or bottom slot for each presence; every legal
@@ -171,15 +223,62 @@ placement; each card of the offered draft, or the next recorded draft of that de
 the turn did not gain; the Reclaim). From each position every set of plays within the
 Energy and plays is tried at every legal target (first without innates, then the best
 40 sets with every innate target), the Fast plays run, the Event and Fear piece effects
-are applied as the log shows them, the turn's real Invader steps run, the Slow plays,
-then the next turn's Invader steps at half weight. The ledger's exchange rates are
-printed; the per-spirit part (how much a Dahan or a presence weighs) comes from the
-spirit's own rules (`SpiritPanel::priorities`), not from a name.
+are applied as the log shows them, the turn's real Invader steps run (a Town or City
+the Build adds counts against the line at the piece's value, so a Build the line stops,
+by Disease or by killing the Explorer first, is credited), the Slow cards take the best
+land each on the board those steps left, then the next turn's Invader steps at the
+calibrated weight (how much of an unattended threat materializes once the Spirit plays
+its next turn: 0.33 on the corpus). The lines that make the ranking are
+then scored one turn deeper: the turn after next's Ravage (its card is this turn's
+Explore) on what the next turn leaves, averaged over the next turn's possible Explore
+cards, at the weight squared. The ledger's exchange rates are printed; the per-spirit
+part (how much a Dahan or a presence weighs) comes from the spirit's own rules
+(`SpiritPanel::priorities`), not from a name.
+
+Presence a Power places (Gift of Proliferation, boons) is the play's, not the
+growth's: the record keeps it apart (`SpiritTurn.presence_by_power`), the line writes it
+`GP2@A2` and scores it as a growth's worth (the presence and the slot it came off), and
+a Sacred Site it makes in the Fast phase is in range for the cards played after it. A
+spirit with an always-group (Rampant Green's "Add a Presence to Jungle or Wetland")
+places that presence in every growth position before the chosen group's.
 
 Limits: one spirit (the first) is reviewed; a card held for later scores only its
 Energy kept; Push and Gather choices, counterattack distributions and the Event's
 option choices are listed, not scored; bare logs with many undo reloads can re-log a
-play or a payment.
+play or a payment; a second presence placed in the same growth measures its Range from
+the presence before the growth, not from the first one placed; the Event and Fear cards
+enter the informed score as averages, not card by card (their effects are not typed);
+a line that earns an extra Fear card by its own Fear gets the Fear at the ledger rate,
+not the card's average worth.
+
+## 5f. Calibration
+
+```
+si calibrate                 # the captures and the Steam folder; writes data/calibration.json
+si calibrate <path>... --out <json> --dry-run
+```
+
+Four numbers in the hindsight scoring have no rule behind them, so they are measured
+over the corpus and written to `data/calibration.json`, which `si hindsight` reads from
+beside the definitions folder (`--calibration <json>` names another; without a file the
+built-in values are the last measurement). Each line of the report says what it
+measured over how many turns:
+
+| Constant | How it is measured | 2026-10-21, 24 games, 149 turns |
+|---|---|---|
+| Event, Fear card worth | least squares over every turn's hidden effect on the actual line (its hindsight score minus its informed score under the Explore card that came): an Event indicator and the Fear cards resolved, per Terror Level | Event +0.90; Fear card TL1 +0.18, TL2 +0.61, TL3 +0.28 |
+| next-turn weight | Blight and Dahan the next turn's Ravage and Build took, over what they would have taken with no Spirit action (the lookahead on the recorded position) | 0.33 over 98 turns |
+| a turn's luck | standard deviation of hindsight minus informed on the actual line, with the constants above (mean +0.03: centered) | 1.37 over 148 turns |
+| simulator error | RMS, in ledger units, of the recorded state at the Slow phase minus the simulated Invader phase of the actual line (the `conf` column's noise) | 1.40 over 131 turns, mean +0.33 (the simulator runs a little pessimistic) |
+| the ledger against results | each game's actual lines summed per turn; win and loss means, and the share of win/loss pairs the ledger orders right | wins -0.66, losses -1.88; 72% of pairs (66% before Builds counted) |
+
+The Event coefficient covers everything face down on an Event turn beyond the Explore
+card: the Event itself, the Fear cards' Defends and skips (status effects, not pieces),
+and the next turn's cards inside the lookahead. The ledger line is a measurement, not a
+fit: with 21 decided games the weights stay as printed; when the corpus passes about a
+hundred games they get fitted to win probability (decision-structure spec, section 3a).
+Re-run after `si import` or a batch of new captures; the pass takes a few seconds (the
+actual line only, three passes).
 
 ## 5e. Checkpoints and live replay
 
@@ -195,13 +294,28 @@ save's id (first 12 hex digits of its sha256): copies share it, and a reload tha
 on an existing id is a fork.
 
 ```
+si import "$STEAM/EndGame--8584090663658034924.txt"      # a game the recorder missed → $CAPS/live-<game id>/
+```
+
+`si import` builds a capture after the fact from what the app's folder still holds:
+the EndGame log becomes `log-stream.txt`, the game's final `.dat` and every
+`save-Feedback`/`save-Undo` of the same game (the app keeps only the current game's
+step saves, and clears the undo copies as it goes) go under `saves/`, their write times
+into `events.txt`. The game id is the save's engine-seed hash, as the recorder names
+captures; a branch of a game already captured (a reloaded checkpoint played on) gets
+`live-<id>-<last six digits of the EndGame number>`. So: a game the recorder watched
+has every step; an old game gets its log and its final state; the current game gets
+its last few steps too. Review a branch with `--seed` (above).
+
+```
 si checkpoint $CAPS/live-e392726411c9 --graph            # the checkpoint DAG: distinct saves, forks (undo branches), leaves
 si checkpoint $CAPS/live-e392726411c9 --graph --dot | dot -Tsvg > dag.svg
 si inject $CAPS/live-e392726411c9 --turn 3 --phase SpiritPhase --fetch   # first time: also downloads frida-inject.exe
 si inject $CAPS/live-e392726411c9 --turn 6 --phase SpiritPhase           # load that checkpoint into the RUNNING app, no restart
 ```
 
-`si inject` needs the app running on Windows, at the home screen or inside a game. It
+`si inject` prints, with the load, the `--seed` flag that reviews the branch once it
+is played out. It needs the app running on Windows, at the home screen or inside a game. It
 places the checkpoint in the game's save folder as `save-Undo-990.dat`, runs Frida's
 standalone `frida-inject.exe` (fetched once into the companion's Windows tools folder)
 against `SpiritIsland.exe` with `tools/live-replay/reload_checkpoint.js`, and follows the

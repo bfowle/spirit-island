@@ -377,7 +377,16 @@ fn action(body: &str) -> Option<Event> {
             let m = moves.first()?;
             let raw_from = between(body, "( ", &[" =>"]).unwrap_or("");
             let spirit = m.piece.split("Presence").next().unwrap_or("").split("Incarna").next().unwrap_or("").to_string();
-            let node = (m.from.is_none() && !raw_from.contains("Forgotten") && !raw_from.ends_with("OutOfGame") && !raw_from.is_empty()).then(|| raw_from.to_string());
+            let raw_to = between(body, "=> ", &[")"]).unwrap_or("");
+            let is_slot = |s: &str| !s.is_empty() && !s.contains("Forgotten") && !s.ends_with("OutOfGame") && (s.contains("Energy") || s.contains("CardPlays") || s.contains("Track"));
+            // the track slot the presence came off, or (a growth option undone by hand) went back onto
+            let node = if m.from.is_none() && !raw_from.contains("Forgotten") && !raw_from.ends_with("OutOfGame") && !raw_from.is_empty() {
+                Some(raw_from.to_string())
+            } else if m.from.is_some() && m.to.is_none() && is_slot(raw_to) {
+                Some(raw_to.to_string())
+            } else {
+                None
+            };
             let destroyed = m.to.is_none() && between(body, "=> ", &[")"]).is_some_and(|t| t.ends_with("OutOfGame"));
             Event::PresenceMoved { spirit, node, from: m.from.clone(), to: m.to.clone(), destroyed }
         }

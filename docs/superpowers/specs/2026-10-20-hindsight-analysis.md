@@ -126,6 +126,14 @@ smaller). The informed play is computed on the information set as the log shows
 it: what cards were in hand, what the track gave, which Invader cards had been
 seen, which lands were coastal, what the adversary level does.
 
+As built (2026-10-20, revised the same day): `i_t` averages over the Explore cards
+still in the stage and adds the measured average worth of the face-down Event and
+Fear cards (`si calibrate`, decision-structure spec §3b), so `luck(t)` is the
+deviation from expectation. Slow cards are committed before the Explore and their
+lands chosen after it in both scores (§3c); a Slow mis-target on the actual line is
+its own number (`slow_gap`), not luck. The reading bands are effect sizes against
+the corpus luck spread (§3d).
+
 ## 2b. Confidence (Brett, 2026-10-20)
 
 Every number the hindsight report prints carries two confidences, printed beside it.
@@ -222,6 +230,59 @@ printed without the play it is compared to.
    England 4 game first, read with Brett.
 5. Rei as a policy (the architecture spec's `si-policy`) becomes a fourth play
    to compare against: "what Rei's build would have done here".
+6. The Invader deck as a forecast (Brett, 2026-10-20: Explore cards "doubling
+   up" between stages, the Stage II card repeating a terrain Stage I already
+   hit, so the same lands take a second Explore while still carrying the first,
+   with cascades, against a spread where every terrain takes one Blight). The
+   deck is a known composition drawn without replacement, so for each land the
+   chance of an Explore on each of the next three turns is exact, and from it
+   the expected re-hits (Explore into a land still holding Invaders or Blight)
+   and expected fresh openings. The ledger needs an exposure term: a Town with
+   Blight in a terrain still live in the stage is worth less than the same land
+   in a terrain already drawn out. Stacking costs are convex (cascades, presence
+   lost); spread costs are linear but drain the Blight pool toward the card flip.
+7. Done 2026-10-20: the informed score carries the Event and Fear cards' measured
+   average worth, Slow targets are chosen per Explore outcome, the lookahead runs one
+   expected turn deeper for the ranked lines, `FORECAST` prints the deck per land
+   (decision-structure spec §3, §4). Next: the Event and Fear decks card by card.
+
+## 7. Rules audit (2026-10-20, Brett: "evaluate all game rules; are these mechanics properly stated throughout?")
+
+What the simulator behind `si hindsight` and `si verify` models, where, and what it
+leaves to a note. "Modeled" means executed from the typed rules; "noted" means the
+outcome carries a note where a player choice or an unmodeled rule decides; "open" is a
+rules question for Brett (the register in the guide repo, `data/references/rules/
+register.md`, is the record of answers).
+
+| Rule | Where | Status |
+|---|---|---|
+| Growth: one group per turn (`numberOfGrowthGroupsToUse`), the always-group first (Rampant Green) | `si-model::spirit::GrowthRules{groups,pick,always}`, `si-hindsight::growth_positions`, replay skips the always-group as a "choice" | modeled (today) |
+| Presence placement rules: range from existing presence; terrain, Dahan, Invaders, Town/City/Blight, no-Blight, inland, coastal, Ocean | `Placement`, `placement_ok` | modeled; `…OrPresence`, `…AndBeasts`, `…OrDisease` kinds keep only the range (`Placement::Other`) |
+| A second presence placed in one growth measuring Range from the first | `growth_positions` measures from the presence before the growth | gap (conservative) |
+| Presence placed by a Power (Gift of Proliferation, boons) is the play's, not growth | `SpiritTurn.presence_by_power` (log: the `UsePowerActivation … UsePowerAction` span, or a Power phase), `Play.places`, `Outcome.presence_added` | modeled (today) |
+| A growth option undone by hand puts the presence back on its slot | `PresenceMoved` with a slot destination: un-reveal, drop the placement | modeled (today) |
+| Energy income and plays from the revealed track; "+1 Card Play this turn"; Reclaim all / one; Minor gain (draw 4 keep 1); Major gain (draw 4 keep 1, forget a card from hand or discard) | `track_state`, `Yield`, `CardPick` with forgets for the shown draft too | modeled (Major forgets for the shown draft today) |
+| Elements: every played card's elements, Fast or Slow, plus permanent track elements, count for every innate this turn | `elements_for`, `Tier.elements` | modeled; an "Any element" track slot is not chosen |
+| Range from presence; from a Sacred Site (2+ presence of one spirit); from presence in a given terrain; target rules (Dahan, Invaders, Blight, coastal, …) | `si-metrics::reach::range_ok`, `target_ok` | modeled |
+| Spirit-target cards: "each of its lands" is an Area over the Spirit's presence; "one of target Spirit's lands" is the recorded choice (actual) or the first presence land (alternatives); a presence-placing card targets where the presence goes, within the card's own Range | `Effect::Area` scope "each land where target Spirit has presence", `apply_plays` anchor, `play_options`, `Effect::AddPresence{count,range}` | modeled (today); the "one of its lands" alternative is an approximation |
+| Targets are chosen when a Power resolves: a Sacred Site made by a Fast Power counts for the Powers after it | `candidate_plays` orders presence-placing cards first and carries the presence forward | modeled (today) |
+| Fast before the Invader steps, Slow after; a Fast Power cannot wait | `simulate`: Fast plays, Invader phase, Slow plays | modeled; Slow targets are judged on the Fast-phase board (approximation) |
+| Explore: matching lands holding or touching a Town/City, or coastal; Wilds take it; adversary escalations | `invaders::explore` | modeled; Prussia Land Rush, Russia Stalk the Predators, Sweden Mining Rush are player-placed → noted |
+| Isolate and Explore: an Isolated land is not explored | `explore` skips isolated lands outright | follows register R-EX-6 (unreviewed): **open** — does a coastal Isolated land, or one with its own Town/City, still Explore? |
+| Build: City when Towns outnumber Cities, else Town; Disease stops it (Vengeance may let it through for Fear); England L1 Indentured Servants; no coastal City (Fear card) | `build_land`, `build` | modeled |
+| Ravage: Explorer 1, Town 2, City 3 (Russia L1 Explorers +1; Sweden L3 Towns 3, Cities 5; England L5 +1 Health); Defend; Spirit "-N damage"; Blight at 2+ damage (Sweden L1 +1 at 6+); cascade when Blight was there; presence destroyed with the Blight; Dahan health 2 (+bonuses), Badlands add to their damage; counterattack 2 per surviving Dahan (+Badlands); Russia Hunters | `ravage_land` | modeled; the cascade's land and the counterattack's targets are the player's (cheapest first) → noted; a cascade that cascades again is not followed |
+| Strife: Invaders with Strife deal no damage | only via `NoParticipation` effects the engine logged as status effects | gap: Strife tokens on pieces are not read into the Ravage |
+| Dahan fight back even when Defend absorbed all the damage | `ravage_land` counts survivors regardless of damage | modeled; **open** for Brett to confirm |
+| High Immigration (England L3+), the deck order, escalation flags, stage ordering | `invader_phase`, `TurnRecord.high_immigration`, `InvaderCard.escalation` | modeled |
+| Fear from destroyed Towns/Cities, Terror Level thresholds, Fear card effects | `fold_applied`, the Fear deck sizes; Fear cards applied from the log as exogenous deltas, their land choices scored | partly modeled; the 50 Fear cards are not typed yet |
+| Events | exogenous: the log's delta between the simulated Fast phase and `before_invaders`; option choices listed | not typed yet (62 cards) |
+| Blight card flip and its effect | printed (`FLIPS`/`LOSES` from the turn's save) | not simulated |
+| Time Passes clears Defend, Isolate, damage, elements | each line's island is rebuilt per turn | modeled |
+| Several spirits | the first spirit only; presence in a land is treated as one spirit's | gap |
+
+Verification stands where it was: `si verify` over the captures (89% on the Rampant
+Green vs Russia 5 capture, the misses being counterattack distributions, Creepers'
+repeat, and a Fear card's participation effect).
 
 ## 6. Study board (later)
 

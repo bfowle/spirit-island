@@ -46,6 +46,38 @@ pub fn load(path: &Path) -> Result<(Vec<Line>, Option<Vec<(u64, u32)>>, String)>
 
 pub struct Replay<'d> {
     pub defs: Option<&'d Definitions>,
+    /// The state the log joins at, when it starts mid-game (a branch played from a
+    /// reloaded checkpoint): the save's board, spirits and decks.
+    pub seed: Option<Seed>,
+}
+
+/// What a save says and a log that starts mid-game cannot: the board, each spirit's
+/// Energy, piles and revealed track slots, the Invader cards already out of the deck.
+/// Built from the engine snapshot of the save the game was reloaded from.
+#[derive(Debug, Clone)]
+pub struct Seed {
+    /// The engine's turn index at the save (0 = turn 1) and its phase.
+    pub turn_index: u32,
+    pub phase: Phase,
+    pub boards: Vec<String>,
+    /// Per land: pieces and tokens, and presence per spirit id.
+    pub lands: Vec<(LandId, Counts, Vec<(String, u32)>)>,
+    pub spirits: Vec<SeedSpirit>,
+    pub terror: u8,
+    /// Invader cards out of the deck before the join (the slots and the discard).
+    pub invader_cards_seen: Vec<String>,
+}
+
+#[derive(Debug, Clone, Default)]
+pub struct SeedSpirit {
+    pub id: String,
+    pub energy: i64,
+    pub hand: Vec<String>,
+    pub play: Vec<String>,
+    pub discard: Vec<String>,
+    pub forgotten: Vec<String>,
+    /// Track slots a presence has left.
+    pub revealed: Vec<String>,
 }
 
 /// The digital edition's adversaries: identifier and title, as log lines name
@@ -117,6 +149,9 @@ struct Walk<'d> {
     /// logs a destroyed piece as a move out and then a destroy).
     gone_this_step: BTreeSet<String>,
     power_phase: BTreeMap<String, Phase>,
+    /// The Power whose use the log has opened and not yet closed (`UsePowerActivation` …
+    /// `UsePowerAction`): presence it places is its, not growth.
+    power_in_use: Option<String>,
     spirit_names: BTreeMap<String, String>,
     single_spirit: Option<String>,
 }
@@ -127,7 +162,13 @@ fn si_record_canceled(step: si_model::event::InvaderStep, land: Option<LandId>, 
 
 impl<'d> Replay<'d> {
     pub fn new(defs: Option<&'d Definitions>) -> Self {
-        Replay { defs }
+        Replay { defs, seed: None }
+    }
+
+    /// Start the replay from a save's state instead of from setup.
+    pub fn with_seed(mut self, seed: Option<Seed>) -> Self {
+        self.seed = seed;
+        self
     }
 
     pub fn run(&self, lines: &[Line], undo_times: Option<&[(u64, u32)]>, source: &str) -> GameRecord {
@@ -163,9 +204,13 @@ impl<'d> Replay<'d> {
             defend_this_turn: BTreeMap::new(),
             gone_this_step: BTreeSet::new(),
             power_phase: BTreeMap::new(),
+            power_in_use: None,
             spirit_names: BTreeMap::new(),
             single_spirit: None,
         };
+        if let Some(seed) = &self.seed {
+            w.apply_seed(seed);
+        }
         for (_, p) in kept {
             match p {
                 Parsed::Event(e) => {
@@ -365,6 +410,72 @@ impl<'d> Walk<'d> {
     /// Place the printed pieces of each board in play. The log never records
     /// them: Dahan, the setup City and Town, starting Blight and tokens only
     /// show up once something happens to them.
+    /// Start from a save's state: its pieces (as printed pieces, so later destroys find
+    /// them), presence, Blight and tokens, each spirit's Energy, piles and revealed slots,
+    /// the turn and phase; the turn before the join is recorded as the position the first
+    /// joined turn's plays start from, with the Invader cards already seen.
+    fn apply_seed(&mut self, seed: &Seed) {
+        self.boards = seed.boards.clone();
+        self.seeded = true;
+        for (land, c, presence) in &seed.lands {
+            let mut n = 0;
+            for (count, kind) in [(c.explorers, PieceKind::Explorer), (c.towns, PieceKind::Town), (c.cities, PieceKind::City), (c.dahan, PieceKind::Dahan)] {
+                for _ in 0..count {
+                    n += 1;
+                    self.pieces.insert(format!("init:{land}:{n}"), (land.clone(), kind));
+                }
+            }
+            if c.blight > 0 {
+                self.blight.insert(land.clone(), c.blight);
+            }
+            for (count, kind) in [(c.beasts, TokenKind::Beast), (c.wilds, TokenKind::Wilds), (c.disease, TokenKind::Disease), (c.strife, TokenKind::Strife), (c.badlands, TokenKind::Badlands)] {
+                if count > 0 {
+                    self.tokens.entry(land.clone()).or_default().insert(kind, count);
+                }
+            }
+            for (spirit, k) in presence {
+                if *k > 0 {
+                    self.presence.entry(land.clone()).or_default().insert(spirit.clone(), *k);
+                }
+            }
+        }
+        for sp in &seed.spirits {
+            self.spirit_names.insert(sp.id.clone(), sp.id.clone());
+            self.energy.insert(sp.id.clone(), sp.energy);
+            self.piles.insert(sp.id.clone(), Piles { hand: sp.hand.clone(), play: sp.play.clone(), discard: sp.discard.clone() });
+            self.revealed.insert(sp.id.clone(), sp.revealed.iter().cloned().collect());
+        }
+        if seed.spirits.len() == 1 {
+            self.single_spirit = seed.spirits.first().map(|s| s.id.clone());
+        }
+        self.terror = seed.terror;
+        self.turn = seed.turn_index + 1;
+        self.phase = seed.phase;
+        self.invaded = seed.phase.is_invader_step() || matches!(seed.phase, Phase::SlowPower | Phase::TimePasses);
+        self.rec.meta.from_setup = false;
+        let lands: BTreeSet<LandId> = self.pieces.values().map(|(l, _)| l.clone()).chain(self.blight.keys().cloned()).chain(self.presence.keys().cloned()).chain(self.tokens.keys().cloned()).collect();
+        self.rec.setup = lands.iter().map(|l| (l.clone(), self.counts_of(l))).collect();
+        let prev = seed.turn_index;
+        if prev >= 1 {
+            self.rec.turns.push(TurnRecord { turn: prev, explore: seed.invader_cards_seen.clone(), terror_after: self.terror, ..Default::default() });
+            for sp in &seed.spirits {
+                let presence_after: BTreeMap<LandId, u32> = self.presence.iter().filter_map(|(l, m)| m.get(&sp.id).filter(|n| **n > 0).map(|n| (l.clone(), *n))).collect();
+                self.rec.spirits.push(SpiritTurn {
+                    turn: prev,
+                    spirit: sp.id.clone(),
+                    energy_after: sp.energy,
+                    hand_after: sp.hand.clone(),
+                    discard_after: sp.discard.clone(),
+                    revealed_after: sp.revealed.iter().cloned().collect(),
+                    presence_after,
+                    ..Default::default()
+                });
+            }
+        }
+        self.turn_rec();
+        self.rec.coverage.notes.push(format!("seeded from a save: turn {} at {:?}, {} land(s), {} spirit(s)", self.turn, seed.phase, seed.lands.len(), seed.spirits.len()));
+    }
+
     fn seed_boards(&mut self) {
         if self.seeded {
             return;
@@ -494,7 +605,12 @@ impl<'d> Walk<'d> {
         match m {
             Marker::GrowthGroup { spirit, group } => {
                 let id = self.spirit_id(&spirit);
-                let pick = self.defs.and_then(|d| d.spirits.get(&id)).map(|p| p.growth.pick as usize).unwrap_or(1);
+                let panel = self.defs.and_then(|d| d.spirits.get(&id));
+                // the always-group (Rampant Green's group 0) is taken every growth, not chosen
+                if panel.and_then(|p| p.growth.always.as_ref()).is_some_and(|a| a.number == group) {
+                    return;
+                }
+                let pick = panel.map(|p| p.growth.pick as usize).unwrap_or(1);
                 let st = self.spirit_turn(&id);
                 // re-selections (after an undo) replace the earlier choice
                 if st.growth_groups.len() >= pick {
@@ -514,7 +630,8 @@ impl<'d> Walk<'d> {
                 }
             }
             Marker::PowerPhase { power, phase } => {
-                self.power_phase.insert(power, phase);
+                self.power_phase.insert(power.clone(), phase);
+                self.power_in_use = Some(power);
             }
             Marker::Boards(boards) => {
                 if self.boards.is_empty() {
@@ -834,6 +951,7 @@ impl<'d> Walk<'d> {
             }
             Event::EventResolved { card } => self.turn_rec().events.push(card),
             Event::PowerUsed { power, target, .. } => {
+                self.power_in_use = None;
                 let phase = self.power_phase.get(&power).copied().unwrap_or(self.phase);
                 let spirit = self.attribute_power(&power);
                 if let Some(sp) = &spirit {
@@ -895,8 +1013,14 @@ impl<'d> Walk<'d> {
             }
             Event::PresenceMoved { spirit, node, from, to, destroyed } => {
                 let id = self.spirit_id(&spirit);
+                // back onto its track slot: a growth option undone by hand
+                let returned = from.is_some() && to.is_none() && !destroyed && node.is_some();
                 if let Some(n) = &node {
-                    self.revealed.entry(id.clone()).or_default().insert(n.clone());
+                    if returned {
+                        self.revealed.entry(id.clone()).or_default().remove(n);
+                    } else {
+                        self.revealed.entry(id.clone()).or_default().insert(n.clone());
+                    }
                 }
                 if let Some(f) = &from {
                     if let Some(m) = self.presence.get_mut(f) {
@@ -910,6 +1034,13 @@ impl<'d> Walk<'d> {
                 }
                 if destroyed {
                     self.spirit_turn(&id).presence_destroyed += 1;
+                } else if returned {
+                    let st = self.spirit_turn(&id);
+                    if let Some(i) = st.presence_placed.iter().rposition(|(n, _)| n.as_deref() == node.as_deref()) {
+                        st.presence_placed.remove(i);
+                    } else if let Some(i) = st.presence_by_power.iter().rposition(|(_, n, _)| n.as_deref() == node.as_deref()) {
+                        st.presence_by_power.remove(i);
+                    }
                 } else if let (Some(f), Some(t)) = (&from, &to) {
                     if f != t {
                         self.spirit_turn(&id).presence_moved.push((f.clone(), t.clone()));
@@ -919,12 +1050,25 @@ impl<'d> Walk<'d> {
                     }
                 } else if from.is_none() && to.is_some() {
                     // a slot or off-board presence arriving on the island
-                    // (a slot-to-card move, e.g. Fractured Days, is not a placement)
-                    let placed = (node.clone(), to.clone());
-                    self.spirit_turn(&id).presence_placed.push(placed);
-                    if let Some(t) = &to {
-                        if self.turn > 0 {
-                            self.touch(t, "growth", Some(id.clone()), TouchKind::Presence);
+                    // (a slot-to-card move, e.g. Fractured Days, is not a placement);
+                    // placed by the Power in use, or during a Power phase, it is that
+                    // Power's (Gift of Proliferation), not growth
+                    let by_power = self.power_in_use.clone().or_else(|| matches!(self.phase, Phase::FastPower | Phase::SlowPower).then(|| format!("{:?}", self.phase)));
+                    match by_power {
+                        Some(source) if self.turn > 0 => {
+                            self.spirit_turn(&id).presence_by_power.push((source.clone(), node.clone(), to.clone()));
+                            if let Some(t) = &to {
+                                self.touch(t, &source, Some(id.clone()), TouchKind::Presence);
+                            }
+                        }
+                        _ => {
+                            let placed = (node.clone(), to.clone());
+                            self.spirit_turn(&id).presence_placed.push(placed);
+                            if let Some(t) = &to {
+                                if self.turn > 0 {
+                                    self.touch(t, "growth", Some(id.clone()), TouchKind::Presence);
+                                }
+                            }
                         }
                     }
                 }

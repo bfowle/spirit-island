@@ -19,6 +19,16 @@ struct Palette {
     speed: BTreeMap<String, Speed>,
     /// Innate codes and ids: painted underlined, so an innate never reads like a card.
     innate: std::collections::BTreeSet<String>,
+    /// The boards of the game being printed: only their land ids are painted as lands
+    /// (otherwise G2 the growth group or F2 the element count would read as lands).
+    boards: Option<std::collections::BTreeSet<String>>,
+}
+
+/// The boards of the game being printed (`C`, `NW`…); land ids of other boards are left alone.
+pub fn set_boards(boards: &[String]) {
+    if let Some(p) = PALETTE.lock().unwrap().as_mut() {
+        p.boards = Some(boards.iter().cloned().collect());
+    }
 }
 
 static ENABLED: OnceLock<bool> = OnceLock::new();
@@ -56,7 +66,7 @@ pub fn register(defs: &Definitions) {
         innate.insert(codes.code(&i.id));
         innate.insert(i.id.clone());
     }
-    *PALETTE.lock().unwrap() = Some(Palette { terrain, speed, innate });
+    *PALETTE.lock().unwrap() = Some(Palette { terrain, speed, innate, boards: None });
 }
 
 fn c256(n: u8, s: &str) -> String {
@@ -72,8 +82,8 @@ fn c256u(n: u8, s: &str) -> String {
 }
 
 /// Element abbreviations as the hindsight prints them: `Su1 Mo1 Fi2 Ai1 Wa1 Ea1 Pl1 An2`.
-/// Sun, Moon, Fire, Air, Water, Earth, Plant, Animal.
-const ELEMENT_COLORS: [u8; 8] = [220, 250, 196, 159, 33, 130, 34, 131];
+/// Sun yellow, Moon white, Fire orange, Air purple, Water blue, Earth grey, Plant green, Animal red.
+const ELEMENT_COLORS: [u8; 8] = [220, 255, 208, 135, 33, 245, 34, 196];
 
 const MOUNTAIN: u8 = 245;
 const SANDS: u8 = 220;
@@ -114,7 +124,7 @@ pub fn paint(line: &str) -> String {
     // the eight elements by position: S M F A W E P A, each with its count
     let element = ELEMENT.get_or_init(|| Regex::new(r"\bS(\d) M(\d) F(\d) A(\d) W(\d) E(\d) P(\d) A(\d)\b").unwrap());
     static GLYPH: OnceLock<Regex> = OnceLock::new();
-    let glyph = GLYPH.get_or_init(|| Regex::new(r"\bBl\d+\b|\bDh\d+\b|\bPr\d+\b|\bFr\d+\b|\bkill\b|\bpush \d+\b|\| next\b|●+|○+|⑂|\bLOSES\b|\bFLIPS\b").unwrap());
+    let glyph = GLYPH.get_or_init(|| Regex::new(r"\bBl\d+\b|\bDh\d+\b|\bPr\d+\b|\bFr\d+\b|\bkill\b|\bpush \d+\b|\| next\b|\bPr\+\d+|\b\d/\d\b|\bLOSES\b|\bFLIPS\b").unwrap());
     static TEMPO_ROW: OnceLock<Regex> = OnceLock::new();
     let tempo_row = TEMPO_ROW.get_or_init(|| Regex::new(r"^\s*(?:NW|NE|SW|SE|[A-HW])\d{1,2}\s+(?:Mountain|Sands|Jungle|Wetland|Ocean)\b|^\s*(?:total|above|on|gambled|failed|sacrificed|untouched|late)\b").unwrap());
     let is_tempo_row = tempo_row.is_match(line);
@@ -127,16 +137,9 @@ pub fn paint(line: &str) -> String {
     }
     let mut out = String::new();
     let mut last = 0;
-    // pass 1: lands
     let mut pieces: Vec<(usize, usize, String)> = Vec::new();
-    for m in land.find_iter(line) {
-        let color = palette.as_ref().and_then(|p| p.terrain.get(m.as_str())).map(|t| terrain_color(*t));
-        if let Some(c) = color {
-            pieces.push((m.start(), m.end(), c256(c, m.as_str())));
-        }
-    }
+    // pass 1: the element column (its letters collide with land ids, so it goes first)
     for m in element.captures_iter(line) {
-        // each "X<n>" token colored by its element; a zero count dimmed
         for i in 1..=8 {
             let g = m.get(i).unwrap();
             let start = g.start() - 1;
@@ -145,12 +148,29 @@ pub fn paint(line: &str) -> String {
             pieces.push((start, g.end(), c256(color, text)));
         }
     }
+    // pass 2: lands of the boards in play
+    for m in land.find_iter(line) {
+        if pieces.iter().any(|(s, e, _)| m.start() >= *s && m.start() < *e) {
+            continue;
+        }
+        let board: String = m.as_str().chars().take_while(|c| c.is_ascii_alphabetic()).collect();
+        let in_play = palette.as_ref().and_then(|p| p.boards.as_ref()).is_none_or(|b| b.contains(&board));
+        if !in_play {
+            continue;
+        }
+        let color = palette.as_ref().and_then(|p| p.terrain.get(m.as_str())).map(|t| terrain_color(*t));
+        if let Some(c) = color {
+            pieces.push((m.start(), m.end(), c256(c, m.as_str())));
+        }
+    }
     for m in glyph.find_iter(line) {
         if pieces.iter().any(|(s, e, _)| m.start() >= *s && m.start() < *e) {
             continue;
         }
         let g = m.as_str();
-        let color = if g.starts_with("Bl") { BLIGHT } else if g.starts_with("Fr") { FEAR } else if g.starts_with("Dh") { DAHAN } else if g.starts_with("Pr") { WARN } else if g == "kill" || g == "LOSES" { BAD } else if g == "FLIPS" { WARN } else if g.starts_with("push") { 37 } else if g.starts_with("| next") { DIM } else if g.starts_with('●') { GOOD } else if g.starts_with('○') { DIM } else { WARN };
+        let tier_reached = g.len() == 3 && g.as_bytes()[1] == b'/' && !g.starts_with('0');
+        let tier_none = g.len() == 3 && g.as_bytes()[1] == b'/' && g.starts_with('0');
+        let color = if g.starts_with("Bl") { BLIGHT } else if g.starts_with("Fr") { FEAR } else if g.starts_with("Dh") { DAHAN } else if g.starts_with("Pr+") { GOOD } else if g.starts_with("Pr") { WARN } else if g == "kill" || g == "LOSES" { BAD } else if g == "FLIPS" { WARN } else if g.starts_with("push") { 37 } else if g.starts_with("| next") { DIM } else if tier_reached { GOOD } else if tier_none { DIM } else { WARN };
         pieces.push((m.start(), m.end(), if g == "LOSES" || g == "FLIPS" { bold(&c256(color, g)) } else { c256(color, g) }));
     }
     for m in word.find_iter(line) {
@@ -168,8 +188,10 @@ pub fn paint(line: &str) -> String {
             "won" | "Sound" | "matched" => Some(c256(GOOD, w)),
             "lost" | "Mistake" | "mismatches" => Some(c256(BAD, w)),
             "Unlucky" => Some(c256(WARN, w)),
-            "Fast" | "F" => Some(c256(FAST, w)),
-            "Slow" | "S" => Some(c256(SLOW, w)),
+            "Fast" => Some(c256(FAST, w)),
+            "Slow" => Some(c256(SLOW, w)),
+            "F" if trimmed.starts_with("F ") => Some(c256(FAST, w)),
+            "S" if trimmed.starts_with("S ") => Some(c256(SLOW, w)),
             "Blight" | "blight" => Some(c256(BLIGHT, w)),
             "Fear" | "fear" => Some(c256(FEAR, w)),
             "Dahan" | "dahan" => Some(c256(DAHAN, w)),

@@ -158,6 +158,7 @@ impl GrowthOptionDef {
                     "AddPresenceOcean" => Placement::Ocean,
                     "AddPresenceMountainSands" => Placement::Terrains { range, terrains: vec![Terrain::Mountain, Terrain::Sands] },
                     "AddPresenceMountainWetland" => Placement::Terrains { range, terrains: vec![Terrain::Mountain, Terrain::Wetland] },
+                    "AddPresenceJungleWetland" => Placement::Terrains { range, terrains: vec![Terrain::Jungle, Terrain::Wetland] },
                     other => Placement::Other { range, kind: other.to_string() },
                 });
             }
@@ -201,6 +202,10 @@ pub struct GrowthRules {
     pub groups: Vec<GrowthGroup>,
     /// How many groups are chosen each turn (1 for most spirits, 2 for some).
     pub pick: u8,
+    /// A group every growth takes before the chosen ones (Rampant Green's "Add a
+    /// Presence to Jungle or Wetland"); the engine's `alwaysGrowthGroup`.
+    #[serde(default)]
+    pub always: Option<GrowthGroup>,
 }
 
 /// One element tier of an innate.

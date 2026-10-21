@@ -19,8 +19,17 @@
 //! simulated Fast phase and the recorded state at the first Invader step), and
 //! every Event or Fear choice the player was asked for (which land takes the
 //! damage, the Blight, the Town…) is scored against its alternatives where the
-//! effect can be placed in another land. Not yet: Event and Fear effects of the
-//! next turn, deeper lookahead, Slow targets judged on the post-Invader state.
+//! effect can be placed in another land.
+//!
+//! Third pass (decision-structure spec, section 3): a line commits its Slow cards before
+//! the Explore and takes their lands after the Invader steps (`resolve_slow`); the
+//! informed score adds the measured expectation of the Event and Fear cards
+//! (`Calibration`) instead of leaving them out; the lookahead runs one more expected
+//! turn for the ranked lines (`Deep`); the next-turn weight and the reading bands come
+//! from `si calibrate`; the Invader deck is forecast per land (`deck`). Not yet: the
+//! Event and Fear decks simulated card by card, growth for spirits that pick two groups.
+
+pub mod deck;
 
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -52,7 +61,19 @@ pub struct Values {
     pub card: f64,
     /// An Energy left unspent at the end of the turn.
     pub energy: f64,
+    /// Weight of the next turn's Blight and Dahan (the lookahead with no Spirit action):
+    /// the share of such a threat that materializes once the Spirit plays its next turn,
+    /// measured by `si calibrate`. The turn after counts at its square.
+    #[serde(default = "default_next_weight")]
+    pub next_weight: f64,
     pub source: String,
+    /// The spirit's own adjustments, one sentence each (`SpiritPanel::priorities`).
+    #[serde(default)]
+    pub reasons: Vec<String>,
+}
+
+fn default_next_weight() -> f64 {
+    0.5
 }
 
 impl Values {
@@ -69,7 +90,9 @@ impl Values {
             slot: 0.5,
             card: 0.25,
             energy: 0.1,
-            source: "Blight 1 (the loss clock); Dahan and presence half each; Explorer/Town/City a quarter, half, three quarters; an Invader pushed out a quarter; Fear a quarter (four Fear is a card); a track slot revealed a half (Rei: scaling over cards), a card gained a quarter, an Energy kept a tenth; the next turn's Blight and Dahan at half weight".into(),
+            next_weight: 0.5,
+            source: "Blight 1 (the loss clock); Dahan and presence half each; Explorer/Town/City a quarter, half, three quarters, destroyed for and built against; an Invader pushed out a quarter; Fear a quarter (four Fear is a card); a track slot revealed a half (Rei: scaling over cards), a card gained a quarter, an Energy kept a tenth; the next turn's Blight, Dahan and Builds at the calibrated weight, the turn after at its square".into(),
+            reasons: vec![],
         }
     }
 
@@ -81,13 +104,101 @@ impl Values {
             let pr = p.priorities();
             v.dahan *= pr.dahan;
             v.presence *= pr.presence;
-            for r in pr.reasons {
-                v.source.push_str("; ");
-                v.source.push_str(&r);
-            }
+            v.reasons = pr.reasons;
         }
         v
     }
+}
+
+/// Measured constants the review uses where the rules give none: the expected ledger
+/// value of an Event and of a Fear card, the share of a next-turn threat that
+/// materializes once the Spirit plays its turn, and the spread of a turn's luck the
+/// reading bands are standardized against. `si calibrate` measures them over the corpus
+/// and writes `data/calibration.json`; the built-in values are the last measurement.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Calibration {
+    pub source: String,
+    /// Ledger value of an Event on the turn's actual line (least squares with the Fear cards
+    /// over the whole hidden effect: what the line scored on the cards that came minus what
+    /// it scored on the Explore card alone).
+    pub event_mean: f64,
+    pub event_n: u32,
+    /// Per Terror Level: ledger value of one Fear card, fitted the same way.
+    pub fear_card_mean: [f64; 3],
+    pub fear_card_n: [u32; 3],
+    /// Realized next-turn Blight and Dahan over the threat with no Spirit action.
+    pub next_weight: f64,
+    pub next_n: u32,
+    /// Standard deviation of a turn's luck: the Explore card's spread plus the exogenous residual.
+    pub luck_sd: f64,
+    pub luck_n: u32,
+    /// The simulator's own error on the actual line's Invader phase, in ledger units: RMS of
+    /// the recorded state at the Slow phase minus the simulated one. Confidence is smoothed by it.
+    #[serde(default)]
+    pub model_sd: f64,
+    #[serde(default)]
+    pub model_n: u32,
+}
+
+impl Default for Calibration {
+    fn default() -> Self {
+        // the last `si calibrate` run (data/calibration.json carries the current one)
+        Calibration { source: "built-in: si calibrate 2026-10-21 over 24 games, 149 turns (captures and the Steam folder)".into(), event_mean: 0.895, event_n: 116, fear_card_mean: [0.176, 0.611, 0.283], fear_card_n: [70, 32, 7], next_weight: 0.332, next_n: 98, luck_sd: 1.370, luck_n: 148, model_sd: 1.402, model_n: 131 }
+    }
+}
+
+impl Calibration {
+    /// What the informed score adds for the turn's face-down Event and Fear cards: the
+    /// Event's mean when one resolves (from turn 2) and each resolved Fear card's mean at
+    /// the Terror Level the turn began at. The means are fitted to the whole hidden
+    /// effect on a turn (pieces, Defends, skips, and the next turn's cards in the
+    /// lookahead), so nothing is added for the next turn separately.
+    pub fn expected_exogenous(&self, event: bool, fear_cards: u32, terror: u8) -> f64 {
+        let tl = terror.clamp(1, 3) as usize - 1;
+        (if event { self.event_mean } else { 0.0 }) + self.fear_card_mean[tl] * fear_cards as f64
+    }
+
+    pub fn words(&self) -> String {
+        format!(
+            "Event {:+.2} ({} turns), Fear card TL1 {:+.2} TL2 {:+.2} TL3 {:+.2} ({}/{}/{} turns), next-turn weight {:.2} ({} turns), a turn's luck sd {:.2} ({} turns), simulator error {:.2} ({} turns); {}",
+            self.event_mean, self.event_n, self.fear_card_mean[0], self.fear_card_mean[1], self.fear_card_mean[2], self.fear_card_n[0], self.fear_card_n[1], self.fear_card_n[2], self.next_weight, self.next_n, self.luck_sd, self.luck_n, self.model_sd, self.model_n, self.source
+        )
+    }
+}
+
+/// The standard normal distribution function (Abramowitz and Stegun 7.1.26, error
+/// under 1.5e-7).
+pub fn normal_cdf(x: f64) -> f64 {
+    let z = x / std::f64::consts::SQRT_2;
+    let t = 1.0 / (1.0 + 0.3275911 * z.abs());
+    let poly = t * (0.254829592 + t * (-0.284496736 + t * (1.421413741 + t * (-1.453152027 + t * 1.061405429))));
+    let erf = 1.0 - poly * (-z * z).exp();
+    0.5 * (1.0 + if z >= 0.0 { erf } else { -erf })
+}
+
+/// Raw material one turn contributes to `si calibrate`.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+pub struct Sample {
+    pub event: bool,
+    pub fear_cards: u32,
+    /// Terror Level as the turn began.
+    pub terror: u8,
+    /// Ledger value of the Event and Fear piece effects as the log shows them.
+    pub exogenous: Option<f64>,
+    /// The whole hidden effect on the actual line: its score on the cards that came (best
+    /// Slow targets) minus its score on the real Explore card with the Event and Fear cards
+    /// left out. What `Calibration` fits.
+    pub hidden_effect: Option<f64>,
+    /// The actual line's score under each possible Explore card (informed mode, before the exogenous expectation).
+    pub per_card: Vec<f64>,
+    /// Next turn's Ravage and Build on the recorded position with no Spirit action: Blight, Dahan lost.
+    pub next_threat: Option<(u32, u32)>,
+    /// What the next turn's Invader steps took as recorded: Blight (cascades included), Dahan lost.
+    pub next_actual: Option<(u32, u32)>,
+    /// Ledger value of the recorded state at the Slow phase minus the simulated one for the
+    /// actual line (the simulator's error on this turn's Invader phase).
+    #[serde(default)]
+    pub model_error: Option<f64>,
 }
 
 /// What a line produced over the turn, in raw pieces.
@@ -101,10 +212,32 @@ pub struct Outcome {
     pub cities_destroyed: u32,
     pub invaders_pushed: u32,
     pub fear: u32,
+    /// Presence a Power added to the island (Gift of Proliferation): a growth's worth,
+    /// the presence and the track slot it came off.
+    #[serde(default)]
+    pub presence_added: u32,
+    /// Towns and Cities the turn's Build added (a Build the line stopped is one fewer).
+    #[serde(default)]
+    pub built_towns: u32,
+    #[serde(default)]
+    pub built_cities: u32,
     /// The next turn's Invader steps run on the position this line leaves,
     /// with no further Spirit action: what the position carries forward.
     pub next_blight: u32,
     pub next_dahan_lost: u32,
+    #[serde(default)]
+    pub next_built_towns: u32,
+    #[serde(default)]
+    pub next_built_cities: u32,
+    /// The turn after next: its Ravage on what the next turn leaves, averaged over the
+    /// next turn's possible Explore cards (fractional), counted at the weight squared.
+    #[serde(default)]
+    pub next2_blight: f64,
+    #[serde(default)]
+    pub next2_dahan_lost: f64,
+    /// The Slow plays with the targets chosen after the Invader steps (`resolve_slow`).
+    #[serde(default)]
+    pub slow: Vec<Play>,
     pub notes: Vec<String>,
 }
 
@@ -118,7 +251,10 @@ impl Outcome {
             + self.cities_destroyed as f64 * v.city
             + self.invaders_pushed as f64 * v.explorer
             + self.fear as f64 * v.fear
-            + 0.5 * (self.next_blight as f64 * v.blight + self.next_dahan_lost as f64 * v.dahan)
+            + self.presence_added as f64 * (v.slot - v.presence)
+            - (self.built_towns as f64 * v.town + self.built_cities as f64 * v.city)
+            + v.next_weight * (self.next_blight as f64 * v.blight + self.next_dahan_lost as f64 * v.dahan - self.next_built_towns as f64 * v.town - self.next_built_cities as f64 * v.city)
+            + v.next_weight * v.next_weight * (self.next2_blight * v.blight + self.next2_dahan_lost * v.dahan)
     }
 
     pub fn summary(&self) -> String {
@@ -137,6 +273,9 @@ impl Outcome {
         if self.presence_destroyed > 0 {
             p.push(if long { format!("presence lost {}", self.presence_destroyed) } else { format!("Pr{}", self.presence_destroyed) });
         }
+        if self.presence_added > 0 {
+            p.push(if long { format!("presence added {}", self.presence_added) } else { format!("Pr+{}", self.presence_added) });
+        }
         let k: Vec<String> = [(self.explorers_destroyed, "E"), (self.towns_destroyed, "T"), (self.cities_destroyed, "C")].iter().filter(|(n, _)| *n > 0).map(|(n, k)| format!("{n}{k}")).collect();
         if !k.is_empty() {
             p.push(if long { format!("destroyed {}", k.join(" ")) } else { format!("kill {}", k.join(" ")) });
@@ -147,11 +286,26 @@ impl Outcome {
         if self.fear > 0 {
             p.push(if long { format!("Fear {}", self.fear) } else { format!("Fr{}", self.fear) });
         }
-        if self.next_blight > 0 || self.next_dahan_lost > 0 {
+        let built = |t: u32, c: u32| -> String {
+            let k: Vec<String> = [(t, "T"), (c, "C")].iter().filter(|(n, _)| *n > 0).map(|(n, k)| format!("{n}{k}")).collect();
+            k.join(" ")
+        };
+        if self.built_towns + self.built_cities > 0 {
+            p.push(if long { format!("built {}", built(self.built_towns, self.built_cities)) } else { format!("built {}", built(self.built_towns, self.built_cities)) });
+        }
+        if self.next_blight > 0 || self.next_dahan_lost > 0 || self.next_built_towns + self.next_built_cities > 0 {
+            let b = built(self.next_built_towns, self.next_built_cities);
             p.push(if long {
-                format!("next turn: Blight {}{}", self.next_blight, if self.next_dahan_lost > 0 { format!(", Dahan {}", self.next_dahan_lost) } else { String::new() })
+                format!("next turn: Blight {}{}{}", self.next_blight, if self.next_dahan_lost > 0 { format!(", Dahan {}", self.next_dahan_lost) } else { String::new() }, if b.is_empty() { String::new() } else { format!(", built {b}") })
             } else {
-                format!("| next{}{}", if self.next_blight > 0 { format!(" Bl{}", self.next_blight) } else { String::new() }, if self.next_dahan_lost > 0 { format!(" Dh{}", self.next_dahan_lost) } else { String::new() })
+                format!("| next{}{}{}", if self.next_blight > 0 { format!(" Bl{}", self.next_blight) } else { String::new() }, if self.next_dahan_lost > 0 { format!(" Dh{}", self.next_dahan_lost) } else { String::new() }, if b.is_empty() { String::new() } else { format!(" built {b}") })
+            });
+        }
+        if self.next2_blight > 0.05 || self.next2_dahan_lost > 0.05 {
+            p.push(if long {
+                format!("turn after: Blight {:.1}{}", self.next2_blight, if self.next2_dahan_lost > 0.05 { format!(", Dahan {:.1}", self.next2_dahan_lost) } else { String::new() })
+            } else {
+                format!("| then{}{}", if self.next2_blight > 0.05 { format!(" Bl{:.1}", self.next2_blight) } else { String::new() }, if self.next2_dahan_lost > 0.05 { format!(" Dh{:.1}", self.next2_dahan_lost) } else { String::new() })
             });
         }
         if p.is_empty() { "-".into() } else { p.join(" ") }
@@ -167,6 +321,10 @@ pub struct Play {
     pub fast: bool,
     pub innate: bool,
     pub cost: i64,
+    /// The target is where the Power places presence (Gift of Proliferation): written `GP2@A2`,
+    /// as growth writes a placement, not `>` as a land target.
+    #[serde(default)]
+    pub places: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -194,6 +352,13 @@ pub struct Line {
     /// Share of the possible Explore cards under which this line beats the actual one (None for the actual line, or when the Explore is known).
     #[serde(default)]
     pub confidence: Option<f64>,
+    /// Actual line only: its hindsight score with the Slow targets chosen after the Invader
+    /// steps minus the score with the targets as recorded. A Slow mis-target, not luck.
+    #[serde(default)]
+    pub slow_gap: f64,
+    /// Actual line only: the Slow plays as the simulator would have targeted them.
+    #[serde(default)]
+    pub slow_best: Vec<Play>,
     /// Index of the growth position the line starts from (0 = as played).
     #[serde(default)]
     pub position: usize,
@@ -215,17 +380,32 @@ impl Line {
         if self.plays.is_empty() {
             return "(nothing)".into();
         }
-        let word = |p: &Play| match &p.target {
-            Some(l) => format!("{}>{l}", code(&p.power)),
-            None => code(&p.power),
-        };
-        let cards: Vec<String> = self.plays.iter().filter(|p| !p.innate).map(word).collect();
-        let innates: Vec<String> = self.plays.iter().filter(|p| p.innate).map(word).collect();
-        let mut out = if cards.is_empty() { "no cards".to_string() } else { cards.join(" ") };
+        let mut out = self.cards_notation(code);
+        let innates = self.innates_notation(code);
         if !innates.is_empty() {
-            out.push_str(&format!(" | innate {}", innates.join(" ")));
+            out.push_str(&format!(" | innate {innates}"));
         }
         out
+    }
+
+    fn play_word(p: &Play, code: &dyn Fn(&str) -> String) -> String {
+        match &p.target {
+            Some(l) if p.places => format!("{}@{l}", code(&p.power)),
+            Some(l) => format!("{}>{l}", code(&p.power)),
+            None => code(&p.power),
+        }
+    }
+
+    /// The Power Cards played, each with its target (`EW GP2@A2 RBST>A2`); `(nothing)` when
+    /// no card was played.
+    pub fn cards_notation(&self, code: &dyn Fn(&str) -> String) -> String {
+        let cards: Vec<String> = self.plays.iter().filter(|p| !p.innate).map(|p| Self::play_word(p, code)).collect();
+        if cards.is_empty() { "(nothing)".to_string() } else { cards.join(" ") }
+    }
+
+    /// The innates used, each with its target (`AEG>A2 CTM>A3`); empty when none.
+    pub fn innates_notation(&self, code: &dyn Fn(&str) -> String) -> String {
+        self.plays.iter().filter(|p| p.innate).map(|p| Self::play_word(p, code)).collect::<Vec<_>>().join(" ")
     }
 
     /// The elements and innate tiers in words: `Fire 3 Animal 4 → Epidemics Run Rampant tier 2 of 3`.
@@ -234,7 +414,7 @@ impl Line {
             .tiers
             .iter()
             .map(|(id, reached, of)| {
-                let dots: String = (0..*of).map(|i| if i < *reached { '●' } else { '○' }).collect();
+                let dots = format!("{reached}/{of}");
                 format!("{}{dots}", code(id))
             })
             .collect();
@@ -269,8 +449,6 @@ pub fn element_short(set: &ElementSet) -> String {
 pub const ELEMENT_ORDER: [&str; 8] = ["Sun", "Moon", "Fire", "Air", "Water", "Earth", "Plant", "Animal"];
 
 /// The legend, printed once per report.
-pub const GLYPH_LEGEND: &str = "elements S M F A W E P A = Sun Moon Fire Air Water Earth Plant Animal, with counts  ·  innate tiers ●●○ = tier 2 of 3 reached  ·  produced: Bl Blight, Dh Dahan lost, Pr presence lost, kill 2E 1T Invaders destroyed, push N pushed out, Fr Fear, | next = the next turn's Invader steps";
-
 /// Fill a line's elements and innate tiers from its plays and the position's track.
 fn annotate_elements(line: &mut Line, defs: &Definitions, s2: &SpiritTurn) {
     let played: Vec<&PowerCard> = line.plays.iter().filter(|p| !p.innate).filter_map(|p| defs.cards.get(&p.power)).collect();
@@ -341,6 +519,20 @@ pub struct TurnReview {
     /// Event, Fear and other choices the player was asked for this turn, each against its alternatives.
     #[serde(default)]
     pub choices: Vec<ChoiceReview>,
+    /// Ledger value of the Event and Fear piece effects as the log shows them, and how many lands they changed.
+    #[serde(default)]
+    pub exogenous: Option<(f64, usize)>,
+    /// What the informed score added for the face-down Event and Fear cards.
+    #[serde(default)]
+    pub expected_exogenous: f64,
+    /// What they did to the actual line, all told (see `Sample::hidden_effect`).
+    #[serde(default)]
+    pub hidden_effect: Option<f64>,
+    #[serde(default)]
+    pub sample: Sample,
+    /// The Invader deck from this Fast phase: each land's chance of an Explore over the next turns.
+    #[serde(default)]
+    pub forecast: Vec<deck::TurnForecast>,
 }
 
 /// One recorded choice (an Event's or Fear card's land, a Power's "or"
@@ -378,13 +570,19 @@ pub struct ReviewOptions {
     pub keep_per_position: usize,
     /// Print a line per turn on stderr while working.
     pub progress: bool,
+    /// Color the progress line (stderr is a terminal and color is on).
+    pub progress_color: bool,
     /// Lines (best by hindsight, plus the actual) that get the informed score and are ranked by it.
     pub informed_lines: usize,
+    /// The measured constants; None takes the built-in ones.
+    pub calibration: Option<Calibration>,
+    /// Score the actual line only (no alternatives): what `si calibrate` needs.
+    pub actual_only: bool,
 }
 
 impl Default for ReviewOptions {
     fn default() -> Self {
-        ReviewOptions { growth: true, max_positions: 100, max_lines_per_position: 3000, innate_beam: 40, max_innate_options: 60, keep_per_position: 300, progress: false, informed_lines: 30 }
+        ReviewOptions { growth: true, max_positions: 100, max_lines_per_position: 3000, innate_beam: 40, max_innate_options: 60, keep_per_position: 300, progress: false, progress_color: false, informed_lines: 30, calibration: None, actual_only: false }
     }
 }
 
@@ -393,6 +591,9 @@ pub struct Review {
     pub values: Values,
     pub turns: Vec<TurnReview>,
     pub notes: Vec<String>,
+    #[serde(default)]
+    pub calibration: Calibration,
+    pub deck: deck::Deck,
 }
 
 fn innates_of<'d>(defs: &'d Definitions, spirit: &str) -> Vec<&'d si_model::spirit::Innate> {
@@ -442,6 +643,10 @@ fn invader_phase(island: &mut Island, rec: &GameRecord, t: &TurnRecord, defs: &D
                 out.blight += o.blight + o.cascade;
                 out.dahan_lost += o.dahan_lost;
                 out.presence_destroyed += o.presence_destroyed;
+                if step == si_model::event::InvaderStep::Build {
+                    out.built_towns += o.added.iter().filter(|k| **k == PieceKind::Town).count() as u32;
+                    out.built_cities += o.added.iter().filter(|k| **k == PieceKind::City).count() as u32;
+                }
                 // counterattack kills: cheapest first in the simulator
                 out.explorers_destroyed += o.invaders_destroyed;
                 out.notes.extend(o.notes.into_iter().filter(|n| !n.starts_with("counterattack") && !n.starts_with("cascade")));
@@ -452,7 +657,10 @@ fn invader_phase(island: &mut Island, rec: &GameRecord, t: &TurnRecord, defs: &D
 
 fn apply_plays(island: &mut Island, defs: &Definitions, plays: &[Play], fast: bool, elements: &ElementSet, rules: &Rules, spirit: &str, t: &TurnRecord, armed: &mut Vec<effects::TriggerArmed>, out: &mut Outcome) {
     for p in plays.iter().filter(|p| p.fast == fast) {
-        let Some(target) = &p.target else { continue };
+        // a Spirit-target card with no land acts in the Spirit's lands (an Area over its
+        // presence): anchored on one of them, the Area reaches the rest
+        let anchor: Option<LandId> = p.target.clone().or_else(|| defs.cards.get(&p.power).filter(|c| c.target.is_spirit()).and_then(|_| island.lands.values().find(|l| l.c.presence > 0).map(|l| l.id.clone())));
+        let Some(target) = &anchor else { continue };
         let Some((base, thresholds)) = verify::power_effects(defs, &p.power) else { continue };
         // where the player put this Power's spread pieces and which piece or branch it picked, when the log recorded it
         let ctx = Ctx { health_bonus: rules.invader_health_bonus(), elements: elements.clone(), blight_as_badlands: rules.blight_as_badlands_for(spirit), rules: Some(rules.clone()), placements: verify::placements_of(defs, t, &p.power), picks: verify::picks_of(defs, t, &p.power) };
@@ -503,6 +711,7 @@ fn apply_plays(island: &mut Island, defs: &Definitions, plays: &[Play], fast: bo
 /// (with the Fear a Town or City gives), pieces removed, forced Ravages.
 fn fold_applied(out: &mut Outcome, a: &effects::Applied) {
     out.fear += a.fear;
+    out.presence_added += a.presence_added;
     out.invaders_pushed += a.pushed_pieces.iter().filter(|k| k.is_invader()).count() as u32;
     for r in &a.ravaged {
         out.blight += r.blight + r.cascade;
@@ -538,7 +747,7 @@ fn fold_applied(out: &mut Outcome, a: &effects::Applied) {
 /// `informed_build`: for the informed score, the next turn's Build is this turn's
 /// assumed Explore card, its Explore is unknown (not run) and its Event and Fear
 /// effects are not applied; `None` runs the next turn as it came.
-fn lookahead(island: &mut Island, rec: &GameRecord, next: Option<&TurnRecord>, defs: &Definitions, rules: &Rules, out: &mut Outcome, informed_build: Option<&[String]>) {
+fn lookahead(island: &mut Island, rec: &GameRecord, next: Option<&TurnRecord>, defs: &Definitions, rules: &Rules, out: &mut Outcome, informed_build: Option<&[String]>, deep: Option<&Deep>) {
     let Some(n) = next else { return };
     let mut probe = Outcome::default();
     match informed_build {
@@ -552,6 +761,40 @@ fn lookahead(island: &mut Island, rec: &GameRecord, next: Option<&TurnRecord>, d
     }
     out.next_blight = probe.blight;
     out.next_dahan_lost = probe.dahan_lost;
+    out.next_built_towns = probe.built_towns;
+    out.next_built_cities = probe.built_cities;
+    // one turn deeper: the turn after next's Ravage (its card is this turn's Explore) on
+    // what the next turn leaves, averaged over the next turn's possible Explore cards
+    let Some(d) = deep else { return };
+    if d.ravage.is_empty() {
+        return;
+    }
+    let after = TurnRecord { turn: n.turn + 1, ravage: d.ravage.clone(), high_immigration: d.high_immigration.clone(), ..Default::default() };
+    let run = |isl: &mut Island| -> (u32, u32) {
+        let mut p = Outcome::default();
+        invader_phase(isl, rec, &after, defs, rules, &mut p, Some(&[]), false);
+        (p.blight, p.dahan_lost)
+    };
+    if d.pool.is_empty() {
+        let mut isl = island.clone();
+        let (b, dh) = run(&mut isl);
+        out.next2_blight = b as f64;
+        out.next2_dahan_lost = dh as f64;
+    } else {
+        let (mut b, mut dh) = (0.0, 0.0);
+        for card in &d.pool {
+            let mut isl = island.clone();
+            let explore = TurnRecord { turn: n.turn, explore: vec![card.clone()], ..Default::default() };
+            let mut p = Outcome::default();
+            invader_phase(&mut isl, rec, &explore, defs, rules, &mut p, None, false);
+            let (b1, d1) = run(&mut isl);
+            b += b1 as f64;
+            dh += d1 as f64;
+        }
+        let k = d.pool.len() as f64;
+        out.next2_blight = b / k;
+        out.next2_dahan_lost = dh / k;
+    }
 }
 
 /// The Explore cards that could have come this turn, as far as was knowable: every
@@ -580,9 +823,16 @@ pub fn explore_candidates(rec: &GameRecord, defs: &Definitions, t: &TurnRecord) 
 /// Energy the spirit could spend this turn: last turn's bank plus this
 /// turn's income and the growth's printed Energy. The log's own gained and
 /// paid amounts are an upper bound (a bare log re-logs them after an undo).
+/// The Energy the chosen growth groups yield (by group number), with the always-group's.
+fn growth_energy_of(panel: &si_model::spirit::SpiritPanel, groups: &[u8]) -> i64 {
+    let chosen: i64 = groups.iter().filter_map(|n| panel.growth.groups.iter().find(|g| g.number == *n)).map(|g| g.yield_().energy).sum();
+    let always: i64 = if groups.is_empty() { 0 } else { panel.growth.always.as_ref().map(|a| a.yield_().energy).unwrap_or(0) };
+    chosen + always
+}
+
 fn energy_available(rec: &GameRecord, defs: &Definitions, s: &SpiritTurn, prev_after: i64) -> i64 {
     let _ = rec;
-    let growth_energy: i64 = defs.spirits.get(&s.spirit).map(|p| s.growth_groups.iter().filter_map(|g| (*g as usize).checked_sub(1).and_then(|i| p.growth.groups.get(i))).map(|g| g.yield_().energy).sum()).unwrap_or(0);
+    let growth_energy: i64 = defs.spirits.get(&s.spirit).map(|p| growth_energy_of(p, &s.growth_groups)).unwrap_or(0);
     let from_track = prev_after + s.income.unwrap_or(0) + growth_energy;
     let from_log = s.energy_after + s.energy_paid;
     from_track.min(from_log).max(s.energy_after)
@@ -596,16 +846,96 @@ fn elements_for(defs: &Definitions, s: &SpiritTurn, played: &[&PowerCard]) -> El
     set
 }
 
-/// Lands a card may target this turn: in range of the spirit's presence and
-/// allowed by the card's target rule, as the land stood at the Fast phase.
-fn targets_for(card: &PowerCard, s: &SpiritTurn, before: &BTreeMap<LandId, Counts>, graph: &si_model::island::Island) -> Vec<LandId> {
+/// A card whose effect places presence (Gift of Proliferation, boons of growth).
+fn adds_presence(c: &PowerCard) -> bool {
+    c.all_effects().any(|e| matches!(e, Effect::AddPresence { .. }))
+}
+
+/// A Spirit-target card whose effect lands in one of the target Spirit's lands (Fiery
+/// Vengeance: "1 Fear and 1 Damage in one of target Spirit's lands"): the player picks
+/// the land, so the line names it (`FV>C5`). Not a card whose effects are all on the
+/// Spirit's economy, nor one that acts in every presence land at once (an Area).
+fn acts_in_one_land(c: &PowerCard) -> bool {
+    if !c.target.is_spirit() || adds_presence(c) {
+        return false;
+    }
+    let land_effect = |e: &Effect| {
+        matches!(
+            e,
+            Effect::Damage { .. }
+                | Effect::Defend(_)
+                | Effect::Push { .. }
+                | Effect::Gather { .. }
+                | Effect::FearIfInvaders(_)
+                | Effect::RemoveBlight(_)
+                | Effect::AddBlight(_)
+                | Effect::AddDahan(_)
+                | Effect::AddToken { .. }
+                | Effect::RemoveToken { .. }
+                | Effect::Remove { .. }
+                | Effect::Destroy { .. }
+                | Effect::Replace { .. }
+                | Effect::Downgrade(_)
+                | Effect::Isolate
+                | Effect::SkipRavage
+                | Effect::SkipBuild
+                | Effect::SkipExplore
+                | Effect::SkipAll
+                | Effect::NoCascade
+                | Effect::NoBlight
+                | Effect::Ravage
+                | Effect::Build
+                | Effect::Infighting(_)
+                | Effect::Duel { .. }
+                | Effect::DahanHealth(_)
+                | Effect::DahanImmune
+                | Effect::InvaderDamageMinus(_)
+                | Effect::Move { .. }
+                | Effect::Per { .. }
+                | Effect::Conditional { .. }
+                | Effect::Choice(_)
+        )
+    };
+    c.all_effects().any(land_effect)
+}
+
+/// The lands a Spirit-target card may act in: where the Spirit has presence.
+fn presence_lands(presence: &BTreeMap<LandId, u32>) -> Vec<LandId> {
+    presence.iter().filter(|(_, n)| **n > 0).map(|(l, _)| l.clone()).collect()
+}
+
+/// How far from the spirit's presence the card's presence may go (its own text, else Range 1).
+fn presence_range(c: &PowerCard) -> u32 {
+    c.all_effects()
+        .find_map(|e| match e {
+            Effect::AddPresence { range: Some(r), .. } => Some(*r as u32),
+            _ => None,
+        })
+        .unwrap_or(1)
+}
+
+/// Lands within `range` of any presence (not Ocean): where a placed presence may go.
+fn presence_add_targets(presence: &BTreeMap<LandId, u32>, range: u32, graph: &si_model::island::Island) -> Vec<LandId> {
+    graph
+        .lands
+        .iter()
+        .filter(|(_, l)| l.terrain != si_model::island::Terrain::Ocean)
+        .filter(|(id, _)| presence.iter().any(|(from, n)| *n > 0 && graph.distance(from, id, false).is_some_and(|d| d <= range)))
+        .map(|(id, _)| id.clone())
+        .collect()
+}
+
+/// Lands a card may target this turn from the given presence: in range (from a Sacred
+/// Site where the card says so) and allowed by the card's target rule, as the land
+/// stood at the Fast phase.
+fn targets_from(card: &PowerCard, presence: &BTreeMap<LandId, u32>, before: &BTreeMap<LandId, Counts>, graph: &si_model::island::Island) -> Vec<LandId> {
     let mut out = Vec::new();
     for (id, land) in &graph.lands {
         if land.terrain == si_model::island::Terrain::Ocean {
             continue;
         }
         let st = before.get(id).copied().unwrap_or_default();
-        if si_metrics::reach::range_ok(card, &s.presence_after, id, graph) != Some(true) {
+        if si_metrics::reach::range_ok(card, presence, id, graph) != Some(true) {
             continue;
         }
         if !si_metrics::reach::target_ok(&card.target, &st, Some(land.terrain), Some(land.coastal)) {
@@ -616,43 +946,60 @@ fn targets_for(card: &PowerCard, s: &SpiritTurn, before: &BTreeMap<LandId, Count
     out
 }
 
+/// Lands a card may target this turn from the spirit's presence as recorded.
+fn targets_for(card: &PowerCard, s: &SpiritTurn, before: &BTreeMap<LandId, Counts>, graph: &si_model::island::Island) -> Vec<LandId> {
+    targets_from(card, &s.presence_after, before, graph)
+}
+
 fn innate_targets(innate: &si_model::spirit::Innate, s: &SpiritTurn, before: &BTreeMap<LandId, Counts>, graph: &si_model::island::Island) -> Vec<LandId> {
     let pseudo = PowerCard { id: innate.id.clone(), title: innate.title.clone(), kind: si_model::power::PowerKind::Unique, cost: 0, speed: innate.speed, range: innate.range.clone(), target: innate.target.clone(), elements: ElementSet::new(), body: vec![], thresholds: vec![], effects: vec![], expansion: String::new() };
     targets_for(&pseudo, s, before, graph)
 }
 
-/// Every set of up to `plays` cards from the hand within the Energy, each
-/// Fast card with each legal target; Slow cards are played for their
-/// elements only. Capped so a wide hand does not explode.
+/// One card's ways to be played from the given presence: a land-targeting card at each
+/// legal target; a Spirit-target card that places presence at each land the presence may
+/// go; any other Spirit-target card once, with no land (it acts on the Spirit, or in all
+/// the Spirit's lands as an Area).
+fn play_options(c: &PowerCard, presence: &BTreeMap<LandId, u32>, before: &BTreeMap<LandId, Counts>, graph: &si_model::island::Island) -> Vec<Play> {
+    let fast = c.speed == Speed::Fast;
+    let one = |target: Option<LandId>, places: bool| Play { power: c.id.clone(), target, fast, innate: false, cost: c.cost, places };
+    if (c.range.is_some() || acts_in_one_land(c)) && !fast {
+        // a Slow card commits now and takes its land after the Invader steps (`resolve_slow`)
+        vec![one(None, false)]
+    } else if c.range.is_some() {
+        let mut v: Vec<Play> = targets_from(c, presence, before, graph).into_iter().map(|t| one(Some(t), false)).collect();
+        if v.is_empty() {
+            v.push(one(None, false));
+        }
+        v
+    } else if acts_in_one_land(c) {
+        // the Spirit picks one of its lands: each is a way to play the card
+        let mut v: Vec<Play> = presence_lands(presence).into_iter().map(|t| one(Some(t), false)).collect();
+        if v.is_empty() {
+            v.push(one(None, false));
+        }
+        v
+    } else if c.target.is_spirit() && adds_presence(c) {
+        let mut v: Vec<Play> = presence_add_targets(presence, presence_range(c), graph).into_iter().map(|t| one(Some(t), true)).collect();
+        if v.is_empty() {
+            v.push(one(None, false));
+        }
+        v
+    } else {
+        vec![one(None, false)]
+    }
+}
+
+/// Every set of up to `plays` cards from the hand within the Energy, each card with each
+/// of its ways to be played. A card that places presence goes first, and the presence it
+/// adds counts for the cards after it (a Sacred Site made in the Fast phase is in range
+/// for the rest of the turn; targets are chosen when a Power resolves). Capped so a wide
+/// hand does not explode.
 fn candidate_plays(hand: &[&PowerCard], plays: usize, energy: i64, s: &SpiritTurn, before: &BTreeMap<LandId, Counts>, graph: &si_model::island::Island) -> Vec<Vec<Play>> {
-    let per_card: Vec<Vec<Play>> = hand
-        .iter()
-        .map(|c| {
-            let fast = c.speed == Speed::Fast;
-            if c.range.is_some() {
-                // land-targeting card, Fast or Slow: every legal target (Slow targets are judged on the Fast-phase state; close enough for one turn)
-                let mut v: Vec<Play> = targets_for(c, s, before, graph).into_iter().map(|t| Play { power: c.id.clone(), target: Some(t), fast, innate: false, cost: c.cost }).collect();
-                if v.is_empty() {
-                    v.push(Play { power: c.id.clone(), target: None, fast, innate: false, cost: c.cost });
-                }
-                v
-            } else if c.target.is_spirit() {
-                // own lands: scored where the spirit has presence
-                let mut v: Vec<Play> = s.presence_after.keys().map(|l| Play { power: c.id.clone(), target: Some(l.clone()), fast, innate: false, cost: c.cost }).collect();
-                if v.is_empty() {
-                    v.push(Play { power: c.id.clone(), target: None, fast, innate: false, cost: c.cost });
-                }
-                v
-            } else {
-                vec![Play { power: c.id.clone(), target: None, fast, innate: false, cost: c.cost }]
-            }
-        })
-        .collect();
     let mut out: Vec<Vec<Play>> = vec![vec![]];
-    // choose subsets of cards (by index) of size <= plays, then one option per chosen card
-    let n = hand.len();
-    for mask in 0u32..(1u32 << n.min(12)) {
-        let idx: Vec<usize> = (0..n.min(12)).filter(|i| mask & (1 << i) != 0).collect();
+    let n = hand.len().min(12);
+    for mask in 0u32..(1u32 << n) {
+        let mut idx: Vec<usize> = (0..n).filter(|i| mask & (1 << i) != 0).collect();
         if idx.is_empty() || idx.len() > plays {
             continue;
         }
@@ -660,14 +1007,22 @@ fn candidate_plays(hand: &[&PowerCard], plays: usize, energy: i64, s: &SpiritTur
         if cost > energy {
             continue;
         }
-        let mut combos: Vec<Vec<Play>> = vec![vec![]];
+        idx.sort_by_key(|i| !adds_presence(hand[*i]));
+        let mut combos: Vec<(Vec<Play>, BTreeMap<LandId, u32>)> = vec![(vec![], s.presence_after.clone())];
         for i in &idx {
+            let c = hand[*i];
             let mut next = Vec::new();
-            for c in &combos {
-                for opt in &per_card[*i] {
-                    let mut c2 = c.clone();
-                    c2.push(opt.clone());
-                    next.push(c2);
+            for (so_far, presence) in &combos {
+                for opt in play_options(c, presence, before, graph) {
+                    let mut presence2 = presence.clone();
+                    if opt.places {
+                        if let Some(t) = &opt.target {
+                            *presence2.entry(t.clone()).or_insert(0) += 1;
+                        }
+                    }
+                    let mut c2 = so_far.clone();
+                    c2.push(opt);
+                    next.push((c2, presence2));
                 }
             }
             combos = next;
@@ -675,9 +1030,93 @@ fn candidate_plays(hand: &[&PowerCard], plays: usize, energy: i64, s: &SpiritTur
                 combos.truncate(3000);
             }
         }
-        out.extend(combos);
+        out.extend(combos.into_iter().map(|(p, _)| p));
     }
     out
+}
+
+/// Choose the targets of the Slow plays on the island the Invader steps left: each Slow
+/// card or innate in turn takes the legal target that scores best (with the lookahead)
+/// given the Slow plays already placed. A play that carries a target keeps it unless
+/// `rechoose` (the informed score, where the recorded target was chosen for another
+/// Explore card). A Spirit-target card keeps its anchor; a play with no legal target is
+/// left untargeted and skipped.
+fn resolve_slow(island: &Island, defs: &Definitions, plays: &[Play], rechoose: bool, s: &SpiritTurn, graph: &si_model::island::Island, innates: &[&si_model::spirit::Innate], eval: &dyn Fn(&[Play]) -> f64) -> Vec<Play> {
+    let presence: BTreeMap<LandId, u32> = island.lands.iter().filter(|(_, l)| l.c.presence > 0).map(|(id, l)| (id.clone(), l.c.presence)).collect();
+    let counts: BTreeMap<LandId, Counts> = island.lands.iter().map(|(id, l)| (id.clone(), l.c)).collect();
+    let mut now = s.clone();
+    now.presence_after = presence.clone();
+    let mut decided: Vec<Play> = Vec::new();
+    for p in plays.iter().filter(|p| !p.fast) {
+        let targets: Option<Vec<LandId>> = if p.innate {
+            innates.iter().find(|i| i.id == p.power).map(|i| innate_targets(i, &now, &counts, graph))
+        } else {
+            defs.cards.get(&p.power).and_then(|c| if c.range.is_some() { Some(targets_from(c, &presence, &counts, graph)) } else if acts_in_one_land(c) { Some(presence_lands(&presence)) } else { None })
+        };
+        let Some(targets) = targets else {
+            decided.push(p.clone());
+            continue;
+        };
+        if p.target.is_some() && !rechoose {
+            decided.push(p.clone());
+            continue;
+        }
+        let mut best: Option<(f64, LandId)> = None;
+        for tg in targets {
+            let mut trial = decided.clone();
+            trial.push(Play { target: Some(tg.clone()), ..p.clone() });
+            let v = eval(&trial);
+            if best.as_ref().is_none_or(|(b, _)| v > *b) {
+                best = Some((v, tg));
+            }
+        }
+        decided.push(Play { target: best.map(|(_, l)| l), ..p.clone() });
+    }
+    decided
+}
+
+/// The line's plays with the Slow targets the simulation chose under the Explore card
+/// that came (Fast plays as given, then the resolved Slow plays).
+fn with_slow(plays: &[Play], out: &Outcome) -> Vec<Play> {
+    if out.slow.is_empty() {
+        return plays.to_vec();
+    }
+    plays.iter().filter(|p| p.fast).cloned().chain(out.slow.iter().cloned()).collect()
+}
+
+/// The turn after next, for the deeper lookahead: its Ravage card (this turn's Explore,
+/// the card that came or the one assumed), England's extra Build when recorded, and
+/// the next turn's possible Explore cards (empty when the next turn ran as recorded,
+/// its Explore included).
+pub struct Deep {
+    pub ravage: Vec<String>,
+    pub high_immigration: Vec<String>,
+    pub pool: Vec<String>,
+}
+
+fn deep_for(rec: &GameRecord, defs: &Definitions, deck: &deck::Deck, t: &TurnRecord, assumed: &[String], informed: bool) -> Option<Deep> {
+    rec.turns.iter().find(|n| n.turn == t.turn + 1)?;
+    if informed {
+        // the next turn's Explore is face down: average over its stage's remaining cards
+        // (this turn's assumed card cannot come twice); the turn after's Ravage is this
+        // turn's assumed Explore
+        let mut pool = deck::pool(rec, defs, deck, t, t.turn + 1).map(|(_, c)| c).unwrap_or_default();
+        pool.retain(|c| !assumed.contains(c));
+        Some(Deep { ravage: assumed.to_vec(), high_immigration: vec![], pool })
+    } else {
+        // the next turn ran as recorded; the turn after as recorded when the record has
+        // it, else from this turn's Explore card
+        let after = rec.turns.iter().find(|n| n.turn == t.turn + 2);
+        let ravage = after.map(|a| a.ravage.clone()).filter(|r| !r.is_empty()).unwrap_or_else(|| assumed.to_vec());
+        let high_immigration = after.map(|a| a.high_immigration.clone()).unwrap_or_default();
+        Some(Deep { ravage, high_immigration, pool: vec![] })
+    }
+}
+
+/// The Slow plays with their lands cleared, for the simulator to choose (presence
+/// placements keep theirs).
+fn clear_slow_targets(v: &[Play]) -> Vec<Play> {
+    v.iter().map(|p| if p.fast || p.places { p.clone() } else { Play { target: None, ..p.clone() } }).collect()
 }
 
 /// Review every turn of the game with the default options.
@@ -688,19 +1127,22 @@ pub fn review(rec: &GameRecord, defs: &Definitions) -> Review {
 /// Review every turn of the game.
 pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -> Review {
     let spirit = rec.meta.spirits.first().cloned().unwrap_or_default();
-    let values = Values::for_panel(defs.spirits.get(&spirit));
-    let mut notes = Vec::new();
+    let cal = opts.calibration.clone().unwrap_or_default();
+    let mut values = Values::for_panel(defs.spirits.get(&spirit));
+    values.next_weight = cal.next_weight;
+    let mut notes: Vec<String> = Vec::new();
     if rec.meta.spirits.len() > 1 {
         notes.push("more than one spirit: only the first spirit's growth and plays are reviewed in this version".into());
     }
     let level = rec.meta.adversary_level.or_else(|| si_metrics::adversary::estimate(rec, defs).and_then(|e| e.candidates.first().copied())).unwrap_or(0);
     let rules = Rules { adversary: rec.meta.adversary.clone(), level, spirits: rec.meta.spirits.clone(), hooks: Rules::hooks_of(defs, &rec.meta.spirits), ..Default::default() };
     let graph = si_metrics::reach::island_for(rec, defs);
+    let deck = deck::Deck::for_game(rec, defs, level);
     let pick = defs.spirits.get(&spirit).map(|p| p.growth.pick).unwrap_or(1);
-    if opts.growth && pick > 1 {
+    if opts.growth && pick > 1 && !opts.actual_only {
         notes.push(format!("{spirit} picks {pick} growth groups a turn: growth alternatives are not enumerated for it yet; the growth is taken as played"));
     }
-    let enumerate_growth = opts.growth && pick <= 1;
+    let enumerate_growth = opts.growth && pick <= 1 && !opts.actual_only;
     let all_innates = innates_of(defs, &spirit);
     let mut turns = Vec::new();
     for t in rec.turns.iter().filter(|t| t.turn >= 1 && !t.before_fast.is_empty()) {
@@ -709,6 +1151,13 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
         let next_turn = rec.turns.iter().find(|n| n.turn == t.turn + 1);
         // positions: the growth actually taken first, then every growth the panel allowed
         let actual_pos = actual_position(rec, defs, s, t);
+        // the spirit turn as the plays saw it: presence after the growth, before any Power placed more
+        let s_growth: SpiritTurn = {
+            let mut x = s.clone();
+            x.presence_after = actual_pos.presence.clone();
+            x
+        };
+        let s = &s_growth;
         let mut positions: Vec<Position> = vec![actual_pos.clone()];
         if enumerate_growth {
             // round-robin over the growth groups, so a cap does not starve the later groups
@@ -730,8 +1179,13 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             positions.truncate(opts.max_positions.max(1));
         }
         let started = std::time::Instant::now();
+        // one bar per turn, 40 cells, filled as growth positions complete (any thread)
+        const BAR: usize = 40;
+        let done = std::sync::atomic::AtomicUsize::new(0);
+        let total = positions.len().max(1);
+        let (bold, cyan, dim, reset) = if opts.progress_color { ("\x1b[1m", "\x1b[36m", "\x1b[2m", "\x1b[0m") } else { ("", "", "", "") };
         if opts.progress {
-            eprint!("  T{} {} growth position(s) [", t.turn, positions.len());
+            eprint!("  {bold}T{:<2}{reset} {dim}[{reset}{cyan}", t.turn);
         }
         // the actual line, as recorded (targets included)
         let actual_plays: Vec<Play> = s
@@ -742,6 +1196,10 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
                 let fast = card.is_some_and(|c| c.speed == Speed::Fast);
                 let mut target = s.powers_used.iter().find(|(p, pw, _)| (*p == Phase::FastPower || *p == Phase::SlowPower) && pw == c).and_then(|(_, _, t)| t.clone());
                 if target.is_none() {
+                    // a Spirit-target card that placed presence: where it went
+                    target = s.presence_by_power.iter().find(|(pw, _, _)| pw == c).and_then(|(_, _, l)| l.clone());
+                }
+                if target.is_none() {
                     // a Spirit-target card (Fiery Vengeance) names its land only in the damage it dealt
                     target = rec.lands.values().find(|l| l.touches.iter().any(|x| x.turn == t.turn && x.by == *c)).map(|l| l.land.clone());
                 }
@@ -751,10 +1209,10 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
                     let placed = verify::placements_of(defs, t, c);
                     target = placed.iter().find(|(r, _)| !r.starts_with("Adding")).or(placed.first()).map(|(_, l)| l.clone());
                 }
-                Play { power: c.clone(), target, fast, innate: false, cost: card.map(|c| c.cost).unwrap_or(0) }
+                Play { power: c.clone(), target, fast, innate: false, cost: card.map(|c| c.cost).unwrap_or(0), places: card.is_some_and(adds_presence) }
             })
             .collect();
-        let actual_innates: Vec<Play> = s.powers_used.iter().filter(|(p, pw, _)| (*p == Phase::FastPower || *p == Phase::SlowPower) && all_innates.iter().any(|i| i.id == *pw)).map(|(p, pw, t)| Play { power: pw.clone(), target: t.clone(), fast: *p == Phase::FastPower, innate: true, cost: 0 }).collect();
+        let actual_innates: Vec<Play> = s.powers_used.iter().filter(|(p, pw, _)| (*p == Phase::FastPower || *p == Phase::SlowPower) && all_innates.iter().any(|i| i.id == *pw)).map(|(p, pw, t)| Play { power: pw.clone(), target: t.clone(), fast: *p == Phase::FastPower, innate: true, cost: 0, places: false }).collect();
         // Event and Fear choices whose effect the simulator can place in another land
         let scorable: Vec<(usize, LandId, ChoiceEffect)> = t
             .choices
@@ -771,7 +1229,8 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
         // the rest of the Event and Fear effects: what the log shows at the first Invader step
         // beyond what the actual Fast plays and the choices above account for
         let actual_readable = actual_plays.iter().all(|p| defs.cards.get(&p.power).is_none_or(|c| c.fully_parsed()));
-        let residual: Option<Delta> = if actual_readable && !t.before_invaders.is_empty() {
+        // `exogenous`: the whole Event and Fear piece effect (choices included) in ledger value
+        let (residual, exogenous): (Option<Delta>, Option<(f64, usize)>) = if actual_readable && !t.before_invaders.is_empty() {
             let mut island = verify::island_for(rec, defs, &t.before_fast);
             let mut rules_t = rules.clone();
             let played: Vec<&PowerCard> = actual_plays.iter().filter_map(|p| defs.cards.get(&p.power)).collect();
@@ -781,17 +1240,48 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             all.extend(actual_innates.iter().cloned());
             let mut armed = Vec::new();
             apply_plays(&mut island, defs, &all, true, &elements, &rules, &spirit, t, &mut armed, &mut probe);
+            let full = delta_between(&island, &t.before_invaders);
             for (_, land, e) in &scorable {
                 apply_choice_effect(&mut island, &mut rules_t, land, e, &ctx_exo, &mut probe);
             }
-            Some(delta_between(&island, &t.before_invaders))
+            (Some(delta_between(&island, &t.before_invaders)), Some((delta_value(&full, &values), full.0.len())))
         } else {
-            None
+            (None, None)
+        };
+        // the simulator's error on this turn's Invader phase: the actual Fast plays, the Event
+        // and Fear effects from the log and the real Invader steps, against the recorded state
+        // at the Slow phase (calibration material for the confidence smoothing)
+        let model_error: Option<f64> = match &residual {
+            Some(d) if !t.before_slow.is_empty() => {
+                let mut island = verify::island_for(rec, defs, &t.before_fast);
+                for (id, l) in island.lands.iter_mut() {
+                    l.c.presence = s.presence_after.get(id).copied().unwrap_or(0);
+                }
+                let mut rules_t = rules.clone();
+                let played: Vec<&PowerCard> = actual_plays.iter().filter_map(|p| defs.cards.get(&p.power)).collect();
+                let elements = elements_for(defs, s, &played);
+                let mut probe = Outcome::default();
+                let mut all: Vec<Play> = actual_plays.clone();
+                all.extend(actual_innates.iter().cloned());
+                let mut armed = Vec::new();
+                apply_plays(&mut island, defs, &all, true, &elements, &rules, &spirit, t, &mut armed, &mut probe);
+                for (_, land, e) in &scorable {
+                    apply_choice_effect(&mut island, &mut rules_t, land, e, &ctx_exo, &mut probe);
+                }
+                apply_delta(&mut island, d);
+                invader_phase(&mut island, rec, t, defs, &rules_t, &mut probe, None, true);
+                Some(delta_value(&delta_between(&island, &t.before_slow), &values))
+            }
+            _ => None,
         };
         // `informed`: score on what was knowable — the given Explore card (or the one that
         // came), no Event or Fear effects, cards only hindsight knows (`drop`) not played
-        let simulate = |plays: &[Play], innate_plays: &[Play], s2: &SpiritTurn, moved: Option<(usize, &LandId)>, explore: Option<&[String]>, informed: bool, drop: &[String]| -> Outcome {
+        let simulate = |plays: &[Play], innate_plays: &[Play], s2: &SpiritTurn, moved: Option<(usize, &LandId)>, explore: Option<&[String]>, informed: bool, drop: &[String], deep: bool| -> Outcome {
             let mut island = verify::island_for(rec, defs, &t.before_fast);
+            // the position's presence: its growth, before any Power placed more
+            for (id, l) in island.lands.iter_mut() {
+                l.c.presence = s2.presence_after.get(id).copied().unwrap_or(0);
+            }
             let mut rules_t = rules.clone();
             let kept: Vec<Play> = plays.iter().filter(|p| !(informed && drop.contains(&p.power))).cloned().collect();
             let played: Vec<&PowerCard> = kept.iter().filter_map(|p| defs.cards.get(&p.power)).collect();
@@ -815,9 +1305,28 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             }
             invader_phase(&mut island, rec, t, defs, &rules_t, &mut out, explore, !informed);
             if !ended_before_slow {
-                apply_plays(&mut island, defs, &all, false, &elements, &rules_t, &spirit, t, &mut armed, &mut out);
                 let assumed: Vec<String> = explore.map(|e| e.to_vec()).unwrap_or_else(|| t.explore.clone());
-                lookahead(&mut island, rec, next_turn, defs, &rules_t, &mut out, if informed { Some(&assumed) } else { None });
+                let informed_la: Option<&[String]> = if informed { Some(&assumed) } else { None };
+                // the Slow targets, chosen on the island the Invader steps left: a line commits its
+                // Slow cards before the Explore and its lands after, as the player does. The
+                // informed score re-chooses them under each Explore card (`informed`).
+                let slow = {
+                    let eval = |slow: &[Play]| -> f64 {
+                        let mut isl = island.clone();
+                        let mut o = out.clone();
+                        let mut armed2 = armed.clone();
+                        apply_plays(&mut isl, defs, slow, false, &elements, &rules_t, &spirit, t, &mut armed2, &mut o);
+                        lookahead(&mut isl, rec, next_turn, defs, &rules_t, &mut o, informed_la, None);
+                        o.score(&values)
+                    };
+                    resolve_slow(&island, defs, &all, informed, s2, &graph, &all_innates, &eval)
+                };
+                all.retain(|p| p.fast);
+                all.extend(slow.iter().cloned());
+                apply_plays(&mut island, defs, &all, false, &elements, &rules_t, &spirit, t, &mut armed, &mut out);
+                let deep_ctx = if deep { deep_for(rec, defs, &deck, t, &assumed, informed) } else { None };
+                lookahead(&mut island, rec, next_turn, defs, &rules_t, &mut out, informed_la, deep_ctx.as_ref());
+                out.slow = slow;
             }
             out
         };
@@ -831,13 +1340,21 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
                 if !reached {
                     continue;
                 }
-                let targets = innate_targets(inn, s2, &t.before_fast, &graph);
+                let slow = inn.speed != Speed::Fast;
+                let targets = if slow { vec![] } else { innate_targets(inn, s2, &t.before_fast, &graph) };
                 let mut next = Vec::new();
                 for o in &options {
                     next.push(o.clone());
+                    if slow {
+                        // a Slow innate commits now and takes its land after the Invader steps
+                        let mut o2 = o.clone();
+                        o2.push(Play { power: inn.id.clone(), target: None, fast: false, innate: true, cost: 0, places: false });
+                        next.push(o2);
+                        continue;
+                    }
                     for tg in &targets {
                         let mut o2 = o.clone();
-                        o2.push(Play { power: inn.id.clone(), target: Some(tg.clone()), fast: inn.speed == Speed::Fast, innate: true, cost: 0 });
+                        o2.push(Play { power: inn.id.clone(), target: Some(tg.clone()), fast: inn.speed == Speed::Fast, innate: true, cost: 0, places: false });
                         next.push(o2);
                     }
                 }
@@ -864,7 +1381,7 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             let mut first: Vec<(f64, Vec<Play>, Outcome, f64)> = candidates
                 .into_iter()
                 .map(|cand| {
-                    let out = simulate(&cand, &[], &s2, None, None, false, &[]);
+                    let out = simulate(&cand, &[], &s2, None, None, false, &[], false);
                     let cost: i64 = cand.iter().map(|p| p.cost).sum();
                     let gv = growth_value(pos, cost);
                     (out.score(&values) + gv, cand, out, gv)
@@ -878,17 +1395,18 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
                     options.truncate(opts.max_innate_options.max(1));
                     for inn in options {
                         if inn.is_empty() {
-                            lines.push(Line { growth: pos.growth.clone(), growth_actual: pi == 0, growth_value: gv, ties: 0, informed: score0, luck: 0.0, confidence: None, position: pi, elements: String::new(), tiers: vec![], plays: cand.clone(), outcome: out0.clone(), score: score0, actual: false });
+                            lines.push(Line { growth: pos.growth.clone(), growth_actual: pi == 0, growth_value: gv, ties: 0, informed: score0, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: pi, elements: String::new(), tiers: vec![], plays: with_slow(&cand, &out0), outcome: out0.clone(), score: score0, actual: false });
                             continue;
                         }
-                        let out = simulate(&cand, &inn, &s2, None, None, false, &[]);
+                        let out = simulate(&cand, &inn, &s2, None, None, false, &[], false);
                         let score = out.score(&values) + gv;
                         let mut plays = cand.clone();
                         plays.extend(inn);
-                        lines.push(Line { growth: pos.growth.clone(), growth_actual: pi == 0, growth_value: gv, ties: 0, informed: score, luck: 0.0, confidence: None, position: pi, elements: String::new(), tiers: vec![], plays, outcome: out, score, actual: false });
+                        let plays = with_slow(&plays, &out);
+                        lines.push(Line { growth: pos.growth.clone(), growth_actual: pi == 0, growth_value: gv, ties: 0, informed: score, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: pi, elements: String::new(), tiers: vec![], plays, outcome: out, score, actual: false });
                     }
                 } else {
-                    lines.push(Line { growth: pos.growth.clone(), growth_actual: pi == 0, growth_value: gv, ties: 0, informed: score0, luck: 0.0, confidence: None, position: pi, elements: String::new(), tiers: vec![], plays: cand, outcome: out0, score: score0, actual: false });
+                    lines.push(Line { growth: pos.growth.clone(), growth_actual: pi == 0, growth_value: gv, ties: 0, informed: score0, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: pi, elements: String::new(), tiers: vec![], plays: with_slow(&cand, &out0), outcome: out0, score: score0, actual: false });
                 }
             }
             lines.sort_by(|a, b| b.score.partial_cmp(&a.score).unwrap());
@@ -897,12 +1415,19 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
                 annotate_elements(l, defs, &s2);
             }
             if opts.progress {
-                eprint!(".");
+                let d = done.fetch_add(1, std::sync::atomic::Ordering::SeqCst) + 1;
+                let before = (d - 1) * BAR / total;
+                let after = (d * BAR / total).min(BAR);
+                if after > before {
+                    eprint!("{}", "#".repeat(after - before));
+                }
             }
             (tried, lines)
         };
         let threads = std::thread::available_parallelism().map(|n| n.get()).unwrap_or(1).clamp(1, 16).min(positions.len().max(1));
-        let results: Vec<(usize, Vec<Line>)> = if threads <= 1 {
+        let results: Vec<(usize, Vec<Line>)> = if opts.actual_only {
+            Vec::new()
+        } else if threads <= 1 {
             positions.iter().enumerate().map(|(pi, pos)| per_position(pi, pos)).collect()
         } else {
             let indexed: Vec<(usize, &Position)> = positions.iter().enumerate().collect();
@@ -920,9 +1445,20 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             lines.extend(ls);
         }
         let actual_cost: i64 = actual_plays.iter().map(|p| p.cost).sum();
-        let actual_out = simulate(&actual_plays, &actual_innates, s, None, None, false, &[]);
+        let actual_out = simulate(&actual_plays, &actual_innates, s, None, None, false, &[], false);
         let actual_gv = growth_value(&actual_pos, actual_cost);
-        let mut actual_line = Line { growth: actual_pos.growth.clone(), growth_actual: true, growth_value: actual_gv, ties: 0, informed: 0.0, luck: 0.0, confidence: None, position: 0, elements: String::new(), tiers: vec![], plays: actual_plays.iter().cloned().chain(actual_innates.iter().cloned()).collect(), outcome: actual_out.clone(), score: actual_out.score(&values) + actual_gv, actual: true };
+        // the same line with its Slow targets chosen after the Invader steps: a Slow
+        // mis-target is reported as its own gap, not folded into luck
+        let (slow_gap, slow_best) = if ended_before_slow || actual_plays.iter().chain(actual_innates.iter()).all(|p| p.fast) {
+            (0.0, vec![])
+        } else {
+            let cleared = |v: &[Play]| -> Vec<Play> { v.iter().map(|p| if p.fast || p.places { p.clone() } else { Play { target: None, ..p.clone() } }).collect() };
+            let o = simulate(&cleared(&actual_plays), &cleared(&actual_innates), s, None, None, false, &[], false);
+            ((o.score(&values) - actual_out.score(&values)).max(0.0), o.slow)
+        };
+        let mut actual_line = Line { growth: actual_pos.growth.clone(), growth_actual: true, growth_value: actual_gv, ties: 0, informed: 0.0, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: 0, elements: String::new(), tiers: vec![], plays: actual_plays.iter().cloned().chain(actual_innates.iter().cloned()).collect(), outcome: actual_out.clone(), score: actual_out.score(&values) + actual_gv, actual: true };
+        actual_line.slow_gap = slow_gap;
+        actual_line.slow_best = slow_best;
         annotate_elements(&mut actual_line, defs, s);
         lines.push(actual_line.clone());
         lines.sort_by(|a, b| b.score.partial_cmp(&a.score).unwrap().then(a.plays.len().cmp(&b.plays.len())).then(b.actual.cmp(&a.actual)));
@@ -958,33 +1494,71 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
         }
         lines.sort_by(|a, b| b.score.partial_cmp(&a.score).unwrap().then(a.plays.len().cmp(&b.plays.len())).then(b.actual.cmp(&a.actual)));
         if opts.progress {
-            eprintln!("] {} play sets, {} lines kept, {:.1}s", count, lines.len(), started.elapsed().as_secs_f64());
+            let filled = done.load(std::sync::atomic::Ordering::SeqCst) * BAR / total;
+            eprint!("{}{reset}{dim}]{reset} {:>4} position{} {:>6} play sets {:>5} lines  {dim}ranking{reset}", " ".repeat(BAR.saturating_sub(filled)), positions.len(), if positions.len() == 1 { " " } else { "s" }, count, lines.len());
         }
         // the informed score: the best lines by hindsight and the actual one, each averaged
         // over the Explore cards that could have come, with the Event and Fear effects left out
         let cands = explore_candidates(rec, defs, t);
+        // the face-down Event and Fear cards: what a player should have expected of them
+        let tl_start = rec.turns.iter().filter(|u| u.turn < t.turn).map(|u| u.terror_after).max().unwrap_or(1).clamp(1, 3);
+        let fear_k = if t.fear_cards.is_empty() { t.fear_cards_earned } else { t.fear_cards.len() as u32 };
+        let expected_exo = cal.expected_exogenous(!t.events.is_empty(), fear_k, tl_start);
         let mut top: Vec<Line> = Vec::new();
         for l in &lines {
             if l.actual || top.len() < opts.informed_lines.max(1) {
                 top.push(l.clone());
             }
         }
-        let score_under = |l: &Line, explore: Option<&[String]>| -> f64 {
+        let spirit_turn_at = |l: &Line| -> SpiritTurn {
             let pos = &positions[l.position.min(positions.len() - 1)];
             let mut s2 = s.clone();
             s2.presence_after = pos.presence.clone();
             s2.revealed_after = pos.revealed.clone();
+            s2
+        };
+        // the ranked lines are scored one turn deeper in both modes; the actual line's Slow
+        // gap with it
+        for l in top.iter_mut() {
+            let s2 = spirit_turn_at(l);
             let (cards, inns): (Vec<Play>, Vec<Play>) = l.plays.iter().cloned().partition(|p| !p.innate);
-            simulate(&cards, &inns, &s2, None, explore, true, &pos.hindsight_cards).score(&values) + l.growth_value
+            let out = simulate(&cards, &inns, &s2, None, None, false, &[], true);
+            l.score = out.score(&values) + l.growth_value;
+            if l.actual && !ended_before_slow && l.plays.iter().any(|p| !p.fast) {
+                let o = simulate(&clear_slow_targets(&cards), &clear_slow_targets(&inns), &s2, None, None, false, &[], true);
+                l.slow_gap = (o.score(&values) + l.growth_value - l.score).max(0.0);
+                l.slow_best = o.slow;
+            }
+            l.outcome = out;
+        }
+        let score_under = |l: &Line, explore: Option<&[String]>| -> f64 {
+            let pos = &positions[l.position.min(positions.len() - 1)];
+            let s2 = spirit_turn_at(l);
+            let (cards, inns): (Vec<Play>, Vec<Play>) = l.plays.iter().cloned().partition(|p| !p.innate);
+            simulate(&cards, &inns, &s2, None, explore, true, &pos.hindsight_cards, true).score(&values) + l.growth_value
         };
         let per_card: Vec<Vec<f64>> = top.iter().map(|l| if cands.is_empty() { vec![score_under(l, None)] } else { cands.iter().map(|c| score_under(l, Some(c))).collect() }).collect();
         let actual_idx = top.iter().position(|l| l.actual);
+        let actual_per_card: Vec<f64> = actual_idx.map(|a| per_card[a].clone()).unwrap_or_default();
+        // the whole hidden effect on the actual line: its hindsight score (best Slow targets)
+        // minus its informed score under the Explore card that came
+        let hidden_effect: Option<f64> = actual_idx.and_then(|a| {
+            let i = if cands.is_empty() { Some(0) } else { cands.iter().position(|c| *c == t.explore) };
+            i.and_then(|i| per_card[a].get(i).copied()).map(|under_real| top[a].score + top[a].slow_gap - under_real)
+        });
         for (i, l) in top.iter_mut().enumerate() {
-            let mean = per_card[i].iter().sum::<f64>() / per_card[i].len() as f64;
+            let mean = per_card[i].iter().sum::<f64>() / per_card[i].len() as f64 + expected_exo;
             l.informed = mean;
-            l.luck = l.score - mean;
+            l.luck = l.score + l.slow_gap - mean;
+            // how sure the line beats the actual one: under each possible Explore card, the
+            // chance the gap outweighs the simulator's own error (two scores, each off by
+            // `model_sd`), averaged over the cards; a plain count of cards when no error is measured
             l.confidence = match actual_idx {
-                Some(a) if a != i && cands.len() > 1 => Some(per_card[i].iter().zip(&per_card[a]).filter(|(x, y)| x >= y).count() as f64 / cands.len() as f64),
+                Some(a) if a != i => {
+                    let noise = cal.model_sd * std::f64::consts::SQRT_2;
+                    let per: Vec<f64> = per_card[i].iter().zip(&per_card[a]).map(|(x, y)| if noise > 0.05 { normal_cdf((x - y) / noise) } else if x >= y { 1.0 } else { 0.0 }).collect();
+                    if per.is_empty() || (noise <= 0.05 && cands.len() <= 1) { None } else { Some(per.iter().sum::<f64>() / per.len() as f64) }
+                }
                 _ => None,
             };
         }
@@ -1004,25 +1578,25 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             if !t.explore.is_empty() {
                 let others: Vec<String> = cands.iter().map(|c| c[0].clone()).filter(|c| *c != t.explore[0]).collect();
                 if others.is_empty() {
-                    h.push(format!("the Explore card ({}) was face down at the Fast phase, but it was the last card of its stage: knowable", t.explore.join(", ")));
+                    h.push(format!("Explore: {}, the last card of its stage (knowable)", t.explore.join(", ")));
                 } else {
-                    h.push(format!("the Explore card ({}) was face down at the Fast phase; it could have been {} ({} cards left in Stage {}): the informed score averages over them", t.explore.join(", "), others.join(", "), cands.len(), defs.invader_cards.get(&t.explore[0]).map(|c| c.stage).unwrap_or(0)));
+                    h.push(format!("Explore: {} face down; could have been {} ({} left in Stage {})", t.explore.join(", "), others.join(", "), cands.len(), defs.invader_cards.get(&t.explore[0]).map(|c| c.stage).unwrap_or(0)));
                 }
             }
             if !t.events.is_empty() {
-                h.push(format!("the Event ({}) was face down", t.events.join(", ")));
+                h.push(format!("Event: {}", t.events.join(", ")));
             }
             if t.fear_cards_earned > 0 {
-                h.push(format!("{} Fear card(s) resolved", t.fear_cards_earned));
+                h.push(format!("Fear: {} card(s) resolved", t.fear_cards_earned));
             }
-            match &residual {
-                Some(d) if !d.0.is_empty() => h.push(format!("Event and Fear piece effects applied to every line as the log shows them ({} land(s) changed between the Fast phase and the first Invader step)", d.0.len())),
-                Some(_) => {}
-                None if !actual_readable => h.push("Event and Fear piece effects not applied: the actual line plays a card the simulator cannot read in full".into()),
-                None => {}
+            match (hidden_effect, exogenous) {
+                (Some(x), Some((pieces, n))) => h.push(format!("Effects: the Event and Fear cards were worth {x:+.2} to your line against {expected_exo:+.2} expected (pieces {pieces:+.2} over {n} land(s); the rest Defends, skips and the next turn's cards); applied from the log to every line")),
+                (Some(x), None) => h.push(format!("Effects: the Event and Fear cards were worth {x:+.2} to your line against {expected_exo:+.2} expected")),
+                (None, _) if !actual_readable => h.push("Effects: not applied; the actual line plays a card the simulator cannot read in full".into()),
+                _ => {}
             }
             if !s.offered.is_empty() {
-                h.push(format!("the gain offered {}; each is tried as the card taken", s.offered.join(", ")));
+                h.push(format!("Draft: {}; each tried as the card taken", s.offered.join(", ")));
             }
             h
         };
@@ -1037,7 +1611,7 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
         unread_all.sort();
         unread_all.dedup();
         if !unread_all.is_empty() && same_unread {
-            tnotes.push(format!("{} is not fully readable by the simulator; it sits in both lines at the same target, so the comparison stands with that caveat", unread_all.join(", ")));
+            tnotes.push(format!("{} not fully readable; it sits in both lines at the same target, so the comparison stands", unread_all.join(", ")));
         }
         {
             let mut typed_only: Vec<String> = Vec::new();
@@ -1046,7 +1620,7 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
                     if let Some(c) = defs.cards.get(&p.power) {
                         let ns = c.not_simulated();
                         if !ns.is_empty() {
-                            let line = format!("{}: {}", c.title, ns.join("; "));
+                            let line = c.title.clone();
                             if !typed_only.contains(&line) {
                                 typed_only.push(line);
                             }
@@ -1055,7 +1629,7 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
                 }
             }
             if !typed_only.is_empty() {
-                tnotes.push(format!("typed but not simulated, so the scores leave them out — {}", typed_only.join(" · ")));
+                tnotes.push(format!("not simulated: {} (text the simulator types but does not execute; si cards --card shows it)", typed_only.join(", ")));
             }
         }
         let where_from = |gap_growth: f64, gap_plays: f64| -> String {
@@ -1074,23 +1648,29 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             .filter(|p| p.target.is_none() && defs.cards.get(&p.power).is_some_and(|c| c.range.is_some()) && !(ended_before_slow && !p.fast))
             .map(|p| defs.cards.get(&p.power).map(|c| c.title.clone()).unwrap_or(p.power.clone()))
             .collect();
+        // bands as effect sizes against a turn's usual luck (Cohen: 0.2 small, 0.8 large)
+        let sd = cal.luck_sd.max(0.25);
+        let effect = decision / sd;
         let reading = if !untargeted.is_empty() {
             format!("Not judged: the log shows {} played but never used (un-played after an undo, or a use the log dropped), so the actual line is incomplete", untargeted.join(", "))
         } else if !unread_all.is_empty() && !same_unread {
             format!("Not judged: the simulator cannot read {} in full yet (see si cards --card), so the scores on this turn are not trustworthy", unread_all.join(", "))
-        } else if decision <= 0.5 {
-            if actual_line.luck <= -1.0 {
-                format!("Unlucky: the right play on what you knew (within {decision:.1} of the best informed line); the hidden cards cost {:.1}", -actual_line.luck)
+        } else if effect < 0.2 {
+            if actual_line.luck <= -sd {
+                format!("Unlucky: the right play on what you knew (within {decision:.1} of the best informed line); the hidden cards cost {:.1}, more than a turn's usual swing of {sd:.1}", -actual_line.luck)
             } else {
-                "Sound: within half a Blight of the best line on what was knowable".to_string()
+                format!("Sound: within {decision:.1} of the best line on what was knowable, under a fifth of a turn's usual swing ({sd:.1})")
             }
-        } else if actual_line.score >= best_hindsight - 0.5 {
+        } else if actual_line.score >= best_hindsight - 0.2 * sd {
             format!("Gamble paid: {decision:.1} behind the percentage play on what was known, but the hidden cards made it the best line")
-        } else if decision <= 1.5 {
-            format!("Better available on what was known: about {decision:.1} in ledger value, {}", where_from(gap_growth, gap_plays))
+        } else if effect < 0.8 {
+            format!("Better available on what was known: about {decision:.1} in ledger value ({effect:.1} of a turn's usual swing), {}", where_from(gap_growth, gap_plays))
         } else {
-            format!("Mistake on what was known: {decision:.1} in ledger value, {}", where_from(gap_growth, gap_plays))
+            format!("Mistake on what was known: {decision:.1} in ledger value ({effect:.1} times a turn's usual swing of {sd:.1}), {}", where_from(gap_growth, gap_plays))
         };
+        if actual_line.slow_gap > 0.25 {
+            tnotes.push(format!("Slow targets: {:.1} better was open after the Explore ({}); counted as its own gap, not as luck", actual_line.slow_gap, actual_line.slow_best.iter().map(|p| match &p.target { Some(l) => format!("{}>{l}", p.power), None => p.power.clone() }).collect::<Vec<_>>().join(" ")));
+        }
         if ended_before_slow && rec.meta.ending.is_some() && t.turn == rec.meta.turns {
             tnotes.push("the game ended in this turn's Invader phase: Slow plays and the lookahead are not scored for any line".into());
         }
@@ -1104,7 +1684,6 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
         if positions.len() == 1 && enumerate_growth && t.turn > 1 {
             tnotes.push("no growth alternative found from the previous turn's position (first turn, or a position the record does not carry)".into());
         }
-        tnotes.push("one-turn horizon plus the next turn's Invader steps at half weight; a card held for later scores only its Energy kept".into());
         // the choices the engine asked for: Event and Fear lands, Power branches, cascade targets
         let mut choices: Vec<ChoiceReview> = Vec::new();
         for (ci, c) in t.choices.iter().enumerate() {
@@ -1124,7 +1703,7 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
                         options.push((opt.clone(), None));
                         continue;
                     };
-                    let out = simulate(&actual_plays, &actual_innates, s, Some((ci, &land)), None, false, &[]);
+                    let out = simulate(&actual_plays, &actual_innates, s, Some((ci, &land)), None, false, &[], false);
                     let score = out.score(&values) + actual_gv;
                     if land.to_string() == selected {
                         actual_score = Some(score);
@@ -1154,7 +1733,32 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             v.dedup();
             v
         };
+        if opts.progress {
+            eprintln!(" {} lines x {} Explore card{}  {dim}{:.1}s{reset}", lines.len(), cands.len().max(1), if cands.len() == 1 { "" } else { "s" }, started.elapsed().as_secs_f64());
+        }
         let actual_luck = actual_line.luck;
+        // calibration material: the next turn's threat with no Spirit action against what it took
+        let (next_threat, next_actual) = match next_turn {
+            Some(n) if !n.before_fast.is_empty() => {
+                let mut isl = verify::island_for(rec, defs, &n.before_fast);
+                let mut probe = Outcome::default();
+                invader_phase(&mut isl, rec, n, defs, &rules, &mut probe, None, false);
+                let visits = || rec.lands.values().flat_map(|l| l.visits.iter()).filter(|v| v.turn == n.turn && matches!(v.step, Some(si_model::event::InvaderStep::Ravage) | Some(si_model::event::InvaderStep::Build)));
+                let blight: u32 = visits().map(|v| v.blight + v.cascade).sum();
+                let dahan: u32 = visits().map(|v| v.dahan_lost).sum();
+                (Some((probe.blight, probe.dahan_lost)), Some((blight, dahan)))
+            }
+            _ => (None, None),
+        };
+        let sample = Sample { event: !t.events.is_empty(), fear_cards: fear_k, terror: tl_start, exogenous: exogenous.map(|(x, _)| x), hidden_effect, per_card: actual_per_card, next_threat, next_actual, model_error };
+        // the deck from this Fast phase, on the board as this turn's face-up Ravage and Build leave it
+        let forecast = {
+            let mut isl = verify::island_for(rec, defs, &t.before_fast);
+            let mut probe = Outcome::default();
+            invader_phase(&mut isl, rec, t, defs, &rules, &mut probe, Some(&[]), false);
+            let this: Vec<String> = cands.iter().map(|c| c[0].clone()).collect();
+            deck::forecast(rec, defs, &deck, t, &isl, &rules, 3, Some(&this))
+        };
         turns.push(TurnReview {
             turn: t.turn,
             spirit: spirit.clone(),
@@ -1176,9 +1780,14 @@ pub fn review_with(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions) -
             luck: actual_luck,
             offered: s.offered.clone(),
             choices,
+            exogenous,
+            expected_exogenous: expected_exo,
+            hidden_effect,
+            sample,
+            forecast,
         });
     }
-    Review { values, turns, notes }
+    Review { values, turns, notes, calibration: cal, deck }
 }
 
 /// Event, Fear or what the log said: the card tables decide when the engine's
@@ -1367,6 +1976,21 @@ fn delta_between(sim: &Island, logged: &BTreeMap<LandId, Counts>) -> Delta {
     d
 }
 
+/// The ledger value of a piece delta (logged minus simulated): Blight added, Dahan and
+/// presence lost and Invaders added count against; Invaders removed count for. Tokens
+/// are not valued.
+fn delta_value(d: &Delta, v: &Values) -> f64 {
+    let mut total = 0.0;
+    for diff in d.0.values() {
+        let [e, t, c, dahan, blight, presence, ..] = *diff;
+        total += blight as f64 * v.blight;
+        total += (-dahan) as f64 * v.dahan;
+        total += (-presence) as f64 * v.presence;
+        total += (-e) as f64 * v.explorer + (-t) as f64 * v.town + (-c) as f64 * v.city;
+    }
+    total
+}
+
 fn apply_delta(island: &mut Island, d: &Delta) {
     for (l, diff) in &d.0 {
         if let Some(land) = island.lands.get_mut(l) {
@@ -1405,7 +2029,7 @@ pub fn try_line(rec: &GameRecord, defs: &Definitions, turn: u32, text: &str) -> 
     };
     let mut plays: Vec<Play> = Vec::new();
     for tok in text.split_whitespace() {
-        let (name, target) = match tok.split_once('>') {
+        let (name, target) = match tok.split_once('>').or_else(|| tok.split_once('@')) {
             Some((n, l)) => (n, Some(l.parse::<LandId>().map_err(|e| e.to_string())?)),
             None => (tok, None),
         };
@@ -1415,7 +2039,8 @@ pub fn try_line(rec: &GameRecord, defs: &Definitions, turn: u32, text: &str) -> 
             Some(c) => (c.speed == Speed::Fast, c.cost),
             None => (defs.spirits.values().flat_map(|p| p.innates.iter()).find(|i| i.id == id).is_some_and(|i| i.speed == Speed::Fast), 0),
         };
-        plays.push(Play { power: id, target, fast, innate, cost });
+        let places = defs.cards.get(&id).is_some_and(adds_presence);
+        plays.push(Play { power: id, target, fast, innate, cost, places });
     }
     let cards: Vec<Play> = plays.iter().filter(|p| !p.innate).cloned().collect();
     let innates: Vec<Play> = plays.iter().filter(|p| p.innate).cloned().collect();
@@ -1445,12 +2070,29 @@ pub fn try_line(rec: &GameRecord, defs: &Definitions, turn: u32, text: &str) -> 
     let mut armed = Vec::new();
     apply_plays(&mut island, defs, &all, true, &elements, &rules, &spirit, t, &mut armed, &mut out);
     invader_phase(&mut island, rec, t, defs, &rules, &mut out, None, true);
-    apply_plays(&mut island, defs, &all, false, &elements, &rules, &spirit, t, &mut armed, &mut out);
     let next_turn = rec.turns.iter().find(|n| n.turn == turn + 1);
-    lookahead(&mut island, rec, next_turn, defs, &rules, &mut out, None);
+    // a Slow play written without a land takes the best one after the Invader steps
+    let graph = si_metrics::reach::island_for(rec, defs);
+    let innates_all = innates_of(defs, &spirit);
+    let slow = {
+        let eval = |slow: &[Play]| -> f64 {
+            let mut isl = island.clone();
+            let mut o = out.clone();
+            let mut armed2 = armed.clone();
+            apply_plays(&mut isl, defs, slow, false, &elements, &rules, &spirit, t, &mut armed2, &mut o);
+            lookahead(&mut isl, rec, next_turn, defs, &rules, &mut o, None, None);
+            o.score(&values)
+        };
+        resolve_slow(&island, defs, &all, false, s, &graph, &innates_all, &eval)
+    };
+    all.retain(|p| p.fast);
+    all.extend(slow.iter().cloned());
+    apply_plays(&mut island, defs, &all, false, &elements, &rules, &spirit, t, &mut armed, &mut out);
+    lookahead(&mut island, rec, next_turn, defs, &rules, &mut out, None, None);
+    out.slow = slow;
     out.notes.extend(out_notes);
     let score = out.score(&values);
-    Ok(Line { growth: vec![], growth_actual: true, growth_value: 0.0, ties: 0, informed: score, luck: 0.0, confidence: None, position: 0, elements: String::new(), tiers: vec![], plays: all, outcome: out, score, actual: false })
+    Ok(Line { growth: vec![], growth_actual: true, growth_value: 0.0, ties: 0, informed: score, luck: 0.0, confidence: None, slow_gap: 0.0, slow_best: vec![], position: 0, elements: String::new(), tiers: vec![], plays: all, outcome: out, score, actual: false })
 }
 
 // ---- growth: the position a turn starts from, and every growth the panel allows ----
@@ -1557,8 +2199,24 @@ pub fn growth_positions(rec: &GameRecord, defs: &Definitions, s: &SpiritTurn, t:
     let lands: Vec<LandId> = graph.lands.keys().cloned().collect();
     let mut out = Vec::new();
     for g in &panel.growth.groups {
-        let y = g.yield_();
-        let k = y.presence as usize;
+        // the group's yield with the always-group's on top (Rampant Green places a presence
+        // every growth before its choice); each presence keeps its own placement rule
+        let gy = g.yield_();
+        let ay = panel.growth.always.as_ref().map(|a| a.yield_());
+        let mut y = gy.clone();
+        let mut rules: Vec<Placement> = Vec::new();
+        if let Some(a) = &ay {
+            y.energy += a.energy;
+            y.cards += a.cards;
+            y.plays_this_turn += a.plays_this_turn;
+            y.presence += a.presence;
+            if y.reclaim.is_none() {
+                y.reclaim = a.reclaim.clone();
+            }
+            rules.extend(std::iter::repeat(a.placement.clone().unwrap_or(Placement::Any { range: 1 })).take(a.presence as usize));
+        }
+        rules.extend(std::iter::repeat(gy.placement.clone().unwrap_or(Placement::Any { range: 1 })).take(gy.presence as usize));
+        let k = rules.len();
         // slot sequences for the presences placed: each from the Energy or the Card Plays track
         let mut slot_seqs: Vec<Vec<Track>> = vec![vec![]];
         for _ in 0..k {
@@ -1591,17 +2249,17 @@ pub fn growth_positions(rec: &GameRecord, defs: &Definitions, s: &SpiritTurn, t:
             if !ok {
                 continue;
             }
-            // placements: combinations with repetition over the legal lands
-            let legal: Vec<LandId> = match &y.placement {
-                Some(p) if k > 0 => lands.iter().filter(|l| placement_ok(p, graph, &presence0, l, &t.before_fast.get(*l).copied().unwrap_or_default())).cloned().collect(),
-                _ => vec![],
-            };
+            // placements: each presence over the lands its rule allows (the lands as they
+            // stood at the Fast phase); two presences under the same rule are a combination,
+            // not a permutation
+            let legal: Vec<Vec<LandId>> = rules.iter().map(|p| lands.iter().filter(|l| placement_ok(p, graph, &presence0, l, &t.before_fast.get(*l).copied().unwrap_or_default())).cloned().collect()).collect();
             let mut placements: Vec<Vec<LandId>> = vec![vec![]];
-            for _ in 0..k {
+            for (i, legal_i) in legal.iter().enumerate() {
+                let same_rule = i > 0 && rules[i] == rules[i - 1];
                 let mut next = Vec::new();
                 for pl in &placements {
-                    let from = pl.last().and_then(|last| legal.iter().position(|x| x == last)).unwrap_or(0);
-                    for l in legal.iter().skip(from) {
+                    let from = if same_rule { pl.last().and_then(|last| legal_i.iter().position(|x| x == last)).unwrap_or(0) } else { 0 };
+                    for l in legal_i.iter().skip(from) {
                         let mut p2 = pl.clone();
                         p2.push(l.clone());
                         next.push(p2);
@@ -1619,7 +2277,22 @@ pub fn growth_positions(rec: &GameRecord, defs: &Definitions, s: &SpiritTurn, t:
             // here would have shown), a Major with each card the hand could forget for it
             let card_options: Vec<CardPick> = if y.cards > 0 {
                 if !s.offered.is_empty() {
-                    s.offered.iter().map(|c| CardPick { card: Some(c.clone()), draft_turn: None, forget: None }).collect()
+                    // the draft shown this turn; a Major costs a card: each card in hand, or one from the discard
+                    let mut picks = Vec::new();
+                    for c in &s.offered {
+                        if defs.cards.get(c).is_some_and(|k| k.kind == si_model::power::PowerKind::Major) {
+                            let mut forgets: Vec<String> = hand0.clone();
+                            if let Some(d) = discard0.first() {
+                                forgets.push(d.clone());
+                            }
+                            for f in forgets {
+                                picks.push(CardPick { card: Some(c.clone()), draft_turn: None, forget: Some(f) });
+                            }
+                        } else {
+                            picks.push(CardPick { card: Some(c.clone()), draft_turn: None, forget: None });
+                        }
+                    }
+                    picks
                 } else {
                     let mut picks = Vec::new();
                     for kind in [si_model::power::PowerKind::Minor, si_model::power::PowerKind::Major] {
@@ -1702,7 +2375,7 @@ pub fn growth_positions(rec: &GameRecord, defs: &Definitions, s: &SpiritTurn, t:
                             growth.push(format!("+{}E", y.energy));
                         }
                         let st = panel.track_state(&revealed);
-                        out.push(Position { presence, revealed: revealed.clone(), hand, energy: energy0 + y.energy + st.income, plays: st.plays, growth, slots: slot_ids.len() as u32, cards_gained, energy_gained: y.energy, actual: false, hindsight_cards });
+                        out.push(Position { presence, revealed: revealed.clone(), hand, energy: energy0 + y.energy + st.income, plays: st.plays + y.plays_this_turn as i64, growth, slots: slot_ids.len() as u32, cards_gained, energy_gained: y.energy, actual: false, hindsight_cards });
                     }
                 }
             }
@@ -1730,12 +2403,29 @@ pub fn actual_position(rec: &GameRecord, defs: &Definitions, s: &SpiritTurn, t: 
     for c in &s.cards_gained {
         growth.push(format!("+{c}"));
     }
-    let growth_energy: i64 = defs.spirits.get(&s.spirit).map(|p| s.growth_groups.iter().filter_map(|g| (*g as usize).checked_sub(1).and_then(|i| p.growth.groups.get(i))).map(|g| g.yield_().energy).sum()).unwrap_or(0);
+    for c in &s.cards_forgotten {
+        growth.push(format!("-{c}"));
+    }
+    let growth_energy: i64 = defs.spirits.get(&s.spirit).map(|p| growth_energy_of(p, &s.growth_groups)).unwrap_or(0);
     if growth_energy > 0 {
         growth.push(format!("+{growth_energy}E"));
     }
     Position {
-        presence: s.presence_after.clone(),
+        presence: {
+            // after the growth, before any Power placed more (those placements are the plays')
+            let mut p = s.presence_after.clone();
+            for (_, _, land) in &s.presence_by_power {
+                if let Some(l) = land {
+                    if let Some(n) = p.get_mut(l) {
+                        *n = n.saturating_sub(1);
+                        if *n == 0 {
+                            p.remove(l);
+                        }
+                    }
+                }
+            }
+            p
+        },
         revealed: s.revealed_after.clone(),
         hand,
         energy: energy_available(rec, defs, s, prev_after),

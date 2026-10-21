@@ -318,18 +318,10 @@ fn special_rule(spirit: &str, v: &Value) -> SpecialRule {
 fn spirit(v: &Value) -> Result<SpiritPanel> {
     let id = id(v)?;
     let tracks = v.get("presenceTrackNodes").and_then(Value::as_array).map(|a| a.iter().map(track_node).collect()).unwrap_or_default();
-    let groups = v
-        .get("growthGroups")
-        .and_then(Value::as_array)
-        .map(|a| {
-            a.iter()
-                .map(|g| GrowthGroup {
-                    number: num(g, "groupNumber") as u8,
-                    options: g.get("growthOptions").and_then(Value::as_array).map(|o| o.iter().map(growth_option).collect()).unwrap_or_default(),
-                })
-                .collect()
-        })
-        .unwrap_or_default();
+    let group_of = |g: &Value| GrowthGroup { number: num(g, "groupNumber") as u8, options: g.get("growthOptions").and_then(Value::as_array).map(|o| o.iter().map(growth_option).collect()).unwrap_or_default() };
+    let groups: Vec<GrowthGroup> = v.get("growthGroups").and_then(Value::as_array).map(|a| a.iter().map(group_of).collect()).unwrap_or_default();
+    // the group every growth takes before the chosen one, when the panel has one
+    let always = v.get("alwaysGrowthGroup").filter(|g| g.get("growthOptions").and_then(Value::as_array).is_some_and(|o| !o.is_empty())).map(group_of);
     let aspects = v
         .get("aspects")
         .and_then(Value::as_array)
@@ -351,7 +343,7 @@ fn spirit(v: &Value) -> Result<SpiritPanel> {
         complexity: str_of(v, "complexity"),
         setup: str_of(v, "setup"),
         tracks,
-        growth: GrowthRules { groups, pick: num(v, "numberOfGrowthGroupsToUse").max(1) as u8 },
+        growth: GrowthRules { groups, pick: num(v, "numberOfGrowthGroupsToUse").max(1) as u8, always },
         innates: v.get("innatePowers").and_then(Value::as_array).map(|a| a.iter().map(innate).collect()).unwrap_or_default(),
         special_rules: v.get("specialRules").and_then(Value::as_array).map(|a| a.iter().map(|r| special_rule(&id, r)).collect()).unwrap_or_default(),
         uniques: strings(v, "uniquePowerCardIdentifiers"),

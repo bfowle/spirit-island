@@ -164,6 +164,10 @@ pub struct SpiritTurn {
     /// Presence moved land to land (growth options, special rules).
     #[serde(default)]
     pub presence_moved: Vec<(LandId, LandId)>,
+    /// Presence a Power or an Invader-phase card placed this turn (source, track slot
+    /// revealed, land): Gift of Proliferation, boons. Not growth.
+    #[serde(default)]
+    pub presence_by_power: Vec<(String, Option<String>, Option<LandId>)>,
     pub presence_destroyed: u32,
     pub revealed_after: BTreeSet<String>,
     pub income: Option<i64>,

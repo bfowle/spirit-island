@@ -32,6 +32,8 @@ fn main() -> Result<()> {
         "checkpoint" => checkpoint(&args[1..]),
         "inject" => inject(&args[1..]),
         "hindsight" => hindsight(&args[1..]),
+        "import" => import(&args[1..]),
+        "calibrate" => calibrate(&args[1..]),
         _ => usage(),
     }
 }
@@ -40,18 +42,91 @@ fn usage() -> Result<()> {
     eprintln!("usage: si replay <EndGame.txt | capture dir> [--defs <dir>] [--json] [--lands]");
     eprintln!("       si report <EndGame.txt | capture dir> [--defs <dir>]        land tempo, track tempo, build profile");
     eprintln!("       si corpus <path>... [--defs <dir>] [--md]                  one row per game over captures and EndGame logs, then groupings");
-    eprintln!("       si hindsight <EndGame.txt | capture dir> [--defs <dir>] [--turn n] [--top n] [--fixed-growth] [--try \"SLSF>C8 MI\"]   each turn's growth and plays against every legal line, scored on the Invader steps that followed; Event and Fear choices against their alternatives");
+    eprintln!("       si hindsight <EndGame.txt | capture dir> [--defs <dir>] [--turn n] [--top n] [--fixed-growth] [--seed <save.dat>] [--calibration <json>] [--try \"SLSF>C8 MI\"]   each turn's growth and plays against every legal line, scored on the Invader steps that followed; Event and Fear choices against their alternatives; the deck forecast per land");
     eprintln!("       si notate <EndGame.txt | capture dir> [--defs <dir>] [--canonical]   the game in Spirit Island notation (moves, reveals, results)");
-    eprintln!("       si checkpoint <capture dir…> [--turn n] [--phase SpiritPhase|FastPower|SlowPower|…] [--export <dir>] [--graph [--dot]]   the app's saves kept with a capture, by turn and phase; --export writes the chosen .dat; --graph draws the checkpoint DAG (undo branches as forks)");
+    eprintln!("       si checkpoint <capture dir...> [--turn n] [--phase SpiritPhase|FastPower|SlowPower|...] [--export <dir>] [--graph [--dot]]   the app's saves kept with a capture, by turn and phase; --export writes the chosen .dat; --graph draws the checkpoint DAG (undo branches as forks)");
     eprintln!("       si inject <capture dir> --turn n [--phase SpiritPhase] [--save <file part>] [--any-branch] [--name save-Undo-990.dat] [--timeout 90] [--fetch]   load that checkpoint (on the path the game finally took) into the RUNNING Steam app from WSL (frida-inject.exe, no restart; main menu or in-game)");
     eprintln!("       si verify <EndGame.txt | capture dir> [--defs <dir>] [--level n] [--all]   simulate each turn's Invader phase and compare with the log");
     eprintln!("       si cards [--defs <dir>] [--unparsed [n]] [--card <title>] [--features] [--fit]   effect-parser coverage; one card's parse; the feature table; the pricing fit");
+    eprintln!("       si import <EndGame--n.txt> [--out <steam-capture dir>]   build a live-<game id>/ capture from an EndGame log and the saves the app still has (its final .dat, any save-Feedback/Undo of that game); the recorder makes the full one");
+    eprintln!("       si calibrate [<path>...] [--defs <dir>] [--out <json>] [--dry-run]   measure over the corpus what hindsight has no rule for: the Event and Fear cards' mean ledger effect, the next-turn weight, a turn's luck spread, the ledger against results; writes data/calibration.json (default corpus: the captures and the Steam folder)");
     Ok(())
 }
 
 /// The Steam folder that holds the `EndGame--<id>` logs and saves.
 fn steam_dir() -> PathBuf {
     std::env::var("SI_STEAM_DIR").map(PathBuf::from).unwrap_or_else(|_| PathBuf::from("/mnt/c/Users/brett/AppData/LocalLow/Handelabra Games Inc_/Spirit Island"))
+}
+
+/// Where the recorder keeps captures (`live-<game id>/`), for `si import`.
+fn capture_root() -> PathBuf {
+    std::env::var("SI_CAPTURE_DIR").map(PathBuf::from).unwrap_or_else(|_| PathBuf::from("/home/brett/repos/spirit-island/data/steam-capture"))
+}
+
+/// `WetlandA5` -> `A5`: the engine names a land by terrain and id.
+fn land_id_of(engine: &str) -> Option<si_model::island::LandId> {
+    let short = ["Mountain", "Sands", "Jungle", "Wetland", "Ocean"].iter().find_map(|t| engine.strip_prefix(t)).unwrap_or(engine);
+    short.parse().ok()
+}
+
+/// The state a log that starts mid-game joins at, from the save it was reloaded from.
+fn seed_from_snapshot(snap: &si_steam::engine_map::EngineSnapshot) -> si_record::replay::Seed {
+    use si_steam::engine_map::PieceKind as K;
+    let spirit_of = |s: &str| -> String { snap.spirits.iter().find(|sp| sp.id == s).or_else(|| snap.spirits.iter().find(|sp| sp.id.contains(s) || s.contains(&sp.id))).map(|sp| sp.id.clone()).unwrap_or_else(|| s.to_string()) };
+    let mut lands = Vec::new();
+    for l in &snap.lands {
+        let Some(id) = land_id_of(&l.id) else { continue };
+        let mut c = si_record::Counts::default();
+        let mut presence: std::collections::BTreeMap<String, u32> = std::collections::BTreeMap::new();
+        for p in &l.pieces {
+            match &p.kind {
+                K::Explorer => c.explorers += 1,
+                K::Town => c.towns += 1,
+                K::City => c.cities += 1,
+                K::Dahan => c.dahan += 1,
+                K::Blight => c.blight += 1,
+                K::Presence(s) => *presence.entry(spirit_of(s)).or_insert(0) += 1,
+                K::Token(t) => match t.as_str() {
+                    "Beast" | "Beasts" => c.beasts += 1,
+                    "Disease" => c.disease += 1,
+                    "Strife" => c.strife += 1,
+                    "Wilds" => c.wilds += 1,
+                    "Badlands" => c.badlands += 1,
+                    _ => {}
+                },
+                _ => {}
+            }
+        }
+        c.presence = presence.values().sum();
+        lands.push((id, c, presence.into_iter().collect()));
+    }
+    let spirits = snap
+        .spirits
+        .iter()
+        .map(|sp| si_record::replay::SeedSpirit {
+            id: sp.id.clone(),
+            energy: sp.energy,
+            hand: sp.hand.clone(),
+            play: sp.play_area.clone(),
+            discard: sp.discard.clone(),
+            forgotten: sp.forgotten.clone(),
+            revealed: sp.track_nodes.iter().filter(|(_, covered)| !covered).map(|(id, _)| id.clone()).collect(),
+        })
+        .collect();
+    let mut seen: Vec<String> = snap.invader_discard.iter().chain(snap.ravage_slot.iter()).chain(snap.build_slot.iter()).chain(snap.explore_slot_revealed.iter()).chain(snap.extra_invader_slots.iter().flat_map(|(_, v)| v.iter())).map(|c| c.id.clone()).collect();
+    seen.sort();
+    seen.dedup();
+    let boards: Vec<String> = lands.iter().map(|(id, _, _)| id.board.clone()).collect::<std::collections::BTreeSet<_>>().into_iter().collect();
+    // Terror Level cards leave the game as each level is reached
+    let terror = 1 + snap.out_of_game.iter().filter(|c| c.id.starts_with("TerrorLevel")).count() as u8;
+    si_record::replay::Seed { turn_index: snap.turn_index.max(0) as u32, phase: si_model::game::Phase::parse(&snap.state), boards, lands, spirits, terror, invader_cards_seen: seen }
+}
+
+/// `--seed <save.dat|.gz>`: the save a mid-game log was reloaded from.
+fn seed_from_args(args: &[String]) -> Result<Option<si_record::replay::Seed>> {
+    let Some(p) = args.iter().position(|a| a == "--seed").and_then(|i| args.get(i + 1)) else { return Ok(None) };
+    let snap = decode_save(Path::new(p)).ok_or_else(|| anyhow::anyhow!("--seed: {p} is not a readable save"))?;
+    Ok(Some(seed_from_snapshot(&snap)))
 }
 
 fn decode_save(dat: &Path) -> Option<si_steam::engine_map::EngineSnapshot> {
@@ -87,7 +162,7 @@ fn save_index() -> &'static std::collections::BTreeMap<String, PathBuf> {
 /// order, the engine's journal).
 fn sibling_save(path: &Path) -> Option<si_steam::engine_map::EngineSnapshot> {
     if path.is_dir() {
-        let id = path.file_name()?.to_string_lossy().strip_prefix("live-")?.to_string();
+        let id: String = path.file_name()?.to_string_lossy().strip_prefix("live-")?.chars().take(12).collect();
         return save_index().get(&id).and_then(|p| decode_save(p));
     }
     let dat = path.with_extension("dat");
@@ -124,11 +199,37 @@ fn defs_from(args: &[String]) -> Result<Option<Definitions>> {
     }
 }
 
+/// The definitions folder named on the command line or in `SI_DEFS_DIR`.
+fn defs_dir_from(args: &[String]) -> Option<PathBuf> {
+    args.iter().position(|a| a == "--defs").and_then(|i| args.get(i + 1)).cloned().or_else(|| std::env::var("SI_DEFS_DIR").ok()).map(PathBuf::from)
+}
+
+/// Where `si calibrate` writes and `si hindsight` reads the measured constants:
+/// `--calibration <json>`, else `calibration.json` beside the definitions folder.
+fn calibration_path(args: &[String]) -> PathBuf {
+    if let Some(p) = args.iter().position(|a| a == "--calibration").and_then(|i| args.get(i + 1)) {
+        return PathBuf::from(p);
+    }
+    defs_dir_from(args).and_then(|d| d.parent().map(|p| p.join("calibration.json"))).unwrap_or_else(|| PathBuf::from("calibration.json"))
+}
+
+fn calibration_from(args: &[String]) -> Option<si_hindsight::Calibration> {
+    let p = calibration_path(args);
+    let text = std::fs::read_to_string(&p).ok()?;
+    match serde_json::from_str::<si_hindsight::Calibration>(&text) {
+        Ok(c) => Some(c),
+        Err(e) => {
+            eprintln!("calibration {} not read ({e}); built-in values used", p.display());
+            None
+        }
+    }
+}
+
 fn replay(args: &[String]) -> Result<()> {
     let Some(path) = args.first() else { bail!("replay needs a log file or capture directory") };
     let defs = defs_from(args)?;
     let (lines, undo, source) = si_record::replay::load(&PathBuf::from(path))?;
-    let rec = Replay::new(defs.as_ref()).run(&lines, undo.as_deref(), &source);
+    let rec = Replay::new(defs.as_ref()).with_seed(seed_from_args(args)?).run(&lines, undo.as_deref(), &source);
     if args.iter().any(|a| a == "--json") {
         out!("{}", serde_json::to_string_pretty(&rec)?);
         return Ok(());
@@ -145,7 +246,7 @@ fn cards(args: &[String]) -> Result<()> {
         let Some(c) = defs.cards.get(&name).or_else(|| defs.card_by_title(&name)) else { bail!("no card {name}") };
         let elements = if c.elements.is_empty() { "no elements".to_string() } else { c.elements.to_string() };
         out!("{}  ({})", c.title, c.id);
-        out!("  {:?} Power · {} Energy · {:?} · {} · target {} · {}", c.kind, c.cost, c.speed, c.range.as_ref().map(|r| r.words()).unwrap_or("no Range".into()), c.target.words(), elements);
+        out!("  {:?} Power | {} Energy | {:?} | {} | target {} | {}", c.kind, c.cost, c.speed, c.range.as_ref().map(|r| r.words()).unwrap_or("no Range".into()), c.target.words(), elements);
         let print_block = |indent: &str, body: &[String], effects: &[si_model::power::Effect]| {
             out!("{indent}printed:");
             for b in body {
@@ -176,7 +277,7 @@ fn cards(args: &[String]) -> Result<()> {
         };
         let mut unread = print_block("  ", &c.body, &c.effects);
         for t in &c.thresholds {
-            out!("  threshold {} {}", t.elements, if t.title.is_empty() { String::new() } else { format!("— {}", t.title) });
+            out!("  threshold {} {}", t.elements, if t.title.is_empty() { String::new() } else { format!("- {}", t.title) });
             unread += print_block("    ", &t.body, &t.effects);
         }
         let mut others = Vec::new();
@@ -232,7 +333,7 @@ fn cards(args: &[String]) -> Result<()> {
     for (k, (n, f)) in &by_kind {
         out!("  {k}: {f}/{n}");
     }
-    out!("cards that can act on a slot: explore {} · build {} · ravage {}", slots[0], slots[1], slots[2]);
+    out!("cards that can act on a slot: explore {} | build {} | ravage {}", slots[0], slots[1], slots[2]);
     let tiers: Vec<&si_model::spirit::Tier> = defs.spirits.values().flat_map(|s| s.innates.iter().flat_map(|i| i.tiers.iter())).collect();
     let tiers_full = tiers.iter().filter(|t| !t.effects.is_empty() && !t.effects.iter().any(|e| e.is_other())).count();
     out!("{tiers_full} of {} innate tiers fully parsed", tiers.len());
@@ -303,7 +404,7 @@ fn pricing_fit(defs: &Definitions, kind: &str) -> Result<()> {
     let y: Vec<f64> = cards.iter().map(|c| c.cost as f64).collect();
     let Some(beta) = si_metrics::fit::least_squares(&x, &y) else { bail!("no cards to fit") };
     let res = si_metrics::fit::residuals(&x, &y, &beta);
-    out!("PRICING FIT ({kind}) — cost ≈ Σ coefficient × feature, over {} fully parsed cards (R² {:.2})", cards.len(), si_metrics::fit::r_squared(&y, &res));
+    out!("PRICING FIT ({kind}) - cost ≈ Σ coefficient × feature, over {} fully parsed cards (R² {:.2})", cards.len(), si_metrics::fit::r_squared(&y, &res));
     out!("Energy per unit of:");
     for (i, (n, b)) in names.iter().zip(&beta).enumerate() {
         let used = x.iter().any(|r| r[i] != 0.0) && (i == 0 || x.iter().any(|r| r[i] != x[0][i]));
@@ -324,6 +425,88 @@ fn pricing_fit(defs: &Definitions, kind: &str) -> Result<()> {
     Ok(())
 }
 
+/// A table in the house style (talaria-cli): UTF-8 box borders with round corners,
+/// content arranged to the width, a bold cyan header; styling off when color is off.
+/// `condensed` drops the lines between rows (short tables).
+fn styled_table(width: u16, condensed: bool, header: &[&str]) -> comfy_table::Table {
+    use comfy_table::{modifiers::UTF8_ROUND_CORNERS, presets, Attribute, Cell, Color, ContentArrangement, Table};
+    let mut t = Table::new();
+    t.load_preset(if condensed { presets::UTF8_FULL_CONDENSED } else { presets::UTF8_FULL }).apply_modifier(UTF8_ROUND_CORNERS).set_content_arrangement(ContentArrangement::Dynamic).set_width(width);
+    if !color::enabled() {
+        t.force_no_tty();
+    }
+    if !header.is_empty() {
+        t.set_header(header.iter().map(|h| Cell::new(h).add_attribute(Attribute::Bold).fg(Color::Cyan)).collect::<Vec<_>>());
+    }
+    t
+}
+
+/// The terminal's width, or `COLUMNS` when piped, else 170.
+fn terminal_width() -> u16 {
+    terminal_size::terminal_size().map(|(terminal_size::Width(w), _)| w).or_else(|| std::env::var("COLUMNS").ok().and_then(|c| c.parse().ok())).unwrap_or(170)
+}
+
+/// `HHMMSS_mmm` of a file's write time (UTC clock), the recorder's save-name stamp, and the same as a log clock.
+fn stamp_of(path: &Path) -> (String, String) {
+    let ms = std::fs::metadata(path).and_then(|m| m.modified()).ok().and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok()).map(|d| d.as_millis() as u64 % 86_400_000).unwrap_or(0);
+    let (h, m, s, mil) = (ms / 3_600_000, ms / 60_000 % 60, ms / 1000 % 60, ms % 1000);
+    (format!("{h:02}{m:02}{s:02}_{mil:03}"), format!("{h:02}:{m:02}:{s:02}.{mil:03}"))
+}
+
+/// Build a `live-<game id>/` capture from an EndGame log after the fact: the log as
+/// `log-stream.txt`, the game's final save and any `save-Feedback`/`save-Undo` of the
+/// same game still in the app's folder as `saves/`, their write times as `events.txt`.
+/// The app keeps only the current game's step saves, so an old game gets its final
+/// state alone; a game the recorder watched has every step.
+fn import(args: &[String]) -> Result<()> {
+    let Some(log) = args.first() else { bail!("import needs an EndGame log (EndGame--<n>.txt)") };
+    let log = PathBuf::from(log);
+    let dat = log.with_extension("dat");
+    let snap = decode_save(&dat).ok_or_else(|| anyhow::anyhow!("no readable save beside the log ({}): the game id comes from it", dat.display()))?;
+    let root = args.iter().position(|a| a == "--out").and_then(|i| args.get(i + 1)).map(PathBuf::from).unwrap_or_else(capture_root);
+    let id = snap.game_id.clone();
+    let mut dir = root.join(format!("live-{id}"));
+    if dir.exists() {
+        // the same game id: a branch of a recorded game (a reloaded checkpoint played on)
+        let n: String = log.file_stem().map(|s| s.to_string_lossy().chars().filter(char::is_ascii_digit).collect()).unwrap_or_default();
+        let tail: String = n.chars().rev().take(6).collect::<Vec<_>>().into_iter().rev().collect();
+        dir = root.join(format!("live-{id}-{tail}"));
+        if dir.exists() {
+            bail!("{} already exists", dir.display());
+        }
+    }
+    std::fs::create_dir_all(dir.join("saves"))?;
+    std::fs::copy(&log, dir.join("log-stream.txt"))?;
+    let mut events: Vec<(String, String)> = Vec::new();
+    let mut copied = 0;
+    let steam = log.parent().map(Path::to_path_buf).unwrap_or_else(steam_dir);
+    let mut saves: Vec<PathBuf> = vec![dat.clone()];
+    if let Ok(rd) = std::fs::read_dir(&steam) {
+        saves.extend(rd.flatten().map(|e| e.path()).filter(|p| {
+            p.file_name().is_some_and(|n| {
+                let n = n.to_string_lossy();
+                n.starts_with("save-") && n.ends_with(".dat")
+            })
+        }));
+    }
+    for p in saves {
+        let Some(s) = decode_save(&p) else { continue };
+        if s.game_id != id {
+            continue;
+        }
+        let name = if p == dat { "save-EndGame.dat".to_string() } else { p.file_name().unwrap().to_string_lossy().to_string() };
+        let (stamp, clock) = stamp_of(&p);
+        std::fs::copy(&p, dir.join("saves").join(format!("{stamp}__{name}")))?;
+        events.push((clock.clone(), format!("{clock}  NEW            {name}")));
+        copied += 1;
+    }
+    events.sort();
+    std::fs::write(dir.join("events.txt"), events.iter().map(|(_, l)| l.as_str()).collect::<Vec<_>>().join("\n") + "\n")?;
+    out!("{}: log-stream.txt from {}, {} save(s) (turn {} at {} in the final one)", dir.display(), log.display(), copied, snap.turn_index + 1, snap.state);
+    out!("review: si hindsight {}   checkpoints: si checkpoint {}", dir.display(), dir.display());
+    Ok(())
+}
+
 fn hindsight(args: &[String]) -> Result<()> {
     let Some(path) = args.first() else { bail!("hindsight needs a log file or capture directory") };
     let Some(defs) = defs_from(args)? else { bail!("hindsight needs --defs <dir> or SI_DEFS_DIR") };
@@ -332,31 +515,57 @@ fn hindsight(args: &[String]) -> Result<()> {
     let try_line: Option<String> = args.iter().position(|a| a == "--try").and_then(|i| args.get(i + 1)).cloned();
     let fixed_growth = args.iter().any(|a| a == "--fixed-growth");
     let (lines, undo, source) = si_record::replay::load(&PathBuf::from(path))?;
-    let mut rec = Replay::new(Some(&defs)).run(&lines, undo.as_deref(), &source);
+    let mut rec = Replay::new(Some(&defs)).with_seed(seed_from_args(args)?).run(&lines, undo.as_deref(), &source);
     apply_save(&mut rec, Path::new(path));
     let codes = std::cell::RefCell::new(si_record::notation::Codes::new(Some(&defs), false));
+    color::set_boards(&rec.meta.boards);
     let progress = std::io::IsTerminal::is_terminal(&std::io::stderr());
-    let opts = si_hindsight::ReviewOptions { growth: !fixed_growth, progress, ..Default::default() };
+    let calibration = calibration_from(args);
+    let opts = si_hindsight::ReviewOptions { growth: !fixed_growth, progress, progress_color: color::enabled(), calibration, ..Default::default() };
     if progress {
-        eprintln!("hindsight: {} turns to review; each dot is one growth position tried with every play set (--fixed-growth keeps the growth as played)", rec.turns.iter().filter(|t| t.turn >= 1 && !t.before_fast.is_empty()).count());
+        eprintln!("hindsight  {} turns; each bar fills as the turn's growth positions are tried with every play set, then the ranking runs{}", rec.turns.iter().filter(|t| t.turn >= 1 && !t.before_fast.is_empty()).count(), if fixed_growth { " (--fixed-growth: the growth as played)" } else { " (--fixed-growth keeps the growth as played and is much faster)" });
     }
     let review = si_hindsight::review_with(&rec, &defs, &opts);
     let pool_at = blight_pool_by_turn(Path::new(path));
-    out!("{}", rec.meta.source);
-    out!("spirits {} | boards {} | adversary {} level {} | {}", rec.meta.spirits.join("+"), rec.meta.boards.join(""), rec.meta.adversary.clone().unwrap_or("none".into()), rec.meta.adversary_level.map(|l| l.to_string()).unwrap_or("?".into()), rec.meta.ending.map(|e| e.words()).unwrap_or("no ending"));
+    // the game in a small table; the key to every column and term is a table at the end
+    use comfy_table::{ColumnConstraint, Width};
+    let width = terminal_width();
+    // GAME and KEY are reading tables: capped at 120 columns like CODES, rows wrap
+    let two_column = |rows: Vec<(String, String)>| -> comfy_table::Table {
+        let mut t = styled_table(width.min(120), true, &[]);
+        if let Some(c) = t.column_mut(0) {
+            c.set_constraint(ColumnConstraint::LowerBoundary(Width::Fixed(11)));
+        }
+        for (k, v) in rows {
+            t.add_row(vec![k, v]);
+        }
+        t
+    };
+    let spirit_name = |id: &str| defs.spirits.get(id).map(|p| p.title.clone()).filter(|t| !t.is_empty()).unwrap_or_else(|| id.to_string());
+    let adversary = match (&rec.meta.adversary, rec.meta.adversary_level) {
+        (Some(id), level) => format!("{}{}", defs.adversaries.get(id).map(|a| a.title.clone()).unwrap_or_else(|| id.clone()), level.map(|l| format!(", level {l}")).unwrap_or_else(|| ", level unknown".into())),
+        (None, _) => "none".into(),
+    };
+    let mut game: Vec<(String, String)> = vec![
+        ("source".into(), rec.meta.source.clone()),
+        ("spirit".into(), rec.meta.spirits.iter().map(|s| spirit_name(s)).collect::<Vec<_>>().join(" + ")),
+        ("board".into(), rec.meta.boards.join(" ")),
+        ("adversary".into(), adversary),
+        ("deck".into(), format!("{} by stage, the first card the setup Explore", review.deck.source.rsplit(": ").next().unwrap_or(&review.deck.source))),
+        ("result".into(), rec.meta.ending.map(|e| e.words().to_string()).unwrap_or_else(|| format!("in progress: {} turns in the log", rec.meta.turns))),
+    ];
     if rec.coverage.undo_unresolved > 0 {
-        out!("caution: bare log, {} undo reloads placed one save back; a capture would be exact", rec.coverage.undo_reloads);
+        game.push(("record".into(), format!("bare log: {} undo reloads placed one save back; a capture would be exact", rec.coverage.undo_reloads)));
     }
-    out!("HINDSIGHT — each turn's growth and plays against every legal line from the same position, each followed by the turn's real Invader steps and the next turn's at half weight.");
-    out!("Growth: every group, top or bottom slot, every legal placement, each offered card, the Reclaim. Plays: every Fast and Slow card and innate at every legal target.");
-    out!("The Ravage and Build cards were face up when the choice was made: this is what was knowable, not luck. Event and Fear piece effects are applied to every line as the log shows them.");
     if fixed_growth {
-        out!("--fixed-growth: the growth is taken as played; only the plays vary.");
+        game.push(("growth".into(), "as played (--fixed-growth): only the plays vary".into()));
     }
-    out!("ledger: {}", review.values.source);
-    out!("glyphs: {}", si_hindsight::GLYPH_LEGEND);
     for n in &review.notes {
-        out!("note: {n}");
+        game.push(("note".into(), n.clone()));
+    }
+    out!("GAME");
+    for line in two_column(game).lines() {
+        out!("  {line}");
     }
     let code = |id: &str| codes.borrow_mut().code(id);
     let spaced = |id: &str| -> String {
@@ -375,35 +584,64 @@ fn hindsight(args: &[String]) -> Result<()> {
         }
         out!();
         let hand: Vec<String> = t.hand.iter().map(|c| code(c)).collect();
-        out!("════ T{} ════  hand {}  ·  {} plays  ·  {} Energy", t.turn, hand.join(" "), t.plays, t.energy);
+        out!("==== T{} ====  hand {}  |  {} plays  |  {} Energy", t.turn, hand.join(" "), t.plays, t.energy);
         // the Blight pool at the turn's start, when the capture kept that save: a line whose
         // Blight reaches it ends the game
         let pool = pool_at.get(&t.turn).copied();
         let pool_note = match pool {
-            Some((p, true)) => format!("; Blight card flipped, {p} left: Bl{p} or more LOSES the game"),
-            Some((p, false)) => format!("; Blight card not yet flipped, {p} left on it: Bl{p} or more FLIPS it"),
+            Some((p, true)) => format!(" | Blight card flipped, {p} left: Bl{p} or more LOSES the game"),
+            Some((p, false)) => format!(" | Blight card not yet flipped, {p} left on it: Bl{p} or more FLIPS it"),
             None => String::new(),
         };
-        out!("  LINES  ({} play sets over {} growth position{}; ranked by the informed score{})", t.candidates, t.positions, if t.positions == 1 { "" } else { "s" }, pool_note);
-        out!("    {:<6} {:<36} {:<42} {:>8} {:>8} {:>6} {:>5}  {:<23} {:<16} {}", "", "growth", "plays (cards | innate …)", "informed", "hindsight", "luck", "conf", "elements S M F A W E P A", "innate tiers", "produced (hindsight)");
-        // a column never grows past its width, so the table stays aligned; the full notation is in si notate
-        let fit = |s: &str, w: usize| -> String {
-            if s.chars().count() <= w { s.to_string() } else { format!("{}…", s.chars().take(w - 1).collect::<String>()) }
-        };
-        let row = |tag: &str, l: &si_hindsight::Line| {
+        out!("  LINES  {} play sets over {} growth position{}, ranked by informed{}", t.candidates, t.positions, if t.positions == 1 { "" } else { "s" }, pool_note);
+        // a wrapping table: long cells fold onto more lines instead of being cut. The tag,
+        // the numbers, the eight element letters (the painter needs them on one line) and
+        // the tiers have one width each; the text columns have the width of their header
+        // at least, so no header ever wraps; the table is as wide as the terminal, or as
+        // wide as those minimums need
+        use comfy_table::{Cell, CellAlignment};
+        let headers = ["", "growth", "cards", "innates", "informed", "hindsight", "conf", "elements", "innate tiers", "produced"];
+        let tiers_w: u16 = (t.actual.tiers.iter().map(|(id, _, of)| code(id).len() + 3 + of.to_string().len()).sum::<usize>() + t.actual.tiers.len()).max(12) as u16 + 2;
+        let fixed: [(usize, u16); 6] = [(0, 8), (4, 11), (5, 11), (6, 6), (7, 25), (8, tiers_w)];
+        let floors: [(usize, u16); 4] = [(1, 16), (2, 16), (3, 12), (9, 16)];
+        let min_total: u16 = fixed.iter().map(|(_, w)| *w).sum::<u16>() + floors.iter().map(|(_, w)| *w).sum::<u16>() + headers.len() as u16 + 1;
+        let width = width.max(min_total);
+        let mut table = styled_table(width, false, &headers);
+        for (i, w) in fixed {
+            if let Some(c) = table.column_mut(i) {
+                c.set_constraint(ColumnConstraint::Absolute(Width::Fixed(w)));
+            }
+        }
+        for (i, w) in floors {
+            if let Some(c) = table.column_mut(i) {
+                c.set_constraint(ColumnConstraint::LowerBoundary(Width::Fixed(w)));
+            }
+        }
+        let row = |tag: &str, l: &si_hindsight::Line| -> Vec<Cell> {
             let growth = l.growth_notation(&|id| code(id));
             let growth = if l.growth_actual && !l.actual { format!("{growth} (as played)") } else { growth };
             let growth = if l.ties > 0 { format!("{growth} +{} alike", l.ties) } else { growth };
             let conf = l.confidence.map(|c| format!("{:.0}%", c * 100.0)).unwrap_or_else(|| "-".into());
-            let tiers: Vec<String> = l.tiers.iter().map(|(id, reached, of)| format!("{}{}", code(id), (0..*of).map(|i| if i < *reached { '●' } else { '○' }).collect::<String>())).collect();
+            let tiers: Vec<String> = l.tiers.iter().map(|(id, reached, of)| format!("{} {reached}/{of}", code(id))).collect();
             let mark = match pool {
-                Some((p, true)) if p > 0 && l.outcome.blight as i64 >= p => "  LOSES",
-                Some((p, false)) if p > 0 && l.outcome.blight as i64 >= p => "  FLIPS",
+                Some((p, true)) if p > 0 && l.outcome.blight as i64 >= p => " LOSES",
+                Some((p, false)) if p > 0 && l.outcome.blight as i64 >= p => " FLIPS",
                 _ => "",
             };
-            out!("    {tag} {:<36} {:<42} {:>+8.2} {:>+8.2} {:>+6.2} {:>5}  {:<23} {:<16} {}{}", fit(&growth, 36), fit(&l.notation(&|id| code(id)), 42), l.informed, l.score, l.luck, conf, l.elements, fit(&tiers.join(" "), 16), l.outcome.summary(), mark);
+            vec![
+                Cell::new(tag),
+                Cell::new(growth),
+                Cell::new(l.cards_notation(&|id| code(id))),
+                Cell::new(l.innates_notation(&|id| code(id))),
+                Cell::new(format!("{:+.2}", l.informed)).set_alignment(CellAlignment::Right),
+                Cell::new(format!("{:+.2}", l.score)).set_alignment(CellAlignment::Right),
+                Cell::new(conf).set_alignment(CellAlignment::Right),
+                Cell::new(l.elements.clone()),
+                Cell::new(tiers.join(" ")),
+                Cell::new(format!("{}{mark}", l.outcome.summary())),
+            ]
         };
-        row("actual", &t.actual);
+        table.add_row(row("actual", &t.actual));
         let mut shown = 0;
         for l in t.ranked.iter() {
             if l.actual {
@@ -412,56 +650,78 @@ fn hindsight(args: &[String]) -> Result<()> {
             if shown >= top {
                 break;
             }
-            row(if shown == 0 { "best  " } else { "then  " }, l);
+            table.add_row(row(if shown == 0 { "best" } else { "then" }, l));
             shown += 1;
         }
         if t.gap_growth > 0.25 {
             if let Some(l) = t.ranked.iter().find(|l| l.growth_actual && !l.actual) {
-                row("same G", l);
+                table.add_row(row("same G", l));
             }
+        }
+        for line in table.lines() {
+            out!("    {line}");
         }
         out!("  READING  {}", t.reading);
-        out!("           informed = expected on what was knowable (the Explore cards still in the stage, Event and Fear effects unknown, a later draft's card not played); hindsight = on the cards that came; luck = hindsight − informed; conf = share of possible Explore cards under which the line beats the actual");
         if !t.choices.is_empty() {
-            let scored: Vec<&si_hindsight::ChoiceReview> = t.choices.iter().filter(|c| c.gap.is_some()).collect();
-            let unscored: Vec<&si_hindsight::ChoiceReview> = t.choices.iter().filter(|c| c.gap.is_none()).collect();
-            out!("  CHOICES THE GAME ASKED FOR  (Event and Fear steps; each land scored with your growth and plays kept)");
-            for c in &scored {
-                let opts: Vec<String> = c.options.iter().map(|(o, sc)| match sc {
-                    Some(v) if *o == c.selected => format!("{o} {v:+.2} ←chosen"),
-                    Some(v) => format!("{o} {v:+.2}"),
-                    None => o.clone(),
-                }).collect();
-                let verdict = match c.gap {
-                    Some(g) if g <= 0.01 => "best option".to_string(),
-                    Some(g) if g <= 0.5 => format!("within {g:.2} of best"),
-                    Some(g) => format!("better land open, by {g:.2}"),
-                    None => String::new(),
-                };
-                let effect = c.note.split(" placed in each land").next().unwrap_or("").to_string();
-                out!("    {:<5} {:<34} {:<26} {:<28} {}", c.source_kind, c.source, effect, verdict, opts.join("  "));
-            }
-            if !unscored.is_empty() {
-                out!("    also asked (not scored yet):");
-                for c in &unscored {
-                    let opts: Vec<String> = c.options.iter().map(|(o, _)| if *o == c.selected { format!("{o} ←chosen") } else { o.clone() }).collect();
-                    out!("      {:<5} {:<34} {:<26} {}", c.source_kind, c.source, c.reason, opts.join("  "));
+            // one row per prompt: what asked, what it placed, the verdict, every option with its
+            // score where the simulator could place the effect, the chosen one marked
+            out!("  CHOICES  what the Event, Fear and Blight steps asked; each land scored with your growth and plays kept");
+            let mut ct = styled_table(width, true, &["step", "card", "asked", "verdict", "options (<- chosen)"]);
+            for (i, w) in [(0usize, 7u16), (1, 26), (3, 20)] {
+                if let Some(c) = ct.column_mut(i) {
+                    c.set_constraint(ColumnConstraint::LowerBoundary(Width::Fixed(w)));
                 }
             }
+            for c in &t.choices {
+                let opts: Vec<String> = c.options.iter().map(|(o, sc)| match sc {
+                    Some(v) if *o == c.selected => format!("{o} {v:+.2} <-"),
+                    Some(v) => format!("{o} {v:+.2}"),
+                    None if *o == c.selected => format!("{o} <-"),
+                    None => o.clone(),
+                }).collect();
+                let (asked, verdict) = match c.gap {
+                    Some(g) => (c.note.split(" placed in each land").next().unwrap_or("").to_string(), if g <= 0.01 { "best option".to_string() } else if g <= 0.5 { format!("within {g:.2} of best") } else { format!("better land open, by {g:.2}") }),
+                    None => (spaced(&c.reason), "not scored".to_string()),
+                };
+                ct.add_row(vec![c.source_kind.clone(), c.source.clone(), asked, verdict, opts.join("  ")]);
+            }
+            for line in ct.lines() {
+                out!("    {line}");
+            }
         }
-        out!("  HIDDEN WHEN YOU CHOSE");
+        out!("  HIDDEN   face down when you chose");
         for h in &t.hidden {
-            let h = if let Some(rest) = h.strip_prefix("the gain offered ") {
-                let (cards, tail) = rest.split_once(';').unwrap_or((rest, ""));
-                let coded: Vec<String> = cards.split(", ").map(|c| code(c.trim())).collect();
-                format!("gain offered {}{}", coded.join(" "), if tail.is_empty() { String::new() } else { format!(";{tail}") })
-            } else if let Some(rest) = h.strip_prefix("the Event (") {
-                let (id, tail) = rest.split_once(')').unwrap_or((rest, ""));
-                format!("Event: {}{}", spaced(id), tail)
-            } else {
-                h.clone()
+            let (label, value) = h.split_once(": ").unwrap_or(("", h.as_str()));
+            let value = match label {
+                "Event" => value.split(", ").map(spaced).collect::<Vec<_>>().join(", "),
+                "Draft" => {
+                    let (cards, tail) = value.split_once(';').unwrap_or((value, ""));
+                    format!("{}{}", cards.split(", ").map(|c| code(c.trim())).collect::<Vec<_>>().join(" "), if tail.is_empty() { String::new() } else { format!(";{tail}") })
+                }
+                _ => value.to_string(),
             };
-            out!("    {h}");
+            out!("    {label:<8} {value}");
+        }
+        if !t.forecast.is_empty() {
+            // the deck from this Fast phase: which stage each coming turn draws from, which cards
+            // are still possible, and each land's chance of an Explore, re-hits apart from fresh
+            out!("  FORECAST the Invader deck from this Fast phase: each land's chance of an Explore; re-hit = the land already holds Invaders or Blight (board as this turn's face-up Ravage and Build leave it)");
+            let mut ft = styled_table(width, true, &["turn", "stage", "cards possible", "re-hit", "fresh", "expected re-hits / fresh"]);
+            for (i, w) in [(0usize, 6u16), (1, 7), (5, 14)] {
+                if let Some(c) = ft.column_mut(i) {
+                    c.set_constraint(ColumnConstraint::LowerBoundary(Width::Fixed(w)));
+                }
+            }
+            let chance = |l: &si_hindsight::deck::LandForecast| format!("{} {:.0}%", l.land, l.p * 100.0);
+            for f in &t.forecast {
+                let rehit: Vec<String> = f.lands.iter().filter(|l| l.rehit).map(chance).collect();
+                let fresh: Vec<String> = f.lands.iter().filter(|l| !l.rehit).map(chance).collect();
+                let cards: Vec<String> = f.cards.iter().map(|c| c.clone()).collect();
+                ft.add_row(vec![format!("T{}", f.turn), format!("{}", f.stage), cards.join(" "), if rehit.is_empty() { "-".into() } else { rehit.join("  ") }, if fresh.is_empty() { "-".into() } else { fresh.join("  ") }, format!("{:.1} / {:.1}", f.rehits, f.fresh)]);
+            }
+            for line in ft.lines() {
+                out!("    {line}");
+            }
         }
         if !t.notes.is_empty() {
             out!("  NOTES");
@@ -478,10 +738,53 @@ fn hindsight(args: &[String]) -> Result<()> {
             }
         }
     }
-    let legend = codes.borrow().legend();
-    if !legend.is_empty() {
+    // the key: one short row per column and term, the numbers from the review itself
+    let v = &review.values;
+    let cal = &review.calibration;
+    let w = v.next_weight;
+    let mut key: Vec<(String, String)> = vec![
+        ("lines".into(), "each turn's growth and plays against every legal line from the same position; every line then runs the turn's real Invader steps and the next turn's. actual = yours; best, then = the alternatives, ranked by informed; same G = the best line from your growth when another growth ranks first".into()),
+        ("growth".into(), "every group, top or bottom slot, every legal placement, each card of the offered draft, the Reclaim. (as played) keeps yours; +N alike folds rows with the same plays and score from another placement or slot".into()),
+        ("plays".into(), "every Fast and Slow card and innate at every legal target. A Slow card takes its land after the Invader steps, as you do; the land shown is the one chosen under the Explore card that came".into()),
+        ("notation".into(), "CARD>A2 targets the land; CARD@A2 places presence there; CARD alone acts on the Spirit or in all its lands at once; innates are underlined".into()),
+        ("elements".into(), "S M F A W E P A = Sun Moon Fire Air Water Earth Plant Animal, each with its count. CTM 2/3 = innate tier 2 of 3 reached".into()),
+        ("produced".into(), "Bl Blight, Dh Dahan lost, Pr presence lost, Pr+1 presence added, kill 2E 1T destroyed, push N pushed out, Fr Fear, built 1T the Build's Towns and Cities; | next = the next turn's Invader steps, | then = the turn after's expected Ravage".into()),
+        ("informed".into(), "the line's worth on what was knowable: averaged over the Explore cards still in the stage, the face-down Event and Fear cards at their measured average worth, a card from a later draft not played. Lines rank by it".into()),
+        ("hindsight".into(), "the line's worth on the cards that came. hindsight minus informed is luck".into()),
+        ("conf".into(), format!("how sure the line beats yours: under each possible Explore card, the chance its lead outweighs the simulator's own error ({:.2}), averaged over the cards. A lead of 1 reads about 70%, of 3 about 93%", cal.model_sd)),
+        ("reading".into(), format!("the gap to the best informed line against a turn's usual luck ({:.2}): Sound under a fifth of it, Better available up to four fifths, Mistake above. Unlucky when the hidden cards cost more than a whole swing; Gamble paid when they made your line the best", cal.luck_sd)),
+        ("hidden".into(), "the Ravage and Build cards were face up when you chose: knowable, not luck. The Explore, Event and Fear cards were face down; what they did is applied from the log to every line in the hindsight score".into()),
+        ("ledger".into(), format!("Blight {:+.2}; Dahan {:+.2}; presence {:+.2}; Explorer/Town/City destroyed {:+.2}/{:+.2}/{:+.2} and built the same against; pushed out {:+.2}; Fear {:+.2}; track slot revealed {:+.2}; card gained {:+.2}; Energy kept {:+.2}", v.blight, v.dahan, v.presence, v.explorer, v.town, v.city, v.explorer, v.fear, v.slot, v.card, v.energy)),
+    ];
+    if !v.reasons.is_empty() {
+        key.push(("spirit".into(), v.reasons.join(". ")));
+    }
+    key.push(("horizon".into(), format!("this turn in full; the next turn's Invader steps at {w:.2} (the measured share of an unattended threat that materializes once the Spirit plays its turn); the turn after's expected Ravage at {:.2}", w * w)));
+    key.push(("calibrated".into(), format!("Event {:+.2}, Fear card {:+.2}/{:+.2}/{:+.2} by Terror Level, a turn's luck sd {:.2}, simulator error {:.2}, all in ledger units; {}", cal.event_mean, cal.fear_card_mean[0], cal.fear_card_mean[1], cal.fear_card_mean[2], cal.luck_sd, cal.model_sd, cal.source.split(" under ").next().unwrap_or(&cal.source))));
+    out!();
+    out!("KEY");
+    for line in two_column(key).lines() {
+        out!("  {line}");
+    }
+    let entries = codes.borrow().entries();
+    if !entries.is_empty() {
         out!();
-        out!("{{{legend}}}");
+        out!("CODES");
+        let mut lt = styled_table(width.max(120), true, &[]);
+        for chunk in entries.chunks(3) {
+            let mut row: Vec<String> = Vec::new();
+            for (c, title) in chunk {
+                row.push(c.clone());
+                row.push(title.clone());
+            }
+            while row.len() < 6 {
+                row.push(String::new());
+            }
+            lt.add_row(row);
+        }
+        for line in lt.lines() {
+            out!("  {line}");
+        }
     }
     Ok(())
 }
@@ -650,18 +953,18 @@ fn checkpoint_graph(dirs: &[PathBuf], dot: bool) -> Result<()> {
         out!("}}");
         return Ok(());
     }
-    out!("CHECKPOINT DAG — {} capture(s), {} distinct saves, {} root(s), {} fork(s), {} leaf/leaves", dirs.len(), nodes.len(), roots, forks.len(), leaves.len());
+    out!("CHECKPOINT DAG - {} capture(s), {} distinct saves, {} root(s), {} fork(s), {} leaf/leaves", dirs.len(), nodes.len(), roots, forks.len(), leaves.len());
     out!("ids are the first 12 hex digits of the save's sha256; a fork is a save the game came back to (undo, or a live reload) and left again");
     for id in &order {
         let n = &nodes[id];
-        let mark = if n.children.len() > 1 { "⑂" } else if n.children.is_empty() { "●" } else { "│" };
-        out!("  {mark} {id}  T{:<2} {:<22} {:<48} ← {}  {}", n.turn, n.state, n.label, n.parents.join(","), if n.seen_in.len() > 1 { format!("in {}", n.seen_in.join(" + ")) } else { String::new() });
+        let mark = if n.children.len() > 1 { "+" } else if n.children.is_empty() { "*" } else { "|" };
+        out!("  {mark} {id}  T{:<2} {:<22} {:<48} <- {}  {}", n.turn, n.state, n.label, n.parents.join(","), if n.seen_in.len() > 1 { format!("in {}", n.seen_in.join(" + ")) } else { String::new() });
     }
     if !forks.is_empty() {
         out!("forks:");
         for f in forks {
             let n = &nodes[f];
-            out!("  {f} T{} {} → {} branches: {}", n.turn, n.state, n.children.len(), n.children.join(" "));
+            out!("  {f} T{} {} -> {} branches: {}", n.turn, n.state, n.children.len(), n.children.join(" "));
         }
     }
     Ok(())
@@ -710,6 +1013,7 @@ fn inject(args: &[String]) -> Result<()> {
         out!("{} checkpoints on the final path match; taking the earliest, {} (the start of that phase as the game actually went; --save <file name part> picks another)", chosen.len(), c.name);
     }
     let dat = export_checkpoint(c, &tools.join("checkpoints"))?;
+    out!("seed for the branch's review once it is played out: si hindsight <its EndGame log> --seed {}", c.path.display());
     // the app's loader reads disk files as <save folder>/<file name>. The undo name serves
     // both routes: in a game, ReloadFromFile reads it; at the main menu, Continue falls back
     // to the newest undo file on disk when the continue file is not found (verified
@@ -903,7 +1207,7 @@ fn verify(args: &[String]) -> Result<()> {
     let r = si_rules::verify::verify(&rec, &defs, level);
     out!("{}", rec.meta.source);
     out!("spirits {} | boards {} | adversary {} level {} | {} turns simulated", rec.meta.spirits.join("+"), rec.meta.boards.join(""), rec.meta.adversary.clone().unwrap_or("none".into()), match (from_save, &est, level) { (Some(l), _, _) => format!("{l} (from the save)"), (None, Some(e), Some(l)) if e.candidates.len() > 1 => format!("{l} (lowest of {})", e.label()), (_, _, Some(l)) => l.to_string(), _ => "?".into() }, r.turns);
-    out!("INVADER PHASE and SPIRIT ACTIONS — simulated from the recorded state at each phase start, compared with the log");
+    out!("INVADER PHASE and SPIRIT ACTIONS - simulated from the recorded state at each phase start, compared with the log");
     out!("{:<30} {:>8} {:>9}", "field", "matched", "compared");
     for (f, (m, c)) in &r.fields {
         out!("{:<30} {:>8} {:>9}", f, m, c);
@@ -950,14 +1254,14 @@ fn report(args: &[String]) -> Result<()> {
     }
     if let Some(est) = defs.as_ref().and_then(|d| si_metrics::adversary::estimate(&rec, d)) {
         out!(
-            "adversary level {} (difficulty {}) — {}",
+            "adversary level {} (difficulty {}) - {}",
             est.label(),
             est.difficulty.map(|(a, b)| if a == b { a.to_string() } else { format!("{a}-{b}") }).unwrap_or("?".into()),
             est.evidence.join("; ")
         );
     }
     out!();
-    out!("LAND TEMPO — each Invader card's pass over a land: Explore t → Build t+1 → Ravage t+2");
+    out!("LAND TEMPO - each Invader card's pass over a land: Explore t -> Build t+1 -> Ravage t+2");
     out!("land terrain   card       t0   E  B  R   outcome    blight  class       price    reach                      touches by clock position");
     for c in &chains {
         // one entry per clock position: the powers used, then what else happened
@@ -1009,8 +1313,8 @@ fn report(args: &[String]) -> Result<()> {
             }
             let name = match clock {
                 si_metrics::Clock::BeforeExplore => "pre-X",
-                si_metrics::Clock::AfterExplore => "X→B",
-                si_metrics::Clock::AfterBuild => "B→R",
+                si_metrics::Clock::AfterExplore => "X->B",
+                si_metrics::Clock::AfterBuild => "B->R",
                 si_metrics::Clock::AfterRavage => "post-R",
             };
             touches.push(format!("{name}[{}]", parts.join(" ")));
@@ -1045,8 +1349,8 @@ fn report(args: &[String]) -> Result<()> {
         );
     }
     out!();
-    out!("LEDGER — per turn: lands due, how the Ravage-due ones ended, and what the spirits paid (all spirits)");
-    out!("turn  due B/R   above  on  gambled  failed  untouched  sacrificed  blight   cards  energy   hand→discard  runway");
+    out!("LEDGER - per turn: lands due, how the Ravage-due ones ended, and what the spirits paid (all spirits)");
+    out!("turn  due B/R   above  on  gambled  failed  untouched  sacrificed  blight   cards  energy   hand->discard  runway");
     let mut all_rows: Vec<si_metrics::TrackRow> = Vec::new();
     for sp in &rec.meta.spirits {
         all_rows.extend(si_metrics::track::rows(&rec, defs.as_ref(), sp));
@@ -1055,7 +1359,7 @@ fn report(args: &[String]) -> Result<()> {
     let ledger = si_metrics::ledger::ledger(&chains, &all_rows, &paid);
     for l in &ledger {
         out!(
-            "T{:<4} {:>2}/{:<3}   {:>5} {:>3} {:>8} {:>7} {:>10} {:>11} {:>7}   {:>5} {:>7}   {:>4}→{:<9} {}",
+            "T{:<4} {:>2}/{:<3}   {:>5} {:>3} {:>8} {:>7} {:>10} {:>11} {:>7}   {:>5} {:>7}   {:>4}->{:<9} {}",
             l.turn,
             l.due_build,
             l.due_ravage,
@@ -1081,17 +1385,17 @@ fn report(args: &[String]) -> Result<()> {
     let spent: u32 = ledger.iter().map(|l| l.cards_spent).sum();
     let (price_cards, price_energy): (u32, i64) = chains.iter().map(|c| (c.price_cards, c.price_energy)).fold((0, 0), |a, b| (a.0 + b.0, a.1 + b.1));
     if spent > 0 {
-        out!("handled per card over the game: {handled} lands / {spent} cards = {:.2} · cards aimed at a chain's land: {price_cards} ({price_energy} Energy)", handled as f64 / spent as f64);
+        out!("handled per card over the game: {handled} lands / {spent} cards = {:.2} | cards aimed at a chain's land: {price_cards} ({price_energy} Energy)", handled as f64 / spent as f64);
     }
     out!();
     out!("by Ravage turn:");
     for (turn, classes) in si_metrics::tempo::classes_by_turn(&chains) {
-        out!("  T{:<3} {}", turn, classes.iter().map(|(c, n)| format!("{} {}", c.name(), n)).collect::<Vec<_>>().join(" · "));
+        out!("  T{:<3} {}", turn, classes.iter().map(|(c, n)| format!("{} {}", c.name(), n)).collect::<Vec<_>>().join(" | "));
     }
     let total = chains.iter().filter(|c| c.class != si_metrics::Class::Open).count().max(1);
     let count = |cl: si_metrics::Class| chains.iter().filter(|c| c.class == cl).count();
     out!(
-        "  game  above {} · on {} · gambled {} · failed {} · sacrificed {} · untouched {} · late {}  (of {} chains)",
+        "  game  above {} | on {} | gambled {} | failed {} | sacrificed {} | untouched {} | late {}  (of {} chains)",
         count(si_metrics::Class::Above),
         count(si_metrics::Class::On),
         count(si_metrics::Class::Gambled),
@@ -1105,7 +1409,7 @@ fn report(args: &[String]) -> Result<()> {
     for sp in &rec.meta.spirits {
         let title = defs.as_ref().and_then(|d| d.spirits.get(sp)).map(|p| p.title.clone()).unwrap_or(sp.clone());
         let rows = si_metrics::track::rows(&rec, defs.as_ref(), sp);
-        out!("TRACK TEMPO — {title}");
+        out!("TRACK TEMPO - {title}");
         out!("turn  growth   x/ycp   presence  cards  reclaim  played/plays  energy  hand  discard");
         for r in &rows {
             out!(
@@ -1129,16 +1433,16 @@ fn report(args: &[String]) -> Result<()> {
         }
         for spike in si_metrics::spikes::spikes_for(sp) {
             match si_metrics::track::spike_turn(&rows, &spike) {
-                Some(t) => out!("spike {} reached T{}{}  — {}", spike.label, t, spike.by_turn.map(|b| format!(" (target T{b})")).unwrap_or_default(), spike.source),
-                None => out!("spike {} not reached{}  — {}", spike.label, spike.by_turn.map(|b| format!(" (target T{b})")).unwrap_or_default(), spike.source),
+                Some(t) => out!("spike {} reached T{}{}  - {}", spike.label, t, spike.by_turn.map(|b| format!(" (target T{b})")).unwrap_or_default(), spike.source),
+                None => out!("spike {} not reached{}  - {}", spike.label, spike.by_turn.map(|b| format!(" (target T{b})")).unwrap_or_default(), spike.source),
             }
         }
         let weak = si_metrics::track::weak_turns(&rows);
-        out!("weak turns {:?} · reclaim turns {:?} · reclaim loops {}", weak, si_metrics::track::reclaim_turns(&rows), si_metrics::track::reclaim_loops(&rows));
+        out!("weak turns {:?} | reclaim turns {:?} | reclaim loops {}", weak, si_metrics::track::reclaim_turns(&rows), si_metrics::track::reclaim_loops(&rows));
         let blight_by_t4: u32 = rec.turns.iter().filter(|t| t.turn >= 1 && t.turn <= 4).map(|t| t.blight_added + t.blight_cascaded).sum();
         let p = si_metrics::profile::profile(defs.as_ref(), sp, &rows, &chains, blight_by_t4);
         out!(
-            "PROFILE  scaling {:?} (presence by T3 {}/{}, cards gained {}, first reclaim {}) · stance {:?} (above share {}) · blight by T4 {}",
+            "PROFILE  scaling {:?} (presence by T3 {}/{}, cards gained {}, first reclaim {}) | stance {:?} (above share {}) | blight by T4 {}",
             p.scaling,
             p.presence_by_t3.0,
             p.presence_by_t3.1,
@@ -1150,7 +1454,7 @@ fn report(args: &[String]) -> Result<()> {
         );
         out!();
     }
-    out!("GROWTH SHAPES — each series over the turns, binned by the simplest order that explains it (Lumia)");
+    out!("GROWTH SHAPES - each series over the turns, binned by the simplest order that explains it (Lumia)");
     for (name, series) in growth_series(&rec) {
         match si_metrics::growth::fit(&series) {
             Some(f) => out!("  {:<28} {:<12} {}", name, f.order.name(), series.iter().map(|v| format!("{v}")).collect::<Vec<_>>().join(" ")),
@@ -1293,6 +1597,240 @@ fn measure(rec: &GameRecord, defs: Option<&Definitions>, source: &str) -> Row {
     }
 }
 
+/// The games under `paths`, replayed: captures first, then the bare EndGame logs no
+/// capture already holds (a log whose last actions a capture shares is the same game
+/// twice; the capture, with its exact undo clock, wins). Games joined in progress or
+/// shorter than two turns are skipped with a note on stderr.
+fn load_corpus(paths: &[PathBuf], defs: Option<&Definitions>) -> Vec<(PathBuf, String, GameRecord)> {
+    let mut paths: Vec<PathBuf> = paths.to_vec();
+    paths.sort_by_key(|p| !p.is_dir());
+    let mut capture_lines: Vec<std::collections::HashSet<String>> = Vec::new();
+    let mut out = Vec::new();
+    for p in &paths {
+        let (lines, undo, source) = match si_record::replay::load(p) {
+            Ok(x) => x,
+            Err(e) => {
+                eprintln!("skip {}: {e}", p.display());
+                continue;
+            }
+        };
+        let actions: Vec<&str> = lines.iter().map(|l| l.text.trim()).filter(|t| t.starts_with("DidPerformAction")).collect();
+        if p.is_dir() {
+            capture_lines.push(actions.iter().map(|t| t.to_string()).collect());
+        } else {
+            let tail: Vec<&str> = actions.iter().rev().take(40).copied().collect();
+            if !tail.is_empty() && capture_lines.iter().any(|set| tail.iter().filter(|t| set.contains(**t)).count() * 10 >= tail.len() * 9) {
+                eprintln!("skip {} (same game as a capture)", p.display());
+                continue;
+            }
+        }
+        let mut rec = Replay::new(defs).run(&lines, undo.as_deref(), &source);
+        apply_save(&mut rec, p);
+        if !rec.meta.from_setup || rec.meta.turns < 2 {
+            eprintln!("skip {} (joined in progress or too short: {} turns)", p.display(), rec.meta.turns);
+            continue;
+        }
+        out.push((p.clone(), source, rec));
+    }
+    out
+}
+
+/// Measure over the corpus what hindsight has no rule for, and write `calibration.json`:
+/// the Event's and the Fear cards' mean ledger effect (the informed score's expectation
+/// of the face-down cards), the next-turn weight (how much of an unattended threat
+/// materializes once the Spirit plays), the spread of a turn's luck (the reading bands'
+/// unit), and the ledger's separation of wins from losses. Two passes over the actual
+/// lines only: the weight first, then the luck spread with it.
+fn calibrate(args: &[String]) -> Result<()> {
+    let Some(defs) = defs_from(args)? else { bail!("calibrate needs --defs <dir> or SI_DEFS_DIR") };
+    let out_path = args.iter().position(|a| a == "--out").and_then(|i| args.get(i + 1)).map(PathBuf::from).unwrap_or_else(|| calibration_path(args));
+    let dry = args.iter().any(|a| a == "--dry-run");
+    let mut paths: Vec<PathBuf> = Vec::new();
+    let mut skip = false;
+    for a in args {
+        if skip {
+            skip = false;
+            continue;
+        }
+        if matches!(a.as_str(), "--defs" | "--out" | "--calibration") {
+            skip = true;
+            continue;
+        }
+        if a.starts_with("--") {
+            continue;
+        }
+        paths.extend(games_under(Path::new(a)));
+    }
+    let mut roots: Vec<String> = args.iter().enumerate().filter(|(i, a)| !a.starts_with("--") && !matches!(args.get(i.wrapping_sub(1)).map(|s| s.as_str()), Some("--defs" | "--out" | "--calibration"))).map(|(_, a)| a.clone()).collect();
+    if paths.is_empty() {
+        paths.extend(games_under(&capture_root()));
+        paths.extend(games_under(&steam_dir()));
+        roots = vec![capture_root().display().to_string(), steam_dir().display().to_string()];
+    }
+    let games = load_corpus(&paths, Some(&defs));
+    if games.is_empty() {
+        bail!("no games found under {}", paths.iter().map(|p| p.display().to_string()).collect::<Vec<_>>().join(", "));
+    }
+    let values = si_hindsight::Values::generic();
+    let review_all = |cal: &si_hindsight::Calibration| -> Vec<(String, Option<si_model::game::Ending>, Vec<si_hindsight::TurnReview>)> {
+        games
+            .iter()
+            .map(|(p, _, rec)| {
+                let opts = si_hindsight::ReviewOptions { growth: false, actual_only: true, calibration: Some(cal.clone()), ..Default::default() };
+                let r = si_hindsight::review_with(rec, &defs, &opts);
+                (p.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default(), rec.meta.ending, r.turns)
+            })
+            .collect()
+    };
+    let mean = |v: &[f64]| -> f64 { if v.is_empty() { 0.0 } else { v.iter().sum::<f64>() / v.len() as f64 } };
+    let sd = |v: &[f64]| -> f64 {
+        if v.len() < 2 {
+            return 0.0;
+        }
+        let m = mean(v);
+        (v.iter().map(|x| (x - m) * (x - m)).sum::<f64>() / (v.len() - 1) as f64).sqrt()
+    };
+    // pass 1: the next-turn weight, then the Event and Fear means fitted to the hidden effect
+    // on each turn's actual line (least squares: Event indicator and Fear cards per Terror
+    // Level, no intercept: a turn with neither has no hidden effect by definition)
+    let base = si_hindsight::Calibration::default();
+    let pass1 = review_all(&base);
+    let samples: Vec<&si_hindsight::Sample> = pass1.iter().flat_map(|(_, _, ts)| ts.iter().map(|t| &t.sample)).collect();
+    let ledger = |(b, d): (u32, u32)| -> f64 { b as f64 * values.blight.abs() + d as f64 * values.dahan.abs() };
+    let (mut threatened, mut realized, mut next_n) = (0.0, 0.0, 0u32);
+    for s in &samples {
+        if let (Some(th), Some(ac)) = (s.next_threat, s.next_actual) {
+            if ledger(th) > 0.0 {
+                threatened += ledger(th);
+                realized += ledger(ac);
+                next_n += 1;
+            }
+        }
+    }
+    let next_weight = if threatened > 0.0 { (realized / threatened).clamp(0.05, 1.0) } else { base.next_weight };
+    // the hidden effects are scored with the weight above, so fit them on a second pass
+    let mut cal = si_hindsight::Calibration { source: String::new(), event_mean: 0.0, event_n: 0, fear_card_mean: [0.0; 3], fear_card_n: [0; 3], next_weight, next_n, luck_sd: base.luck_sd, luck_n: 0, model_sd: 0.0, model_n: 0 };
+    let pass2 = review_all(&cal);
+    let fit_rows: Vec<([f64; 4], f64)> = pass2
+        .iter()
+        .flat_map(|(_, _, ts)| ts.iter())
+        .filter_map(|t| {
+            let y = t.sample.hidden_effect?;
+            let mut x = [0.0; 4];
+            x[0] = if t.sample.event { 1.0 } else { 0.0 };
+            x[t.sample.terror.clamp(1, 3) as usize] = t.sample.fear_cards as f64;
+            Some((x, y))
+        })
+        .collect();
+    let beta = least_squares(&fit_rows);
+    cal.event_mean = beta[0];
+    cal.event_n = fit_rows.iter().filter(|(x, _)| x[0] > 0.0).count() as u32;
+    for tl in 1..=3usize {
+        cal.fear_card_mean[tl - 1] = beta[tl];
+        cal.fear_card_n[tl - 1] = fit_rows.iter().filter(|(x, _)| x[tl] > 0.0).count() as u32;
+    }
+    // pass 3: a turn's luck as the review defines it, with the means above
+    let pass2 = review_all(&cal);
+    let lucks: Vec<f64> = pass2.iter().flat_map(|(_, _, ts)| ts.iter().filter(|t| t.sample.hidden_effect.is_some()).map(|t| t.luck)).collect();
+    cal.luck_sd = if lucks.len() >= 2 { sd(&lucks) } else { base.luck_sd };
+    cal.luck_n = lucks.len() as u32;
+    let errors: Vec<f64> = pass2.iter().flat_map(|(_, _, ts)| ts.iter().filter_map(|t| t.sample.model_error)).collect();
+    cal.model_sd = if errors.is_empty() { 0.0 } else { (errors.iter().map(|e| e * e).sum::<f64>() / errors.len() as f64).sqrt() };
+    cal.model_n = errors.len() as u32;
+    let turns_total: usize = pass2.iter().map(|(_, _, ts)| ts.len()).sum();
+    cal.source = format!("si calibrate {} (UTC): {} games, {turns_total} turns under {}", chrono_date(), games.len(), roots.join(", "));
+    // the ledger against results: each game's actual lines summed
+    let mut wins: Vec<(String, f64)> = Vec::new();
+    let mut losses: Vec<(String, f64)> = Vec::new();
+    for (name, ending, ts) in &pass2 {
+        let total: f64 = ts.iter().map(|t| t.actual.score).sum();
+        let per_turn = if ts.is_empty() { 0.0 } else { total / ts.len() as f64 };
+        match ending {
+            Some(e) if e.won() => wins.push((name.clone(), per_turn)),
+            Some(_) => losses.push((name.clone(), per_turn)),
+            None => {}
+        }
+    }
+    let pairs = wins.len() * losses.len();
+    let concordant = wins.iter().flat_map(|w| losses.iter().map(move |l| (w.1 > l.1) as usize)).sum::<usize>();
+    out!("CALIBRATION  {} games, {turns_total} turns", games.len());
+    out!("  hidden effect fit         Event {:+.2} ({} turns with one); Fear card TL1 {:+.2} ({} turns)  TL2 {:+.2} ({})  TL3 {:+.2} ({}); least squares over {} turns of what the face-down cards did to the actual line", cal.event_mean, cal.event_n, cal.fear_card_mean[0], cal.fear_card_n[0], cal.fear_card_mean[1], cal.fear_card_n[1], cal.fear_card_mean[2], cal.fear_card_n[2], fit_rows.len());
+    out!("  next-turn weight          {:.2} = {realized:.1} realized / {threatened:.1} threatened (Blight and Dahan in ledger units) over {next_n} turns", cal.next_weight);
+    out!("  a turn's luck             sd {:.2}, mean {:+.2}, over {} turns (hindsight minus informed on the actual line)", cal.luck_sd, mean(&lucks), cal.luck_n);
+    out!("  simulator error           rms {:.2}, mean {:+.2}, over {} turns (recorded state at the Slow phase minus the simulated Invader phase of the actual line, in ledger units)", cal.model_sd, mean(&errors), cal.model_n);
+    out!("  ledger vs result          wins {} (mean {:+.2} per turn), losses {} (mean {:+.2} per turn); {} of {} win/loss pairs ordered right ({:.0}%)", wins.len(), mean(&wins.iter().map(|w| w.1).collect::<Vec<_>>()), losses.len(), mean(&losses.iter().map(|l| l.1).collect::<Vec<_>>()), concordant, pairs, if pairs > 0 { concordant as f64 / pairs as f64 * 100.0 } else { 0.0 });
+    out!("  per game (ledger per turn): {}", wins.iter().map(|(n, v)| format!("W {n} {v:+.2}")).chain(losses.iter().map(|(n, v)| format!("L {n} {v:+.2}"))).collect::<Vec<_>>().join("; "));
+    if dry {
+        out!("--dry-run: {} not written", out_path.display());
+    } else {
+        std::fs::write(&out_path, serde_json::to_string_pretty(&cal)?)?;
+        out!("written: {}", out_path.display());
+    }
+    Ok(())
+}
+
+/// Ordinary least squares for four coefficients (normal equations with a hair of ridge,
+/// so a feature no turn has gets zero rather than a singular matrix).
+fn least_squares(rows: &[([f64; 4], f64)]) -> [f64; 4] {
+    let mut a = [[0.0f64; 4]; 4];
+    let mut b = [0.0f64; 4];
+    for (x, y) in rows {
+        for i in 0..4 {
+            b[i] += x[i] * y;
+            for j in 0..4 {
+                a[i][j] += x[i] * x[j];
+            }
+        }
+    }
+    for i in 0..4 {
+        a[i][i] += 1e-6;
+    }
+    // Gaussian elimination with partial pivoting
+    let mut m = [[0.0f64; 5]; 4];
+    for i in 0..4 {
+        m[i][..4].copy_from_slice(&a[i]);
+        m[i][4] = b[i];
+    }
+    for col in 0..4 {
+        let pivot = (col..4).max_by(|&i, &j| m[i][col].abs().partial_cmp(&m[j][col].abs()).unwrap()).unwrap();
+        m.swap(col, pivot);
+        let d = m[col][col];
+        if d.abs() < 1e-12 {
+            continue;
+        }
+        for j in col..5 {
+            m[col][j] /= d;
+        }
+        for i in 0..4 {
+            if i != col {
+                let f = m[i][col];
+                for j in col..5 {
+                    m[i][j] -= f * m[col][j];
+                }
+            }
+        }
+    }
+    [m[0][4], m[1][4], m[2][4], m[3][4]]
+}
+
+/// Today's date (UTC) as YYYY-MM-DD, without a date crate.
+fn chrono_date() -> String {
+    let secs = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0) as i64;
+    let days = secs / 86400;
+    // civil-from-days (Howard Hinnant)
+    let z = days + 719468;
+    let era = z.div_euclid(146097);
+    let doe = z.rem_euclid(146097);
+    let yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+    let y = yoe + era * 400;
+    let doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
+    let mp = (5 * doy + 2) / 153;
+    let d = doy - (153 * mp + 2) / 5 + 1;
+    let m = if mp < 10 { mp + 3 } else { mp - 9 };
+    let y = if m <= 2 { y + 1 } else { y };
+    format!("{y:04}-{m:02}-{d:02}")
+}
+
 fn corpus(args: &[String]) -> Result<()> {
     let defs = defs_from(args)?;
     let md = args.iter().any(|a| a == "--md");
@@ -1313,35 +1851,8 @@ fn corpus(args: &[String]) -> Result<()> {
         let _ = i;
         paths.extend(games_under(Path::new(a)));
     }
-    // A bare EndGame log of a game that a capture also holds is the same game
-    // twice: the capture (exact undo clock) wins. Captures first.
-    paths.sort_by_key(|p| !p.is_dir());
-    let mut capture_lines: Vec<std::collections::HashSet<String>> = Vec::new();
     let mut rows: Vec<Row> = Vec::new();
-    for p in &paths {
-        let (lines, undo, source) = match si_record::replay::load(p) {
-            Ok(x) => x,
-            Err(e) => {
-                eprintln!("skip {}: {e}", p.display());
-                continue;
-            }
-        };
-        let actions: Vec<&str> = lines.iter().map(|l| l.text.trim()).filter(|t| t.starts_with("DidPerformAction")).collect();
-        if p.is_dir() {
-            capture_lines.push(actions.iter().map(|t| t.to_string()).collect());
-        } else {
-            let tail: Vec<&str> = actions.iter().rev().take(40).copied().collect();
-            if !tail.is_empty() && capture_lines.iter().any(|set| tail.iter().filter(|t| set.contains(**t)).count() * 10 >= tail.len() * 9) {
-                eprintln!("skip {} (same game as a capture)", p.display());
-                continue;
-            }
-        }
-        let mut rec = Replay::new(defs.as_ref()).run(&lines, undo.as_deref(), &source);
-        apply_save(&mut rec, p);
-        if !rec.meta.from_setup || rec.meta.turns < 2 {
-            eprintln!("skip {} (joined in progress or too short: {} turns)", p.display(), rec.meta.turns);
-            continue;
-        }
+    for (_, source, rec) in load_corpus(&paths, defs.as_ref()) {
         rows.push(measure(&rec, defs.as_ref(), &source));
     }
     // dedupe: keep the exact (capture) record of a game over its bare log
@@ -1502,8 +2013,8 @@ fn print_record(r: &GameRecord, defs: Option<&Definitions>, lands: bool) {
                 if st.cards_forgotten.is_empty() { String::new() } else { format!("forget {} ", st.cards_forgotten.join(",")) }
             );
             let powers: Vec<String> = st.powers_used.iter().map(|(ph, p, l)| format!("{}:{}{}", &ph.name()[..1], short(p), l.as_ref().map(|l| format!("@{l}")).unwrap_or_default())).collect();
-            let mut placed: Vec<String> = st.presence_placed.iter().map(|(n, l)| format!("{}→{}", n.as_deref().map(slot_short).unwrap_or("board"), l.as_ref().map(|l| l.to_string()).unwrap_or("?".into()))).collect();
-            placed.extend(st.presence_moved.iter().map(|(f, t)| format!("{f}⇢{t}")));
+            let mut placed: Vec<String> = st.presence_placed.iter().map(|(n, l)| format!("{}->{}", n.as_deref().map(slot_short).unwrap_or("board"), l.as_ref().map(|l| l.to_string()).unwrap_or("?".into()))).collect();
+            placed.extend(st.presence_moved.iter().map(|(f, t)| format!("{f}>{t}")));
             out!(
                 "{:<5} {:<16} {:<7} {:<26} {:>2} +{:<3} -{:<3} ={:<4}  {:<36} {:<35} {:>4}  {:>7}  {}",
                 if st.turn == 0 { "setup".to_string() } else { format!("T{}", st.turn) },
@@ -1524,7 +2035,7 @@ fn print_record(r: &GameRecord, defs: Option<&Definitions>, lands: bool) {
         out!();
     }
     if lands {
-        out!("lands: visits (turn step card: +added blight/cascade dmg def dahan-lost inv-destroyed → E/T/C/D after) and touches (turn phase by)");
+        out!("lands: visits (turn step card: +added blight/cascade dmg def dahan-lost inv-destroyed -> E/T/C/D after) and touches (turn phase by)");
         for (id, l) in &r.lands {
             if l.visits.is_empty() && l.touches.is_empty() && l.blight.is_empty() {
                 continue;
@@ -1532,7 +2043,7 @@ fn print_record(r: &GameRecord, defs: Option<&Definitions>, lands: bool) {
             out!("{}{}  end E/T/C/D/B {}/{}/{}/{}/{}", id, l.terrain.map(|t| format!(" {t}")).unwrap_or_default(), l.end.explorers, l.end.towns, l.end.cities, l.end.dahan, l.end.blight);
             for v in &l.visits {
                 out!(
-                    "   T{} {:<7} {:<10} +{:<8} blight {}/{} dmg {} def {} dahan-lost {} destroyed {} → {}/{}/{}/{}",
+                    "   T{} {:<7} {:<10} +{:<8} blight {}/{} dmg {} def {} dahan-lost {} destroyed {} -> {}/{}/{}/{}",
                     v.turn,
                     v.step.map(|s| format!("{s:?}")).unwrap_or_default(),
                     v.card.clone().unwrap_or_default(),
@@ -1564,7 +2075,7 @@ fn print_record(r: &GameRecord, defs: Option<&Definitions>, lands: bool) {
     }
 }
 
-/// `ShroudOfSilentMistCardPlays3` → `P3`, `…Energy2` → `E2`.
+/// `ShroudOfSilentMistCardPlays3` -> `P3`, `...Energy2` -> `E2`.
 fn slot_short(id: &str) -> &str {
     if let Some(i) = id.find("CardPlays") {
         return &id[i + 4..];

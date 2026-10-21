@@ -96,8 +96,9 @@ pub enum Effect {
     RemoveBlight(u8),
     AddBlight(u8),
     AddDahan(u8),
-    /// Presence added by a Power (boons, Blazing Renewal).
-    AddPresence(u8),
+    /// Presence added by a Power (boons, Blazing Renewal); `range` when the card says
+    /// where it may go ("up to Range 1 from their Presence").
+    AddPresence { count: u8, range: Option<u8> },
     AddToken { kind: TokenKind, count: u8 },
     RemoveToken { kind: TokenKind, count: u8 },
     /// Remove pieces without Destroying them (no Fear, no counterattack).
@@ -236,7 +237,10 @@ impl Effect {
             RemoveBlight(b) => format!("remove {b} Blight"),
             AddBlight(b) => format!("add {b} Blight"),
             AddDahan(d) => format!("add {d} Dahan"),
-            AddPresence(p) => format!("add {p} presence"),
+            AddPresence { count, range } => match range {
+                Some(r) => format!("add {count} presence within Range {r} of your presence"),
+                None => format!("add {count} presence"),
+            },
             AddToken { kind, count } => format!("add {count} {}", token_word(*kind)),
             RemoveToken { kind, count } => format!("remove {count} {}", token_word(*kind)),
             Remove { count, what } => format!("remove {} {} (not destroyed: no Fear)", n(*count), list(what)),
@@ -614,7 +618,7 @@ impl Features {
             FearIfInvaders(f) => self.fear_conditional += *f as u32,
             RemoveBlight(b) => self.blight_removed += *b as u32,
             AddBlight(b) => self.blight_added += *b as u32,
-            AddDahan(_) | AddPresence(_) | AddToken { .. } => self.tokens_added += 1,
+            AddDahan(_) | AddPresence { .. } | AddToken { .. } => self.tokens_added += 1,
             RemoveToken { .. } | Remove { .. } | Replace { .. } | Downgrade(_) => self.destroy += 1,
             Destroy { count, .. } => self.destroy += n(*count),
             Isolate | SkipRavage | SkipBuild | SkipExplore | SkipAll | SkipAction(_) | NoParticipation(_) | DahanImmune | InvaderDamageMinus(_) => self.skip += 1,

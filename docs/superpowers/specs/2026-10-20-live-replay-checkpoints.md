@@ -161,8 +161,17 @@ code `si hindsight` and `si inject` use.
    machine.
 2. `si checkpoint` list and export; the hindsight block for the chosen turn printed
    beside it.
-3. Recorder: branch marker and a `--from <checkpoint>` on `si report` / `si hindsight`;
-   branches listed under their parent in the corpus.
+3. Branch review (built 2026-10-20 night): a branch's EndGame log starts at the load
+   (`LOADED FILE: save-Undo-990.dat`), so `si hindsight <log> --seed <the checkpoint
+   save>` seeds the replay from the save's engine snapshot (board, presence per spirit,
+   Energy, piles, revealed slots, turn, phase, the Invader cards already out of the
+   deck); the turns keep their real numbers and the hidden-card math knows the deck.
+   `si inject` prints the flag. `si import <EndGame log>` builds a `live-<id>[-branch]/`
+   capture from the log and the saves the app still has (its final `.dat`, the current
+   game's step saves), so an unrecorded game or a branch lands beside the captures.
+   Still open: the recorder itself on a reloaded game id (it would append to the
+   parent's capture; the DAG's fork rule handles the saves, the log needs a branch
+   marker).
 4. Edited checkpoints (NRBF encoder, round-trip test over the 4,949 kept saves; first
    edit Energy) so a turn can start with the hindsight line's growth already taken.
 5. The study board's "play this live" button.

@@ -25,6 +25,9 @@ pub struct Applied {
     pub gathered: u32,
     pub blight_removed: u32,
     pub tokens_added: u32,
+    /// Presence the Power added to the island.
+    #[serde(default)]
+    pub presence_added: u32,
     pub fear: u32,
     /// Ravages the Power forced (Manifest Incarnation), with what each did.
     #[serde(default)]
@@ -360,7 +363,10 @@ fn apply_one(e: &Effect, island: &mut Island, target: &si_model::island::LandId,
         }
         Effect::AddBlight(n) => l.c.blight += *n as u32,
         Effect::AddDahan(n) => l.c.dahan += *n as u32,
-        Effect::AddPresence(n) => l.c.presence += *n as u32,
+        Effect::AddPresence { count, .. } => {
+            l.c.presence += *count as u32;
+            a.presence_added += *count as u32;
+        }
         Effect::AddToken { kind, count } => {
             let n = *count as u32;
             match kind {
@@ -575,6 +581,9 @@ fn apply_one(e: &Effect, island: &mut Island, target: &si_model::island::LandId,
             } else if let Some(n) = sc.strip_prefix("up to ").and_then(|r| r.split(' ').next()).and_then(|n| n.parse::<usize>().ok()) {
                 a.notes.push(format!("area: {scope} — the {n} fullest adjacent lands taken (player's choice)"));
                 by_invaders.into_iter().take(n).collect()
+            } else if sc.starts_with("each land where target spirit has presence") || sc == "your lands" || sc.starts_with("each of its lands") {
+                // the Spirit's lands: in a solo game every presence on the island is theirs
+                island.lands.values().filter(|x| x.c.presence > 0 && x.terrain != Some(Terrain::Ocean)).map(|x| x.id.clone()).collect()
             } else {
                 vec![target.clone()]
             };
