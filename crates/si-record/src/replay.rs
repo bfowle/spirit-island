@@ -200,6 +200,12 @@ struct Walk<'d> {
     /// The Power whose use the log has opened and not yet closed (`UsePowerActivation` …
     /// `UsePowerAction`): presence it places is its, not growth.
     power_in_use: Option<String>,
+    /// The board before a presence moved outside any Power in a Power phase (Shroud's Mists
+    /// Shift and Flow gathers as a Power targets, before the Power starts): that Power's use
+    /// begins there.
+    before_targeting: Option<BTreeMap<LandId, Counts>>,
+    /// The Damage on each piece this turn, by piece: it stays until Time Passes.
+    wounds: BTreeMap<String, u32>,
     spirit_names: BTreeMap<String, String>,
     single_spirit: Option<String>,
 }
@@ -264,6 +270,8 @@ impl<'d> Replay<'d> {
             gone_this_step: BTreeSet::new(),
             power_phase: BTreeMap::new(),
             power_in_use: None,
+            before_targeting: None,
+            wounds: BTreeMap::new(),
             spirit_names: BTreeMap::new(),
             single_spirit: None,
         };
@@ -409,6 +417,7 @@ fn unique_fact(e: &Event, epoch: u32) -> Option<String> {
         Event::FearCardResolved { card } => format!("fear {card}"),
         Event::EventResolved { card } => format!("event {card} e{epoch}"),
         Event::TerrorLevel { level } => format!("terror {level}"),
+        Event::AdversaryTook { piece } => format!("the adversary took {piece}"),
         _ => return None,
     })
 }
@@ -446,6 +455,29 @@ impl<'d> Walk<'d> {
         }
         self.rec.spirits.push(st);
         self.rec.spirits.last_mut().unwrap()
+    }
+
+    /// The Damage on the pieces still standing, by land.
+    fn wounds_now(&self) -> BTreeMap<LandId, Vec<(PieceKind, u32)>> {
+        let mut out: BTreeMap<LandId, Vec<(PieceKind, u32)>> = BTreeMap::new();
+        for (id, d) in &self.wounds {
+            if let (Some((land, kind)), true) = (self.pieces.get(id), *d > 0) {
+                out.entry(land.clone()).or_default().push((*kind, *d));
+            }
+        }
+        out
+    }
+
+    /// Store the wounds beside a snapshot of the board.
+    fn snapshot_wounds(&mut self, at: &str) {
+        let w = self.wounds_now();
+        self.turn_rec().wounds.insert(at.to_string(), w);
+    }
+
+    /// Every land with anything on it, as it stands now.
+    fn board_now(&self) -> BTreeMap<LandId, Counts> {
+        let lands: BTreeSet<LandId> = self.pieces.values().map(|(l, _)| l.clone()).chain(self.blight.keys().cloned()).chain(self.presence.keys().cloned()).chain(self.tokens.keys().cloned()).collect();
+        lands.iter().map(|l| (l.clone(), self.counts_of(l))).collect()
     }
 
     fn turn_rec(&mut self) -> &mut TurnRecord {
@@ -693,6 +725,11 @@ impl<'d> Walk<'d> {
             }
             Marker::PowerPhase { power, phase } => {
                 self.power_phase.insert(power.clone(), phase);
+                if self.turn > 0 && matches!(phase, Phase::FastPower | Phase::SlowPower) {
+                    let before = self.before_targeting.take().unwrap_or_else(|| self.board_now());
+                    let wounds = self.wounds_now();
+                    self.turn_rec().power_uses.push(crate::record::PowerUse { power: power.clone(), phase: Some(phase), target: None, before, after: BTreeMap::new(), moves: Vec::new(), destroyed: Vec::new(), wounds, fear: 0, defend: 0 });
+                }
                 self.power_in_use = Some(power);
             }
             Marker::Boards(boards) => {
@@ -733,8 +770,22 @@ impl<'d> Walk<'d> {
     fn apply(&mut self, e: Event) {
         match e {
             Event::PhaseChanged { to, .. } => {
+                self.before_targeting = None;
                 if to == Phase::PlayerSetup {
                     self.rec.meta.from_setup = true;
+                }
+                if self.phase == Phase::FastPower && to != Phase::FastPower && self.turn > 0 {
+                    // the board as the Fast phase ends
+                    let lands: BTreeSet<LandId> = self.pieces.values().map(|(l, _)| l.clone()).chain(self.blight.keys().cloned()).chain(self.presence.keys().cloned()).chain(self.tokens.keys().cloned()).collect();
+                    let snapshot: BTreeMap<LandId, Counts> = lands.iter().map(|l| (l.clone(), self.counts_of(l))).collect();
+                    self.turn_rec().after_fast = snapshot;
+                    self.snapshot_wounds("after_fast");
+                }
+                if self.phase == Phase::SlowPower && to != Phase::SlowPower && self.turn > 0 {
+                    // the board as the Slow phase ends: the turn as the player left it
+                    let snapshot = self.board_now();
+                    self.turn_rec().after_slow = snapshot;
+                    self.snapshot_wounds("after_slow");
                 }
                 if (to == Phase::FastPower || to == Phase::SlowPower) && self.turn > 0 {
                     let lands: BTreeSet<LandId> = self.pieces.values().map(|(l, _)| l.clone()).chain(self.blight.keys().cloned()).chain(self.presence.keys().cloned()).chain(self.tokens.keys().cloned()).collect();
@@ -745,6 +796,7 @@ impl<'d> Walk<'d> {
                     } else {
                         t.before_slow = snapshot;
                     }
+                    self.snapshot_wounds(if to == Phase::FastPower { "before_fast" } else { "before_slow" });
                 }
                 if to.is_invader_step() && !self.invaded && self.turn > 0 {
                     // the state the Invader steps start from
@@ -756,6 +808,11 @@ impl<'d> Walk<'d> {
                     t.before_invaders = snapshot;
                     t.defend = defend;
                     t.terror_at_invaders = terror;
+                    self.snapshot_wounds("before_invaders");
+                }
+                if to == Phase::TimePasses {
+                    // the Damage heals as Time Passes
+                    self.wounds.clear();
                 }
                 if to.is_invader_step() {
                     self.invaded = true;
@@ -859,6 +916,26 @@ impl<'d> Walk<'d> {
             }
             Event::PiecesMoved { moves } => {
                 let spirit_phase = matches!(self.phase, Phase::FastPower | Phase::SlowPower | Phase::SpiritPhase);
+                // the Power in use: each piece it moved or destroyed, with its kind
+                if self.power_in_use.is_some() && self.turn > 0 {
+                    let mut logged: Vec<(Option<(String, LandId, LandId)>, Option<(LandId, String)>)> = Vec::new();
+                    for m in &moves {
+                        let name = m.kind.map(|k| format!("{k:?}")).or_else(|| TokenKind::parse(&m.piece).map(|t| format!("{t:?}")));
+                        let prev = self.pieces.get(&m.piece).map(|(l, _)| l.clone()).or(m.from.clone());
+                        match (name, prev, &m.to) {
+                            (Some(n), Some(f), Some(t)) if f != *t => logged.push((Some((n, f, t.clone())), None)),
+                            (Some(n), Some(f), None) => logged.push((None, Some((f, n)))),
+                            _ => {}
+                        }
+                    }
+                    let power = self.power_in_use.clone().unwrap_or_default();
+                    if let Some(u) = self.turn_rec().power_uses.iter_mut().rev().find(|u| u.power == power && u.after.is_empty()) {
+                        for (mv, gone) in logged {
+                            u.moves.extend(mv);
+                            u.destroyed.extend(gone);
+                        }
+                    }
+                }
                 let mut out: BTreeMap<LandId, u32> = BTreeMap::new();
                 let mut into: BTreeMap<LandId, u32> = BTreeMap::new();
                 for m in moves {
@@ -940,6 +1017,12 @@ impl<'d> Walk<'d> {
                         }
                     }
                     if let Some((land, kind)) = self.pieces.remove(&id) {
+                        if let (Some(power), false) = (self.power_in_use.clone(), invader_step) {
+                            let (l2, k2) = (land.clone(), format!("{kind:?}"));
+                            if let Some(u) = self.turn_rec().power_uses.iter_mut().rev().find(|u| u.power == power && u.after.is_empty()) {
+                                u.destroyed.push((l2, k2));
+                            }
+                        }
                         if invader_step {
                             if kind == PieceKind::Dahan {
                                 *self.step_dahan_lost.entry(land).or_insert(0) += 1;
@@ -958,7 +1041,23 @@ impl<'d> Walk<'d> {
                     self.touch(&land, "tokens", None, TouchKind::Moved { out: 0, into: 0 });
                 }
             }
-            Event::Damage { source, land, amount, .. } => {
+            Event::Damage { source, land, amount, distribution } => {
+                // the Damage stays on each piece named until Time Passes (a printed piece the
+                // record has not named yet is the one of its kind in the land)
+                for (piece, d) in &distribution {
+                    if !self.pieces.contains_key(piece) {
+                        if let (Some(kind), Some(l)) = (PieceKind::parse(piece), land.as_ref()) {
+                            if let Some(seed) = self.pieces.iter().find(|(pid, (pl, pk))| pid.starts_with("init:") && pl == l && *pk == kind).map(|(pid, _)| pid.clone()) {
+                                if let Some(v) = self.pieces.remove(&seed) {
+                                    self.pieces.insert(piece.clone(), v);
+                                }
+                            }
+                        }
+                    }
+                    if self.pieces.contains_key(piece) {
+                        *self.wounds.entry(piece.clone()).or_insert(0) += d;
+                    }
+                }
                 if let Some(land) = land {
                     if self.phase.is_invader_step() {
                         *self.step_damage.entry(land).or_insert(0) += amount;
@@ -968,6 +1067,12 @@ impl<'d> Walk<'d> {
                 }
             }
             Event::Defend { lands, amount, source } => {
+                if let Some(power) = self.power_in_use.clone() {
+                    let n = lands.len() as u32;
+                    if let Some(u) = self.turn_rec().power_uses.iter_mut().rev().find(|u| u.power == power && u.after.is_empty()) {
+                        u.defend += amount * n;
+                    }
+                }
                 for l in lands {
                     *self.defend_this_turn.entry(l.clone()).or_insert(0) += amount;
                     self.touch(&l, &source, None, TouchKind::Defend(amount));
@@ -1004,6 +1109,11 @@ impl<'d> Walk<'d> {
             Event::Fear { amount, .. } => {
                 if amount > 0 {
                     self.turn_rec().fear_generated += amount;
+                    if let Some(power) = self.power_in_use.clone() {
+                        if let Some(u) = self.turn_rec().power_uses.iter_mut().rev().find(|u| u.power == power && u.after.is_empty()) {
+                            u.fear += amount as u32;
+                        }
+                    }
                 }
             }
             Event::FearCardEarned => {
@@ -1015,9 +1125,21 @@ impl<'d> Walk<'d> {
                 self.terror = level;
                 self.turn_rec().terror_after = level;
             }
+            Event::AdversaryTook { piece } => {
+                if piece.starts_with("Beast") {
+                    self.turn_rec().beasts_to_adversary += 1;
+                }
+            }
             Event::EventResolved { card } => self.turn_rec().events.push(card),
             Event::PowerUsed { power, target, .. } => {
                 self.power_in_use = None;
+                if self.turn > 0 {
+                    let after = self.board_now();
+                    if let Some(u) = self.turn_rec().power_uses.iter_mut().rev().find(|u| u.power == power && u.after.is_empty()) {
+                        u.after = after;
+                        u.target = target.clone();
+                    }
+                }
                 let phase = self.power_phase.get(&power).copied().unwrap_or(self.phase);
                 let spirit = self.attribute_power(&power);
                 if let Some(sp) = &spirit {
@@ -1046,6 +1168,15 @@ impl<'d> Walk<'d> {
                     }
                 }
             }
+            Event::ElementsGained { spirit: Some(sp), source, elements } => {
+                // a card's elements come with the card and a track slot's with the track;
+                // Shifting Memory's prepared markers are not elements until spent
+                let kept = !(source.is_empty() || source == "-" || source.contains("/AddPresence") || source.contains("PrepareElementMarkers"));
+                if kept && !elements.is_empty() && self.turn > 0 {
+                    self.spirit_turn(&sp).elements_gained.push((source, elements));
+                }
+            }
+            Event::ElementsGained { spirit: None, .. } => {}
             Event::CardUnplayed { card, .. } => {
                 let spirit = self.attribute_power(&card);
                 if let Some(sp) = spirit {
@@ -1078,6 +1209,22 @@ impl<'d> Walk<'d> {
                 st.energy_after = after;
             }
             Event::PresenceMoved { spirit, node, from, to, destroyed } => {
+                if self.power_in_use.is_none() && matches!(self.phase, Phase::FastPower | Phase::SlowPower) && from.is_some() && to.is_some() && !destroyed && self.before_targeting.is_none() {
+                    self.before_targeting = Some(self.board_now());
+                }
+                // the Power in use moved or destroyed it (Many Minds' Sacred Site pushed as a
+                // Beast, Explosive Eruption's X): part of what the use did
+                if self.turn > 0 && self.power_in_use.is_some() {
+                    let power = self.power_in_use.clone().unwrap_or_default();
+                    let (f, t) = (from.clone(), to.clone());
+                    if let Some(u) = self.turn_rec().power_uses.iter_mut().rev().find(|u| u.power == power && u.after.is_empty()) {
+                        match (f, t, destroyed) {
+                            (Some(f), Some(t), false) if f != t => u.moves.push(("Presence".into(), f, t)),
+                            (Some(f), _, true) => u.destroyed.push((f, "Presence".into())),
+                            _ => {}
+                        }
+                    }
+                }
                 let id = self.spirit_id(&spirit);
                 // back onto its track slot: a growth option undone by hand
                 let returned = from.is_some() && to.is_none() && !destroyed && node.is_some();
@@ -1196,7 +1343,6 @@ impl<'d> Walk<'d> {
             }
             Event::TimePassed => {}
             Event::SlotsAdvanced { .. }
-            | Event::ElementsGained { .. }
             | Event::PlaysAdjusted { .. }
             | Event::GrowthChosen { .. }
             | Event::GrowthOptionTaken { .. }

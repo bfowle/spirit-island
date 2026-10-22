@@ -207,6 +207,13 @@ pub enum Effect {
     /// The Power may be used in the Fast phase (sometimes for a cost).
     MayBeFast { cost: Option<u8> },
     Repeat,
+    /// The tier replaces the tiers reached before it ("Instead, 3 Fear and Defend 4"): the
+    /// first effect of such a tier, a marker with no effect of its own.
+    Instead,
+    /// A tier's cost beyond elements, at the head of its effects (`what` the cost's name:
+    /// `Beast` in the target land, `DestroyedPresence` the presence destroyed for it,
+    /// `Energy`, `PowerCards`): the tier is reached only when it is met.
+    Requires { what: String, count: u8 },
     /// "You may do both": the preceding Choice is not exclusive.
     Both,
     /// "For each {X}, …" / "N Damage per {X}".
@@ -272,6 +279,8 @@ impl Effect {
             MayBeFast { cost: Some(c) } => format!("may be Fast for {c} Energy"),
             MayBeFast { cost: None } => "may be Fast".into(),
             Repeat => "repeat this Power".into(),
+            Instead => "instead of the tiers before".into(),
+            Requires { what, count } => format!("needs {count} {what}"),
             Both => "you may do both".into(),
             Per { per, then } => format!("for each {}: {}", per.words(), then.iter().map(Effect::words).collect::<Vec<_>>().join("; ")),
             Choice(branches) => format!("either {}", branches.iter().map(|b| b.iter().map(Effect::words).collect::<Vec<_>>().join(", ")).collect::<Vec<_>>().join(" — or — ")),
@@ -629,6 +638,7 @@ impl Features {
             GainEnergy(e) => self.energy += *e as u32,
             GainPowerCard { .. } | GainElement(_) => self.cards += 1,
             RangeBonus(_) | Repeat | MayBeFast { .. } | Both | MakeFast(_) | Unmodeled(_) | SpiritEffect(_) | SpecialToken { .. } | Timing { .. } | Movement(_) | DeckEffect(_) | Variable { .. } | Choose(_) | MaySlow => self.other += 1,
+            Instead | Requires { .. } => {}
             Clarification(_) | Distribution(_) | Build => {}
             DestroyPresence(_) | NoBlight => self.skip += 1,
             RemoveHealth(k) => self.destroy += *k as u32,

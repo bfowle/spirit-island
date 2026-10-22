@@ -65,6 +65,9 @@ pub enum Event {
     FearCardEarned,
     FearCardResolved { card: String },
     TerrorLevel { level: u8 },
+    /// A piece the adversary's rules took off the island to its own panel (Russia's Hunters
+    /// keep the Beasts they destroy there).
+    AdversaryTook { piece: String },
     EventRevealed { card: String },
     EventResolved { card: String },
     /// A Power (card or innate) used by a spirit at a land, with the phase.
@@ -73,7 +76,14 @@ pub enum Event {
     CardUnplayed { spirit: Option<SpiritId>, card: CardId },
     EnergyPaid { spirit: SpiritId, amount: i64 },
     EnergyGained { spirit: SpiritId, amount: i64 },
-    ElementsGained { spirit: Option<SpiritId>, source: String },
+    /// Elements a spirit gained (`elements` by name, when the source says): a card played
+    /// (source `-`), a presence track slot, a growth option, a Power, a wildcard's choice.
+    ElementsGained {
+        spirit: Option<SpiritId>,
+        source: String,
+        #[serde(default)]
+        elements: Vec<String>,
+    },
     PlaysAdjusted { source: String },
     /// Presence from a track slot (`node`) to a land, land to land, or land to
     /// destroyed (`to` None).
@@ -119,6 +129,7 @@ impl Event {
             Event::FearCardEarned => "FearCardEarned",
             Event::FearCardResolved { .. } => "FearCardResolved",
             Event::TerrorLevel { .. } => "TerrorLevel",
+            Event::AdversaryTook { .. } => "AdversaryTook",
             Event::EventRevealed { .. } => "EventRevealed",
             Event::EventResolved { .. } => "EventResolved",
             Event::PowerUsed { .. } => "PowerUsed",

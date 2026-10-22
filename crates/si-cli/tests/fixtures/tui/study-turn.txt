@@ -1,5 +1,5 @@
  STUDY  Shroud of Silent Mist | board D | no adversary | won: Invaders destroyed | deck base deck 111-2222-33333 | capture
- ╭ T1 better 0.6 ╮╭ T2 sound ╮╭ T3 sound ╮╭ T4 MISTAKE 1.5 ╮╭ T5 sound ╮╭ T6 sound ╮                                                                                                                     ╭ Turn ╮╭ Pacing ╮
+ ╭ T1 better 0.6 ╮╭ T2 sound ╮╭ T3 sound ╮╭ T4 MISTAKE 2.2 ╮╭ T5 sound ╮╭ T6 sound ╮                                                                                                                     ╭ Turn ╮╭ Pacing ╮
 ─╯               ╰┴──────────┴┴──────────┴┴────────────────┴┴──────────┴┴──────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯      ╰┴────────┴─
 ╭ LINES  5 play sets over 1 growth position, ranked by informed ──────────────────────────────────────────────────────────────╮╭ POSITION  the island at the Fast phase ───────────────────────────────────────────────────╮
 │       growth            plays                        informed  hindsight conf  tiers           produced                     ││land terr inv      Dh Bl Pr tok     steps     line              result                     │

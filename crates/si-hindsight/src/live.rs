@@ -121,7 +121,7 @@ pub fn open_turn(rec: Arc<GameRecord>, defs: &Definitions, seed: &Seed, cal: &Ca
     let level = seed.adversary_level.or(rec.meta.adversary_level).or_else(|| si_metrics::adversary::estimate(&rec, defs).and_then(|e| e.candidates.first().copied())).unwrap_or(0);
     // the loss conditions' counts as the turn began, the Blight Card as the save holds it
     let clocks = crate::loss_clocks(&rec, turn, seed.blight_pool.map(|p| (p, seed.blight_flipped)));
-    let rules = Rules { adversary: rec.meta.adversary.clone().or_else(|| seed.adversary.clone()), level, spirits: rec.meta.spirits.clone(), hooks: Rules::hooks_of(defs, &rec.meta.spirits), clocks, terror: seed.terror.max(1), ..Default::default() };
+    let rules = Rules { scenario: rec.meta.scenario.clone().or_else(|| seed.scenario.clone()), adversary: rec.meta.adversary.clone().or_else(|| seed.adversary.clone()), level, spirits: rec.meta.spirits.clone(), hooks: Rules::hooks_of(defs, &rec.meta.spirits), clocks, terror: seed.terror.max(1), ..Default::default() };
     let deck = Deck::for_game(&rec, defs, level);
     let mut values = Values::for_panel(panel);
     values.next_weight = cal.next_weight;
@@ -202,6 +202,8 @@ fn expectation(open: &OpenTurn, plan_fear: u32) -> (bool, u32, u8) {
 /// share of candidates under which the plan beats `baseline` (the `none` plan) with the
 /// simulator's error. A play the journal already records is not applied twice.
 pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, text: &str) -> Result<Line, String> {
+    let scenario_defs = defs.for_scenario(open.rec.meta.scenario.as_deref().or(open.seed.scenario.as_deref()));
+    let defs: &Definitions = &scenario_defs;
     let rec: &GameRecord = &open.rec;
     let t = &open.t;
     let spirit = open.spirit.as_str();
@@ -226,11 +228,6 @@ pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, 
     };
     let mut notes: Vec<String> = Vec::new();
     let typed = crate::parse_plays(defs, plays_text)?;
-    if past_fast {
-        if let Some(p) = typed.iter().find(|p| p.fast) {
-            return Err(format!("the Fast phase is over: {} is Fast", p.power));
-        }
-    }
     let (made_cards, made_innates) = crate::recorded_plays(rec, defs, &open.s, t, &all_innates);
     // the plays already made this turn come first, in the order made; a typed play that
     // names one of them is that play's land and moves (a card played, not yet used), not a
@@ -239,12 +236,15 @@ pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, 
     let mut typed_kept: Vec<Play> = Vec::new();
     for p in typed {
         match all.iter_mut().find(|m| m.power == p.power) {
-            Some(m) if m.target.is_none() || m.target == p.target => {
+            // used already: its moves were made as the journal has them, whatever the plan writes
+            Some(m) if m.target.is_some() && m.target == p.target => notes.push(format!("{} made already at {}", p.power, p.target.as_ref().map(|l| l.to_string()).unwrap_or_default())),
+            Some(m) if m.target.is_none() => {
                 m.target = p.target.clone();
                 m.fast = p.fast;
                 m.forced = p.forced;
                 m.moves = p.moves.clone();
                 m.exact = p.exact;
+                m.kills = p.kills.clone();
                 notes.push(format!("{} made already: the plan says where", p.power));
             }
             Some(m) => notes.push(format!("{} made already at {}: the plan's {} is dropped", p.power, m.target.as_ref().map(|l| l.to_string()).unwrap_or_default(), p.target.as_ref().map(|l| l.to_string()).unwrap_or_default())),
@@ -252,6 +252,12 @@ pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, 
         }
     }
     let typed = typed_kept;
+    // a Fast play the journal made already is the plan naming it; a new one is too late
+    if past_fast {
+        if let Some(p) = typed.iter().find(|p| p.fast) {
+            return Err(format!("the Fast phase is over: {} is Fast", p.power));
+        }
+    }
     all.extend(typed.iter().cloned());
     let cards: Vec<Play> = all.iter().filter(|p| !p.innate).cloned().collect();
     let cost: i64 = cards.iter().map(|p| p.cost).sum();
@@ -267,12 +273,10 @@ pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, 
         }
     }
     let growth_value = pos.slots as f64 * values.slot + pos.cards_gained as f64 * values.card + (pos.energy - cost).max(0) as f64 * values.energy;
-    let mut s2 = open.s.clone();
-    s2.presence_after = pos.presence.clone();
-    s2.revealed_after = pos.revealed.clone();
+    let s2 = crate::spirit_at(&open.s, &pos);
     let played: Vec<&PowerCard> = cards.iter().filter_map(|p| defs.cards.get(&p.power)).collect();
     let elements = crate::elements_for(defs, &s2, &played);
-    if let Some(e) = crate::forced_speed_error(defs, &typed, &elements) {
+    if let Some(e) = crate::forced_speed_error(defs, spirit, &typed, &elements) {
         return Err(e);
     }
     // `all` acts in order: the plays made already as made, then the plan's as written
@@ -288,9 +292,9 @@ pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, 
         let mut armed = Vec::new();
         let mut island;
         if at_slow {
-            island = verify::island_for(rec, defs, &t.before_slow);
+            island = verify::island_at(rec, defs, t, "before_slow");
         } else {
-            island = verify::island_for(rec, defs, &t.before_fast);
+            island = verify::island_at(rec, defs, t, "before_fast");
             for (id, l) in island.lands.iter_mut() {
                 l.c.presence = s2.presence_after.get(id).copied().unwrap_or(0);
             }

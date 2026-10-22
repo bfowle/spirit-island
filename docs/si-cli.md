@@ -274,7 +274,36 @@ Thunderspeaker game, checked step by step against the save journal):
   after a Ravage destroys Dahan, one presence within range 1 per Dahan is destroyed
   (Sworn to Victory: the ravaged land's first, then a neighbor's without Dahan, the
   fewest first, as the player chose both times). Shroud gathers one presence toward a
-  Power's land first (Mists Shift and Flow: where the record says, else into the target).
+  Power's land first (Mists Shift and Flow: the record's choice for that Power when it is
+  the target or beside it, none when the player declined, else into the target). Rampant
+  Green skips a Ravage or Build in a land with its Sacred Site by destroying a presence
+  there (Choke the Land with Green) where the record has it doing so.
+- **Elements**: the track, the cards played, and what the turn gained besides: a growth
+  option's element (Fractured Days, Lure; on the growth taken only), a wildcard slot's
+  choice, a Power Card's grant when that card is in the line.
+- **Pieces and tokens**: a gather, push, Destroy or Remove moves or takes tokens too
+  (Beasts, Disease, Wilds, Strife, Badlands), one at a time, never from nowhere. The
+  Event and Fear steps' change is replayed as the record has it; a piece it moved that the
+  line does not have is not added where it went.
+- **Innate tiers**: a tier printed "Instead, ..." replaces the tiers reached before it
+  (Beset and Confound the Invaders at two tiers is 3 Fear and Defend 4, not 5 and 6); a
+  tier's costs beyond elements hold it back until met: Beasts in the target land (Beset),
+  the presence destroyed for it (Explosive Eruption's X, as the line states it); Energy and
+  Power Card costs are taken as paid.
+- **Many Minds**: its Beasts gather from and push to lands up to 2 away (Fly Fast as
+  Thought), and its Sacred Site counts as a Beast, moving 2 of its presence together (A
+  Joining of Swarms and Flocks; a line writes that `:Pr`).
+- **Presence**: an "Add" may take a presence already on the island, from where the line
+  says (`A5>A8:Pr`); a Push of presence is the player's call, not taken unasked. A Power on a
+  Spirit writes its moves as whole paths (`Boon[C4>C7:Pr]`) and acts where they start.
+- **Two boards**: the lands that touch across boards come from the save's adjacency
+  matrix (a board definition knows only its own).
+- **Damage stays until Time Passes**: "To Destroy an Invader, you must deal Damage that
+  meets or exceeds its Health in one turn" (core rulebook p. 15). A piece's Damage is kept
+  (the record tracks every piece's from the journal and puts it on each snapshot; the
+  Event and Fear steps' too), Damage goes to the most valuable set it destroys at the
+  Health each piece has left with the rest on a survivor, and the Dahan fall "as
+  efficiently as possible" (p. 9): a Damaged Dahan first, the rest on one.
 - **Cards**: Manifestation of Power and Glory deals Dahan times presence as one amount;
   Lead the Furious Assault destroys a Town per 2 Dahan (a City per 3); Words of Warning's
   Dahan strike back as they fall; Boon of Swarming Bedevilment defends every land of the
@@ -417,9 +446,11 @@ showing the turn and the growth positions tried so far.
   plays act in the order written: `GW>A5[>A1x2] SA>A5[<A1]` pushes two Dahan to A1 and
   then gathers one back, where the other order would find A1 empty. A play's phase is
   its printed speed: `WW>A7` is Fast, `VT` a Slow card that takes its land after the
-  Invader steps. `F:LFA>A4` takes an innate printed Slow in the Fast phase through its
-  "This Power may be Fast" tier (Thunderspeaker's 4 Air), and the line is refused with
-  the reason when its elements do not reach that tier. On the screen the style says
+  Invader steps. `F:LFA>A4` takes a Power printed Slow in the Fast phase: an innate
+  through its "This Power may be Fast" tier (Thunderspeaker's 4 Air), or any Power
+  another play or the spirit's own rule makes Fast (Slip the Flow of Time's "Resolve 1
+  Slow Power now", Lightning's Boon, Swiftness of Lightning's one per Air). The line is
+  refused with the reason when nothing in it makes the Power Fast. On the screen the style says
   what a play is: a Fast play orange, a Slow one blue-violet (the CLI's two colors; the
   SPIRIT panel's innate speeds and HAND's F and S too); an innate is underlined; a card
   played for its elements only is dim and has no land (LINE says so). Plain text
@@ -434,7 +465,17 @@ showing the turn and the growth positions tried so far.
   land the Power cannot reach is skipped. Without a bracket the simulator gathers from
   the fullest adjacent land and takes no Dahan push (where Dahan go is the player's call),
   and says so in the line's notes; an "or" card without one takes its other branch
-  (`VT>A1` is Voice of Thunder's 2 Fear, `VT>A5[>A1x4]` its push). `i` loads the current turn's start-of-turn checkpoint into
+  (`VT>A1` is Voice of Thunder's 2 Fear, `VT>A5[>A1x4]` its push).
+  A bare move in a bracket is a Dahan's; any other kind is named after a colon: `>A4:T`
+  a Town, `<A2x2:Be` two Beasts (E, T, C, Dh, Be, Di, St, Wi, Ba), and a kind named picks
+  the "or" branch that moves it. What the Power destroyed where the player chooses which
+  follows the moves: `-T` a Town in its land, `-C3:Ex2` two Explorers in C3, and `-`
+  alone that it destroyed nothing (its Damage fell where it killed nothing, or "up to"
+  took none). Stated, the kills are all it destroys; unstated, the simulator kills the
+  most valuable set. `[]` is a bracket asked for that moved nothing. The kills are plain
+  text's (`si hindsight`, a carried plan): on screen the line's produced column says what
+  died ("kill 2E"), so its bracket shows the moves only. A line written out
+  and read back plays exactly the same: `si fuzz` checks it on every line it makes. `i` loads the current turn's start-of-turn checkpoint into
   the running game by running `si inject <capture> --turn n --phase SpiritPhase` as a
   child process and shows what it printed; a bare EndGame log has no checkpoints and
   the panel says so. `?` shows the keys, `q` quits.
@@ -601,6 +642,56 @@ purple, Fear magenta, Dahan orange-brown, Rei's classes from green (above) to re
 (sacrificed, untouched), scores by sign. `--no-color` or `NO_COLOR=1` turns it off;
 `--color` or `SI_COLOR=1` forces it on when piping.
 
+## 6a. Fuzzing: the game logic against itself and against the games
+
+```
+si fuzz                      # every closed turn of every game: random legal lines, the actual line, the invariants
+si fuzz --boards             # also each turn where the actual line ends otherwise than the record, land by land
+si fuzz --powers             # every Power use the games recorded, played alone against the game's own result, by Power
+si fuzz --live               # the turn being played: the first and last save of every open phase, plans scored as the live screen scores them
+si fuzz --rules              # the rules themselves: every Power Card and innate, every adversary at every level, on random states of every board
+si fuzz --rules --stated     # also every printed sentence read as something other than what it says
+si fuzz --rules --case "Draw Towards a Consuming Void" 1157631377883715   # the case a violation named, built again and explained
+si fuzz --use <game> 3 "Smash, Stomp, and Flatten"   # a recorded use played alone and explained beside the game's result
+si fuzz --lines 100 --seed 7 # more lines, another seed (a finding names the seed that builds its line again)
+```
+
+Every rule's law lives beside the code that applies it, with a fuzz test in the same file's
+unit tests that feeds it random inputs from that type's own generator; the corpus fuzzer
+and `--rules` call the same laws:
+
+| law (function) | beside | what it holds |
+|---|---|---|
+| `effects::oracle::apply_holds`, `simple_holds` | the effect executor | no piece from nowhere; moves along the island's edges; gathers and pushes keep every kind's number; destroys only what is there; stated kills and exact brackets are all it does; acts where it says; Damage kills no more Health than it deals; Fear, Defend, Adds, Pushes, Gathers and Destroys by their numbers |
+| `invaders::oracle::explore_holds`, `build_holds`, `ravage_holds` | Explore, Build, Ravage | the base rules exactly: an Explorer where the Invaders reach (Wilds take it), one Town or City where Invaders are (Disease stops it), a Ravage that adds no piece but Blight, one Blight of its own, the board's counts in its outcome |
+| `invaders::oracle::adversary_holds`, `victory_holds` | the same | under every adversary and level: no Dahan, presence or Beast appears, Blight only in a Ravage, a win and a loss together are a win (the rulebook's sacrifice victory, `invaders::ending`), victory as the Terror Level says |
+| `Line::holds` | `Line` | finite scores, never won and lost, moves along edges, presence never from nowhere |
+| `notation_holds` | `parse_plays` | plays written out read back and write the same text, the same Power, land, speed, kills |
+| `delta_holds` | `apply_delta` | the Event and Fear residual adds and takes no more than it says (a debug build checks it on every application) |
+| `invaders::oracle::wounds_hold` | `Land::wounds` | no more wounds of a kind than pieces of it, none at or past its piece's Health |
+| `effects::sentence_holds` | the card-text parser | a printed sentence is read as what it says: every number it prints and every piece it names shows in what it was read as (`si fuzz --rules --stated` lists the sentences that are not) |
+
+The shared parts are in `si_model::oracle`: the seeded generator, the violation, and
+`property`, the loop a fuzz test runs. `SI_FUZZ_CASES=200000 SI_FUZZ_SEED=7 cargo test`
+runs every property deeper or from another seed; a broken law names the case's seed.
+`crates/si-rules/tests/definitions.rs` runs `--rules` on every `cargo test`.
+
+On every random line (built from the enumerator's own legality): nothing panics, the same
+line scores the same twice, every score is finite, a legal line is not refused, a gather
+or push moves pieces only between adjacent lands, presence never comes from nowhere and
+none goes missing uncounted, no line both wins and loses, and the line written out
+(`plays_text_kept`) reads back to the same text and plays the same. On the actual line:
+it is not refused, a game that went on did not end in it, and its notation read back
+plays as the record's plays do. Two measures of the simulator against the games follow
+the findings: how many turns the actual line in notation ends exactly as the record does
+(the board as the Slow phase ended), and how many recorded Power uses, each played alone
+from the board as it began with the record's own moves and kills, leave the board as
+the game did, the Fear it generated and the Defend it granted (where the game logged one)
+too. `--powers` lists the Powers that do not, with the first difference: the
+work list for rules not yet stated or not yet applied. The live run checks doing nothing
+is never refused and every plan holds the same invariants. Run it in a debug build too
+(`cargo build -p si-cli`, `target/debug/si fuzz`): overflow panics there.
+
 ## 6. The rules oracle
 
 ```
@@ -626,7 +717,19 @@ si cards --innates                # innate tiers the grammar does not read in fu
 si cards --card "Strike Low with Sudden Fevers"   # the printed text, each sentence "read as" game words: • simulated, ◦ typed but not simulated, ✗ not read
 si cards --features > cards.tsv   # one row per card: cost, speed, range, counted effects
 si cards --fit minor              # cost regressed on what the card does (minor | major | unique | all)
+si fuzz --rules --stated          # the printed sentences read as something other than what they say (none at the moment)
 ```
+
+Every printed sentence is held to the parser's law: read as what it says, every number it
+prints and every piece it names showing in its reading (`effects::sentence_holds`,
+asserted for the whole definitions by `crates/si-rules/tests/definitions.rs`). A sentence
+the effects cannot say ("Destroy 2 fewer {Dahan}", "do likewise for {Town}...", Damage to
+"Invaders with {Strife} only", a capped count, a push to some lands only) is read as
+`Unmodeled`, typed but not simulated, never as a nearby effect that is wrong: a wrong
+reading moves every line that plays the card, an honest gap only marks it. The parser
+reads a verb over a list item by item ("Destroy all {Explorer} and all {Town}"), an "or"
+between whole actions as a choice ("1 Damage per {Dahan} OR Push up to 3 {Dahan}"), an
+opening "If ..." or "For each ..." with its whole clause, and "Add N {A}/{B}" as either.
 
 ## 8. The saves themselves
 
@@ -651,3 +754,4 @@ play.
 - `crates/si-record/tests/shroud.rs`: the Shroud win as the golden replay.
 - `crates/si-defs/tests/defs.rs`: definitions and the card-text parser.
 - `crates/si-rules/src/invaders.rs` (unit tests): Ravage, Build, Explore cases.
+- `crates/si-hindsight/tests/forced_fast.rs`: `F:`, brackets with kinds, kills, `-` and `[]`.

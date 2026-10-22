@@ -5,6 +5,7 @@
 //! docs/superpowers/specs/2026-10-20-hindsight-analysis.md, section 3.
 
 pub mod effects;
+pub mod fuzz;
 pub mod invaders;
 pub mod verify;
 

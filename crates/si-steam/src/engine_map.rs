@@ -532,6 +532,15 @@ fn map_distances(island: Node, boards: &[EngineBoard], lands: &[EngineLand]) -> 
 /// Lands per board in the engine's `LandAdjacencyMatrix` index space.
 const MATRIX_STRIDE: i64 = 16;
 
+/// The edges between lands of different boards, from the save's adjacency matrix.
+pub fn cross_board_links(snap: &EngineSnapshot) -> Vec<(si_model::island::LandId, si_model::island::LandId)> {
+    snap.adjacency
+        .iter()
+        .filter_map(|(a, b)| Some((si_record::log::land(a)?, si_record::log::land(b)?)))
+        .filter(|(a, b)| a.board != b.board)
+        .collect()
+}
+
 /// The engine's `LandAdjacencyMatrix` is a flattened `bool[n, n]` with
 /// n = 16 × boards. A land's index is `BoardNumber × 16 + land number`
 /// (verified against the board definitions and against cross-board cascade

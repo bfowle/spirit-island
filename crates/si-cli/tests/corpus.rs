@@ -80,7 +80,7 @@ fn every_capture_journal_matches_its_save() {
 
 /// Known simulator gaps that make a won game's actual line read as lost, each with the
 /// reason; a new one fails the test.
-const KNOWN_FALSE_LOSSES: &[(&str, u64, &str)] = &[("live-0494e5c4ee45", 10, "the last City had taken damage earlier in the turn and fell to the counterattack; the simulator keeps no damage between actions, so the City stands and the game goes on to a Blight loss")];
+const KNOWN_FALSE_LOSSES: &[(&str, u64, &str)] = &[];
 
 #[test]
 fn lost_games_lose_on_their_last_turn_and_won_games_never_do() {

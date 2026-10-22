@@ -349,7 +349,7 @@ fn action(body: &str) -> Option<Event> {
             } else if card.starts_with("TerrorLevel") && to == "Out of Game" {
                 Event::TerrorLevel { level: if card.ends_with("III") { 3 } else { 2 } }
             } else {
-                return card_pile_move(&card, from, to);
+                return log_card_move(&card, from, to);
             }
         }
         "MoveCardsAction" | "DiscardCardsAction" | "RevealCardsAction" => return None,
@@ -370,7 +370,7 @@ fn action(body: &str) -> Option<Event> {
             let (spirit, amount) = spirit_of_energy(body, "SpiritGainingEnergy:")?;
             Event::EnergyGained { spirit, amount }
         }
-        "GainElementsAction" => Event::ElementsGained { spirit: None, source: between(body, "Source: ", &["]"]).unwrap_or("").to_string() },
+        "GainElementsAction" => Event::ElementsGained { spirit: None, source: between(body, "Source: ", &["]"]).unwrap_or("").to_string(), elements: Vec::new() },
         "AdjustCardPlaysAction" => Event::PlaysAdjusted { source: between(body, "Source: [", &[":"]).unwrap_or("").to_string() },
         "MovePresenceAction" => {
             let moves = piece_moves(between(body, "PieceMovements=", &[])?);
@@ -413,6 +413,21 @@ fn card_pile_moves(body: &str) -> Option<Parsed> {
         1 => Parsed::Event(events.into_iter().next().unwrap()),
         _ => Parsed::Many(events),
     })
+}
+
+/// A log's single card move: a card played (hand to play area) and a play taken back (play
+/// area to hand), which the newer logs say only this way, without a PlayPowerCardAction line
+/// of their own; any other move as `card_pile_move`. (The save journal marks plays itself,
+/// and there a card back from play can be a reclaim, as Slip the Flow of Time's.)
+pub fn log_card_move(card: &str, from: &str, to: &str) -> Option<Event> {
+    let owner = |loc: &str| -> Option<String> { loc.contains("'s ").then(|| loc.split("'s ").next().unwrap_or("").to_string()) };
+    if to.ends_with("'s Play Area") && from.ends_with("'s Hand") {
+        return Some(Event::CardPlayed { spirit: owner(to), card: card.to_string() });
+    }
+    if to.ends_with("'s Hand") && from.ends_with("'s Play Area") {
+        return Some(Event::CardUnplayed { spirit: owner(to), card: card.to_string() });
+    }
+    card_pile_move(card, from, to)
 }
 
 /// A card moving between a spirit's piles, decks and discards.
@@ -589,5 +604,11 @@ mod tests {
             Parsed::Marker(Marker::PowerPhase { power: "SteamVents".into(), phase: Phase::FastPower })
         );
         assert!(matches!(parse("DidPerformAction: [ModifyPowersAction: PowersToModify=[A] ResetPower=True PowerSpeed=]"), Parsed::Skipped(s) if s == "ModifyPowersAction"));
+    }
+
+    #[test]
+    fn a_card_moved_into_play_is_played_and_back_to_hand_unplayed() {
+        assert_eq!(log_card_move("SurgingLahar", "Ember-Eyed Behemoth's Hand", "Ember-Eyed Behemoth's Play Area"), Some(Event::CardPlayed { spirit: Some("Ember-Eyed Behemoth".into()), card: "SurgingLahar".into() }));
+        assert_eq!(log_card_move("SurgingLahar", "Ember-Eyed Behemoth's Play Area", "Ember-Eyed Behemoth's Hand"), Some(Event::CardUnplayed { spirit: Some("Ember-Eyed Behemoth".into()), card: "SurgingLahar".into() }));
     }
 }

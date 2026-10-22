@@ -290,6 +290,19 @@ pub enum RuleHook {
     /// Targeting a land with a Power, the spirit may Gather 1 of its presence into the
     /// target or an adjacent land first (Shroud: Mists Shift and Flow).
     GatherPresenceOnTargeting,
+    /// Whenever Invaders would Ravage or Build in a land with the spirit's Sacred Site, the
+    /// spirit may skip it by destroying one of its presence there (Rampant Green: Choke the
+    /// Land with Green). Which skips are taken is the player's call.
+    SkipStepByDestroyingPresence,
+    /// For every one of this element the spirit has, 1 of its Slow Powers may be used as if
+    /// Fast (Lightning: Swiftness of Lightning, per Air).
+    SlowAsFastPer(Element),
+    /// When the spirit Gathers or Pushes Beasts, they may come from or go to lands up to 2
+    /// distant (Many Minds: Fly Fast as Thought).
+    BeastsMoveTwoLands,
+    /// The spirit's Sacred Site may also count as a Beast; changing that Beast changes 2 of
+    /// its presence there (Many Minds: A Joining of Swarms and Flocks).
+    SacredSiteIsBeast,
     /// Not yet typed; the text is still carried on the rule.
     Untyped,
 }

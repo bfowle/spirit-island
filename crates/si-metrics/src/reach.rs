@@ -77,7 +77,12 @@ impl ChainReach {
 /// The island graph for the record's boards (lands the definitions know).
 pub fn island_for(rec: &GameRecord, defs: &Definitions) -> Island {
     let boards: Vec<_> = rec.meta.boards.iter().filter_map(|b| defs.board_def(b).cloned()).collect();
-    Island::from_boards(&boards)
+    let mut island = Island::from_boards(&boards);
+    // the lands that touch across boards, as the save has them
+    for (a, b) in &rec.meta.links {
+        island.connect(a, b);
+    }
+    island
 }
 
 /// The land's pieces as they stood after the last Invader step up to `turn`.

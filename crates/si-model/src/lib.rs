@@ -10,6 +10,7 @@ pub mod force;
 pub mod game;
 pub mod island;
 pub mod modifier;
+pub mod oracle;
 pub mod power;
 pub mod setup;
 pub mod spirit;

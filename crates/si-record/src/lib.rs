@@ -10,5 +10,5 @@ pub mod notation;
 pub mod record;
 pub mod replay;
 
-pub use record::{Choice, Counts, Coverage, GameMeta, GameRecord, InvaderVisit, LandLedger, SpiritTurn, Touch, TouchKind, TurnRecord};
+pub use record::{Choice, Counts, Coverage, GameMeta, GameRecord, InvaderVisit, LandLedger, PowerUse, SpiritTurn, Touch, TouchKind, TurnRecord};
 pub use replay::Replay;

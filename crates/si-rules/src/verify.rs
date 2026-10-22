@@ -73,7 +73,43 @@ pub fn island_for(rec: &GameRecord, defs: &Definitions, before: &BTreeMap<LandId
     for (id, c) in before {
         lands.entry(id.clone()).or_insert_with(|| Land { id: id.clone(), c: *c, ..Default::default() });
     }
+    // the lands that touch across boards
+    for (a, b) in &rec.meta.links {
+        if lands.contains_key(a) && lands.contains_key(b) {
+            for (x, y) in [(a, b), (b, a)] {
+                if let Some(l) = lands.get_mut(x) {
+                    if !l.adjacent.contains(y) {
+                        l.adjacent.push(y.clone());
+                    }
+                }
+            }
+        }
+    }
     Island { lands }
+}
+
+/// The island at one of a turn's snapshots (`before_fast`, `after_fast`, `before_invaders`,
+/// `before_slow`, `after_slow`), with the Damage the pieces carried then.
+pub fn island_at(rec: &GameRecord, defs: &Definitions, t: &TurnRecord, at: &str) -> Island {
+    let counts = match at {
+        "after_fast" => &t.after_fast,
+        "before_invaders" => &t.before_invaders,
+        "before_slow" => &t.before_slow,
+        "after_slow" => &t.after_slow,
+        _ => &t.before_fast,
+    };
+    with_wounds(island_for(rec, defs, counts), t.wounds.get(at))
+}
+
+/// The Damage pieces carry, put on the island's lands.
+pub fn with_wounds(mut island: Island, wounds: Option<&BTreeMap<LandId, Vec<(PieceKind, u32)>>>) -> Island {
+    for (id, w) in wounds.into_iter().flatten() {
+        if let Some(l) = island.lands.get_mut(id) {
+            l.wounds = w.clone();
+            l.trim_wounds();
+        }
+    }
+    island
 }
 
 /// Spirit Powers used in this turn's Fast phase whose printed effect skips an
@@ -131,6 +167,21 @@ pub fn placements_of(defs: &Definitions, t: &TurnRecord, power: &str) -> Vec<(St
     t.choices.iter().filter(|c| c.kind == "Location" && names.contains(&norm(&c.source))).filter_map(|c| c.selected.parse::<LandId>().ok().map(|l| (c.reason.clone(), l))).collect()
 }
 
+/// Where the record has the spirit gather a presence as this Power targeted its land
+/// (Shroud's Mists Shift and Flow): `Some(Some(land))` gathered into it, `Some(None)` the
+/// player declined, None no such choice this turn.
+pub fn presence_gather_of(defs: &Definitions, t: &TurnRecord, power: &str) -> Option<Option<LandId>> {
+    let norm = |s: &str| s.chars().filter(|c| c.is_ascii_alphanumeric()).collect::<String>().to_lowercase();
+    let mut names = vec![norm(power)];
+    if let Some(c) = defs.cards.get(power) {
+        names.push(norm(&c.title));
+    }
+    if let Some(i) = defs.spirits.values().flat_map(|s| s.innates.iter()).find(|i| i.id == power) {
+        names.push(norm(&i.title));
+    }
+    t.choices.iter().find(|c| c.kind == "Location" && c.reason == "Gather" && names.contains(&norm(&c.source))).map(|c| c.selected.parse::<LandId>().ok())
+}
+
 /// The piece and branch choices the log recorded for one Power this turn: (the engine's reason, what was selected).
 pub fn picks_of(defs: &Definitions, t: &TurnRecord, power: &str) -> Vec<(String, String)> {
     let norm = |s: &str| s.chars().filter(|c| c.is_ascii_alphanumeric()).collect::<String>().to_lowercase();
@@ -164,6 +215,40 @@ fn list(v: &str) -> Vec<String> {
 
 fn step_of(name: &str) -> Option<InvaderStep> {
     InvaderStep::parse(name)
+}
+
+/// The Ravages and Builds the player paid a presence to skip this turn (Rampant Green's Choke
+/// the Land with Green), as the record has them: the cancels a Spirit paid for.
+pub fn chokes_of(rec: &GameRecord, t: &TurnRecord) -> Vec<(InvaderStep, LandId)> {
+    t.canceled
+        .iter()
+        .filter(|c| matches!(c.step, InvaderStep::Ravage | InvaderStep::Build) && (rec.meta.spirits.iter().any(|s| c.source.contains(s.as_str())) || c.source.contains("Choke")))
+        .filter_map(|c| Some((c.step, c.land.clone()?)))
+        .collect()
+}
+
+/// The `nth` use of a Power this turn, as the record has it.
+pub fn use_of<'a>(t: &'a TurnRecord, power: &str, nth: usize) -> Option<&'a si_record::PowerUse> {
+    t.power_uses.iter().filter(|u| u.power == power).nth(nth)
+}
+
+/// What a use destroyed, by land, as the effects take a recorded choice.
+pub fn kills_of(u: &si_record::PowerUse) -> Vec<(LandId, si_model::power::PieceFilter)> {
+    u.destroyed.iter().map(|(l, k)| (l.clone(), si_model::power::PieceFilter::parse(k))).collect()
+}
+
+/// What a use moved, each kind named: the gathers into its land, the pushes out of it, and
+/// any other move it made.
+pub fn moves_of_use(u: &si_record::PowerUse) -> Vec<crate::effects::Move> {
+    let mut out: Vec<crate::effects::Move> = Vec::new();
+    for (k, from, to) in &u.moves {
+        let piece = Some(si_model::power::PieceFilter::parse(k));
+        match out.iter_mut().find(|m| m.from == *from && m.to == *to && m.piece == piece) {
+            Some(m) => m.n += 1,
+            None => out.push(crate::effects::Move { from: from.clone(), to: to.clone(), piece, n: 1 }),
+        }
+    }
+    out
 }
 
 /// The engine's status effects of the turn, read into rules and land flags.
@@ -354,6 +439,12 @@ pub fn elements_of(defs: &Definitions, s: &si_record::SpiritTurn) -> si_model::E
             set.extend(&card.elements);
         }
     }
+    // a growth option's, a Power's, a wildcard slot's: what the turn gained beyond those
+    for (_, els) in &s.elements_gained {
+        for e in els.iter().filter_map(|e| si_model::element::Element::parse(e)) {
+            set.add(e, 1);
+        }
+    }
     set
 }
 
@@ -408,7 +499,7 @@ pub fn verify_powers(rec: &GameRecord, defs: &Definitions, rules: &Rules, report
                         continue;
                     }
                     let Some(target) = target else { continue };
-                    let ctx = effects::Ctx { health_bonus: rules.invader_health_bonus(), elements: elements.clone(), blight_as_badlands: rules.blight_as_badlands_for(&s.spirit), rules: Some(rules.clone()), placements: placements_of(defs, t, power), picks: picks_of(defs, t, power), moves: recorded_moves(rec, t.turn, power, Some(target)), moves_exact: true, branches: branches_of(defs, t, power), presence_with_dahan: rules.presence_with_dahan_for(&s.spirit) };
+                    let ctx = effects::Ctx { health_bonus: rules.invader_health_bonus(), elements: elements.clone(), blight_as_badlands: rules.blight_as_badlands_for(&s.spirit), rules: Some(rules.clone()), placements: placements_of(defs, t, power), picks: picks_of(defs, t, power), moves: recorded_moves(rec, t.turn, power, Some(target)), moves_exact: true, branches: branches_of(defs, t, power), presence_with_dahan: rules.presence_with_dahan_for(&s.spirit), kills: None, site_beast: rules.site_beast_for(&s.spirit), beasts_far: rules.beasts_far_for(&s.spirit) };
                     let Some((base, thresholds)) = power_effects(defs, power) else {
                         notes_on.entry(target.clone()).or_default().push(format!("{power}: no definition"));
                         continue;
@@ -470,7 +561,7 @@ pub fn verify_powers(rec: &GameRecord, defs: &Definitions, rules: &Rules, report
 /// gap does not cascade into the next step's comparison.
 pub fn verify(rec: &GameRecord, defs: &Definitions, level: Option<u8>) -> Report {
     let mut report = Report::default();
-    let base_rules = Rules { adversary: rec.meta.adversary.clone(), level: level.unwrap_or(0), spirits: rec.meta.spirits.clone(), hooks: Rules::hooks_of(defs, &rec.meta.spirits), ..Default::default() };
+    let base_rules = Rules { scenario: rec.meta.scenario.clone(), adversary: rec.meta.adversary.clone(), level: level.unwrap_or(0), spirits: rec.meta.spirits.clone(), hooks: Rules::hooks_of(defs, &rec.meta.spirits), ..Default::default() };
     if rec.meta.adversary.is_some() && level.is_none() {
         report.notes.push("adversary level unknown: level rules not applied (pass --level)".into());
     }
@@ -484,7 +575,7 @@ pub fn verify(rec: &GameRecord, defs: &Definitions, level: Option<u8>) -> Report
         }
         report.turns += 1;
         let mut rules = base_rules.clone();
-        let mut island = island_for(rec, defs, &t.before_invaders);
+        let mut island = island_at(rec, defs, t, "before_invaders");
         for (id, d) in &t.defend {
             if let Some(l) = island.lands.get_mut(id) {
                 l.defend = *d;
@@ -493,6 +584,7 @@ pub fn verify(rec: &GameRecord, defs: &Definitions, level: Option<u8>) -> Report
         // Skips and cancels come from the engine's own status effects and
         // CancelAction lines (the oracle), not from reading card text.
         apply_status_effects(&mut island, &mut rules, t, &mut report.notes);
+        rules.chokes = chokes_of(rec, t);
         let logged_cascades: u32 = rec.lands.values().flat_map(|l| l.blight.iter()).filter(|(turn, phase, _, cascade)| *turn == t.turn && *phase == Phase::Ravage && *cascade).map(|(_, _, n, _)| n).sum();
         let mut sim_cascades = 0u32;
         let steps: Vec<(&str, &Vec<String>, InvaderStep)> = vec![("HighImmigration", &t.high_immigration, InvaderStep::Build), ("Ravage", &t.ravage, InvaderStep::Ravage), ("Build", &t.build, InvaderStep::Build), ("Explore", &t.explore, InvaderStep::Explore)];

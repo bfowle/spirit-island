@@ -476,6 +476,9 @@ pub fn parsed(entries: &[Entry], boards: &[String], ending: Option<&str>, spirit
     let mut held_destroy: Option<Event> = None;
     // the Event or Fear card being resolved: the source of a choice whose identifier does not name it
     let mut resolving: Option<String> = None;
+    // the source of the last destroy in the Invader step under way: what paid for a cancel
+    // (Rampant Green's presence for a Ravage it chokes)
+    let mut step_source: Option<String> = None;
     let mut state = String::new();
     for e in entries {
         match &e.kind {
@@ -484,6 +487,7 @@ pub fn parsed(entries: &[Entry], boards: &[String], ending: Option<&str>, spirit
         }
         if e.state != state {
             state = e.state.clone();
+            step_source = None;
         }
         let destroy_move = matches!(&e.kind, Kind::MovePieces { reason, .. } | Kind::MoveTokens { reason, .. } | Kind::MovePresence { reason, .. } if reason == "Destroy");
         if !destroy_move {
@@ -513,10 +517,18 @@ pub fn parsed(entries: &[Entry], boards: &[String], ending: Option<&str>, spirit
                 }
             }
             Kind::RavageLand { land: l, card, cancelled: false } => {
+                step_source = None;
                 if let Some(id) = land(l) {
                     push(Parsed::Event(Event::Ravaged { land: id, source: card.clone() }));
                 }
             }
+            Kind::RavageLand { land: l, cancelled: true, .. } | Kind::BuildLand { land: l, cancelled: true, .. } => {
+                let step = if matches!(e.kind, Kind::RavageLand { .. }) { InvaderStep::Ravage } else { InvaderStep::Build };
+                if let Some(id) = land(l) {
+                    push(Parsed::Event(Event::Canceled { step, land: Some(id), source: step_source.take().unwrap_or_else(|| "the engine".into()) }));
+                }
+            }
+            Kind::BuildLand { .. } => step_source = None,
             Kind::AddPieces { adds, source } => {
                 let (tokens, pieces): (Vec<_>, Vec<_>) = adds.iter().partition(|(p, _)| TokenKind::parse(p).is_some() && PieceKind::parse(p).is_none());
                 if !pieces.is_empty() {
@@ -529,6 +541,9 @@ pub fn parsed(entries: &[Entry], boards: &[String], ending: Option<&str>, spirit
             }
             Kind::MovePieces { moves, .. } => push(Parsed::Event(Event::PiecesMoved { moves: moves.iter().map(|(p, f, t)| piece_move(p, f, t)).collect() })),
             Kind::DestroyPieces { pieces, source } => {
+                if step_of(&state).is_some() {
+                    step_source = source.clone();
+                }
                 if let Some(d) = held_destroy.take() {
                     push(Parsed::Event(d));
                 }
@@ -551,7 +566,7 @@ pub fn parsed(entries: &[Entry], boards: &[String], ending: Option<&str>, spirit
             }
             Kind::GainEnergy { spirit, amount } => push(Parsed::Event(Event::EnergyGained { spirit: spirit.clone(), amount: *amount })),
             Kind::PayEnergy { spirit, amount } => push(Parsed::Event(Event::EnergyPaid { spirit: spirit.clone(), amount: *amount })),
-            Kind::GainElements { spirit, source, .. } => push(Parsed::Event(Event::ElementsGained { spirit: Some(spirit.clone()), source: source.clone().unwrap_or_default() })),
+            Kind::GainElements { spirit, elements, source } => push(Parsed::Event(Event::ElementsGained { spirit: Some(spirit.clone()), source: source.clone().unwrap_or_default(), elements: elements.clone() })),
             Kind::PlayPowerCard { spirit, card, unplayed } => push(Parsed::Event(if *unplayed {
                 Event::CardUnplayed { spirit: Some(spirit.clone()), card: card.clone() }
             } else {
@@ -589,7 +604,14 @@ pub fn parsed(entries: &[Entry], boards: &[String], ending: Option<&str>, spirit
                 }
                 last_blight = Some((e.index, dest, *cascade, *amount, *added));
             }
-            Kind::MoveTokens { moves, .. } => push(Parsed::Event(Event::PiecesMoved { moves: moves.iter().map(|(p, f, t)| piece_move(p, f, t)).collect() })),
+            Kind::MoveTokens { moves, .. } => {
+                push(Parsed::Event(Event::PiecesMoved { moves: moves.iter().map(|(p, f, t)| piece_move(p, f, t)).collect() }));
+                // a token the adversary keeps on its own panel (Russia's Hunters and their Beasts)
+                for (p, _, t) in moves.iter().filter(|(_, _, t)| t.contains("Adversary Location")) {
+                    let _ = t;
+                    push(Parsed::Event(Event::AdversaryTook { piece: p.clone() }));
+                }
+            }
             Kind::Defend { lands, amount, source } => push(Parsed::Event(Event::Defend { lands: lands.iter().filter_map(|l| land(l)).collect(), amount: (*amount).max(0) as u32, source: source.clone().unwrap_or_default() })),
             Kind::MoveBlight { moves, .. } => {
                 // land to land is a move; a pool refill or a removal to the box is not a land change
@@ -850,6 +872,7 @@ pub fn record(g: &Graph, defs: Option<&si_defs::Definitions>, source: &str) -> s
     }
     rec.meta.difficulty = snap.difficulty;
     rec.meta.scenario = snap.scenario.clone();
+    rec.meta.links = crate::engine_map::cross_board_links(&snap);
     rec
 }
 

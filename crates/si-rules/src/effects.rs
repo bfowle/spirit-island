@@ -10,20 +10,57 @@ use si_model::ElementSet;
 
 use crate::invaders::{Island, Land};
 
-/// One piece a Power moved: gathered into its land (`to` is the target) or pushed out of
-/// it (`from` is the target). In a line's request `piece` is None: the effect's own kind.
+/// One piece or token a Power moved: gathered into its land (`to` is the target) or pushed
+/// out of it (`from` is the target). In a line's request `piece` None is the effect's own
+/// kind; a kind named (`>A4:T`) is moved first.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Move {
     pub from: LandId,
     pub to: LandId,
     #[serde(default)]
-    pub piece: Option<PieceKind>,
+    pub piece: Option<PieceFilter>,
     #[serde(default = "one")]
     pub n: u32,
 }
 
 fn one() -> u32 {
     1
+}
+
+/// A moved kind's code in a line's bracket (`>A4:T`): E, T, C, Dh for Dahan, and the tokens
+/// Be(ast), Di(sease), St(rife), Wi(lds), Ba(dlands).
+pub fn piece_code(f: &PieceFilter) -> Option<&'static str> {
+    Some(match f {
+        PieceFilter::Piece(PieceKind::Explorer) => "E",
+        PieceFilter::Piece(PieceKind::Town) => "T",
+        PieceFilter::Piece(PieceKind::City) => "C",
+        PieceFilter::Piece(PieceKind::Dahan) => "Dh",
+        PieceFilter::Token(TokenKind::Beast) => "Be",
+        PieceFilter::Token(TokenKind::Disease) => "Di",
+        PieceFilter::Token(TokenKind::Strife) => "St",
+        PieceFilter::Token(TokenKind::Wilds) => "Wi",
+        PieceFilter::Token(TokenKind::Badlands) => "Ba",
+        PieceFilter::Presence => "Pr",
+        _ => return None,
+    })
+}
+
+/// The kind a bracket's code names (`T`, `Be`; case does not matter).
+pub fn piece_of_code(code: &str) -> Option<PieceFilter> {
+    let c = code.to_ascii_lowercase();
+    Some(match c.as_str() {
+        "e" => PieceFilter::Piece(PieceKind::Explorer),
+        "t" => PieceFilter::Piece(PieceKind::Town),
+        "c" => PieceFilter::Piece(PieceKind::City),
+        "d" | "dh" => PieceFilter::Piece(PieceKind::Dahan),
+        "be" | "b" => PieceFilter::Token(TokenKind::Beast),
+        "di" => PieceFilter::Token(TokenKind::Disease),
+        "st" => PieceFilter::Token(TokenKind::Strife),
+        "wi" | "w" => PieceFilter::Token(TokenKind::Wilds),
+        "ba" => PieceFilter::Token(TokenKind::Badlands),
+        "pr" => PieceFilter::Presence,
+        _ => return None,
+    })
 }
 
 /// What a Power did to its target land.
@@ -57,9 +94,16 @@ pub struct Applied {
     /// Every piece gathered into or pushed out of the land, with where it came from or went.
     #[serde(default)]
     pub moves: Vec<Move>,
+    /// What the Damage and the Destroys took where the player chooses, by land: what a
+    /// bracket writes `-T`.
+    #[serde(default)]
+    pub killed: Vec<(LandId, PieceFilter)>,
     /// Presence that went along with the Dahan this Power moved (Ally of the Dahan).
     #[serde(default)]
     pub presence_moved: u32,
+    /// The spirit's own presence the Power destroyed ("destroy 1 of your presence").
+    #[serde(default)]
+    pub presence_destroyed: u32,
     pub notes: Vec<String>,
 }
 
@@ -74,6 +118,7 @@ pub struct TriggerArmed {
 
 /// Per-piece health in the land (England 5 and other health rules are the
 /// caller's business through `health_bonus`).
+#[derive(Debug, Clone)]
 pub struct Ctx {
     pub health_bonus: u32,
     /// The spirit's elements this turn (track plus cards), for thresholds.
@@ -99,12 +144,20 @@ pub struct Ctx {
     /// Dahan (Thunderspeaker's Ally of the Dahan; the player may decline, and never has
     /// in the recorded games).
     pub presence_with_dahan: bool,
+    /// The pieces the line says this use destroys, by land (the player's choice of which
+    /// pieces the Damage or the Destroy takes: the record's, or `-T` in a bracket). Stated,
+    /// they are all it destroys: the rest of its Damage falls where it kills nothing.
+    pub kills: Option<Vec<(LandId, PieceFilter)>>,
+    /// The Spirit's Sacred Site counts as a Beast (Many Minds: A Joining of Swarms and Flocks).
+    pub site_beast: bool,
+    /// The Spirit's Beasts gather from and push to lands up to 2 away (Fly Fast as Thought).
+    pub beasts_far: bool,
 }
 
 impl Ctx {
     /// A context with nothing recorded and no spirit rules: the elements and Health only.
     pub fn plain(health_bonus: u32, elements: ElementSet) -> Ctx {
-        Ctx { health_bonus, elements, blight_as_badlands: false, rules: None, placements: vec![], picks: vec![], moves: vec![], moves_exact: false, branches: vec![], presence_with_dahan: false }
+        Ctx { health_bonus, elements, blight_as_badlands: false, rules: None, placements: vec![], picks: vec![], moves: vec![], moves_exact: false, branches: vec![], presence_with_dahan: false, kills: None, site_beast: false, beasts_far: false }
     }
 }
 
@@ -145,6 +198,8 @@ fn presence_along(island: &mut Island, from: &LandId, to: &LandId, ctx: &Ctx, a:
 fn per_n(per: &PieceFilter, island: &Island, target: &LandId, ctx: &Ctx) -> u32 {
     match per {
         PieceFilter::Other(desc) => per_count_other(desc, island, target, ctx),
+        // the Spirit's Sacred Site counts as a Beast (A Joining of Swarms and Flocks)
+        PieceFilter::Token(TokenKind::Beast) if ctx.site_beast => island.lands.get(target).map(|l| l.c.beasts + (l.c.presence >= 2) as u32).unwrap_or(0),
         _ => island.lands.get(target).map(|l| count_of(l, per)).unwrap_or(0),
     }
 }
@@ -168,11 +223,28 @@ fn moves_dahan(es: &[Effect]) -> bool {
     })
 }
 
-/// Which branch of an "or" the line takes: the one the log recorded (by its printed order,
-/// else by its words), else the one whose
-/// gathers or pushes the line asks for, else the first that does not wait on a Dahan move
-/// the line does not ask for (Voice of Thunder without `[>A4]` takes its Fear).
-fn choose_branch(branches: &[Vec<Effect>], target: &LandId, ctx: &Ctx) -> usize {
+/// Does the effect list gather or push this kind of piece?
+fn moves_kind(es: &[Effect], kind: &PieceFilter) -> bool {
+    es.iter().any(|e| match e {
+        Effect::Push { what, .. } | Effect::Gather { what, .. } => allows(what, kind),
+        Effect::Per { then, .. } | Effect::Conditional { then, .. } => moves_kind(then, kind),
+        _ => false,
+    })
+}
+
+/// Which branch of an "or" the line takes: the one whose kind of piece the line names
+/// (`>A4:T`, or a Dahan move written bare for a Power that moves Dahan), else the one the
+/// record has for this Power this turn (by its printed order, else by its words), else the
+/// Dahan move a line asks for without naming a kind, when there are Dahan for it to move,
+/// else the first that does not wait on a Dahan move the line does not ask for (Voice of
+/// Thunder without `[>A4]` takes its Fear).
+fn choose_branch(branches: &[Vec<Effect>], island: &Island, target: &LandId, ctx: &Ctx) -> usize {
+    let asked: Vec<&Move> = ctx.moves.iter().filter(|m| m.from == *target || m.to == *target).collect();
+    // a move has something to move: the kind out of the land, or in from where it asks
+    let has = |m: &Move, k: &PieceFilter| island.lands.get(if m.from == *target { target } else { &m.from }).is_some_and(|l| count_of(l, k) > 0);
+    if let Some(i) = branches.iter().position(|b| asked.iter().any(|m| m.piece.as_ref().is_some_and(|k| moves_kind(b, k) && has(m, k)))) {
+        return i;
+    }
     if let Some(i) = ctx.branches.iter().copied().find(|i| *i < branches.len()) {
         return i;
     }
@@ -195,8 +267,9 @@ fn choose_branch(branches: &[Vec<Effect>], target: &LandId, ctx: &Ctx) -> usize 
             return i;
         }
     }
-    let asked = ctx.moves.iter().any(|m| m.from == *target || m.to == *target);
-    if asked {
+    // a bare move asked, with Dahan to make it: out of the land, or in from where it asks
+    let dahan = PieceFilter::Piece(PieceKind::Dahan);
+    if asked.iter().any(|m| m.piece.is_none() && has(m, &dahan)) {
         if let Some(i) = branches.iter().position(|b| moves_dahan(b)) {
             return i;
         }
@@ -334,41 +407,27 @@ fn add_piece(l: &mut Land, k: PieceKind) {
     }
 }
 
-fn add_filtered(l: &mut Land, f: &PieceFilter) {
-    match f {
-        PieceFilter::Piece(k) => add_piece(l, *k),
-        PieceFilter::Token(TokenKind::Beast) => l.c.beasts += 1,
-        _ => {}
-    }
-}
-
-fn piece_of(f: &PieceFilter) -> Option<PieceKind> {
-    match f {
-        PieceFilter::Piece(k) => Some(*k),
-        _ => None,
-    }
-}
-
 /// The moves a line asked for that this application has not made yet: a "per Air"
 /// gather runs the effect once per element, and each run takes its share of the ask.
 fn remaining(ctx: &Ctx, a: &Applied, which: impl Fn(&Move) -> bool) -> Vec<Move> {
     // asks along the same path count once, summed (the record lists each piece moved)
     let mut asks: Vec<Move> = Vec::new();
     for m in ctx.moves.iter().filter(|m| which(m)) {
-        match asks.iter_mut().find(|x| x.from == m.from && x.to == m.to) {
+        match asks.iter_mut().find(|x| x.from == m.from && x.to == m.to && x.piece == m.piece) {
             Some(x) => x.n += m.n,
             None => asks.push(m.clone()),
         }
     }
     asks.iter()
         .filter_map(|m| {
-            let done: u32 = a.moves.iter().filter(|d| d.from == m.from && d.to == m.to).map(|d| d.n).sum();
+            // what this application moved along the path of a kind the ask takes
+            let done: u32 = a.moves.iter().filter(|d| d.from == m.from && d.to == m.to && m.piece.as_ref().is_none_or(|k| d.piece.as_ref().is_some_and(|u| k == u || allows(std::slice::from_ref(k), u)))).map(|d| d.n).sum();
             (m.n > done).then(|| Move { n: m.n - done, ..m.clone() })
         })
         .collect()
 }
 
-fn record_move(a: &mut Applied, from: LandId, to: LandId, piece: Option<PieceKind>, n: u32) {
+fn record_move(a: &mut Applied, from: LandId, to: LandId, piece: Option<PieceFilter>, n: u32) {
     if let Some(m) = a.moves.iter_mut().find(|m| m.from == from && m.to == to && m.piece == piece) {
         m.n += n;
     } else {
@@ -376,15 +435,112 @@ fn record_move(a: &mut Applied, from: LandId, to: LandId, piece: Option<PieceKin
     }
 }
 
+/// Does an effect's list of pieces take this kind (`Invaders` takes an Explorer)?
+fn allows(what: &[PieceFilter], kind: &PieceFilter) -> bool {
+    what.iter().any(|f| f == kind || (*f == PieceFilter::AnyInvader && matches!(kind, PieceFilter::Piece(k) if *k != PieceKind::Dahan)))
+}
+
+fn token_mut(l: &mut Land, t: TokenKind) -> Option<&mut u32> {
+    match t {
+        TokenKind::Beast => Some(&mut l.c.beasts),
+        TokenKind::Disease => Some(&mut l.c.disease),
+        TokenKind::Strife => Some(&mut l.c.strife),
+        TokenKind::Wilds => Some(&mut l.c.wilds),
+        TokenKind::Badlands => Some(&mut l.c.badlands),
+        _ => None,
+    }
+}
+
+/// One piece or token of the filter's kind taken off the land, as the kind it was (`Invaders`
+/// takes the cheapest or the dearest, by `cheapest_first`); None when the land has none.
+fn take_one(l: &mut Land, f: &PieceFilter, cheapest_first: bool) -> Option<PieceFilter> {
+    match f {
+        PieceFilter::Piece(_) | PieceFilter::AnyInvader => remove_pieces(l, std::slice::from_ref(f), 1, cheapest_first).pop().map(PieceFilter::Piece),
+        PieceFilter::Token(t) => {
+            let n = token_mut(l, *t)?;
+            if *n == 0 {
+                return None;
+            }
+            *n -= 1;
+            Some(f.clone())
+        }
+        PieceFilter::Presence => {
+            if l.c.presence == 0 {
+                return None;
+            }
+            l.c.presence -= 1;
+            Some(PieceFilter::Presence)
+        }
+        _ => None,
+    }
+}
+
+/// Up to `n` pieces or tokens the effect's list takes off the land: the kinds in `prefer`
+/// first (the record's choice), then the dearest Invaders, then tokens.
+fn take_many(l: &mut Land, what: &[PieceFilter], n: u32, prefer: &[PieceFilter]) -> Vec<PieceFilter> {
+    let mut out: Vec<PieceFilter> = Vec::new();
+    for k in prefer.iter().filter(|k| allows(what, k)) {
+        if out.len() as u32 >= n {
+            break;
+        }
+        if let Some(u) = take_one(l, k, false) {
+            out.push(u);
+        }
+    }
+    let pieces: Vec<PieceFilter> = what.iter().filter(|f| matches!(f, PieceFilter::Piece(_) | PieceFilter::AnyInvader)).cloned().collect();
+    let rest = n.saturating_sub(out.len() as u32);
+    out.extend(remove_pieces(l, &pieces, rest, false).into_iter().map(PieceFilter::Piece));
+    for f in what.iter().filter(|f| matches!(f, PieceFilter::Token(_) | PieceFilter::Presence)) {
+        while (out.len() as u32) < n {
+            match take_one(l, f, false) {
+                Some(u) => out.push(u),
+                None => break,
+            }
+        }
+    }
+    out
+}
+
+/// The kinds the record has this use destroying in the land, less those this application
+/// has destroyed already.
+fn recorded_kills(ctx: &Ctx, land: &LandId, a: &Applied) -> Vec<PieceFilter> {
+    // what this application has destroyed in the land already, tokens too
+    let mut done: Vec<PieceFilter> = a.killed.iter().filter(|(l, _)| l == land).map(|(_, k)| k.clone()).collect();
+    let mut out = Vec::new();
+    for (_, k) in ctx.kills.iter().flatten().filter(|(l, _)| l == land) {
+        if let Some(i) = done.iter().position(|d| d == k) {
+            done.remove(i);
+            continue;
+        }
+        out.push(k.clone());
+    }
+    out
+}
+
+/// One piece or token put down in the land.
+fn put_one(l: &mut Land, f: &PieceFilter) {
+    match f {
+        PieceFilter::Piece(k) => add_piece(l, *k),
+        PieceFilter::Token(t) => {
+            if let Some(n) = token_mut(l, *t) {
+                *n += 1;
+            }
+        }
+        PieceFilter::Presence => l.c.presence += 1,
+        _ => {}
+    }
+}
+
 /// Where a pushed piece goes when the line does not say: the player's likeliest choice.
-fn push_destination(island: &Island, adjacent: &[LandId], k: PieceKind) -> Option<LandId> {
+fn push_destination(island: &Island, adjacent: &[LandId], k: &PieceFilter) -> Option<LandId> {
+    let dahan = *k == PieceFilter::Piece(PieceKind::Dahan);
     let mut best: Option<(i64, LandId)> = None;
     for id in adjacent {
         let Some(n) = island.lands.get(id) else { continue };
         if n.terrain == Some(Terrain::Ocean) {
             continue;
         }
-        let score: i64 = if k == PieceKind::Dahan { n.c.invaders() as i64 * 10 - n.c.dahan as i64 } else { n.c.dahan as i64 * 10 + n.c.presence as i64 * 5 + n.c.invaders() as i64 };
+        let score: i64 = if dahan { n.c.invaders() as i64 * 10 - n.c.dahan as i64 } else { n.c.dahan as i64 * 10 + n.c.presence as i64 * 5 + n.c.invaders() as i64 };
         if best.as_ref().is_none_or(|(b, _)| score < *b) {
             best = Some((score, id.clone()));
         }
@@ -432,46 +588,39 @@ fn remove_pieces(l: &mut Land, filters: &[PieceFilter], count: u32, cheapest_fir
 fn damage(l: &mut Land, amount: u32, to: DamageTarget, ctx: &Ctx, a: &mut Applied) {
     let badlands = l.c.badlands + if ctx.blight_as_badlands { l.c.blight } else { 0 };
     let total = amount + if amount > 0 { badlands } else { 0 };
+    let hb = ctx.health_bonus;
+    let dahan_full = 2 + l.dahan_health;
+    // a piece's Health with its bonuses; Damage on it stays until Time Passes (`Land::wounds`)
+    let full = move |k: PieceKind| if k == PieceKind::Dahan { dahan_full } else { k.health() as u32 + hb };
+    let land = l.id.clone();
+    let died = |a: &mut Applied, killed: Vec<PieceKind>, chosen: bool| {
+        for k in killed {
+            a.destroyed.push(k);
+            if chosen {
+                a.killed.push((land.clone(), PieceFilter::Piece(k)));
+            }
+        }
+    };
     match to {
-        DamageTarget::Dahan | DamageTarget::EachDahan => {
-            let per = if to == DamageTarget::EachDahan { total * l.c.dahan.max(1) } else { total };
-            let killed = l.c.dahan.min(per / 2);
-            l.c.dahan -= killed;
-            a.destroyed.extend(std::iter::repeat(PieceKind::Dahan).take(killed as usize));
-            a.damage += per;
+        DamageTarget::Dahan => {
+            let k = l.take_dahan_damage(total, dahan_full);
+            died(a, vec![PieceKind::Dahan; k as usize], false);
+            a.damage += total;
+        }
+        DamageTarget::EachDahan => {
+            let k = l.take_each_damage(total, &[PieceKind::Dahan], &full);
+            a.damage += total * (l.c.dahan + k.len() as u32).max(1);
+            died(a, k, false);
         }
         DamageTarget::EachInvader => {
             // the engine logs one Damage amount for an "each" effect; so do we
-            let each = total;
-            for (k, n) in [(PieceKind::Explorer, l.c.explorers), (PieceKind::Town, l.c.towns), (PieceKind::City, l.c.cities)] {
-                let h = k.health() as u32 + ctx.health_bonus;
-                if each >= h {
-                    for _ in 0..n {
-                        a.destroyed.push(k);
-                    }
-                    match k {
-                        PieceKind::Explorer => l.c.explorers = 0,
-                        PieceKind::Town => l.c.towns = 0,
-                        PieceKind::City => l.c.cities = 0,
-                        PieceKind::Dahan => {}
-                    }
-                }
-            }
-            a.damage += each;
+            let k = l.take_each_damage(total, &[PieceKind::Explorer, PieceKind::Town, PieceKind::City], &full);
+            died(a, k, false);
+            a.damage += total;
         }
         DamageTarget::EachTownCity => {
-            for (k, n) in [(PieceKind::Town, l.c.towns), (PieceKind::City, l.c.cities)] {
-                let h = k.health() as u32 + ctx.health_bonus;
-                if total >= h {
-                    for _ in 0..n {
-                        a.destroyed.push(k);
-                    }
-                    match k {
-                        PieceKind::Town => l.c.towns = 0,
-                        _ => l.c.cities = 0,
-                    }
-                }
-            }
+            let k = l.take_each_damage(total, &[PieceKind::Town, PieceKind::City], &full);
+            died(a, k, false);
             a.damage += total;
         }
         DamageTarget::Invaders | DamageTarget::TownCityOnly | DamageTarget::ExplorerTownOnly | DamageTarget::Town => {
@@ -482,23 +631,72 @@ fn damage(l: &mut Land, amount: u32, to: DamageTarget, ctx: &Ctx, a: &mut Applie
                 DamageTarget::Town => vec![PieceKind::Town],
                 _ => vec![PieceKind::Explorer, PieceKind::Town, PieceKind::City],
             };
-            // the player spends the damage on the most valuable set it destroys (two Towns
-            // over a City for 4 Damage; three Cities, a Town and an Explorer for 12)
-            let has = |k: PieceKind, n: u32| if allowed.contains(&k) { n } else { 0 };
-            let hb = ctx.health_bonus;
-            let (ke, kt, kc) = crate::invaders::best_kills(total, (has(PieceKind::Explorer, l.c.explorers), has(PieceKind::Town, l.c.towns), has(PieceKind::City, l.c.cities)), (1 + hb, 2 + hb, 3 + hb));
-            l.c.cities -= kc;
-            l.c.towns -= kt;
-            l.c.explorers -= ke;
-            a.destroyed.extend(std::iter::repeat_n(PieceKind::City, kc as usize).chain(std::iter::repeat_n(PieceKind::Town, kt as usize)).chain(std::iter::repeat_n(PieceKind::Explorer, ke as usize)));
+            // the pieces the line says it destroys go first; stated, nothing else dies and the
+            // rest stays as Damage where it kills nothing. Unstated, the player spends it on
+            // the most valuable set it destroys, each piece at the Health it has left
+            let first: Vec<PieceKind> = recorded_kills(ctx, &l.id, a).into_iter().filter_map(|k| if let PieceFilter::Piece(p) = k { Some(p) } else { None }).collect();
+            let k = l.take_damage(total, &allowed, &full, &first, ctx.kills.is_some());
+            died(a, k, true);
             if total > 0 {
-                a.notes.push("damage distribution: the most valuable Invaders it kills (player's choice)".into());
+                a.notes.push(if ctx.kills.is_some() { "damage distribution: as the line states".into() } else { "damage distribution: the most valuable Invaders it kills (player's choice)".into() });
             }
         }
     }
 }
 
+/// The lands two steps from `id` (not it, not its neighbors, no Ocean): where Many Minds'
+/// Beasts may come from or go to.
+pub fn two_away(island: &Island, id: &LandId) -> Vec<LandId> {
+    let near: Vec<LandId> = island.lands.get(id).map(|l| l.adjacent.clone()).unwrap_or_default();
+    let mut out: Vec<LandId> = Vec::new();
+    for n in &near {
+        for m in island.lands.get(n).map(|l| l.adjacent.clone()).unwrap_or_default() {
+            if m != *id && !near.contains(&m) && !out.contains(&m) && island.lands.get(&m).is_some_and(|x| x.terrain != Some(Terrain::Ocean)) {
+                out.push(m);
+            }
+        }
+    }
+    out
+}
+
+/// The Spirit's Sacred Site moved as a Beast: 2 of its presence along each path the line
+/// asks (`:Pr`), within reach. A Joining of Swarms and Flocks.
+fn move_site_beasts(island: &mut Island, target: &LandId, ctx: &Ctx, reach_out: &[LandId], reach_in: &[LandId], a: &mut Applied) {
+    for m in ctx.moves.iter().filter(|m| m.piece == Some(PieceFilter::Presence)) {
+        let (from, to) = (m.from.clone(), m.to.clone());
+        let ok = (from == *target && reach_out.contains(&to)) || (to == *target && reach_in.contains(&from));
+        let have = island.lands.get(&from).map(|l| l.c.presence).unwrap_or(0);
+        let n = m.n.min(have);
+        if !ok || n == 0 {
+            continue;
+        }
+        if let Some(f) = island.lands.get_mut(&from) {
+            f.c.presence -= n;
+        }
+        if let Some(t) = island.lands.get_mut(&to) {
+            t.c.presence += n;
+        }
+        record_move(a, from, to, Some(PieceFilter::Presence), n);
+        a.presence_moved += n;
+    }
+}
+
 fn apply_one(e: &Effect, island: &mut Island, target: &si_model::island::LandId, ctx: &Ctx, a: &mut Applied) {
+    let beasty = |what: &[PieceFilter]| what.contains(&PieceFilter::Token(TokenKind::Beast));
+    let far: Vec<LandId> = match e {
+        Effect::Push { what, .. } | Effect::Gather { what, .. } if ctx.beasts_far && beasty(what) => two_away(island, target),
+        _ => Vec::new(),
+    };
+    if ctx.site_beast {
+        if let Effect::Push { what, .. } | Effect::Gather { what, .. } = e {
+            if beasty(what) {
+                let near: Vec<LandId> = island.lands.get(target).map(|l| l.adjacent.clone()).unwrap_or_default();
+                let reach: Vec<LandId> = near.into_iter().chain(far.iter().cloned()).collect();
+                let (out_, in_): (Vec<LandId>, Vec<LandId>) = if matches!(e, Effect::Push { .. }) { (reach, vec![]) } else { (vec![], reach) };
+                move_site_beasts(island, target, ctx, &out_, &in_, a);
+            }
+        }
+    }
     let Some(l) = island.lands.get_mut(target) else { return };
     match e {
         Effect::Damage { amount, to } => damage(l, *amount as u32, *to, ctx, a),
@@ -512,46 +710,79 @@ fn apply_one(e: &Effect, island: &mut Island, target: &si_model::island::LandId,
         }
         Effect::Push { count, what } => {
             let adjacent = l.adjacent.clone();
-            let mut asked: Vec<Move> = remaining(ctx, a, |m| m.from == *target && adjacent.contains(&m.to));
+            // a Beast may go two lands (Fly Fast as Thought): an ask for one may name such a land
+            let beast_ask = |m: &Move| m.piece.as_ref().map_or(what.iter().all(|f| *f == PieceFilter::Token(TokenKind::Beast)), |k| *k == PieceFilter::Token(TokenKind::Beast));
+            let mut asked: Vec<Move> = remaining(ctx, a, |m| m.from == *target && (adjacent.contains(&m.to) || (far.contains(&m.to) && beast_ask(m))) && m.piece.as_ref().is_none_or(|k| allows(what, k)));
             // a Dahan push is a positional choice the line must make (`>A4`): unasked, the
             // Dahan stay, and the note says so. Invaders pushed leave either way.
             let dahan_only = what.iter().all(|f| matches!(f, PieceFilter::Piece(PieceKind::Dahan)));
+            // a presence push ("Target Spirit may Push up to 1 of their Presence") is the
+            // player's call too: unasked, the presence stays
+            let presence_only = what.iter().all(|f| matches!(f, PieceFilter::Presence));
             if ctx.moves_exact && asked.is_empty() {
                 // the record (or the player's bracket) pushed nothing here
+            } else if presence_only && asked.is_empty() {
+                a.notes.push("push presence: not taken, where it goes is the player's choice (write >A4:Pr)".into());
             } else if dahan_only && asked.is_empty() && count_of(l, &PieceFilter::Piece(PieceKind::Dahan)) > 0 {
                 a.notes.push(format!("push up to {} Dahan: not taken, where they go is the player's choice (write >A4 to push one to A4)", if *count == 255 { "all".to_string() } else { count.to_string() }));
             } else {
             let avail: u32 = what.iter().map(|f| count_of(l, f)).sum();
             let n = if *count == 255 { avail } else if *count == 128 { avail / 2 } else { (*count as u32).min(avail) };
             let n = if asked.is_empty() { n } else { n.min(asked.iter().map(|m| m.n).sum::<u32>()) };
-            let removed = remove_pieces(l, what, n, false);
+            // the kinds the line names go first, then the dearest Invaders, then tokens
+            let prefer: Vec<PieceFilter> = asked.iter().filter_map(|m| m.piece.clone().map(|k| std::iter::repeat_n(k, m.n as usize))).flatten().collect();
+            let removed = if ctx.moves_exact {
+                // exact: ask by ask, its kind (or the effect's own), and nothing beyond
+                let mut took: Vec<PieceFilter> = Vec::new();
+                for m in &asked {
+                    let room = n.saturating_sub(took.len() as u32).min(m.n);
+                    match &m.piece {
+                        Some(k) => (0..room).map_while(|_| take_one(l, k, false)).for_each(|u| took.push(u)),
+                        None => took.extend(take_many(l, what, room, &[])),
+                    }
+                }
+                took
+            } else {
+                take_many(l, what, n, &prefer)
+            };
             a.pushed += removed.len() as u32;
-            a.pushed_pieces.extend(removed.iter().copied());
+            a.pushed_pieces.extend(removed.iter().filter_map(|u| match u {
+                PieceFilter::Piece(k) => Some(*k),
+                _ => None,
+            }));
             if n < avail {
                 a.notes.push("push: which pieces is the player's choice".into());
             }
-            // each piece goes to an adjacent land: the one the line asks for, else a guess at
-            // the player's choice (an Invader to the land with the fewest Dahan and no presence)
+            // each piece goes to an adjacent land: the one the line asks for (its kind named
+            // first), else a guess at the player's choice (an Invader to the land with the
+            // fewest Dahan and no presence)
             let guessed = asked.is_empty() && !removed.is_empty();
-            for k in removed {
-                let dest = match asked.iter_mut().find(|m| m.n > 0 && m.piece.is_none_or(|p| p == k)) {
-                    Some(m) => {
-                        m.n -= 1;
-                        Some(m.to.clone())
+            for u in removed {
+                // the ask that names its kind, else one whose kind takes it (Invaders an
+                // Explorer), else one that names none
+                let ask = asked
+                    .iter()
+                    .position(|m| m.n > 0 && m.piece.as_ref() == Some(&u))
+                    .or_else(|| asked.iter().position(|m| m.n > 0 && m.piece.as_ref().is_some_and(|k| allows(std::slice::from_ref(k), &u))))
+                    .or_else(|| asked.iter().position(|m| m.n > 0 && m.piece.is_none()));
+                let dest = match ask {
+                    Some(i) => {
+                        asked[i].n -= 1;
+                        Some(asked[i].to.clone())
                     }
-                    None => push_destination(island, &adjacent, k),
+                    None => push_destination(island, &adjacent, &u),
                 };
                 let Some(dest) = dest else {
-                    a.notes.push(format!("{k:?} pushed with no adjacent land to go to"));
+                    a.notes.push(format!("{u:?} pushed with no adjacent land to go to"));
                     continue;
                 };
                 if let Some(d) = island.lands.get_mut(&dest) {
-                    add_piece(d, k);
+                    put_one(d, &u);
                 }
-                if k == PieceKind::Dahan {
+                if u == PieceFilter::Piece(PieceKind::Dahan) {
                     presence_along(island, target, &dest, ctx, a);
                 }
-                record_move(a, target.clone(), dest, Some(k), 1);
+                record_move(a, target.clone(), dest, Some(u), 1);
             }
             if guessed {
                 a.notes.push("push: where the pieces go is the player's choice".into());
@@ -559,45 +790,43 @@ fn apply_one(e: &Effect, island: &mut Island, target: &si_model::island::LandId,
             }
         }
         Effect::Gather { count, what } => {
-            // sources are the adjacent lands: the ones the line asks for first, then the
-            // fullest (the player's choice)
+            // sources are the adjacent lands: the ones the line asks for first (the kind it
+            // names, else the effect's own), then the fullest (the player's choice)
             let adjacent = l.adjacent.clone();
             let want = if *count >= 128 { 0 } else { *count as u32 };
             let mut left = want;
             let what = what.clone();
             let target_id = target.clone();
-            let asked: Vec<Move> = remaining(ctx, a, |m| m.to == target_id && adjacent.contains(&m.from));
+            let beast_ask = |m: &Move| m.piece.as_ref().map_or(what.iter().all(|f| *f == PieceFilter::Token(TokenKind::Beast)), |k| *k == PieceFilter::Token(TokenKind::Beast));
+            let asked: Vec<Move> = remaining(ctx, a, |m| m.to == target_id && (adjacent.contains(&m.from) || (far.contains(&m.from) && beast_ask(m))) && m.piece.as_ref().is_none_or(|k| allows(&what, k)));
+            // what is left of each ask, used up across the kinds the effect names
+            let mut ask_left: Vec<u32> = asked.iter().map(|m| m.n).collect();
             for f in &what {
-                let mut plan: Vec<(u32, LandId)> = asked.iter().map(|m| (m.n, m.from.clone())).collect();
-                let mut rest: Vec<(u32, LandId)> = adjacent.iter().filter(|a| !asked.iter().any(|m| m.from == **a)).filter_map(|a| island.lands.get(a).filter(|n| n.terrain != Some(Terrain::Ocean)).map(|n| (count_of(n, f), a.clone()))).filter(|(n, _)| *n > 0).collect();
-                rest.sort_by(|x, y| y.0.cmp(&x.0));
+                // (ask index or none, room, source, kind)
+                let mut plan: Vec<(Option<usize>, u32, LandId, PieceFilter)> = asked.iter().enumerate().filter(|(_, m)| m.piece.as_ref().is_none_or(|k| allows(std::slice::from_ref(f), k))).map(|(i, m)| (Some(i), ask_left[i], m.from.clone(), m.piece.clone().unwrap_or_else(|| f.clone()))).collect();
+                let mut rest: Vec<(Option<usize>, u32, LandId, PieceFilter)> = adjacent.iter().filter(|a| !asked.iter().any(|m| m.from == **a)).filter_map(|a| island.lands.get(a).filter(|n| n.terrain != Some(Terrain::Ocean)).map(|n| (None, count_of(n, f), a.clone(), f.clone()))).filter(|(_, n, _, _)| *n > 0).collect();
+                rest.sort_by(|x, y| y.1.cmp(&x.1));
                 if !ctx.moves_exact {
                     plan.extend(rest);
                 }
-                for (cap, src) in plan {
-                    if left == 0 {
-                        break;
-                    }
-                    let avail = island.lands.get(&src).map(|n| count_of(n, f)).unwrap_or(0);
-                    let take = avail.min(cap).min(left);
-                    if take == 0 {
-                        continue;
-                    }
-                    if let Some(src_land) = island.lands.get_mut(&src) {
-                        remove_pieces(src_land, std::slice::from_ref(f), take, true);
-                    }
-                    if let Some(t) = island.lands.get_mut(&target_id) {
-                        for _ in 0..take {
-                            add_filtered(t, f);
+                for (ask, cap, src, kind) in plan {
+                    let cap = ask.map(|i| ask_left[i].min(cap)).unwrap_or(cap);
+                    let mut took = 0;
+                    while took < cap && left > 0 {
+                        let Some(u) = island.lands.get_mut(&src).and_then(|s| take_one(s, &kind, true)) else { break };
+                        if let Some(t) = island.lands.get_mut(&target_id) {
+                            put_one(t, &u);
                         }
-                    }
-                    if piece_of(f) == Some(PieceKind::Dahan) {
-                        for _ in 0..take {
+                        if u == PieceFilter::Piece(PieceKind::Dahan) {
                             presence_along(island, &src, &target_id, ctx, a);
                         }
+                        record_move(a, src.clone(), target_id.clone(), Some(u), 1);
+                        took += 1;
+                        left -= 1;
                     }
-                    record_move(a, src.clone(), target_id.clone(), piece_of(f), take);
-                    left -= take;
+                    if let Some(i) = ask {
+                        ask_left[i] -= took;
+                    }
                 }
             }
             a.gathered += want - left;
@@ -620,8 +849,29 @@ fn apply_one(e: &Effect, island: &mut Island, target: &si_model::island::LandId,
         Effect::AddBlight(n) => l.c.blight += *n as u32,
         Effect::AddDahan(n) => l.c.dahan += *n as u32,
         Effect::AddPresence { count, .. } => {
-            l.c.presence += *count as u32;
-            a.presence_added += *count as u32;
+            // "Add" may take a presence already on the island: from where the line says
+            // (`:Pr` paths into the land), else from the track
+            let n = *count as u32;
+            let sources: Vec<(LandId, u32)> = ctx.moves.iter().filter(|m| m.to == *target && m.from != *target && m.piece == Some(PieceFilter::Presence)).map(|m| (m.from.clone(), m.n)).collect();
+            let mut from_board = 0;
+            for (src, k) in sources {
+                let have = island.lands.get(&src).map(|x| x.c.presence).unwrap_or(0);
+                let take = k.min(n - from_board).min(have);
+                if take > 0 {
+                    if let Some(x) = island.lands.get_mut(&src) {
+                        x.c.presence -= take;
+                    }
+                    record_move(a, src, target.clone(), Some(PieceFilter::Presence), take);
+                    from_board += take;
+                }
+                if from_board >= n {
+                    break;
+                }
+            }
+            if let Some(t) = island.lands.get_mut(target) {
+                t.c.presence += n;
+            }
+            a.presence_added += n - from_board;
         }
         Effect::AddToken { kind, count } => {
             let n = *count as u32;
@@ -651,13 +901,35 @@ fn apply_one(e: &Effect, island: &mut Island, target: &si_model::island::LandId,
         }
         Effect::Destroy { count, what } => {
             let n = if *count == 255 { what.iter().map(|f| count_of(l, f)).sum() } else { *count as u32 };
-            let removed = remove_pieces(l, what, n, false);
-            a.destroyed.extend(removed);
+            let prefer = recorded_kills(ctx, target, a);
+            // stated: exactly those and nothing else ("up to" is the player's call)
+            let removed = if ctx.kills.is_some() {
+                let mut took = Vec::new();
+                for k in prefer.iter().filter(|k| allows(what, k)) {
+                    if took.len() as u32 >= n {
+                        break;
+                    }
+                    took.extend(take_one(l, k, false));
+                }
+                took
+            } else {
+                take_many(l, what, n, &prefer)
+            };
+            a.killed.extend(removed.iter().map(|u| (target.clone(), u.clone())));
+            a.presence_destroyed += removed.iter().filter(|u| **u == PieceFilter::Presence).count() as u32;
+            a.destroyed.extend(removed.iter().filter_map(|u| match u {
+                PieceFilter::Piece(k) => Some(*k),
+                _ => None,
+            }));
         }
         Effect::Remove { count, what } => {
             let n = if *count == 255 { what.iter().map(|f| count_of(l, f)).sum() } else if *count == 128 { what.iter().map(|f| count_of(l, f)).sum::<u32>() / 2 } else { *count as u32 };
-            let removed = remove_pieces(l, what, n, false);
-            a.removed.extend(removed);
+            let removed = take_many(l, what, n, &[]);
+            a.presence_destroyed += removed.iter().filter(|u| **u == PieceFilter::Presence).count() as u32;
+            a.removed.extend(removed.iter().filter_map(|u| match u {
+                PieceFilter::Piece(k) => Some(*k),
+                _ => None,
+            }));
         }
         Effect::Replace { count, from, to } => {
             let n = (*count as u32).min(count_of(l, from));
@@ -727,7 +999,7 @@ fn apply_one(e: &Effect, island: &mut Island, target: &si_model::island::LandId,
             }
         }
         Effect::Choice(branches) => {
-            let i = choose_branch(branches, target, ctx);
+            let i = choose_branch(branches, island, target, ctx);
             if let Some(b) = branches.get(i) {
                 b.iter().for_each(|e| apply_one(e, island, target, ctx, a));
                 a.notes.push(format!("'or': {} (player's choice)", b.iter().map(Effect::words).collect::<Vec<_>>().join("; ")));
@@ -739,11 +1011,12 @@ fn apply_one(e: &Effect, island: &mut Island, target: &si_model::island::LandId,
         Effect::GainEnergy(_) | Effect::GainPowerCard { .. } | Effect::GainElement(_) | Effect::RangeBonus(_) | Effect::MayBeFast { .. } | Effect::Repeat | Effect::Both | Effect::Move { .. } | Effect::PlayAnother | Effect::MakeFast(_) | Effect::Reclaim(_) | Effect::RegainForgotten | Effect::EnergyPer { .. } | Effect::InvaderRule(_) | Effect::Unmodeled(_) | Effect::SpiritEffect(_) | Effect::SpecialToken { .. } | Effect::Timing { .. } | Effect::Movement(_) | Effect::DeckEffect(_) | Effect::Variable { .. } | Effect::Choose(_) => {
             a.notes.push(format!("not simulated: {}", e.words()));
         }
-        Effect::Clarification(_) | Effect::MaySlow => {}
+        Effect::Clarification(_) | Effect::MaySlow | Effect::Instead | Effect::Requires { .. } => {}
         Effect::Distribution(t) => a.notes.push(format!("distribution kept on the target (player's choice): {t}")),
         Effect::DestroyPresence(n) => {
             let n = (*n as u32).min(l.c.presence);
             l.c.presence -= n;
+            a.presence_destroyed += n;
             a.notes.push(format!("{n} of your presence destroyed"));
         }
         Effect::RemoveHealth(h) => {
@@ -960,19 +1233,395 @@ fn apply_one(e: &Effect, island: &mut Island, target: &si_model::island::LandId,
 }
 
 /// Apply a Power's base effects, plus every threshold the elements reach.
-pub fn apply(card_effects: &[Effect], thresholds: &[(ElementSet, Vec<Effect>)], island: &mut Island, target: &si_model::island::LandId, ctx: &Ctx) -> Applied {
-    let mut a = Applied::default();
-    for e in card_effects {
-        apply_one(e, island, target, ctx, &mut a);
-    }
-    for (need, effects) in thresholds {
-        if ctx.elements.satisfies(need) {
-            for e in effects {
-                apply_one(e, island, target, ctx, &mut a);
+/// The effects a Power runs with these elements: its own, then each tier the elements reach
+/// in order, a tier that says "Instead" replacing everything reached before it ("Instead, 3
+/// Fear and Defend 4" is 3 Fear and Defend 4, not 5 and 6).
+pub fn reached_effects(card_effects: &[Effect], thresholds: &[(ElementSet, Vec<Effect>)], elements: &ElementSet) -> Vec<Effect> {
+    reached_effects_in(card_effects, thresholds, elements, None, None)
+}
+
+/// `reached_effects`, a tier's costs beyond elements checked too: the Beasts in `land` (the
+/// Spirit's Sacred Site counting as one where `site_beast`), the presence the line says it
+/// destroys there for the Power (`ctx.kills`, Explosive Eruption's X: unstated, unmet);
+/// Energy and Power Card costs are taken as paid (the simulator keeps no purse for them).
+pub fn reached_effects_in(card_effects: &[Effect], thresholds: &[(ElementSet, Vec<Effect>)], elements: &ElementSet, land: Option<&Land>, ctx: Option<&Ctx>) -> Vec<Effect> {
+    let met = |what: &str, n: u8| -> bool {
+        match what {
+            "Beast" => land.is_some_and(|l| l.c.beasts + (ctx.is_some_and(|c| c.site_beast) && l.c.presence >= 2) as u32 >= n as u32),
+            "DestroyedPresence" => {
+                let x = ctx.and_then(|c| c.kills.as_ref()).map(|k| k.iter().filter(|(at, f)| land.is_some_and(|l| l.id == *at) && *f == PieceFilter::Presence).count()).unwrap_or(0);
+                x >= n as usize
             }
+            _ => true,
+        }
+    };
+    let mut out: Vec<Effect> = card_effects.to_vec();
+    for (_, effects) in thresholds.iter().filter(|(need, _)| elements.satisfies(need)) {
+        let costs: Vec<(&String, u8)> = effects.iter().filter_map(|e| if let Effect::Requires { what, count } = e { Some((what, *count)) } else { None }).collect();
+        if !costs.iter().all(|(w, n)| met(w, *n)) {
+            continue;
+        }
+        let effects: Vec<Effect> = effects.iter().filter(|e| !matches!(e, Effect::Requires { .. })).cloned().collect();
+        match effects.split_first() {
+            Some((Effect::Instead, rest)) => {
+                out.clear();
+                out.extend(rest.iter().cloned());
+            }
+            _ => out.extend(effects.iter().cloned()),
         }
     }
+    out
+}
+
+pub fn apply(card_effects: &[Effect], thresholds: &[(ElementSet, Vec<Effect>)], island: &mut Island, target: &si_model::island::LandId, ctx: &Ctx) -> Applied {
+    let mut a = Applied::default();
+    let chosen = reached_effects_in(card_effects, thresholds, &ctx.elements, island.lands.get(target), Some(ctx));
+    for e in chosen {
+        apply_one(&e, island, target, ctx, &mut a);
+    }
+    // a piece that left took its wound along: no wound outlives its piece
+    for l in island.lands.values_mut() {
+        l.trim_wounds();
+    }
     a
+}
+
+/// The laws an effect application keeps, stated from outside the executor, and the
+/// generators its fuzz test draws from (`tests::every_effect_keeps_its_laws`). The corpus
+/// fuzzer and `si fuzz --rules` hold every card and innate tier in the definitions to the
+/// same laws.
+pub mod oracle {
+    use super::*;
+    use si_model::oracle::{check, Rng, Violation};
+    use si_record::Counts;
+    use std::collections::BTreeMap;
+
+    /// The kinds the laws count, as the notation names them.
+    pub const KINDS: [&str; 11] = ["E", "T", "C", "Dh", "Bl", "Pr", "Be", "Di", "St", "Wi", "Ba"];
+
+    pub fn count(c: &Counts, i: usize) -> u32 {
+        [c.explorers, c.towns, c.cities, c.dahan, c.blight, c.presence, c.beasts, c.disease, c.strife, c.wilds, c.badlands][i]
+    }
+
+    fn index_of(f: &PieceFilter) -> Option<usize> {
+        Some(match f {
+            PieceFilter::Piece(PieceKind::Explorer) => 0,
+            PieceFilter::Piece(PieceKind::Town) => 1,
+            PieceFilter::Piece(PieceKind::City) => 2,
+            PieceFilter::Piece(PieceKind::Dahan) => 3,
+            PieceFilter::Blight => 4,
+            PieceFilter::Presence => 5,
+            PieceFilter::Token(TokenKind::Beast) => 6,
+            PieceFilter::Token(TokenKind::Disease) => 7,
+            PieceFilter::Token(TokenKind::Strife) => 8,
+            PieceFilter::Token(TokenKind::Wilds) => 9,
+            PieceFilter::Token(TokenKind::Badlands) => 10,
+            _ => return None,
+        })
+    }
+
+    pub fn totals(island: &Island) -> [u32; 11] {
+        let mut t = [0u32; 11];
+        for l in island.lands.values() {
+            for (i, x) in t.iter_mut().enumerate() {
+                *x += count(&l.c, i);
+            }
+        }
+        t
+    }
+
+    /// The kinds an effect list may put on the island (by index into `KINDS`): what it
+    /// adds, replaces with, builds, ravages or spreads. Every other kind can only move or go.
+    pub fn may_add(es: &[Effect]) -> [bool; 11] {
+        let mut m = [false; 11];
+        fn walk(es: &[Effect], m: &mut [bool; 11]) {
+            for e in es {
+                match e {
+                    Effect::AddDahan(_) => m[3] = true,
+                    Effect::AddBlight(_) => m[4] = true,
+                    Effect::AddPresence { .. } => m[5] = true,
+                    Effect::AddToken { kind, .. } | Effect::Spread { kind, .. } => {
+                        if let Some(i) = index_of(&PieceFilter::Token(*kind)) {
+                            m[i] = true;
+                        }
+                    }
+                    Effect::AddChosenToken(_) | Effect::TokenChoice { .. } => m[6..].iter_mut().for_each(|x| *x = true),
+                    Effect::Replace { to, .. } => {
+                        if let Some(i) = index_of(to) {
+                            m[i] = true;
+                        }
+                    }
+                    Effect::AddInvaders { kind, .. } => {
+                        if let Some(i) = index_of(&PieceFilter::Piece(*kind)) {
+                            m[i] = true;
+                        }
+                    }
+                    Effect::Downgrade(_) => {
+                        m[0] = true;
+                        m[1] = true;
+                    }
+                    Effect::Build | Effect::Ravage | Effect::InvaderRule(_) => {
+                        m[0..3].iter_mut().for_each(|x| *x = true);
+                        m[4] = true;
+                    }
+                    Effect::Per { then, .. } | Effect::Conditional { then, .. } | Effect::Area { then, .. } | Effect::Trigger { then, .. } => walk(then, m),
+                    Effect::Choice(bs) => bs.iter().for_each(|b| walk(b, m)),
+                    _ => {}
+                }
+            }
+        }
+        walk(es, &mut m);
+        m
+    }
+
+    fn only(es: &[Effect], ok: &dyn Fn(&Effect) -> bool) -> bool {
+        es.iter().all(|e| match e {
+            Effect::Per { then, .. } | Effect::Conditional { then, .. } => only(then, ok),
+            Effect::Choice(bs) => bs.iter().all(|b| only(b, ok)),
+            _ => ok(e),
+        })
+    }
+
+    /// The effects `apply` runs: the card's own and every threshold the elements reach.
+    pub fn reached(effects: &[Effect], thresholds: &[(ElementSet, Vec<Effect>)], ctx: &Ctx, land: Option<&Land>) -> Vec<Effect> {
+        reached_effects_in(effects, thresholds, &ctx.elements, land, Some(ctx))
+    }
+
+    /// The laws of one `apply` on `target`, from `before` to `after`:
+    /// - no piece from nowhere: a kind the effects cannot add never grows in number;
+    /// - moves only along the island's own edges, each of at least one piece;
+    /// - a list of gathers and pushes only keeps every kind's number;
+    /// - what it says it destroyed was there to destroy;
+    /// - stated kills are all it destroys; an exact bracket is all it moves;
+    /// - a list that acts in one land changes that land and the lands its moves touch only;
+    /// - Damage kills no more Health than it deals.
+    pub fn apply_holds(effects: &[Effect], thresholds: &[(ElementSet, Vec<Effect>)], target: &LandId, ctx: &Ctx, before: &Island, after: &Island, a: &Applied) -> Vec<Violation> {
+        let mut out = Vec::new();
+        let all = reached(effects, thresholds, ctx, before.lands.get(target));
+        let adds = may_add(&all);
+        let (t0, t1) = (totals(before), totals(after));
+        for i in 0..11 {
+            check(&mut out, adds[i] || t1[i] <= t0[i], "no piece from nowhere", || format!("{} on the island {} -> {}", KINDS[i], t0[i], t1[i]));
+        }
+        for m in &a.moves {
+            // a Beast (and a Sacred Site moved as one) may go two lands with Fly Fast as Thought
+            let beast = matches!(m.piece, Some(PieceFilter::Token(TokenKind::Beast)) | Some(PieceFilter::Presence));
+            // a presence added from the island comes from as far as the Power's range
+            let placed = m.piece == Some(PieceFilter::Presence);
+            let adjacent = placed || before.lands.get(&m.from).is_some_and(|l| l.adjacent.contains(&m.to)) || (ctx.beasts_far && beast && two_away(before, &m.from).contains(&m.to));
+            check(&mut out, adjacent && m.n > 0, "moves along the island's edges", || format!("{} from {} to {}", m.n, m.from, m.to));
+        }
+        if only(&all, &|e| matches!(e, Effect::Push { .. } | Effect::Gather { .. })) {
+            for i in 0..11 {
+                check(&mut out, t1[i] == t0[i], "moving keeps every kind's number", || format!("{} {} -> {}", KINDS[i], t0[i], t1[i]));
+            }
+        }
+        // what it destroyed was there: before in the land, or moved in by this application
+        let mut by: BTreeMap<(LandId, usize), u32> = BTreeMap::new();
+        for (l, k) in &a.killed {
+            if let Some(i) = index_of(k) {
+                *by.entry((l.clone(), i)).or_default() += 1;
+            }
+        }
+        // (presence may also arrive along with Dahan or as a Sacred Site moved as a Beast)
+        let presence_travels = ctx.presence_with_dahan || ctx.site_beast;
+        for ((l, i), n) in by.iter().filter(|((_, i), _)| !adds[*i] && !(*i == 5 && presence_travels)) {
+            let had = before.lands.get(l).map(|x| count(&x.c, *i)).unwrap_or(0);
+            let came: u32 = a.moves.iter().filter(|m| m.to == *l && m.piece.as_ref().and_then(index_of).is_none_or(|j| j == *i)).map(|m| m.n).sum();
+            check(&mut out, *n <= had + came, "destroys only what is there", || format!("{n} {} in {l}, {had} there", KINDS[*i]));
+        }
+        if let Some(stated) = &ctx.kills {
+            let mut left: Vec<(LandId, PieceFilter)> = stated.clone();
+            for k in &a.killed {
+                match left.iter().position(|x| x == k) {
+                    Some(p) => {
+                        left.remove(p);
+                    }
+                    None => out.push(Violation::new("stated kills are all it destroys", format!("{} {:?} not stated", k.0, k.1))),
+                }
+            }
+        }
+        if ctx.moves_exact {
+            // along each path, no more than the asks on it (an ask that names no kind, or a
+            // kind that takes the piece, Invaders an Explorer)
+            for m in &a.moves {
+                let covers = |x: &Move, p: &Option<PieceFilter>| x.piece.as_ref().is_none_or(|k| p.as_ref().is_some_and(|u| k == u || allows(std::slice::from_ref(k), u)));
+                let asked: u32 = ctx.moves.iter().filter(|x| x.from == m.from && x.to == m.to && covers(x, &m.piece)).map(|x| x.n).sum();
+                let made: u32 = a.moves.iter().filter(|x| x.from == m.from && x.to == m.to).map(|x| x.n).sum();
+                check(&mut out, made <= asked.max(ctx.moves.iter().filter(|x| x.from == m.from && x.to == m.to).map(|x| x.n).sum()) && asked > 0, "an exact bracket is all it moves", || format!("{made} from {} to {}, {asked} asked", m.from, m.to));
+            }
+        }
+        let local = only(&all, &|e| !matches!(e, Effect::Area { .. } | Effect::Trigger { .. } | Effect::Ravage | Effect::Build | Effect::InvaderRule(_) | Effect::Spread { .. }));
+        if local {
+            for (id, l) in &after.lands {
+                let was = before.lands.get(id).map(|x| x.c).unwrap_or_default();
+                let mut c0 = was;
+                let mut c1 = l.c;
+                // presence moves with Dahan and gathers toward targets by spirit rules
+                c0.presence = 0;
+                c1.presence = 0;
+                let touched = id == target || a.moves.iter().any(|m| m.from == *id || m.to == *id);
+                check(&mut out, touched || c0 == c1, "acts where it says", || format!("{id} changed: {was:?} -> {:?}", l.c));
+            }
+        }
+        // pooled Damage only: "to each" deals its amount to every piece
+        let damages_only = only(&all, &|e| !matches!(e, Effect::Damage { to: DamageTarget::EachInvader | DamageTarget::EachTownCity | DamageTarget::EachDahan, .. } | Effect::Destroy { .. } | Effect::Remove { .. } | Effect::RemoveHealth(_) | Effect::Ravage | Effect::Infighting(_) | Effect::Duel { .. } | Effect::Downgrade(_) | Effect::InvaderRule(_) | Effect::Replace { .. } | Effect::Area { .. } | Effect::Trigger { .. }));
+        if damages_only {
+            // the Damage already on the target's Invaders this turn counts toward their Health
+            let wounded: u32 = before.lands.get(target).map(|l| l.wounds.iter().filter(|(k, _)| k.is_invader()).map(|(_, d)| *d).sum()).unwrap_or(0);
+            let health: u32 = a.destroyed.iter().filter(|k| k.is_invader()).map(|k| k.health() as u32 + ctx.health_bonus).sum();
+            check(&mut out, health <= a.damage + wounded, "Damage kills no more Health than it deals", || format!("{health} Health destroyed by {} Damage, {wounded} on them already", a.damage));
+        }
+        out.extend(crate::invaders::oracle::wounds_hold(after, ctx.health_bonus, 0));
+        out
+    }
+
+    /// One plain effect's own numbers, when it is the whole list: Fear n is n Fear, Defend n
+    /// is n Defend, an Add adds what it says in its land, Remove Blight takes what is there
+    /// up to n, a Push or Gather moves no more than it says (and, unasked, all it may of
+    /// Invaders), a Destroy takes what it says while there is any.
+    pub fn simple_holds(e: &Effect, target: &LandId, ctx: &Ctx, before: &Island, after: &Island, a: &Applied) -> Vec<Violation> {
+        let mut out = Vec::new();
+        let (Some(b), Some(x)) = (before.lands.get(target), after.lands.get(target)) else { return out };
+        // each kind the list names, once (Invaders and Explorer overlap)
+        let of = |c: &Counts, what: &[PieceFilter]| -> u32 {
+            let mut kinds: Vec<usize> = what.iter().flat_map(|f| match f { PieceFilter::AnyInvader => vec![0, 1, 2], f => index_of(f).into_iter().collect() }).collect();
+            kinds.sort();
+            kinds.dedup();
+            kinds.iter().map(|i| count(c, *i)).sum()
+        };
+        let limit = |n: u8, avail: u32| -> u32 { if n == 255 { avail } else if n == 128 { avail / 2 } else { (n as u32).min(avail) } };
+        match e {
+            Effect::Fear(n) => check(&mut out, a.fear == *n as u32, "Fear as stated", || format!("{} for Fear {n}", a.fear)),
+            Effect::Defend(n) => check(&mut out, x.defend == b.defend + *n as u32, "Defend as stated", || format!("{} -> {} for Defend {n}", b.defend, x.defend)),
+            Effect::AddDahan(n) => check(&mut out, x.c.dahan == b.c.dahan + *n as u32, "adds as stated", || format!("Dahan {} -> {} for {n}", b.c.dahan, x.c.dahan)),
+            Effect::AddBlight(n) => check(&mut out, x.c.blight == b.c.blight + *n as u32, "adds as stated", || format!("Blight {} -> {} for {n}", b.c.blight, x.c.blight)),
+            Effect::AddToken { kind, count: n } => {
+                if let Some(i) = index_of(&PieceFilter::Token(*kind)) {
+                    check(&mut out, count(&x.c, i) == count(&b.c, i) + *n as u32, "adds as stated", || format!("{} {} -> {} for {n}", KINDS[i], count(&b.c, i), count(&x.c, i)));
+                }
+            }
+            Effect::RemoveBlight(n) => check(&mut out, x.c.blight == b.c.blight - (*n as u32).min(b.c.blight), "removes as stated", || format!("Blight {} -> {} for {n}", b.c.blight, x.c.blight)),
+            Effect::Push { count: n, what } => {
+                let (have, left) = (of(&b.c, what), of(&x.c, what));
+                let gone = have.saturating_sub(left);
+                check(&mut out, gone <= limit(*n, have), "pushes no more than it says", || format!("{gone} of {have} for Push {n}"));
+                let invaders_only = what.iter().all(|f| !matches!(f, PieceFilter::Piece(PieceKind::Dahan)));
+                if invaders_only && ctx.moves.is_empty() && !ctx.moves_exact && after.lands.values().any(|l| l.id != *target && b.adjacent.contains(&l.id) && l.terrain != Some(Terrain::Ocean)) {
+                    check(&mut out, gone == limit(*n, have), "pushes all it says, unasked", || format!("{gone} of {have} for Push {n}"));
+                }
+            }
+            Effect::Gather { count: n, what } => {
+                let came = of(&x.c, what).saturating_sub(of(&b.c, what));
+                if *n < 128 {
+                    check(&mut out, came <= *n as u32, "gathers no more than it says", || format!("{came} for Gather {n}"));
+                }
+            }
+            Effect::Destroy { count: n, what } if ctx.kills.is_none() => {
+                let (have, left) = (of(&b.c, what), of(&x.c, what));
+                check(&mut out, have - left == limit(*n, have), "destroys as stated", || format!("{} of {have} for Destroy {n}", have - left));
+            }
+            _ => {}
+        }
+        out
+    }
+
+    /// A small island to act on (the Invader steps' generator: an Ocean and six lands in a
+    /// ring with two chords, random pieces, tokens, Defend and skips).
+    pub fn arbitrary_island(rng: &mut Rng) -> Island {
+        crate::invaders::oracle::arbitrary_island(rng)
+    }
+
+    pub fn arbitrary_filter(rng: &mut Rng) -> PieceFilter {
+        let all = [
+            PieceFilter::Piece(PieceKind::Explorer),
+            PieceFilter::Piece(PieceKind::Town),
+            PieceFilter::Piece(PieceKind::City),
+            PieceFilter::Piece(PieceKind::Dahan),
+            PieceFilter::AnyInvader,
+            PieceFilter::Token(TokenKind::Beast),
+            PieceFilter::Token(TokenKind::Disease),
+            PieceFilter::Token(TokenKind::Wilds),
+            PieceFilter::Token(TokenKind::Strife),
+            PieceFilter::Token(TokenKind::Badlands),
+        ];
+        all[rng.below(all.len())].clone()
+    }
+
+    fn filters(rng: &mut Rng) -> Vec<PieceFilter> {
+        let mut v = vec![arbitrary_filter(rng)];
+        if rng.one_in(3) {
+            let f = arbitrary_filter(rng);
+            if !v.contains(&f) {
+                v.push(f);
+            }
+        }
+        v
+    }
+
+    fn count_word(rng: &mut Rng) -> u8 {
+        if rng.one_in(8) { 255 } else { rng.between(1, 3) as u8 }
+    }
+
+    /// An effect the simulator executes, nested up to `depth` (a per, an "or", an "if").
+    pub fn arbitrary_effect(rng: &mut Rng, depth: u32) -> Effect {
+        let targets = [DamageTarget::Invaders, DamageTarget::TownCityOnly, DamageTarget::ExplorerTownOnly, DamageTarget::Town, DamageTarget::Dahan, DamageTarget::EachInvader, DamageTarget::EachTownCity, DamageTarget::EachDahan];
+        let tokens = [TokenKind::Beast, TokenKind::Disease, TokenKind::Wilds, TokenKind::Strife, TokenKind::Badlands];
+        let k = rng.below(if depth > 0 { 15 } else { 12 });
+        match k {
+            0 => Effect::Damage { amount: rng.between(0, 6) as u8, to: targets[rng.below(targets.len())] },
+            1 => Effect::Defend(rng.between(1, 4) as u8),
+            2 => Effect::Push { count: count_word(rng), what: filters(rng) },
+            3 => Effect::Gather { count: count_word(rng), what: filters(rng) },
+            4 => Effect::Fear(rng.between(1, 3) as u8),
+            5 => Effect::RemoveBlight(rng.between(1, 2) as u8),
+            6 => Effect::AddBlight(1),
+            7 => Effect::AddDahan(rng.between(1, 2) as u8),
+            8 => Effect::AddToken { kind: tokens[rng.below(tokens.len())], count: rng.between(1, 2) as u8 },
+            9 => Effect::Destroy { count: count_word(rng), what: filters(rng) },
+            10 => Effect::Remove { count: count_word(rng), what: filters(rng) },
+            11 => Effect::FearIfInvaders(rng.between(1, 2) as u8),
+            12 => Effect::Per { per: arbitrary_filter(rng), then: vec![arbitrary_effect(rng, depth - 1)] },
+            13 => Effect::Choice(vec![vec![arbitrary_effect(rng, depth - 1)], vec![arbitrary_effect(rng, depth - 1)]]),
+            _ => Effect::Conditional { condition: ["Invaders are present", "target land has {Dahan}", "target land has {Beast}"][rng.below(3)].into(), then: vec![arbitrary_effect(rng, depth - 1)] },
+        }
+    }
+
+    /// What a line may say of a play: asks to and from the neighbors (a kind named or not),
+    /// a bracket exact or not, kills stated or not, presence along with the Dahan or not.
+    pub fn arbitrary_ctx(rng: &mut Rng, island: &Island, target: &LandId) -> Ctx {
+        let mut ctx = Ctx::plain(rng.between(0, 1), ElementSet::new());
+        let around: Vec<LandId> = island.lands.get(target).map(|l| l.adjacent.clone()).unwrap_or_default();
+        for _ in 0..rng.below(3) {
+            let Some(n) = rng.pick(&around).cloned() else { break };
+            let piece = if rng.coin() { None } else { Some(arbitrary_filter(rng)) };
+            let (from, to) = if rng.coin() { (n, target.clone()) } else { (target.clone(), n) };
+            ctx.moves.push(Move { from, to, piece, n: rng.between(1, 3) });
+        }
+        ctx.moves_exact = !ctx.moves.is_empty() && rng.coin();
+        if rng.one_in(3) {
+            let l = island.lands.get(target);
+            let mut k = Vec::new();
+            for _ in 0..rng.below(3) {
+                let f = [PieceFilter::Piece(PieceKind::Explorer), PieceFilter::Piece(PieceKind::Town), PieceFilter::Piece(PieceKind::City), PieceFilter::Token(TokenKind::Beast)][rng.below(4)].clone();
+                if l.is_some() {
+                    k.push((target.clone(), f));
+                }
+            }
+            ctx.kills = Some(k);
+        }
+        ctx.presence_with_dahan = rng.one_in(4);
+        // Many Minds' rules now and then: Beasts two lands away, the Sacred Site as a Beast
+        ctx.beasts_far = rng.one_in(5);
+        ctx.site_beast = rng.one_in(5);
+        if ctx.site_beast && rng.coin() {
+            if let Some(n) = rng.pick(&around).cloned() {
+                let (from, to) = if rng.coin() { (n, target.clone()) } else { (target.clone(), n) };
+                ctx.moves.push(Move { from, to, piece: Some(PieceFilter::Presence), n: 2 });
+            }
+        }
+        ctx
+    }
 }
 
 #[cfg(test)]
@@ -1013,7 +1662,7 @@ mod tests {
         let mut isl = three_lands();
         let a = apply(&[Effect::Gather { count: 1, what: vec![PieceFilter::Piece(PieceKind::Dahan)] }, Effect::Push { count: 1, what: vec![PieceFilter::Piece(PieceKind::Dahan)] }], &[], &mut isl, &a1, &asked);
         assert_eq!((isl.lands[&a1].c.dahan, isl.lands[&"A2".parse().unwrap()].c.dahan, isl.lands[&"A3".parse().unwrap()].c.dahan), (2, 0, 3), "one Dahan in from A2 (not the fuller A3), one out to A3");
-        assert_eq!(a.moves, vec![Move { from: "A2".parse().unwrap(), to: a1.clone(), piece: Some(PieceKind::Dahan), n: 1 }, Move { from: a1.clone(), to: "A3".parse().unwrap(), piece: Some(PieceKind::Dahan), n: 1 }]);
+        assert_eq!(a.moves, vec![Move { from: "A2".parse().unwrap(), to: a1.clone(), piece: Some(PieceFilter::Piece(PieceKind::Dahan)), n: 1 }, Move { from: a1.clone(), to: "A3".parse().unwrap(), piece: Some(PieceFilter::Piece(PieceKind::Dahan)), n: 1 }]);
         // nothing asked: the gather takes from the fullest land; a Dahan push is not taken, since where they go is the player's call
         let mut isl = three_lands();
         let a = apply(&[Effect::Gather { count: 1, what: vec![PieceFilter::Piece(PieceKind::Dahan)] }, Effect::Push { count: 1, what: vec![PieceFilter::Piece(PieceKind::Dahan)] }], &[], &mut isl, &a1, &ctx());
@@ -1104,7 +1753,7 @@ mod tests {
         let per = Effect::Per { per: PieceFilter::parse("{Sun}"), then: vec![Effect::Push { count: 1, what: vec![PieceFilter::Piece(PieceKind::Dahan)] }] };
         let a = apply(&[per], &[], &mut isl, &a1, &c);
         assert_eq!(a.pushed, 2);
-        assert_eq!(a.moves, vec![Move { from: a1.clone(), to: "A3".parse().unwrap(), piece: Some(PieceKind::Dahan), n: 2 }]);
+        assert_eq!(a.moves, vec![Move { from: a1.clone(), to: "A3".parse().unwrap(), piece: Some(PieceFilter::Piece(PieceKind::Dahan)), n: 2 }]);
         assert_eq!((isl.lands[&a1].c.dahan, isl.lands[&"A3".parse().unwrap()].c.dahan), (0, 4));
     }
 
@@ -1159,5 +1808,50 @@ mod tests {
         let l = &isl.lands[&"A1".parse().unwrap()];
         assert_eq!((a.pushed, a.defend, a.tokens_added, a.fear), (3, 2, 1, 1));
         assert_eq!((l.c.explorers, l.c.towns, l.c.disease, l.defend), (0, 0, 1, 2));
+    }
+
+    #[test]
+    fn every_effect_keeps_its_laws() {
+        use super::oracle::*;
+        use si_model::oracle::{property, Violation};
+        property(
+            "effects",
+            1,
+            6000,
+            |rng| {
+                let island = arbitrary_island(rng);
+                let target = LandId::new("A", rng.between(1, 6) as u8);
+                let effects: Vec<Effect> = (0..rng.between(1, 3)).map(|_| arbitrary_effect(rng, 2)).collect();
+                let ctx = arbitrary_ctx(rng, &island, &target);
+                (island, target, effects, ctx)
+            },
+            |(island, target, effects, ctx)| {
+                let mut after = island.clone();
+                let ran = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| apply(effects, &[], &mut after, target, ctx)));
+                let Ok(a) = ran else { return vec![Violation::new("no panic", "apply panicked")] };
+                let mut v = apply_holds(effects, &[], target, ctx, island, &after, &a);
+                if let [e] = effects.as_slice() {
+                    v.extend(simple_holds(e, target, ctx, island, &after, &a));
+                }
+                v
+            },
+        );
+    }
+
+    #[test]
+    fn an_instead_tier_replaces_the_tiers_before_it() {
+        // Beset and Confound the Invaders, two tiers reached: 3 Fear and Defend 4, not 5 and 6
+        let air = |n: u8| {
+            let mut e = ElementSet::new();
+            e.add(si_model::element::Element::Air, n);
+            e
+        };
+        let tiers = vec![(air(1), vec![Effect::Fear(2), Effect::Defend(2)]), (air(2), vec![Effect::Instead, Effect::Fear(3), Effect::Defend(4)])];
+        let mut isl = three_lands();
+        let a1: LandId = "A1".parse().unwrap();
+        let a = apply(&[], &tiers, &mut isl, &a1, &Ctx::plain(0, air(2)));
+        assert_eq!((a.fear, a.defend), (3, 4));
+        let a = apply(&[], &tiers, &mut three_lands(), &a1, &Ctx::plain(0, air(1)));
+        assert_eq!((a.fear, a.defend), (2, 2), "the first tier alone");
     }
 }

@@ -36,7 +36,7 @@ re!(ADD_CHOSEN, r"^Add (\d+) of that type of token to target land$");
 re!(ADD_EACH_ADJACENT, r"^(?:They |Target Spirit |You )?[Aa]dds? (\d+) \{(\w+)\} to each adjacent land$");
 re!(REPEAT_TARGET, r"^(?:Once (?:this turn|per turn), )?[Tt]arget(?: Spirit)? may Repeat (?:a|one|\d+|up to \d+ other|the lowest-cost) Power Cards?");
 re!(PLAY_ANOTHER, r"^(?:Target Spirit may (?:immediately )?|They may |You may )?[Pp]lay (?:another Power Card|a Power Card|it|the Major Power)(?: immediately)? by paying its cost");
-re!(MAKE_FAST, r"^(?:This turn, )?[Tt]arget Spirit may (?:use (?:up to )?(\d+) \{Slow\} Powers? as if (?:they were|it were) \{Fast\}|make (\d+) Power which says .+ \{Fast\})");
+re!(MAKE_FAST, r"^(?:This turn, )?[Tt]arget Spirit may (?:use (?:up to )?(\d+) \{Slow\} Powers? as if (?:they were|it were) \{Fast\}|make (\d+) Power which says .+ \{Fast\}|[Rr]esolve (\d+) \{Slow\} Powers? now)");
 re!(RECLAIM_N, r"^(?:Target Spirit may |You may )?Reclaims? (?:up to )?(\d+) (?:Power )?[Cc]ards?");
 re!(RECLAIM_OR_REGAIN, r"^Target Spirit either Reclaims (\d+) Power Card or re-gains a Unique Power they previously forgot$");
 re!(ENERGY_PER, r"^(?:Otherwise, )?(?:[Tt]arget Spirit |[Yy]ou )?gains? (\d+) Energy per (.+)$");
@@ -83,6 +83,7 @@ re!(GATHER, r"^(?:[Yy]ou may |Target Spirit )?Gathers? (?:up to )?(\d+|all) (?:o
 re!(MOVE, r"^(?:You may )?Move (?:up to )?(\d+) (?:of (?:your|their|target Spirit's) )?((?:(?:\{\w+\}|Invaders?)/?)+)");
 re!(ADD, r"^(?:Target Spirit |They |You )?(?:Add|add)s? ((?:(?:up to )?\d+ (?:additional )?\{\w+\}(?:, | and |, and )?)+)");
 re!(PIECE_N, r"(\d+) (?:additional )?\{(\w+)\}");
+re!(PIECES_N, r"(\d+) (?:additional )?(\{\w+\}(?:/\{\w+\})*)");
 re!(REMOVE, r"^(?:Remove|remove) (?:up to )?(\d+|all|any number of) (?:Damaged )?((?:(?:\{\w+\}|Invaders?)/?)+)");
 re!(REMOVE_HALF, r"^Remove up to half \(round (?:up|down)\) of (\{\w+\}|Invaders)");
 re!(ABDUCT, r"^Abduct (?:up to )?(\d+|it) ?((?:(?:\{\w+\}|Invaders?)/?)*)");
@@ -118,8 +119,67 @@ pub fn clean(s: &str) -> String {
     SPACES.replace_all(s.trim(), " ").replace(" .", ".").replace(" ,", ",").trim().to_string()
 }
 
+re!(LIST_VERB, r"^((?i:destroy|push|gather|add|remove))( up to)? (.+)$");
+re!(ADD_ADJACENT_N, r"^Add (\d+) \{(\w+)\} (?:to|in) (?:up to )?(\d+) adjacent lands?(.*)$");
+re!(IN_ADJACENT_N, r"^In up to (\d+) adjacent lands?(.*?), (.+)$");
+re!(ADD_EITHER, r"^[Aa]dd (\d+) \{(\w+)\}/\{(\w+)\}$");
+re!(LIST_ITEM, r"^(all |up to \d+ |\d+ )?(\{\w+\}(?:/\{\w+\})*|Invaders)$");
+
+/// "Verb A, B, and C" as one sentence per item: "Destroy all {Dahan} and {Beast}" is
+/// "Destroy all {Dahan}" and "Destroy all {Beast}" (an item without its count takes the one
+/// before), and what follows the list applies to every item ("... from each adjacent
+/// land"). None unless the sentence is such a list.
+fn distribute(s: &str) -> Option<Vec<String>> {
+    let c = LIST_VERB.captures(s)?;
+    let verb: String = c[1].chars().enumerate().map(|(i, ch)| if i == 0 { ch.to_ascii_uppercase() } else { ch }).collect();
+    let (upto, objects) = (c.get(2).map(|m| m.as_str()).unwrap_or(""), &c[3]);
+    let end = objects.rfind('}').map(|i| i + 1).or_else(|| objects.rfind("Invaders").map(|i| i + "Invaders".len()))?;
+    let (list, tail) = objects.split_at(end);
+    // the tail without its parentheticals ("(from any Spirit)")
+    let tail = regex::Regex::new(r"\s*\([^)]*\)").unwrap().replace_all(tail, "").to_string();
+    let items: Vec<&str> = list.split(", and ").flat_map(|x| x.split(" and ")).flat_map(|x| x.split(", ")).map(str::trim).filter(|x| !x.is_empty()).collect();
+    if items.len() < 2 {
+        return None;
+    }
+    let mut count: Option<String> = None;
+    let mut out = Vec::new();
+    for it in items {
+        let m = LIST_ITEM.captures(it)?;
+        let n = m.get(1).map(|x| x.as_str().to_string()).or(count.clone())?;
+        count = Some(n.clone());
+        out.push(format!("{verb}{upto} {n}{}{tail}", &m[2]));
+    }
+    Some(out)
+}
+
 /// Split at ". " when a new sentence starts (capital, `{`, `+` or a digit).
-fn sentences(line: &str) -> Vec<String> {
+/// "Verb A or B" as a choice of "Verb A" and "Verb B" ("Push up to 2 {Explorer} or 1
+/// {Town}"); None unless the sentence is such a choice.
+fn distribute_or(s: &str) -> Option<Vec<String>> {
+    let c = LIST_VERB.captures(s)?;
+    let verb: String = c[1].chars().enumerate().map(|(i, ch)| if i == 0 { ch.to_ascii_uppercase() } else { ch }).collect();
+    let (upto, objects) = (c.get(2).map(|m| m.as_str()).unwrap_or(""), &c[3]);
+    let end = objects.rfind('}').map(|i| i + 1)?;
+    let (list, tail) = objects.split_at(end);
+    if !list.contains(" or ") {
+        return None;
+    }
+    // "1 {Badlands}, 1 {Disease}, or 1 {Strife}": the commas are "or"s too
+    let list = list.replace(", or ", " or ").replace(", ", " or ");
+    let items: Vec<&str> = list.split(" or ").map(str::trim).collect();
+    if items.len() < 2 {
+        return None;
+    }
+    let mut out = Vec::new();
+    for it in items {
+        let m = LIST_ITEM.captures(it)?;
+        out.push(format!("{verb}{upto} {}{}{tail}", m.get(1)?.as_str(), &m[2]));
+    }
+    Some(out)
+}
+
+/// A printed line split into the sentences the parser reads one at a time.
+pub fn sentences(line: &str) -> Vec<String> {
     let text = clean(line);
     let chars: Vec<char> = text.chars().collect();
     let mut out = Vec::new();
@@ -185,6 +245,48 @@ pub fn parse_sentence(raw: &str) -> Vec<Effect> {
     if s.is_empty() {
         return vec![];
     }
+    // a verb over a list: "Destroy all {Explorer} and all {Town}", "Gather 5 {Town}, 5
+    // {Dahan}, 5 {Beast}, and 15 {Explorer}": the verb for each, every part typed
+    // a verb over a choice: "Push up to 2 {Explorer} or 1 {Town}"
+    if let Some(parts) = distribute_or(&s) {
+        let read: Vec<Vec<Effect>> = parts.iter().map(|p| parse_sentence(p)).collect();
+        if read.iter().all(|p| typed(p)) {
+            return vec![Effect::Choice(read)];
+        }
+    }
+    if let Some(parts) = distribute(&s) {
+        let read: Vec<Vec<Effect>> = parts.iter().map(|p| parse_sentence(p)).collect();
+        if read.iter().all(|p| typed(p)) {
+            return read.into_iter().flatten().collect();
+        }
+    }
+    // "A and B", "A, B, and C" read part by part before any pattern takes the whole and
+    // drops its tail ("1 Damage and Defend 2"); an "if", a "for each" or an "otherwise"
+    // keeps its clause together and reads it the same way inside
+    let opens_clause = ["If ", "if ", "For each", "For every", "Otherwise", "Each ", "In "].iter().any(|p| s.starts_with(p)) || s.contains(':');
+    if !opens_clause {
+        // each part an action on the board, not a clause that only reads as one ("After
+        // Invaders are added or moved to target land, ..." is no choice)
+        let whole = |p: &Vec<Effect>| typed(p) && !p.iter().any(|e| matches!(e, Effect::Clarification(_) | Effect::InvaderRule(_) | Effect::Timing { .. } | Effect::Movement(_) | Effect::SpiritEffect(_) | Effect::DeckEffect(_) | Effect::Distribution(_) | Effect::SpecialToken { .. } | Effect::Unmodeled(_) | Effect::Variable { .. } | Effect::Choose(_) | Effect::ChooseLand(_)));
+        // "A OR B", "A or B": each a whole action of its own
+        for or in [" OR ", " or "] {
+            if s.contains(or) {
+                let parts: Vec<Vec<Effect>> = s.split(or).map(parse_sentence).collect();
+                if parts.len() > 1 && parts.iter().all(whole) {
+                    return vec![Effect::Choice(parts)];
+                }
+            }
+        }
+        for sep in [", and ", " and "] {
+            if s.contains(sep) {
+                let parts: Vec<Vec<Effect>> = s.split(sep).map(parse_sentence).collect();
+                if parts.len() > 1 && parts.iter().all(whole) {
+                    return parts.into_iter().flatten().collect();
+                }
+                break;
+            }
+        }
+    }
     if let Some(e) = direct(&s) {
         return e;
     }
@@ -197,8 +299,9 @@ pub fn parse_sentence(raw: &str) -> Vec<Effect> {
             }
         }
     }
-    if s.contains(" or ") {
-        let parts: Vec<Vec<Effect>> = s.split(" or ").map(parse_sentence).collect();
+    let or = if s.contains(" OR ") { " OR " } else { " or " };
+    if s.contains(or) {
+        let parts: Vec<Vec<Effect>> = s.split(or).map(parse_sentence).collect();
         if parts.iter().all(|p| typed(p)) {
             return vec![Effect::Choice(parts)];
         }
@@ -273,9 +376,89 @@ fn filters(s: &str) -> Vec<PieceFilter> {
 fn direct(s: &str) -> Option<Vec<Effect>> {
     let one = |e: Effect| Some(vec![e]);
     let lower = s.to_ascii_lowercase();
+    // --- what cannot be read right is not read at all ----------------------
+    // (a wrong reading is worse than "not simulated": these say something the effects
+    // cannot, so they stay text the simulator says it does not execute)
+    let beyond = [
+        "do likewise",                                // the effect again for other kinds of piece
+        "fewer {dahan}",                              // Birds Cry Warning: 2 fewer Dahan destroyed
+        "{dahan} does not participate in ravage",     // Roiling Bog: one Dahan sits the Ravage out
+        "with {strife} only",                         // Mind-Shattering Song: Damage to some Invaders only
+        "destroy 1 invader with {strife}",            // Mind-Shattering Song: a Destroy of some Invaders only
+        "in an adjacent land with",                   // Angry Bears: a Destroy in a land the player picks
+        "in an adjacent land without",                // Tigers Hunting: Damage in a land the player picks
+        "lowers {dahan} counterattack",               // Rain and Mud: the counterattack less
+        "from now on:",                               // Bargains of Power and Protection: a lasting rule
+        "to a maximum of",                            // Dreams of the Dahan: a capped count
+        "bringing up to",                             // a presence pushed with pieces along
+        "to lands without",                           // a push to lands of a kind only
+        "per 2 {",                                    // one per two of a kind
+    ];
+    if let Some(b) = beyond.iter().find(|b| lower.contains(*b)) {
+        return one(Effect::Unmodeled(format!("{s} (beyond the simulator: {b})")));
+    }
+    // --- lands besides the target -------------------------------------------
+    // "Add 1 {Strife} in up to 3 adjacent lands", "Add 1 {Disease} to 2 adjacent lands with
+    // Invaders": the adjacent lands the player picks (the fullest)
+    if let Some(c) = ADD_ADJACENT_N.captures(s) {
+        if let Some(k) = TokenKind::parse(&c[2]) {
+            return one(Effect::Area { scope: format!("up to {} adjacent lands{}", &c[3], &c[4]), then: vec![Effect::AddToken { kind: k, count: count(&c[1]) }] });
+        }
+    }
+    // "In up to 3 adjacent lands with {Blight}, add 1 {Badlands}/{Strife}"
+    if let Some(c) = IN_ADJACENT_N.captures(s) {
+        let then = parse_sentence(&c[3]);
+        if typed(&then) {
+            return one(Effect::Area { scope: format!("up to {} adjacent lands{}", &c[1], &c[2]), then });
+        }
+    }
+    // "In that land: ..." is the target land's own clause
+    if let Some(rest) = s.strip_prefix("In that land: ").or_else(|| s.strip_prefix("In that land, ")) {
+        let then = parse_sentence(rest);
+        if typed(&then) {
+            return Some(then);
+        }
+    }
+    // "Add 2 {Badlands}/{Strife}": either token
+    if let Some(c) = ADD_EITHER.captures(s) {
+        if let (Some(a), Some(b)) = (TokenKind::parse(&c[2]), TokenKind::parse(&c[3])) {
+            let n = count(&c[1]);
+            return one(Effect::Choice(vec![vec![Effect::AddToken { kind: a, count: n }], vec![Effect::AddToken { kind: b, count: n }]]));
+        }
+    }
+    // --- an opening clause keeps its condition ------------------------------
+    // ("If target land has {Beast}, Invaders do not Build there this turn" is not a plain
+    // skip; "For each {Beast}, 1 {Fear} and Invaders skip one Action" not a plain skip)
+    // (the patterns written for one card's "If ..." come first: they read what this cannot)
+    if (s.starts_with("If ") || s.starts_with("if ")) && !FEAR_IF.is_match(s) && !IF_GATHER_DO_SO.is_match(s) && !INVADER_RULE.is_match(s) {
+        for re in [&*IF_COMMA, &*IF_COLON] {
+            if let Some(c) = re.captures(s) {
+                let then = parse_sentence(&c[2]);
+                if typed(&then) {
+                    return one(Effect::Conditional { condition: c[1].to_string(), then });
+                }
+            }
+        }
+    }
+    if s.starts_with("For each ") || s.starts_with("For every ") {
+        if let Some(c) = FOR_EACH.captures(s) {
+            let then = parse_sentence(&c[3]);
+            if typed(&then) {
+                let suffix = c.get(2).map(|m| m.as_str().trim()).unwrap_or("");
+                let per = match suffix {
+                    "in or adjacent to target land" | "in adjacent lands" | "past the first" | "Pushed by this Power" => PieceFilter::Other(format!("{} {}", &c[1], suffix)),
+                    _ => PieceFilter::parse(c[1].split(' ').next().unwrap()),
+                };
+                return one(Effect::Per { per, then });
+            }
+        }
+    }
     // --- whole-sentence idioms -------------------------------------------
     if lower.starts_with("isolate") {
         return one(Effect::Isolate);
+    }
+    if lower.contains("may do likewise") {
+        return one(Effect::Unmodeled(s.to_string()));
     }
     if lower.contains("repeat this power") || lower.starts_with("repeat on an adjacent land") {
         return one(Effect::Repeat);
@@ -322,7 +505,7 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     if let Some(c) = NO_PART.captures(s) {
         return one(Effect::NoParticipation(count(&c[1])));
     }
-    if lower.starts_with("{dahan} take no damage from ravaging invaders") || lower.starts_with("{dahan} cannot be damaged") || lower.contains("would be destroyed in target land, destroy") || lower.ends_with("{dahan} does not participate in ravage") {
+    if lower.starts_with("{dahan} take no damage from ravaging invaders") || lower.starts_with("{dahan} cannot be damaged") {
         return one(Effect::DahanImmune);
     }
     if let Some(c) = DAMAGE_MINUS.captures(s) {
@@ -452,13 +635,14 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
         return one(Effect::Area { scope: "each adjacent land".into(), then: vec![inner] });
     }
     if REPEAT_TARGET.is_match(s) {
-        return one(Effect::Repeat);
+        // another of the Spirit's Power Cards again, not this Power: the Spirit's economy
+        return one(Effect::SpiritEffect(s.to_string()));
     }
     if PLAY_ANOTHER.is_match(s) {
         return one(Effect::PlayAnother);
     }
     if let Some(c) = MAKE_FAST.captures(s) {
-        return one(Effect::MakeFast(c.get(1).or(c.get(2)).map(|m| count(m.as_str())).unwrap_or(1)));
+        return one(Effect::MakeFast(c.get(1).or(c.get(2)).or(c.get(3)).map(|m| count(m.as_str())).unwrap_or(1)));
     }
     if let Some(c) = RECLAIM_OR_REGAIN.captures(s) {
         return one(Effect::Choice(vec![vec![Effect::Reclaim(count(&c[1]))], vec![Effect::RegainForgotten]]));
@@ -610,11 +794,19 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
         let rest = c[3].trim().to_string();
         if let Some(per) = rest.strip_prefix("per ") {
             let per_word = per.split([' ', ',']).next().unwrap_or(per);
-            let to = damage_target(&rest);
-            return one(Effect::Per { per: PieceFilter::parse(per_word), then: vec![Effect::Damage { amount, to }] });
+            // the target is what follows the "per" ("per {Dahan}/{Explorer}, to {Town}/{City}
+            // only"), and a "per A/B" counts each kind
+            let to = damage_target(&per[per_word.len()..]);
+            let kinds: Vec<PieceFilter> = per_word.split('/').map(PieceFilter::parse).collect();
+            return Some(kinds.into_iter().map(|k| Effect::Per { per: k, then: vec![Effect::Damage { amount, to }] }).collect());
         }
         if bonus {
             return one(Effect::DamageBonus(amount));
+        }
+        // "1 Damage to each {Town}/{City}/{Dahan}" (Pyroclastic Bombardment): each of them,
+        // the Towns and Cities and the Dahan alike
+        if rest.to_ascii_lowercase().contains("each {town}/{city}/{dahan}") {
+            return Some(vec![Effect::Damage { amount, to: DamageTarget::EachTownCity }, Effect::Damage { amount, to: DamageTarget::EachDahan }]);
         }
         return one(Effect::Damage { amount, to: damage_target(&rest) });
     }
@@ -707,7 +899,7 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
         });
     }
     if let Some(c) = DROWN.captures(s) {
-        let out: Vec<Effect> = PIECE_N.captures_iter(&c[1]).map(|p| Effect::Destroy { count: count(&p[1]), what: vec![PieceFilter::parse(&p[2])] }).collect();
+        let out: Vec<Effect> = PIECES_N.captures_iter(&c[1]).map(|p| Effect::Destroy { count: count(&p[1]), what: p[2].split('/').map(PieceFilter::parse).collect() }).collect();
         if !out.is_empty() {
             return Some(out);
         }
@@ -764,6 +956,56 @@ fn damage_target(rest: &str) -> DamageTarget {
     }
 }
 
+/// The parser's law, stated from outside it: a sentence is read as what it says. Every
+/// number it prints and every piece it names (Explorer, Town, City, Dahan, Beast, Disease,
+/// Wilds, Strife, Badlands, Blight, Fear, presence) shows in the words of what it was read
+/// as. A sentence read as text kept whole (a clarification, the Spirit's economy, a deck, a
+/// timing, an Invader-phase rule) keeps its own words and is not held to it.
+pub fn sentence_holds(sentence: &str, effects: &[Effect]) -> Vec<si_model::oracle::Violation> {
+    use si_model::oracle::Violation;
+    fn kept_whole(e: &Effect) -> bool {
+        match e {
+            Effect::Clarification(_) | Effect::SpiritEffect(_) | Effect::DeckEffect(_) | Effect::Timing { .. } | Effect::InvaderRule(_) | Effect::Unmodeled(_) | Effect::Other(_) | Effect::Movement(_) | Effect::Distribution(_) | Effect::SpecialToken { .. } | Effect::Variable { .. } | Effect::Choose(_) | Effect::ChooseLand(_) | Effect::Repeat => true,
+            Effect::Per { then, .. } | Effect::Conditional { then, .. } | Effect::Area { then, .. } | Effect::Trigger { then, .. } => then.iter().any(kept_whole),
+            Effect::Choice(bs) => bs.iter().flatten().any(kept_whole),
+            _ => false,
+        }
+    }
+    if effects.is_empty() || effects.iter().any(kept_whole) {
+        return Vec::new();
+    }
+    let words: String = effects.iter().map(Effect::words).collect::<Vec<_>>().join(" ").to_ascii_lowercase();
+    // "Replace 1 {City} with 2 {Explorer}" reads as the replacement and 1 more added
+    let replaces = effects.iter().any(|e| matches!(e, Effect::Replace { .. }));
+    // the sentence without its parentheticals and its icons' own numbers ({1Range})
+    let mut plain = String::new();
+    let mut depth = 0;
+    for ch in sentence.chars() {
+        match ch {
+            '(' => depth += 1,
+            ')' => depth -= 1,
+            _ if depth == 0 => plain.push(ch),
+            _ => {}
+        }
+    }
+    let plain = regex::Regex::new(r"\{[^}]*\}").unwrap().replace_all(&plain, |c: &regex::Captures| c[0].chars().filter(|x| !x.is_ascii_digit()).collect::<String>()).to_string();
+    let low = plain.to_ascii_lowercase();
+    let mut out = Vec::new();
+    for n in regex::Regex::new(r"\d+").unwrap().find_iter(&plain).filter(|_| !replaces) {
+        if !regex::Regex::new(&format!(r"(^|\D){}(\D|$)", n.as_str())).unwrap().is_match(&words) {
+            out.push(Violation::new("every number read", format!("`{sentence}` read as `{words}`: {} is not in it", n.as_str())));
+        }
+    }
+    for (name, said) in [("explorer", "explorer"), ("town", "town"), ("city", "city"), ("dahan", "dahan"), ("beast", "beast"), ("disease", "disease"), ("wilds", "wilds"), ("strife", "strife"), ("badlands", "badlands"), ("blight", "blight"), ("fear", "fear")] {
+        let named = low.contains(&format!("{{{name}}}")) || low.contains(&format!("{name} ")) && name == "fear";
+        let read = words.contains(said) || (name == "city" && words.contains("cities")) || ((name == "explorer" || name == "town" || name == "city") && words.contains("invader"));
+        if named && !read {
+            out.push(Violation::new("every piece read", format!("`{sentence}` read as `{words}`: {name} is not in it")));
+        }
+    }
+    out
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -771,6 +1013,56 @@ mod tests {
 
     fn p(lines: &[&str]) -> Vec<Effect> {
         parse(&lines.iter().map(|s| s.to_string()).collect::<Vec<_>>())
+    }
+
+    #[test]
+    fn a_slow_power_resolved_now_is_a_speed_grant() {
+        // Fractured Days' Slip the Flow of Time; Lightning's Boon
+        assert_eq!(p(&["Target Spirit may Resolve 1 {Slow} Power now."]), vec![Effect::MakeFast(1)]);
+        assert_eq!(p(&["This turn, target Spirit may use up to 2 {Slow} Powers as if they were {Fast}."]), vec![Effect::MakeFast(2)]);
+    }
+
+    #[test]
+    fn printed_sentences_read_as_they_say() {
+        use si_model::island::PieceKind::*;
+        let piece = |k| PieceFilter::Piece(k);
+        // The Trees and Stones Speak of War: both halves for each Dahan
+        assert_eq!(p(&["For each {Dahan}, 1 Damage and Defend 2."]), vec![Effect::Per { per: piece(Dahan), then: vec![Effect::Damage { amount: 1, to: DamageTarget::Invaders }, Effect::Defend(2)] }]);
+        // Rituals of Destruction: the Fear too
+        assert_eq!(p(&["If target land has at least 3 {Dahan}, +3 Damage and 2 {Fear}."]), vec![Effect::Conditional { condition: "target land has at least 3 {Dahan}".into(), then: vec![Effect::DamageBonus(3), Effect::Fear(2)] }]);
+        // Voice of Command: the Damage goes to Towns and Cities, counted per Dahan and per Explorer
+        assert_eq!(
+            p(&["1 Damage per {Dahan}/{Explorer}, to {Town}/{City} only."]),
+            vec![Effect::Per { per: piece(Dahan), then: vec![Effect::Damage { amount: 1, to: DamageTarget::TownCityOnly }] }, Effect::Per { per: piece(Explorer), then: vec![Effect::Damage { amount: 1, to: DamageTarget::TownCityOnly }] }]
+        );
+        // Wood Seeks Growth, Humans Seek Freedom: an "OR", the Damage to Invaders
+        assert_eq!(p(&["1 Damage per {Dahan} OR Push up to 3 {Dahan}."]), vec![Effect::Choice(vec![vec![Effect::Per { per: piece(Dahan), then: vec![Effect::Damage { amount: 1, to: DamageTarget::Invaders }] }], vec![Effect::Push { count: 3, what: vec![piece(Dahan)] }]])]);
+        // Ocean Breaks the Shore: a Town or a City drowns
+        assert_eq!(p(&["Also, Drown 1 {Town}/{City}."]), vec![Effect::Destroy { count: 1, what: vec![piece(Town), piece(City)] }]);
+        // Sweep into the Sea: both kinds, in a lowercase list after an "if"
+        assert_eq!(p(&["If target land is Coastal, destroy all {Explorer} and {Town}."]), vec![Effect::Conditional { condition: "target land is Coastal".into(), then: vec![Effect::Destroy { count: 255, what: vec![piece(Explorer)] }, Effect::Destroy { count: 255, what: vec![piece(Town)] }] }]);
+        // Prey on the Builders, Peace of the Nighttime Sky: the condition stays
+        assert_eq!(p(&["If target land has {Beast}, Invaders do not Build there this turn."]), vec![Effect::Conditional { condition: "target land has {Beast}".into(), then: vec![Effect::SkipBuild] }]);
+        assert_eq!(p(&["If the Terror Level is 1, Invaders do not Ravage in target land this turn."]), vec![Effect::Conditional { condition: "the Terror Level is 1".into(), then: vec![Effect::SkipRavage] }]);
+        // Infestation of Venomous Spiders: per Beast, a Fear and a skip
+        assert_eq!(p(&["For each {Beast}, 1 {Fear} and Invaders skip one Action in target land."]), vec![Effect::Per { per: PieceFilter::Token(TokenKind::Beast), then: vec![Effect::Fear(1), Effect::SkipAction(1)] }]);
+        // Birds Cry Warning, Powerstorm: not this Power's own effects, so not read as them
+        assert!(matches!(p(&["The next time {Dahan} would be Destroyed in target land, Destroy 2 fewer {Dahan}."]).as_slice(), [Effect::Unmodeled(_)]));
+        assert!(matches!(p(&["Target may Repeat up to 2 other Power Cards by paying their costs."]).as_slice(), [Effect::SpiritEffect(_)]));
+        // Grant Hatred a Ravenous Form, Death Falls Gently: the adjacent lands the player picks
+        assert_eq!(p(&["Add 1 {Strife} in up to 3 adjacent lands."]), vec![Effect::Area { scope: "up to 3 adjacent lands".into(), then: vec![Effect::AddToken { kind: TokenKind::Strife, count: 1 }] }]);
+        // Spill Bitterness Into the Earth: either token, and the Blight
+        assert_eq!(p(&["Add 2 {Badlands}/{Strife} and 1 {Blight}."]), vec![Effect::Choice(vec![vec![Effect::AddToken { kind: TokenKind::Badlands, count: 2 }], vec![Effect::AddToken { kind: TokenKind::Strife, count: 2 }]]), Effect::AddBlight(1)]);
+        // Renewing Boon: both halves in that land
+        let boon = p(&["In that land: Remove 1 {Blight}, and target Spirit may add 1 of their {DestroyedPresenceNew}."]);
+        assert!(boon.contains(&Effect::RemoveBlight(1)), "{boon:?}");
+        // Air Moves, Earth Endures: the Town is the other choice
+        assert_eq!(p(&["Push up to 2 {Explorer} or 1 {Town}."]), vec![Effect::Choice(vec![vec![Effect::Push { count: 2, what: vec![piece(Explorer)] }], vec![Effect::Push { count: 1, what: vec![piece(Town)] }]])]);
+    }
+
+    #[test]
+    fn damage_to_each_town_city_and_dahan_hits_all_three() {
+        assert_eq!(p(&["1 Damage to each {Town}/{City}/{Dahan}."]), vec![Effect::Damage { amount: 1, to: DamageTarget::EachTownCity }, Effect::Damage { amount: 1, to: DamageTarget::EachDahan }]);
     }
 
     #[test]

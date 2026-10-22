@@ -28,6 +28,11 @@ pub struct GameMeta {
     pub difficulty: Option<i64>,
     #[serde(default)]
     pub scenario: Option<String>,
+    /// The lands that touch across boards, as the save's adjacency matrix has them (a board
+    /// definition knows only its own lands): every two-board gather, push, cascade and
+    /// Explore across the seam needs them.
+    #[serde(default)]
+    pub links: Vec<(LandId, LandId)>,
 }
 
 /// One Invader step in one land.
@@ -184,6 +189,11 @@ pub struct SpiritTurn {
     pub discard_after: Vec<String>,
     /// (phase, power, target)
     pub powers_used: Vec<(Phase, String, Option<LandId>)>,
+    /// Elements gained this turn beyond the presence track and the cards played: (source,
+    /// elements): a growth option (`Spirit/GainElements`), a Power that grants them, a
+    /// wildcard slot's choice. They count toward the innates like any other.
+    #[serde(default)]
+    pub elements_gained: Vec<(String, Vec<String>)>,
     /// Where this spirit's presence stood at the end of the turn (for range).
     #[serde(default)]
     pub presence_after: BTreeMap<LandId, u32>,
@@ -228,6 +238,28 @@ pub struct TurnRecord {
     pub fear_generated: i32,
     pub fear_cards_earned: u32,
     pub terror_after: u8,
+    /// Beasts the adversary's rules took to its panel this turn (Russia's Hunters), from the
+    /// save journal (a log does not say).
+    #[serde(default)]
+    pub beasts_to_adversary: u32,
+    /// The board as the Fast phase ended, before the Blighted Island, Event and Fear steps:
+    /// what those steps did is `before_invaders` less this, the record's own, so a Power's
+    /// effect the simulator misses never passes for an Event's.
+    #[serde(default)]
+    pub after_fast: BTreeMap<LandId, Counts>,
+    /// The board as the Slow phase ended: the turn as the player left it, what a line of
+    /// plays in notation must come to when it is the line played.
+    #[serde(default)]
+    pub after_slow: BTreeMap<LandId, Counts>,
+    /// Every Power used this turn with the board as it began and as it ended: each a test
+    /// with its answer, the Power's rules against what the game did.
+    #[serde(default)]
+    pub power_uses: Vec<PowerUse>,
+    /// The Damage on pieces that had not fallen, at each snapshot of the board (keyed
+    /// `before_fast`, `after_fast`, `before_invaders`, `before_slow`, `after_slow`): Damage
+    /// stays on a piece until Time Passes, so a Town with 1 falls to 1 more.
+    #[serde(default)]
+    pub wounds: BTreeMap<String, BTreeMap<LandId, Vec<(PieceKind, u32)>>>,
     /// The Terror Level as the Invader steps began (the victory they can bring); the level
     /// can rise later in the turn (`terror_after`).
     #[serde(default)]
@@ -238,6 +270,32 @@ pub struct TurnRecord {
     pub fear_cards: Vec<String>,
     pub board_after: Counts,
     pub lands_with_invaders_after: u32,
+}
+
+/// One Power's use: its land, the phase, the board as it began (`StartPower`) and as it
+/// ended (`UsePower`).
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PowerUse {
+    pub power: String,
+    pub phase: Option<Phase>,
+    pub target: Option<LandId>,
+    pub before: BTreeMap<LandId, Counts>,
+    pub after: BTreeMap<LandId, Counts>,
+    /// What it moved, one entry a piece: (kind, from, to), the kind by name (`Dahan`, `Beast`).
+    #[serde(default)]
+    pub moves: Vec<(String, LandId, LandId)>,
+    /// What it destroyed: (land, kind by name).
+    #[serde(default)]
+    pub destroyed: Vec<(LandId, String)>,
+    /// The Damage already on pieces as it began.
+    #[serde(default)]
+    pub wounds: BTreeMap<LandId, Vec<(PieceKind, u32)>>,
+    /// The Fear it generated and the Defend it granted (all lands together): what a board
+    /// does not show.
+    #[serde(default)]
+    pub fear: u32,
+    #[serde(default)]
+    pub defend: u32,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]

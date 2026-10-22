@@ -55,6 +55,7 @@ fn main() -> Result<()> {
         "hindsight" => hindsight(&args[1..]),
         "import" => import(&args[1..]),
         "calibrate" => calibrate(&args[1..]),
+        "fuzz" => fuzz(&args[1..]),
         "study" => tui::run(&args[1..]),
         "journal" => journal::run(&args[1..]),
         _ => unreachable!(),
@@ -80,12 +81,13 @@ const COMMANDS: &[CommandHelp] = &[
     CommandHelp { name: "corpus", args: "<path>... [--md]", what: "one row per game over captures and EndGame logs, then the groupings", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--md", "Markdown tables")] },
     CommandHelp { name: "verify", args: "<EndGame.txt | capture dir> [--level n] [--all]", what: "simulate each turn's Invader phase and the Power uses, and compare them with what the log records", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--level n", "the adversary level when the save beside the log does not say"), ("--all", "every land, not only the ones that differ")] },
     CommandHelp { name: "notate", args: "<EndGame.txt | capture dir> [--canonical]", what: "the game in Spirit Island notation: decisions, reveals and results kept apart, Power>land[results]", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--canonical", "full ids instead of the short codes")] },
-    CommandHelp { name: "cards", args: "[--unparsed [n]] [--card <title>] [--innates] [--features] [--fit minor|major|unique|all]", what: "the effect grammar's coverage of the Power Cards and innates; one card's parse; the feature table; the pricing fit", options: &[DEFS, ("--unparsed [n]", "the cards the grammar does not read in full, n of them"), ("--card <title>", "one card, sentence by sentence (read, typed, simulated)"), ("--innates", "the innate tiers not read"), ("--features", "the feature table over the cards"), ("--fit <kind>", "the least-squares price fit over that kind")] },
+    CommandHelp { name: "cards", args: "[--unparsed [n]] [--card <title>] [--innates] [--features] [--fit minor|major|unique|all]", what: "the effect grammar's coverage of the Power Cards and innates; one card's parse; the feature table; the pricing fit", options: &[DEFS, ("--unparsed [n]", "the cards the grammar does not read in full, n of them"), ("--card <title>", "one card or innate, sentence by sentence (read, typed, simulated)"), ("--innates", "the innate tiers not read"), ("--features", "the feature table over the cards"), ("--fit <kind>", "the least-squares price fit over that kind")] },
     CommandHelp { name: "hindsight", args: "<EndGame.txt | capture dir> [--turn n] [--top n] [--fixed-growth] [--seed <save>] [--calibration <json>] [--try \"SLSF>C8 MI\"]", what: "each turn's growth and plays against every legal line from the same position: informed, hindsight, luck, confidence, the readings", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--turn n", "one turn only"), ("--top n", "how many alternatives to print"), ("--fixed-growth", "the growth as played; only the plays vary (much faster)"), ("--seed <save.dat|.gz>", "the save a journal that starts mid-game was reloaded from (si inject prints it)"), ("--calibration <json>", "the measured constants (else data/calibration.json beside the defs, else built in)"), ("--try \"<line>\"", "score a line you write, beside the actual one (with --turn)"), ("--actual", "the actual line only, no alternatives (seconds for a whole game)"), ("--json", "the review as JSON instead of tables: every turn's lines and outcomes, losses, clocks, the simulator's error")] },
     CommandHelp { name: "study", args: "<EndGame.txt | capture dir> | --live [--steam <dir>] [--replay <capture> --at Tn/Phase [--save <part>]]  [--fixed-growth] [--seed <save>] [--calibration <json>]", what: "the hindsight review as screens, turn by turn (a capture, its newest save; one of its saves, the game as that save holds it); --live: the game being played, the open turn scoring the plans you type beside doing nothing", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--live", "read the Steam folder as it stands and follow it; every save seen is recorded into $SI_CAPTURE_DIR/live-<id>/"), ("--steam <dir>", "another folder than $SI_STEAM_DIR or the Handelabra path"), ("--replay <capture> --at Tn/Phase", "the live screen on a capture cut at that save, no game needed (the earliest save of that turn and phase on the path the game took)"), ("--attempt <save>", "with --live: an earlier attempt of this game (a save of the branch rolled back from); its review of the turn being played seeds the plans"), ("--save <part>", "with --replay: a save by a part of its name instead of --at"), ("--fixed-growth", "review the growth as played; only the plays vary (seconds, not minutes)"), ("--seed <save.dat|.gz>", "a file's journal that starts mid-game: the save it was reloaded from"), ("--calibration <json>", "the measured constants"), ("keys", "h/l turns, j/k rows, Enter opens a group, e/c all, Tab pacing, t a line or a plan, d delete it, i load this turn's start into the running game, ? the rest")] },
     CommandHelp { name: "checkpoint", args: "<capture dir>... [--turn n] [--phase <Phase>] [--any-branch] [--export <dir>] [--graph [--dot]]", what: "the app's saves kept with a capture, by turn and phase, on the path the game finally took", options: &[("--turn n", "that turn's saves"), ("--phase <Phase>", "SpiritPhase, FastPower, SlowPower, Ravage, ... (the save's state name)"), ("--any-branch", "undone attempts too"), ("--export <dir>", "write the matching saves there as plain .dat"), ("--graph [--dot]", "the checkpoints as a DAG (forks where the game came back to a save); --dot for Graphviz")] },
     CommandHelp { name: "inject", args: "<capture dir> --turn n [--phase SpiritPhase] [--save <part>] [--any-branch] [--name save-Undo-990.dat] [--timeout 90] [--fetch]", what: "load that checkpoint into the RUNNING Steam app from WSL (frida-inject.exe, no restart): the open game reloads in place, or Continue opens it from the main menu", options: &[("--turn n", "the turn (its earliest save of the phase on the path the game took)"), ("--phase <Phase>", "default SpiritPhase, the turn's start"), ("--save <part>", "a save by a part of its name"), ("--any-branch", "undone attempts too"), ("--name <file>", "the file name the checkpoint is placed under in the save folder"), ("--timeout <s>", "how long to wait for the app's frame (default 90)"), ("--fetch", "download frida-inject.exe for Windows into the tools folder first")] },
     CommandHelp { name: "import", args: "<EndGame--n.txt> [--out <steam-capture dir>]", what: "build a live-<game id>/ capture from an EndGame log and the saves the app still has (its final .dat, any save-Feedback/Undo of that game)", options: &[("--out <dir>", "where the capture goes (default $SI_CAPTURE_DIR)")] },
+    CommandHelp { name: "fuzz", args: "[<path>...] [--rules | --live] [--lines n] [--seed n] [--json]", what: "random legal lines on every closed turn of every game (the captures and the Steam folder), the game logic's invariants checked on each: no panic, the same result twice, finite scores, no refusal of a legal line, the notation read back the same, moves between adjacent lands, presence never from nowhere, no win and loss together; the actual line not ending a game that went on", options: &[DEFS, ("--use <game> <turn> <Power>", "one recorded use of a Power played alone and explained beside the game's result"), ("--case <Power> <seed>", "with --rules: the case a violation named, built again from its seed and explained"), ("--rules", "the rules themselves instead: every Power Card and innate in the definitions on random states of every board, every adversary at every level through Explore, Build and Ravage, each held to its laws (--lines: cases each, default 40)"), ("--live", "the turn being played instead: at the first and last save of every open phase on the path each capture's game took, doing nothing and random plans scored as the live screen scores them"), ("--lines n", "random lines per turn (default 30; with --live, plans per save, default 8)"), ("--seed n", "the seed (a finding prints the one that builds its line again)"), ("--boards", "each turn where the actual line in notation ends otherwise than the record, land by land"), ("--powers", "every Power the games used, each use played alone from the board as it began: how many leave the board as the game did, and the first that does not"), ("--json", "the reports as JSON")] },
     CommandHelp { name: "calibrate", args: "[<path>...] [--out <json>] [--dry-run] [--turns]", what: "measure over the corpus what hindsight has no rule for: the Event and Fear cards' mean worth, the next-turn weight, a turn's luck sd, the simulator's error", options: &[DEFS, ("--out <json>", "where to write (default data/calibration.json beside the defs)"), ("--dry-run", "measure and print, write nothing"), ("--turns", "also print each turn's simulator error (game, turn, ledger units), to see what a change moved")] },
 ];
 
@@ -202,7 +204,9 @@ pub(crate) fn load_record(path: &Path, defs: Option<&Definitions>, seed: Option<
         }
     }
     let (lines, undo, source) = si_record::replay::load(path)?;
-    let rec = Replay::new(defs).with_seed(seed).run(&lines, undo.as_deref(), &source);
+    let mut rec = Replay::new(defs).with_seed(seed).run(&lines, undo.as_deref(), &source);
+    // the save beside a log names what the log does not: the level, the lands across boards
+    apply_save(&mut rec, path);
     Ok((rec, source))
 }
 
@@ -222,6 +226,9 @@ pub(crate) fn apply_save(rec: &mut GameRecord, path: &Path) -> Option<si_steam::
     }
     rec.meta.difficulty = snap.difficulty;
     rec.meta.scenario = snap.scenario.clone();
+    if rec.meta.links.is_empty() {
+        rec.meta.links = si_steam::engine_map::cross_board_links(&snap);
+    }
     Some(snap)
 }
 
@@ -314,7 +321,24 @@ fn cards(args: &[String]) -> Result<()> {
     let pos = |flag: &str| args.iter().position(|a| a == flag);
     if let Some(i) = pos("--card") {
         let name = args.get(i + 1).cloned().unwrap_or_default();
-        let Some(c) = defs.cards.get(&name).or_else(|| defs.card_by_title(&name)) else { bail!("no card {name}") };
+        let norm = |x: &str| x.chars().filter(|c| c.is_ascii_alphanumeric()).collect::<String>().to_lowercase();
+        let innate = defs.spirits.values().flat_map(|sp| sp.innates.iter().map(move |i| (sp, i))).find(|(_, i)| i.id == name || norm(&i.title) == norm(&name));
+        if let (None, Some((sp, inn))) = (defs.cards.get(&name).or_else(|| defs.card_by_title(&name)), innate) {
+            // an innate: its rider and each tier, printed and as read
+            out!("{}  ({}) innate of {}", inn.title, inn.id, sp.title);
+            out!("  {:?} | {} | target {}", inn.speed, inn.range.as_ref().map(|r| r.words()).unwrap_or("no Range".into()), inn.target.words());
+            for r in &inn.rider {
+                out!("  rider: {}", si_defs::text::plain(r));
+            }
+            for t in &inn.tiers {
+                out!("  {}{}: {}", t.elements, if t.modifier { " (modifier)" } else { "" }, si_defs::text::plain(&t.body));
+                for e in &t.effects {
+                    out!("      • {}", e.words());
+                }
+            }
+            return Ok(());
+        }
+        let Some(c) = defs.cards.get(&name).or_else(|| defs.card_by_title(&name)) else { bail!("no card or innate {name}") };
         let elements = if c.elements.is_empty() { "no elements".to_string() } else { c.elements.to_string() };
         out!("{}  ({})", c.title, c.id);
         out!("  {:?} Power | {} Energy | {:?} | {} | target {} | {}", c.kind, c.cost, c.speed, c.range.as_ref().map(|r| r.words()).unwrap_or("no Range".into()), c.target.words(), elements);
@@ -602,6 +626,14 @@ fn hindsight(args: &[String]) -> Result<()> {
     let progress = progress && !json;
     if progress {
         eprintln!("hindsight  {} turns; each bar fills as the turn's growth positions are tried with every play set, then the ranking runs{}", rec.turns.iter().filter(|t| t.turn >= 1 && !t.before_fast.is_empty()).count(), if fixed_growth { " (--fixed-growth: the growth as played)" } else { " (--fixed-growth keeps the growth as played and is much faster)" });
+    }
+    // --try with --json and --turn: the written line's full result, nothing else
+    if let (true, Some(text), Some(turn)) = (args.iter().any(|a| a == "--json"), &try_line, only_turn) {
+        match si_hindsight::try_line(&rec, &defs, turn, text) {
+            Ok(l) => println!("{}", serde_json::to_string(&l)?),
+            Err(e) => bail!("{e}"),
+        }
+        return Ok(());
     }
     let only: Option<Vec<u32>> = only_turn.map(|t| vec![t]);
     let review = if progress { si_hindsight::review_turns(&rec, &defs, &opts, only.as_deref(), &progress_bars(color::enabled())) } else { si_hindsight::review_turns(&rec, &defs, &opts, only.as_deref(), &|_| {}) };
@@ -1701,6 +1733,236 @@ fn measure(rec: &GameRecord, defs: Option<&Definitions>, source: &str) -> Row {
 /// capture already holds (a log whose last actions a capture shares is the same game
 /// twice; the capture, with its exact undo clock, wins). Games joined in progress or
 /// shorter than two turns are skipped with a note on stderr.
+/// `si fuzz`: the game logic's invariants on random legal lines over the corpus.
+fn fuzz(args: &[String]) -> Result<()> {
+    let Some(defs) = defs_from(args)? else { bail!("fuzz needs --defs <dir> or SI_DEFS_DIR") };
+    let after = |flag: &str| args.iter().position(|a| a == flag).and_then(|i| args.get(i + 1)).cloned();
+    let live = args.iter().any(|a| a == "--live");
+    let opts = si_hindsight::fuzz::FuzzOptions { lines: after("--lines").and_then(|s| s.parse().ok()).unwrap_or(if live { 8 } else { 30 }), seed: after("--seed").and_then(|s| s.parse().ok()).unwrap_or(1) };
+    let mut paths: Vec<PathBuf> = Vec::new();
+    for (i, a) in args.iter().enumerate() {
+        if a.starts_with("--") || matches!(args.get(i.wrapping_sub(1)).map(|s| s.as_str()), Some("--defs" | "--lines" | "--seed")) {
+            continue;
+        }
+        paths.extend(games_under(Path::new(a)));
+    }
+    if paths.is_empty() {
+        paths.extend(games_under(&capture_root()));
+        if !live {
+            paths.extend(games_under(&steam_dir()));
+        }
+    }
+    let json = args.iter().any(|a| a == "--json");
+    if let Some(i) = args.iter().position(|a| a == "--case") {
+        // a Power's case built again from the seed a violation named
+        let power = args.get(i + 1).cloned().unwrap_or_default();
+        let seed: u64 = args.get(i + 2).and_then(|s| s.parse().ok()).unwrap_or(0);
+        let id = defs.cards.get(&power).map(|c| c.id.clone()).or_else(|| defs.card_by_title(&power).map(|c| c.id.clone())).or_else(|| defs.spirits.values().flat_map(|s| s.innates.iter()).find(|x| x.id == power || x.title == power).map(|x| x.id.clone())).unwrap_or(power);
+        out!("{}", si_rules::fuzz::explain_power_case(&defs, &id, seed).map_err(|e| anyhow::anyhow!(e))?);
+        return Ok(());
+    }
+    if args.iter().any(|a| a == "--rules") {
+        let cases = after("--lines").and_then(|s| s.parse().ok()).unwrap_or(40);
+        return fuzz_rules(&defs, cases, opts.seed, json);
+    }
+    if live {
+        let cal = calibration_from(args).unwrap_or_default();
+        return fuzz_live(&defs, &paths, &opts, &cal, json);
+    }
+    if let Some(i) = args.iter().position(|a| a == "--use") {
+        // one recorded use of a Power, played alone and explained
+        let game = args.get(i + 1).cloned().unwrap_or_default();
+        let turn: u32 = args.get(i + 2).and_then(|s| s.parse().ok()).unwrap_or(0);
+        let power = args.get(i + 3).cloned().unwrap_or_default();
+        let (mut rec, _) = load_record(Path::new(&game), Some(&defs), None, false)?;
+        apply_save(&mut rec, Path::new(&game));
+        let id = defs.cards.get(&power).map(|c| c.id.clone()).or_else(|| defs.card_by_title(&power).map(|c| c.id.clone())).or_else(|| defs.spirits.values().flat_map(|s| s.innates.iter()).find(|x| x.id == power || x.title == power).map(|x| x.id.clone())).unwrap_or(power);
+        for d in si_hindsight::fuzz::explain_use(&rec, &defs, turn, &id) {
+            out!("{d}\n");
+        }
+        return Ok(());
+    }
+    let games = load_corpus(&paths, Some(&defs));
+    let mut total = 0usize;
+    let mut reports = Vec::new();
+    // every Power use the games recorded, each played alone against the game's own result
+    let mut uses: Vec<(String, si_hindsight::fuzz::UseCheck)> = Vec::new();
+    for (p, _, rec) in &games {
+        let name = p.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default();
+        uses.extend(si_hindsight::fuzz::power_uses(rec, &defs).into_iter().map(|u| (name.clone(), u)));
+    }
+    for (p, _, rec) in &games {
+        let r = si_hindsight::fuzz::fuzz_game(rec, &defs, &opts);
+        let name = p.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default();
+        let who = format!("{} vs {}", rec.meta.spirits.join("+"), rec.meta.adversary.as_deref().map(|a| format!("{a} {}", rec.meta.adversary_level.map(|l| l.to_string()).unwrap_or("?".into()))).unwrap_or("no adversary".into()));
+        total += r.findings.len();
+        if !json {
+            let checks = si_hindsight::fuzz::by_check(&r);
+            out!("{name:<28} {who:<60} {:>2} turns {:>5} lines  exact {}/{}  {}", r.turns, r.lines, r.exact.len(), r.exact.len() + r.inexact.len(), if checks.is_empty() { "clean".to_string() } else { checks.iter().map(|(k, n)| format!("{k} {n}")).collect::<Vec<_>>().join(", ") });
+            if args.iter().any(|a| a == "--boards") {
+                for (t, d) in &r.inexact {
+                    out!("    T{t} the actual line's notation ends the turn otherwise than the record (sim/record): {d}");
+                }
+            }
+            for f in r.findings.iter().take(6) {
+                out!("    T{} {}: {}  [{}]  seed {}", f.turn, f.check, f.detail, f.line, f.seed);
+            }
+            if r.findings.len() > 6 {
+                out!("    ... {} more", r.findings.len() - 6);
+            }
+        }
+        reports.push((name, who, r));
+    }
+    if json {
+        let v: Vec<serde_json::Value> = reports.iter().map(|(n, w, r)| serde_json::json!({ "game": n, "who": w, "report": r })).collect();
+        println!("{}", serde_json::to_string(&v)?);
+    } else {
+        let exact: usize = reports.iter().map(|(_, _, r)| r.exact.len()).sum();
+        let measured: usize = reports.iter().map(|(_, _, r)| r.exact.len() + r.inexact.len()).sum();
+        out!("{} games, {} turns, {} lines: {} finding(s); the actual line in notation ends {exact} of {measured} turns exactly as the record does (--boards lists the rest)", reports.len(), reports.iter().map(|(_, _, r)| r.turns).sum::<usize>(), reports.iter().map(|(_, _, r)| r.lines).sum::<usize>(), total);
+        let exact_uses = uses.iter().filter(|(_, u)| u.diff.is_none()).count();
+        out!("{exact_uses} of {} recorded Power uses, each played alone, leave the board as the game did (--powers: by Power)", uses.len());
+        if args.iter().any(|a| a == "--powers") {
+            let mut by: std::collections::BTreeMap<String, (usize, usize, bool, Option<String>)> = std::collections::BTreeMap::new();
+            for (g, u) in &uses {
+                let e = by.entry(u.power.clone()).or_insert((0, 0, u.simulated, None));
+                e.0 += 1;
+                match &u.diff {
+                    None => e.1 += 1,
+                    Some(d) if e.3.is_none() => e.3 = Some(format!("{g} T{} on {}: {d}", u.turn, u.target.as_ref().map(|l| l.to_string()).unwrap_or("-".into()))),
+                    Some(_) => {}
+                }
+            }
+            let mut rows: Vec<(&String, &(usize, usize, bool, Option<String>))> = by.iter().collect();
+            rows.sort_by_key(|(_, (n, ok, _, _))| (*ok as i64 - *n as i64, -(*n as i64)));
+            let mut tb = styled_table(terminal_width(), false, &["Power", "uses", "exact", "simulated", "first difference (simulated/game)"]);
+            for (pw, (n, ok, sim, d)) in rows {
+                let title = defs.cards.get(pw.as_str()).map(|c| c.title.clone()).or_else(|| defs.spirits.values().flat_map(|s| s.innates.iter()).find(|i| i.id == *pw).map(|i| format!("{} (innate)", i.title))).unwrap_or(pw.clone());
+                tb.add_row(vec![title, n.to_string(), ok.to_string(), if *sim { "in full".into() } else { "in part".into() }, d.clone().unwrap_or_default()]);
+            }
+            out!("{tb}");
+        }
+    }
+    if total > 0 {
+        bail!("{total} finding(s)");
+    }
+    Ok(())
+}
+
+/// `si fuzz --rules`: every Power and every adversary level in the definitions, on random
+/// states of the real boards, held to the rules' own laws.
+fn args_stated() -> bool {
+    std::env::args().any(|a| a == "--stated")
+}
+
+fn fuzz_rules(defs: &Definitions, cases: usize, seed: u64, json: bool) -> Result<()> {
+    let r = si_rules::fuzz::fuzz_definitions(defs, cases, seed);
+    if json {
+        println!("{}", serde_json::to_string(&r)?);
+    }
+    let broken_powers: Vec<&si_rules::fuzz::PowerRun> = r.powers.iter().filter(|p| !p.broken.is_empty()).collect();
+    let broken_levels: Vec<&si_rules::fuzz::AdversaryRun> = r.adversaries.iter().filter(|a| !a.broken.is_empty()).collect();
+    if !json {
+        let cards = r.powers.iter().filter(|p| p.spirit.is_none()).count();
+        let simulated = r.powers.iter().filter(|p| p.simulated).count();
+        out!("boards: {}", r.boards.join(" "));
+        out!("{} Powers ({cards} Power Cards, {} innates), {} cases each: {} broke a law; {simulated} of them every effect simulated, {} in part", r.powers.len(), r.powers.len() - cards, cases, broken_powers.len(), r.powers.len() - simulated);
+        out!("{} adversary levels and the base rules, {} cases each: {} broke a law", r.adversaries.len() - 1, cases, broken_levels.len());
+        out!("{} printed sentences read as something other than what they say (--stated lists them)", r.stated.len());
+        if args_stated() {
+            let mut tb = styled_table(terminal_width(), false, &["Power", "law", "what was seen"]);
+            for (who, law, detail) in &r.stated {
+                tb.add_row(vec![who.clone(), law.clone(), detail.clone()]);
+            }
+            out!("{tb}");
+        }
+        if !broken_powers.is_empty() {
+            let mut tb = styled_table(terminal_width(), false, &["Power", "law", "what was seen", "seed"]);
+            for p in &broken_powers {
+                let (seed, law, detail) = &p.broken[0];
+                let who = match &p.spirit {
+                    Some(sp) => format!("{} (innate, {sp})", p.title),
+                    None => p.title.clone(),
+                };
+                tb.add_row(vec![who, law.clone(), detail.clone(), seed.to_string()]);
+            }
+            out!("{tb}");
+        }
+        if !broken_levels.is_empty() {
+            let mut tb = styled_table(terminal_width(), false, &["adversary", "level", "law", "what was seen", "seed"]);
+            for a in &broken_levels {
+                let (seed, law, detail) = &a.broken[0];
+                tb.add_row(vec![a.adversary.clone().unwrap_or("none".into()), a.level.to_string(), law.clone(), detail.clone(), seed.to_string()]);
+            }
+            out!("{tb}");
+        }
+    }
+    let n = broken_powers.len() + broken_levels.len();
+    if n > 0 {
+        bail!("{n} broke a law");
+    }
+    Ok(())
+}
+
+/// `si fuzz --live`: the turn being played, cut at the first and last save of every open
+/// phase on the path each capture's game took (the record from that save's own journal, the
+/// seed from the save, as the live screen builds them), fuzzed as the screen scores plans.
+fn fuzz_live(defs: &Definitions, dirs: &[PathBuf], opts: &si_hindsight::fuzz::FuzzOptions, cal: &si_hindsight::Calibration, json: bool) -> Result<()> {
+    let mut total = 0usize;
+    let mut reports = Vec::new();
+    for dir in dirs.iter().filter(|d| d.join("saves").is_dir()) {
+        let cps = checkpoints_of(dir)?;
+        let mut cuts: std::collections::BTreeMap<(i64, String), (usize, usize)> = std::collections::BTreeMap::new();
+        for (i, c) in cps.iter().enumerate().filter(|(_, c)| c.on_final_path) {
+            cuts.entry((c.snap.turn_index, c.snap.phase.clone())).and_modify(|e| e.1 = i).or_insert((i, i));
+        }
+        let mut r = si_hindsight::fuzz::FuzzReport::default();
+        let mut who = String::new();
+        for (a, b) in cuts.into_values() {
+            for i in if a == b { vec![a] } else { vec![a, b] } {
+                let c = &cps[i];
+                let Some(g) = si_steam::source::read_save(&c.path).ok().and_then(|b| si_steam::nrbf::decode(&b).ok()) else { continue };
+                let mut rec = si_steam::journal::record(&g, Some(defs), &format!("{} (save journal)", c.path.display()));
+                let seed = si_steam::seed::from_snapshot(&c.snap, &c.name);
+                seed.apply_meta(&mut rec.meta);
+                if !rec.meta.from_setup {
+                    continue;
+                }
+                who = format!("{} vs {}", rec.meta.spirits.join("+"), rec.meta.adversary.as_deref().map(|a| format!("{a} {}", rec.meta.adversary_level.map(|l| l.to_string()).unwrap_or("?".into()))).unwrap_or("no adversary".into()));
+                let Some(open) = si_hindsight::live::open_turn(std::sync::Arc::new(rec), defs, &seed, cal) else { continue };
+                let at = format!("T{} {}, {}", open.turn, si_hindsight::live::phase_word(open.phase), c.name);
+                let one = si_hindsight::fuzz::fuzz_open(&open, defs, opts, &at);
+                r.turns += one.turns;
+                r.lines += one.lines;
+                r.findings.extend(one.findings);
+            }
+        }
+        let name = dir.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default();
+        total += r.findings.len();
+        if !json {
+            let checks = si_hindsight::fuzz::by_check(&r);
+            out!("{name:<28} {who:<60} {:>3} saves {:>5} plans  {}", r.turns, r.lines, if checks.is_empty() { "clean".to_string() } else { checks.iter().map(|(k, n)| format!("{k} {n}")).collect::<Vec<_>>().join(", ") });
+            for f in r.findings.iter().take(6) {
+                out!("    {} {}: {}  [{}]  seed {}", f.at, f.check, f.detail, f.line, f.seed);
+            }
+            if r.findings.len() > 6 {
+                out!("    ... {} more", r.findings.len() - 6);
+            }
+        }
+        reports.push((name, who, r));
+    }
+    if json {
+        let v: Vec<serde_json::Value> = reports.iter().map(|(n, w, r)| serde_json::json!({ "game": n, "who": w, "report": r })).collect();
+        println!("{}", serde_json::to_string(&v)?);
+    } else {
+        out!("{} captures, {} saves, {} plans: {} finding(s)", reports.len(), reports.iter().map(|(_, _, r)| r.turns).sum::<usize>(), reports.iter().map(|(_, _, r)| r.lines).sum::<usize>(), total);
+    }
+    if total > 0 {
+        bail!("{total} finding(s)");
+    }
+    Ok(())
+}
+
 fn load_corpus(paths: &[PathBuf], defs: Option<&Definitions>) -> Vec<(PathBuf, String, GameRecord)> {
     let mut paths: Vec<PathBuf> = paths.to_vec();
     paths.sort_by_key(|p| !p.is_dir());

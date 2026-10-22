@@ -9,6 +9,7 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 use si_model::decks::{InvaderCard, InvaderTarget};
+use si_model::event::InvaderStep;
 use si_model::island::{LandId, PieceKind, Terrain};
 use si_record::Counts;
 
@@ -41,6 +42,208 @@ pub struct Land {
     pub no_blight: bool,
     /// Ravage damage adjustments that apply to this land only (a Fear card's chosen land): (amount, Invader kinds; empty = all).
     pub damage_adjust: Vec<(i32, Vec<PieceKind>)>,
+    /// Damage that stays on a piece until Time Passes: one entry a damaged piece (its kind,
+    /// the Damage on it). A Town with 1 Damage falls to 1 more.
+    #[serde(default)]
+    pub wounds: Vec<(PieceKind, u32)>,
+}
+
+/// The value of destroying a piece, for choosing which the Damage takes (a Town worth three
+/// Explorers, a City five).
+fn kill_value(k: PieceKind) -> u32 {
+    match k {
+        PieceKind::Explorer => 1,
+        PieceKind::Town => 3,
+        PieceKind::City => 5,
+        PieceKind::Dahan => 0,
+    }
+}
+
+impl Land {
+    fn count_mut(&mut self, k: PieceKind) -> &mut u32 {
+        match k {
+            PieceKind::Explorer => &mut self.c.explorers,
+            PieceKind::Town => &mut self.c.towns,
+            PieceKind::City => &mut self.c.cities,
+            PieceKind::Dahan => &mut self.c.dahan,
+        }
+    }
+
+    /// Every piece of the kinds, with the Health it has left (`full` is a kind's Health with
+    /// its bonuses): the damaged ones first, most damaged first.
+    pub fn pieces_left(&self, kinds: &[PieceKind], full: &dyn Fn(PieceKind) -> u32) -> Vec<(PieceKind, u32)> {
+        let mut out = Vec::new();
+        for &k in kinds {
+            let n = match k {
+                PieceKind::Explorer => self.c.explorers,
+                PieceKind::Town => self.c.towns,
+                PieceKind::City => self.c.cities,
+                PieceKind::Dahan => self.c.dahan,
+            } as usize;
+            let mut hurt: Vec<u32> = self.wounds.iter().filter(|(w, _)| *w == k).map(|(_, d)| *d).collect();
+            hurt.sort_by(|a, b| b.cmp(a));
+            for i in 0..n {
+                let d = hurt.get(i).copied().unwrap_or(0);
+                out.push((k, full(k).saturating_sub(d).max(1)));
+            }
+        }
+        out
+    }
+
+    /// One piece of `kind` with `left` Health destroyed (its wound goes with it).
+    fn destroy_piece(&mut self, kind: PieceKind, left: u32, full: u32) {
+        let n = self.count_mut(kind);
+        if *n == 0 {
+            return;
+        }
+        *n -= 1;
+        let dmg = full.saturating_sub(left);
+        if dmg > 0 {
+            if let Some(i) = self.wounds.iter().position(|(k, d)| *k == kind && *d == dmg) {
+                self.wounds.remove(i);
+            }
+        }
+        self.trim_wounds();
+    }
+
+    /// `dmg` more Damage on one piece of `kind` that has `left` Health: it stays, wounded.
+    fn wound_piece(&mut self, kind: PieceKind, left: u32, full: u32, dmg: u32) {
+        let had = full.saturating_sub(left);
+        if had > 0 {
+            if let Some(w) = self.wounds.iter_mut().find(|(k, d)| *k == kind && *d == had) {
+                w.1 += dmg;
+                return;
+            }
+        }
+        self.wounds.push((kind, dmg));
+    }
+
+    /// No more wounds of a kind than pieces of it: a piece that left took its wound along.
+    pub fn trim_wounds(&mut self) {
+        for k in [PieceKind::Explorer, PieceKind::Town, PieceKind::City, PieceKind::Dahan] {
+            let n = match k {
+                PieceKind::Explorer => self.c.explorers,
+                PieceKind::Town => self.c.towns,
+                PieceKind::City => self.c.cities,
+                PieceKind::Dahan => self.c.dahan,
+            } as usize;
+            let mut idx: Vec<usize> = self.wounds.iter().enumerate().filter(|(_, (w, _))| *w == k).map(|(i, _)| i).collect();
+            // drop the least damaged first
+            idx.sort_by_key(|i| self.wounds[*i].1);
+            let extra = idx.len().saturating_sub(n);
+            let mut drop: Vec<usize> = idx.into_iter().take(extra).collect();
+            drop.sort_by(|a, b| b.cmp(a));
+            for i in drop {
+                self.wounds.remove(i);
+            }
+        }
+    }
+
+    /// `total` Damage to the Dahan, as the rules make it fall: "You must Destroy Dahan as
+    /// efficiently as possible; you cannot disperse Damage among multiple Dahan to avoid
+    /// killing them. If a Dahan is dealt 1 Damage, turn it over to show that it is Damaged"
+    /// (core rulebook p. 9). The damaged ones fall first; what is left stays on one. How many
+    /// were destroyed.
+    pub fn take_dahan_damage(&mut self, total: u32, full: u32) -> u32 {
+        let mut left = total;
+        let mut killed = 0;
+        loop {
+            let pieces = self.pieces_left(&[PieceKind::Dahan], &|_| full);
+            let Some(&(_, h)) = pieces.iter().min_by_key(|(_, h)| *h) else { break };
+            if h > left {
+                if left > 0 {
+                    self.wound_piece(PieceKind::Dahan, h, full, left);
+                }
+                break;
+            }
+            self.destroy_piece(PieceKind::Dahan, h, full);
+            left -= h;
+            killed += 1;
+        }
+        killed
+    }
+
+    /// `each` Damage to every piece of `kinds` (a "to each" effect): the ones it reaches
+    /// destroyed, the rest wounded. The pieces destroyed, by kind.
+    pub fn take_each_damage(&mut self, each: u32, kinds: &[PieceKind], full: &dyn Fn(PieceKind) -> u32) -> Vec<PieceKind> {
+        let mut killed = Vec::new();
+        if each == 0 {
+            return killed;
+        }
+        for (k, h) in self.pieces_left(kinds, full) {
+            if h <= each {
+                self.destroy_piece(k, h, full(k));
+                killed.push(k);
+            } else {
+                self.wound_piece(k, h, full(k), each);
+            }
+        }
+        killed
+    }
+
+    /// `total` Damage to the pieces of `kinds`, spent as the player would: the most valuable
+    /// set it destroys (each piece at the Health it has left), the pieces in `first` before
+    /// any (the line's stated kills; with `only`, nothing else dies), the rest on a survivor
+    /// where it kills nothing and stays until Time Passes. The pieces destroyed, by kind.
+    pub fn take_damage(&mut self, total: u32, kinds: &[PieceKind], full: &dyn Fn(PieceKind) -> u32, first: &[PieceKind], only: bool) -> Vec<PieceKind> {
+        let mut left = total;
+        let mut killed: Vec<PieceKind> = Vec::new();
+        for &k in first.iter().filter(|k| kinds.contains(k)) {
+            let pieces = self.pieces_left(&[k], full);
+            let Some(&(_, h)) = pieces.iter().filter(|(_, h)| *h <= left).min_by_key(|(_, h)| *h) else { continue };
+            self.destroy_piece(k, h, full(k));
+            left -= h;
+            killed.push(k);
+        }
+        if !only {
+            // the most valuable set of the rest the Damage can destroy (a knapsack on Health)
+            let pieces = self.pieces_left(kinds, full);
+            let n = pieces.len();
+            let cap = left as usize;
+            // ties go to the bigger pieces: three Cities, a Town and an Explorer over two
+            // Cities and three Towns for 12 (as Thunderspeaker's player took them)
+            let worth = |k: PieceKind| kill_value(k) * 1000 + match k {
+                PieceKind::City => 100,
+                PieceKind::Town => 10,
+                _ => 1,
+            };
+            let mut best = vec![vec![0u32; cap + 1]; n + 1];
+            for i in 0..n {
+                let (k, h) = pieces[i];
+                for c in 0..=cap {
+                    best[i + 1][c] = best[i][c];
+                    if (h as usize) <= c {
+                        let v = best[i][c - h as usize] + worth(k);
+                        if v > best[i + 1][c] {
+                            best[i + 1][c] = v;
+                        }
+                    }
+                }
+            }
+            let mut c = cap;
+            let mut take: Vec<(PieceKind, u32)> = Vec::new();
+            for i in (0..n).rev() {
+                if best[i + 1][c] != best[i][c] {
+                    let (k, h) = pieces[i];
+                    take.push((k, h));
+                    c -= h as usize;
+                }
+            }
+            for (k, h) in take {
+                self.destroy_piece(k, h, full(k));
+                left -= h;
+                killed.push(k);
+            }
+        }
+        // what is left wounds the most valuable survivor it does not destroy
+        if left > 0 {
+            let survivors = self.pieces_left(kinds, full);
+            if let Some(&(k, h)) = survivors.iter().filter(|(_, h)| *h > left).max_by_key(|(k, h)| (kill_value(*k), u32::MAX - *h)) {
+                self.wound_piece(k, h, full(k), left);
+            }
+        }
+        killed
+    }
 }
 
 #[derive(Debug, Clone, Default)]
@@ -90,6 +293,14 @@ pub struct Rules {
     /// Cities at II, no Cities at III); 0 checks no victory.
     #[serde(default)]
     pub terror: u8,
+    /// The scenario in play (Blitz: an extra Explorer once per board when exploring).
+    #[serde(default)]
+    pub scenario: Option<String>,
+    /// The Ravages and Builds the player skipped this turn by destroying a presence in a land
+    /// with their Sacred Site (Rampant Green: Choke the Land with Green), as the record has
+    /// them; which ones to skip is the player's call.
+    #[serde(default)]
+    pub chokes: Vec<(InvaderStep, LandId)>,
 }
 
 /// The game-long counts the loss conditions keep, as they stood when the turn began
@@ -168,6 +379,20 @@ pub fn loss_after_fast(island: &Island, rules: &Rules, tally: Tally) -> Option<S
         }
     }
     loss(island, rules, tally)
+}
+
+/// How the game stands after an effect: `Ok` the Spirits win, `Err` the Invaders do, None
+/// it goes on. An effect that brings both is a win: "In the rare case that a single Power
+/// Card or other effect causes you to both win and lose, you win a sacrifice victory: you
+/// are Destroyed, but the Island, the Dahan, and many other Spirits survive" (core
+/// rulebook, the Victory sidebar). `after_fast` adds the losses checked as the Fast phase
+/// ends (Habsburg Mining's Land Stripped Bare).
+pub fn ending(island: &Island, rules: &Rules, tally: Tally, after_fast: bool) -> Option<Result<String, String>> {
+    if let Some(w) = victory(island, rules) {
+        return Some(Ok(w));
+    }
+    let lost = if after_fast { loss_after_fast(island, rules, tally) } else { loss(island, rules, tally) };
+    lost.map(Err)
 }
 
 /// How near each loss condition in play stands, in words: the count against its limit.
@@ -257,6 +482,11 @@ impl Rules {
     fn russia(&self, l: u8) -> bool {
         self.is("TheTsardomOfRussia", l)
     }
+    /// The player skips this step here by destroying one of their presence, as the record has
+    /// them doing, while the land still holds their Sacred Site (Choke the Land with Green).
+    fn chokes(&self, step: InvaderStep, land: &Land) -> bool {
+        land.c.presence >= 2 && self.chokes.contains(&(step, land.id.clone())) && self.hooks.iter().any(|(_, h)| *h == si_model::spirit::RuleHook::SkipStepByDestroyingPresence)
+    }
     fn vengeance(&self) -> bool {
         self.hooks.iter().any(|(_, h)| matches!(h, si_model::spirit::RuleHook::DiseaseBuildForFear { .. }))
     }
@@ -271,6 +501,16 @@ impl Rules {
     /// The spirit gathers 1 presence toward a Power's land first (Mists Shift and Flow).
     pub fn gathers_presence_on_targeting(&self, spirit: &str) -> bool {
         self.hooks.iter().any(|(s, h)| s == spirit && *h == si_model::spirit::RuleHook::GatherPresenceOnTargeting)
+    }
+
+    /// The spirit's Sacred Site counts as a Beast (A Joining of Swarms and Flocks).
+    pub fn site_beast_for(&self, spirit: &str) -> bool {
+        self.hooks.iter().any(|(s, h)| s == spirit && *h == si_model::spirit::RuleHook::SacredSiteIsBeast)
+    }
+
+    /// The spirit's Beasts gather and push from and to lands up to 2 away (Fly Fast as Thought).
+    pub fn beasts_far_for(&self, spirit: &str) -> bool {
+        self.hooks.iter().any(|(s, h)| s == spirit && *h == si_model::spirit::RuleHook::BeastsMoveTwoLands)
     }
 
     /// The spirit's presence moves with the Dahan it is with (Ally of the Dahan).
@@ -333,7 +573,7 @@ fn matching(island: &Island, card: &InvaderCard) -> Vec<LandId> {
 /// Explore: an Explorer into each matching land that holds or touches a Town
 /// or City, or is coastal. Wilds take the Explore instead. Stage II cards
 /// carry the adversary's escalation.
-pub fn explore(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Outcome> {
+fn explore_step(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Outcome> {
     let mut out = Vec::new();
     if card.escalation && rules.prussia(1) {
         out.push(Outcome { land: LandId::new("?", 0), notes: vec!["Land Rush: +1 Town in a land without Town on each board with Town/City (player's choice)".into()], ..Default::default() });
@@ -360,6 +600,7 @@ pub fn explore(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Ou
         }
     }
     let targets = matching(island, card);
+    let mut blitz_boards: std::collections::BTreeSet<String> = std::collections::BTreeSet::new();
     for id in targets {
         let reached = {
             let l = &island.lands[&id];
@@ -386,6 +627,12 @@ pub fn explore(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Ou
                     o.added.extend(std::iter::repeat(PieceKind::Explorer).take(*n as usize));
                     o.notes.push(format!("+{n} Explorer from an Event modifier"));
                 }
+            }
+            // Blitz: once per board, the Explore adds an extra Explorer (in the first land explored)
+            if rules.scenario.as_deref() == Some("Blitz") && blitz_boards.insert(id.board.clone()) {
+                l.c.explorers += 1;
+                o.added.push(PieceKind::Explorer);
+                o.notes.push("Blitz: +1 Explorer, once per board".into());
             }
             if card.escalation && rules.sweden(1) && l.c.invaders() >= l.c.dahan && l.c.dahan > 0 {
                 l.c.dahan -= 1;
@@ -416,6 +663,10 @@ pub fn build_land(island: &mut Island, id: &LandId, rules: &Rules) -> Outcome {
     let piece = if l.c.towns > l.c.cities { PieceKind::City } else { PieceKind::Town };
     if l.skip_build {
         o.notes.push("Build skipped by a Spirit effect".into());
+    } else if rules.chokes(InvaderStep::Build, l) {
+        l.c.presence -= 1;
+        o.presence_destroyed += 1;
+        o.notes.push("Build skipped: a presence destroyed to choke it (Choke the Land with Green)".into());
     } else if l.c.disease > 0 && !rules.ignore_disease {
         l.c.disease -= 1;
         if rules.vengeance() {
@@ -439,7 +690,7 @@ pub fn build_land(island: &mut Island, id: &LandId, rules: &Rules) -> Outcome {
 /// Build: in each matching land with Invaders (England 1: also lands without
 /// Invaders next to two or more Towns and Cities), a City if Towns outnumber
 /// Cities, else a Town. Disease stops it.
-pub fn build(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Outcome> {
+fn build_step(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Outcome> {
     let mut out = Vec::new();
     for id in matching(island, card) {
         let has_invaders = island.lands[&id].c.invaders() > 0;
@@ -458,7 +709,7 @@ pub fn build(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Outc
 /// Ravage: Invaders deal their damage to the land and the Dahan, Defend
 /// absorbs first, two or more Damage adds Blight (cascading onto an adjacent
 /// land when Blight was already there), surviving Dahan strike back.
-pub fn ravage(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Outcome> {
+fn ravage_step(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Outcome> {
     let mut targets = matching(island, card);
     if rules.russia(3) {
         for l in island.lands.values() {
@@ -477,6 +728,33 @@ pub fn ravage(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Out
         if victory(island, rules).is_some() {
             break;
         }
+    }
+    out
+}
+
+/// Explore with one card; a piece the step took took its wound along.
+pub fn explore(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Outcome> {
+    let out = explore_step(island, card, rules);
+    for l in island.lands.values_mut() {
+        l.trim_wounds();
+    }
+    out
+}
+
+/// Build with one card; a piece the step took took its wound along.
+pub fn build(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Outcome> {
+    let out = build_step(island, card, rules);
+    for l in island.lands.values_mut() {
+        l.trim_wounds();
+    }
+    out
+}
+
+/// Ravage with one card; a piece the step took took its wound along.
+pub fn ravage(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Outcome> {
+    let out = ravage_step(island, card, rules);
+    for l in island.lands.values_mut() {
+        l.trim_wounds();
     }
     out
 }
@@ -508,6 +786,12 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
     let mut o = Outcome::new(&id);
     if l.skip_ravage {
         o.notes.push("Ravage skipped by a Spirit effect".into());
+        return Some(o);
+    }
+    if rules.chokes(InvaderStep::Ravage, l) {
+        l.c.presence -= 1;
+        o.presence_destroyed += 1;
+        o.notes.push("Ravage skipped: a presence destroyed to choke it (Choke the Land with Green)".into());
         return Some(o);
     }
     let land_adjust = l.damage_adjust.clone();
@@ -562,8 +846,12 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
     let badlands = l.c.badlands + if rules.beasts_as_badlands { l.c.beasts } else { 0 };
     let to_dahan = if dmg > 0 { dmg + badlands } else { 0 };
     let dahan_health = (2 + rules.dahan_health_bonus.get(&id).copied().unwrap_or(0) + l.dahan_health as i32).max(1) as u32;
-    o.dahan_lost = l.c.dahan.min(to_dahan / dahan_health);
-    let survivors = l.c.dahan - o.dahan_lost;
+    // as efficiently as the rules require: a Dahan already Damaged this turn falls first,
+    // what is left stays on one (core rulebook p. 9)
+    let dahan_before = l.c.dahan;
+    let mut hurt = l.clone();
+    o.dahan_lost = hurt.take_dahan_damage(to_dahan, dahan_health);
+    let survivors = dahan_before - o.dahan_lost;
     // Words of Warning: the Dahan deal their damage with the Invaders', so the ones
     // this Ravage destroys strike back too
     let striking = if l.dahan_simultaneous { l.c.dahan } else { survivors };
@@ -571,25 +859,24 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
         o.notes.push(format!("{} Dahan destroyed still dealt their damage (simultaneously with the Invaders)", o.dahan_lost));
     }
     let counter = if striking > 0 { striking * 2 + badlands } else { 0 };
-    // the player distributes: the most valuable set the damage kills (England 5: +1 Health)
+    // the player distributes: the most valuable set the damage kills, each Invader at the
+    // Health it has left this turn (England 5: +1 Health); the rest stays on a survivor
     let bonus = rules.england(5) as u32;
-    let (ke, kt, kc) = best_kills(counter, (l.c.explorers, l.c.towns, l.c.cities), (1, 2 + bonus, 3 + bonus));
-    let killed: Vec<PieceKind> = std::iter::repeat_n(PieceKind::City, kc as usize).chain(std::iter::repeat_n(PieceKind::Town, kt as usize)).chain(std::iter::repeat_n(PieceKind::Explorer, ke as usize)).collect();
+    let full = move |k: PieceKind| k.health() as u32 + bonus;
+    let killed = l.take_damage(counter, &[PieceKind::Explorer, PieceKind::Town, PieceKind::City], &full, &[], false);
     for k in &killed {
         o.invaders_destroyed += 1;
         o.destroyed.push(*k);
-        match k {
-            PieceKind::Explorer => l.c.explorers -= 1,
-            PieceKind::Town => l.c.towns -= 1,
-            PieceKind::City => l.c.cities -= 1,
-            PieceKind::Dahan => {}
-        }
     }
     if counter > 0 {
         o.notes.push("counterattack distribution: the most valuable Invaders it kills (player's choice)".into());
     }
     l.c.blight += o.blight;
-    l.c.dahan -= o.dahan_lost;
+    // the Dahan as the Invaders' Damage left them, wounds and all
+    l.c.dahan = hurt.c.dahan;
+    let dahan_wounds: Vec<(PieceKind, u32)> = hurt.wounds.iter().filter(|(k, _)| *k == PieceKind::Dahan).cloned().collect();
+    l.wounds.retain(|(k, _)| *k != PieceKind::Dahan);
+    l.wounds.extend(dahan_wounds);
     l.c.presence = l.c.presence.saturating_sub(o.presence_destroyed);
     if cascades {
         place_cascade(island, &id, rules, &mut o, 0);
@@ -674,6 +961,287 @@ fn sworn_to_victory(island: &mut Island, id: &LandId, rules: &Rules, o: &mut Out
     if destroyed > 0 {
         o.presence_destroyed += destroyed;
         o.notes.push(format!("Sworn to Victory: {destroyed} presence destroyed for {} Dahan lost (which presence is the player's choice)", o.dahan_lost));
+    }
+}
+
+/// The laws the Invader steps keep, stated from outside them, and the generators their
+/// fuzz test draws from (`tests::every_invader_step_keeps_its_laws`). Under the base rules
+/// (no adversary, no scenario, no flags) the laws are exact; under an adversary's rules
+/// they are the ones every level keeps (`adversary_holds`). `si fuzz --rules` runs every
+/// adversary at every level through them.
+pub mod oracle {
+    use super::*;
+    use si_model::oracle::{check, Rng, Violation};
+
+    const KINDS: [&str; 11] = ["E", "T", "C", "Dh", "Bl", "Pr", "Be", "Di", "St", "Wi", "Ba"];
+
+    fn fields(c: &Counts) -> [u32; 11] {
+        [c.explorers, c.towns, c.cities, c.dahan, c.blight, c.presence, c.beasts, c.disease, c.strife, c.wilds, c.badlands]
+    }
+
+    fn changed(before: &Island, after: &Island) -> Vec<LandId> {
+        after.lands.iter().filter(|(id, l)| before.lands.get(*id).is_none_or(|b| b.c != l.c)).map(|(id, _)| id.clone()).collect()
+    }
+
+    /// Explore under the base rules: an Explorer into each matching land the Invaders
+    /// reach (a Town or City in it or next door, or the Ocean beside it) unless it is
+    /// skipped or isolated; Wilds take the Explore instead; nothing else changes.
+    pub fn explore_holds(card: &InvaderCard, before: &Island, after: &Island) -> Vec<Violation> {
+        let mut out = Vec::new();
+        for (id, b) in &before.lands {
+            let Some(a) = after.lands.get(id) else { continue };
+            let reached = b.coastal || b.c.buildings() > 0 || before.buildings_adjacent(id) > 0;
+            let explores = b.terrain != Some(Terrain::Ocean) && card_matches(card, b) && reached && !b.skip_explore && !b.isolated;
+            let mut want = b.c;
+            if explores {
+                if b.c.wilds > 0 {
+                    want.wilds -= 1;
+                } else {
+                    want.explorers += 1;
+                }
+            }
+            check(&mut out, a.c == want, "Explore adds an Explorer where the Invaders reach", || format!("{id} ({:?}, coastal {}, reached {reached}): {:?} -> {:?}", b.terrain, b.coastal, b.c, a.c));
+        }
+        out
+    }
+
+    /// Build under the base rules: in each matching land with Invaders, a City where Towns
+    /// outnumber Cities, else a Town; Disease stops it and goes; a skip stops it; nothing
+    /// else changes.
+    pub fn build_holds(card: &InvaderCard, before: &Island, after: &Island) -> Vec<Violation> {
+        let mut out = Vec::new();
+        for (id, b) in &before.lands {
+            let Some(a) = after.lands.get(id) else { continue };
+            let builds = b.terrain != Some(Terrain::Ocean) && card_matches(card, b) && b.c.invaders() > 0;
+            let mut want = b.c;
+            if builds && !b.skip_build {
+                if b.c.disease > 0 {
+                    want.disease -= 1;
+                } else if b.c.towns > b.c.cities {
+                    want.cities += 1;
+                } else {
+                    want.towns += 1;
+                }
+            }
+            check(&mut out, a.c == want, "Build adds one Town or City where Invaders are", || format!("{id}: {:?} -> {:?}", b.c, a.c));
+        }
+        out
+    }
+
+    /// Ravage under the base rules: only the matching lands with Invaders and the lands
+    /// Blight cascades into change; no Invader, Dahan, presence or token ever appears; a
+    /// land takes at most one Blight of its own, each cascade one in a neighbor; the
+    /// outcome's counts are the board's; the Dahan lose no more than the Damage kills;
+    /// Defend and Invaders' Damage under 2 add no Blight.
+    pub fn ravage_holds(card: &InvaderCard, before: &Island, after: &Island, outcomes: &[Outcome]) -> Vec<Violation> {
+        let mut out = Vec::new();
+        let (b0, b1): ([u32; 11], [u32; 11]) = (sum(before), sum(after));
+        for i in [0usize, 1, 2, 3, 5, 6, 7, 8, 9, 10] {
+            check(&mut out, b1[i] <= b0[i], "a Ravage adds no piece but Blight", || format!("{} {} -> {}", KINDS[i], b0[i], b1[i]));
+        }
+        let blight_added: u32 = outcomes.iter().map(|o| o.blight + o.cascade).sum();
+        check(&mut out, b1[4] <= b0[4] + blight_added, "Blight as the outcomes say", || format!("Blight {} -> {}, {blight_added} added", b0[4], b1[4]));
+        let ravaged: Vec<&LandId> = outcomes.iter().map(|o| &o.land).collect();
+        for id in changed(before, after) {
+            let by_cascade = ravaged.iter().any(|r| before.lands.get(*r).is_some_and(|l| l.adjacent.contains(&id))) || outcomes.iter().any(|o| o.cascade > 0);
+            check(&mut out, ravaged.contains(&&id) || by_cascade, "a Ravage acts where it ravages", || format!("{id} changed"));
+        }
+        for o in outcomes {
+            let (Some(b), Some(a)) = (before.lands.get(&o.land), after.lands.get(&o.land)) else { continue };
+            check(&mut out, card_matches(card, b) && b.c.invaders() > 0, "a Ravage where the card says, with Invaders", || format!("{} ravaged", o.land));
+            check(&mut out, o.blight <= 1, "one Blight of a land's own", || format!("{} took {}", o.land, o.blight));
+            check(&mut out, o.dahan_lost == b.c.dahan - a.c.dahan.min(b.c.dahan), "the Dahan lost are the board's", || format!("{}: {} lost, {} -> {}", o.land, o.dahan_lost, b.c.dahan, a.c.dahan));
+            // a Badlands adds its Damage to what reaches the Dahan
+            let to_dahan = if o.damage > 0 { o.damage + b.c.badlands } else { 0 };
+            let hurt: u32 = b.wounds.iter().filter(|(k, _)| *k == PieceKind::Dahan).map(|(_, d)| *d).sum();
+            check(&mut out, o.dahan_lost * (2 + b.dahan_health) <= to_dahan + hurt, "the Damage kills the Dahan lost", || format!("{}: {} Dahan for {} Damage, {} Badlands, {hurt} on them already", o.land, o.dahan_lost, o.damage, b.c.badlands));
+            check(&mut out, o.invaders_destroyed == b.c.invaders() - a.c.invaders().min(b.c.invaders()), "the Invaders destroyed are the board's", || format!("{}: {} destroyed, {} -> {}", o.land, o.invaders_destroyed, b.c.invaders(), a.c.invaders()));
+            check(&mut out, o.damage >= 2 || o.blight == 0, "under 2 Damage adds no Blight", || format!("{}: {} Damage, {} Blight", o.land, o.damage, o.blight));
+        }
+        out
+    }
+
+    fn sum(island: &Island) -> [u32; 11] {
+        let mut t = [0u32; 11];
+        for l in island.lands.values() {
+            for (i, x) in fields(&l.c).iter().enumerate() {
+                t[i] += x;
+            }
+        }
+        t
+    }
+
+    /// What every adversary's rules keep at every level, in every step: no Dahan, presence
+    /// or Beast ever appears, Blight appears only in a Ravage, and a game is never both won
+    /// and lost.
+    pub fn adversary_holds(step: InvaderStep, before: &Island, after: &Island, rules: &Rules) -> Vec<Violation> {
+        let mut out = Vec::new();
+        let (b0, b1) = (sum(before), sum(after));
+        for i in [3usize, 5, 6] {
+            check(&mut out, b1[i] <= b0[i], "no Dahan, presence or Beast appears", || format!("{step:?}: {} {} -> {}", KINDS[i], b0[i], b1[i]));
+        }
+        if step != InvaderStep::Ravage {
+            check(&mut out, b1[4] == b0[4], "Blight only in a Ravage", || format!("{step:?}: Blight {} -> {}", b0[4], b1[4]));
+        }
+        // a board that both wins and loses is a sacrifice victory, a win
+        let won = victory(after, rules);
+        let lost = loss(after, rules, Tally::default());
+        let end = ending(after, rules, Tally::default(), false);
+        let want = match (&won, &lost) {
+            (Some(w), _) => Some(Ok(w.clone())),
+            (None, Some(l)) => Some(Err(l.clone())),
+            (None, None) => None,
+        };
+        check(&mut out, end == want, "a win and a loss together are a win", || format!("{won:?} / {lost:?} ended {end:?}"));
+        out
+    }
+
+    /// The Terror Level's victory as the board shows it: at I no Invaders, at II no Towns or
+    /// Cities, at III no Cities.
+    pub fn victory_holds(island: &Island, rules: &Rules) -> Vec<Violation> {
+        let mut out = Vec::new();
+        let t = sum(island);
+        let want = match rules.terror {
+            0 => false,
+            1 => t[0] + t[1] + t[2] == 0,
+            2 => t[1] + t[2] == 0,
+            _ => t[2] == 0,
+        };
+        check(&mut out, victory(island, rules).is_some() == want, "victory as the Terror Level says", || format!("TL{} E{} T{} C{}", rules.terror, t[0], t[1], t[2]));
+        out
+    }
+
+    /// A small island to act on: an Ocean and six lands in a ring with two chords, the two
+    /// lands beside the Ocean coastal, random pieces and tokens in each, now and then a
+    /// Defend or a skip.
+    pub fn arbitrary_island(rng: &mut Rng) -> Island {
+        let id = |n: u8| LandId::new("A", n);
+        let edges: [(u8, u8); 10] = [(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 1), (1, 4), (2, 5), (0, 1), (0, 2)];
+        let terrains = [Terrain::Ocean, Terrain::Mountain, Terrain::Wetland, Terrain::Jungle, Terrain::Sands, Terrain::Mountain, Terrain::Jungle];
+        let mut lands: BTreeMap<LandId, Land> = BTreeMap::new();
+        for n in 0..=6u8 {
+            let adjacent: Vec<LandId> = edges.iter().filter_map(|(a, b)| if *a == n { Some(id(*b)) } else if *b == n { Some(id(*a)) } else { None }).collect();
+            let mut c = Counts::default();
+            if n > 0 {
+                let small = |r: &mut Rng, hi: u32| if r.one_in(3) { 0 } else { r.between(0, hi) };
+                c.explorers = small(rng, 3);
+                c.towns = small(rng, 2);
+                c.cities = small(rng, 1);
+                c.dahan = small(rng, 3);
+                c.blight = small(rng, 1);
+                c.presence = small(rng, 2);
+                c.beasts = small(rng, 2);
+                c.disease = small(rng, 1);
+                c.strife = small(rng, 1);
+                c.wilds = small(rng, 1);
+                c.badlands = small(rng, 1);
+            }
+            let coastal = adjacent.contains(&id(0));
+            let mut land = Land { id: id(n), terrain: Some(terrains[n as usize]), coastal, adjacent, c, ..Default::default() };
+            if n > 0 {
+                land.wounds = arbitrary_wounds(rng, &land.c);
+                land.defend = if rng.one_in(4) { rng.between(1, 3) } else { 0 };
+                land.skip_ravage = rng.one_in(10);
+                land.skip_build = rng.one_in(10);
+                land.skip_explore = rng.one_in(10);
+            }
+            lands.insert(id(n), land);
+        }
+        Island { lands }
+    }
+
+    /// A random game state on real boards (the definitions' layouts, lands touching across
+    /// boards along their shared numbers when there are two): random pieces and tokens in
+    /// every land but the Oceans, now and then a Defend or a skip.
+    pub fn arbitrary_island_on(rng: &mut Rng, boards: &[&si_model::island::BoardDef]) -> Island {
+        let mut lands: BTreeMap<LandId, Land> = BTreeMap::new();
+        for b in boards {
+            for d in &b.lands {
+                let mut c = Counts::default();
+                if d.terrain != Terrain::Ocean {
+                    let small = |r: &mut Rng, hi: u32| if r.one_in(3) { 0 } else { r.between(0, hi) };
+                    c.explorers = small(rng, 3);
+                    c.towns = small(rng, 2);
+                    c.cities = small(rng, 1);
+                    c.dahan = small(rng, 3);
+                    c.blight = small(rng, 1);
+                    c.presence = small(rng, 2);
+                    c.beasts = small(rng, 1);
+                    c.disease = small(rng, 1);
+                    c.strife = small(rng, 1);
+                    c.wilds = small(rng, 1);
+                    c.badlands = small(rng, 1);
+                }
+                let mut land = Land { id: d.id.clone(), terrain: Some(d.terrain), coastal: d.coastal(), adjacent: d.adjacent.iter().map(|n| LandId::new(&d.id.board, *n)).collect(), c, ..Default::default() };
+                land.wounds = arbitrary_wounds(rng, &land.c);
+                land.defend = if rng.one_in(5) { rng.between(1, 3) } else { 0 };
+                land.skip_ravage = rng.one_in(12);
+                land.skip_build = rng.one_in(12);
+                land.skip_explore = rng.one_in(12);
+                lands.insert(d.id.clone(), land);
+            }
+        }
+        // two boards touch: a land of one beside the same-numbered land of the other
+        if boards.len() == 2 {
+            let code = |b: &si_model::island::BoardDef| b.lands.first().map(|l| l.id.board.clone()).unwrap_or_default();
+            for n in [1u8, 2, 3] {
+                let (a, b) = (LandId::new(&code(boards[0]), n), LandId::new(&code(boards[1]), n));
+                if lands.contains_key(&a) && lands.contains_key(&b) {
+                    lands.get_mut(&a).unwrap().adjacent.push(b.clone());
+                    lands.get_mut(&b).unwrap().adjacent.push(a.clone());
+                }
+            }
+        }
+        Island { lands }
+    }
+
+    /// Damage already on some pieces this turn: now and then a Town, City or Dahan wounded.
+    pub fn arbitrary_wounds(rng: &mut Rng, c: &Counts) -> Vec<(PieceKind, u32)> {
+        let mut w = Vec::new();
+        for (k, n, full) in [(PieceKind::Town, c.towns, 2), (PieceKind::City, c.cities, 3), (PieceKind::Dahan, c.dahan, 2)] {
+            for _ in 0..n {
+                if rng.one_in(4) {
+                    w.push((k, rng.between(1, full - 1)));
+                }
+            }
+        }
+        w
+    }
+
+    /// The wounds' law: no more wounds of a kind than pieces of it, none at or past its
+    /// piece's Health (`bonus` the Invaders' extra Health).
+    pub fn wounds_hold(island: &Island, bonus: u32, dahan_bonus: u32) -> Vec<Violation> {
+        let mut out = Vec::new();
+        for l in island.lands.values() {
+            for (k, n) in [(PieceKind::Explorer, l.c.explorers), (PieceKind::Town, l.c.towns), (PieceKind::City, l.c.cities), (PieceKind::Dahan, l.c.dahan)] {
+                let w: Vec<u32> = l.wounds.iter().filter(|(x, _)| *x == k).map(|(_, d)| *d).collect();
+                check(&mut out, w.len() as u32 <= n, "no more wounds than pieces", || format!("{}: {} wounded {k:?}, {n} there", l.id, w.len()));
+                let full = if k == PieceKind::Dahan { 2 + dahan_bonus + l.dahan_health } else { k.health() as u32 + bonus };
+                check(&mut out, w.iter().all(|d| *d < full), "a wound short of the piece's Health", || format!("{}: {k:?} wounds {w:?}, Health {full}", l.id));
+            }
+        }
+        out
+    }
+
+    /// An Invader card of any stage: one terrain at I, a terrain or the coast at II (an
+    /// escalation half the time), two terrains at III.
+    pub fn arbitrary_card(rng: &mut Rng) -> InvaderCard {
+        let t = [Terrain::Mountain, Terrain::Wetland, Terrain::Jungle, Terrain::Sands];
+        let pick = |r: &mut Rng| InvaderTarget::Terrain(t[r.below(4)]);
+        let stage = rng.between(1, 3) as u8;
+        let (targets, escalation) = match stage {
+            1 => (vec![pick(rng)], false),
+            2 => (vec![if rng.one_in(5) { InvaderTarget::Coastal } else { pick(rng) }], rng.coin()),
+            _ => (vec![pick(rng), pick(rng)], false),
+        };
+        InvaderCard { id: format!("Fuzz{stage}"), stage, targets, escalation }
+    }
+
+    /// Rules with an adversary at a level, or none, and a Terror Level.
+    pub fn arbitrary_rules(rng: &mut Rng) -> Rules {
+        let adversaries = ["TheKingdomOfEngland", "TheKingdomOfBrandenburgPrussia", "TheKingdomOfSweden", "TheTsardomOfRussia", "TheKingdomOfFrance", "TheHabsburgMonarchy", "HabsburgMiningExpedition", "TheKingdomOfScotland"];
+        let adversary = if rng.one_in(3) { None } else { Some(adversaries[rng.below(adversaries.len())].to_string()) };
+        Rules { adversary, level: rng.between(0, 6) as u8, terror: rng.between(1, 3) as u8, ..Default::default() }
     }
 }
 
@@ -825,5 +1393,57 @@ mod tests {
         let out = build(&mut isl, &card(Terrain::Sands), &rules);
         assert_eq!(out.len(), 1);
         assert_eq!(out[0].added, vec![PieceKind::Town]);
+    }
+
+    #[test]
+    fn every_invader_step_keeps_its_laws() {
+        use super::oracle::*;
+        use si_model::oracle::{property, Violation};
+        // the base rules: Explore, Build and Ravage exactly as the rulebook has them
+        property(
+            "invader steps",
+            1,
+            6000,
+            |rng| (arbitrary_island(rng), arbitrary_card(rng), rng.below(3)),
+            |(island, card, step)| {
+                let rules = Rules::default();
+                let card = InvaderCard { escalation: false, ..card.clone() };
+                let mut after = island.clone();
+                let ran = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| match step {
+                    0 => (explore(&mut after, &card, &rules), 0),
+                    1 => (build(&mut after, &card, &rules), 1),
+                    _ => (ravage(&mut after, &card, &rules), 2),
+                }));
+                let Ok((outcomes, s)) = ran else { return vec![Violation::new("no panic", "the step panicked")] };
+                match s {
+                    0 => explore_holds(&card, island, &after),
+                    1 => build_holds(&card, island, &after),
+                    _ => ravage_holds(&card, island, &after, &outcomes),
+                }
+            },
+        );
+        // every adversary at every level: the laws all of them keep
+        property(
+            "invader steps under an adversary",
+            2,
+            6000,
+            |rng| (arbitrary_island(rng), arbitrary_card(rng), arbitrary_rules(rng), rng.below(3)),
+            |(island, card, rules, step)| {
+                let mut after = island.clone();
+                let s = [InvaderStep::Explore, InvaderStep::Build, InvaderStep::Ravage][*step];
+                let ran = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| match s {
+                    InvaderStep::Explore => explore(&mut after, card, rules),
+                    InvaderStep::Build => build(&mut after, card, rules),
+                    InvaderStep::Ravage => ravage(&mut after, card, rules),
+                }));
+                if ran.is_err() {
+                    return vec![Violation::new("no panic", "the step panicked")];
+                }
+                let mut v = adversary_holds(s, island, &after, rules);
+                v.extend(victory_holds(&after, rules));
+                v.extend(wounds_hold(&after, rules.invader_health_bonus(), 0));
+                v
+            },
+        );
     }
 }

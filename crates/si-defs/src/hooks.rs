@@ -18,6 +18,10 @@ pub fn for_rule(spirit: &str, rule_id: &str, title: &str) -> Vec<RuleHook> {
         ("Thunderspeaker", "Sworn to Victory") => vec![RuleHook::PresenceDestroyedPerDahanKilled { range: 1 }],
         // Shroud of Silent Mist
         ("ShroudOfSilentMist", "Mists Shift and Flow") => vec![RuleHook::GatherPresenceOnTargeting],
+        ("ASpreadOfRampantGreen", "Choke the Land with Green") => vec![RuleHook::SkipStepByDestroyingPresence],
+        ("LightningsSwiftStrike", "Swiftness of Lightning") => vec![RuleHook::SlowAsFastPer(si_model::element::Element::Air)],
+        ("ManyMindsMoveAsOne", "Fly Fast as Thought") => vec![RuleHook::BeastsMoveTwoLands],
+        ("ManyMindsMoveAsOne", "A Joining of Swarms and Flocks") => vec![RuleHook::SacredSiteIsBeast],
         // Stone's Unyielding Defiance
         ("StonesUnyieldingDefiance", "Bestow the Endurance of Bedrock") => vec![RuleHook::BlightDoesNotCascadeUnlessOutnumbered],
         ("VengeanceAsABurningPlague", "The Terror of a Slowly Unfolding Plague") => vec![RuleHook::DiseaseBuildForFear { fear: 1 }],

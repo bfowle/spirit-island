@@ -38,6 +38,28 @@ pub struct Definitions {
 pub const TABLES: [&str; 9] = ["spirits", "power_cards", "boards", "invader_cards", "adversaries", "fear_cards", "event_cards", "blight_cards", "scenarios"];
 
 impl Definitions {
+    /// The definitions as a scenario plays them: Blitz makes every Power Fast and takes 1
+    /// Energy off each card's cost (a card costing 0 gains 1 Energy in the game; the cost
+    /// stays 0 here). Every other scenario leaves the Powers as printed.
+    pub fn for_scenario(&self, scenario: Option<&str>) -> std::borrow::Cow<'_, Definitions> {
+        match scenario {
+            Some("Blitz") => {
+                let mut d = self.clone();
+                for c in d.cards.values_mut() {
+                    c.speed = si_model::power::Speed::Fast;
+                    c.cost = (c.cost - 1).max(0);
+                }
+                for s in d.spirits.values_mut() {
+                    for i in s.innates.iter_mut() {
+                        i.speed = si_model::power::Speed::Fast;
+                    }
+                }
+                std::borrow::Cow::Owned(d)
+            }
+            _ => std::borrow::Cow::Borrowed(self),
+        }
+    }
+
     /// Read `<dir>/<table>.json` for each table (missing tables are empty).
     pub fn from_dir(dir: &Path) -> Result<Self> {
         let mut tables: BTreeMap<String, Value> = BTreeMap::new();
@@ -293,7 +315,20 @@ fn innate(v: &Value) -> Innate {
             a.iter()
                 .map(|t| {
                     let body = str_of(t, "body");
-                    Tier { elements: element_set_from_costs(t), effects: effects::parse(&[body.clone()]), body, modifier: flag(t, "requiresAnotherElementOption") }
+                    {
+                        // "Instead, ...": this tier replaces the ones reached before it
+                        let mut fx = effects::parse(&[body.clone()]);
+                        if text::plain(&body).trim_start().starts_with("Instead") {
+                            fx.insert(0, si_model::power::Effect::Instead);
+                        }
+                        // its costs beyond elements: Beasts in the land, presence destroyed, Energy, Power Cards
+                        for what in ["Beast", "DestroyedPresence", "Energy", "PowerCards"] {
+                            if let Some(n) = t.get(format!("cost{what}")).and_then(|v| v.as_i64()).filter(|n| *n > 0) {
+                                fx.insert(0, si_model::power::Effect::Requires { what: what.to_string(), count: n.clamp(0, 99) as u8 });
+                            }
+                        }
+                        Tier { elements: element_set_from_costs(t), effects: fx, body, modifier: flag(t, "requiresAnotherElementOption") }
+                    }
                 })
                 .collect()
         })
