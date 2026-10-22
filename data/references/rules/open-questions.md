@@ -631,3 +631,105 @@ Same format as `open-questions.md`. Questions marked *(engine read)* need an IL 
   Stage-III Escalation keys on the printed Stage 3, so it does fire there.
 
 Existing questions this pass touched (no new answer): Q1, Q2, Q4 (R-RA-2 supports "Defend reduces both"), Q5, Q10, Q11, Q16 (England L6 difficulty 10 vs 11 confirmed against Wiki England@6844), Q17 (France loss, confirmed against France_(Plantation_Colony)@7940), Q18 (Sweden L1 and Habsburg loss wording, confirmed against Sweden@12523 and Habsburg_Monarchy_(Livestock_Colony)@6850), Q19, Q20, Q22, Q24.
+
+## From the fuzzing and the simulator's misses (2026-10-22)
+
+Rules the simulator now applies left these open. Most of what it decided was
+already settled (see the end of this section); the work that remains on the
+simulator is in `docs/simulator-misses.md`.
+
+- [ ] **Q33. Collapse in a Blast of Lava and Steam: an Action of its own?**
+  Volcano Looming High: "When your {Presence} is Destroyed, in that land, deal
+  1 Damage per Destroyed {Presence} to both Invaders and to {Dahan}." Badlands
+  add "exactly once per Action" (Jagged Earth rulebook, Badlands tokens;
+  register R-RA-8). If Collapse is an Action of its own, a land's Badlands add
+  to it again, both when it fires inside a Power (Explosive Eruption destroys
+  the presence) and after a Ravage's Blight; if it is part of the Action that
+  destroyed the presence, they do not.
+  *Depends on:* Volcano's Damage in Badlands lands; Explosive Eruption's value.
+  *Sources:* the Jagged Earth rulebook's Actions table lists "A Special Rule
+  which specifies 'After X, do Y'" as a Spirit Action; Collapse says "When",
+  not "After". Engine (live-7c6c9792d645 T1): the Collapse Damage is logged
+  under the Power (`DealDamage from ExplosiveEruption`), in a land without
+  Badlands, so it does not settle this. *Simulator now:* its own Action after
+  a Ravage's Blight; inside a Power, Badlands added to each Damage (a miss
+  either way, per R-RA-8).
+  **Answer:** _(open)_
+
+- [ ] **Q34. Ceaseless Mining from which level?** Habsburg Mining
+  Expedition: "Lands with 3 or more Invaders are Mining lands. In Mining
+  lands: {Disease} and modifiers to {Disease} affect Ravage Actions as though
+  they were Build Actions. During the Build Step, Build Cards cause Ravage
+  Actions (instead of Build Actions)." The engine lists it beside Level 1
+  (Avarice Rewarded) as an additional effect, and register R-ADV-HME-L1a
+  says the Wiki agrees. Is it printed with Level 1, or as part of the
+  adversary at every level, Level 0 included?
+  *Depends on:* every Habsburg Mining Build and Ravage at Level 0.
+  *Sources:* engine `HabsburgMiningExpedition.levels[1].additionalGameEffectBodies`;
+  Wiki Habsburg_Mining_Expedition@12138. *Simulator now:* from Level 1.
+  *Check:* the printed adversary card.
+  **Answer:** _(open)_
+
+- [ ] **Q35. Explosive Eruption's printed Destroyed-presence numbers.** The
+  engine gives the four tiers a Destroyed-presence cost of 2, 4, 6 and 10
+  (the rider: "{DestroyedPresence} (below) checks how many were Destroyed").
+  Are those the printed numbers?
+  *Depends on:* which tier X reaches. *Sources:* engine
+  `VolcanoLoomingHigh` innate `ExplosiveEruption`, `costDestroyedPresence`;
+  game evidence (live-7c6c9792d645 T1, T3): X = 1 reached no tier, consistent
+  with 2. *Check:* the printed Spirit panel.
+  **Answer:** _(open)_
+
+- [ ] **Q36. Mining Tunnels and the Coastal Lands card.** "On each board,
+  Explore in 2 lands whose terrains don't match a Ravage or Build Card (no
+  source required)." Coastal Lands names no terrain. With Coastal Lands in
+  the Ravage or Build space, may the 2 lands be Coastal?
+  *Depends on:* Mining Tunnels' land choices. *Sources:* engine
+  `HabsburgMiningExpedition.stageIIEscalationBody`; register R-ADV-HME-L0a
+  (unreviewed). *Simulator now:* a land the card acts on (a Coastal land,
+  under Coastal Lands) is left out.
+  **Answer:** _(open)_
+
+- [ ] **Q37. Durable Towns when the Ravage adds Blight.** The Habsburg
+  Monarchy Level 4: "{Town} in lands without {Blight} are Durable: they have
+  +2 Health, and 'Destroy {Town}' effects instead deal 2 Damage (to those
+  {Town} only) per {Town} they could Destroy. ('Destroy all {Town}' works
+  normally.)" A Ravage adds its Blight before the Dahan strike back (Jagged
+  Earth rulebook, Ravage steps). Do the land's Towns lose the +2 Health for
+  that counterattack? And does Damage already on a Town count against the
+  lower Health once Blight arrives (2 Damage on a Town whose Health drops
+  from 4 to 2)?
+  *Depends on:* the Monarchy's Level 4, not modeled until answered.
+  *Sources:* engine `TheHabsburgMonarchy.levels[4]`; register R-ADV-HLC-L4
+  (unreviewed).
+  **Answer:** _(open)_
+
+- [ ] **Q38. Unquenchable Flames: how long does the Damage stay?** "1
+  {Fear}. 1 Damage to {Town}/{City}. Invaders do not heal Damage at end of
+  turn." Through this turn's end only, so it clears at the next Time Passes,
+  or until those Invaders are destroyed?
+  *Depends on:* Damage carried into the next turn. *Sources:* engine
+  `UnquenchableFlames.body`. *Simulator now:* not applied; the Damage clears
+  at Time Passes as usual.
+  **Answer:** _(open)_
+
+- [ ] **Q39. Level 0 difficulty of Brandenburg-Prussia, England, Scotland
+  and Sweden.** The engine definitions give a base difficulty for Habsburg
+  Mining (1), Russia (1), the Habsburg Monarchy (2) and France (2), and none
+  for these four. The Scotland game's save says difficulty 1 at an unknown
+  level. What does each card print for Level 0?
+  *Depends on:* reading a bare log's level from its save (a difficulty below
+  every level's reads as Level 0). *Sources:* `data/engine-defs/adversaries.json`
+  `baseDifficulty`; the save beside EndGame--8584246831828257582.txt.
+  *Check:* the printed adversary cards.
+  **Answer:** _(open)_
+
+Settled by earlier answers, no new question: where adversary and escalation
+pieces go, which Explorer or Town upgrades, and which lands a "Max. 2" rule
+takes are the players' best pick (Q21), so the simulator's fixed pick is a
+fix, not a question; France's escalation Blight destroys presence and
+cascades like any Blight added (Q5); a Repeat is a new use with its own
+choices and Repeats do not chain (core rulebook p.19); Badlands add once per
+Action (R-RA-8), which the effect executor still breaks inside one Power;
+Russia Level 2's Explorer cannot be Pushed out of an Isolated land (engine,
+live-27696743c529 T4, Roiling Bog's Isolate).
