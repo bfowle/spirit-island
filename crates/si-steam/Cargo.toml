@@ -7,6 +7,7 @@ edition.workspace = true
 si-common = { path = "../si-common" }
 si-model = { path = "../si-model" }
 si-record = { path = "../si-record" }
+si-defs = { path = "../si-defs" }
 serde.workspace = true
 serde_json.workspace = true
 anyhow.workspace = true

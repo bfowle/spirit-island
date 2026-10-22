@@ -22,6 +22,7 @@ If cargo complains about the network, add `--offline`; every dependency is alrea
 in the local cache.
 
 Below, `si` means `target/release/si` (or `cargo run -q -p si-cli --` while developing).
+`si --help` lists the commands; `si <command> --help` its arguments and options.
 
 ## 2. The engine definitions (once per game update)
 
@@ -90,7 +91,25 @@ What the report prints, top to bottom:
 ```
 si replay <game> --json > game.json      # the whole record as JSON
 si replay <game> --lands                 # the record as text with every land ledger
+si journal <capture dir | save.dat[.gz]>  # the same record from a save's own journal, no log
+si journal <capture dir> --check         # its end against the board the save holds, land by land
+si journal <capture dir> --entries       # the journal's entries, one per line
+si journal <capture dir> --against-log   # what differs from the log-built record of the capture
 ```
+
+**The save's journal.** Every decision save carries the engine's own typed journal of
+the whole game (`Game.Journal._journalEntries`, the material `log.txt` is written from),
+and every command that takes a game (`replay`, `report`, `corpus`, `verify`, `notate`,
+`hindsight`, `study`, `journal`) builds the record from the capture's newest save when
+the capture holds saves: no log, no undo guessing (an undo reloads a save whose journal
+is the truth), no journal copies. The record's source line names the save. An EndGame
+log has no save and is read as before; `--log` makes any command read the log of a
+capture instead (`si journal --against-log` shows what that changes). `--check` replays it and compares
+the record's end with the board the save holds; it matches on every land of the 18
+captures with saves, which is the reader's acceptance test. The log-built record was
+wrong where the log never carried a fact: presence a Power pushed or gathered, and the
+Beasts and Disease Jagged Earth adds to the base boards at setup. Design and findings:
+`docs/superpowers/specs/2026-10-21-save-journal-reader.md`.
 
 ## 5. Every game at once
 
@@ -144,7 +163,7 @@ per turn:
   positions were tried;
 - a table in the house style (comfy-table as in talaria-cli: box borders, bold header,
   cells wrap onto more lines rather than being cut; the tag, number, element and tier
-  columns never wrap) with the rows `actual`, `best`, `then…`: the growth in notation (`G1 c5@A5 Rc
+  columns never wrap) with the rows `actual`, `best`, `then…`: the growth in notation (`G1 cp5@A5 Rc
   +SHG -SFFW`: group, each presence's slot and land, Reclaim, card gained, card
   forgotten; `+MI (draft T4)` when the gain is taken from a later turn's recorded
   draft; `(as played)` marks rows that keep your growth; `+6 alike` folds rows with
@@ -336,6 +355,105 @@ showing the turn and the growth positions tried so far.
 Spec: `docs/superpowers/specs/2026-10-20-study-tui.md`. Not yet: the board drawn from
 the recorded snapshots, picking a target on it, several spirits.
 
+## 5h. Live: the study board on the game being played
+
+```
+si study --live                                   # the Steam folder ($SI_STEAM_DIR or the Handelabra path)
+si study --live --steam <dir>                     # another folder
+si study --live --replay <capture> --at T3/SpiritPhase [--save <name part>]   # a capture cut at that save, no game needed
+```
+
+Turns already played are the closed tabs, reviewed as soon as the journal has moved
+past them. The turn being played is the open tab (`T4 Growth`, `T4 Fast`, `T4 Ravage`,
+`T4 Slow`, in cyan; the header reads LIVE). On it:
+
+- **PLAN** (in LINES' place; its title counts `plans scored: N`): `none` first, then
+  every plan you typed, in that order, never ranked. `t` opens the prompt: on the Growth
+  tab a growth before `|` and plays after it (`G2 e5@D3 cp3@D7 | CS>C3`; a growth the
+  panel does not offer is refused in its own row, and LINE's note lists the groups and
+  example positions to copy); on every later tab plays only; a Fast card after the Fast
+  phase is refused. `score` is the informed score: the mean over the Explore cards still
+  in the stage, the growth position's value and the expectation for the face-down Event
+  and Fear cards included. `vs none` is how often the plan beats doing nothing, as
+  `4 of 5` Explore cards (or `about 3 in 4` when the Explore is known). `d` deletes the
+  plan under the cursor. A play the journal has since recorded is not applied twice
+  (LINE notes it `made already`). The engine's own ranked lines never show on the open
+  tab; they appear when the turn closes, and the plans you typed stay as `try` rows.
+- **THINK ABOUT** (in READING's place): each Ravage land with the simulator's damage,
+  what is at stake and the Defend that keeps the Dahan or the land; the Builds; the
+  Blight card's pool and what doing nothing adds; hand against plays; on the Growth tab
+  how many unseen Minors and Majors would play this turn on each Ravage land.
+- **POSITION**'s last column is `after` (what the steps do there under the selected plan,
+  every adversary modifier applied) until the step is recorded, then the recorded result.
+- **INVADER PHASE** lists the slots and their lands, the Explore's pool, the Blight card,
+  the Fear counts, the Event once drawn, and each recorded step against what the plan said.
+- The footer reads `live: T4 Fast, save 003-0089-FastPower, journal 1,204 lines | 3 turns
+  reviewed`, and names a land where the journal's board and the save's disagree.
+
+Reads the Steam folder only: the journal `log.txt` (replayed from scratch on every
+change; an undo rewrites it) and the newest complete save, through the firewall
+(`si_steam::seed`: no deck order, no face-down card name ever crosses; the Blight card
+is named only once it has flipped). First spirit only in this version.
+
+**The record comes from the newest save.** When the newest decision save decodes and its
+journal reaches back to setup, the screen's record is built from that journal (the footer
+says `save journal`); `log.txt` is the fallback for a folder without a usable save. A
+turn closes on the first save after its Time Passes, as the app saves at every decision.
+
+**A rollback keeps the attempt.** When the record shrinks onto a turn that was closed and
+reviewed (`i`, or the app's own Undo across turns), that turn opens with the earlier
+attempt's lines as its first plans: the line you played and the review's three best,
+each scored against the position as it stands and noted `last attempt: played, scored
+-2.5 then` or `last attempt: best then, scored -1.2`. `d` removes one, `t` adds yours. A
+different game id is a new game and clears everything typed. When the rollback happened
+before the screen was up (the app was relaunched, or the screen restarted), name the
+branch's save: `si study --live --attempt <capture>/saves/<the EndGame or last save of
+that branch>` reviews that attempt's turn as soon as the live game opens it and seeds the
+plans the same way. To read the whole branch, open its save itself:
+`si study <capture>/saves/<that save>` (every turn it holds, reviewed; `i` there still
+loads a turn's start from the capture).
+
+**It records as it watches.** The app keeps only the last turn's decision saves, so the
+live screen copies every save it sees into `$SI_CAPTURE_DIR/live-<game id>/` (`saves/`
+as the recorder names them, `events.txt`, the journal as `log-stream.txt`, and Unity's
+`Player.log` as `player-stream.txt`: the app's own debug log, with each action's source
+and activation, the intents it puts to the player, and its save bookkeeping; it restarts
+with the app, so the stream holds one copy per launch), the same capture the old
+companion's recorder wrote. A screen restarted over the same game appends only what
+the streams lack. On the open tab, THINK ABOUT leads with what the app is asking the
+player right now, read from `Player.log` (`The app asks: Use Power: Sudden Ambush
+(Fast).`, or `The app's last step: ...` once answered): only the intent lines are read,
+the activation's name and its public attributes, never a deck. That capture is what `i` on a closed tab
+loads: `si inject <capture> --turn n --phase SpiritPhase` puts that turn's start into
+the running game, and the journal that restarts at the load is seeded from the very
+save injected, so the branch you then play keeps its real turn numbers and its own
+tabs. A turn that began before the screen was up has no start to load, and `i` says so.
+Keep `si study --live` up from the first turn of a game you may want to replay.
+
+The trap behind the 2026-10-21 reports of a branch the screen never saw: the app closes
+`log.txt` when a game ends (`Closing friendly log file` in its `Player.log`, from
+`LogRecorder.CloseFriendlyLogFileOutput`) and opens it again only when the game view
+starts afresh (`GameViewController.Start`, which truncates it). A reload in place after
+that, the app's own Undo at the end screen or `i` inside the ended game, keeps saving
+but journals nothing, so such a branch existed only as the saves the capture keeps.
+`si inject` now calls `LogRecorder.InitializeFriendlyLog(path, append: true)` before its
+in-place reload, so the journal continues in the same file; a reload from the main menu
+takes the Continue route, where the app writes a fresh journal that the screen stitches
+to the capture's earlier copy, seeding it from the last save before its first line. The
+footer still names a journal that stopped while saves go on. Every one of those saves
+carries the engine's own typed journal of the whole game (ChangeState, UsePower,
+MoveIslandPieces, AddIslandPieces, DestroyPieces, AdjustFearGenerated, PlayPowerCard,
+UseGrowthOption, MovePresence, BuildLand, MoveCards, GainElements, ...), the material
+`log.txt` itself is written from. Reading the record from that journal instead of the log
+is the next build; it would also retire the undo guessing on bare logs.
+
+The screen harness (`cargo test -p si-cli --test tui_smoke`, tmux driven, blessed panes
+under `crates/si-cli/tests/fixtures/tui/`, `SI_TUI_BLESS=1` to rewrite them) covers the
+study screens on the Shroud capture and the live screens on its T3 Growth and T3 Fast
+cuts (`crates/si-hindsight/tests/fixtures/open-turn/`). The firewall tests need a folder
+of plain `.dat` saves: `SI_STEAM_CAPTURE=<dir> cargo test -p si-steam --test firewall`
+(gunzip a capture's `saves/*.dat.gz` into it).
+
 ## 5e. Checkpoints and live replay
 
 ```
@@ -377,7 +495,8 @@ standalone `frida-inject.exe` (fetched once into the companion's Windows tools f
 against `SpiritIsland.exe` with `tools/live-replay/reload_checkpoint.js`, and follows the
 script's log until it reports `done` or an error. At the home screen the app's Continue
 picks the file up (its undo fallback); in a game the app reloads in place through its own
-Undo path. Click the game window after starting the command: Unity runs no frames while
+Undo path, after the script reopens the app's journal in append mode (the app closes
+`log.txt` at a game over and would otherwise play on with no journal; section 5h). Click the game window after starting the command: Unity runs no frames while
 the window is in the background. Verified 2026-10-20. Mechanism and findings:
 `docs/superpowers/specs/2026-10-20-live-replay-checkpoints.md`.
 

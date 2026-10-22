@@ -16,14 +16,34 @@ macro_rules! out {
     () => { println!() };
     ($($arg:tt)*) => { crate::color::emit(&format!($($arg)*)) };
 }
+mod journal;
 use si_defs::Definitions;
 use si_record::{GameRecord, Replay, TouchKind};
 
 fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().skip(1).collect();
     color::init(&args);
-    let Some(cmd) = args.first() else { return usage() };
-    match cmd.as_str() {
+    let Some(cmd) = args.first() else {
+        eprint!("{}", usage_text());
+        std::process::exit(2);
+    };
+    if matches!(cmd.as_str(), "--help" | "-h" | "help") {
+        match args.get(1).and_then(|c| command(c)) {
+            Some(c) => print!("{}", help_text(c)),
+            None => print!("{}", usage_text()),
+        }
+        return Ok(());
+    }
+    let Some(c) = command(cmd) else {
+        eprintln!("si: no command {cmd:?}\n");
+        eprint!("{}", usage_text());
+        std::process::exit(2);
+    };
+    if args[1..].iter().any(|a| a == "--help" || a == "-h") {
+        print!("{}", help_text(c));
+        return Ok(());
+    }
+    match c.name {
         "replay" => replay(&args[1..]),
         "report" => report(&args[1..]),
         "corpus" => corpus(&args[1..]),
@@ -36,33 +56,74 @@ fn main() -> Result<()> {
         "import" => import(&args[1..]),
         "calibrate" => calibrate(&args[1..]),
         "study" => tui::run(&args[1..]),
-        _ => usage(),
+        "journal" => journal::run(&args[1..]),
+        _ => unreachable!(),
     }
 }
 
-fn usage() -> Result<()> {
-    eprintln!("usage: si replay <EndGame.txt | capture dir> [--defs <dir>] [--json] [--lands]");
-    eprintln!("       si report <EndGame.txt | capture dir> [--defs <dir>]        land tempo, track tempo, build profile");
-    eprintln!("       si corpus <path>... [--defs <dir>] [--md]                  one row per game over captures and EndGame logs, then groupings");
-    eprintln!("       si hindsight <EndGame.txt | capture dir> [--defs <dir>] [--turn n] [--top n] [--fixed-growth] [--seed <save.dat>] [--calibration <json>] [--try \"SLSF>C8 MI\"]   each turn's growth and plays against every legal line, scored on the Invader steps that followed; Event and Fear choices against their alternatives; the deck forecast per land");
-    eprintln!("       si notate <EndGame.txt | capture dir> [--defs <dir>] [--canonical]   the game in Spirit Island notation (moves, reveals, results)");
-    eprintln!("       si checkpoint <capture dir...> [--turn n] [--phase SpiritPhase|FastPower|SlowPower|...] [--export <dir>] [--graph [--dot]]   the app's saves kept with a capture, by turn and phase; --export writes the chosen .dat; --graph draws the checkpoint DAG (undo branches as forks)");
-    eprintln!("       si inject <capture dir> --turn n [--phase SpiritPhase] [--save <file part>] [--any-branch] [--name save-Undo-990.dat] [--timeout 90] [--fetch]   load that checkpoint (on the path the game finally took) into the RUNNING Steam app from WSL (frida-inject.exe, no restart; main menu or in-game)");
-    eprintln!("       si verify <EndGame.txt | capture dir> [--defs <dir>] [--level n] [--all]   simulate each turn's Invader phase and compare with the log");
-    eprintln!("       si cards [--defs <dir>] [--unparsed [n]] [--card <title>] [--features] [--fit]   effect-parser coverage; one card's parse; the feature table; the pricing fit");
-    eprintln!("       si import <EndGame--n.txt> [--out <steam-capture dir>]   build a live-<game id>/ capture from an EndGame log and the saves the app still has (its final .dat, any save-Feedback/Undo of that game); the recorder makes the full one");
-    eprintln!("       si study <EndGame.txt | capture dir> [--defs <dir>] [--fixed-growth] [--seed <save.dat>] [--calibration <json>]   the hindsight review as screens: turn by turn with the lines table, reading, hidden cards and deck forecast; a pacing screen of charts; t types a line to score, i loads the turn's checkpoint into the running game");
-    eprintln!("       si calibrate [<path>...] [--defs <dir>] [--out <json>] [--dry-run]   measure over the corpus what hindsight has no rule for: the Event and Fear cards' mean ledger effect, the next-turn weight, a turn's luck spread, the ledger against results; writes data/calibration.json (default corpus: the captures and the Steam folder)");
-    Ok(())
+/// One command: its name, its arguments on the usage line, one line on what it does,
+/// and its options, each with a line of its own.
+struct CommandHelp {
+    name: &'static str,
+    args: &'static str,
+    what: &'static str,
+    options: &'static [(&'static str, &'static str)],
+}
+
+const DEFS: (&str, &str) = ("--defs <dir>", "the engine definitions (else $SI_DEFS_DIR; `si-steam-dump defs <dir>` writes them)");
+const GAME: &str = "<EndGame.txt | capture dir>";
+
+const COMMANDS: &[CommandHelp] = &[
+    CommandHelp { name: "replay", args: "<EndGame.txt | capture dir> [--json] [--lands]", what: "replay a game log into a record and print it: turns, spirits, lands, coverage", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--json", "the record as JSON"), ("--lands", "every land's ledger")] },
+    CommandHelp { name: "journal", args: "<capture dir | save.dat[.gz]> [--entries] [--check] [--against-log] [--json] [--lands]", what: "the record from a save's own journal (every decision save carries the whole game's), no log needed; --check: its end against the save's board; --against-log: its differences from the capture's log-built record", options: &[DEFS, ("--entries", "the journal's entries, one per line, resolved to the log's names"), ("--check", "replay the journal and compare the record's end with the board the save holds, land by land"), ("--against-log", "compare with the record replayed from the capture's log-stream.txt"), ("--json", "the record as JSON"), ("--lands", "every land's ledger")] },
+    CommandHelp { name: "report", args: "<EndGame.txt | capture dir>", what: "land tempo with price and reach, the ledger, track tempo, spikes, the build profile, growth shapes, the adversary level", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS] },
+    CommandHelp { name: "corpus", args: "<path>... [--md]", what: "one row per game over captures and EndGame logs, then the groupings", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--md", "Markdown tables")] },
+    CommandHelp { name: "verify", args: "<EndGame.txt | capture dir> [--level n] [--all]", what: "simulate each turn's Invader phase and the Power uses, and compare them with what the log records", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--level n", "the adversary level when the save beside the log does not say"), ("--all", "every land, not only the ones that differ")] },
+    CommandHelp { name: "notate", args: "<EndGame.txt | capture dir> [--canonical]", what: "the game in Spirit Island notation: decisions, reveals and results kept apart, Power>land[results]", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--canonical", "full ids instead of the short codes")] },
+    CommandHelp { name: "cards", args: "[--unparsed [n]] [--card <title>] [--innates] [--features] [--fit minor|major|unique|all]", what: "the effect grammar's coverage of the Power Cards and innates; one card's parse; the feature table; the pricing fit", options: &[DEFS, ("--unparsed [n]", "the cards the grammar does not read in full, n of them"), ("--card <title>", "one card, sentence by sentence (read, typed, simulated)"), ("--innates", "the innate tiers not read"), ("--features", "the feature table over the cards"), ("--fit <kind>", "the least-squares price fit over that kind")] },
+    CommandHelp { name: "hindsight", args: "<EndGame.txt | capture dir> [--turn n] [--top n] [--fixed-growth] [--seed <save>] [--calibration <json>] [--try \"SLSF>C8 MI\"]", what: "each turn's growth and plays against every legal line from the same position: informed, hindsight, luck, confidence, the readings", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--turn n", "one turn only"), ("--top n", "how many alternatives to print"), ("--fixed-growth", "the growth as played; only the plays vary (much faster)"), ("--seed <save.dat|.gz>", "the save a journal that starts mid-game was reloaded from (si inject prints it)"), ("--calibration <json>", "the measured constants (else data/calibration.json beside the defs, else built in)"), ("--try \"<line>\"", "score a line you write, beside the actual one (with --turn)")] },
+    CommandHelp { name: "study", args: "<EndGame.txt | capture dir> | --live [--steam <dir>] [--replay <capture> --at Tn/Phase [--save <part>]]  [--fixed-growth] [--seed <save>] [--calibration <json>]", what: "the hindsight review as screens, turn by turn (a capture, its newest save; one of its saves, the game as that save holds it); --live: the game being played, the open turn scoring the plans you type beside doing nothing", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--live", "read the Steam folder as it stands and follow it; every save seen is recorded into $SI_CAPTURE_DIR/live-<id>/"), ("--steam <dir>", "another folder than $SI_STEAM_DIR or the Handelabra path"), ("--replay <capture> --at Tn/Phase", "the live screen on a capture cut at that save, no game needed (the earliest save of that turn and phase on the path the game took)"), ("--attempt <save>", "with --live: an earlier attempt of this game (a save of the branch rolled back from); its review of the turn being played seeds the plans"), ("--save <part>", "with --replay: a save by a part of its name instead of --at"), ("--fixed-growth", "review the growth as played; only the plays vary (seconds, not minutes)"), ("--seed <save.dat|.gz>", "a file's journal that starts mid-game: the save it was reloaded from"), ("--calibration <json>", "the measured constants"), ("keys", "h/l turns, j/k rows, Enter opens a group, e/c all, Tab pacing, t a line or a plan, d delete it, i load this turn's start into the running game, ? the rest")] },
+    CommandHelp { name: "checkpoint", args: "<capture dir>... [--turn n] [--phase <Phase>] [--any-branch] [--export <dir>] [--graph [--dot]]", what: "the app's saves kept with a capture, by turn and phase, on the path the game finally took", options: &[("--turn n", "that turn's saves"), ("--phase <Phase>", "SpiritPhase, FastPower, SlowPower, Ravage, ... (the save's state name)"), ("--any-branch", "undone attempts too"), ("--export <dir>", "write the matching saves there as plain .dat"), ("--graph [--dot]", "the checkpoints as a DAG (forks where the game came back to a save); --dot for Graphviz")] },
+    CommandHelp { name: "inject", args: "<capture dir> --turn n [--phase SpiritPhase] [--save <part>] [--any-branch] [--name save-Undo-990.dat] [--timeout 90] [--fetch]", what: "load that checkpoint into the RUNNING Steam app from WSL (frida-inject.exe, no restart): the open game reloads in place, or Continue opens it from the main menu", options: &[("--turn n", "the turn (its earliest save of the phase on the path the game took)"), ("--phase <Phase>", "default SpiritPhase, the turn's start"), ("--save <part>", "a save by a part of its name"), ("--any-branch", "undone attempts too"), ("--name <file>", "the file name the checkpoint is placed under in the save folder"), ("--timeout <s>", "how long to wait for the app's frame (default 90)"), ("--fetch", "download frida-inject.exe for Windows into the tools folder first")] },
+    CommandHelp { name: "import", args: "<EndGame--n.txt> [--out <steam-capture dir>]", what: "build a live-<game id>/ capture from an EndGame log and the saves the app still has (its final .dat, any save-Feedback/Undo of that game)", options: &[("--out <dir>", "where the capture goes (default $SI_CAPTURE_DIR)")] },
+    CommandHelp { name: "calibrate", args: "[<path>...] [--out <json>] [--dry-run]", what: "measure over the corpus what hindsight has no rule for: the Event and Fear cards' mean worth, the next-turn weight, a turn's luck sd, the simulator's error", options: &[DEFS, ("--out <json>", "where to write (default data/calibration.json beside the defs)"), ("--dry-run", "measure and print, write nothing")] },
+];
+
+fn command(name: &str) -> Option<&'static CommandHelp> {
+    COMMANDS.iter().find(|c| c.name == name)
+}
+
+/// Every command on one line each.
+fn usage_text() -> String {
+    let mut s = String::from("usage: si <command> [args]   (si <command> --help for its options; $SI_DEFS_DIR names the engine definitions)\n\n");
+    let w = COMMANDS.iter().map(|c| c.name.len()).max().unwrap_or(10);
+    for c in COMMANDS {
+        s.push_str(&format!("  {:w$}  {}\n", c.name, c.what, w = w));
+    }
+    s.push_str(&format!("\nGames: {GAME} is a Steam EndGame log (with its .dat beside it) or a recorder capture (live-<id>/ with saves/).\n"));
+    s
+}
+
+/// One command: its usage line, what it does, its options.
+fn help_text(c: &CommandHelp) -> String {
+    let mut s = format!("usage: si {} {}\n\n{}\n", c.name, c.args, c.what);
+    if !c.options.is_empty() {
+        s.push('\n');
+        let w = c.options.iter().map(|(o, _)| o.len()).max().unwrap_or(10);
+        for (o, what) in c.options {
+            s.push_str(&format!("  {:w$}  {}\n", o, what, w = w));
+        }
+    }
+    s
 }
 
 /// The Steam folder that holds the `EndGame--<id>` logs and saves.
-fn steam_dir() -> PathBuf {
+pub(crate) fn steam_dir() -> PathBuf {
     std::env::var("SI_STEAM_DIR").map(PathBuf::from).unwrap_or_else(|_| PathBuf::from("/mnt/c/Users/brett/AppData/LocalLow/Handelabra Games Inc_/Spirit Island"))
 }
 
 /// Where the recorder keeps captures (`live-<game id>/`), for `si import`.
-fn capture_root() -> PathBuf {
+pub(crate) fn capture_root() -> PathBuf {
     std::env::var("SI_CAPTURE_DIR").map(PathBuf::from).unwrap_or_else(|_| PathBuf::from("/home/brett/repos/spirit-island/data/steam-capture"))
 }
 
@@ -75,7 +136,7 @@ fn seed_from_args(args: &[String]) -> Result<Option<si_record::replay::Seed>> {
     Ok(Some(si_steam::seed::from_snapshot(&snap, &name)))
 }
 
-fn decode_save(dat: &Path) -> Option<si_steam::engine_map::EngineSnapshot> {
+pub(crate) fn decode_save(dat: &Path) -> Option<si_steam::engine_map::EngineSnapshot> {
     let bytes = si_steam::source::read_save(dat).ok()?;
     let graph = si_steam::nrbf::decode(&bytes).ok()?;
     Some(si_steam::engine_map::map(&graph))
@@ -118,9 +179,40 @@ fn sibling_save(path: &Path) -> Option<si_steam::engine_map::EngineSnapshot> {
     decode_save(&dat)
 }
 
+/// The record of a game: from the newest save's journal when `path` is a capture that
+/// holds saves (every decision save carries the engine's typed journal of the whole
+/// game; docs/superpowers/specs/2026-10-21-save-journal-reader.md), else from the log,
+/// which `--log` forces. The source names which.
+pub(crate) fn load_record(path: &Path, defs: Option<&Definitions>, seed: Option<si_record::replay::Seed>, force_log: bool) -> Result<(GameRecord, String)> {
+    // a save itself: the game as it holds it, whatever branch the capture's newest save stands on
+    if path.is_file() && path.file_name().is_some_and(|n| n.to_string_lossy().contains(".dat")) {
+        let g = si_steam::nrbf::decode(&si_steam::source::read_save(path)?)?;
+        let source = format!("{} (save journal)", path.display());
+        return Ok((si_steam::journal::record(&g, defs, &source), source));
+    }
+    if !force_log && path.is_dir() {
+        if let Some(save) = journal::newest_save(path) {
+            if let Some(g) = si_steam::source::read_save(&save).ok().and_then(|b| si_steam::nrbf::decode(&b).ok()) {
+                let source = format!("{} (save journal: {})", path.display(), save.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default());
+                let rec = si_steam::journal::record(&g, defs, &source);
+                if rec.meta.from_setup && rec.meta.turns > 0 {
+                    return Ok((rec, source));
+                }
+            }
+        }
+    }
+    let (lines, undo, source) = si_record::replay::load(path)?;
+    let rec = Replay::new(defs).with_seed(seed).run(&lines, undo.as_deref(), &source);
+    Ok((rec, source))
+}
+
+fn force_log(args: &[String]) -> bool {
+    args.iter().any(|a| a == "--log")
+}
+
 /// Fill the record's metadata from the save beside the log: the adversary
 /// (when the log never named it), its level, the game difficulty, the scenario.
-fn apply_save(rec: &mut GameRecord, path: &Path) -> Option<si_steam::engine_map::EngineSnapshot> {
+pub(crate) fn apply_save(rec: &mut GameRecord, path: &Path) -> Option<si_steam::engine_map::EngineSnapshot> {
     let snap = sibling_save(path)?;
     if let Some((id, level)) = snap.adversaries.first() {
         if rec.meta.adversary.is_none() {
@@ -133,7 +225,7 @@ fn apply_save(rec: &mut GameRecord, path: &Path) -> Option<si_steam::engine_map:
     Some(snap)
 }
 
-fn defs_from(args: &[String]) -> Result<Option<Definitions>> {
+pub(crate) fn defs_from(args: &[String]) -> Result<Option<Definitions>> {
     let dir = args.iter().position(|a| a == "--defs").and_then(|i| args.get(i + 1)).cloned().or_else(|| std::env::var("SI_DEFS_DIR").ok());
     match dir {
         Some(d) => {
@@ -208,8 +300,7 @@ fn calibration_from(args: &[String]) -> Option<si_hindsight::Calibration> {
 fn replay(args: &[String]) -> Result<()> {
     let Some(path) = args.first() else { bail!("replay needs a log file or capture directory") };
     let defs = defs_from(args)?;
-    let (lines, undo, source) = si_record::replay::load(&PathBuf::from(path))?;
-    let rec = Replay::new(defs.as_ref()).with_seed(seed_from_args(args)?).run(&lines, undo.as_deref(), &source);
+    let (rec, _) = load_record(Path::new(path), defs.as_ref(), seed_from_args(args)?, force_log(args))?;
     if args.iter().any(|a| a == "--json") {
         out!("{}", serde_json::to_string_pretty(&rec)?);
         return Ok(());
@@ -494,8 +585,7 @@ fn hindsight(args: &[String]) -> Result<()> {
     let top: usize = args.iter().position(|a| a == "--top").and_then(|i| args.get(i + 1)).and_then(|s| s.parse().ok()).unwrap_or(3);
     let try_line: Option<String> = args.iter().position(|a| a == "--try").and_then(|i| args.get(i + 1)).cloned();
     let fixed_growth = args.iter().any(|a| a == "--fixed-growth");
-    let (lines, undo, source) = si_record::replay::load(&PathBuf::from(path))?;
-    let mut rec = Replay::new(Some(&defs)).with_seed(seed_from_args(args)?).run(&lines, undo.as_deref(), &source);
+    let (mut rec, _) = load_record(Path::new(path), Some(&defs), seed_from_args(args)?, force_log(args))?;
     apply_save(&mut rec, Path::new(path));
     let codes = std::cell::RefCell::new(si_record::notation::Codes::new(Some(&defs), false));
     color::set_boards(&rec.meta.boards);
@@ -770,19 +860,19 @@ fn hindsight(args: &[String]) -> Result<()> {
 }
 
 /// One of the app's saves kept with a capture, decoded.
-struct Checkpoint {
-    path: PathBuf,
+pub(crate) struct Checkpoint {
+    pub(crate) path: PathBuf,
     /// The file name the app wrote (`save-Feedback-002-0047-SpiritPhase.dat`).
-    name: String,
+    pub(crate) name: String,
     snap: si_steam::engine_map::EngineSnapshot,
     /// sha256 of the save bytes: the checkpoint's id. Copies share it; a reload that
     /// lands on an existing id is a fork in the game's DAG.
     id: String,
     /// On the path the game finally took (an undone attempt is off it).
-    on_final_path: bool,
+    pub(crate) on_final_path: bool,
 }
 
-fn checkpoints_of(dir: &Path) -> Result<Vec<Checkpoint>> {
+pub(crate) fn checkpoints_of(dir: &Path) -> Result<Vec<Checkpoint>> {
     let saves = dir.join("saves");
     if !saves.is_dir() {
         bail!("{} has no saves/ folder: only recorder captures keep the app's saves (an EndGame log has only its final .dat)", dir.display());
@@ -825,7 +915,7 @@ fn checkpoints_of(dir: &Path) -> Result<Vec<Checkpoint>> {
     Ok(out)
 }
 
-fn checkpoint_matches(c: &Checkpoint, turn: Option<i64>, phase: Option<&str>) -> bool {
+pub(crate) fn checkpoint_matches(c: &Checkpoint, turn: Option<i64>, phase: Option<&str>) -> bool {
     turn.is_none_or(|n| n == c.snap.turn_index + 1) && phase.is_none_or(|ph| c.snap.state.eq_ignore_ascii_case(ph) || c.snap.phase.eq_ignore_ascii_case(ph) || c.name.contains(ph))
 }
 
@@ -1011,7 +1101,15 @@ fn inject(args: &[String]) -> Result<()> {
     let player_log = save_dir.join("Player.log");
     let log_mark = std::fs::metadata(&player_log).map(|m| m.len()).unwrap_or(0);
     out!("checkpoint {} (turn {} {}/{}, id {}) placed in {} as {}", c.name, c.snap.turn_index + 1, c.snap.phase, c.snap.state, &c.id[..12], save_dir.display(), name);
-    out!("attaching frida-inject to SpiritIsland.exe (up to {timeout}s). Keep the game window focused: Unity stops running its frames in the background.");
+    // Unity runs no frames while its window is in the background, and the hook waits for a
+    // frame: bring the game to the front first (a focus change on the desktop, nothing more)
+    let focused = Command::new("powershell.exe").args(["-NoProfile", "-Command", "(New-Object -ComObject WScript.Shell).AppActivate('Spirit Island')"]).output().map(|o| String::from_utf8_lossy(&o.stdout).trim() == "True").unwrap_or(false);
+    if focused {
+        out!("the game window is in front; keep it there until the reload (Unity stops running its frames in the background)");
+    } else {
+        out!("could not bring the game window to the front: click into it now and keep it there (Unity stops running its frames in the background)");
+    }
+    out!("attaching frida-inject to SpiritIsland.exe (up to {timeout}s)");
     out!("inside a game: the open game reloads in place to the checkpoint (its own Undo path); at the main menu: the checkpoint replaces the app's continue game and Continue opens it. Either way the previous state stays in its capture.");
     // -i keeps frida-inject attached while the script works; closing its stdin ends it.
     let mut child = Command::new(&injector).args(["-n", "SpiritIsland.exe", "-s", &script_win, "-P", &params, "-i"]).stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::piped()).spawn()?;
@@ -1092,6 +1190,7 @@ fn inject(args: &[String]) -> Result<()> {
     std::thread::sleep(std::time::Duration::from_secs(2));
     match std::fs::remove_file(save_dir.join(&name)) {
         Ok(()) => out!("removed {} from the save folder: the app holds the state now and writes its own continue save at its next decision", name),
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => out!("{} is gone from the save folder already: the app's reload deleted its undo files, as it does", name),
         Err(e) => out!("could not remove {} from the save folder ({e}); delete it by hand so the Undo button does not find it", name),
     }
     out!("reloaded: the app now shows {} at turn {} ({}). Play the branch; its saves continue under the same game id, so the checkpoint DAG shows the fork. The hindsight block for this turn: si hindsight {} --turn {}", c.name, c.snap.turn_index + 1, c.snap.state, path, c.snap.turn_index + 1);
@@ -1162,8 +1261,7 @@ fn live_replay_script() -> Result<PathBuf> {
 fn notate(args: &[String]) -> Result<()> {
     let Some(path) = args.first() else { bail!("notate needs a log file or capture directory") };
     let defs = defs_from(args)?;
-    let (lines, undo, source) = si_record::replay::load(&PathBuf::from(path))?;
-    let mut rec = Replay::new(defs.as_ref()).run(&lines, undo.as_deref(), &source);
+    let (mut rec, _) = load_record(Path::new(path), defs.as_ref(), None, force_log(args))?;
     apply_save(&mut rec, Path::new(path));
     for line in si_record::notation::notate(&rec, defs.as_ref(), args.iter().any(|a| a == "--canonical")).lines() {
         out!("{line}");
@@ -1176,8 +1274,7 @@ fn verify(args: &[String]) -> Result<()> {
     let Some(defs) = defs_from(args)? else { bail!("verify needs --defs <dir> or SI_DEFS_DIR") };
     let level: Option<u8> = args.iter().position(|a| a == "--level").and_then(|i| args.get(i + 1)).and_then(|s| s.parse().ok());
     let all = args.iter().any(|a| a == "--all");
-    let (lines, undo, source) = si_record::replay::load(&PathBuf::from(path))?;
-    let mut rec = Replay::new(Some(&defs)).run(&lines, undo.as_deref(), &source);
+    let (mut rec, _) = load_record(Path::new(path), Some(&defs), None, force_log(args))?;
     apply_save(&mut rec, Path::new(path));
     // the save beside the log states the level; else the lowest consistent
     // candidate (level rules are cumulative, so its rules hold regardless)
@@ -1211,8 +1308,7 @@ fn verify(args: &[String]) -> Result<()> {
 fn report(args: &[String]) -> Result<()> {
     let Some(path) = args.first() else { bail!("report needs a log file or capture directory") };
     let defs = defs_from(args)?;
-    let (lines, undo, source) = si_record::replay::load(&PathBuf::from(path))?;
-    let mut rec = Replay::new(defs.as_ref()).run(&lines, undo.as_deref(), &source);
+    let (mut rec, _) = load_record(Path::new(path), defs.as_ref(), None, force_log(args))?;
     let snap = apply_save(&mut rec, Path::new(path));
     let chains = si_metrics::tempo::chains_with(&rec, defs.as_ref());
     out!("{}", rec.meta.source);
@@ -1587,7 +1683,7 @@ fn load_corpus(paths: &[PathBuf], defs: Option<&Definitions>) -> Vec<(PathBuf, S
     let mut capture_lines: Vec<std::collections::HashSet<String>> = Vec::new();
     let mut out = Vec::new();
     for p in &paths {
-        let (lines, undo, source) = match si_record::replay::load(p) {
+        let (lines, undo, _) = match si_record::replay::load(p) {
             Ok(x) => x,
             Err(e) => {
                 eprintln!("skip {}: {e}", p.display());
@@ -1604,7 +1700,14 @@ fn load_corpus(paths: &[PathBuf], defs: Option<&Definitions>) -> Vec<(PathBuf, S
                 continue;
             }
         }
-        let mut rec = Replay::new(defs).run(&lines, undo.as_deref(), &source);
+        let (mut rec, source) = match load_record(p, defs, None, false) {
+            Ok(x) => x,
+            Err(e) => {
+                eprintln!("skip {}: {e}", p.display());
+                continue;
+            }
+        };
+        let _ = undo;
         apply_save(&mut rec, p);
         if !rec.meta.from_setup || rec.meta.turns < 2 {
             eprintln!("skip {} (joined in progress or too short: {} turns)", p.display(), rec.meta.turns);
@@ -1930,7 +2033,7 @@ fn corpus(args: &[String]) -> Result<()> {
     Ok(())
 }
 
-fn print_record(r: &GameRecord, defs: Option<&Definitions>, lands: bool) {
+pub(crate) fn print_record(r: &GameRecord, defs: Option<&Definitions>, lands: bool) {
     let m = &r.meta;
     out!("{}", m.source);
     out!(

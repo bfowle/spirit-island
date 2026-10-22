@@ -210,7 +210,7 @@ fn status_params(s: &str) -> std::collections::BTreeMap<String, String> {
     out
 }
 
-fn land(s: &str) -> Option<LandId> {
+pub fn land(s: &str) -> Option<LandId> {
     let t = s.trim();
     if t.is_empty() || t == "Out of Game" || t == "OutOfGame" || t == "Blight" || t.ends_with("OutOfGame") || t.contains("Forgotten Powers") {
         return None;
@@ -416,7 +416,7 @@ fn card_pile_moves(body: &str) -> Option<Parsed> {
 }
 
 /// A card moving between a spirit's piles, decks and discards.
-fn card_pile_move(card: &str, from: &str, to: &str) -> Option<Event> {
+pub fn card_pile_move(card: &str, from: &str, to: &str) -> Option<Event> {
     let owner = |loc: &str| -> Option<String> { loc.contains("'s ").then(|| loc.split("'s ").next().unwrap_or("").to_string()) };
     if to.ends_with("'s Hand") {
         let deck = if from.contains("Deck") || from.contains("Reveal") { from.to_string() } else { from.to_string() };

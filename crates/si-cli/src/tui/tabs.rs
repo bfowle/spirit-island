@@ -19,30 +19,32 @@ pub(super) fn verdict_short(r: &TurnReview) -> (String, Color) {
 /// screens as tabs at the right end. Box-drawing only, the corners the panels use.
 pub(super) fn draw_tabs(f: &mut Frame, app: &App, area: Rect) {
     let width = area.width as usize;
-    let full: Vec<(String, Color)> = app
-        .turns
-        .iter()
-        .map(|t| match app.reviews.get(t) {
-            Some(r) => {
-                let (word, c) = verdict_short(r);
-                (format!("T{t} {word}"), c)
-            }
-            None => (format!("T{t} ..."), Color::DarkGray),
-        })
-        .collect();
+    let tabs = app.tabs();
+    let label_of = |tab: &Tab, short: bool| -> (String, Color) {
+        match tab {
+            Tab::Open(t, phase) => (format!("T{t} {}", si_hindsight::live::phase_word(*phase)), ACCENT),
+            Tab::Closed(t) => match app.reviews.get(t) {
+                Some(r) if short => (if r.decision > 0.05 { format!("T{t} {:.1}", r.decision) } else { format!("T{t}") }, verdict_short(r).1),
+                Some(r) => {
+                    let (word, c) = verdict_short(r);
+                    (format!("T{t} {word}"), c)
+                }
+                None if short => (format!("T{t}"), Color::DarkGray),
+                None => (format!("T{t} ..."), Color::DarkGray),
+            },
+        }
+    };
+    let full: Vec<(String, Color)> = tabs.iter().map(|t| label_of(t, false)).collect();
     let screens = [("Turn", Screen::Turn), ("Pacing", Screen::Pacing)];
     let screens_w: usize = screens.iter().map(|(n, _)| n.chars().count() + 4).sum::<usize>() + 1;
     let tabs_w = |labels: &[(String, Color)]| labels.iter().map(|(l, _)| l.chars().count() + 4).sum::<usize>() + 1;
     // narrower labels when the bar would overflow: the number only, then the turn only
     let mut labels = full;
     if tabs_w(&labels) + screens_w + 2 > width {
-        labels = app.turns.iter().zip(labels.iter()).map(|(t, (_, c))| match app.reviews.get(t) {
-            Some(r) if r.decision > 0.05 => (format!("T{t} {:.1}", r.decision), *c),
-            _ => (format!("T{t}"), *c),
-        }).collect();
+        labels = tabs.iter().map(|t| label_of(t, true)).collect();
     }
     if tabs_w(&labels) + screens_w + 2 > width {
-        labels = app.turns.iter().zip(labels.iter()).map(|(t, (_, c))| (format!("T{t}"), *c)).collect();
+        labels = tabs.iter().zip(labels.iter()).map(|(t, (_, c))| (format!("T{}", t.turn()), *c)).collect();
     }
     let accent = Style::default().fg(ACCENT);
     let mut top: Vec<Span> = vec![Span::raw(" ")];

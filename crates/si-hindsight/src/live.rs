@@ -144,12 +144,36 @@ fn match_growth(defs: &Definitions, open: &OpenTurn, graph: &si_model::island::I
             None => tok.to_string(),
         })
         .collect();
-    if let Some(p) = all.iter().find(|p| p.growth.iter().cloned().collect::<BTreeSet<_>>() == want) {
-        return Ok(p.clone());
+    // a position is its group and its placements; the card a draft gave, the Reclaim and the
+    // Energy yield follow from the group, and a review's line names a card the live
+    // position cannot know yet
+    // the lands, not the slot codes: a review's line names the slot the journal reported,
+    // the live position names the next uncovered node, and the two can differ by one
+    let key = |tokens: &BTreeSet<String>| -> (Option<String>, Vec<String>) {
+        let group = tokens.iter().find(|t| t.starts_with('G') && t[1..].chars().all(|c| c.is_ascii_digit() || c == '+')).cloned();
+        let mut places: Vec<String> = tokens.iter().filter_map(|t| t.split_once('@').map(|(_, land)| land.to_string())).collect();
+        places.sort();
+        (group, places)
+    };
+    let want_key = key(&want);
+    let mut candidates: Vec<&Position> = all.iter().filter(|p| key(&p.growth.iter().cloned().collect()) == want_key).collect();
+    // among the positions on those lands, the one whose tracks match the typed slots (`cp` or
+    // `e` before the number), then the one sharing the most tokens
+    let track_of = |t: &str| -> Option<(String, String)> { t.split_once('@').map(|(slot, land)| (slot.trim_end_matches(|c: char| c.is_ascii_digit()).to_string(), land.to_string())) };
+    let want_tracks: BTreeSet<(String, String)> = want.iter().filter_map(|t| track_of(t)).collect();
+    candidates.sort_by_key(|p| {
+        let tracks = p.growth.iter().filter_map(|t| track_of(t)).filter(|x| want_tracks.contains(x)).count();
+        let same = p.growth.iter().filter(|t| want.contains(*t)).count();
+        std::cmp::Reverse((tracks, same))
+    });
+    if let Some(p) = candidates.first() {
+        return Ok((*p).clone());
     }
     let groups: Vec<String> = defs.spirits.get(&open.spirit).map(|p| p.growth.groups.iter().map(|g| format!("G{}", g.number)).collect()).unwrap_or_default();
-    let examples: Vec<String> = all.iter().take(4).map(|p| p.growth.join(" ")).collect();
-    Err(format!("no growth position matches \"{text}\"; the panel offers {} ({} positions, such as {})", groups.join(" "), all.len(), examples.join(" / ")))
+    // the typed group's own positions first, so the fix is a copy away
+    let same_group: Vec<String> = all.iter().filter(|p| key(&p.growth.iter().cloned().collect()).0 == want_key.0).take(14).map(|p| p.growth.join(" ")).collect();
+    let examples: Vec<String> = if same_group.is_empty() { all.iter().take(4).map(|p| p.growth.join(" ")).collect() } else { same_group };
+    Err(format!("no growth position matches \"{text}\"; the panel offers {} ({} positions; {}: {})", groups.join(" "), all.len(), want_key.0.as_deref().unwrap_or("for example"), examples.join(" / ")))
 }
 
 /// What the informed score adds for the face-down cards on an open turn: the Event from

@@ -226,6 +226,10 @@ pub struct Outcome {
     /// with no further Spirit action: what the position carries forward.
     pub next_blight: u32,
     pub next_dahan_lost: u32,
+    /// Invaders the next turn's Ravage destroys by Dahan counterattack on the position this
+    /// line leaves: where the Dahan stand is worth something (Thunderspeaker's whole game).
+    #[serde(default)]
+    pub next_invaders_destroyed: u32,
     #[serde(default)]
     pub next_built_towns: u32,
     #[serde(default)]
@@ -257,7 +261,7 @@ impl Outcome {
             + self.fear as f64 * v.fear
             + self.presence_added as f64 * (v.slot - v.presence)
             - (self.built_towns as f64 * v.town + self.built_cities as f64 * v.city)
-            + v.next_weight * (self.next_blight as f64 * v.blight + self.next_dahan_lost as f64 * v.dahan - self.next_built_towns as f64 * v.town - self.next_built_cities as f64 * v.city)
+            + v.next_weight * (self.next_blight as f64 * v.blight + self.next_dahan_lost as f64 * v.dahan + self.next_invaders_destroyed as f64 * v.explorer - self.next_built_towns as f64 * v.town - self.next_built_cities as f64 * v.city)
             + v.next_weight * v.next_weight * (self.next2_blight * v.blight + self.next2_dahan_lost * v.dahan)
     }
 
@@ -297,12 +301,13 @@ impl Outcome {
         if self.built_towns + self.built_cities > 0 {
             p.push(if long { format!("built {}", built(self.built_towns, self.built_cities)) } else { format!("built {}", built(self.built_towns, self.built_cities)) });
         }
-        if self.next_blight > 0 || self.next_dahan_lost > 0 || self.next_built_towns + self.next_built_cities > 0 {
+        if self.next_blight > 0 || self.next_dahan_lost > 0 || self.next_invaders_destroyed > 0 || self.next_built_towns + self.next_built_cities > 0 {
             let b = built(self.next_built_towns, self.next_built_cities);
+            let k = self.next_invaders_destroyed;
             p.push(if long {
-                format!("next turn: Blight {}{}{}", self.next_blight, if self.next_dahan_lost > 0 { format!(", Dahan {}", self.next_dahan_lost) } else { String::new() }, if b.is_empty() { String::new() } else { format!(", built {b}") })
+                format!("next turn: Blight {}{}{}{}", self.next_blight, if self.next_dahan_lost > 0 { format!(", Dahan {}", self.next_dahan_lost) } else { String::new() }, if k > 0 { format!(", Dahan destroy {k}") } else { String::new() }, if b.is_empty() { String::new() } else { format!(", built {b}") })
             } else {
-                format!("| next{}{}{}", if self.next_blight > 0 { format!(" Bl{}", self.next_blight) } else { String::new() }, if self.next_dahan_lost > 0 { format!(" Dh{}", self.next_dahan_lost) } else { String::new() }, if b.is_empty() { String::new() } else { format!(" built {b}") })
+                format!("| next{}{}{}{}", if self.next_blight > 0 { format!(" Bl{}", self.next_blight) } else { String::new() }, if self.next_dahan_lost > 0 { format!(" Dh{}", self.next_dahan_lost) } else { String::new() }, if k > 0 { format!(" kill {k}") } else { String::new() }, if b.is_empty() { String::new() } else { format!(" built {b}") })
             });
         }
         if self.next2_blight > 0.05 || self.next2_dahan_lost > 0.05 {
@@ -333,7 +338,7 @@ pub struct Play {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Line {
-    /// The growth in notation tokens (`G2`, `e4@C4`, `c2@C4`, `Rc`, `+<card id>`, `+1E`); empty when growth is not reviewed.
+    /// The growth in notation tokens (`G2`, `e4@C4`, `cp2@C4`, `Rc`, `+<card id>`, `+1E`); empty when growth is not reviewed.
     #[serde(default)]
     pub growth: Vec<String>,
     /// This line starts from the growth actually taken.
@@ -432,7 +437,7 @@ impl Line {
         if tiers.is_empty() { self.elements.clone() } else { format!("{}  {}", self.elements, tiers.join(" ")) }
     }
 
-    /// The growth in notation: `G2 e4@C4 c2@C4 +HSAI`.
+    /// The growth in notation: `G2 e4@C4 cp2@C4 +HSAI`.
     pub fn growth_notation(&self, code: &dyn Fn(&str) -> String) -> String {
         growth_words(&self.growth, code)
     }
@@ -768,6 +773,8 @@ pub(crate) fn lookahead(island: &mut Island, rec: &GameRecord, next: Option<&Tur
     }
     out.next_blight = probe.blight;
     out.next_dahan_lost = probe.dahan_lost;
+    // the counterattack's kills land in `explorers_destroyed` (cheapest first)
+    out.next_invaders_destroyed = probe.explorers_destroyed + probe.towns_destroyed + probe.cities_destroyed;
     out.next_built_towns = probe.built_towns;
     out.next_built_cities = probe.built_cities;
     // one turn deeper: the turn after next's Ravage (its card is this turn's Explore) on
@@ -2157,7 +2164,7 @@ pub struct Position {
     pub hand: Vec<String>,
     pub energy: i64,
     pub plays: i64,
-    /// The growth in notation tokens (`G2`, `e4@C4`, `c2@C4`, `Rc`, `+<card id>`, `+1E`).
+    /// The growth in notation tokens (`G2`, `e4@C4`, `cp2@C4`, `Rc`, `+<card id>`, `+1E`).
     pub growth: Vec<String>,
     pub slots: u32,
     pub cards_gained: u32,
@@ -2192,7 +2199,7 @@ fn slot_code(id: &str) -> String {
     if id.contains("Energy") {
         format!("e{digits}")
     } else if id.contains("CardPlays") {
-        format!("c{digits}")
+        format!("cp{digits}")
     } else {
         id.to_string()
     }

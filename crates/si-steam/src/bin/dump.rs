@@ -2,6 +2,8 @@
 //!
 //! `si-steam-dump check <files…>`        decode each file, report errors
 //! `si-steam-dump hist <file>`           class histogram
+//! `si-steam-dump journal <file>`          the engine's typed journal, entry by entry, resolved
+//! `si-steam-dump journal-raw <file> [depth]` the same entries as the object graph holds them
 //! `si-steam-dump tree <file> [path] [depth]`  print the tree under a dotted path
 
 use si_steam::nrbf::{self, Node, Object, Value};
@@ -32,6 +34,23 @@ fn main() -> anyhow::Result<()> {
             let g = nrbf::decode(&si_steam::source::read_save(std::path::Path::new(&args[1]))?)?;
             for (name, n) in g.class_histogram().iter().take(80) {
                 println!("{n:6}  {name}");
+            }
+        }
+        Some("journal") => {
+            // the engine's own typed journal, entry by entry, resolved to the log's names
+            let g = nrbf::decode(&si_steam::source::read_save(std::path::Path::new(&args[1]))?)?;
+            for e in si_steam::journal::entries(&g) {
+                println!("{}", e.words());
+            }
+        }
+        Some("journal-raw") => {
+            // the same entries as the save holds them (the object graph under each)
+            let g = nrbf::decode(&si_steam::source::read_save(std::path::Path::new(&args[1]))?)?;
+            let depth = args.get(2).and_then(|d| d.parse().ok()).unwrap_or(2);
+            let items = g.root().child("<Journal>k__BackingField").and_then(|j| j.child("_journalEntries")).and_then(|l| l.child("_items")).ok_or_else(|| anyhow::anyhow!("no journal in this save"))?;
+            for (i, n) in items.item_nodes().into_iter().enumerate() {
+                println!("[{i}]");
+                print_node(n, 1, depth);
             }
         }
         Some("tree") => {
@@ -292,7 +311,7 @@ fn main() -> anyhow::Result<()> {
                 println!("{}", serde_json::to_string_pretty(&st.stats)?);
             }
         }
-        _ => eprintln!("usage: si-steam-dump check|hist|tree|snap|sum|adjprobe|dims|defs|pub|scan|review|stats|backtest|timeline …"),
+        _ => eprintln!("usage: si-steam-dump check|hist|journal|journal-raw|tree|snap|sum|adjprobe|dims|defs|pub|scan|review|stats|backtest|timeline …"),
     }
     Ok(())
 }

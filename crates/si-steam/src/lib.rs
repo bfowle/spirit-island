@@ -10,6 +10,7 @@ pub mod backfill;
 pub mod engine_defs;
 pub mod companion;
 pub mod engine_map;
+pub mod journal;
 pub mod log_parse;
 pub mod nrbf;
 pub mod projection;

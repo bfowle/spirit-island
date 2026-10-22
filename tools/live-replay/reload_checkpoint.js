@@ -87,7 +87,7 @@ function loadMono() {
   return mono;
 }
 
-const state = { domain: null, images: {}, gvcClass: null, menuClass: null, serializer: null, pending: null, hooked: false, frames: 0, ticks: { 'in-game': 0, 'main-menu': 0 }, route: null };
+const state = { domain: null, images: {}, gvcClass: null, menuClass: null, serializer: null, logRecorder: null, pending: null, hooked: false, frames: 0, ticks: { 'in-game': 0, 'main-menu': 0 }, route: null };
 
 function findImages() {
   const cb = new NativeCallback((assembly, _user) => {
@@ -182,6 +182,7 @@ function setup() {
   state.gvcClass = klass('MainAssembly', NS, 'GameViewController');
   state.menuClass = klass('MainAssembly', NS, 'MainMenuViewController');
   state.serializer = klass('MainAssembly', NS, 'GameSerializer');
+  state.logRecorder = klass('MainAssembly', 'Handelabra', 'LogRecorder');
   method(state.gvcClass, 'ReloadFromFile', 4);
   method(state.gvcClass, 'Update', 0);
   method(state.menuClass, 'Update', 0);
@@ -190,6 +191,8 @@ function setup() {
   method(state.serializer, 'IsContinueValid', 0);
   method(state.serializer, 'get_UseSteamCloud', 0);
   method(state.serializer, 'GetSaveFolder', 0);
+  method(state.serializer, 'GetLogFilePath', 0);
+  method(state.logRecorder, 'InitializeFriendlyLog', 2);
   methodAny(state.serializer, 'DeleteSaveFilename');
   report({ step: 'setup', images: names.length, pid: Process.id });
 }
@@ -220,8 +223,17 @@ function probes(job) {
 }
 
 // In a game: the app's own Undo path, reading the file si inject placed in the save folder.
+// The app closes its journal (log.txt) when a game ends ("Closing friendly log file" in
+// Player.log) and opens it again only when the game view starts afresh, so a reload in
+// place after a game over would play on with no journal: the saves keep coming, the
+// study board sees nothing. LogRecorder.InitializeFriendlyLog(path, append: true) reopens
+// it first, appending (an open journal is closed and reopened the same way, nothing is
+// lost); the reload's own "***** LOADED FILE: ... *****" line then lands in it.
 function reloadInGame(gvc, job) {
   probes(job);
+  const journal = utf8(step('runtime_invoke GetLogFilePath()', () => invoke(method(state.serializer, 'GetLogFilePath', 0), NULL, [])));
+  step(`runtime_invoke LogRecorder.InitializeFriendlyLog(${journal}, append: true)`, () => invoke(method(state.logRecorder, 'InitializeFriendlyLog', 2), NULL, [str(journal), boolArg(true)]));
+  report({ step: 'journal', reopened: journal, append: true });
   // ReloadFromFile(string filename, bool allowCloudSave, bool isUndo, bool isFullSync)
   step(`runtime_invoke ReloadFromFile(${job.name}, false, true, false)`, () => invoke(method(state.gvcClass, 'ReloadFromFile', 4), gvc, [str(job.name), boolArg(false), boolArg(true), boolArg(false)]));
   report({ step: 'reload', route: 'in-game', ok: true });

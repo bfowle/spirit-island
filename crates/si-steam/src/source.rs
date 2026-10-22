@@ -101,20 +101,39 @@ fn decode_bytes(bytes: &[u8], defs: &EngineDefs) -> anyhow::Result<PublicSnapsho
 /// Records a live game as a capture (`data/steam-capture/live-<game-id>/`):
 /// `saves/<HHMMSS_mmm>__<name>.dat.gz` at each save's write time,
 /// `events.txt` (`NEW <name>` at write time, which the decision parser uses
-/// for undo), and `log-stream.txt` (each `log.txt` line stamped when read).
+/// for undo), `log-stream.txt` (each `log.txt` line stamped when read) and
+/// `player-stream.txt` (each line of Unity's `Player.log` stamped when read:
+/// the app's own debug log, with every action's source and activation, the
+/// intents the app puts to the player, and its save and undo bookkeeping; it
+/// restarts with the app, not with the game).
 /// The same files a replay reads, so every live game can be replayed and
 /// reviewed. Personal data: gitignored.
-struct Recorder {
+pub struct Recorder {
     root: PathBuf,
     dir: Option<PathBuf>,
     game: Option<String>,
-    log_offset: u64,
-    pending_log: Vec<String>,
+    log: Stream,
+    player: Stream,
     utc_offset_ms: i64,
 }
 
+/// One tailed file and the stream it goes to.
+struct Stream {
+    file: &'static str,
+    offset: u64,
+    mtime: Option<SystemTime>,
+    /// Lines read before a save named the game.
+    pending: Vec<String>,
+}
+
+impl Stream {
+    fn new(file: &'static str) -> Self {
+        Stream { file, offset: 0, mtime: None, pending: Vec::new() }
+    }
+}
+
 impl Recorder {
-    fn new(data_dir: &Path) -> Self {
+    pub fn new(data_dir: &Path) -> Self {
         // Local wall clock for stamps, like the original capture tool.
         let utc_offset_ms = std::process::Command::new("date")
             .arg("+%z")
@@ -128,7 +147,7 @@ impl Recorder {
                 Some(sign * (h * 60 + m) * 60_000)
             })
             .unwrap_or(0);
-        Recorder { root: data_dir.join("steam-capture"), dir: None, game: None, log_offset: 0, pending_log: Vec::new(), utc_offset_ms }
+        Recorder { root: data_dir.join("steam-capture"), dir: None, game: None, log: Stream::new("log-stream.txt"), player: Stream::new("player-stream.txt"), utc_offset_ms }
     }
 
     fn local_ms(&self, t: SystemTime) -> u64 {
@@ -148,7 +167,17 @@ impl Recorder {
         }
     }
 
-    fn set_game(&mut self, game_id: &str) {
+    /// The capture directory once a save has named the game.
+    pub fn dir(&self) -> Option<&Path> {
+        self.dir.as_deref()
+    }
+
+    /// The game id the capture is for, once a save has named it.
+    pub fn game(&self) -> Option<&str> {
+        self.game.as_deref()
+    }
+
+    pub fn set_game(&mut self, game_id: &str) {
         if self.game.as_deref() == Some(game_id) {
             return;
         }
@@ -158,16 +187,63 @@ impl Recorder {
         }
         self.dir = Some(dir);
         self.game = Some(game_id.to_string());
-        for line in std::mem::take(&mut self.pending_log) {
-            self.append("log-stream.txt", &line);
+        self.flush_pending(true);
+        self.flush_pending(false);
+    }
+
+    /// Pending lines go to their stream, less the ones it already holds: a screen
+    /// restarted over the same game reads the whole file again, and the stream must
+    /// not carry a second copy of what an earlier screen recorded (a replay reads the
+    /// copies as journal restarts). The stream's tail is matched against the head of the
+    /// pending lines, both without their stamps, and only the rest is appended. The same
+    /// content written again by the app after the stream's last line is a new copy and
+    /// is kept whole.
+    fn flush_pending(&mut self, journal: bool) {
+        let st = if journal { &mut self.log } else { &mut self.player };
+        let pending = std::mem::take(&mut st.pending);
+        if pending.is_empty() {
+            return;
+        }
+        let (file, mtime) = (st.file, st.mtime);
+        let Some(dir) = self.dir.clone() else { return };
+        let stream = std::fs::read_to_string(dir.join(file)).unwrap_or_default();
+        let have: Vec<&str> = stream.lines().map(strip_stamp).collect();
+        let want: Vec<&str> = pending.iter().map(|l| strip_stamp(l)).collect();
+        let mut k = want.len().min(have.len());
+        while k > 0 && have[have.len() - k..] != want[..k] {
+            k -= 1;
+        }
+        if k == want.len() {
+            let last = stream.lines().last().and_then(stamp_ms);
+            let rewritten = match (mtime, last) {
+                (Some(mt), Some(ms)) => self.local_ms(mt) > ms + 2_000,
+                _ => false,
+            };
+            if !rewritten {
+                return;
+            }
+            k = 0;
+        }
+        for line in &pending[k..] {
+            self.append(file, line);
         }
     }
 
-    fn save(&self, name: &str, mtime: SystemTime, bytes: &[u8]) {
-        let Some(dir) = &self.dir else { return };
+    /// The file a save would be kept as.
+    fn save_path(&self, name: &str, mtime: SystemTime) -> Option<PathBuf> {
+        let dir = self.dir.as_ref()?;
         let ms = self.local_ms(mtime);
         let stamp = format!("{:02}{:02}{:02}_{:03}", ms / 3_600_000, (ms / 60_000) % 60, (ms / 1000) % 60, ms % 1000);
-        let path = dir.join("saves").join(format!("{stamp}__{name}.gz"));
+        Some(dir.join("saves").join(format!("{stamp}__{name}.gz")))
+    }
+
+    /// The capture already holds this save (a screen restarted over the same game).
+    pub fn has(&self, name: &str, mtime: SystemTime) -> bool {
+        self.save_path(name, mtime).is_some_and(|p| p.exists())
+    }
+
+    pub fn save(&self, name: &str, mtime: SystemTime, bytes: &[u8]) {
+        let Some(path) = self.save_path(name, mtime) else { return };
         if let Ok(f) = std::fs::File::create(&path) {
             let mut gz = GzEncoder::new(f, Compression::fast());
             let _ = gz.write_all(bytes).and_then(|_| gz.finish().map(|_| ()));
@@ -177,38 +253,80 @@ impl Recorder {
 
     /// Read lines appended to `log.txt`. A shorter file means a new game:
     /// lines wait until its first save names the game.
-    fn tail(&mut self, log: &Path) {
-        let Ok(meta) = std::fs::metadata(log) else { return };
-        if meta.len() < self.log_offset {
-            self.log_offset = 0;
+    pub fn tail(&mut self, log: &Path) {
+        if self.tail_stream(true, log) {
             self.game = None;
             self.dir = None;
         }
-        if meta.len() == self.log_offset {
-            return;
+    }
+
+    /// Read lines appended to Unity's `Player.log` beside the saves. A shorter file is
+    /// the app relaunched, the same game or not: the game stays as the saves name it.
+    pub fn tail_player(&mut self, player_log: &Path) {
+        self.tail_stream(false, player_log);
+    }
+
+    /// Append what the file gained since the last read to the stream; true when the
+    /// file was shorter than last time (written afresh).
+    fn tail_stream(&mut self, journal: bool, path: &Path) -> bool {
+        let Ok(meta) = std::fs::metadata(path) else { return false };
+        let st = if journal { &mut self.log } else { &mut self.player };
+        let fresh = meta.len() < st.offset;
+        if fresh {
+            st.offset = 0;
         }
-        let Ok(mut f) = std::fs::File::open(log) else { return };
+        if meta.len() == st.offset {
+            return fresh;
+        }
+        let Ok(mut f) = std::fs::File::open(path) else { return fresh };
         use std::io::{Seek, SeekFrom};
-        if f.seek(SeekFrom::Start(self.log_offset)).is_err() {
-            return;
+        if f.seek(SeekFrom::Start(st.offset)).is_err() {
+            return fresh;
         }
         let mut buf = Vec::new();
         if f.read_to_end(&mut buf).is_err() {
-            return;
+            return fresh;
         }
         // Keep a partial last line for the next read.
         let end = buf.iter().rposition(|b| *b == b'\n').map(|i| i + 1).unwrap_or(0);
-        self.log_offset += end as u64;
+        st.offset += end as u64;
+        st.mtime = meta.modified().ok();
+        let file = st.file;
         let stamp = self.stamp(SystemTime::now());
-        for line in String::from_utf8_lossy(&buf[..end]).lines() {
+        let text = String::from_utf8_lossy(&buf[..end]).to_string();
+        for line in text.lines() {
             let line = format!("{stamp}  {line}");
-            if self.dir.is_some() {
-                self.append("log-stream.txt", &line);
+            if self.dir.is_some() && !fresh {
+                self.append(file, &line);
             } else {
-                self.pending_log.push(line);
+                let st = if journal { &mut self.log } else { &mut self.player };
+                st.pending.push(line);
             }
         }
+        if fresh && !journal {
+            // the app relaunched over a game the saves already named: the lines can go
+            self.flush_pending(false);
+        }
+        fresh
     }
+}
+
+/// A stream line without its `HH:MM:SS.mmm  ` stamp.
+fn strip_stamp(line: &str) -> &str {
+    match stamp_ms(line) {
+        Some(_) => &line[14..],
+        None => line,
+    }
+}
+
+/// The clock of a stream line's stamp, as milliseconds of the day.
+fn stamp_ms(line: &str) -> Option<u64> {
+    let b = line.as_bytes();
+    if b.len() < 14 || b[2] != b':' || b[5] != b':' || b[8] != b'.' || &b[12..14] != b"  " {
+        return None;
+    }
+    let n = |r: std::ops::Range<usize>| line.get(r)?.parse::<u64>().ok();
+    Some(((n(0..2)? * 60 + n(3..5)?) * 60 + n(6..8)?) * 1000 + n(9..12)?)
 }
 
 fn is_save(name: &str) -> bool {
@@ -262,6 +380,7 @@ fn live_loop(dir: PathBuf, poll: Duration, data_dir: PathBuf, defs: Arc<EngineDe
 
         if record {
             recorder.tail(&dir.join("log.txt"));
+            recorder.tail_player(&dir.join("Player.log"));
         }
         // Every save that is new or changed and complete (it decodes: a
         // complete stream ends in MessageEnd; a partial write fails and is

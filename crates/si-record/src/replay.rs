@@ -226,6 +226,17 @@ impl<'d> Replay<'d> {
         let adversary = ADVERSARIES.iter().find(|(id, title)| copy.iter().any(|l| l.text.contains(id) || l.text.contains(title))).map(|(id, _)| id.to_string());
         let parsed: Vec<(Option<u64>, Parsed)> = copy.iter().map(|l| (l.ms, log::parse(&l.text))).collect();
         let kept = resolve_undo(parsed, undo_times, &mut coverage);
+        self.walk(kept, coverage, adversary, source)
+    }
+
+    /// The record from events and markers already typed: a save's own journal (si-steam
+    /// reads it), which has no undo to resolve and no copies, since the engine keeps only
+    /// what stands.
+    pub fn run_parsed(&self, parsed: Vec<(Option<u64>, Parsed)>, adversary: Option<String>, source: &str) -> GameRecord {
+        self.walk(parsed, Coverage::default(), adversary, source)
+    }
+
+    fn walk(&self, kept: Vec<(Option<u64>, Parsed)>, coverage: Coverage, adversary: Option<String>, source: &str) -> GameRecord {
         let mut w = Walk {
             defs: self.defs,
             rec: GameRecord { meta: GameMeta { source: source.to_string(), adversary, ..Default::default() }, coverage, ..Default::default() },
@@ -534,6 +545,9 @@ impl<'d> Walk<'d> {
             let Some(b) = defs.board_def(&code) else { continue };
             for l in &b.lands {
                 let land = l.id.clone();
+                // every land of a board in play has a ledger, touched or not, so the record's
+                // end names the printed pieces that stood untouched all game
+                self.ledger(&land);
                 let mut n = 0;
                 for (count, kind) in [(l.initial.explorers, PieceKind::Explorer), (l.initial.towns, PieceKind::Town), (l.initial.cities, PieceKind::City), (l.initial.dahan, PieceKind::Dahan)] {
                     for _ in 0..count {

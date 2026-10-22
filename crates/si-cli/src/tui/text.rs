@@ -369,7 +369,7 @@ mod tests {
 
     #[test]
     fn wrap_breaks_on_words_and_cuts_long_ones() {
-        assert_eq!(wrap_text("G1 c5@A2 Rc +IRSL -GP2", 10), vec!["G1 c5@A2", "Rc +IRSL", "-GP2"]);
+        assert_eq!(wrap_text("G1 cp5@A2 Rc +IRSL -GP2", 10), vec!["G1 cp5@A2", "Rc +IRSL", "-GP2"]);
         assert_eq!(wrap_text("abcdefghij", 4), vec!["abcd", "efgh", "ij"]);
         assert_eq!(wrap_text("", 4), vec![""]);
     }

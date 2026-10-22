@@ -7,6 +7,7 @@ use super::*;
 /// being played) the turn as it stands and the plans scored from it.
 pub(super) enum TurnKind<'r> {
     Closed(&'r TurnReview),
+    Open(&'r plans::Scored),
 }
 
 /// What every panel of the Turn screen reads. Built once per frame by `App::turn_ctx`;
@@ -27,6 +28,10 @@ pub(super) struct TurnCtx<'r, 'd> {
     pub sel: Option<RowView>,
     /// The Blight card's pool at this turn (left, flipped), when a capture kept the save.
     pub pool: Option<(i64, bool)>,
+    /// The open tab: a new scoring is running; the panels show the last one meanwhile.
+    pub pending: bool,
+    /// The open tab: what the app asks the player now, in words (from its Player.log).
+    pub activity: Option<String>,
 }
 
 impl<'r, 'd> TurnCtx<'r, 'd> {
@@ -36,22 +41,49 @@ impl<'r, 'd> TurnCtx<'r, 'd> {
     pub fn review(&self) -> Option<&'r TurnReview> {
         match self.kind {
             TurnKind::Closed(r) => Some(r),
+            TurnKind::Open(_) => None,
+        }
+    }
+    pub fn scored(&self) -> Option<&'r plans::Scored> {
+        match self.kind {
+            TurnKind::Open(sc) => Some(sc),
+            TurnKind::Closed(_) => None,
         }
     }
     pub fn hand(&self) -> Vec<String> {
-        self.review().map(|r| r.hand.clone()).unwrap_or_default()
+        match self.kind {
+            TurnKind::Closed(r) => r.hand.clone(),
+            TurnKind::Open(sc) => {
+                let mut v: Vec<String> = sc.open.s.hand_after.iter().chain(sc.open.s.cards_played.iter()).cloned().collect();
+                v.sort();
+                v.dedup();
+                v
+            }
+        }
     }
     pub fn energy(&self) -> i64 {
-        self.review().map(|r| r.energy).unwrap_or(0)
+        match self.kind {
+            TurnKind::Closed(r) => r.energy,
+            TurnKind::Open(sc) => sc.energy,
+        }
     }
     pub fn plays(&self) -> i64 {
-        self.review().map(|r| r.plays).unwrap_or(0)
+        match self.kind {
+            TurnKind::Closed(r) => r.plays,
+            TurnKind::Open(sc) => sc.plays,
+        }
     }
     pub fn forecast(&self) -> &'r [si_hindsight::deck::TurnForecast] {
-        self.review().map(|r| r.forecast.as_slice()).unwrap_or(&[])
+        match self.kind {
+            TurnKind::Closed(r) => r.forecast.as_slice(),
+            TurnKind::Open(sc) => sc.forecast.as_slice(),
+        }
     }
     pub fn offered(&self) -> &'r [String] {
-        self.review().map(|r| r.offered.as_slice()).unwrap_or(&[])
+        match self.kind {
+            TurnKind::Closed(r) => r.offered.as_slice(),
+            TurnKind::Open(sc) => sc.open.s.offered.as_slice(),
+        }
     }
     pub fn actual(&self) -> Option<&'r si_hindsight::Line> {
         self.review().map(|r| &r.actual)
@@ -63,7 +95,10 @@ impl<'r, 'd> TurnCtx<'r, 'd> {
         self.review().map(|r| r.choices.as_slice()).unwrap_or(&[])
     }
     pub fn terror(&self) -> u8 {
-        self.review().map(|r| r.sample.terror).unwrap_or(1)
+        match self.kind {
+            TurnKind::Closed(r) => r.sample.terror,
+            TurnKind::Open(sc) => sc.open.seed.terror,
+        }
     }
     pub fn best_growth(&self) -> &'r [String] {
         self.review().map(|r| r.best_growth.as_slice()).unwrap_or(&[])
@@ -73,7 +108,7 @@ impl<'r, 'd> TurnCtx<'r, 'd> {
 impl<'r, 'd> TurnCtx<'r, 'd> {
     /// The lands the selected row's plays target and its growth places presence in, each
     /// with the codes aimed there (`SLSF`, `GP2@`, `+Pr`).
-    fn line_marks(&self, code: &dyn Fn(&str) -> String) -> BTreeMap<LandId, Vec<String>> {
+    pub(super) fn line_marks(&self, code: &dyn Fn(&str) -> String) -> BTreeMap<LandId, Vec<String>> {
         let mut marks: BTreeMap<LandId, Vec<String>> = BTreeMap::new();
         let Some(rv) = &self.sel else { return marks };
         for g in &rv.line.growth {
@@ -96,14 +131,14 @@ impl<'r, 'd> TurnCtx<'r, 'd> {
     }
 
     /// This turn's visits to a land, in order.
-    fn visits(&self, land: &LandId) -> Vec<&'r si_record::InvaderVisit> {
+    pub(super) fn visits(&self, land: &LandId) -> Vec<&'r si_record::InvaderVisit> {
         let turn = self.turn;
         self.rec.lands.get(land).map(|ll| ll.visits.iter().filter(|v| v.turn == turn).collect()).unwrap_or_default()
     }
 
     /// The lands the step's cards act in this turn: where the record shows a visit, else
     /// where the card's terrain matches and Invaders stand.
-    fn step_lands(&self, cards: &[String], step: InvaderStep) -> Vec<(LandId, String)> {
+    pub(super) fn step_lands(&self, cards: &[String], step: InvaderStep) -> Vec<(LandId, String)> {
         let mut out: Vec<(LandId, String)> = Vec::new();
         for l in self.island.lands.values() {
             let visited: Vec<&si_record::InvaderVisit> = self.visits(&l.id).into_iter().filter(|v| v.step == Some(step) && cards.iter().any(|c| v.card.as_deref() == Some(c) || v.card.is_none())).collect();
@@ -120,14 +155,20 @@ impl<'r, 'd> TurnCtx<'r, 'd> {
     }
 
     /// The selected row's elements this turn.
-    fn sel_elements(&self) -> Option<ElementSet> {
+    pub(super) fn sel_elements(&self) -> Option<ElementSet> {
         self.sel.as_ref().map(|rv| parse_short_elements(&rv.line.elements))
     }
 }
 
 pub(super) fn draw_turn(f: &mut Frame, app: &App, area: Rect) {
     let Some(ctx) = app.turn_ctx() else {
-        let msg = if app.running { "reviewing this turn..." } else { "no review for this turn (no Fast-phase state in the record)" };
+        let msg = if app.is_open_tab() {
+            "scoring the open turn..."
+        } else if app.running {
+            "reviewing this turn..."
+        } else {
+            "no review for this turn (no Fast-phase state in the record)"
+        };
         f.render_widget(Paragraph::new(msg).style(dim()), area);
         return;
     };
@@ -212,6 +253,9 @@ fn draw_turn_ctx(f: &mut Frame, ctx: &TurnCtx, area: Rect) {
 
 /// The lines table: the actual line, the alternatives as a tree, a typed line.
 pub(super) fn lines_panel(ctx: &TurnCtx, width: u16) -> Panel {
+    if let Some(sc) = ctx.scored() {
+        return plan_panel(ctx, sc, width);
+    }
     let Some(review) = ctx.review() else { return Panel::text("LINES", vec![]) };
     let rows = &ctx.rows;
     let inner = width.saturating_sub(2) as usize;
@@ -243,12 +287,13 @@ pub(super) fn lines_panel(ctx: &TurnCtx, width: u16) -> Panel {
         let (growth, cards, innates) = match rv.level {
             0 if tag == "try" => ("(growth as played)".to_string(), l.cards_notation(&code), l.innates_notation(&code)),
             0 if tag == "actual" => (l.growth_notation(&code), l.cards_notation(&code), l.innates_notation(&code)),
+            // a group row shows its best member in full, lands included: the row is a line
             0 => {
                 let g = l.growth_notation(&code);
                 let g = if l.growth_actual { format!("{g} (as played)") } else { g };
-                (format!("{g}{}{}", fold(rv.children, "play set"), more(rv.open, rv.children)), power_names(l, false, &code), power_names(l, true, &code))
+                (format!("{g}{}{}", fold(rv.children, "play set"), more(rv.open, rv.children)), l.cards_notation(&code), l.innates_notation(&code))
             }
-            1 => (String::new(), format!("{}{}{}", power_names(l, false, &code), fold(rv.children, "targeting"), more(rv.open, rv.children)), power_names(l, true, &code)),
+            1 => (String::new(), format!("{}{}{}", l.cards_notation(&code), fold(rv.children, "targeting"), more(rv.open, rv.children)), l.innates_notation(&code)),
             _ => (String::new(), l.cards_notation(&code), l.innates_notation(&code)),
         };
         let conf = l.confidence.map(|c| format!("{:.0}%", c * 100.0)).unwrap_or_else(|| "-".into());
@@ -284,6 +329,9 @@ pub(super) fn lines_panel(ctx: &TurnCtx, width: u16) -> Panel {
 
 /// The reading and its numbers.
 pub(super) fn reading_panel(ctx: &TurnCtx, width: u16) -> Panel {
+    if let Some(sc) = ctx.scored() {
+        return think_about_panel(ctx, sc, width);
+    }
     let Some(r) = ctx.review() else { return Panel::text("READING", vec![]) };
     let w = width.saturating_sub(2) as usize;
     let mut lines: Vec<TLine<'static>> = hang("verdict", dim(), &r.reading, Style::default(), w);
@@ -308,14 +356,16 @@ pub(super) fn position_panel(ctx: &TurnCtx, width: u16) -> Panel {
     let (ravage, build, hi): (Vec<String>, Vec<String>, Vec<String>) = ctx.t.map(|t| (t.ravage.clone(), t.build.clone(), t.high_immigration.clone())).unwrap_or_default();
     let fc0 = ctx.forecast().iter().find(|fc| fc.turn == ctx.turn);
     let show_result = inner >= 68;
-    // land, terr, inv, Dh, Bl, Pr, tok, steps, line, [result]
+    let live = ctx.scored().is_some();
+    let after_map = ctx.sel.as_ref().map(|rv| rv.line.outcome.after.clone()).unwrap_or_default();
+    // land, terr, inv, Dh, Bl, Pr, tok, steps, line, [result | after]
     let mut fixed: Vec<Option<usize>> = vec![Some(4), Some(4), Some(8), Some(2), Some(2), Some(2), Some(7), Some(9), None];
     let mut weights: Vec<usize> = vec![0, 0, 0, 0, 0, 0, 0, 0, 40];
-    let mut headers = vec!["land", "terr", "inv", "Dh", "Bl", "Pr", "tok", "steps", "line"];
+    let mut headers = vec!["land", "terr", "inv", "Dh", "Bl", "Pr", "tok", "steps", if live { "plan" } else { "line" }];
     if show_result {
         fixed.push(None);
         weights.push(60);
-        headers.push("result");
+        headers.push(if live { "after" } else { "result" });
     }
     let widths = share_widths(inner, &fixed, &weights, 8);
     let mut rows: Vec<Row> = Vec::new();
@@ -339,7 +389,16 @@ pub(super) fn position_panel(ctx: &TurnCtx, width: u16) -> Panel {
             steps.push(format!("X{:.0}%", p.p * 100.0));
         }
         let line = marks.get(&l.id).map(|v| v.join(" ")).unwrap_or_default();
-        let result: Vec<String> = ctx.visits(&l.id).iter().map(|v| format!("{}:{}", step_letter(v.step), visit_words(v))).collect();
+        let mut result: Vec<String> = ctx.visits(&l.id).iter().map(|v| format!("{}:{}", step_letter(v.step), visit_words(v))).collect();
+        if live && result.is_empty() {
+            // the step has not run: what the selected plan says it does here
+            if let Some(a) = after_map.get(&l.id) {
+                let words = after_words(&l.c, a);
+                if !words.is_empty() {
+                    result.push(words);
+                }
+            }
+        }
         let terr = format!("{}{}", terrain_short(l.terrain), if l.coastal { " c" } else { "" });
         let n = |x: u32| if x > 0 { x.to_string() } else { String::new() };
         let mut cells: Vec<String> = vec![l.id.to_string(), terr, pieces_short(&l.c), n(l.c.dahan), n(l.c.blight), n(l.c.presence), tokens_short(&l.c), steps.join(" "), line];
@@ -357,13 +416,16 @@ pub(super) fn position_panel(ctx: &TurnCtx, width: u16) -> Panel {
         rows_h += rh;
         rows.push(row);
     }
-    Panel { block: panel_block("POSITION  the island at the Fast phase"), body: PanelBody::Table { header: header_row(&headers), rows, widths: widths.iter().map(|w| Constraint::Length(*w as u16)).collect(), rows_h, select: None } }
+    Panel { block: panel_block(if live { "POSITION  the island now; after = under the selected plan until the step is recorded" } else { "POSITION  the island at the Fast phase" }), body: PanelBody::Table { header: header_row(&headers), rows, widths: widths.iter().map(|w| Constraint::Length(*w as u16)).collect(), rows_h, select: None } }
 }
 
 /// This turn's Invader phase: the face-up cards and where they act, the face-down
 /// Explore with its pool and what came, the Event and Fear cards with the choices they
 /// asked, the Blight card, the board after.
 pub(super) fn invaders_panel(ctx: &TurnCtx, width: u16) -> Panel {
+    if let Some(sc) = ctx.scored() {
+        return invaders_live_panel(ctx, sc, width);
+    }
     let w = width.saturating_sub(2) as usize;
     let title = "INVADER PHASE  this turn's cards";
     let Some(t) = ctx.t else {
@@ -528,6 +590,8 @@ pub(super) fn growth_panel(ctx: &TurnCtx, width: u16) -> Panel {
         si_hindsight::growth_words(&rest, &code)
     };
     let best_group = group_of(best_growth);
+    let plan_growth: Option<Vec<String>> = ctx.scored().and(ctx.sel.as_ref()).filter(|rv| rv.tag != "none" && !rv.line.growth_actual).map(|rv| rv.line.growth.clone());
+    let plan_group = plan_growth.as_deref().and_then(group_of);
     if let Some(p) = ctx.panel {
         if p.growth.pick > 1 {
             lines.push(TLine::from(Span::styled(format!("pick {} of", p.growth.pick), dim())));
@@ -547,6 +611,9 @@ pub(super) fn growth_panel(ctx: &TurnCtx, width: u16) -> Panel {
                 tail.push_str(&format!(" <- best: {}", rest_of(best_growth)));
             } else if is_best && !is_taken {
                 tail.push_str(" <- best");
+            }
+            if plan_group == Some(g.number) {
+                tail.push_str(&format!(" <- plan: {}", rest_of(plan_growth.as_deref().unwrap_or(&[]))));
             }
             let style = if is_taken { Style::default().add_modifier(Modifier::BOLD) } else if is_best { Style::default().fg(Color::Green) } else { Style::default() };
             lines.extend(hang(&format!("G{}", g.number), if is_best { Style::default().fg(Color::Green) } else { dim() }, &format!("{words}{tail}"), style, w));
@@ -575,7 +642,9 @@ pub(super) fn growth_panel(ctx: &TurnCtx, width: u16) -> Panel {
 pub(super) fn hand_panel(ctx: &TurnCtx, width: u16) -> Panel {
     let inner = width.saturating_sub(2) as usize;
     let hand = ctx.hand();
-    let actual: BTreeSet<&str> = ctx.actual().map(|a| a.plays.as_slice()).unwrap_or(&[]).iter().filter(|p| !p.innate).map(|p| p.power.as_str()).collect();
+    let live = ctx.scored().is_some();
+    let made: Vec<String> = ctx.scored().map(|sc| sc.open.s.cards_played.clone()).unwrap_or_default();
+    let actual: BTreeSet<&str> = if live { made.iter().map(|c| c.as_str()).collect() } else { ctx.actual().map(|a| a.plays.as_slice()).unwrap_or(&[]).iter().filter(|p| !p.innate).map(|p| p.power.as_str()).collect() };
     let sel: BTreeSet<String> = ctx.sel.as_ref().map(|rv| rv.line.plays.iter().filter(|p| !p.innate).map(|p| p.power.clone()).collect()).unwrap_or_default();
     // (name, fixed width, weight, wraps); a narrow panel drops the target, then range and elements
     let mut cols: Vec<(&str, Option<usize>, usize, bool)> = vec![("code", Some(5), 0, false), ("card", None, 55, true), ("cost", Some(4), 0, false), ("spd", Some(3), 0, false), ("range", Some(6), 0, false), ("target", None, 45, true), ("elements", Some(31), 0, false), ("in", Some(6), 0, false)];
@@ -596,10 +665,12 @@ pub(super) fn hand_panel(ctx: &TurnCtx, width: u16) -> Panel {
         let code = ctx.code(id);
         let in_actual = actual.contains(id.as_str());
         let in_sel = sel.contains(id);
-        let in_word = match (in_actual, in_sel) {
-            (true, true) => "both",
-            (true, false) => "actual",
-            (false, true) => "row",
+        let in_word = match (in_actual, in_sel, live) {
+            (true, true, _) => "both",
+            (true, false, true) => "made",
+            (true, false, false) => "actual",
+            (false, true, true) => "plan",
+            (false, true, false) => "row",
             _ => "",
         };
         let card = ctx.defs.cards.get(id);
@@ -640,7 +711,7 @@ pub(super) fn hand_panel(ctx: &TurnCtx, width: u16) -> Panel {
         rows_h += rh;
         rows.push(Row::new(texts.into_iter().map(Cell::new).collect::<Vec<_>>()).height(rh).style(style));
     }
-    Panel { block: panel_block("HAND  in = who plays it (actual, row, both)"), body: PanelBody::Table { header: header_row(&headers), rows, widths: widths.iter().map(|w| Constraint::Length(*w as u16)).collect(), rows_h, select: None } }
+    Panel { block: panel_block(if live { "HAND  in = made already, in the selected plan, or both" } else { "HAND  in = who plays it (actual, row, both)" }), body: PanelBody::Table { header: header_row(&headers), rows, widths: widths.iter().map(|w| Constraint::Length(*w as u16)).collect(), rows_h, select: None } }
 }
 
 /// The selected row in words: notation, growth, elements and tiers, what it produced,
@@ -666,7 +737,10 @@ pub(super) fn line_panel(ctx: &TurnCtx, width: u16) -> Panel {
         }
         sel.extend(hang_spans("elements", dim(), spans, w));
         sel.extend(hang("produced", dim(), &l.outcome.words(true), Style::default(), w));
-        sel.extend(hang("scores", dim(), &format!("informed {:+.2}, hindsight {:+.2}, luck {:+.2}{}", l.informed, l.score, l.luck, l.confidence.map(|c| format!(", conf {:.0}%", c * 100.0)).unwrap_or_default()), Style::default(), w));
+        match ctx.scored() {
+            Some(sc) => sel.extend(hang("scores", dim(), &format!("score {:+.2} over {} Explore card{}; Event and Fear cards expected {:+.2}{}", l.informed, sc.cands.len().max(1), if sc.cands.len() == 1 { "" } else { "s" }, l.expected, l.confidence.map(|c| format!("; beats none {:.0}%", c * 100.0)).unwrap_or_default()), Style::default(), w)),
+            None => sel.extend(hang("scores", dim(), &format!("informed {:+.2}, hindsight {:+.2}, luck {:+.2}{}", l.informed, l.score, l.luck, l.confidence.map(|c| format!(", conf {:.0}%", c * 100.0)).unwrap_or_default()), Style::default(), w)),
+        }
         let slow_words = |v: &[si_hindsight::Play]| v.iter().map(|p| match &p.target { Some(t) => format!("{}>{t}", code(&p.power)), None => code(&p.power) }).collect::<Vec<_>>().join(" ");
         if l.outcome.slow.iter().any(|p| p.target.is_some()) {
             sel.extend(hang("Slow lands", dim(), &format!("{} (chosen after the Invader steps)", slow_words(&l.outcome.slow)), Style::default(), w));

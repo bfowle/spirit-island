@@ -90,7 +90,7 @@ fn slot_code(slot: &str, canonical: bool) -> String {
     if slot.contains("Energy") {
         format!("e{digits}")
     } else if slot.contains("CardPlays") {
-        format!("c{digits}")
+        format!("cp{digits}")
     } else {
         slot.to_string()
     }

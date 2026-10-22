@@ -13,15 +13,15 @@ use crate::nrbf::{Graph, Node, Value};
 use sha2::{Digest, Sha256};
 
 // Engine enum tables (SpiritIslandEngine.dll 1.0.9776 constants).
-const PHASE_TYPES: &[&str] = &["StartOfGame", "Spirit", "FastPower", "Invader", "SlowPower", "TimePasses"];
-const STATE_TYPES: &[&str] = &[
+pub(crate) const PHASE_TYPES: &[&str] = &["StartOfGame", "Spirit", "FastPower", "Invader", "SlowPower", "TimePasses"];
+pub(crate) const STATE_TYPES: &[&str] = &[
     "PlayerSetup", "InvadersStartingAction", "Grow", "GainEnergy", "PlayPayPower", "FastPower",
     "BlightedIsland", "Fear", "Ravage", "Build", "Explore", "AdvanceInvaderCards", "SlowPower",
     "TimePasses", "HighImmigration", "SpiritPhase", "Event",
 ];
 const SPIRIT_PHASE_STATUS: &[&str] = &["Grow", "GainEnergy", "PlayPayPower", "Complete"];
-const ISLAND_PIECE_TYPES: &[&str] = &["Dahan", "Explorer", "Town", "City", "Thief"];
-const TOKEN_TYPES: &[&str] = &["Beast", "Wilds", "Disease", "Strife", "Scenario", "Badlands", "Special", "Vitality"];
+pub(crate) const ISLAND_PIECE_TYPES: &[&str] = &["Dahan", "Explorer", "Town", "City", "Thief"];
+pub(crate) const TOKEN_TYPES: &[&str] = &["Beast", "Wilds", "Disease", "Strife", "Scenario", "Badlands", "Special", "Vitality"];
 const ENDING_RESULTS: &[&str] = &[
     "WinInvadersDestroyed", "WinTerrorVictory", "WinSacrificeVictory", "WinScenario",
     "LoseSpiritDestroyed", "LoseTimeRunsOut", "LoseTooMuchBlight", "LoseAdversary", "LoseScenario",
@@ -29,7 +29,7 @@ const ENDING_RESULTS: &[&str] = &[
 ];
 const TERRAINS: &[&str] = &["Jungle", "Mountain", "Sands", "Wetland", "Ocean"];
 
-fn enum_name(table: &[&str], v: Option<i64>) -> String {
+pub(crate) fn enum_name(table: &[&str], v: Option<i64>) -> String {
     v.and_then(|i| table.get(i as usize)).map(|s| s.to_string()).unwrap_or_else(|| format!("{v:?}"))
 }
 
