@@ -308,7 +308,7 @@ fn track_node(v: &Value) -> TrackNode {
 }
 
 fn innate(v: &Value) -> Innate {
-    let tiers = v
+    let tiers: Vec<Tier> = v
         .get("elementOptions")
         .and_then(Value::as_array)
         .map(|a| {
@@ -333,6 +333,14 @@ fn innate(v: &Value) -> Innate {
                 .collect()
         })
         .unwrap_or_default();
+    // Explosive Eruption: "Destroy X (1 or more) of your {Presence} in target land", on every
+    // use; X then the presence destroyed for it in "X Damage" and "X Fear"
+    let rider = strings(v, "body");
+    let x = effects::rider_destroys_x(&rider);
+    let each_use = if x { effects::destroy_x() } else { Vec::new() };
+    let tiers: Vec<Tier> = if x { tiers.into_iter().map(|t: Tier| Tier { effects: effects::x_as_destroyed(&t.effects), ..t }).collect() } else { tiers };
+    // "This Power's Damage is done (separately) to both Invaders and {Dahan}"
+    let tiers: Vec<Tier> = if effects::rider_damages_both(&rider) { tiers.into_iter().map(|t: Tier| Tier { effects: effects::damage_to_both(&t.effects), ..t }).collect() } else { tiers };
     Innate {
         id: str_of(v, "identifier"),
         title: str_of(v, "title"),
@@ -340,7 +348,8 @@ fn innate(v: &Value) -> Innate {
         range: range_of(v),
         target: TargetKind(str_of(v, "targetType")),
         tiers,
-        rider: strings(v, "body"),
+        rider,
+        effects: each_use,
     }
 }
 
@@ -408,7 +417,12 @@ fn power_card(v: &Value) -> Result<PowerCard> {
             a.iter()
                 .map(|t| {
                     let body = strings(t, "body");
-                    Threshold { elements: element_set_from_costs(t), title: String::new(), effects: effects::parse(&body), body }
+                    // "First, ...": this threshold acts before the card's own effects
+                    let mut fx = effects::parse(&body);
+                    if body.first().is_some_and(|b| text::plain(b).trim_start().starts_with("First")) {
+                        fx.insert(0, si_model::power::Effect::First);
+                    }
+                    Threshold { elements: element_set_from_costs(t), title: String::new(), effects: fx, body }
                 })
                 .collect()
         })

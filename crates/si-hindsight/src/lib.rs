@@ -32,6 +32,7 @@
 pub mod deck;
 pub mod fuzz;
 pub mod live;
+pub mod repeat;
 
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -471,9 +472,10 @@ impl Line {
     /// The laws every scored line keeps (the corpus fuzzer and the live one hold every line
     /// to them): finite scores; a game never both won and lost in the outcome (a win and a
     /// loss together are a win, and the game stops at either); moves only along the
-    /// island's edges, each of a piece or more; presence never from nowhere and none missing
-    /// uncounted (`presence0` on the island as the line starts).
-    pub fn holds(&self, island: &Island, presence0: u32) -> Vec<si_model::oracle::Violation> {
+    /// island's edges, each of a piece or more, unless the Power's Move reaches farther
+    /// ("to any land"); presence never from nowhere and none missing uncounted (`presence0`
+    /// on the island as the line starts).
+    pub fn holds(&self, defs: &Definitions, island: &Island, presence0: u32) -> Vec<si_model::oracle::Violation> {
         use si_model::oracle::check;
         let mut out = Vec::new();
         check(&mut out, self.score.is_finite() && self.informed.is_finite(), "finite scores", || format!("score {} informed {}", self.score, self.informed));
@@ -484,7 +486,8 @@ impl Line {
                 // Beast (or Many Minds' Sacred Site moved as one) may go two lands
                 let presence = m.piece == Some(si_model::power::PieceFilter::Presence);
                 let beast = m.piece == Some(si_model::power::PieceFilter::Token(si_model::island::TokenKind::Beast));
-                let adjacent = presence || island.lands.get(&m.from).is_some_and(|l| l.adjacent.contains(&m.to)) || (beast && effects::two_away(island, &m.from).contains(&m.to));
+                let far = verify::power_effects(defs, power).is_some_and(|(base, th)| effects::move_reaches(&base, m.piece.as_ref(), island, &m.from, &m.to) || th.iter().any(|(_, e)| effects::move_reaches(e, m.piece.as_ref(), island, &m.from, &m.to)));
+                let adjacent = presence || far || island.lands.get(&m.from).is_some_and(|l| l.adjacent.contains(&m.to)) || (beast && effects::two_away(island, &m.from).contains(&m.to));
                 check(&mut out, adjacent && m.n > 0, "move", || format!("{power} moved {} from {} to {}: not adjacent or nothing", m.n, m.from, m.to));
             }
         }
@@ -960,15 +963,49 @@ pub(crate) fn invader_phase(island: &mut Island, rec: &GameRecord, t: &TurnRecor
     }
     let explore_cards: Vec<String> = explore.map(|e| e.to_vec()).unwrap_or_else(|| t.explore.clone());
     let steps: Vec<(&Vec<String>, si_model::event::InvaderStep)> = vec![(&t.high_immigration, si_model::event::InvaderStep::Build), (&t.ravage, si_model::event::InvaderStep::Ravage), (&t.build, si_model::event::InvaderStep::Build), (&explore_cards, si_model::event::InvaderStep::Explore)];
-    for (cards, step) in steps {
-        for card_id in cards {
-            let Some(card) = defs.invader_cards.get(card_id) else { continue };
-            let outcomes = match step {
-                si_model::event::InvaderStep::Ravage => invaders::ravage(island, card, &rules),
-                si_model::event::InvaderStep::Build => invaders::build(island, card, &rules),
-                si_model::event::InvaderStep::Explore => invaders::explore(island, card, &rules),
+    // the boards the Ravage Step added Blight on (Russia 6 acts on the others)
+    let mut blighted: BTreeSet<String> = BTreeSet::new();
+    for (i, (cards, step)) in steps.into_iter().enumerate() {
+        // each card's Action, then what the adversary does after the step: after the Ravage
+        // (Russia 6, Scotland 6), after the Build (Habsburg Mining's Mining Boom, the Habsburg
+        // Monarchy's Migratory Herders), Habsburg Mining's Mining Tunnels once a Stage II card
+        // has explored and the cards advanced (the Ravage and Build spaces then hold this
+        // turn's Build and Explore cards)
+        let mut actions: Vec<Option<&String>> = cards.iter().map(Some).collect();
+        // England 6, Independent Resolve: no Fear Card resolved, the High Immigration Build twice
+        if i == 0 && rules.england_resolves_twice() {
+            actions.extend(cards.iter().map(Some));
+        }
+        if i == 1 || i == 2 || (i == 3 && cards.iter().any(|c| defs.invader_cards.get(c).is_some_and(|c| c.escalation))) {
+            actions.push(None);
+        }
+        for card_id in actions {
+            let outcomes = match (card_id, step) {
+                (Some(c), _) => {
+                    let Some(card) = defs.invader_cards.get(c) else { continue };
+                    match step {
+                        si_model::event::InvaderStep::Ravage => invaders::ravage(island, card, &rules),
+                        si_model::event::InvaderStep::Build => invaders::build(island, card, &rules),
+                        si_model::event::InvaderStep::Explore => invaders::explore(island, card, &rules),
+                    }
+                }
+                (None, si_model::event::InvaderStep::Build) => {
+                    let build: Vec<&si_model::decks::InvaderCard> = t.build.iter().filter_map(|c| defs.invader_cards.get(c)).collect();
+                    invaders::after_build(island, &rules, &build)
+                }
+                (None, si_model::event::InvaderStep::Ravage) => {
+                    let ravage: Vec<&si_model::decks::InvaderCard> = t.ravage.iter().filter_map(|c| defs.invader_cards.get(c)).collect();
+                    invaders::after_ravage(island, &rules, &ravage, &blighted)
+                }
+                (None, _) => {
+                    let next: Vec<&si_model::decks::InvaderCard> = t.build.iter().chain(explore_cards.iter()).filter_map(|c| defs.invader_cards.get(c)).collect();
+                    invaders::mining_tunnels(island, &rules, &next)
+                }
             };
             for o in outcomes {
+                if step == si_model::event::InvaderStep::Ravage && o.blight + o.cascade > 0 {
+                    blighted.insert(o.land.board.clone());
+                }
                 out.blight += o.blight + o.cascade;
                 out.dahan_lost += o.dahan_lost;
                 out.presence_destroyed += o.presence_destroyed;
@@ -978,6 +1015,7 @@ pub(crate) fn invader_phase(island: &mut Island, rec: &GameRecord, t: &TurnRecor
                 }
                 // counterattack kills, by kind, with the Fear a Town or City gives
                 count_kills(out, &o.destroyed);
+                out.fear += o.fear;
                 out.beasts_destroyed_by_rules += o.beasts_destroyed;
                 out.irreparable_blight += o.irreparable;
                 out.notes.extend(o.notes.into_iter().filter(|n| !n.starts_with("counterattack") && !n.starts_with("cascade")));
@@ -1020,7 +1058,7 @@ pub(crate) fn apply_plays(island: &mut Island, defs: &Definitions, plays: &[Play
         }
         let Some((base, thresholds)) = verify::power_effects(defs, &p.power) else { continue };
         // where the player put this Power's spread pieces and which piece or branch it picked, when the log recorded it
-        let ctx = Ctx { health_bonus: rules.invader_health_bonus(), elements: elements.clone(), blight_as_badlands: rules.blight_as_badlands_for(spirit), rules: Some(rules.clone()), placements: verify::placements_of(defs, t, &p.power), picks: verify::picks_of(defs, t, &p.power), moves: p.moves.clone(), moves_exact: p.exact, branches: verify::branches_of(defs, t, &p.power), presence_with_dahan: rules.presence_with_dahan_for(spirit), kills: p.kills.clone(), site_beast: rules.site_beast_for(spirit), beasts_far: rules.beasts_far_for(spirit) };
+        let ctx = Ctx { health_bonus: rules.invader_health_bonus(), elements: elements.clone(), blight_as_badlands: rules.blight_as_badlands_for(spirit), rules: Some(rules.clone()), placements: verify::placements_of(defs, t, &p.power), picks: verify::picks_of(defs, t, &p.power), moves: p.moves.clone(), moves_exact: p.exact, branches: verify::branches_of(defs, t, &p.power), presence_with_dahan: rules.presence_with_dahan_for(spirit), kills: p.kills.clone(), site_beast: rules.site_beast_for(spirit), beasts_far: rules.beasts_far_for(spirit), collapse: rules.collapse_for(spirit) };
         // Shroud's Mists Shift and Flow: 1 presence gathered toward the land first. The record's
         // choice for this Power this turn where it fits (the land it gathered into, when that
         // is the target or beside it; none when the player declined), else into the target
@@ -1050,13 +1088,15 @@ pub(crate) fn apply_plays(island: &mut Island, defs: &Definitions, plays: &[Play
         for i in fired.into_iter().rev() {
             armed.remove(i);
         }
-        // skips the Power grants to its land (Strike Low), as the engine would record them
+        let a = effects::apply(&base, &thresholds, island, target, &ctx);
+        // the skips and Isolation the Power grants its land (Strike Low), as the engine would
+        // record them, once it has acted (Melt Earth into Quicksand's Damage comes before its
+        // Isolate: an Explorer Russia saves may still flee)
         if let Some(l) = island.lands.get_mut(target) {
             for e in base.iter().chain(thresholds.iter().filter(|(need, _)| elements.satisfies(need)).flat_map(|(_, es)| es.iter())) {
                 verify::flag(l, e);
             }
         }
-        let a = effects::apply(&base, &thresholds, island, target, &ctx);
         let destroyed_invader = a.destroyed.iter().any(|k| *k != PieceKind::Dahan);
         // every play applied has its entry, empty when it moved nothing, so the line shows
         // what happened and never the request (`<A3x9` is "all", asked)
@@ -1375,7 +1415,8 @@ pub(crate) fn destroys_pieces(defs: &Definitions, power: &str) -> bool {
     fn any(es: &[Effect]) -> bool {
         es.iter().any(|e| match e {
             Effect::Damage { to, .. } => !matches!(to, DamageTarget::Dahan | DamageTarget::EachDahan),
-            Effect::Destroy { .. } => true,
+            // a token it removes is the player's pick too ("Remove up to half of {Beast}")
+            Effect::Destroy { .. } | Effect::RemoveToken { .. } => true,
             Effect::Per { then, .. } | Effect::Conditional { then, .. } | Effect::Area { then, .. } => any(then),
             Effect::Choice(b) => b.iter().any(|x| any(x)),
             _ => false,
@@ -1399,8 +1440,11 @@ pub(crate) fn moves_pieces(defs: &Definitions, power: &str) -> bool {
 
 pub(crate) fn elements_for(defs: &Definitions, s: &SpiritTurn, played: &[&PowerCard]) -> ElementSet {
     let mut set = defs.spirits.get(&s.spirit).map(|p| p.track_state(&s.revealed_after).elements).unwrap_or_default();
-    for c in played {
-        set.extend(&c.elements);
+    // a card's Elements once, however often the line uses it (a Repeat gives none)
+    for (i, c) in played.iter().enumerate() {
+        if !played[..i].iter().any(|d| d.id == c.id) {
+            set.extend(&c.elements);
+        }
     }
     // gained beyond the track and the cards: a growth option, a wildcard's choice, and a
     // Power Card's grant when that card is in the line
@@ -1754,7 +1798,7 @@ pub(crate) fn resolve_slow(island: &Island, defs: &Definitions, plays: &[Play], 
     let mut now = s.clone();
     now.presence_after = presence.clone();
     let mut decided: Vec<Play> = Vec::new();
-    for p in plays.iter().filter(|p| !p.fast) {
+    for (at, p) in plays.iter().enumerate().filter(|(_, p)| !p.fast) {
         let targets: Option<Vec<LandId>> = if p.innate {
             innates.iter().find(|i| i.id == p.power).map(|i| innate_targets(i, &now, &counts, graph))
         } else {
@@ -1764,17 +1808,27 @@ pub(crate) fn resolve_slow(island: &Island, defs: &Definitions, plays: &[Play], 
             decided.push(p.clone());
             continue;
         };
+        // a Repeat goes where it says, from the land its first use took (`repeat`)
+        let targets = match (decided.iter().find(|q| q.power == p.power).and_then(|q| q.target.clone()), repeat::place(defs, &p.power)) {
+            (Some(first), Some(at)) => repeat::lands(at, &first, &targets, graph, &presence),
+            _ => targets,
+        };
         if (p.target.is_some() && !rechoose) || p.inert {
             decided.push(p.clone());
             continue;
         }
         let mut best: Option<(f64, Play)> = None;
+        // a use is scored with the Repeats still to come in the same land, where they may go
+        // there: one Damage alone may kill nothing three on one Town do (Creepers)
+        let same_land = matches!(repeat::place(defs, &p.power), Some(si_model::power::RepeatAt::Usual | si_model::power::RepeatAt::TargetOrPresence));
+        let to_come: Vec<&Play> = if same_land { plays[at + 1..].iter().filter(|q| q.power == p.power && !q.fast && (q.target.is_none() || rechoose)).collect() } else { Vec::new() };
         for tg in targets {
             // a land chosen after the Invader steps comes with its moves chosen then too: where
             // a gather takes from, where a push sends (or no push: Voice of Thunder's Fear)
             let score = |c: &Play| -> f64 {
                 let mut trial = decided.clone();
                 trial.push(c.clone());
+                trial.extend(to_come.iter().map(|q| Play { target: Some(tg.clone()), ..(*q).clone() }));
                 eval(&trial)
             };
             let (v, cand) = best_moves(island, defs, p, &tg, &score);
@@ -1789,6 +1843,18 @@ pub(crate) fn resolve_slow(island: &Island, defs: &Definitions, plays: &[Play], 
 
 /// The line's plays with the Slow targets the simulation chose under the Explore card
 /// that came (Fast plays as given, then the resolved Slow plays).
+/// The other Spirits' presence after their Growth this turn, by land, as recorded: the review
+/// plays the first Spirit's turn; the rest stand where the game had them.
+pub(crate) fn others_presence(rec: &GameRecord, turn: u32, spirit: &str) -> BTreeMap<LandId, u32> {
+    let mut out: BTreeMap<LandId, u32> = BTreeMap::new();
+    for s in rec.spirits.iter().filter(|s| s.turn == turn && s.spirit != spirit) {
+        for (l, n) in &s.presence_after {
+            *out.entry(l.clone()).or_insert(0) += n;
+        }
+    }
+    out
+}
+
 /// The plays in the order the record used them (a play the record did not use keeps its place).
 pub(crate) fn in_use_order(mut plays: Vec<Play>, s: &SpiritTurn) -> Vec<Play> {
     let order: Vec<&str> = s.powers_used.iter().map(|(_, p, _)| p.as_str()).collect();
@@ -1892,6 +1958,20 @@ pub(crate) fn recorded_plays(rec: &GameRecord, defs: &Definitions, s: &SpiritTur
             Play { power: c.clone(), target, fast, innate: false, cost: card.map(|c| c.cost).unwrap_or(0), places: card.is_some_and(|c| c.target.is_spirit() && adds_presence(c)), forced: fast && !printed_fast, exact: moves_pieces(defs, c), moves, inert: false, recorded: true, kills }
         })
         .collect();
+    // a card used again (Sea Monsters' Repeat): each later use a play of its own, at the land
+    // it took, with no Energy (`repeat`)
+    let mut cards = cards;
+    for c in &s.cards_played {
+        let Some(first) = cards.iter().find(|p| p.power == *c).cloned() else { continue };
+        let mut nth = 1;
+        while let Some(u) = verify::use_of(t, c, nth) {
+            let moves = if u.moves.is_empty() { Vec::new() } else { verify::moves_of_use(u) };
+            let kills = destroys_pieces(defs, c).then(|| verify::kills_of(u));
+            let fast = u.phase.map(|p| p == Phase::FastPower).unwrap_or(first.fast);
+            cards.push(Play { target: u.target.clone().or(first.target.clone()), fast, cost: 0, moves, kills, ..first.clone() });
+            nth += 1;
+        }
+    }
     let turn_no = t.turn;
     let turn_rec = t;
     // an innate used in the Fast phase though printed Slow went through its "may be Fast" tier: the mark says so
@@ -2012,7 +2092,6 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
         notes.push("more than one spirit: only the first spirit's growth and plays are reviewed in this version".into());
     }
     let level = rec.meta.adversary_level.or_else(|| si_metrics::adversary::estimate(rec, defs).and_then(|e| e.candidates.first().copied())).unwrap_or(0);
-    let rules = Rules { scenario: rec.meta.scenario.clone(), adversary: rec.meta.adversary.clone(), level, spirits: rec.meta.spirits.clone(), hooks: Rules::hooks_of(defs, &rec.meta.spirits), ..Default::default() };
     let graph = si_metrics::reach::island_for(rec, defs);
     let deck = deck::Deck::for_game(rec, defs, level);
     let pick = defs.spirits.get(&spirit).map(|p| p.growth.pick).unwrap_or(1);
@@ -2023,17 +2102,13 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
     let all_innates = innates_of(defs, &spirit);
     let mut turns = Vec::new();
     let closed = closed_turns(rec);
-    let base_rules = rules;
     for t in rec.turns.iter().filter(|t| closed.contains(&t.turn) && only.is_none_or(|o| o.contains(&t.turn))) {
         let Some(s) = rec.spirits.iter().find(|s| s.turn == t.turn && s.spirit == spirit) else { continue };
-        // the loss conditions' counts as this turn began
+        // the turn's rules and the record's choices, as every replay of it has them; the loss
+        // conditions' counts as this turn began (the Blight pool the caller knows, if any)
         let rules = {
-            let mut r = base_rules.clone();
+            let mut r = turn_rules(rec, defs, t);
             r.clocks = loss_clocks(rec, t.turn, opts.blight_pool.get(&t.turn).copied());
-            r.cascades = cascades_of(t);
-            r.chokes = verify::chokes_of(rec, t);
-            r.ravage_order = ravage_order_of(t);
-            r.terror = terror_at_invaders(rec, t);
             r
         };
         let clocks = invaders::clocks(&verify::island_at(rec, defs, t, "before_fast"), &rules, invaders::Tally::default());
@@ -2083,8 +2158,9 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
         let model_error: Option<f64> = match &residual {
             Some(d) if !t.before_slow.is_empty() => {
                 let mut island = verify::island_at(rec, defs, t, "before_fast");
+                let others = others_presence(rec, t.turn, &spirit);
                 for (id, l) in island.lands.iter_mut() {
-                    l.c.presence = s.presence_after.get(id).copied().unwrap_or(0);
+                    l.c.presence = s.presence_after.get(id).copied().unwrap_or(0) + others.get(id).copied().unwrap_or(0);
                 }
                 let mut rules_t = rules.clone();
                 let played: Vec<&PowerCard> = actual_plays.iter().filter_map(|p| defs.cards.get(&p.power)).collect();
@@ -2107,9 +2183,11 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
         // came), no Event or Fear effects, cards only hindsight knows (`drop`) not played
         let simulate = |plays: &[Play], innate_plays: &[Play], s2: &SpiritTurn, moved: Option<(usize, &LandId)>, explore: Option<&[String]>, informed: bool, drop: &[String], deep: bool| -> Outcome {
             let mut island = verify::island_at(rec, defs, t, "before_fast");
-            // the position's presence: its growth, before any Power placed more
+            // the position's presence: its growth, before any Power placed more (the other
+            // Spirits' as recorded)
+            let others = others_presence(rec, t.turn, &spirit);
             for (id, l) in island.lands.iter_mut() {
-                l.c.presence = s2.presence_after.get(id).copied().unwrap_or(0);
+                l.c.presence = s2.presence_after.get(id).copied().unwrap_or(0) + others.get(id).copied().unwrap_or(0);
             }
             let mut rules_t = rules.clone();
             let kept: Vec<Play> = plays.iter().filter(|p| !(informed && drop.contains(&p.power))).cloned().collect();
@@ -2222,6 +2300,19 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
                 candidates.push(vec![]);
             }
             candidates.truncate(opts.max_lines_per_position.max(1));
+            // each Power's Repeats as plays of their own after it (`repeat`): a Fast one at each
+            // land it may take
+            let usual = |p: &Play| -> Vec<LandId> {
+                match defs.cards.get(&p.power) {
+                    Some(c) => targets_from(c, &s2.presence_after, &t.before_fast, &graph),
+                    None => all_innates.iter().find(|i| i.id == p.power).map(|i| innate_targets(i, &s2, &t.before_fast, &graph)).unwrap_or_default(),
+                }
+            };
+            let elements_of = |cand: &[Play]| -> ElementSet {
+                let played: Vec<&PowerCard> = cand.iter().filter_map(|p| defs.cards.get(&p.power)).collect();
+                elements_for(defs, &s2, &played)
+            };
+            let candidates: Vec<Vec<Play>> = candidates.into_iter().flat_map(|cand| repeat::expand(defs, &cand, &elements_of(&cand), &usual, &graph, &s2.presence_after, 4)).collect();
             let tried = candidates.len();
             let mut first: Vec<(f64, Vec<Play>, Outcome, f64)> = candidates
                 .into_iter()
@@ -2259,7 +2350,8 @@ pub fn review_turns(rec: &GameRecord, defs: &Definitions, opts: &ReviewOptions, 
             let mut lines: Vec<Line> = Vec::new();
             for (i, (score0, cand, out0, gv)) in first.into_iter().enumerate() {
                 if beam[i] {
-                    let mut options = innate_options(&cand, &s2);
+                    let els = elements_of(&cand);
+                    let mut options: Vec<Vec<Play>> = innate_options(&cand, &s2).into_iter().flat_map(|inn| repeat::expand(defs, &inn, &els, &usual, &graph, &s2.presence_after, 4)).collect();
                     options.truncate(opts.max_innate_options.max(1));
                     for inn in options {
                         if inn.is_empty() {
@@ -3172,6 +3264,8 @@ pub fn parse_plays(defs: &Definitions, text: &str) -> Result<Vec<Play>, String> 
                 }
             }
         }
+        // a Power written again is its Repeat: no Energy (`repeat`)
+        let cost = if plays.iter().any(|q| q.power == id) { 0 } else { cost };
         // a bracket is the whole of what the Power moves (`GW>A5[]` gathers and pushes nothing)
         plays.push(Play { power: id, target, fast, innate, cost, places, forced, moves, exact: bracket.is_some(), inert, recorded: false, kills });
     }
@@ -3220,7 +3314,44 @@ pub fn try_line(rec: &GameRecord, defs: &Definitions, turn: u32, text: &str) -> 
 /// loss clocks as the turn began, and the record's choices (cascades, chokes, Ravage order).
 pub(crate) fn turn_rules(rec: &GameRecord, defs: &Definitions, t: &TurnRecord) -> Rules {
     let level = rec.meta.adversary_level.or_else(|| si_metrics::adversary::estimate(rec, defs).and_then(|e| e.candidates.first().copied())).unwrap_or(0);
-    Rules { scenario: rec.meta.scenario.clone(), adversary: rec.meta.adversary.clone(), level, spirits: rec.meta.spirits.clone(), hooks: Rules::hooks_of(defs, &rec.meta.spirits), clocks: loss_clocks(rec, t.turn, None), cascades: cascades_of(t), chokes: verify::chokes_of(rec, t), ravage_order: ravage_order_of(t), terror: terror_at_invaders(rec, t), ..Default::default() }
+    Rules { scenario: rec.meta.scenario.clone(), adversary: rec.meta.adversary.clone(), level, spirits: rec.meta.spirits.clone(), hooks: Rules::hooks_of(defs, &rec.meta.spirits), clocks: loss_clocks(rec, t.turn, None), cascades: cascades_of(t), chokes: verify::chokes_of(rec, t), turn: t.turn, fear_cards_resolved: Some(if t.fear_cards.is_empty() { t.fear_cards_earned } else { t.fear_cards.len() as u32 }), upgrade_lands: verify::mining_lands_of(t).0, tunnel_lands: verify::mining_lands_of(t).1, disease_builds: verify::disease_builds_of(rec, defs, t), skip_answers: verify::skip_answers_of(t), escalation_lands: verify::escalation_lands_of(t), escalated_elsewhere: verify::escalated_elsewhere_of(t), ravage_order: ravage_order_of(t), terror: terror_at_invaders(rec, t), ..Default::default() }
+}
+
+/// What a written line asks beyond the turn as it stood: more Energy than there was, more
+/// cards than plays (a Repeat is no card played), a card not in hand, a Repeat its tiers do
+/// not reach or a land it may not take. The line is still played, to see what it would do;
+/// these are said beside it (`try_plays` puts them in its notes).
+pub fn line_checks(rec: &GameRecord, defs: &Definitions, turn: u32, text: &str) -> Vec<String> {
+    let scenario_defs = defs.for_scenario(rec.meta.scenario.as_deref());
+    let spirit = rec.meta.spirits.first().cloned().unwrap_or_default();
+    let Some(s) = rec.spirits.iter().find(|s| s.turn == turn && s.spirit == spirit) else { return Vec::new() };
+    parse_plays(&scenario_defs, text).map(|plays| checks_of(rec, &scenario_defs, s, &plays)).unwrap_or_default()
+}
+
+fn checks_of(rec: &GameRecord, defs: &Definitions, s: &SpiritTurn, plays: &[Play]) -> Vec<String> {
+    let cards: Vec<&Play> = repeat::first_uses(plays).into_iter().filter(|p| !p.innate).collect();
+    let prev_after = rec.spirits.iter().find(|p| p.spirit == s.spirit && p.turn + 1 == s.turn).map(|p| p.energy_after).unwrap_or(0);
+    let energy = energy_available(rec, defs, s, prev_after);
+    let cost: i64 = cards.iter().map(|p| p.cost).sum();
+    let plays_allowed = s.plays.unwrap_or(cards.len() as i64);
+    let mut out = Vec::new();
+    if cost > energy {
+        out.push(format!("costs {cost} Energy, {energy} available"));
+    }
+    if cards.len() as i64 > plays_allowed {
+        out.push(format!("{} cards against {} plays", cards.len(), plays_allowed));
+    }
+    let hand: Vec<String> = s.hand_after.iter().chain(s.cards_played.iter()).cloned().collect();
+    for c in &cards {
+        if !hand.contains(&c.power) {
+            out.push(format!("{} was not in hand that turn", c.power));
+        }
+    }
+    let played: Vec<&PowerCard> = cards.iter().filter_map(|p| defs.cards.get(&p.power)).collect();
+    let elements = elements_for(defs, s, &played);
+    let graph = si_metrics::reach::island_for(rec, defs);
+    out.extend(repeat::holds(defs, plays, &elements, &graph).into_iter().map(|v| v.to_string()));
+    out
 }
 
 /// A line of plays scored on a closed turn, as `try_line` scores a written one: the plays act
@@ -3237,30 +3368,14 @@ pub fn try_plays(rec: &GameRecord, defs: &Definitions, turn: u32, plays: Vec<Pla
         return Err("no Fast-phase state recorded for that turn".into());
     }
     let rules = turn_rules(rec, defs, t);
-    let cards: Vec<Play> = plays.iter().filter(|p| !p.innate).cloned().collect();
-    let prev_after = rec.spirits.iter().find(|p| p.spirit == spirit && p.turn == turn - 1).map(|p| p.energy_after).unwrap_or(0);
-    let energy = energy_available(rec, defs, s, prev_after);
-    let cost: i64 = cards.iter().map(|p| p.cost).sum();
-    let plays_allowed = s.plays.unwrap_or(cards.len() as i64);
-    let mut out_notes = Vec::new();
-    if cost > energy {
-        out_notes.push(format!("costs {cost} Energy, {energy} available"));
-    }
-    if cards.len() as i64 > plays_allowed {
-        out_notes.push(format!("{} cards against {} plays", cards.len(), plays_allowed));
-    }
-    let hand: Vec<String> = s.hand_after.iter().chain(s.cards_played.iter()).cloned().collect();
-    for c in &cards {
-        if !hand.contains(&c.power) {
-            out_notes.push(format!("{} was not in hand that turn", c.power));
-        }
-    }
+    let out_notes = checks_of(rec, defs, s, &plays);
     let mut island = verify::island_at(rec, defs, t, "before_fast");
-    let played: Vec<&PowerCard> = cards.iter().filter_map(|p| defs.cards.get(&p.power)).collect();
+    let played: Vec<&PowerCard> = repeat::first_uses(&plays).into_iter().filter_map(|p| defs.cards.get(&p.power)).collect();
     let elements = elements_for(defs, s, &played);
     if let Some(e) = forced_speed_error(defs, &spirit, &plays, &elements) {
         return Err(e);
     }
+    let graph = si_metrics::reach::island_for(rec, defs);
     let mut out = Outcome::default();
     // the plays act in the order written: a gather after the push that brought the Dahan
     let mut all = plays.clone();
@@ -3289,7 +3404,6 @@ pub fn try_plays(rec: &GameRecord, defs: &Definitions, turn: u32, plays: Vec<Pla
     }
     let next_turn = rec.turns.iter().find(|n| n.turn == turn + 1);
     // a Slow play written without a land takes the best one after the Invader steps
-    let graph = si_metrics::reach::island_for(rec, defs);
     let innates_all = innates_of(defs, &spirit);
     let slow = {
         let eval = |slow: &[Play]| -> f64 {
@@ -3720,6 +3834,10 @@ mod tests {
                 p.exact = !p.moves.is_empty() || p.kills.is_some() || rng.one_in(4);
             }
             out.push(p);
+        }
+        // a Repeat of a Power already in the line: its speed, no Energy, a land of its own
+        if let Some(first) = rng.pick(&out).cloned().filter(|p| !p.inert && rng.coin()) {
+            out.push(Play { target: Some(land(rng)), cost: 0, moves: Vec::new(), kills: None, exact: false, ..first });
         }
         out
     }

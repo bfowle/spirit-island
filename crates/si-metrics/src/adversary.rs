@@ -141,8 +141,24 @@ pub fn estimate(rec: &GameRecord, defs: &Definitions) -> Option<LevelEstimate> {
     }
     let mut candidates = Vec::new();
     let mut setup_said = None;
-    for n in 1..=6u8 {
-        if adv.level(n).is_none() {
+    // the save's difficulty, when it holds no scenario's: the level's own. Level 0 is a
+    // candidate only on that evidence: the base difficulty, or (where the definitions leave
+    // the base out) a difficulty below every level's
+    let saved = rec.meta.difficulty.filter(|_| rec.meta.scenario.is_none());
+    let lowest = adv.levels.iter().map(|l| l.difficulty as i64).min();
+    let base_known = adv.base_difficulty > 0;
+    let difficulty_of = |n: u8| -> Option<i64> { if n == 0 { base_known.then_some(adv.base_difficulty as i64).or(saved.filter(|d| lowest.is_some_and(|m| *d < m))) } else { adv.level(n).map(|l| l.difficulty as i64) } };
+    if let Some(d) = saved {
+        evidence.push(format!("the save beside the log says difficulty {d}"));
+    }
+    for n in 0..=6u8 {
+        if n == 0 && (saved.is_none() || saved != difficulty_of(0)) {
+            continue;
+        }
+        if n > 0 && adv.level(n).is_none() {
+            continue;
+        }
+        if saved.is_some_and(|d| difficulty_of(n) != Some(d)) {
             continue;
         }
         let order = adv.stages_at(n);
@@ -162,7 +178,7 @@ pub fn estimate(rec: &GameRecord, defs: &Definitions) -> Option<LevelEstimate> {
         None => evidence.push("setup pieces not available (log joined after setup, or unknown board)".into()),
     }
     let difficulty = (!candidates.is_empty()).then(|| {
-        let ds: Vec<u8> = candidates.iter().filter_map(|n| adv.level(*n).map(|l| l.difficulty)).collect();
+        let ds: Vec<u8> = candidates.iter().filter_map(|n| difficulty_of(*n).map(|d| d as u8)).collect();
         (*ds.iter().min().unwrap(), *ds.iter().max().unwrap())
     });
     Some(LevelEstimate { adversary: id.clone(), candidates, difficulty, evidence })

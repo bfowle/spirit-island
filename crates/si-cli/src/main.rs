@@ -858,7 +858,13 @@ fn hindsight(args: &[String]) -> Result<()> {
         if let Some(line) = &try_line {
             if only_turn == Some(t.turn) {
                 match si_hindsight::try_line(&rec, &defs, t.turn, line) {
-                    Ok(l) => out!("  TRY    {:<36} {:<44} {:>8} {:>+8.2}  {}", "(growth as played)", l.notation(&|id| code(id)), "-", l.score, l.outcome.summary()),
+                    Ok(l) => {
+                        out!("  TRY    {:<36} {:<44} {:>8} {:>+8.2}  {}", "(growth as played)", l.notation(&|id| code(id)), "-", l.score, l.outcome.summary());
+                        // what the line asks beyond the turn: Energy, plays, the hand, Repeats
+                        for n in si_hindsight::line_checks(&rec, &defs, t.turn, line) {
+                            out!("         {n}");
+                        }
+                    }
                     Err(e) => out!("  TRY: {e}"),
                 }
             }

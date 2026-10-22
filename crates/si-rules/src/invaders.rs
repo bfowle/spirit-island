@@ -46,6 +46,10 @@ pub struct Land {
     /// the Damage on it). A Town with 1 Damage falls to 1 more.
     #[serde(default)]
     pub wounds: Vec<(PieceKind, u32)>,
+    /// Invader Actions the Spirit may skip here this turn, each when the player says so
+    /// ("Invaders skip one Action in target land", "skip one Invader Action").
+    #[serde(default)]
+    pub skip_actions: u32,
 }
 
 /// The value of destroying a piece, for choosing which the Damage takes (a Town worth three
@@ -301,6 +305,36 @@ pub struct Rules {
     /// them; which ones to skip is the player's call.
     #[serde(default)]
     pub chokes: Vec<(InvaderStep, LandId)>,
+    /// The lands where the player let a Build happen through Disease, removing none, for 1
+    /// Fear (Vengeance's The Terror of a Slowly Unfolding Plague), as the record has them.
+    #[serde(default)]
+    pub disease_builds: Vec<LandId>,
+    /// The player's answer each time the engine asked whether to spend a "skip one Invader
+    /// Action" on an Action in a land (Skip true, Allow false), as the record has them.
+    #[serde(default)]
+    pub skip_answers: Vec<(InvaderStep, LandId, bool)>,
+    /// The lands the record shows the player picking for the escalation's pieces this turn
+    /// (Prussia's Town, Russia's Explorers), in order.
+    #[serde(default)]
+    pub escalation_lands: Vec<LandId>,
+    /// The record has this turn's escalation in another step: the Explore does not repeat it.
+    #[serde(default)]
+    pub escalated_elsewhere: bool,
+    /// Habsburg Mining's Mining Boom: the lands the record shows the player picking to
+    /// upgrade an Explorer after the Build, in order.
+    #[serde(default)]
+    pub upgrade_lands: Vec<LandId>,
+    /// Habsburg Mining's Mining Tunnels: the lands the record shows explored after the
+    /// Invader cards advanced, in order.
+    #[serde(default)]
+    pub tunnel_lands: Vec<LandId>,
+    /// The turn's number (Russia 6 acts from turn 2).
+    #[serde(default)]
+    pub turn: u32,
+    /// Fear Cards resolved this turn, as the record has them (England 6's double High
+    /// Immigration Build when none).
+    #[serde(default)]
+    pub fear_cards_resolved: Option<u32>,
 }
 
 /// The game-long counts the loss conditions keep, as they stood when the turn began
@@ -487,6 +521,47 @@ impl Rules {
     fn chokes(&self, step: InvaderStep, land: &Land) -> bool {
         land.c.presence >= 2 && self.chokes.contains(&(step, land.id.clone())) && self.hooks.iter().any(|(_, h)| *h == si_model::spirit::RuleHook::SkipStepByDestroyingPresence)
     }
+    /// Spend one of the land's "skip one Invader Action" on this Action? The player's recorded
+    /// answer where the engine asked; else at the first Action that would do anything here.
+    fn skips(&self, step: InvaderStep, l: &mut Land) -> bool {
+        if l.skip_actions == 0 {
+            return false;
+        }
+        let skip = match self.skip_answers.iter().find(|(s, at, _)| *s == step && *at == l.id) {
+            Some((_, _, skip)) => *skip,
+            None => step == InvaderStep::Explore || l.c.invaders() > 0,
+        };
+        if skip {
+            l.skip_actions -= 1;
+        }
+        skip
+    }
+    /// Russia 2, A Sense for Impending Disaster: an Action's first Explorer destroyed is
+    /// Pushed instead, for 1 Fear.
+    pub fn explorers_flee(&self) -> bool {
+        self.russia(2)
+    }
+    /// England 6, Independent Resolve: "During any Invader Phase where you resolve no Fear
+    /// Cards, perform the Build from High Immigration twice."
+    pub fn england_resolves_twice(&self) -> bool {
+        self.england(6) && self.fear_cards_resolved == Some(0)
+    }
+    fn monarchy(&self, l: u8) -> bool {
+        self.is("TheHabsburgMonarchy", l)
+    }
+    fn france(&self, l: u8) -> bool {
+        self.is("TheKingdomOfFrance", l)
+    }
+    fn scotland(&self, l: u8) -> bool {
+        self.is("TheKingdomOfScotland", l)
+    }
+    fn mining(&self, l: u8) -> bool {
+        self.is("HabsburgMiningExpedition", l)
+    }
+    /// Habsburg Mining's Ceaseless Mining: a land with 3 or more Invaders is a Mining land.
+    fn mining_land(&self, l: &Land) -> bool {
+        self.mining(1) && l.c.invaders() >= 3
+    }
     fn vengeance(&self) -> bool {
         self.hooks.iter().any(|(_, h)| matches!(h, si_model::spirit::RuleHook::DiseaseBuildForFear { .. }))
     }
@@ -509,6 +584,12 @@ impl Rules {
     }
 
     /// The spirit's Beasts gather and push from and to lands up to 2 away (Fly Fast as Thought).
+    /// Volcano's Collapse in a Blast of Lava and Steam: Damage per presence destroyed, to both
+    /// Invaders and Dahan in that land (0 for a Spirit without it).
+    pub fn collapse_for(&self, spirit: &str) -> u32 {
+        self.hooks.iter().find_map(|(s, h)| if let si_model::spirit::RuleHook::DamageOnPresenceDestroyed { per_presence } = h { (s == spirit).then_some(*per_presence as u32) } else { None }).unwrap_or(0)
+    }
+
     pub fn beasts_far_for(&self, spirit: &str) -> bool {
         self.hooks.iter().any(|(s, h)| s == spirit && *h == si_model::spirit::RuleHook::BeastsMoveTwoLands)
     }
@@ -548,6 +629,10 @@ pub struct Outcome {
     /// What a player's choice could have produced instead (Vengeance letting a
     /// Build through Disease).
     pub alternative: Vec<PieceKind>,
+    /// Fear the step generated beyond the pieces it destroyed (Vengeance's Build through
+    /// Disease).
+    #[serde(default)]
+    pub fear: u32,
     /// Choices the rules leave to the player, or rules not modeled.
     pub notes: Vec<String>,
 }
@@ -575,11 +660,45 @@ fn matching(island: &Island, card: &InvaderCard) -> Vec<LandId> {
 /// carry the adversary's escalation.
 fn explore_step(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Outcome> {
     let mut out = Vec::new();
-    if card.escalation && rules.prussia(1) {
-        out.push(Outcome { land: LandId::new("?", 0), notes: vec!["Land Rush: +1 Town in a land without Town on each board with Town/City (player's choice)".into()], ..Default::default() });
+    // an escalation the player places: in the land the record shows picked, else the land a
+    // player would likeliest pick (the least presence, Dahan and Invaders)
+    let boards: Vec<String> = island.lands.keys().map(|l| l.board.clone()).collect::<std::collections::BTreeSet<_>>().into_iter().collect();
+    let pick = |island: &Island, boards: &[&str], ok: &dyn Fn(&Land) -> bool, n: usize| -> Vec<(LandId, bool)> {
+        let fits = |l: &Land| boards.contains(&l.id.board.as_str()) && l.terrain != Some(Terrain::Ocean) && ok(l);
+        let recorded: Vec<LandId> = rules.escalation_lands.iter().filter(|x| island.lands.get(*x).is_some_and(&fits)).cloned().collect();
+        if let Some(last) = recorded.last() {
+            return (0..n).map(|i| (recorded.get(i).unwrap_or(last).clone(), true)).collect();
+        }
+        island.lands.values().filter(|l| fits(l)).min_by_key(|l| (l.c.presence, l.c.dahan, l.c.invaders(), l.id.number)).map(|l| vec![(l.id.clone(), false); n]).unwrap_or_default()
+    };
+    let whose = |recorded: bool| if recorded { "the record's pick" } else { "the player's likeliest pick" };
+    let escalates = card.escalation && !rules.escalated_elsewhere;
+    if escalates && rules.prussia(1) {
+        // Land Rush: on each board with Town/City, 1 Town in a land without Town
+        for b in &boards {
+            if !island.lands.values().any(|l| l.id.board == *b && l.c.buildings() > 0) {
+                continue;
+            }
+            for (id, rec) in pick(island, &[b.as_str()], &|l| l.c.towns == 0, 1) {
+                island.lands.get_mut(&id).unwrap().c.towns += 1;
+                out.push(Outcome { land: id.clone(), added: vec![PieceKind::Town], notes: vec![format!("Land Rush (escalation): +1 Town in {id} ({})", whose(rec))], ..Outcome::new(&id) });
+            }
+        }
     }
-    if card.escalation && rules.russia(1) {
-        out.push(Outcome { land: LandId::new("?", 0), notes: vec!["Stalk the Predators: +2 Explorers among lands with Beasts (player's choice)".into()], ..Default::default() });
+    if escalates && rules.russia(1) {
+        // Stalk the Predators: on each board, 2 Explorers among lands with Beasts; none there,
+        // among lands with Beasts on another board
+        for b in &boards {
+            let others: Vec<&str> = boards.iter().filter(|x| *x != b).map(|x| x.as_str()).collect();
+            let mut placed = pick(island, &[b.as_str()], &|l| l.c.beasts > 0, 2);
+            if placed.is_empty() {
+                placed = pick(island, &others, &|l| l.c.beasts > 0, 2);
+            }
+            for (id, rec) in placed {
+                island.lands.get_mut(&id).unwrap().c.explorers += 1;
+                out.push(Outcome { land: id.clone(), added: vec![PieceKind::Explorer], notes: vec![format!("Stalk the Predators (escalation): +1 Explorer in {id} ({})", whose(rec))], ..Outcome::new(&id) });
+            }
+        }
     }
     if card.escalation && rules.england(1) {
         // Building Boom: on each board with Town/City, build in the land with the most
@@ -599,6 +718,26 @@ fn explore_step(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<O
             out.push(o);
         }
     }
+    // Scotland's escalation: "On the single board with the most Coastal {Town}/{City}, add 1
+    // {Town} to the N lands with the fewest {Town}. (N = # of players.)" (ties: board and land order)
+    if escalates && rules.scotland(0) {
+        let coastal_buildings = |b: &str| island.lands.values().filter(|l| l.id.board == b && l.coastal).map(|l| l.c.buildings()).sum::<u32>();
+        if let Some(b) = boards.iter().max_by_key(|b| (coastal_buildings(b), std::cmp::Reverse((*b).clone()))) {
+            let n = rules.clocks.players.max(1) as usize;
+            let mut lands: Vec<&Land> = island.lands.values().filter(|l| l.id.board == *b && l.terrain != Some(Terrain::Ocean)).collect();
+            lands.sort_by_key(|l| (l.c.towns, l.id.number));
+            let picked: Vec<LandId> = lands.into_iter().take(n).map(|l| l.id.clone()).collect();
+            for id in picked {
+                island.lands.get_mut(&id).unwrap().c.towns += 1;
+                out.push(Outcome { added: vec![PieceKind::Town], notes: vec![format!("Scotland's escalation: +1 Town in {id}")], ..Outcome::new(&id) });
+            }
+        }
+    }
+    let blight_on = |island: &Island, b: &str| island.lands.values().filter(|l| l.id.board == b).map(|l| l.c.blight).sum::<u32>();
+    let empire: BTreeMap<String, u32> = boards.iter().map(|b| (b.clone(), blight_on(island, b))).collect();
+    let mut empire_used: BTreeMap<String, u32> = BTreeMap::new();
+    let mut trading: BTreeMap<String, u32> = BTreeMap::new();
+    let coastal_card = card.targets.iter().any(|t| matches!(t, InvaderTarget::Coastal));
     let targets = matching(island, card);
     let mut blitz_boards: std::collections::BTreeSet<String> = std::collections::BTreeSet::new();
     for id in targets {
@@ -614,12 +753,36 @@ fn explore_step(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<O
         let mut o = Outcome::new(&id);
         if l.skip_explore || isolated || l.isolated {
             o.notes.push(if isolated || l.isolated { "Isolated: no Explore into the land".into() } else { "Explore skipped by a Spirit effect".into() });
+        } else if rules.skips(InvaderStep::Explore, l) {
+            o.notes.push("Explore skipped: one Invader Action skipped (the player's choice)".into());
         } else if l.c.wilds > 0 {
             l.c.wilds -= 1;
             o.notes.push("Wilds removed instead of the Explore".into());
+        } else if rules.scotland(1) && l.coastal && (!coastal_card || *trading.get(&id.board).unwrap_or(&0) < 2) {
+            // Scotland 1, Trading Port: a Town instead of the Explorer in a Coastal land (the
+            // "Coastal Lands" card, 2 lands per board)
+            *trading.entry(id.board.clone()).or_insert(0) += 1;
+            l.c.towns += 1;
+            o.added.push(PieceKind::Town);
+            o.notes.push("Trading Port: a Town instead of the Explorer".into());
         } else {
+            let had_buildings = l.c.buildings() > 0;
             l.c.explorers += 1;
             o.added.push(PieceKind::Explorer);
+            // France 1, Frontier Explorers: into a land without Town/City, 1 more
+            if rules.france(1) && !had_buildings {
+                l.c.explorers += 1;
+                o.added.push(PieceKind::Explorer);
+                o.notes.push("Frontier Explorers: +1 Explorer".into());
+            }
+            // Habsburg Mining 6, The Empire Ascendant: on a board with 3 or fewer Blight, +1
+            // Explorer in each land explored, 2 lands a board a card (the first in land order)
+            if rules.mining(6) && empire.get(&id.board).is_some_and(|b| *b <= 3) && *empire_used.get(&id.board).unwrap_or(&0) < 2 {
+                *empire_used.entry(id.board.clone()).or_insert(0) += 1;
+                l.c.explorers += 1;
+                o.added.push(PieceKind::Explorer);
+                o.notes.push("The Empire Ascendant: +1 Explorer".into());
+            }
             for (n, target) in &rules.explore_bonus {
                 let applies = target.is_empty() || (target == "LandWithoutTownCity" && l.c.buildings() == 0);
                 if applies {
@@ -643,6 +806,61 @@ fn explore_step(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<O
         }
         out.push(o);
     }
+    // France 6, Persistent Explorers: "After resolving an Explore Card, on each board add 1
+    // {Explorer} to a land without any."
+    if rules.france(6) {
+        for b in &boards {
+            for (id, rec) in per_board(island, &[], b, &|l| l.c.explorers == 0, 1) {
+                island.lands.get_mut(&id).unwrap().c.explorers += 1;
+                out.push(Outcome { added: vec![PieceKind::Explorer], notes: vec![format!("Persistent Explorers: +1 Explorer in {id} ({})", if rec { "the record's pick" } else { "the player's likeliest pick" })], ..Outcome::new(&id) });
+            }
+        }
+    }
+    // the Habsburg Monarchy's escalation, after Exploring: "On each board with 4 or fewer
+    // {Blight}, add 1 {Town} to a land without {Town}/{Blight}. On each board with 2 or fewer
+    // {Blight}, do so again."
+    if escalates && rules.monarchy(0) {
+        for b in &boards {
+            let blight = blight_on(island, b);
+            let times = (blight <= 4) as usize + (blight <= 2) as usize;
+            for _ in 0..times {
+                for (id, rec) in per_board(island, &rules.escalation_lands, b, &|l| l.c.towns == 0 && l.c.blight == 0, 1) {
+                    island.lands.get_mut(&id).unwrap().c.towns += 1;
+                    out.push(Outcome { added: vec![PieceKind::Town], notes: vec![format!("the Monarchy's escalation: +1 Town in {id} ({})", if rec { "the record's pick" } else { "the player's likeliest pick" })], ..Outcome::new(&id) });
+                }
+            }
+        }
+    }
+    // France's escalation, after Exploring: "on each board, pick a land of the shown terrain. If
+    // it has {Town}/{City}, add 1 {Blight}. Otherwise, add 1 {Town}."
+    if escalates && rules.france(0) {
+        for b in &boards {
+            for (id, rec) in per_board(island, &rules.escalation_lands, b, &|l| card_matches(card, l), 1) {
+                let whose = if rec { "the record's pick" } else { "the player's likeliest pick" };
+                let l = island.lands.get_mut(&id).unwrap();
+                let mut o = Outcome::new(&id);
+                if l.c.buildings() > 0 {
+                    // Blight added: a presence destroyed, and onto Blight it cascades
+                    let cascades = l.c.blight > 0 && !l.no_cascade;
+                    l.c.blight += 1;
+                    o.blight += 1;
+                    if l.c.presence > 0 {
+                        l.c.presence -= 1;
+                        o.presence_destroyed += 1;
+                    }
+                    o.notes.push(format!("France's escalation: +1 Blight in {id} ({whose})"));
+                    if cascades {
+                        place_cascade(island, &id, rules, &mut o, 0);
+                    }
+                } else {
+                    l.c.towns += 1;
+                    o.added.push(PieceKind::Town);
+                    o.notes.push(format!("France's escalation: +1 Town in {id} ({whose})"));
+                }
+                out.push(o);
+            }
+        }
+    }
     // one outcome per land (an escalation Build and the Explore itself merge)
     let mut merged: Vec<Outcome> = Vec::new();
     for o in out {
@@ -657,16 +875,42 @@ fn explore_step(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<O
     merged
 }
 
+/// The piece a Build adds: the Habsburg Monarchy 2's More Rural Than Urban builds 2 Towns
+/// where it would build a City in an Inland land.
+fn put_built(l: &mut Land, piece: PieceKind, rules: &Rules, o: &mut Outcome) {
+    if piece == PieceKind::City && !l.coastal && rules.monarchy(2) {
+        l.c.towns += 2;
+        o.added.extend([PieceKind::Town, PieceKind::Town]);
+        o.notes.push("More Rural Than Urban: 2 Towns instead of an Inland City".into());
+        return;
+    }
+    match piece {
+        PieceKind::City => l.c.cities += 1,
+        _ => l.c.towns += 1,
+    }
+    o.added.push(piece);
+}
+
 pub fn build_land(island: &mut Island, id: &LandId, rules: &Rules) -> Outcome {
+    // France 4, Triangle Trade: a Coastal City's Town goes to the neighbor with the fewest Towns
+    let triangle_to: Option<LandId> = rules.france(4).then(|| island.lands[id].adjacent.iter().filter(|x| island.lands.get(*x).is_some_and(|n| n.terrain != Some(Terrain::Ocean))).min_by_key(|x| (island.lands[*x].c.towns, x.number)).cloned()).flatten();
     let l = island.lands.get_mut(id).unwrap();
     let mut o = Outcome::new(id);
     let piece = if l.c.towns > l.c.cities { PieceKind::City } else { PieceKind::Town };
     if l.skip_build {
         o.notes.push("Build skipped by a Spirit effect".into());
+    } else if rules.skips(InvaderStep::Build, l) {
+        o.notes.push("Build skipped: one Invader Action skipped (the player's choice)".into());
     } else if rules.chokes(InvaderStep::Build, l) {
         l.c.presence -= 1;
         o.presence_destroyed += 1;
         o.notes.push("Build skipped: a presence destroyed to choke it (Choke the Land with Green)".into());
+    } else if l.c.disease > 0 && !rules.ignore_disease && rules.vengeance() && rules.disease_builds.contains(id) && !(piece == PieceKind::City && l.coastal && rules.no_coastal_city) {
+        // The Terror of a Slowly Unfolding Plague: the Build happens, the Disease stays, 1 Fear
+        put_built(l, piece, rules, &mut o);
+        let fear = rules.hooks.iter().find_map(|(_, h)| if let si_model::spirit::RuleHook::DiseaseBuildForFear { fear } = h { Some(*fear as u32) } else { None }).unwrap_or(1);
+        o.fear += fear;
+        o.notes.push(format!("Disease let the Build happen for {fear} Fear (The Terror of a Slowly Unfolding Plague, as the record has it)"));
     } else if l.c.disease > 0 && !rules.ignore_disease {
         l.c.disease -= 1;
         if rules.vengeance() {
@@ -678,11 +922,21 @@ pub fn build_land(island: &mut Island, id: &LandId, rules: &Rules) -> Outcome {
     } else if piece == PieceKind::City && l.coastal && rules.no_coastal_city {
         o.notes.push("no City in a Coastal land this turn (Fear card)".into());
     } else {
-        match piece {
-            PieceKind::City => l.c.cities += 1,
-            _ => l.c.towns += 1,
-        }
-        o.added.push(piece);
+        put_built(l, piece, rules, &mut o);
+    }
+    // France 2, Slave Labor: "After Invaders Build in a land with 2 {Explorer} or more, replace
+    // all but 1 {Explorer} there with an equal number of {Town}."
+    if rules.france(2) && !o.added.is_empty() && l.c.explorers >= 2 {
+        let k = l.c.explorers - 1;
+        l.c.explorers = 1;
+        l.c.towns += k;
+        o.added.extend(std::iter::repeat_n(PieceKind::Town, k as usize));
+        o.notes.push(format!("Slave Labor: {k} Explorer replaced with Towns"));
+    }
+    let coastal_city = l.coastal && o.added.contains(&PieceKind::City);
+    if let Some((to, n)) = triangle_to.filter(|_| coastal_city).and_then(|to| island.lands.get_mut(&to).map(|n| (to, n))) {
+        n.c.towns += 1;
+        o.notes.push(format!("Triangle Trade: +1 Town in {to}"));
     }
     o
 }
@@ -690,15 +944,158 @@ pub fn build_land(island: &mut Island, id: &LandId, rules: &Rules) -> Outcome {
 /// Build: in each matching land with Invaders (England 1: also lands without
 /// Invaders next to two or more Towns and Cities), a City if Towns outnumber
 /// Cities, else a Town. Disease stops it.
+/// Upgrade 1 Explorer to a Town, else a Town to a City: the piece, as it was.
+fn upgrade_one(l: &mut Land) -> Option<PieceKind> {
+    if l.c.explorers > 0 {
+        l.c.explorers -= 1;
+        l.c.towns += 1;
+        Some(PieceKind::Explorer)
+    } else if l.c.towns > 0 {
+        l.c.towns -= 1;
+        l.c.cities += 1;
+        Some(PieceKind::Town)
+    } else {
+        None
+    }
+}
+
+/// A land on each board for an adversary's per-board piece: where the record shows the
+/// player picked, else the land a player would likeliest pick (the least presence, Dahan and
+/// Invaders). `(land, recorded)`.
+fn per_board(island: &Island, recorded: &[LandId], board: &str, ok: &dyn Fn(&Land) -> bool, n: usize) -> Vec<(LandId, bool)> {
+    let fits = |l: &Land| l.id.board == board && l.terrain != Some(Terrain::Ocean) && ok(l);
+    let mut out: Vec<(LandId, bool)> = recorded.iter().filter(|x| island.lands.get(*x).is_some_and(&fits)).take(n).map(|x| (x.clone(), true)).collect();
+    let mut rest: Vec<&Land> = island.lands.values().filter(|l| fits(l) && !out.iter().any(|(x, _)| *x == l.id)).collect();
+    rest.sort_by_key(|l| (l.c.presence, l.c.dahan, l.c.invaders(), l.id.number));
+    out.extend(rest.into_iter().take(n.saturating_sub(out.len())).map(|l| (l.id.clone(), false)));
+    out
+}
+
+/// After the Build Step, Habsburg Mining's Mining Boom: on each board, in a land with an
+/// Explorer, (II, level 5: Build there, then) Upgrade 1 Explorer.
+pub fn after_build(island: &mut Island, rules: &Rules, build: &[&InvaderCard]) -> Vec<Outcome> {
+    let mut out = Vec::new();
+    // the Habsburg Monarchy 1, Migratory Herders: "In each land matching a Build Card, Gather 1
+    // {Town} from a land not matching a Build Card. (In board/land order.)" (from the first
+    // such neighbor in land order)
+    if rules.monarchy(1) {
+        let matches = |l: &Land| build.iter().any(|c| card_matches(c, l));
+        let lands: Vec<LandId> = island.lands.values().filter(|l| l.terrain != Some(Terrain::Ocean) && matches(l)).map(|l| l.id.clone()).collect();
+        for id in lands {
+            let from = island.lands[&id].adjacent.iter().filter(|x| island.lands.get(*x).is_some_and(|n| !matches(n) && n.c.towns > 0)).min().cloned();
+            if let Some(from) = from {
+                island.lands.get_mut(&from).unwrap().c.towns -= 1;
+                island.lands.get_mut(&id).unwrap().c.towns += 1;
+                out.push(Outcome { notes: vec![format!("Migratory Herders: a Town gathered from {from}")], ..Outcome::new(&id) });
+            }
+        }
+    }
+    if !rules.mining(3) {
+        return out;
+    }
+    let boards: Vec<String> = island.lands.keys().map(|l| l.board.clone()).collect::<std::collections::BTreeSet<_>>().into_iter().collect();
+    for b in &boards {
+        for (id, rec) in per_board(island, &rules.upgrade_lands, b, &|l| l.c.explorers > 0, 1) {
+            let mut o = if rules.mining(5) { build_land(island, &id, rules) } else { Outcome::new(&id) };
+            let l = island.lands.get_mut(&id).unwrap();
+            if l.c.explorers > 0 {
+                l.c.explorers -= 1;
+                l.c.towns += 1;
+                o.notes.push(format!("Mining Boom: an Explorer in {id} upgraded ({})", if rec { "the record's pick" } else { "the player's likeliest pick" }));
+            }
+            out.push(o);
+        }
+    }
+    out
+}
+
+/// After the Ravage Step. Russia 6, Pressure for Fast Profit: "After the Ravage Step of turn 2+,
+/// on each board where it added no {Blight}: In the land with the most {Explorer} (min. 1),
+/// add 1 {Explorer} and 1 {Town}." Scotland 6, Exports Fuel Inward Growth: "add 1 {Town} to
+/// each Inland land that matches a Ravage Card and is within {1Range} of {Town}/{City}."
+/// `blighted`: the boards the step added Blight on.
+pub fn after_ravage(island: &mut Island, rules: &Rules, ravage: &[&InvaderCard], blighted: &std::collections::BTreeSet<String>) -> Vec<Outcome> {
+    let mut out = Vec::new();
+    let boards: Vec<String> = island.lands.keys().map(|l| l.board.clone()).collect::<std::collections::BTreeSet<_>>().into_iter().collect();
+    if rules.russia(6) && rules.turn >= 2 {
+        for b in boards.iter().filter(|b| !blighted.contains(*b)) {
+            let most = island.lands.values().filter(|l| l.id.board == *b).map(|l| l.c.explorers).max().unwrap_or(0);
+            if most == 0 {
+                continue;
+            }
+            for (id, _) in per_board(island, &[], b, &|l| l.c.explorers == most, 1) {
+                let l = island.lands.get_mut(&id).unwrap();
+                l.c.explorers += 1;
+                l.c.towns += 1;
+                out.push(Outcome { added: vec![PieceKind::Explorer, PieceKind::Town], notes: vec![format!("Pressure for Fast Profit: +1 Explorer and +1 Town in {id}")], ..Outcome::new(&id) });
+            }
+        }
+    }
+    if rules.scotland(6) {
+        let near_building = |island: &Island, l: &Land| l.c.buildings() > 0 || l.adjacent.iter().any(|x| island.lands.get(x).is_some_and(|n| n.c.buildings() > 0));
+        let lands: Vec<LandId> = island.lands.values().filter(|l| !l.coastal && l.terrain != Some(Terrain::Ocean) && ravage.iter().any(|c| card_matches(c, l)) && near_building(island, l)).map(|l| l.id.clone()).collect();
+        for id in lands {
+            island.lands.get_mut(&id).unwrap().c.towns += 1;
+            out.push(Outcome { added: vec![PieceKind::Town], notes: vec!["Exports Fuel Inward Growth: +1 Town".into()], ..Outcome::new(&id) });
+        }
+    }
+    out
+}
+
+/// After the Invader cards advance with a Stage II escalation card, Habsburg Mining's Mining
+/// Tunnels: "On each board, Explore in 2 lands whose terrains don't match a Ravage or Build
+/// Card (no source required)." `next` are the cards in the Ravage and Build spaces now.
+pub fn mining_tunnels(island: &mut Island, rules: &Rules, next: &[&InvaderCard]) -> Vec<Outcome> {
+    let mut out = Vec::new();
+    if !rules.mining(0) {
+        return out;
+    }
+    let boards: Vec<String> = island.lands.keys().map(|l| l.board.clone()).collect::<std::collections::BTreeSet<_>>().into_iter().collect();
+    for b in &boards {
+        for (id, rec) in per_board(island, &rules.tunnel_lands, b, &|l| !next.iter().any(|c| card_matches(c, l)), 2) {
+            let isolated = rules.isolated.contains(&id);
+            let l = island.lands.get_mut(&id).unwrap();
+            let mut o = Outcome::new(&id);
+            let whose = if rec { "the record's pick" } else { "the player's likeliest pick" };
+            if isolated || l.isolated {
+                o.notes.push("Mining Tunnels: Isolated, no Explore".into());
+            } else if l.c.wilds > 0 {
+                l.c.wilds -= 1;
+                o.notes.push(format!("Mining Tunnels: Wilds removed instead of the Explore ({whose})"));
+            } else {
+                l.c.explorers += 1;
+                o.added.push(PieceKind::Explorer);
+                o.notes.push(format!("Mining Tunnels: an Explore into {id} ({whose})"));
+            }
+            out.push(o);
+        }
+    }
+    out
+}
+
 fn build_step(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Outcome> {
     let mut out = Vec::new();
     for id in matching(island, card) {
+        // Ceaseless Mining: "During the Build Step, Build Cards cause Ravage Actions (instead of
+        // Build Actions)" in a Mining land
+        if rules.mining_land(&island.lands[&id]) {
+            if let Some(mut o) = ravage_land(island, &id, rules) {
+                o.notes.push("Ceaseless Mining: the Build card Ravages this Mining land".into());
+                out.push(o);
+            }
+            continue;
+        }
         let has_invaders = island.lands[&id].c.invaders() > 0;
         let england = rules.england(1) && !has_invaders && island.buildings_adjacent(&id) >= 2;
-        if has_invaders || england {
+        // Scotland 3, Chart the Coastline: "In Coastal lands, Build Cards affect lands without
+        // Invaders, so long as there is an adjacent {City}."
+        let chart = rules.scotland(3) && !has_invaders && island.lands[&id].coastal && island.lands[&id].adjacent.iter().any(|x| island.lands.get(x).is_some_and(|n| n.c.cities > 0));
+        if has_invaders || england || chart {
             let mut o = build_land(island, &id, rules);
             if england {
                 o.notes.push("Indentured Servants: Build into a land without Invaders".into());
+            } else if chart {
+                o.notes.push("Chart the Coastline: Build into a Coastal land without Invaders".into());
             }
             out.push(o);
         }
@@ -782,10 +1179,31 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
     if island.lands[&id].c.invaders() == 0 {
         return None;
     }
+    // Russia 2: where an Explorer the Dahan would destroy is Pushed instead, the player's pick:
+    // the neighbor with the fewest Dahan, presence and buildings
+    // (not out of an Isolated land, nor into one: then it is destroyed after all)
+    let isolated = |x: &LandId| rules.isolated.contains(x) || island.lands.get(x).is_some_and(|n| n.isolated);
+    // Habsburg Monarchy 6, Far-Flung Herds: +2 Damage (total) if any adjacent land has a Town
+    let herds_near = rules.monarchy(6) && island.lands[&id].adjacent.iter().any(|x| island.lands.get(x).is_some_and(|n| n.c.towns > 0));
+    // Sweden 5, Mining Rush: where its Town goes, the player's pick: an adjacent land without
+    // Town/City with the least presence, Dahan and Invaders
+    let rush_pick: Option<LandId> = rules.sweden(5).then(|| island.lands[&id].adjacent.iter().filter(|x| island.lands.get(*x).is_some_and(|n| n.terrain != Some(Terrain::Ocean) && n.c.buildings() == 0)).min_by_key(|x| island.lands.get(*x).map(|n| (n.c.presence, n.c.dahan, n.c.invaders(), x.number)).unwrap_or((u32::MAX, 0, 0, 0))).cloned()).flatten();
+    let flee_pick: Option<LandId> = (rules.explorers_flee() && !isolated(&id)).then(|| island.lands[&id].adjacent.iter().filter(|x| !isolated(x) && island.lands.get(*x).is_some_and(|n| n.terrain != Some(Terrain::Ocean))).min_by_key(|x| island.lands.get(*x).map(|n| (n.c.dahan, n.c.presence, n.c.buildings())).unwrap_or((u32::MAX, 0, 0))).cloned()).flatten();
+    let mut fled: Option<LandId> = None;
     let l = island.lands.get_mut(&id).unwrap();
     let mut o = Outcome::new(&id);
     if l.skip_ravage {
         o.notes.push("Ravage skipped by a Spirit effect".into());
+        return Some(o);
+    }
+    if rules.skips(InvaderStep::Ravage, l) {
+        o.notes.push("Ravage skipped: one Invader Action skipped (the player's choice)".into());
+        return Some(o);
+    }
+    // Ceaseless Mining: "Disease ... affect Ravage Actions as though they were Build Actions"
+    if rules.mining_land(l) && l.c.disease > 0 && !rules.ignore_disease {
+        l.c.disease -= 1;
+        o.notes.push("Disease stopped the Ravage of a Mining land (Ceaseless Mining)".into());
         return Some(o);
     }
     if rules.chokes(InvaderStep::Ravage, l) {
@@ -816,6 +1234,12 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
         o.notes.push(format!("{} Invaders did not take part (player's choice of which)", l.no_participation));
     }
     let raw: u32 = parts.iter().sum();
+    let raw = if herds_near && raw > 0 {
+        o.notes.push("Far-Flung Herds: +2 Damage, a Town next door".into());
+        raw + 2
+    } else {
+        raw
+    };
     let dmg = raw.saturating_sub(l.defend).saturating_sub(l.damage_minus);
     o.damage = dmg;
     let mut cascades = false;
@@ -829,6 +1253,14 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
             o.notes.push("Heavy Mining: 4+ overkill adds a Blight".into());
         }
         cascades = l.c.blight > 0 && !l.no_cascade;
+        // Habsburg Mining 1, Avarice Rewarded: the cascade instead Upgrades 1 Explorer/Town,
+        // before the Dahan strike back (which, the player's pick: an Explorer first)
+        if cascades && rules.mining(1) {
+            cascades = false;
+            if let Some(up) = upgrade_one(l) {
+                o.notes.push(format!("Avarice Rewarded: the cascade upgraded {up:?} instead"));
+            }
+        }
         if l.c.presence > 0 {
             o.presence_destroyed = 1;
             o.notes.push("1 presence per Spirit present destroyed (one Spirit assumed)".into());
@@ -838,9 +1270,7 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
             o.beasts_destroyed += 1;
             o.notes.push("Hunters: 1 Beast destroyed with the Blight".into());
         }
-        if rules.sweden(5) {
-            o.notes.push("Mining Rush: +1 Town in an adjacent land without Town/City (player's choice)".into());
-        }
+
     }
     // Dahan take the same damage; Badlands add to it
     let badlands = l.c.badlands + if rules.beasts_as_badlands { l.c.beasts } else { 0 };
@@ -863,7 +1293,14 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
     // Health it has left this turn (England 5: +1 Health); the rest stays on a survivor
     let bonus = rules.england(5) as u32;
     let full = move |k: PieceKind| k.health() as u32 + bonus;
-    let killed = l.take_damage(counter, &[PieceKind::Explorer, PieceKind::Town, PieceKind::City], &full, &[], false);
+    let mut killed = l.take_damage(counter, &[PieceKind::Explorer, PieceKind::Town, PieceKind::City], &full, &[], false);
+    // Russia 2: the Ravage's first Explorer destroyed is Pushed instead, 1 Fear
+    if let (Some(dest), Some(i)) = (&flee_pick, killed.iter().position(|k| *k == PieceKind::Explorer)) {
+        killed.remove(i);
+        o.fear += 1;
+        o.notes.push(format!("an Explorer the Dahan destroyed was Pushed to {dest} instead, 1 Fear (Russia's A Sense for Impending Disaster; where is the player's pick)"));
+        fled = Some(dest.clone());
+    }
     for k in &killed {
         o.invaders_destroyed += 1;
         o.destroyed.push(*k);
@@ -878,6 +1315,17 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
     l.wounds.retain(|(k, _)| *k != PieceKind::Dahan);
     l.wounds.extend(dahan_wounds);
     l.c.presence = l.c.presence.saturating_sub(o.presence_destroyed);
+    if let Some(d) = fled.and_then(|d| island.lands.get_mut(&d)) {
+        d.c.explorers += 1;
+    }
+    // Sweden 5, Mining Rush: "When Ravaging adds at least 1 {Blight} to a land, also add 1 {Town}
+    // to an adjacent land without {Town}/{City}." (not the cascade's)
+    if let Some((to, n)) = rush_pick.filter(|_| o.blight > 0).and_then(|to| island.lands.get_mut(&to).map(|n| (to, n))) {
+        n.c.towns += 1;
+        o.notes.push(format!("Mining Rush: +1 Town in {to} (the player's likeliest pick)"));
+    }
+    let lost = o.presence_destroyed;
+    presence_lost(island, &id, rules, lost, &mut o);
     if cascades {
         place_cascade(island, &id, rules, &mut o, 0);
     }
@@ -916,18 +1364,48 @@ fn place_cascade(island: &mut Island, from: &LandId, rules: &Rules, o: &mut Outc
     let chains = l.c.blight > 0 && !l.no_cascade;
     l.c.blight += 1;
     o.cascade += 1;
-    if l.c.presence > 0 {
-        l.c.presence -= 1;
-        o.presence_destroyed += 1;
-    }
+    let lost = l.c.presence.min(1);
+    l.c.presence -= lost;
+    o.presence_destroyed += lost;
     if rules.russia(1) && l.c.beasts > 0 {
         l.c.beasts -= 1;
         o.beasts_destroyed += 1;
     }
     o.notes.push(format!("cascade onto {to}{}", if recorded.is_some() { "" } else { " (player's choice)" }));
+    presence_lost(island, &to, rules, lost, o);
     if chains {
         place_cascade(island, &to, rules, o, depth + 1);
     }
+}
+
+/// What follows presence the Blight destroyed (not a Spirit Action): Vengeance's Lingering
+/// Pestilence adds a Disease where each was; Volcano's Collapse in a Blast of Lava and Steam,
+/// "When your {Presence} is Destroyed, in that land, deal 1 Damage per Destroyed {Presence} to
+/// both Invaders and to {Dahan}", its own Action, so Badlands add to it once on each side
+/// (Jagged Earth rulebook, Badlands).
+fn presence_lost(island: &mut Island, id: &LandId, rules: &Rules, destroyed: u32, o: &mut Outcome) {
+    // Vengeance's Lingering Pestilence: "When your {Presence} is Destroyed by anything except a
+    // Spirit Action, add 1 {Disease} where each {DestroyedPresenceNew} was."
+    let pestilence = destroyed > 0 && rules.hooks.iter().any(|(_, h)| matches!(h, si_model::spirit::RuleHook::DiseaseOnPresenceDestroyed));
+    if let Some(l) = island.lands.get_mut(id).filter(|_| pestilence) {
+        l.c.disease += destroyed;
+        o.notes.push(format!("{destroyed} presence destroyed in {id}: {destroyed} Disease added (Lingering Pestilence)"));
+    }
+    let per = rules.hooks.iter().find_map(|(_, h)| if let si_model::spirit::RuleHook::DamageOnPresenceDestroyed { per_presence } = h { Some(*per_presence as u32) } else { None }).unwrap_or(0);
+    if per == 0 || destroyed == 0 {
+        return;
+    }
+    let Some(l) = island.lands.get_mut(id) else { return };
+    let d = destroyed * per + l.c.badlands + if rules.beasts_as_badlands { l.c.beasts } else { 0 };
+    let bonus = rules.england(5) as u32;
+    let full = move |k: PieceKind| k.health() as u32 + bonus;
+    let killed = l.take_damage(d, &[PieceKind::Explorer, PieceKind::Town, PieceKind::City], &full, &[], false);
+    o.invaders_destroyed += killed.len() as u32;
+    o.destroyed.extend(killed.iter().copied());
+    let dahan_health = (2 + rules.dahan_health_bonus.get(id).copied().unwrap_or(0) + l.dahan_health as i32).max(1) as u32;
+    let dahan = l.take_dahan_damage(d, dahan_health);
+    o.dahan_lost += dahan;
+    o.notes.push(format!("{destroyed} presence destroyed in {id}: {d} Damage to the Invaders and to the Dahan (Collapse in a Blast of Lava and Steam)"));
 }
 
 /// Thunderspeaker's Sworn to Victory: after a Ravage destroys Dahan, 1 of the spirit's
@@ -1080,7 +1558,11 @@ pub mod oracle {
         for i in [3usize, 5, 6] {
             check(&mut out, b1[i] <= b0[i], "no Dahan, presence or Beast appears", || format!("{step:?}: {} {} -> {}", KINDS[i], b0[i], b1[i]));
         }
-        if step != InvaderStep::Ravage {
+        // (Habsburg Mining's Build cards Ravage its Mining lands: Blight in a Build too; France's
+        // escalation adds Blight after Exploring)
+        let build_ravages = step == InvaderStep::Build && rules.mining(1);
+        let cash_crops = step == InvaderStep::Explore && rules.france(0);
+        if step != InvaderStep::Ravage && !build_ravages && !cash_crops {
             check(&mut out, b1[4] == b0[4], "Blight only in a Ravage", || format!("{step:?}: Blight {} -> {}", b0[4], b1[4]));
         }
         // a board that both wins and loses is a sacrifice victory, a win
@@ -1308,6 +1790,180 @@ mod tests {
         assert!(loss(&one(Counts::default()), &b, Tally { blight: 3, ..t0 }).is_none(), "an unflipped card flips");
         let bare = island(vec![land("A1", Terrain::Sands, false, &[], Counts::default())]);
         assert!(loss(&bare, &Rules::default(), t0).is_some_and(|r| r.contains("presence")));
+    }
+
+    #[test]
+    fn volcanos_presence_destroyed_by_the_blight_collapses_on_both_sides() {
+        // 2 Towns Ravage: 4 Damage, Blight, the presence destroyed; the Dahan (2 of them) lose
+        // both to the 4 Damage, and the Collapse's 1 Damage then takes an Explorer left alive
+        let volcano = Rules { hooks: vec![("VolcanoLoomingHigh".into(), si_model::spirit::RuleHook::DamageOnPresenceDestroyed { per_presence: 1 })], ..Default::default() };
+        let c = Counts { explorers: 1, towns: 2, presence: 1, dahan: 2, ..Default::default() };
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], c)]);
+        let out = ravage(&mut isl, &card(Terrain::Sands), &volcano);
+        assert_eq!(out[0].presence_destroyed, 1);
+        assert!(out[0].notes.iter().any(|n| n.contains("Collapse")), "{:?}", out[0].notes);
+        let mut plain = island(vec![land("A1", Terrain::Sands, false, &[], c)]);
+        let base = ravage(&mut plain, &card(Terrain::Sands), &Rules::default());
+        assert_eq!(base[0].invaders_destroyed + 1, out[0].invaders_destroyed, "the Collapse destroys one Invader more: {:?} vs {:?}", base[0], out[0]);
+        // no presence lost, no Collapse
+        let mut none = island(vec![land("A1", Terrain::Sands, false, &[], Counts { presence: 0, ..c })]);
+        let out = ravage(&mut none, &card(Terrain::Sands), &volcano);
+        assert!(!out[0].notes.iter().any(|n| n.contains("Collapse")));
+    }
+
+    fn adv_at(id: &str, level: u8) -> Rules {
+        Rules { adversary: Some(id.into()), level, ..Default::default() }
+    }
+    fn lid(s: &str) -> LandId {
+        s.parse().unwrap()
+    }
+    fn escalating(t: Terrain) -> InvaderCard {
+        InvaderCard { escalation: true, stage: 2, ..card(t) }
+    }
+
+    #[test]
+    fn the_habsburg_monarchys_herds() {
+        // 2, More Rural Than Urban: an Inland City is 2 Towns; a Coastal one stays a City
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], Counts { towns: 1, ..Default::default() })]);
+        assert_eq!(build(&mut isl, &card(Terrain::Sands), &adv_at("TheHabsburgMonarchy", 2))[0].added, vec![PieceKind::Town, PieceKind::Town]);
+        let mut isl = island(vec![land("A1", Terrain::Sands, true, &[], Counts { towns: 1, ..Default::default() })]);
+        assert_eq!(build(&mut isl, &card(Terrain::Sands), &adv_at("TheHabsburgMonarchy", 2))[0].added, vec![PieceKind::City]);
+        // 6, Far-Flung Herds: +2 Damage when a neighbor has a Town (2 Explorers: 2 -> 4, both Dahan die)
+        let c = Counts { explorers: 2, dahan: 2, ..Default::default() };
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &["A2"], c), land("A2", Terrain::Jungle, false, &["A1"], Counts { towns: 1, ..Default::default() })]);
+        let out = ravage(&mut isl, &card(Terrain::Sands), &adv_at("TheHabsburgMonarchy", 6));
+        assert_eq!((out[0].damage, out[0].dahan_lost), (4, 2));
+        // 1, Migratory Herders: the Build card's land gathers a Town from a neighbor it misses
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &["A2"], Counts::default()), land("A2", Terrain::Jungle, false, &["A1"], Counts { towns: 2, ..Default::default() })]);
+        let sands = card(Terrain::Sands);
+        after_build(&mut isl, &adv_at("TheHabsburgMonarchy", 1), &[&sands]);
+        assert_eq!((isl.lands[&lid("A1")].c.towns, isl.lands[&lid("A2")].c.towns), (1, 1));
+        // its escalation: a board with 2 or fewer Blight gets 2 Towns, in lands without Town/Blight
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &["A2"], Counts::default()), land("A2", Terrain::Jungle, false, &["A1"], Counts::default())]);
+        explore(&mut isl, &escalating(Terrain::Mountain), &adv_at("TheHabsburgMonarchy", 0));
+        assert_eq!(isl.lands.values().map(|l| l.c.towns).sum::<u32>(), 2);
+    }
+
+    #[test]
+    fn frances_explorers_labor_and_trade() {
+        // 1, Frontier Explorers: an Explore into a land without Town/City brings 2
+        let mut isl = island(vec![land("A1", Terrain::Sands, true, &[], Counts::default())]);
+        explore(&mut isl, &card(Terrain::Sands), &adv_at("TheKingdomOfFrance", 1));
+        assert_eq!(isl.lands[&lid("A1")].c.explorers, 2);
+        // 2, Slave Labor: after a Build, all but 1 Explorer become Towns
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], Counts { explorers: 3, ..Default::default() })]);
+        build(&mut isl, &card(Terrain::Sands), &adv_at("TheKingdomOfFrance", 2));
+        assert_eq!((isl.lands[&lid("A1")].c.explorers, isl.lands[&lid("A1")].c.towns), (1, 3));
+        // 4, Triangle Trade: a Coastal City sends a Town to the neighbor with the fewest
+        let mut isl = island(vec![land("A1", Terrain::Sands, true, &["A2", "A3"], Counts { towns: 1, ..Default::default() }), land("A2", Terrain::Jungle, false, &["A1"], Counts { towns: 1, ..Default::default() }), land("A3", Terrain::Jungle, false, &["A1"], Counts::default())]);
+        build(&mut isl, &card(Terrain::Sands), &adv_at("TheKingdomOfFrance", 4));
+        assert_eq!((isl.lands[&lid("A1")].c.cities, isl.lands[&lid("A3")].c.towns), (1, 1));
+        // 6, Persistent Explorers: after the card, a land without Explorers gets one
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], Counts { towns: 1, ..Default::default() }), land("A2", Terrain::Jungle, false, &[], Counts::default())]);
+        explore(&mut isl, &card(Terrain::Mountain), &adv_at("TheKingdomOfFrance", 6));
+        assert_eq!(isl.lands.values().map(|l| l.c.explorers).sum::<u32>(), 1);
+        // its escalation: a land of the shown terrain with a Town takes Blight, without one a Town
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], Counts { towns: 1, ..Default::default() })]);
+        explore(&mut isl, &escalating(Terrain::Sands), &adv_at("TheKingdomOfFrance", 0));
+        assert_eq!(isl.lands[&lid("A1")].c.blight, 1);
+    }
+
+    #[test]
+    fn scotlands_ports_coast_and_exports() {
+        // 1, Trading Port: a Coastal Explore brings a Town
+        let mut isl = island(vec![land("A1", Terrain::Sands, true, &[], Counts::default())]);
+        explore(&mut isl, &card(Terrain::Sands), &adv_at("TheKingdomOfScotland", 1));
+        assert_eq!((isl.lands[&lid("A1")].c.towns, isl.lands[&lid("A1")].c.explorers), (1, 0));
+        // 3, Chart the Coastline: a Coastal land without Invaders next to a City Builds
+        let mut isl = island(vec![land("A1", Terrain::Sands, true, &["A2"], Counts::default()), land("A2", Terrain::Jungle, false, &["A1"], Counts { cities: 1, ..Default::default() })]);
+        assert_eq!(build(&mut isl, &card(Terrain::Sands), &adv_at("TheKingdomOfScotland", 3))[0].added, vec![PieceKind::Town]);
+        // 6, Exports Fuel Inward Growth: an Inland land of the Ravage card near a Town takes one
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &["A2"], Counts::default()), land("A2", Terrain::Jungle, false, &["A1"], Counts { towns: 1, ..Default::default() })]);
+        let sands = card(Terrain::Sands);
+        after_ravage(&mut isl, &adv_at("TheKingdomOfScotland", 6), &[&sands], &Default::default());
+        assert_eq!(isl.lands[&lid("A1")].c.towns, 1);
+        // its escalation: the board with the most Coastal Town/City, a Town in the land with the fewest
+        let mut isl = island(vec![land("A1", Terrain::Sands, true, &[], Counts { towns: 1, ..Default::default() }), land("A2", Terrain::Jungle, false, &[], Counts::default())]);
+        explore(&mut isl, &escalating(Terrain::Mountain), &adv_at("TheKingdomOfScotland", 0));
+        assert_eq!(isl.lands[&lid("A2")].c.towns, 1);
+    }
+
+    #[test]
+    fn russia_six_sweden_five_england_six_mining_six() {
+        // Russia 6: from turn 2, a board without Blight from the Ravage: +1 Explorer, +1 Town
+        // where the most Explorers are
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], Counts { explorers: 2, ..Default::default() }), land("A2", Terrain::Jungle, false, &[], Counts { explorers: 1, ..Default::default() })]);
+        let r = Rules { turn: 2, ..adv_at("TheTsardomOfRussia", 6) };
+        after_ravage(&mut isl, &r, &[], &Default::default());
+        assert_eq!((isl.lands[&lid("A1")].c.explorers, isl.lands[&lid("A1")].c.towns), (3, 1));
+        let mut isl2 = isl.clone();
+        after_ravage(&mut isl2, &Rules { turn: 1, ..r.clone() }, &[], &Default::default());
+        assert_eq!(isl2.lands, isl.lands, "not on turn 1");
+        // Sweden 5: a Ravage's Blight brings a Town to a neighbor without Town/City
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &["A2"], Counts { towns: 1, ..Default::default() }), land("A2", Terrain::Jungle, false, &["A1"], Counts::default())]);
+        ravage(&mut isl, &card(Terrain::Sands), &adv_at("TheKingdomOfSweden", 5));
+        assert_eq!(isl.lands[&lid("A2")].c.towns, 1);
+        // England 6: no Fear Card resolved, High Immigration Builds twice
+        assert!(Rules { fear_cards_resolved: Some(0), ..adv_at("TheKingdomOfEngland", 6) }.england_resolves_twice());
+        assert!(!Rules { fear_cards_resolved: Some(1), ..adv_at("TheKingdomOfEngland", 6) }.england_resolves_twice());
+        // Habsburg Mining 6: a board with 3 or fewer Blight, +1 Explorer in each land explored (2 a board)
+        let mut isl = island(vec![land("A1", Terrain::Sands, true, &[], Counts::default()), land("A2", Terrain::Sands, true, &[], Counts::default()), land("A3", Terrain::Sands, true, &[], Counts::default())]);
+        explore(&mut isl, &card(Terrain::Sands), &adv_at("HabsburgMiningExpedition", 6));
+        assert_eq!(isl.lands.values().map(|l| l.c.explorers).sum::<u32>(), 5);
+    }
+
+    #[test]
+    fn habsburg_minings_lands_boom_and_tunnels() {
+        let a1: LandId = "A1".parse().unwrap();
+        let a2: LandId = "A2".parse().unwrap();
+        let mining = |level: u8| Rules { adversary: Some("HabsburgMiningExpedition".into()), level, ..Default::default() };
+        // Ceaseless Mining: a Build card Ravages a land with 3 or more Invaders...
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], Counts { explorers: 2, towns: 1, ..Default::default() })]);
+        let out = build(&mut isl, &card(Terrain::Sands), &mining(1));
+        assert!(out[0].added.is_empty() && out[0].blight == 1, "{:?}", out[0]);
+        // ...and its Disease stops that Ravage as it would a Build
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], Counts { explorers: 2, towns: 1, disease: 1, ..Default::default() })]);
+        let out = ravage(&mut isl, &card(Terrain::Sands), &mining(1));
+        assert_eq!((out[0].blight, isl.lands[&a1].c.disease), (0, 0));
+        // a land with fewer Invaders Builds as ever
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], Counts { explorers: 1, ..Default::default() })]);
+        assert_eq!(build(&mut isl, &card(Terrain::Sands), &mining(1))[0].added, vec![PieceKind::Town]);
+        // Avarice Rewarded: the cascade upgrades an Explorer instead
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &["A2"], Counts { explorers: 2, blight: 1, ..Default::default() }), land("A2", Terrain::Jungle, false, &["A1"], Counts::default())]);
+        let out = ravage(&mut isl, &card(Terrain::Sands), &mining(1));
+        assert_eq!((out[0].cascade, isl.lands[&a2].c.blight, isl.lands[&a1].c.towns, isl.lands[&a1].c.explorers), (0, 0, 1, 1), "{:?}", out[0]);
+        // Mining Boom (level 3): the recorded land's Explorer upgraded after the Build
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &["A2"], Counts { explorers: 1, ..Default::default() }), land("A2", Terrain::Jungle, false, &["A1"], Counts { explorers: 1, ..Default::default() })]);
+        let out = after_build(&mut isl, &Rules { upgrade_lands: vec![a2.clone()], ..mining(3) }, &[]);
+        assert_eq!((out.len(), isl.lands[&a2].c.towns, isl.lands[&a1].c.towns), (1, 1, 0));
+        assert!(after_build(&mut isl, &mining(2), &[]).is_empty(), "no Mining Boom below level 3");
+        // Mining Tunnels: 2 Explores per board in lands the next Ravage and Build cards miss
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &["A2"], Counts::default()), land("A2", Terrain::Jungle, false, &["A1"], Counts { wilds: 1, ..Default::default() })]);
+        let next = card(Terrain::Sands);
+        let out = mining_tunnels(&mut isl, &mining(0), &[&next]);
+        assert_eq!((out.len(), isl.lands[&a1].c.explorers, isl.lands[&a2].c.wilds), (1, 0, 0), "only A2 misses the card; its Wilds take the Explore");
+    }
+
+    #[test]
+    fn vengeances_pestilence_and_its_build_through_disease() {
+        use si_model::spirit::RuleHook;
+        let vengeance = Rules { hooks: vec![("VengeanceAsABurningPlague".into(), RuleHook::DiseaseOnPresenceDestroyed), ("VengeanceAsABurningPlague".into(), RuleHook::DiseaseBuildForFear { fear: 1 })], ..Default::default() };
+        // Lingering Pestilence: the presence the Ravage's Blight destroyed leaves a Disease
+        let c = Counts { towns: 2, presence: 1, ..Default::default() };
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], c)]);
+        ravage(&mut isl, &card(Terrain::Sands), &vengeance);
+        let a1: LandId = "A1".parse().unwrap();
+        assert_eq!((isl.lands[&a1].c.presence, isl.lands[&a1].c.disease), (0, 1));
+        // The Terror of a Slowly Unfolding Plague: where the record let the Build through, it
+        // happens, the Disease stays and 1 Fear; elsewhere the Disease stops it
+        let c = Counts { towns: 1, disease: 1, ..Default::default() };
+        let through = Rules { disease_builds: vec![a1.clone()], ..vengeance.clone() };
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], c)]);
+        let out = build(&mut isl, &card(Terrain::Sands), &through);
+        assert_eq!((isl.lands[&a1].c.disease, out[0].added.len(), out[0].fear), (1, 1, 1));
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], c)]);
+        let out = build(&mut isl, &card(Terrain::Sands), &vengeance);
+        assert_eq!((isl.lands[&a1].c.disease, out[0].added.len(), out[0].fear), (0, 0, 0));
     }
 
     #[test]

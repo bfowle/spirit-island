@@ -232,6 +232,10 @@ pub struct Innate {
     /// Sentences printed on the innate above its tiers ("This Power's Damage is done (separately) to both Invaders and Dahan").
     #[serde(default)]
     pub rider: Vec<String>,
+    /// What the innate does on every use, before its tiers: its rider read as effects
+    /// (Explosive Eruption's "Destroy X (1 or more) of your {Presence} in target land").
+    #[serde(default)]
+    pub effects: Vec<crate::power::Effect>,
 }
 
 impl Innate {
@@ -607,6 +611,7 @@ mod tests {
                 Tier { modifier: true, ..tier(&[(Element::Air, 4)], "This Power may be Fast") },
             ],
             rider: vec![],
+            effects: vec![],
         };
         let mut have = ElementSet::new();
         have.add(Element::Air, 2);

@@ -259,7 +259,8 @@ pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, 
         }
     }
     all.extend(typed.iter().cloned());
-    let cards: Vec<Play> = all.iter().filter(|p| !p.innate).cloned().collect();
+    // the cards played: a Repeat is none (`repeat`)
+    let cards: Vec<Play> = crate::repeat::first_uses(&all).into_iter().filter(|p| !p.innate).cloned().collect();
     let cost: i64 = cards.iter().map(|p| p.cost).sum();
     if cost > pos.energy {
         notes.push(format!("costs {cost} Energy, {} available", pos.energy));
@@ -279,6 +280,7 @@ pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, 
     if let Some(e) = crate::forced_speed_error(defs, spirit, &typed, &elements) {
         return Err(e);
     }
+    notes.extend(crate::repeat::holds(defs, &all, &elements, &graph).into_iter().map(|v| v.to_string()));
     // `all` acts in order: the plays made already as made, then the plan's as written
     // the next turn as the face-up cards project it: its Ravage is this turn's Build slot,
     // its Build this turn's Explore once known (`informed_build` substitutes the candidate)
@@ -295,8 +297,9 @@ pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, 
             island = verify::island_at(rec, defs, t, "before_slow");
         } else {
             island = verify::island_at(rec, defs, t, "before_fast");
+            let others = crate::others_presence(rec, t.turn, spirit);
             for (id, l) in island.lands.iter_mut() {
-                l.c.presence = s2.presence_after.get(id).copied().unwrap_or(0);
+                l.c.presence = s2.presence_after.get(id).copied().unwrap_or(0) + others.get(id).copied().unwrap_or(0);
             }
             crate::apply_plays(&mut island, defs, &all, true, &elements, rules, spirit, t, &mut armed, &mut out);
             crate::invader_phase(&mut island, rec, t, defs, rules, &mut out, Some(explore), false);

@@ -31,6 +31,7 @@ use si_model::game::Phase;
 use si_model::oracle::Rng;
 
 use crate::live::{score_plan, OpenTurn};
+use crate::repeat;
 use crate::{actual_position, closed_turns, growth_positions, spirit_at, dahan_moves, elements_for, in_use_order, innate_targets_reach, innates_of, may_be_fast, parse_plays, play_options, push_lands, recorded_plays, try_plays, Line, Move, Play, Position, Rules};
 
 #[derive(Debug, Clone)]
@@ -145,7 +146,15 @@ fn random_line(rng: &mut Rng, defs: &Definitions, pos: &Position, s2: &SpiritTur
         p.exact = !p.moves.is_empty() && rng.coin();
     }
     rng.shuffle(&mut plays);
-    plays
+    // each Power's Repeats after it, a Fast one at a random land it may take (`repeat`)
+    let usual = |p: &Play| -> Vec<LandId> {
+        match defs.cards.get(&p.power) {
+            Some(c) => play_options(c, &pos.presence, &t.before_fast, graph).into_iter().filter_map(|o| o.target).collect(),
+            None => innates.iter().find(|i| i.id == p.power).map(|i| innate_targets_reach(i, s2, &t.before_fast, graph, presence_moves)).unwrap_or_default(),
+        }
+    };
+    let mut lines = repeat::expand(defs, &plays, &elements, &usual, graph, &pos.presence, 8);
+    lines.swap_remove(rng.below(lines.len()))
 }
 
 /// What a line produced, for comparing two runs that should agree.
@@ -263,7 +272,11 @@ pub fn fuzz_game(rec: &GameRecord, defs: &Definitions, opts: &FuzzOptions) -> Fu
                     find("not deterministic", format!("{} vs {}", produced(&line), produced(&again)), shown.clone(), seed);
                 }
             }
-            for v in line.holds(&island, presence0) {
+            for v in line.holds(defs, &island, presence0) {
+                find(v.law, v.detail, shown.clone(), seed);
+            }
+            let played: Vec<&PowerCard> = plays.iter().filter_map(|p| defs.cards.get(&p.power)).collect();
+            for v in repeat::holds(defs, &plays, &elements_for(defs, &s2, &played), &graph) {
                 find(v.law, v.detail, shown.clone(), seed);
             }
             // written out and read back, the line plays the same, and writes the same again
@@ -323,8 +336,10 @@ pub fn fuzz_open(open: &OpenTurn, defs: &Definitions, opts: &FuzzOptions, at: &s
     let actual = actual_position(rec, sdefs, &open.s, t);
     let positions: Vec<Position> = if open.phase == Phase::SpiritPhase { growth_positions(rec, sdefs, &open.s, t, &graph) } else { Vec::new() };
     let (made_cards, made_innates) = recorded_plays(rec, sdefs, &open.s, t, &innates);
-    let start = |pos: &Position| -> u32 { if at_slow { t.before_slow.values().map(|c| c.presence).sum() } else { pos.presence.values().sum() } };
-    for v in none.holds(&island, start(&actual)) {
+    // the presence the plan starts from: the position's and the other Spirits' as recorded
+    let others: u32 = crate::others_presence(rec, t.turn, &open.spirit).values().sum();
+    let start = |pos: &Position| -> u32 { if at_slow { t.before_slow.values().map(|c| c.presence).sum() } else { pos.presence.values().sum::<u32>() + others } };
+    for v in none.holds(defs, &island, start(&actual)) {
         rep.findings.push(finding(v.law, v.detail, "doing nothing".into(), 0));
     }
     for i in 0..opts.lines {
@@ -364,7 +379,7 @@ pub fn fuzz_open(open: &OpenTurn, defs: &Definitions, opts: &FuzzOptions, at: &s
                 rep.findings.push(finding("not deterministic", format!("{} vs {}", produced(&line), produced(&again)), text.clone(), seed));
             }
         }
-        for v in line.holds(&island, start(&pos)) {
+        for v in line.holds(defs, &island, start(&pos)) {
             rep.findings.push(finding(v.law, v.detail, text.clone(), seed));
         }
         // the plan as the screen writes it, typed back in

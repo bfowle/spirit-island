@@ -179,8 +179,9 @@ pub enum Effect {
     Variable { what: String, by: String },
     /// The player picks a piece or Spirit the rest of the card acts on.
     Choose(String),
-    /// Move pieces between lands (not a Push or Gather from the target).
-    Move { count: u8, what: Vec<PieceFilter> },
+    /// Move pieces between lands (not a Push or Gather from the target): where they go is
+    /// the player's choice, as the line states it, within `reach`.
+    Move { count: u8, what: Vec<PieceFilter>, reach: MoveReach },
     Isolate,
     /// Invaders skip their Ravage in the land.
     SkipRavage,
@@ -206,10 +207,18 @@ pub enum Effect {
     RangeBonus(u8),
     /// The Power may be used in the Fast phase (sometimes for a cost).
     MayBeFast { cost: Option<u8> },
-    Repeat,
+    /// "Repeat this Power": once this use resolves, the Power is used again, a new use and
+    /// Action of its own (core rulebook p.19; Jagged Earth rulebook, Repeats). It gives no
+    /// Elements again, its own Repeats are ignored, it keeps the Power's speed, and its
+    /// choices may differ. A line carries it as a later play of the same Power, so within one
+    /// use it does nothing.
+    Repeat(RepeatAt),
     /// The tier replaces the tiers reached before it ("Instead, 3 Fear and Defend 4"): the
     /// first effect of such a tier, a marker with no effect of its own.
     Instead,
+    /// The tier acts before the card's own effects ("First, Gather up to 3 {Dahan}"): the
+    /// first effect of such a tier, a marker with no effect of its own.
+    First,
     /// A tier's cost beyond elements, at the head of its effects (`what` the cost's name:
     /// `Beast` in the target land, `DestroyedPresence` the presence destroyed for it,
     /// `Energy`, `PowerCards`): the tier is reached only when it is met.
@@ -257,7 +266,7 @@ impl Effect {
             Spread { kind, count, scope } => format!("add {count} {} among {scope} (player's choice of lands)", token_word(*kind)),
             Ravage => "Invaders in the target land Ravage now".into(),
             FearDeckRemove { energy_per_player } => format!("optional: {energy_per_player} Energy per player to remove the top Fear card from the game"),
-            Move { count, what } => format!("move {} {}", n(*count), list(what)),
+            Move { count, what, reach } => format!("move {} {} {}", n(*count), list(what), reach.words()),
             Isolate => "Isolate the land".into(),
             SkipRavage => "Invaders skip their Ravage here".into(),
             SkipBuild => "Invaders skip their Build here".into(),
@@ -278,8 +287,12 @@ impl Effect {
             RangeBonus(k) => format!("+{k} Range"),
             MayBeFast { cost: Some(c) } => format!("may be Fast for {c} Energy"),
             MayBeFast { cost: None } => "may be Fast".into(),
-            Repeat => "repeat this Power".into(),
+            Repeat(RepeatAt::Usual) => "repeat this Power".into(),
+            Repeat(RepeatAt::Adjacent) => "repeat this Power in an adjacent land".into(),
+            Repeat(RepeatAt::Within(n)) => format!("repeat this Power on a different land within {n} of the target"),
+            Repeat(RepeatAt::TargetOrPresence) => "repeat this Power in the target land or a land with your presence".into(),
             Instead => "instead of the tiers before".into(),
+            First => "before the card's own effects".into(),
             Requires { what, count } => format!("needs {count} {what}"),
             Both => "you may do both".into(),
             Per { per, then } => format!("for each {}: {}", per.words(), then.iter().map(Effect::words).collect::<Vec<_>>().join("; ")),
@@ -327,13 +340,12 @@ impl Effect {
     pub fn simulated(&self) -> bool {
         use Effect::*;
         match self {
-            Other(_) | Unmodeled(_) | Repeat | PlayAnother | MakeFast(_) | Reclaim(_) | RegainForgotten | EnergyPer { .. } | InvaderRule(_) | FearDeckRemove { .. } | GainPowerCard { .. } | GainElement(_) | RangeBonus(_) | MayBeFast { .. } | Both | GainEnergy(_) | TokenChoice { .. } | ChooseLand(_) => false,
+            Other(_) | Unmodeled(_) | PlayAnother | MakeFast(_) | Reclaim(_) | RegainForgotten | EnergyPer { .. } | InvaderRule(_) | FearDeckRemove { .. } | GainPowerCard { .. } | GainElement(_) | RangeBonus(_) | MayBeFast { .. } | Both | GainEnergy(_) | TokenChoice { .. } | ChooseLand(_) => false,
             SpiritEffect(_) | SpecialToken { .. } | Timing { .. } | Movement(_) | DeckEffect(_) | Variable { .. } | Choose(_) => false,
             Clarification(_) | Distribution(_) | MaySlow => true,
-            Per { per: PieceFilter::Other(s), then } => {
-                let l = s.to_ascii_lowercase();
-                (l.starts_with("elements:") || l.contains("adjacent") || l.contains("past the first") || l.contains('{')) && then.iter().all(Effect::simulated)
-            }
+            // the line plays the Repeat as a use of its own
+            Repeat(_) => true,
+            Per { per: PieceFilter::Other(s), then } => per_understood(s) && then.iter().all(Effect::simulated),
             Conditional { condition, then } => !condition.to_ascii_lowercase().starts_with("after") && then.iter().all(Effect::simulated),
             Trigger { when, then, .. } => {
                 let w = when.to_ascii_lowercase();
@@ -384,6 +396,8 @@ impl PieceFilter {
             PieceFilter::Presence => "presence".into(),
             PieceFilter::Blight => "Blight".into(),
             PieceFilter::AnyInvader => "Invader".into(),
+            // a count the simulator takes reads as words; one it does not stays quoted
+            PieceFilter::Other(s) if per_understood(s) => s.replace(['{', '}'], ""),
             PieceFilter::Other(s) => format!("\"{s}\""),
         }
     }
@@ -448,6 +462,80 @@ impl DamageTarget {
         matches!(self, DamageTarget::Invaders | DamageTarget::EachInvader | DamageTarget::ExplorerTownOnly)
     }
 }
+
+/// Where a Repeat may be used. Core rulebook p.19: "If a Repeat specifies where to use it,
+/// obey those instructions (instead of the usual Range and Target restrictions). Otherwise,
+/// you can choose any valid target by the usual rules, including the same target as its
+/// first use."
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum RepeatAt {
+    /// Any target the Power could take ("Repeat this Power.").
+    Usual,
+    /// A land adjacent to the first use's ("Repeat this Power on an adjacent land").
+    Adjacent,
+    /// A different land within this many of the first use's ("Repeat this power on a
+    /// different land within {3Range} (of target land)").
+    Within(u8),
+    /// The first use's land or one with the Spirit's presence ("Repeat this Power in target
+    /// land or in a land with your {Presence}").
+    TargetOrPresence,
+}
+
+/// Where a Move's pieces may go, as the card prints it. Each move is the player's choice:
+/// the line states it (`Wrap[C7>C3x3]`), and unstated nothing moves.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum MoveReach {
+    /// Out of the target to a land up to this many away; 255 any land ("Move up to 5
+    /// {Dahan} to any land").
+    From(u8),
+    /// Into the target from a land up to this many away; 255 any ("Move up to 2 {Beast}
+    /// within {3Range} to target land", "from other lands to target land").
+    Into(u8),
+    /// Step by step from the target, each step to an adjacent land, up to this many steps
+    /// per piece ("Move 1 {Beast} up to two lands"; it may come back).
+    Path(u8),
+    /// With the pieces this Power moved, along their steps, up to this many per piece moved
+    /// ("1 {Disease} may move with each Pushed piece": 1; "As it moves, up to 2 {Dahan} may
+    /// move with it": 2).
+    Along(u8),
+    /// Between the target and a land with the Spirit's presence, either way ("Move up to 4
+    /// {Dahan} between target land and one of your lands").
+    Between,
+    /// From a land with the Spirit's presence to a different one ("Move 1 of your
+    /// {Presence} to a different land with your {Presence}").
+    ToPresence,
+    /// Out of the target to a land up to this many away with the same terrain ("to a land
+    /// within {2Range} that has the same terrain").
+    SameTerrain(u8),
+}
+
+impl MoveReach {
+    pub fn words(self) -> String {
+        match self {
+            MoveReach::From(255) => "to any land".into(),
+            MoveReach::From(n) => format!("to a land within {n}"),
+            MoveReach::Into(255) => "into the target from any land".into(),
+            MoveReach::Into(n) => format!("into the target from within {n}"),
+            MoveReach::Path(n) => format!("up to {n} lands, step by step"),
+            MoveReach::Along(n) => format!("along with the pieces it moved, {n} per piece"),
+            MoveReach::Between => "between the target and one of your lands".into(),
+            MoveReach::ToPresence => "to a different land with your presence".into(),
+            MoveReach::SameTerrain(n) => format!("to a land within {n} of the same terrain"),
+        }
+    }
+}
+
+/// A "for each" count beyond a plain piece that the simulator takes: elements the Spirit
+/// has, pieces in adjacent lands, past the first, what this use pushed or removed, the
+/// presence destroyed for it.
+pub fn per_understood(s: &str) -> bool {
+    let l = s.to_ascii_lowercase();
+    l.starts_with("elements:") || l.contains("adjacent") || l.contains("past the first") || l.contains('{') || l == X_DESTROYED || l.starts_with("invader pushed by this power")
+}
+
+/// The X Explosive Eruption defines ("Destroy X (1 or more) of your {Presence} in target
+/// land"), as a "per": the presence destroyed for the Power, a count the line states (`-Pr`).
+pub const X_DESTROYED: &str = "your presence destroyed for it";
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum PieceFilter {
@@ -611,7 +699,7 @@ impl Features {
             Defend(d) => self.defend += *d as u32,
             Spread { count, .. } => self.tokens_added += n(*count),
             Ravage | FearDeckRemove { .. } => {}
-            Push { count, what } | Move { count, what } => {
+            Push { count, what } | Move { count, what, .. } => {
                 if what.iter().any(PieceFilter::is_invader) {
                     self.push_invaders += n(*count)
                 }
@@ -637,8 +725,8 @@ impl Features {
             Isolate | SkipRavage | SkipBuild | SkipExplore | SkipAll | SkipAction(_) | NoParticipation(_) | DahanImmune | InvaderDamageMinus(_) => self.skip += 1,
             GainEnergy(e) => self.energy += *e as u32,
             GainPowerCard { .. } | GainElement(_) => self.cards += 1,
-            RangeBonus(_) | Repeat | MayBeFast { .. } | Both | MakeFast(_) | Unmodeled(_) | SpiritEffect(_) | SpecialToken { .. } | Timing { .. } | Movement(_) | DeckEffect(_) | Variable { .. } | Choose(_) | MaySlow => self.other += 1,
-            Instead | Requires { .. } => {}
+            RangeBonus(_) | Repeat(_) | MayBeFast { .. } | Both | MakeFast(_) | Unmodeled(_) | SpiritEffect(_) | SpecialToken { .. } | Timing { .. } | Movement(_) | DeckEffect(_) | Variable { .. } | Choose(_) | MaySlow => self.other += 1,
+            Instead | First | Requires { .. } => {}
             Clarification(_) | Distribution(_) | Build => {}
             DestroyPresence(_) | NoBlight => self.skip += 1,
             RemoveHealth(k) => self.destroy += *k as u32,

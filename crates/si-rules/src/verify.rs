@@ -112,6 +112,19 @@ pub fn with_wounds(mut island: Island, wounds: Option<&BTreeMap<LandId, Vec<(Pie
     island
 }
 
+/// The lands a Spirit Power Isolated before this turn's Invader phase (a Fast Power's printed
+/// Isolate, at the land it targeted; a Slow one acts after the Invaders).
+pub fn isolated_by_powers(rec: &GameRecord, defs: &Definitions, turn: u32) -> Vec<LandId> {
+    let isolates = |power: &str| -> bool {
+        let isolate = |e: &Effect| matches!(e, Effect::Isolate);
+        match defs.cards.get(power) {
+            Some(c) => c.all_effects().any(isolate),
+            None => defs.spirits.values().flat_map(|p| p.innates.iter()).filter(|i| i.id == power).flat_map(|i| i.tiers.iter().flat_map(|t| t.effects.iter())).any(isolate),
+        }
+    };
+    rec.spirits.iter().filter(|s| s.turn == turn).flat_map(|s| s.powers_used.iter()).filter(|(phase, power, _)| *phase == Phase::FastPower && isolates(power)).filter_map(|(_, _, target)| target.clone()).collect()
+}
+
 /// Spirit Powers used in this turn's Fast phase whose printed effect skips an
 /// Invader step in their target land. Not used by `verify` (the engine logs
 /// the skip itself); kept for the simulate mode, where no log exists.
@@ -227,6 +240,74 @@ pub fn chokes_of(rec: &GameRecord, t: &TurnRecord) -> Vec<(InvaderStep, LandId)>
         .collect()
 }
 
+/// The player's answers to the engine's "Skip Ravage / Allow Ravage" questions this turn
+/// (a "skip one Invader Action" kept for the land), by Action and land.
+pub fn skip_answers_of(t: &TurnRecord) -> Vec<(InvaderStep, LandId, bool)> {
+    t.choices
+        .iter()
+        .filter(|c| c.kind == "Effect" && c.choices.iter().any(|x| x.starts_with("Skip ")) && c.choices.iter().any(|x| x.starts_with("Allow ")))
+        .filter_map(|c| {
+            let land = engine_land(&c.reason)?;
+            let word = c.selected.split(' ').nth(1)?;
+            let step = match word {
+                "Ravage" => InvaderStep::Ravage,
+                "Build" => InvaderStep::Build,
+                "Explore" => InvaderStep::Explore,
+                _ => return None,
+            };
+            Some((step, land, c.selected.starts_with("Skip ")))
+        })
+        .collect()
+}
+
+/// A land as the engine names it (`MountainC7`): the land (`C7`).
+pub fn engine_land(name: &str) -> Option<LandId> {
+    let bare = ["Mountain", "Jungle", "Sands", "Wetland", "Ocean"].iter().find_map(|w| name.strip_prefix(w)).unwrap_or(name);
+    bare.parse().ok()
+}
+
+/// The lands the player picked for the escalation's pieces this turn (Prussia's Town,
+/// Russia's Explorers), in order: the adversary's own location choices in the Explore step.
+/// Whether the record shows this turn's escalation placed in a step other than the Explore
+/// (Russia 5's Entrench sends a Stage II card straight to the Build space, and its escalation
+/// comes there): then the Explore does not escalate again.
+pub fn escalated_elsewhere_of(t: &TurnRecord) -> bool {
+    let placed = |phase: si_model::game::Phase| t.choices.iter().any(|c| c.phase == phase && c.source_kind == "Rule" && matches!(c.reason.as_str(), "AddingExplorer" | "AddingTown"));
+    !placed(si_model::game::Phase::Explore) && (placed(si_model::game::Phase::Build) || placed(si_model::game::Phase::Ravage))
+}
+
+pub fn escalation_lands_of(t: &TurnRecord) -> Vec<LandId> {
+    t.choices
+        .iter()
+        .filter(|c| c.phase == si_model::game::Phase::Explore && c.source_kind == "Rule" && matches!(c.reason.as_str(), "AddingExplorer" | "AddingTown"))
+        .filter_map(|c| engine_land(&c.selected))
+        .collect()
+}
+
+/// The lands the record shows the player picking for Habsburg Mining's Mining Boom (Build)
+/// and Mining Tunnels (after the cards advance), in order.
+pub fn mining_lands_of(t: &TurnRecord) -> (Vec<LandId>, Vec<LandId>) {
+    let picks = |phase: si_model::game::Phase, reason: &str| -> Vec<LandId> { t.choices.iter().filter(|c| c.phase == phase && c.source_kind == "Rule" && c.reason == reason).filter_map(|c| engine_land(&c.selected)).collect() };
+    (picks(si_model::game::Phase::Build, "UpgradeInvaders"), picks(si_model::game::Phase::AdvanceInvaderCards, "ExploreLand"))
+}
+
+/// The lands where the player let a Build happen through Disease (Vengeance's The Terror of
+/// a Slowly Unfolding Plague): in a game with that rule, a land that still holds Disease as
+/// the Slow phase begins and whose Build was not canceled. Disease that stopped a Build is
+/// gone, and its Build canceled; Disease a Build let through stays.
+pub fn disease_builds_of(rec: &GameRecord, defs: &Definitions, t: &TurnRecord) -> Vec<LandId> {
+    let vengeance = rec.meta.spirits.iter().any(|s| defs.spirits.get(s).is_some_and(|p| p.hooks().any(|h| matches!(h, si_model::spirit::RuleHook::DiseaseBuildForFear { .. }))));
+    if !vengeance {
+        return Vec::new();
+    }
+    t.before_slow
+        .iter()
+        .filter(|(_, c)| c.disease > 0)
+        .filter(|(l, _)| !t.canceled.iter().any(|c| c.step == InvaderStep::Build && c.land.as_ref() == Some(*l)))
+        .map(|(l, _)| l.clone())
+        .collect()
+}
+
 /// The `nth` use of a Power this turn, as the record has it.
 pub fn use_of<'a>(t: &'a TurnRecord, power: &str, nth: usize) -> Option<&'a si_record::PowerUse> {
     t.power_uses.iter().filter(|u| u.power == power).nth(nth)
@@ -297,8 +378,9 @@ pub fn apply_status_effects(island: &mut Island, rules: &mut Rules, t: &TurnReco
                 }
             }
             "IsolateStatusEffect" => {
+                // the engine names the land (`WetlandA2`)
                 for l in list(&p("LocationsToIsolate")) {
-                    if let Ok(id) = l.parse::<LandId>() {
+                    if let Some(id) = engine_land(&l) {
                         rules.isolated.push(id);
                     }
                 }
@@ -428,7 +510,21 @@ pub fn power_effects(defs: &Definitions, power: &str) -> Option<(Vec<Effect>, Ve
         return Some((c.effects.clone(), thresholds));
     }
     let innate = defs.spirits.values().flat_map(|s| s.innates.iter()).find(|i| i.id == power)?;
-    Some((vec![], innate.tiers.iter().filter(|t| !t.modifier).map(|t| (t.elements.clone(), t.effects.clone())).collect()))
+    // a tier that "requires another element option" (Forsake Society to Chase After Dreams'
+    // 4 Air Repeat) acts only beside an acting tier: its elements and the first one's
+    let first = innate.tiers.iter().find(|t| !t.modifier).map(|t| t.elements.clone()).unwrap_or_default();
+    let need = |t: &si_model::spirit::Tier| -> si_model::ElementSet {
+        if !t.modifier {
+            return t.elements.clone();
+        }
+        let mut n = t.elements.clone();
+        for e in si_model::element::Element::ALL {
+            let more = first.count(e).saturating_sub(n.count(e));
+            n.add(e, more);
+        }
+        n
+    };
+    Some((innate.effects.clone(), innate.tiers.iter().map(|t| (need(t), t.effects.clone())).collect()))
 }
 
 /// The spirit's elements this turn: revealed track slots plus every card played.
@@ -499,7 +595,7 @@ pub fn verify_powers(rec: &GameRecord, defs: &Definitions, rules: &Rules, report
                         continue;
                     }
                     let Some(target) = target else { continue };
-                    let ctx = effects::Ctx { health_bonus: rules.invader_health_bonus(), elements: elements.clone(), blight_as_badlands: rules.blight_as_badlands_for(&s.spirit), rules: Some(rules.clone()), placements: placements_of(defs, t, power), picks: picks_of(defs, t, power), moves: recorded_moves(rec, t.turn, power, Some(target)), moves_exact: true, branches: branches_of(defs, t, power), presence_with_dahan: rules.presence_with_dahan_for(&s.spirit), kills: None, site_beast: rules.site_beast_for(&s.spirit), beasts_far: rules.beasts_far_for(&s.spirit) };
+                    let ctx = effects::Ctx { health_bonus: rules.invader_health_bonus(), elements: elements.clone(), blight_as_badlands: rules.blight_as_badlands_for(&s.spirit), rules: Some(rules.clone()), placements: placements_of(defs, t, power), picks: picks_of(defs, t, power), moves: recorded_moves(rec, t.turn, power, Some(target)), moves_exact: true, branches: branches_of(defs, t, power), presence_with_dahan: rules.presence_with_dahan_for(&s.spirit), kills: None, site_beast: rules.site_beast_for(&s.spirit), beasts_far: rules.beasts_far_for(&s.spirit), collapse: rules.collapse_for(&s.spirit) };
                     let Some((base, thresholds)) = power_effects(defs, power) else {
                         notes_on.entry(target.clone()).or_default().push(format!("{power}: no definition"));
                         continue;
@@ -511,11 +607,17 @@ pub fn verify_powers(rec: &GameRecord, defs: &Definitions, rules: &Rules, report
                         }
                     }
                     let a = effects::apply(&base, &thresholds, &mut island, target, &ctx);
+                    // the Defend in each land it went to, the pieces it moved out of the target
+                    let moved_out: u32 = a.moves.iter().filter(|m| m.from == *target && m.to != *target).map(|m| m.n).sum();
                     let e = sim.entry(target.clone()).or_insert((0, 0, 0, 0));
                     e.0 += a.damage;
-                    e.1 += a.defend;
-                    e.2 += a.pushed;
+                    e.1 += a.defended.iter().filter(|(l, _)| l == target).map(|(_, n)| n).sum::<u32>();
+                    e.2 += moved_out.max(a.pushed);
                     e.3 += a.blight_removed;
+                    for (l, n) in a.defended.iter().filter(|(l, _)| l != target) {
+                        sim.entry(l.clone()).or_insert((0, 0, 0, 0)).1 += n;
+                        powers_on.entry(l.clone()).or_default().push(power.clone());
+                    }
                     powers_on.entry(target.clone()).or_default().push(power.clone());
                     notes_on.entry(target.clone()).or_default().extend(a.notes);
                 }
@@ -565,9 +667,6 @@ pub fn verify(rec: &GameRecord, defs: &Definitions, level: Option<u8>) -> Report
     if rec.meta.adversary.is_some() && level.is_none() {
         report.notes.push("adversary level unknown: level rules not applied (pass --level)".into());
     }
-    if base_rules.adversary.as_deref() == Some("HabsburgMiningExpedition") {
-        report.notes.push("Habsburg Mining's Mining lands are not modeled".into());
-    }
     verify_powers(rec, defs, &base_rules, &mut report);
     for t in &rec.turns {
         if t.turn == 0 || t.before_invaders.is_empty() {
@@ -585,6 +684,15 @@ pub fn verify(rec: &GameRecord, defs: &Definitions, level: Option<u8>) -> Report
         // CancelAction lines (the oracle), not from reading card text.
         apply_status_effects(&mut island, &mut rules, t, &mut report.notes);
         rules.chokes = chokes_of(rec, t);
+        // the record's other choices, as every replay of the turn takes them
+        rules.disease_builds = disease_builds_of(rec, defs, t);
+        rules.skip_answers = skip_answers_of(t);
+        rules.escalation_lands = escalation_lands_of(t);
+        rules.escalated_elsewhere = escalated_elsewhere_of(t);
+        (rules.upgrade_lands, rules.tunnel_lands) = mining_lands_of(t);
+        // Isolation a Power gave a land this turn: the engine applies it at the Invader Action
+        // rather than logging a cancel, and nothing moves in or out (Russia's Explorer stays)
+        rules.isolated.extend(isolated_by_powers(rec, defs, t.turn));
         let logged_cascades: u32 = rec.lands.values().flat_map(|l| l.blight.iter()).filter(|(turn, phase, _, cascade)| *turn == t.turn && *phase == Phase::Ravage && *cascade).map(|(_, _, n, _)| n).sum();
         let mut sim_cascades = 0u32;
         let steps: Vec<(&str, &Vec<String>, InvaderStep)> = vec![("HighImmigration", &t.high_immigration, InvaderStep::Build), ("Ravage", &t.ravage, InvaderStep::Ravage), ("Build", &t.build, InvaderStep::Build), ("Explore", &t.explore, InvaderStep::Explore)];

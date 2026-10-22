@@ -723,7 +723,9 @@ fn choice(activation: &str, instance: &str, selection: Option<i64>, target: Opti
     // and its number that reads as a name (no digits, no slash)
     let is_name = |s: &str| !s.is_empty() && s.chars().all(|c| c.is_ascii_alphanumeric()) && s.chars().any(|c| c.is_ascii_alphabetic()) && s.chars().next().is_some_and(|c| c.is_ascii_uppercase());
     let names: Vec<&str> = segs.iter().skip(1).copied().filter(|s| is_name(s) && !s.ends_with("Action") && *s != kind && !s.ends_with("Activation")).collect();
-    let reason = names.get(1).map(|s| s.to_string()).unwrap_or_default();
+    // (no spirit, `SelectLocation-0--UpgradeInvaders-...`: the reason comes first)
+    let no_spirit = segs.get(2).is_some_and(|s| s.is_empty());
+    let reason = names.get(if no_spirit { 0 } else { 1 }).map(|s| s.to_string()).unwrap_or_default();
     let source_kind = if instance.contains("ResolveEventCardAction") || instance.contains("EventAction") {
         "Event"
     } else if instance.contains("ResolveFearCardAction") {

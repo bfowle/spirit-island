@@ -289,7 +289,98 @@ Thunderspeaker game, checked step by step against the save journal):
   (Beset and Confound the Invaders at two tiers is 3 Fear and Defend 4, not 5 and 6); a
   tier's costs beyond elements hold it back until met: Beasts in the target land (Beset),
   the presence destroyed for it (Explosive Eruption's X, as the line states it); Energy and
-  Power Card costs are taken as paid.
+  Power Card costs are taken as paid. A tier that "requires another element option" (Lure's
+  4 Air Repeat on Forsake Society, Thunderspeaker's "may be Fast") acts only beside an acting
+  tier: its elements and the first tier's together. An innate whose rider says "This Power's
+  Damage is done (separately) to both Invaders and Dahan" (Epidemics Run Rampant, Explosive
+  Eruption) deals each tier's Damage to the Invaders and the same Damage to the Dahan as an
+  amount of its own (`si cards --card EpidemicsRunRampant` shows the twin).
+- **Explosive Eruption and Collapse**: the rider "Destroy X (1 or more) of your Presence in
+  target land" acts on every use, before the tiers, with X the presence the line states it
+  destroys (`EE>A6[-E,-Pr]`: one presence, and the Explorer its Collapse killed, since stated
+  kills are all a Power destroys; `-Prx2` for two; unstated, X is 0 and nothing happens); "X Damage"
+  and "X Fear" are one amount per presence destroyed, and each tier's DestroyedPresence
+  cost is checked against X. Volcano's Collapse in a Blast of Lava and Steam, "When your
+  Presence is Destroyed, in that land, deal 1 Damage per Destroyed Presence to both
+  Invaders and to Dahan", follows every presence destroyed: by a Power, by the Blight a
+  Ravage adds, by a cascade (its own Action there, so Badlands add once on each side).
+- **Vengeance**: Lingering Pestilence adds a Disease where the Blight of a Ravage or a
+  cascade destroyed its presence; The Terror of a Slowly Unfolding Plague lets a Build happen
+  through Disease for 1 Fear where the record shows the player did (a land still holding
+  Disease as the Slow phase begins, its Build not canceled), and elsewhere the Disease stops
+  it.
+- **What a use did**: "For each Beast Removed" counts the Beasts this use removed (Many Minds'
+  Sacred Site removed as one counts one), "For each Dahan Pushed by this Power" the Dahan it
+  pushed; Violent Windstorms' "1 Damage in the land it was Pushed to" lands where each Invader
+  went, Vigor of the Breaking Dawn's "In lands you Pushed Dahan to" where the Dahan went. A
+  token removed "up to" is the player's pick: stated as the use's kills (`-Be`, the Site
+  `-Prx2`) it is exactly that, unstated as many as it may.
+- **Skipping one Invader Action**: Beset and Confound the Invaders and A Dreadful Tide of
+  Scurrying Flesh give the land skips; each Invader Action there spends one where the record
+  shows the player chose "Skip", not where it shows "Allow", and where the engine never asked,
+  at the first Action that would do anything.
+- **Adversary rules in play** (beyond the loss conditions, England 1 and 5, Russia 1 and 3,
+  Sweden 1 and 3, the Habsburg Monarchy's count): Russia 2, A Sense for Impending Disaster:
+  the first Explorer an Action would destroy is Pushed instead, for 1 Fear, where the line or
+  record says (an Explorer the record moved out though the Power pushes none is that one),
+  never out of or into an Isolated land; in a Ravage, to the neighbor with the fewest Dahan,
+  presence and buildings. Escalations the player places, Prussia's Land Rush (+1 Town in a
+  land without Town on each board with Town/City) and Russia's Stalk the Predators (+2
+  Explorers among lands with Beasts), go where the record shows the player picked, else the
+  land with the least presence, Dahan and Invaders; a turn whose escalation the record
+  shows in another step (Russia 5's Entrench sends a Stage II card to the Build) does not
+  escalate again at the Explore. Habsburg Mining: a land with 3 or more Invaders is a Mining
+  land, where a Build card Ravages instead and Disease stops a Ravage (Ceaseless Mining, from
+  level 1 as the engine's data has it); a cascade Upgrades an Explorer (else a Town) instead
+  (Avarice Rewarded, 1); after the Build Step an Explorer upgrades on each board (Mining
+  Boom, 3; at 5 a Build there first); after a Stage II card explores and the cards advance,
+  2 Explores per board in lands the new Ravage and Build cards miss (Mining Tunnels) — each
+  pick where the record shows it, else the land with the least presence, Dahan and Invaders.
+  `si verify` takes the record's choices too, and the Isolation a Fast Power gave a land.
+  In a game of two Spirits, the review plays the first one's turn with the other's presence
+  where the game had it. Also in play, read from the printed rules (no capture plays them
+  yet, so each is held to its unit test and the adversary laws): England 6 (no Fear Card
+  resolved, the High Immigration Build twice), Russia 6 (after the Ravage from turn 2, a
+  board it added no Blight to gets an Explorer and a Town where the most Explorers are),
+  Sweden 5 (a Ravage's Blight brings a Town to a neighbor without Town/City), Habsburg
+  Mining 6 (+1 Explorer in up to 2 explored lands a board, on boards with 3 or fewer
+  Blight), the Habsburg Monarchy 1 (a Build card's land gathers a Town from a neighbor the
+  cards miss), 2 (2 Towns for an Inland City), 6 (+2 Ravage Damage beside a Town) and its
+  escalation, France 1 (2 Explorers into a land without Town/City), 2 (after a Build, all but
+  1 Explorer become Towns), 4 (a Coastal City sends a Town to the neighbor with the
+  fewest), 6 (an Explorer for a land without one after each Explore card) and its
+  escalation, Scotland 1 (a Town instead of a Coastal land's Explorer), 3 (a Coastal land
+  without Invaders next to a City Builds), 6 (an Inland Ravage land near a Town/City takes a
+  Town) and its escalation. Still out, because they reach past the Invader steps: the
+  Habsburg Monarchy 4 (Durable Towns, and "Destroy Town" as Damage), France 5 (Blight kept
+  off the card) and 6's Fear part, Scotland 5 (Blight in the Ocean); set-up and deck changes
+  come from the record. A log without a save gets its level from the evidence (deck order,
+  Fear deck, set-up pieces, and the save's difficulty when one sits beside it: a difficulty
+  below every level's is level 0).
+- **Moves**: a card's "Move" (not a Push or Gather) goes where the line says, within the
+  reach it prints, and unstated nothing moves (the note says so): "to any land" (Wrap in
+  Wings of Sunlight), "within 3 Range to target land" (Flocking Red-Talons), "up to two
+  lands" step by step (Guide the Way on Feathered Wings, the way back included), along the
+  pieces the Power moved ("1 Disease may move with each Pushed piece", Guide's "up to 2
+  Dahan may move with it"), between the target and one of your lands, to another land with
+  your presence, to a land of the same terrain. A bare move is a Dahan's; Many Minds' Sacred
+  Site moves as the Beast (`>C4x2:Pr`). Wrap's "Defend 5 in that land" goes where the Dahan
+  were moved; a threshold printed "First, ..." (Wrap's Gather, Voice of Command's) acts
+  before the card's own effects; "In each land within 1 Range" is every such land.
+- **Repeats**: "Repeating a Power lets you activate its effect again. It does not give you
+  Elements again ... and Repeats cannot be chained" (core rulebook p. 19); each Repeat is a
+  separate Action (Jagged Earth rulebook). A line carries a Repeat as a later play of the same
+  Power, as the journal records it (`CTM>A8 CTM>A8 CTM>A3`): no Energy, no Elements, no card
+  played, the Power's speed, a land of its own. A Repeat that says where goes there from the
+  first use's land (an adjacent land for Insatiable Hunger, Sweep into the Sea and The Land
+  Thrashes; a different land within 3 for Flocking Red-Talons); any other takes the Power's
+  usual targets. The enumerator adds the Repeats a Power's tiers reach (a Slow one takes its
+  land after the Invader steps, each use scored with the Repeats still to come in the same
+  land, so three Creepers go to the one City they kill together; a Fast one is tried at each
+  land it may take); a Repeat the player pays for (Blur the Arc of Years' Time, Peace of the
+  Nighttime Sky's Forget) is not simulated, and a typed line with more uses than the tiers
+  reach is noted under its `TRY` row (with its Energy, plays and hand checks). A card a Repeat
+  used again (Gift of Twinned Days' "Target Spirit may Repeat") replays as recorded.
 - **Many Minds**: its Beasts gather from and push to lands up to 2 away (Fly Fast as
   Thought), and its Sacred Site counts as a Beast, moving 2 of its presence together (A
   Joining of Swarms and Flocks; a line writes that `:Pr`).
@@ -466,6 +557,7 @@ showing the turn and the growth positions tried so far.
   the fullest adjacent land and takes no Dahan push (where Dahan go is the player's call),
   and says so in the line's notes; an "or" card without one takes its other branch
   (`VT>A1` is Voice of Thunder's 2 Fear, `VT>A5[>A1x4]` its push).
+  A Power written twice is its Repeat (`SM>A2 SM>A1`): the second costs nothing.
   A bare move in a bracket is a Dahan's; any other kind is named after a colon: `>A4:T`
   a Town, `<A2x2:Be` two Beasts (E, T, C, Dh, Be, Di, St, Wi, Ba), and a kind named picks
   the "or" branch that moves it. What the Power destroyed where the player chooses which
@@ -665,7 +757,8 @@ and `--rules` call the same laws:
 | `effects::oracle::apply_holds`, `simple_holds` | the effect executor | no piece from nowhere; moves along the island's edges; gathers and pushes keep every kind's number; destroys only what is there; stated kills and exact brackets are all it does; acts where it says; Damage kills no more Health than it deals; Fear, Defend, Adds, Pushes, Gathers and Destroys by their numbers |
 | `invaders::oracle::explore_holds`, `build_holds`, `ravage_holds` | Explore, Build, Ravage | the base rules exactly: an Explorer where the Invaders reach (Wilds take it), one Town or City where Invaders are (Disease stops it), a Ravage that adds no piece but Blight, one Blight of its own, the board's counts in its outcome |
 | `invaders::oracle::adversary_holds`, `victory_holds` | the same | under every adversary and level: no Dahan, presence or Beast appears, Blight only in a Ravage, a win and a loss together are a win (the rulebook's sacrifice victory, `invaders::ending`), victory as the Terror Level says |
-| `Line::holds` | `Line` | finite scores, never won and lost, moves along edges, presence never from nowhere |
+| `Line::holds` | `Line` | finite scores, never won and lost, moves along edges (farther only where the Power's Move reaches), presence never from nowhere |
+| `repeat::holds` | `repeat::expand` | a Repeat costs nothing and keeps the Power's speed; a Power that prints a Repeat goes where it says and is used no more than once plus the Repeats its tiers reach |
 | `notation_holds` | `parse_plays` | plays written out read back and write the same text, the same Power, land, speed, kills |
 | `delta_holds` | `apply_delta` | the Event and Fear residual adds and takes no more than it says (a debug build checks it on every application) |
 | `invaders::oracle::wounds_hold` | `Land::wounds` | no more wounds of a kind than pieces of it, none at or past its piece's Health |
@@ -679,7 +772,7 @@ runs every property deeper or from another seed; a broken law names the case's s
 On every random line (built from the enumerator's own legality): nothing panics, the same
 line scores the same twice, every score is finite, a legal line is not refused, a gather
 or push moves pieces only between adjacent lands, presence never comes from nowhere and
-none goes missing uncounted, no line both wins and loses, and the line written out
+none goes missing uncounted, no line both wins and loses, its Repeats keep their law, and the line written out
 (`plays_text_kept`) reads back to the same text and plays the same. On the actual line:
 it is not refused, a game that went on did not end in it, and its notation read back
 plays as the record's plays do. Two measures of the simulator against the games follow

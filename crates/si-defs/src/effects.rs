@@ -7,7 +7,7 @@ use std::sync::LazyLock;
 
 use regex::Regex;
 use si_model::island::TokenKind;
-use si_model::power::{DamageTarget, Effect, PieceFilter, PowerKind};
+use si_model::power::{DamageTarget, Effect, MoveReach, PieceFilter, PowerKind, RepeatAt, X_DESTROYED};
 
 macro_rules! re {
     ($name:ident, $pat:expr) => {
@@ -34,6 +34,13 @@ re!(CHOOSE_LAND, r"^Choose (one of (?:target|Target) Spirit's lands|a land where
 re!(TOKEN_CHOICE, r"^Choose a type of token from ((?:\{\w+\}/?)+) that exists in an adjacent land(?:; choosing \{Disease\} costs (\d+) Energy)?$");
 re!(ADD_CHOSEN, r"^Add (\d+) of that type of token to target land$");
 re!(ADD_EACH_ADJACENT, r"^(?:They |Target Spirit |You )?[Aa]dds? (\d+) \{(\w+)\} to each adjacent land$");
+re!(PUSHED_DAMAGE_THERE, r"^For each Invader Pushed by this Power, (\d+) Damage in the land it was Pushed to$");
+re!(MOVED_THEN_DEFEND, r"^If you moved at least 1 \{(\w+)\}, Defend (\d+) in that land$");
+re!(MOVE_WITH_PUSHED, r"^(\d+) ((?:\{\w+\}/?)+) may move with each Pushed piece");
+re!(MOVE_WITH_IT, r"^As it moves, up to (\d+) ((?:\{\w+\}/?)+) may move with it");
+re!(MOVE_WITHIN_TO_TARGET, r"^within \{(\d+)range\} to target land");
+re!(MOVE_SAME_TERRAIN, r"^to a land within \{(\d+)range\} that has the same terrain");
+re!(REPEAT_WITHIN, r"different land within \{(\d+)range\}");
 re!(REPEAT_TARGET, r"^(?:Once (?:this turn|per turn), )?[Tt]arget(?: Spirit)? may Repeat (?:a|one|\d+|up to \d+ other|the lowest-cost) Power Cards?");
 re!(PLAY_ANOTHER, r"^(?:Target Spirit may (?:immediately )?|They may |You may )?[Pp]lay (?:another Power Card|a Power Card|it|the Major Power)(?: immediately)? by paying its cost");
 re!(MAKE_FAST, r"^(?:This turn, )?[Tt]arget Spirit may (?:use (?:up to )?(\d+) \{Slow\} Powers? as if (?:they were|it were) \{Fast\}|make (\d+) Power which says .+ \{Fast\}|[Rr]esolve (\d+) \{Slow\} Powers? now)");
@@ -231,7 +238,20 @@ pub fn parse(lines: &[String]) -> Vec<Effect> {
 }
 
 fn parse_lines(lines: &[&String]) -> Vec<Effect> {
-    lines.iter().flat_map(|l| sentences(l)).flat_map(|s| parse_sentence(&s)).collect()
+    let mut out = Vec::new();
+    for l in lines {
+        let said = sentences(l);
+        for (i, s) in said.iter().enumerate() {
+            let mut read = parse_sentence(s);
+            // a Repeat with a price after it ("You may Repeat this Power. If you do, Forget this
+            // Power Card and gain {Moon}"): the player's to pay for, beyond the line
+            if said.get(i + 1).is_some_and(|n| n.starts_with("If you do")) && read.iter().any(|e| matches!(e, Effect::Repeat(_))) {
+                read = vec![Effect::Unmodeled(s.clone())];
+            }
+            out.extend(read);
+        }
+    }
+    out
 }
 
 fn typed(v: &[Effect]) -> bool {
@@ -426,11 +446,16 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
             return one(Effect::Choice(vec![vec![Effect::AddToken { kind: a, count: n }], vec![Effect::AddToken { kind: b, count: n }]]));
         }
     }
+    // Violent Windstorms: "For each Invader Pushed by this Power, 1 Damage in the land it was
+    // Pushed to": each where it went
+    if let Some(c) = PUSHED_DAMAGE_THERE.captures(s) {
+        return one(Effect::Area { scope: "the land each Invader was Pushed to".into(), then: vec![Effect::Damage { amount: count(&c[1]), to: DamageTarget::Invaders }] });
+    }
     // --- an opening clause keeps its condition ------------------------------
     // ("If target land has {Beast}, Invaders do not Build there this turn" is not a plain
     // skip; "For each {Beast}, 1 {Fear} and Invaders skip one Action" not a plain skip)
     // (the patterns written for one card's "If ..." come first: they read what this cannot)
-    if (s.starts_with("If ") || s.starts_with("if ")) && !FEAR_IF.is_match(s) && !IF_GATHER_DO_SO.is_match(s) && !INVADER_RULE.is_match(s) {
+    if (s.starts_with("If ") || s.starts_with("if ")) && !FEAR_IF.is_match(s) && !IF_GATHER_DO_SO.is_match(s) && !INVADER_RULE.is_match(s) && !MOVED_THEN_DEFEND.is_match(s) {
         for re in [&*IF_COMMA, &*IF_COLON] {
             if let Some(c) = re.captures(s) {
                 let then = parse_sentence(&c[2]);
@@ -446,7 +471,7 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
             if typed(&then) {
                 let suffix = c.get(2).map(|m| m.as_str().trim()).unwrap_or("");
                 let per = match suffix {
-                    "in or adjacent to target land" | "in adjacent lands" | "past the first" | "Pushed by this Power" => PieceFilter::Other(format!("{} {}", &c[1], suffix)),
+                    "in or adjacent to target land" | "in adjacent lands" | "past the first" | "Pushed by this Power" | "Removed" => PieceFilter::Other(format!("{} {}", &c[1], suffix)),
                     _ => PieceFilter::parse(c[1].split(' ').next().unwrap()),
                 };
                 return one(Effect::Per { per, then });
@@ -460,14 +485,31 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     if lower.contains("may do likewise") {
         return one(Effect::Unmodeled(s.to_string()));
     }
+    // a Repeat and where it may go; one bought with Time (Blur the Arc of Years) is the
+    // player's to pay for, and a place the patterns do not know is not guessed
     if lower.contains("repeat this power") || lower.starts_with("repeat on an adjacent land") {
-        return one(Effect::Repeat);
+        if lower.contains("by spending") {
+            return one(Effect::Unmodeled(s.to_string()));
+        }
+        let at = if lower.contains("adjacent land") {
+            RepeatAt::Adjacent
+        } else if let Some(c) = REPEAT_WITHIN.captures(&lower) {
+            RepeatAt::Within(c[1].parse().unwrap_or(1))
+        } else if lower.contains("in target land or in a land with your {presence}") {
+            RepeatAt::TargetOrPresence
+        } else if lower.contains(" on ") || lower.contains(" in ") {
+            return one(Effect::Unmodeled(s.to_string()));
+        } else {
+            RepeatAt::Usual
+        };
+        return one(Effect::Repeat(at));
     }
     if lower.starts_with("you may do both") || lower.starts_with("they may do both") {
         return one(Effect::Both);
     }
+    // "Do likewise for {Dahan}": the same action on other pieces, not the Power again
     if lower.contains("do likewise") {
-        return one(Effect::Repeat);
+        return one(Effect::Unmodeled(s.to_string()));
     }
     if CHOOSE.is_match(s) {
         return Some(vec![]);
@@ -475,8 +517,20 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     if lower.contains("may be immediately pushed") {
         return one(Effect::Push { count: 255, what: vec![PieceFilter::AnyInvader] });
     }
-    if lower.contains("may move with each pushed piece") {
-        return one(Effect::Move { count: 1, what: vec![PieceFilter::Token(TokenKind::Disease)] });
+    // Wrap in Wings of Sunlight: "If you moved at least 1 {Dahan}, Defend 5 in that land": the
+    // land they were moved to
+    if let Some(c) = MOVED_THEN_DEFEND.captures(s) {
+        let then = vec![Effect::Area { scope: format!("the land you moved {{{}}} to", &c[1]), then: vec![Effect::Defend(count(&c[2]))] }];
+        return one(Effect::Conditional { condition: format!("you moved at least 1 {{{}}}", &c[1]), then });
+    }
+    // Plaguebearers: "1 {Disease} may move with each Pushed piece"
+    if let Some(c) = MOVE_WITH_PUSHED.captures(s) {
+        return one(Effect::Move { count: 255, what: filters(&c[2]), reach: MoveReach::Along(count(&c[1])) });
+    }
+    // Guide the Way on Feathered Wings: "As it moves, up to 2 {Dahan} may move with it, for
+    // part or all of the way"
+    if let Some(c) = MOVE_WITH_IT.captures(s) {
+        return one(Effect::Move { count: count(&c[1]), what: filters(&c[2]), reach: MoveReach::Along(count(&c[1])) });
     }
     if let Some(c) = FEAR_IF.captures(s) {
         return one(Effect::FearIfInvaders(count(c.get(1).or(c.get(2)).unwrap().as_str())));
@@ -685,7 +739,7 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
         if typed(&then) {
             let suffix = c.get(2).map(|m| m.as_str().trim()).unwrap_or("");
             let per = match suffix {
-                "in or adjacent to target land" | "in adjacent lands" | "past the first" | "Pushed by this Power" => PieceFilter::Other(format!("{} {}", &c[1], suffix)),
+                "in or adjacent to target land" | "in adjacent lands" | "past the first" | "Pushed by this Power" | "Removed" => PieceFilter::Other(format!("{} {}", &c[1], suffix)),
                 _ => PieceFilter::parse(c[1].split(' ').next().unwrap()),
             };
             return one(Effect::Per { per, then });
@@ -839,7 +893,26 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
         return Some(out);
     }
     if let Some(c) = MOVE.captures(s) {
-        return one(Effect::Move { count: count(&c[1]), what: filters(&c[2]) });
+        let rest = s[c.get(0).unwrap().end()..].trim().to_ascii_lowercase();
+        let reach = if rest.starts_with("to any land") {
+            Some(MoveReach::From(255))
+        } else if let Some(r) = MOVE_WITHIN_TO_TARGET.captures(&rest) {
+            Some(MoveReach::Into(r[1].parse().unwrap_or(1)))
+        } else if rest.starts_with("from other lands to target land") || rest.starts_with("from the origin {sacredsite} to target land") {
+            Some(MoveReach::Into(255))
+        } else if rest.starts_with("up to two lands") {
+            Some(MoveReach::Path(2))
+        } else if rest.starts_with("between target land and one of your lands") {
+            Some(MoveReach::Between)
+        } else if rest.starts_with("to a different land with your {presence}") {
+            Some(MoveReach::ToPresence)
+        } else {
+            MOVE_SAME_TERRAIN.captures(&rest).map(|r| MoveReach::SameTerrain(r[1].parse().unwrap_or(1)))
+        };
+        return one(match reach {
+            Some(reach) => Effect::Move { count: count(&c[1]), what: filters(&c[2]), reach },
+            None => Effect::Unmodeled(s.to_string()),
+        });
     }
     if let Some(c) = ADD.captures(s) {
         let mut out = Vec::new();
@@ -956,6 +1029,65 @@ fn damage_target(rest: &str) -> DamageTarget {
     }
 }
 
+/// An innate whose rider says "This Power's Damage is done (separately) to both Invaders and
+/// {Dahan}" (Epidemics Run Rampant, Explosive Eruption): each Damage to Invaders gets its
+/// twin, the same Damage to the Dahan as an amount of its own. "1 Damage per {Disease}"
+/// stays one amount on each side (Badlands add once to each).
+pub fn damage_to_both(fx: &[Effect]) -> Vec<Effect> {
+    fn twin(e: &Effect) -> Option<Effect> {
+        match e {
+            Effect::Damage { amount, to: DamageTarget::Invaders } => Some(Effect::Damage { amount: *amount, to: DamageTarget::Dahan }),
+            Effect::Damage { amount, to: DamageTarget::EachInvader } => Some(Effect::Damage { amount: *amount, to: DamageTarget::EachDahan }),
+            Effect::Per { per, then } => {
+                let twins: Vec<Effect> = then.iter().map(twin).collect::<Option<_>>()?;
+                Some(Effect::Per { per: per.clone(), then: twins })
+            }
+            _ => None,
+        }
+    }
+    let mut out = Vec::new();
+    for e in fx {
+        let inner = match e {
+            Effect::Area { scope, then } => Effect::Area { scope: scope.clone(), then: damage_to_both(then) },
+            Effect::Conditional { condition, then } => Effect::Conditional { condition: condition.clone(), then: damage_to_both(then) },
+            Effect::Choice(bs) => Effect::Choice(bs.iter().map(|b| damage_to_both(b)).collect()),
+            other => other.clone(),
+        };
+        out.push(inner);
+        out.extend(twin(e));
+    }
+    out
+}
+
+/// Does an innate's rider define X as the presence it destroys?
+pub fn rider_destroys_x(rider: &[String]) -> bool {
+    rider.iter().any(|r| clean(r).to_ascii_lowercase().contains("destroy x (1 or more) of your {presence} in target land"))
+}
+
+/// The rider's own effect: X presence destroyed in the target land, as one destruction.
+pub fn destroy_x() -> Vec<Effect> {
+    vec![Effect::Per { per: PieceFilter::Other(X_DESTROYED.into()), then: vec![Effect::DestroyPresence(1)] }]
+}
+
+/// "X Damage" and "X Fear" where X is the presence destroyed for the Power: one Damage (or
+/// Fear) per presence destroyed, as one amount.
+pub fn x_as_destroyed(fx: &[Effect]) -> Vec<Effect> {
+    fx.iter()
+        .map(|e| match e {
+            Effect::Variable { what, by } if what == "Damage" && by == "X as the card defines it" => Effect::Per { per: PieceFilter::Other(X_DESTROYED.into()), then: vec![Effect::Damage { amount: 1, to: DamageTarget::Invaders }] },
+            Effect::Variable { what, by } if what == "Fear" && by == "X as the card defines it" => Effect::Per { per: PieceFilter::Other(X_DESTROYED.into()), then: vec![Effect::Fear(1)] },
+            Effect::Area { scope, then } => Effect::Area { scope: scope.clone(), then: x_as_destroyed(then) },
+            Effect::Conditional { condition, then } => Effect::Conditional { condition: condition.clone(), then: x_as_destroyed(then) },
+            other => other.clone(),
+        })
+        .collect()
+}
+
+/// Does an innate's rider say its Damage is done to both Invaders and Dahan?
+pub fn rider_damages_both(rider: &[String]) -> bool {
+    rider.iter().any(|r| clean(r).to_ascii_lowercase().contains("damage is done (separately) to both invaders and {dahan}"))
+}
+
 /// The parser's law, stated from outside it: a sentence is read as what it says. Every
 /// number it prints and every piece it names (Explorer, Town, City, Dahan, Beast, Disease,
 /// Wilds, Strife, Badlands, Blight, Fear, presence) shows in the words of what it was read
@@ -965,11 +1097,22 @@ pub fn sentence_holds(sentence: &str, effects: &[Effect]) -> Vec<si_model::oracl
     use si_model::oracle::Violation;
     fn kept_whole(e: &Effect) -> bool {
         match e {
-            Effect::Clarification(_) | Effect::SpiritEffect(_) | Effect::DeckEffect(_) | Effect::Timing { .. } | Effect::InvaderRule(_) | Effect::Unmodeled(_) | Effect::Other(_) | Effect::Movement(_) | Effect::Distribution(_) | Effect::SpecialToken { .. } | Effect::Variable { .. } | Effect::Choose(_) | Effect::ChooseLand(_) | Effect::Repeat => true,
+            Effect::Clarification(_) | Effect::SpiritEffect(_) | Effect::DeckEffect(_) | Effect::Timing { .. } | Effect::InvaderRule(_) | Effect::Unmodeled(_) | Effect::Other(_) | Effect::Movement(_) | Effect::Distribution(_) | Effect::SpecialToken { .. } | Effect::Variable { .. } | Effect::Choose(_) | Effect::ChooseLand(_) => true,
             Effect::Per { then, .. } | Effect::Conditional { then, .. } | Effect::Area { then, .. } | Effect::Trigger { then, .. } => then.iter().any(kept_whole),
             Effect::Choice(bs) => bs.iter().flatten().any(kept_whole),
             _ => false,
         }
+    }
+    // a Repeat says it repeats, and goes where the sentence says
+    if let [Effect::Repeat(at)] = effects {
+        let low = sentence.to_ascii_lowercase();
+        let place = match at {
+            RepeatAt::Usual => !low.contains("adjacent") && !low.contains("within") && !low.contains("land with your"),
+            RepeatAt::Adjacent => low.contains("adjacent land"),
+            RepeatAt::Within(n) => low.contains(&format!("within {{{n}range}}")),
+            RepeatAt::TargetOrPresence => low.contains("in target land or in a land with your"),
+        };
+        return if low.contains("repeat") && place { Vec::new() } else { vec![Violation::new("a Repeat goes where it says", format!("`{sentence}` read as `{}`", effects[0].words()))] };
     }
     if effects.is_empty() || effects.iter().any(kept_whole) {
         return Vec::new();
@@ -1020,6 +1163,54 @@ mod tests {
         // Fractured Days' Slip the Flow of Time; Lightning's Boon
         assert_eq!(p(&["Target Spirit may Resolve 1 {Slow} Power now."]), vec![Effect::MakeFast(1)]);
         assert_eq!(p(&["This turn, target Spirit may use up to 2 {Slow} Powers as if they were {Fast}."]), vec![Effect::MakeFast(2)]);
+    }
+
+    #[test]
+    fn a_repeat_goes_where_it_says_and_a_paid_one_is_the_players() {
+        use si_model::power::RepeatAt;
+        // Creepers Tear into Mortar, Sea Monsters; Insatiable Hunger, Sweep into the Sea, The Land
+        // Thrashes; Flocking Red-Talons; Water Eats Away the Deep Roots of Earth
+        assert_eq!(p(&["Repeat this Power."]), vec![Effect::Repeat(RepeatAt::Usual)]);
+        assert_eq!(p(&["Repeat this Power again."]), vec![Effect::Repeat(RepeatAt::Usual)]);
+        assert_eq!(p(&["Repeat this Power on an adjacent land."]), vec![Effect::Repeat(RepeatAt::Adjacent)]);
+        assert_eq!(p(&["Repeat on an adjacent land."]), vec![Effect::Repeat(RepeatAt::Adjacent)]);
+        let thrashes = p(&["Repeat this Power in an adjacent land (ignoring Range and Target restrictions)."]);
+        assert!(matches!(thrashes.as_slice(), [Effect::Repeat(RepeatAt::Adjacent), ..]), "{thrashes:?}");
+        assert!(matches!(p(&["Repeat this power on a different land within {3Range} (of target land)."]).as_slice(), [Effect::Repeat(RepeatAt::Within(3)), Effect::Clarification(_)]));
+        assert_eq!(p(&["Repeat this Power in target land or in a land with your {Presence}."]), vec![Effect::Repeat(RepeatAt::TargetOrPresence)]);
+        // Blur the Arc of Years spends Time; Peace of the Nighttime Sky Forgets itself
+        assert!(matches!(p(&["You may repeat this Power (once) on the same land by spending 1 Time."]).as_slice(), [Effect::Unmodeled(_), ..]));
+        assert!(matches!(p(&["You may Repeat this Power. If you do, Forget this Power Card and gain {Moon}."]).as_slice(), [Effect::Unmodeled(_), ..]));
+        // Lay Paths They Cannot Help But Walk: the push for other pieces, not the Power again
+        assert!(!p(&["Do likewise for {Dahan}, {Presence}, and {Beast} (each separately)."]).iter().any(|e| matches!(e, Effect::Repeat(_))));
+    }
+
+    #[test]
+    fn damage_done_to_both_is_twinned_for_the_dahan() {
+        use si_model::island::TokenKind;
+        // Epidemics Run Rampant: 1 Damage per Disease, to the Invaders and separately to the Dahan
+        let per = p(&["1 Damage per {Disease}."]);
+        assert_eq!(damage_to_both(&per), vec![per[0].clone(), Effect::Per { per: PieceFilter::Token(TokenKind::Disease), then: vec![Effect::Damage { amount: 1, to: DamageTarget::Dahan }] }]);
+        // Explosive Eruption: 4 Damage in each land within range, both sides in each land
+        let area = vec![Effect::Area { scope: "each land within {1Range}".into(), then: vec![Effect::Damage { amount: 4, to: DamageTarget::Invaders }] }];
+        assert_eq!(damage_to_both(&area), vec![Effect::Area { scope: "each land within {1Range}".into(), then: vec![Effect::Damage { amount: 4, to: DamageTarget::Invaders }, Effect::Damage { amount: 4, to: DamageTarget::Dahan }] }]);
+        // Fear is not Damage
+        assert_eq!(damage_to_both(&[Effect::Fear(2)]), vec![Effect::Fear(2)]);
+        assert!(rider_damages_both(&["This Power\u{2019}s Damage is done (separately) to both Invaders and {Dahan}.".to_string()]));
+        assert!(!rider_damages_both(&["Each level is a separate Power.".to_string()]));
+    }
+
+    #[test]
+    fn explosive_eruptions_x_is_the_presence_destroyed_for_it() {
+        let rider = ["Destroy X (1 or more) of your {Presence} in target land.".to_string()];
+        assert!(rider_destroys_x(&rider));
+        let x = |e: Effect| Effect::Per { per: PieceFilter::Other(X_DESTROYED.into()), then: vec![e] };
+        let tier = p(&["In one land within {1Range}, X Damage."]);
+        let read = damage_to_both(&x_as_destroyed(&tier));
+        let Effect::Area { then, .. } = &read[0] else { panic!("{read:?}") };
+        assert_eq!(then, &vec![x(Effect::Damage { amount: 1, to: DamageTarget::Invaders }), x(Effect::Damage { amount: 1, to: DamageTarget::Dahan })]);
+        assert_eq!(x_as_destroyed(&p(&["X {Fear}."])), vec![x(Effect::Fear(1))]);
+        assert_eq!(destroy_x(), vec![x(Effect::DestroyPresence(1))]);
     }
 
     #[test]
