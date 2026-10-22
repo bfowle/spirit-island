@@ -781,7 +781,8 @@ the findings: how many turns the actual line in notation ends exactly as the rec
 from the board as it began with the record's own moves and kills, leave the board as
 the game did, the Fear it generated and the Defend it granted (where the game logged one)
 too. `--powers` lists the Powers that do not, with the first difference: the
-work list for rules not yet stated or not yet applied. The live run checks doing nothing
+work list for rules not yet stated or not yet applied, gathered with its causes in
+`docs/simulator-misses.md`. The live run checks doing nothing
 is never refused and every plan holds the same invariants. Run it in a debug build too
 (`cargo build -p si-cli`, `target/debug/si fuzz`): overflow panics there.
 
