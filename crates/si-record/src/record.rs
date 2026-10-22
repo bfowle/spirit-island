@@ -228,6 +228,10 @@ pub struct TurnRecord {
     pub fear_generated: i32,
     pub fear_cards_earned: u32,
     pub terror_after: u8,
+    /// The Terror Level as the Invader steps began (the victory they can bring); the level
+    /// can rise later in the turn (`terror_after`).
+    #[serde(default)]
+    pub terror_at_invaders: u8,
     pub blight_added: u32,
     pub blight_cascaded: u32,
     pub events: Vec<String>,

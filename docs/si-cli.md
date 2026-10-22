@@ -167,12 +167,17 @@ per turn:
   +SHG -SFFW`: group, each presence's slot and land, Reclaim, card gained, card
   forgotten; `+MI (draft T4)` when the gain is taken from a later turn's recorded
   draft; `(as played)` marks rows that keep your growth; `+6 alike` folds rows with
-  the same plays and score from another placement or slot); the cards played and the
-  innates used, each in its own column (`EW GP2@A2 RBST>A2` and `AEG>A2`: `CARD>land`
-  targets the land, `CARD@land` places presence there, a card alone acts on the Spirit
-  or in all its lands at once; a Spirit-target card that acts in one of the Spirit's
-  lands, like Fiery Vengeance, is tried in each presence land and written `FV>C5`;
-  innates are underlined in color); the elements as the eight letters
+  the same plays and score from another placement or slot); every play in one column,
+  cards and innates together, in the order they act: the Fast ones as played (the actual
+  line in the order the journal has them), then the Slow ones after the Invader steps
+  (`EW GP2@A2 {AEG>A2} RBST>A2`: `CARD>land` targets the land, `CARD@land` places
+  presence there, a card alone acts on the Spirit or in all its lands at once; a
+  Spirit-target card that acts in one of the Spirit's lands, like Fiery Vengeance, is
+  tried in each presence land and written `FV>C5`; an innate in braces, `F:` before an
+  innate taken Fast through its "may be Fast" tier, gathers and pushes in brackets, and
+  `(WW)` a card played for its elements only, where no land gains from it this turn:
+  the line scores the same without its effect, in hindsight and under every Explore
+  card); the elements as the eight letters
   with counts in printed order (`S1 M2 F1 A0 W1 E1 P3 A1`, each in its element's
   color); each innate's tiers as a fraction (`CTM 2/3` = tier 2 of 3 reached), so a
   better element pairing shows up as a better innate; and what the line produced in
@@ -261,9 +266,64 @@ a Sacred Site it makes in the Fast phase is in range for the cards played after 
 spirit with an always-group (Rampant Green's "Add a Presence to Jungle or Wetland")
 places that presence in every growth position before the chosen group's.
 
+What the simulator plays out beyond the cards' text (2026-10-22, from Brett's
+Thunderspeaker game, checked step by step against the save journal):
+
+- **Spirit rules**: Thunderspeaker's presence goes along with each Dahan moved out of
+  its land (Ally of the Dahan; the player never kept it back in the recorded games), and
+  after a Ravage destroys Dahan, one presence within range 1 per Dahan is destroyed
+  (Sworn to Victory: the ravaged land's first, then a neighbor's without Dahan, the
+  fewest first, as the player chose both times). Shroud gathers one presence toward a
+  Power's land first (Mists Shift and Flow: where the record says, else into the target).
+- **Cards**: Manifestation of Power and Glory deals Dahan times presence as one amount;
+  Lead the Furious Assault destroys a Town per 2 Dahan (a City per 3); Words of Warning's
+  Dahan strike back as they fall; Boon of Swarming Bedevilment defends every land of the
+  target Spirit.
+- **Choices**: Damage, a Power's or the Dahan's, goes to the most valuable set it destroys
+  (a Town worth three Explorers, a City five: two Towns over a City for 4 Damage). An
+  "or" takes the branch the journal recorded, else the one the line's brackets ask for,
+  else the first that does not wait on a Dahan move (Voice of Thunder without a bracket
+  takes its 2 Fear). A Dahan push the line does not place is not taken. Where Dahan go is
+  searched one choice at a time: a gather's source (the fullest-first default, or every
+  Dahan of one neighbor), a second source, then the push's destination or none; for a
+  Slow play when its land is chosen after the Invader steps, for a Fast one on the ranked
+  lines, and an innate that moves Dahan which a ranked line leaves out is tried at every
+  land with its moves chosen (a line without Gather the Warriors found no use for it). An
+  enumerated line moves its Dahan before its other Slow plays. For a spirit whose presence
+  moves with the Dahan, an innate is offered on a land next to its presence too (Lead the
+  Furious Assault, range 0, on the land Gather the Warriors filled) and acts only if the
+  presence got there. The innates go on the best 40 card sets and on the best set of each
+  element reach (the four Air that take an innate Fast), up to 150 innate combinations each.
+- **Loss conditions**, every one, checked after the Fast phase and after every Invader
+  step, in this turn, the next turn's lookahead and the turn after next's: the core ones
+  (the Spirit's last presence gone; the flipped Blight Card's last Blight taken, from the
+  capture's saves, per turn) and each adversary's own at every level: England's Proud &
+  Mighty Capital (7 Town/City in a land), France's Sprawling Plantations (more Towns than
+  7 per board), Scotland's Trade Hub (Coastal lands with a City over 2 per board),
+  Russia's Hunters Swarm the Island (Beasts destroyed by the Hunters, counted over the
+  game from the record, over the Beasts left), the Habsburg Monarchy's Irreparable Damage
+  (Blight off the card in Ravages of 6+ overkill, over the game, over the players) and
+  Habsburg Mining's Land Stripped Bare (8 Invaders and Blight in a land at the end of the
+  Fast phase). A line that loses scores the ledger's loss (-25, under every line that does
+  not); the next turn's loss with no Spirit action counts at the next-turn weight, the
+  turn after next's at its square times the share of Explore cards that bring it. Rows
+  say `LOSES`, `| next LOSES`, `| then LOSES 33%`; `si hindsight` prints `LOSS` with the
+  reason. **Loss clocks**: each condition in play as a count against its limit (`England's
+  capital: A1 has 5 of 7 Town/City`, `Blight Card: 2 left (flipped)`, `Russia's Hunters:
+  1 Beasts destroyed, 1 on the island`), at the top of THINK ABOUT for the turn being
+  played, in READING for a closed turn, `CLOCKS` in `si hindsight`. THINK ABOUT also says
+  when doing nothing loses, and, when every card left in the stage escalates, where
+  England's Building Boom builds next. The Invader deck running out is not checked.
+- **Turns**: the turn's Defend, skips and Words of Warning end before the next turn's
+  steps (they used to carry into the lookahead); a line starts from the presence at the
+  Fast phase, not the turn's end; the record's Power Defends are no longer credited to
+  every line as if an Event gave them.
+
 Limits: one spirit (the first) is reviewed; a card held for later scores only its
-Energy kept; Push and Gather choices, counterattack distributions and the Event's
-option choices are listed, not scored; bare logs with many undo reloads can re-log a
+Energy kept; gather sources without a bracket are the fullest adjacent lands; Event
+option choices are listed, not scored; a spirit rule not named above is not simulated
+(Rampant Green's presence destroyed to stop a Ravage, Many Minds' presence as Beasts,
+a Power repeated by Gift of Twinned Days); bare logs with many undo reloads can re-log a
 play or a payment; a second presence placed in the same growth measures its Range from
 the presence before the growth, not from the first one placed; the Event and Fear cards
 enter the informed score as averages, not card by card (their effects are not typed);
@@ -275,6 +335,7 @@ not the card's average worth.
 ```
 si calibrate                 # the captures and the Steam folder; writes data/calibration.json
 si calibrate <path>... --out <json> --dry-run
+si calibrate --dry-run --turns   # also each turn's simulator error, to see which turns a change moved
 ```
 
 Four numbers in the hindsight scoring have no rule behind them, so they are measured
@@ -283,13 +344,18 @@ beside the definitions folder (`--calibration <json>` names another; without a f
 built-in values are the last measurement). Each line of the report says what it
 measured over how many turns:
 
-| Constant | How it is measured | 2026-10-21, 24 games, 149 turns |
+| Constant | How it is measured | 2026-10-22, 27 games, 167 turns |
 |---|---|---|
-| Event, Fear card worth | least squares over every turn's hidden effect on the actual line (its hindsight score minus its informed score under the Explore card that came): an Event indicator and the Fear cards resolved, per Terror Level | Event +0.90; Fear card TL1 +0.18, TL2 +0.61, TL3 +0.28 |
-| next-turn weight | Blight and Dahan the next turn's Ravage and Build took, over what they would have taken with no Spirit action (the lookahead on the recorded position) | 0.33 over 98 turns |
-| a turn's luck | standard deviation of hindsight minus informed on the actual line, with the constants above (mean +0.03: centered) | 1.37 over 148 turns |
-| simulator error | RMS, in ledger units, of the recorded state at the Slow phase minus the simulated Invader phase of the actual line (the `conf` column's noise) | 1.40 over 131 turns, mean +0.33 (the simulator runs a little pessimistic) |
-| the ledger against results | each game's actual lines summed per turn; win and loss means, and the share of win/loss pairs the ledger orders right | wins -0.66, losses -1.88; 72% of pairs (66% before Builds counted) |
+| Event, Fear card worth | least squares over every turn's hidden effect on the actual line (its hindsight score minus its informed score under the Explore card that came): an Event indicator and the Fear cards resolved, per Terror Level | Event +0.40; Fear card TL1 +0.44, TL2 +0.80, TL3 +2.23 (3 turns only) |
+| next-turn weight | Blight and Dahan the next turn's Ravage and Build took, over what they would have taken with no Spirit action (the lookahead on the recorded position) | 0.34 over 114 turns |
+| a turn's luck | standard deviation of hindsight minus informed on the actual line, with the constants above (centered: its mean is near zero) | 1.35 over 144 turns (mean +0.07) |
+| simulator error | RMS, in ledger units, of the recorded state at the Slow phase minus the simulated Invader phase of the actual line (the `conf` column's noise) | 1.48 over 150 turns, mean +0.28 (the simulator runs a little pessimistic; 1.44 before the 2026-10-22 rules on the same corpus, where an old bug credited the record's Power Defends to every line and hid other spirits' unsimulated rules) |
+| the ledger against results | each game's actual lines summed per turn; win and loss means, and the share of win/loss pairs the ledger orders right | wins -0.69, losses -4.92; 79% of pairs, losses scored (73% before, 66% before Builds counted) |
+
+The constants are measured with a lost game scored at zero (`ReviewOptions::score_losses`):
+they describe what the hidden cards and the simulator do to pieces, and one loss, a step of
+25, would swamp a turn's usual swing. The ledger against results is measured with losses
+scored, and passes each capture's Blight Card per turn.
 
 The Event coefficient covers everything face down on an Event turn beyond the Explore
 card: the Event itself, the Fear cards' Defends and skips (status effects, not pieces),
@@ -347,7 +413,28 @@ showing the turn and the growth positions tried so far.
   line per turn; and the decision gap and luck per turn as bars (luck green when the
   cards helped, red when they cost). Block and half-block markers only.
 - `t` opens a prompt for a line in notation (`SLSF>C8 MI`); it is scored like `--try`
-  and shown as a `try` row. `i` loads the current turn's start-of-turn checkpoint into
+  and shown as a `try` row. A line is one sequence, cards and innates together, and the
+  plays act in the order written: `GW>A5[>A1x2] SA>A5[<A1]` pushes two Dahan to A1 and
+  then gathers one back, where the other order would find A1 empty. A play's phase is
+  its printed speed: `WW>A7` is Fast, `VT` a Slow card that takes its land after the
+  Invader steps. `F:LFA>A4` takes an innate printed Slow in the Fast phase through its
+  "This Power may be Fast" tier (Thunderspeaker's 4 Air), and the line is refused with
+  the reason when its elements do not reach that tier. On the screen the style says
+  what a play is: a Fast play orange, a Slow one blue-violet (the CLI's two colors; the
+  SPIRIT panel's innate speeds and HAND's F and S too); an innate is underlined; a card
+  played for its elements only is dim and has no land (LINE says so). Plain text
+  (`si hindsight`, a plan carried from a review) writes an innate in braces
+  (`{GW>A5}`), the Fast use of a Slow innate with `F:`, and an elements-only card in
+  parentheses (`(WW)`, which a typed line may use too).
+  A Power that gathers or pushes names the lands in brackets after its target:
+  `GW>A1[<A3,<A5,>A4x2]` is Gather the Warriors on A1 taking one Dahan each from A3
+  and A5, then pushing two to A4 (a count after `x`, one when there is none; spaces
+  between the moves are read too). In a review's line the bracket is what the simulator
+  did; typed, it is the whole of what the Power moves (`GW>A5[]` moves nothing), and a
+  land the Power cannot reach is skipped. Without a bracket the simulator gathers from
+  the fullest adjacent land and takes no Dahan push (where Dahan go is the player's call),
+  and says so in the line's notes; an "or" card without one takes its other branch
+  (`VT>A1` is Voice of Thunder's 2 Fear, `VT>A5[>A1x4]` its push). `i` loads the current turn's start-of-turn checkpoint into
   the running game by running `si inject <capture> --turn n --phase SpiritPhase` as a
   child process and shows what it printed; a bare EndGame log has no checkpoints and
   the panel says so. `?` shows the keys, `q` quits.
@@ -383,8 +470,9 @@ past them. The turn being played is the open tab (`T4 Growth`, `T4 Fast`, `T4 Ra
   what is at stake and the Defend that keeps the Dahan or the land; the Builds; the
   Blight card's pool and what doing nothing adds; hand against plays; on the Growth tab
   how many unseen Minors and Majors would play this turn on each Ravage land.
-- **POSITION**'s last column is `after` (what the steps do there under the selected plan,
-  every adversary modifier applied) until the step is recorded, then the recorded result.
+- **POSITION**'s last column is `after` (the land as this turn leaves it under the
+  selected plan, every adversary modifier applied; not the next turn's steps) until the
+  step is recorded, then the recorded result.
 - **INVADER PHASE** lists the slots and their lands, the Explore's pool, the Blight card,
   the Fear counts, the Event once drawn, and each recorded step against what the plan said.
 - The footer reads `live: T4 Fast, save 003-0089-FastPower, journal 1,204 lines | 3 turns
@@ -404,7 +492,12 @@ turn closes on the first save after its Time Passes, as the app saves at every d
 reviewed (`i`, or the app's own Undo across turns), that turn opens with the earlier
 attempt's lines as its first plans: the line you played and the review's three best,
 each scored against the position as it stands and noted `last attempt: played, scored
--2.5 then` or `last attempt: best then, scored -1.2`. `d` removes one, `t` adds yours. A
+-2.5 then` or `last attempt: best then, scored -1.2`. A carried line keeps its Slow
+lands and its gathers and pushes (the same cards come again), and the plays the turn
+has made already are matched by card, so a card played and not yet used takes the
+plan's land instead of showing twice. Lines carry only onto the same position: when an
+earlier turn went otherwise, the status line says the attempt began elsewhere and
+nothing is carried. `d` removes one, `t` adds yours. A
 different game id is a new game and clears everything typed. When the rollback happened
 before the screen was up (the app was relaunched, or the screen restarted), name the
 branch's save: `si study --live --attempt <capture>/saves/<the EndGame or last save of
@@ -444,8 +537,8 @@ footer still names a journal that stopped while saves go on. Every one of those 
 carries the engine's own typed journal of the whole game (ChangeState, UsePower,
 MoveIslandPieces, AddIslandPieces, DestroyPieces, AdjustFearGenerated, PlayPowerCard,
 UseGrowthOption, MovePresence, BuildLand, MoveCards, GainElements, ...), the material
-`log.txt` itself is written from. Reading the record from that journal instead of the log
-is the next build; it would also retire the undo guessing on bare logs.
+`log.txt` itself is written from, and the record is read from it (section 4, the footer's
+`save journal`), with `log.txt` as the fallback; that retired the undo guessing too.
 
 The screen harness (`cargo test -p si-cli --test tui_smoke`, tmux driven, blessed panes
 under `crates/si-cli/tests/fixtures/tui/`, `SI_TUI_BLESS=1` to rewrite them) covers the

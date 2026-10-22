@@ -87,6 +87,7 @@ re!(REMOVE, r"^(?:Remove|remove) (?:up to )?(\d+|all|any number of) (?:Damaged )
 re!(REMOVE_HALF, r"^Remove up to half \(round (?:up|down)\) of (\{\w+\}|Invaders)");
 re!(ABDUCT, r"^Abduct (?:up to )?(\d+|it) ?((?:(?:\{\w+\}|Invaders?)/?)*)");
 re!(DESTROY, r"^(?:Destroy|destroy) (?:up to )?(all|\d+) ((?:(?:\{\w+\}|Invaders?)/?)+)(?: per ((?:\{\w+\}/?)+))?");
+re!(FOR_EVERY, r" for every (\d+) (\{\w+\})");
 re!(DROWN, r"^Drown (.+)$");
 re!(REPLACE, r"^(?:[Yy]ou may )?(?:Replace|replace) (\d+|each|all) (?:additional |of (?:their|your) )?\{(\w+)\} with (?:(\d+) )?\{(\w+)\}");
 re!(ENERGY, r"^(?:[Tt]arget Spirit |they |you |They |You )?(?:also )?(?:gains?|Gain) \+?(\d+) Energy$");
@@ -474,6 +475,9 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     if let Some(c) = DAHAN_HEALTH.captures(s) {
         return one(Effect::DahanHealth(count(&c[1])));
     }
+    if s.contains("{Dahan} in target land deal damage simultaneously with Invaders") {
+        return one(Effect::DahanSimultaneous);
+    }
     if INVADER_RULE.is_match(s) {
         return one(Effect::InvaderRule(s.to_string()));
     }
@@ -581,13 +585,24 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     }
     if let Some(c) = DEFEND_GRANT.captures(s) {
         let d = Effect::Defend(count(&c[1]));
-        return one(if lower.contains("{presence}") { Effect::Per { per: PieceFilter::Presence, then: vec![d] } } else { d });
+        let per = if lower.contains("{presence}") { Effect::Per { per: PieceFilter::Presence, then: vec![d] } } else { d };
+        // "each of target Spirit's {Presence} grants Defend 1 in its land": in every land of
+        // theirs, not only the one the card is anchored on (Boon of Swarming Bedevilment)
+        if lower.contains("target spirit") && lower.contains("{presence}") {
+            return one(Effect::Area { scope: "each land where target Spirit has presence".into(), then: vec![per] });
+        }
+        return one(per);
     }
     if let Some(c) = DOES_BONUS.captures(s) {
         return one(Effect::DamageBonus(count(&c[1])));
     }
     if DAMAGE_EQUAL.is_match(s) {
-        return one(Effect::Damage { amount: 1, to: DamageTarget::Invaders });
+        let d = Effect::Damage { amount: 1, to: DamageTarget::Invaders };
+        // "Damage equal to the number of your {Presence} in target land": 1 per presence
+        if lower.contains("number of your {presence}") {
+            return one(Effect::Per { per: PieceFilter::Presence, then: vec![d] });
+        }
+        return one(d);
     }
     if let Some(c) = DAMAGE.captures(s) {
         let bonus = c.get(1).is_some();
@@ -682,6 +697,10 @@ fn direct(s: &str) -> Option<Vec<Effect>> {
     }
     if let Some(c) = DESTROY.captures(s) {
         let d = Effect::Destroy { count: count(&c[1]), what: filters(&c[2]) };
+        // "Destroy 1 {Town} for every 2 {Dahan} in target land" (Lead the Furious Assault)
+        if let Some(e) = FOR_EVERY.captures(s) {
+            return one(Effect::Per { per: PieceFilter::Other(format!("every {} {}", &e[1], &e[2])), then: vec![d] });
+        }
         return one(match c.get(3) {
             Some(per) => Effect::Per { per: PieceFilter::Other(per.as_str().to_string()), then: vec![d] },
             None => d,
@@ -757,7 +776,7 @@ mod tests {
     #[test]
     fn plain_sentences() {
         assert_eq!(p(&["1 {Fear}.", "Invaders skip Ravage Actions."]), vec![Effect::Fear(1), Effect::SkipRavage]);
-        assert_eq!(p(&["Defend 3.", "During Ravage, {Dahan} in target land deal damage simultaneously with Invaders."]), vec![Effect::Defend(3), Effect::InvaderRule("During Ravage, {Dahan} in target land deal damage simultaneously with Invaders".into())]);
+        assert_eq!(p(&["Defend 3.", "During Ravage, {Dahan} in target land deal damage simultaneously with Invaders."]), vec![Effect::Defend(3), Effect::DahanSimultaneous]);
         assert_eq!(p(&["1 {Fear}.", "1 Damage to each Invader.", "1 Damage to each {Dahan}."]), vec![Effect::Fear(1), Effect::Damage { amount: 1, to: DamageTarget::EachInvader }, Effect::Damage { amount: 1, to: DamageTarget::EachDahan }]);
         assert_eq!(p(&["Push up to 3 {Explorer}/{Town}."]), vec![Effect::Push { count: 3, what: vec![PieceFilter::Piece(PieceKind::Explorer), PieceFilter::Piece(PieceKind::Town)] }]);
         assert_eq!(p(&["Add 1 {Badlands} and 1 {Wilds}."]), vec![Effect::AddToken { kind: TokenKind::Badlands, count: 1 }, Effect::AddToken { kind: TokenKind::Wilds, count: 1 }]);
@@ -787,8 +806,12 @@ mod tests {
         assert!(matches!(&guard[0], Effect::Choice(b) if b[0].len() == 2 && b[1].len() == 1), "the header sentence parses to nothing: {guard:?}");
         let terror = p(&["{TerrorI} : 1 {Fear}.", "{TerrorII} : 2 {Fear} or add 1 {Strife}."]);
         assert!(matches!(&terror[1], Effect::Conditional { condition, then } if condition == "TerrorII" && matches!(then[0], Effect::Choice(_))));
+        let boon = p(&["For the rest of this turn, each of target Spirit’s {Presence} grants Defend 1 in its land."]);
+        assert!(matches!(&boon[0], Effect::Area { scope, then } if scope.starts_with("each land where target Spirit") && matches!(&then[0], Effect::Per { per: PieceFilter::Presence, .. })), "{boon:?}");
+        let assault = p(&["Destroy 1 {Town} for every 2 {Dahan} in target land."]);
+        assert!(matches!(&assault[0], Effect::Per { per: PieceFilter::Other(d), then } if d == "every 2 {Dahan}" && matches!(then[0], Effect::Destroy { count: 1, .. })), "{assault:?}");
         let manifest = p(&["1 {Fear}.", "Each {Dahan} deals Damage equal to the number of your {Presence} in target land."]);
-        assert!(matches!(&manifest[1], Effect::Per { per: PieceFilter::Piece(si_model::island::PieceKind::Dahan), .. }));
+        assert!(matches!(&manifest[1], Effect::Per { per: PieceFilter::Piece(si_model::island::PieceKind::Dahan), then } if matches!(&then[0], Effect::Per { per: PieceFilter::Presence, .. })), "each Dahan deals 1 Damage per presence: {manifest:?}");
         let sea = p(&["If Invaders are present, 2 {Fear} per {Beast} (max. 6 {Fear})."]);
         assert!(matches!(&sea[0], Effect::Conditional { then, .. } if matches!(&then[0], Effect::Per { per: PieceFilter::Token(TokenKind::Beast), .. })));
     }

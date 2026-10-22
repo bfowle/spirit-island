@@ -17,6 +17,8 @@ pub(super) struct Job {
     pub generation: u64,
     pub rec: Arc<GameRecord>,
     pub turns: Vec<u32>,
+    /// The Blight Card at each turn's start, from the capture's saves (the Blight Card loss).
+    pub pool: std::collections::BTreeMap<u32, (i64, bool)>,
 }
 
 pub(super) fn spawn(defs: Arc<Definitions>, opts: ReviewOptions, out: Sender<Msg>) -> Sender<Job> {
@@ -44,7 +46,9 @@ pub(super) fn spawn(defs: Arc<Definitions>, opts: ReviewOptions, out: Sender<Msg
                 let _ = out.send(Msg::Progress(p));
             };
             for t in job.turns {
-                let r = si_hindsight::review_turns(&job.rec, &defs, &opts, Some(&[t]), &on_progress);
+                let mut o = opts.clone();
+                o.blight_pool = job.pool.clone();
+                let r = si_hindsight::review_turns(&job.rec, &defs, &o, Some(&[t]), &on_progress);
                 if !meta_sent {
                     let _ = out.send(Msg::Meta(Box::new((r.values.clone(), r.calibration.clone(), r.deck.clone()))));
                     meta_sent = true;

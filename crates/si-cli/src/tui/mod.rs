@@ -449,7 +449,7 @@ pub fn run(args: &[String]) -> Result<()> {
         let pool_at = crate::blight_pool_by_turn(&home);
         let rec = Arc::new(rec);
         let turns: Vec<u32> = si_hindsight::closed_turns(&rec);
-        let _ = review_tx.send(review::Job { generation: 0, rec: Arc::clone(&rec), turns: turns.clone() });
+        let _ = review_tx.send(review::Job { generation: 0, rec: Arc::clone(&rec), turns: turns.clone(), pool: pool_at.clone() });
         let is_capture = home.join("saves").is_dir();
         (rec, home, is_capture, pool_at, turns, String::new())
     };
@@ -678,15 +678,25 @@ fn live_update(app: &mut App, u: source::LiveUpdate) {
     // its best lines become the open turn's plans, scored against the position as it stands,
     // so what was played and what was better stay in sight while the turn is played again
     let open_turn = u.seed.as_ref().filter(|_| u.open).map(|s| s.turn_index + 1);
+    // only from the same position: an attempt whose earlier turns went otherwise played
+    // this turn on another board, and its lines would name lands and cards that are not so now
     if let Some(t) = open_turn.filter(|t| !closed.contains(t)) {
         if let Some(r) = app.reviews.get(&t).cloned() {
-            carry_attempt(app, t, &r);
+            if same_start(&old, &app.rec, &spirit, t) {
+                carry_attempt(app, t, &r);
+            } else {
+                app.status = format!("T{t} again, from another position than the earlier attempt's (an earlier turn went otherwise): its lines are not carried");
+            }
         } else if let Some(a) = app.attempt.clone() {
             // --attempt: that record's review of this turn, asked for once, lands as Msg::Turn
             if !app.attempt_asked.contains(&t) && si_hindsight::closed_turns(&a).contains(&t) && app.plan_texts.get(&t).is_none_or(|v| v.is_empty()) {
                 app.attempt_asked.insert(t);
-                let _ = app.review_tx.send(review::Job { generation: app.generation, rec: a, turns: vec![t] });
-                app.status = format!("reviewing the earlier attempt's T{t}: its line and its best lines will be the first plans");
+                if same_start(&a, &app.rec, &spirit, t) {
+                    let _ = app.review_tx.send(review::Job { generation: app.generation, rec: a, turns: vec![t], pool: app.pool_at.clone() });
+                    app.status = format!("reviewing the earlier attempt's T{t}: its line and its best lines will be the first plans");
+                } else {
+                    app.status = format!("the earlier attempt's T{t} began from another position (an earlier turn went otherwise): its lines are not carried");
+                }
             }
         }
     }
@@ -695,7 +705,11 @@ fn live_update(app: &mut App, u: source::LiveUpdate) {
     app.turns = closed.clone();
     if !todo.is_empty() {
         app.running = true;
-        let _ = app.review_tx.send(review::Job { generation: app.generation, rec: Arc::clone(&app.rec), turns: todo });
+        // the Blight Card per turn, from the saves the capture keeps (the loss it can bring)
+        if let Some(c) = app.capture.clone() {
+            app.pool_at = crate::blight_pool_by_turn(&c);
+        }
+        let _ = app.review_tx.send(review::Job { generation: app.generation, rec: Arc::clone(&app.rec), turns: todo, pool: app.pool_at.clone() });
     }
     // a turn that just closed keeps its plans as try rows
     if let Some(o) = &app.open {
@@ -748,6 +762,22 @@ fn progress_words(p: &Progress) -> String {
 /// A review line as the plan prompt takes it: the growth tokens before `|` (a drafted
 /// card as `+card`, since the live position cannot know the draft; a forget dropped),
 /// then the plays by short code with their lands.
+/// Did turn `t` begin from the same position in both records: the board, and the spirit's
+/// presence, slots, hand, discard and Energy as turn `t - 1` left them?
+fn same_start(a: &GameRecord, b: &GameRecord, spirit: &str, t: u32) -> bool {
+    if t <= 1 {
+        return a.setup == b.setup;
+    }
+    let board = |r: &GameRecord| r.turn(t - 1).map(|x| x.board_after.clone());
+    let sorted = |v: &Vec<String>| {
+        let mut v = v.clone();
+        v.sort();
+        v
+    };
+    let spirit_end = |r: &GameRecord| r.spirit_turn(spirit, t - 1).map(|s| (s.presence_after.clone(), s.revealed_after.clone(), sorted(&s.hand_after), sorted(&s.discard_after), s.energy_after));
+    board(a).is_some() && board(a) == board(b) && spirit_end(a) == spirit_end(b)
+}
+
 /// The earlier attempt's line and its best lines become the first plans of turn `t`, each
 /// noted with what it was and scored then; the same text (in any order) is not added twice.
 fn carry_attempt(app: &mut App, t: u32, r: &TurnReview) {
@@ -783,17 +813,10 @@ fn line_as_plan(app: &App, l: &si_hindsight::Line) -> String {
         .filter(|t| !t.starts_with('-'))
         .map(|t| if t.starts_with('+') && !t.ends_with('E') { "+card".to_string() } else { t.clone() })
         .collect();
-    let plays: Vec<String> = l
-        .plays
-        .iter()
-        .map(|p| match &p.target {
-            Some(land) if p.places => format!("{}@{land}", code(&p.power)),
-            Some(land) if p.fast => format!("{}>{land}", code(&p.power)),
-            // a Slow play takes its land after the Invader steps
-            _ => code(&p.power),
-        })
-        .collect();
-    if growth.is_empty() { plays.join(" ") } else { format!("{} | {}", growth.join(" "), plays.join(" ")) }
+    // the mark on an innate taken Fast, the gathers and pushes in brackets and the Slow lands
+    // come along: the rollback lands on the same position, so the same cards will come
+    let plays = l.plays_text_kept(&code);
+    if growth.is_empty() { plays } else { format!("{} | {plays}", growth.join(" ")) }
 }
 
 fn inject(app: &mut App) {
@@ -884,7 +907,7 @@ fn draw(f: &mut Frame, app: &mut App) {
     if let Some(text) = &app.prompt {
         let r = centered(area, 70, 3);
         f.render_widget(Clear, r);
-        let title = if app.is_open_tab() { " plan (G2 e4@C4 | CS>C3 FCD>C4 on the Growth tab, plays only after it; Enter scores it, Esc cancels) " } else { " try a line (SLSF>C8 MI; Enter scores it, Esc cancels) " };
+        let title = if app.is_open_tab() { " plan (G2 e4@C4 | CS>C3 FCD>C4 on the Growth tab, plays only after it; F:LFA>A4 takes an innate Fast through its tier; Enter scores it, Esc cancels) " } else { " try a line (SLSF>C8 MI; Enter scores it, Esc cancels) " };
         let p = Paragraph::new(format!("{text}_")).block(Block::default().borders(Borders::ALL).title(title).border_style(Style::default().fg(ACCENT)));
         f.render_widget(p, r);
     }

@@ -32,6 +32,9 @@ pub struct Land {
     pub no_cascade: bool,
     /// Extra Health on the Dahan here this turn (Promises of Protection).
     pub dahan_health: u32,
+    /// The Dahan here deal their Ravage damage with the Invaders', the ones destroyed
+    /// included (Words of Warning).
+    pub dahan_simultaneous: bool,
     /// Isolated by a Spirit effect this turn.
     pub isolated: bool,
     /// Blight would be added here but stays on the card this turn (Water Nourishes Life's Growth).
@@ -73,6 +76,169 @@ pub struct Rules {
     pub hooks: Vec<(String, si_model::spirit::RuleHook)>,
     /// Beasts count as Badlands (Hard-Working Settlers).
     pub beasts_as_badlands: bool,
+    /// The loss conditions' game-long counts as the turn began.
+    #[serde(default)]
+    pub clocks: LossClocks,
+    /// Where the player sent each cascading Blight this turn, as the record has it: the
+    /// adjacent lands offered and the one chosen.
+    #[serde(default)]
+    pub cascades: Vec<(Vec<LandId>, LandId)>,
+    /// The order the player ravaged the matching lands in this turn, as the record has it.
+    #[serde(default)]
+    pub ravage_order: Vec<LandId>,
+    /// The Terror Level in effect, for the victory it sets (no Invaders at I, no Towns or
+    /// Cities at II, no Cities at III); 0 checks no victory.
+    #[serde(default)]
+    pub terror: u8,
+}
+
+/// The game-long counts the loss conditions keep, as they stood when the turn began
+/// (the record's earlier turns, the save's Blight Card).
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct LossClocks {
+    /// Players in the game (the Habsburg Monarchy's limit); 0 reads as 1.
+    pub players: u32,
+    /// Blight left on the Blight Card and whether the card has flipped; None when unknown.
+    pub blight_pool: Option<(i64, bool)>,
+    /// The Tsardom of Russia: Beasts destroyed by adversary rules this game.
+    pub beasts_destroyed: u32,
+    /// The Habsburg Monarchy: Blight off the card in Ravages with 6+ overkill this game.
+    pub irreparable: u32,
+}
+
+/// What the turn has added so far to the game-long counts.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct Tally {
+    /// Blight taken from the Blight Card this turn.
+    pub blight: u32,
+    pub beasts_destroyed: u32,
+    pub irreparable: u32,
+}
+
+fn boards_in(island: &Island) -> usize {
+    island.lands.keys().map(|l| l.board.clone()).collect::<std::collections::BTreeSet<_>>().len().max(1)
+}
+
+/// A loss condition the board and the game-long counts show, as the reason the Invaders win:
+/// the core ones (the Spirit's last presence gone, a flipped Blight Card emptied) and every
+/// adversary's own (England's capital, France's Town supply, Scotland's ports, Russia's
+/// hunters, the Habsburg Monarchy's irreparable damage). The adversaries' conditions hold at
+/// every level. None while the game goes on.
+pub fn loss(island: &Island, rules: &Rules, tally: Tally) -> Option<String> {
+    if let Some((pool, true)) = rules.clocks.blight_pool {
+        if pool > 0 && tally.blight as i64 >= pool {
+            return Some(format!("the Blight Card ran out: {pool} left on it, {} taken", tally.blight));
+        }
+    }
+    let presence: u32 = island.lands.values().map(|l| l.c.presence).sum();
+    if presence == 0 && !island.lands.is_empty() {
+        return Some("the Spirit has no presence left on the island".into());
+    }
+    let boards = boards_in(island);
+    match rules.adversary.as_deref() {
+        Some("TheKingdomOfEngland") => island.lands.values().find(|l| l.c.buildings() >= 7).map(|l| format!("England's Proud & Mighty Capital: {} Town/City in {}", l.c.buildings(), l.id)),
+        Some("TheKingdomOfScotland") => {
+            let n = island.lands.values().filter(|l| l.coastal && l.c.cities > 0).count();
+            (n > 2 * boards).then(|| format!("Scotland's Trade Hub: {n} Coastal lands with a City, more than {}", 2 * boards))
+        }
+        Some("TheKingdomOfFrance") => {
+            let towns: u32 = island.lands.values().map(|l| l.c.towns).sum();
+            (towns as usize > 7 * boards).then(|| format!("France's Sprawling Plantations: a Town with none left to place ({} per board)", 7))
+        }
+        Some("TheTsardomOfRussia") => {
+            let destroyed = rules.clocks.beasts_destroyed + tally.beasts_destroyed;
+            let beasts: u32 = island.lands.values().map(|l| l.c.beasts).sum();
+            (destroyed > beasts).then(|| format!("Russia's Hunters Swarm the Island: {destroyed} Beasts destroyed by the Hunters, {beasts} on the island"))
+        }
+        Some("TheHabsburgMonarchy") => {
+            let n = rules.clocks.irreparable + tally.irreparable;
+            let players = rules.clocks.players.max(1);
+            (n > players).then(|| format!("the Habsburg Monarchy's Irreparable Damage: {n} Blight off the card in Ravages with 6+ overkill, more than {players}"))
+        }
+        _ => None,
+    }
+}
+
+/// The loss conditions checked at the end of the Fast phase: Habsburg Mining Expedition's
+/// Land Stripped Bare (8 Invaders and Blight in one land), and every condition `loss` checks.
+pub fn loss_after_fast(island: &Island, rules: &Rules, tally: Tally) -> Option<String> {
+    if rules.adversary.as_deref() == Some("HabsburgMiningExpedition") {
+        if let Some(l) = island.lands.values().find(|l| l.c.invaders() + l.c.blight >= 8) {
+            return Some(format!("Habsburg Mining's Land Stripped Bare: {} Invaders and Blight in {}", l.c.invaders() + l.c.blight, l.id));
+        }
+    }
+    loss(island, rules, tally)
+}
+
+/// How near each loss condition in play stands, in words: the count against its limit.
+/// The forward view a player keeps (England's capital two buildings short, France's Town
+/// supply, Russia's hunters against the Beasts left, the Blight Card's pool).
+pub fn clocks(island: &Island, rules: &Rules, tally: Tally) -> Vec<String> {
+    let mut out = Vec::new();
+    let boards = boards_in(island);
+    match rules.adversary.as_deref() {
+        Some("TheKingdomOfEngland") => {
+            if let Some(l) = island.lands.values().filter(|l| l.c.buildings() > 0).max_by_key(|l| l.c.buildings()) {
+                out.push(format!("England's capital: {} has {} of 7 Town/City", l.id, l.c.buildings()));
+            }
+        }
+        Some("TheKingdomOfScotland") => {
+            let n = island.lands.values().filter(|l| l.coastal && l.c.cities > 0).count();
+            out.push(format!("Scotland's Trade Hub: {n} Coastal lands with a City; more than {} loses", 2 * boards));
+        }
+        Some("TheKingdomOfFrance") => {
+            let towns: u32 = island.lands.values().map(|l| l.c.towns).sum();
+            out.push(format!("France's Town supply: {towns} of {} placed", 7 * boards));
+        }
+        Some("TheTsardomOfRussia") => {
+            let beasts: u32 = island.lands.values().map(|l| l.c.beasts).sum();
+            out.push(format!("Russia's Hunters: {} Beasts destroyed, {beasts} on the island; more destroyed than on the island loses", rules.clocks.beasts_destroyed + tally.beasts_destroyed));
+        }
+        Some("TheHabsburgMonarchy") => out.push(format!("Habsburg Irreparable Damage: {} of {} Blight off the card in 6+ overkill Ravages; one more than that loses", rules.clocks.irreparable + tally.irreparable, rules.clocks.players.max(1))),
+        Some("HabsburgMiningExpedition") => {
+            if let Some(l) = island.lands.values().max_by_key(|l| l.c.invaders() + l.c.blight) {
+                out.push(format!("Land Stripped Bare: {} has {} of 8 Invaders and Blight (checked at the end of the Fast phase)", l.id, l.c.invaders() + l.c.blight));
+            }
+        }
+        _ => {}
+    }
+    if let Some((pool, flipped)) = rules.clocks.blight_pool {
+        let left = pool - tally.blight as i64;
+        out.push(if flipped { format!("Blight Card: {left} left (flipped); taking the last loses") } else { format!("Blight Card: {left} left before it flips") });
+    }
+    out
+}
+
+/// The player's split of `damage` among the Invaders: the most valuable set it destroys,
+/// a Town worth three Explorers and a City five (the generic ledger with the Fear each gives),
+/// the larger pieces first on a tie. `have` and `health` are (Explorers, Towns, Cities);
+/// the result is how many of each die.
+pub fn best_kills(damage: u32, have: (u32, u32, u32), health: (u32, u32, u32)) -> (u32, u32, u32) {
+    let (he, ht, hc) = (health.0.max(1), health.1.max(1), health.2.max(1));
+    let mut best = (0u32, 0u32, 0u32, 0u32);
+    for c in 0..=have.2 {
+        for t in 0..=have.1 {
+            let cost = c * hc + t * ht;
+            if cost > damage {
+                continue;
+            }
+            let e = have.0.min((damage - cost) / he);
+            let value = 5 * c + 3 * t + e;
+            if (value, c, t) > (best.0, best.3, best.2) {
+                best = (value, e, t, c);
+            }
+        }
+    }
+    (best.1, best.2, best.3)
+}
+
+impl Island {
+    /// Time Passes: the turn's Defend, skips and other one-turn effects end; the pieces stay.
+    pub fn time_passes(&mut self) {
+        for l in self.lands.values_mut() {
+            *l = Land { id: l.id.clone(), terrain: l.terrain, coastal: l.coastal, adjacent: std::mem::take(&mut l.adjacent), c: l.c, ..Default::default() };
+        }
+    }
 }
 
 impl Rules {
@@ -102,6 +268,16 @@ impl Rules {
         self.hooks.iter().any(|(s, h)| s == spirit && *h == si_model::spirit::RuleHook::BlightCountsAsBadlands)
     }
 
+    /// The spirit gathers 1 presence toward a Power's land first (Mists Shift and Flow).
+    pub fn gathers_presence_on_targeting(&self, spirit: &str) -> bool {
+        self.hooks.iter().any(|(s, h)| s == spirit && *h == si_model::spirit::RuleHook::GatherPresenceOnTargeting)
+    }
+
+    /// The spirit's presence moves with the Dahan it is with (Ally of the Dahan).
+    pub fn presence_with_dahan_for(&self, spirit: &str) -> bool {
+        self.hooks.iter().any(|(s, h)| s == spirit && *h == si_model::spirit::RuleHook::PresenceMovesWithDahan)
+    }
+
     /// The spirits' special-rule hooks read from their panels.
     pub fn hooks_of(defs: &si_defs::Definitions, spirits: &[String]) -> Vec<(String, si_model::spirit::RuleHook)> {
         spirits.iter().filter_map(|id| defs.spirits.get(id).map(|p| (id, p))).flat_map(|(id, p)| p.special_rules.iter().flat_map(|r| r.hooks.iter()).map(move |h| (id.clone(), h.clone()))).collect()
@@ -119,6 +295,15 @@ pub struct Outcome {
     pub damage: u32,
     pub dahan_lost: u32,
     pub invaders_destroyed: u32,
+    /// Beasts the adversary's rules destroyed here (Russia's Hunters).
+    #[serde(default)]
+    pub beasts_destroyed: u32,
+    /// Blight off the card in a Ravage with 6+ overkill (the Habsburg Monarchy's count).
+    #[serde(default)]
+    pub irreparable: u32,
+    /// The Invaders the Dahan destroyed, by kind (a Town gives 1 Fear, a City 2).
+    #[serde(default)]
+    pub destroyed: Vec<PieceKind>,
     pub presence_destroyed: u32,
     /// What a player's choice could have produced instead (Vengeance letting a
     /// Build through Disease).
@@ -282,13 +467,33 @@ pub fn ravage(island: &mut Island, card: &InvaderCard, rules: &Rules) -> Vec<Out
             }
         }
     }
+    // the player's order when the record has it (a win can come between two lands)
+    targets.sort_by_key(|id| rules.ravage_order.iter().position(|r| r == id).unwrap_or(usize::MAX));
     let mut out = Vec::new();
     for id in targets {
         if let Some(o) = ravage_land(island, &id, rules) {
             out.push(o);
         }
+        if victory(island, rules).is_some() {
+            break;
+        }
     }
     out
+}
+
+/// The Terror Level's victory, as the reason the Spirits win: no Invaders on the island at
+/// Terror Level I, no Towns or Cities at II, no Cities at III. None while the game goes on,
+/// and always when the Terror Level is not known (`rules.terror` 0).
+pub fn victory(island: &Island, rules: &Rules) -> Option<String> {
+    if rules.terror == 0 || island.lands.is_empty() {
+        return None;
+    }
+    let (e, t, c) = island.lands.values().fold((0, 0, 0), |(e, t, c), l| (e + l.c.explorers, t + l.c.towns, c + l.c.cities));
+    match rules.terror {
+        1 => (e + t + c == 0).then(|| "no Invaders on the island (Terror Level I)".to_string()),
+        2 => (t + c == 0).then(|| "no Towns or Cities on the island (Terror Level II)".to_string()),
+        _ => (c == 0).then(|| "no Cities on the island (Terror Level III)".to_string()),
+    }
 }
 
 /// One land's Ravage: damage from its Invaders against Defend, Blight and
@@ -329,6 +534,7 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
     let raw: u32 = parts.iter().sum();
     let dmg = raw.saturating_sub(l.defend).saturating_sub(l.damage_minus);
     o.damage = dmg;
+    let mut cascades = false;
     if dmg >= 2 && l.no_blight {
         o.notes.push("Blight not added: a Spirit effect keeps it on the card".into());
     }
@@ -338,16 +544,14 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
             o.blight += 1;
             o.notes.push("Heavy Mining: 4+ overkill adds a Blight".into());
         }
-        if l.c.blight > 0 && !l.no_cascade {
-            o.cascade = 1;
-            o.notes.push("cascade onto an adjacent land (player's choice)".into());
-        }
+        cascades = l.c.blight > 0 && !l.no_cascade;
         if l.c.presence > 0 {
             o.presence_destroyed = 1;
             o.notes.push("1 presence per Spirit present destroyed (one Spirit assumed)".into());
         }
         if rules.russia(1) && l.c.beasts > 0 {
             l.c.beasts -= 1;
+            o.beasts_destroyed += 1;
             o.notes.push("Hunters: 1 Beast destroyed with the Blight".into());
         }
         if rules.sweden(5) {
@@ -360,33 +564,117 @@ pub fn ravage_land(island: &mut Island, id: &LandId, rules: &Rules) -> Option<Ou
     let dahan_health = (2 + rules.dahan_health_bonus.get(&id).copied().unwrap_or(0) + l.dahan_health as i32).max(1) as u32;
     o.dahan_lost = l.c.dahan.min(to_dahan / dahan_health);
     let survivors = l.c.dahan - o.dahan_lost;
-    let counter = if survivors > 0 { survivors * 2 + badlands } else { 0 };
-    // the player distributes: cheapest kills first (England 5: +1 Health)
+    // Words of Warning: the Dahan deal their damage with the Invaders', so the ones
+    // this Ravage destroys strike back too
+    let striking = if l.dahan_simultaneous { l.c.dahan } else { survivors };
+    if l.dahan_simultaneous && o.dahan_lost > 0 {
+        o.notes.push(format!("{} Dahan destroyed still dealt their damage (simultaneously with the Invaders)", o.dahan_lost));
+    }
+    let counter = if striking > 0 { striking * 2 + badlands } else { 0 };
+    // the player distributes: the most valuable set the damage kills (England 5: +1 Health)
     let bonus = rules.england(5) as u32;
-    let mut health: Vec<(u32, PieceKind)> = Vec::new();
-    health.extend(std::iter::repeat((1u32, PieceKind::Explorer)).take(l.c.explorers as usize));
-    health.extend(std::iter::repeat((2 + bonus, PieceKind::Town)).take(l.c.towns as usize));
-    health.extend(std::iter::repeat((3 + bonus, PieceKind::City)).take(l.c.cities as usize));
-    let mut left = counter;
-    for (h, k) in &health {
-        if left >= *h {
-            left -= *h;
-            o.invaders_destroyed += 1;
-            match k {
-                PieceKind::Explorer => l.c.explorers -= 1,
-                PieceKind::Town => l.c.towns -= 1,
-                PieceKind::City => l.c.cities -= 1,
-                PieceKind::Dahan => {}
-            }
+    let (ke, kt, kc) = best_kills(counter, (l.c.explorers, l.c.towns, l.c.cities), (1, 2 + bonus, 3 + bonus));
+    let killed: Vec<PieceKind> = std::iter::repeat_n(PieceKind::City, kc as usize).chain(std::iter::repeat_n(PieceKind::Town, kt as usize)).chain(std::iter::repeat_n(PieceKind::Explorer, ke as usize)).collect();
+    for k in &killed {
+        o.invaders_destroyed += 1;
+        o.destroyed.push(*k);
+        match k {
+            PieceKind::Explorer => l.c.explorers -= 1,
+            PieceKind::Town => l.c.towns -= 1,
+            PieceKind::City => l.c.cities -= 1,
+            PieceKind::Dahan => {}
         }
     }
     if counter > 0 {
-        o.notes.push("counterattack distribution: cheapest Invaders first (player's choice)".into());
+        o.notes.push("counterattack distribution: the most valuable Invaders it kills (player's choice)".into());
     }
     l.c.blight += o.blight;
     l.c.dahan -= o.dahan_lost;
     l.c.presence = l.c.presence.saturating_sub(o.presence_destroyed);
+    if cascades {
+        place_cascade(island, &id, rules, &mut o, 0);
+    }
+    // the Habsburg Monarchy counts the Blight a Ravage of 6+ overkill takes off the card
+    if rules.adversary.as_deref() == Some("TheHabsburgMonarchy") && dmg >= 8 {
+        o.irreparable = o.blight + o.cascade;
+    }
+    sworn_to_victory(island, &id, rules, &mut o);
     Some(o)
+}
+
+/// Blight cascading out of `from`: onto the land the record says the player chose (when the
+/// cascade offered the same lands), else onto the neighbor a player would pick (no Blight, no
+/// presence, no Dahan, the fewest Invaders). Blight landing where Blight already is cascades
+/// again; each Blight added destroys a presence there, and Russia's Hunters a Beast.
+fn place_cascade(island: &mut Island, from: &LandId, rules: &Rules, o: &mut Outcome, depth: u32) {
+    if depth > 8 {
+        return;
+    }
+    let options: Vec<LandId> = island.lands.get(from).map(|l| l.adjacent.iter().filter(|a| island.lands.get(*a).is_some_and(|n| n.terrain != Some(Terrain::Ocean))).cloned().collect()).unwrap_or_default();
+    let mut offered = options.clone();
+    offered.sort();
+    let recorded: Option<LandId> = rules
+        .cascades
+        .iter()
+        .find(|(o, _)| {
+            let mut x = o.clone();
+            x.sort();
+            x == offered
+        })
+        .map(|(_, to)| to.clone())
+        .filter(|t| options.contains(t));
+    let guessed = || options.iter().min_by_key(|a| island.lands.get(*a).map(|l| (l.c.blight > 0, l.c.presence, l.c.dahan, l.c.invaders())).unwrap_or((true, 0, 0, 0))).cloned();
+    let Some(to) = recorded.clone().or_else(guessed) else { return };
+    let Some(l) = island.lands.get_mut(&to) else { return };
+    let chains = l.c.blight > 0 && !l.no_cascade;
+    l.c.blight += 1;
+    o.cascade += 1;
+    if l.c.presence > 0 {
+        l.c.presence -= 1;
+        o.presence_destroyed += 1;
+    }
+    if rules.russia(1) && l.c.beasts > 0 {
+        l.c.beasts -= 1;
+        o.beasts_destroyed += 1;
+    }
+    o.notes.push(format!("cascade onto {to}{}", if recorded.is_some() { "" } else { " (player's choice)" }));
+    if chains {
+        place_cascade(island, &to, rules, o, depth + 1);
+    }
+}
+
+/// Thunderspeaker's Sworn to Victory: after a Ravage destroys Dahan, 1 of the spirit's
+/// presence within range of the land is destroyed per Dahan. Which presence is the
+/// player's choice: the ravaged land's first, then a neighbor's without Dahan, the fewest
+/// first. Stacks stay, presence with Dahan stays (Manifestation multiplies both): what the
+/// player chose both times the recorded games asked (Thunderspeaker T5, both attempts).
+fn sworn_to_victory(island: &mut Island, id: &LandId, rules: &Rules, o: &mut Outcome) {
+    let Some(range) = rules.hooks.iter().find_map(|(_, h)| if let si_model::spirit::RuleHook::PresenceDestroyedPerDahanKilled { range } = h { Some(*range) } else { None }) else { return };
+    if o.dahan_lost == 0 {
+        return;
+    }
+    let mut left = o.dahan_lost;
+    let mut lands: Vec<LandId> = vec![id.clone()];
+    if range >= 1 {
+        let mut adj: Vec<LandId> = island.lands.get(id).map(|l| l.adjacent.clone()).unwrap_or_default();
+        adj.sort_by_key(|a| island.lands.get(a).map(|l| (l.c.dahan > 0, l.c.presence)).unwrap_or((true, 0)));
+        lands.extend(adj);
+    }
+    let mut destroyed = 0;
+    for land in lands {
+        let Some(l) = island.lands.get_mut(&land) else { continue };
+        let k = l.c.presence.min(left);
+        l.c.presence -= k;
+        left -= k;
+        destroyed += k;
+        if left == 0 {
+            break;
+        }
+    }
+    if destroyed > 0 {
+        o.presence_destroyed += destroyed;
+        o.notes.push(format!("Sworn to Victory: {destroyed} presence destroyed for {} Dahan lost (which presence is the player's choice)", o.dahan_lost));
+    }
 }
 
 #[cfg(test)]
@@ -412,9 +700,89 @@ mod tests {
         let o = &out[0];
         assert_eq!((o.damage, o.blight, o.cascade), (3, 1, 0));
         assert_eq!(o.dahan_lost, 1, "3 damage kills one Dahan of two");
-        assert_eq!(o.invaders_destroyed, 1, "the survivor's 2 damage kills the Explorer (1) with 1 left, not the Town (2)");
+        assert_eq!(o.invaders_destroyed, 1, "the survivor's 2 damage kills the Town (2), worth more than the Explorer (1)");
         let l = &isl.lands[&"A1".parse().unwrap()];
-        assert_eq!((l.c.explorers, l.c.towns, l.c.dahan, l.c.blight), (0, 1, 1, 1));
+        assert_eq!((l.c.explorers, l.c.towns, l.c.dahan, l.c.blight), (1, 0, 1, 1));
+    }
+
+    #[test]
+    fn every_loss_condition_reads_off_the_board_and_the_counts() {
+        let adv = |a: &str| Rules { adversary: Some(a.into()), ..Default::default() };
+        let one = |c: Counts| island(vec![land("A1", Terrain::Sands, true, &["A2"], c), land("A2", Terrain::Jungle, false, &["A1"], Counts { presence: 1, ..Default::default() })]);
+        let t0 = Tally::default();
+        // England: 7 Town/City in one land
+        assert!(loss(&one(Counts { towns: 4, cities: 2, ..Default::default() }), &adv("TheKingdomOfEngland"), t0).is_none());
+        assert!(loss(&one(Counts { towns: 4, cities: 3, ..Default::default() }), &adv("TheKingdomOfEngland"), t0).is_some_and(|r| r.contains("A1")));
+        // France: more Towns than 7 per board
+        assert!(loss(&one(Counts { towns: 7, ..Default::default() }), &adv("TheKingdomOfFrance"), t0).is_none());
+        assert!(loss(&one(Counts { towns: 8, ..Default::default() }), &adv("TheKingdomOfFrance"), t0).is_some());
+        // Scotland: Coastal lands with a City over 2 per board (one coastal land here: never)
+        assert!(loss(&one(Counts { cities: 3, ..Default::default() }), &adv("TheKingdomOfScotland"), t0).is_none());
+        // Russia: more Beasts destroyed by the Hunters than Beasts on the island
+        let mut r = adv("TheTsardomOfRussia");
+        r.clocks.beasts_destroyed = 1;
+        assert!(loss(&one(Counts { beasts: 1, ..Default::default() }), &r, t0).is_none());
+        assert!(loss(&one(Counts { beasts: 1, ..Default::default() }), &r, Tally { beasts_destroyed: 1, ..t0 }).is_some());
+        // the Habsburg Monarchy: irreparable Blight over the players
+        let mut h = adv("TheHabsburgMonarchy");
+        h.clocks.players = 1;
+        assert!(loss(&one(Counts::default()), &h, Tally { irreparable: 1, ..t0 }).is_none());
+        assert!(loss(&one(Counts::default()), &h, Tally { irreparable: 2, ..t0 }).is_some());
+        // Habsburg Mining: 8 Invaders and Blight in a land at the end of the Fast phase
+        assert!(loss_after_fast(&one(Counts { explorers: 5, towns: 1, blight: 2, ..Default::default() }), &adv("HabsburgMiningExpedition"), t0).is_some());
+        assert!(loss(&one(Counts { explorers: 5, towns: 1, blight: 2, ..Default::default() }), &adv("HabsburgMiningExpedition"), t0).is_none(), "checked at the Fast phase's end only");
+        // core: a flipped Blight Card emptied (not an unflipped one), the last presence gone
+        let mut b = Rules::default();
+        b.clocks.blight_pool = Some((2, true));
+        assert!(loss(&one(Counts::default()), &b, Tally { blight: 1, ..t0 }).is_none());
+        assert!(loss(&one(Counts::default()), &b, Tally { blight: 2, ..t0 }).is_some());
+        b.clocks.blight_pool = Some((2, false));
+        assert!(loss(&one(Counts::default()), &b, Tally { blight: 3, ..t0 }).is_none(), "an unflipped card flips");
+        let bare = island(vec![land("A1", Terrain::Sands, false, &[], Counts::default())]);
+        assert!(loss(&bare, &Rules::default(), t0).is_some_and(|r| r.contains("presence")));
+    }
+
+    #[test]
+    fn russias_hunters_and_the_habsburg_count_come_out_of_the_ravage() {
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], Counts { towns: 5, beasts: 1, presence: 1, ..Default::default() })]);
+        let r = Rules { adversary: Some("TheTsardomOfRussia".into()), level: 1, ..Default::default() };
+        let out = ravage(&mut isl, &card(Terrain::Sands), &r);
+        assert_eq!(out[0].beasts_destroyed, 1);
+        let mut isl = island(vec![land("A1", Terrain::Sands, false, &[], Counts { towns: 4, presence: 1, ..Default::default() })]);
+        let h = Rules { adversary: Some("TheHabsburgMonarchy".into()), ..Default::default() };
+        let out = ravage(&mut isl, &card(Terrain::Sands), &h);
+        assert_eq!((out[0].damage, out[0].irreparable), (8, 1), "8 damage: 6 overkill, its Blight counts");
+    }
+
+    #[test]
+    fn sworn_to_victory_destroys_presence_per_dahan_lost() {
+        // 12 damage in A1 kills both Dahan: the Blight takes A1's presence, then Sworn to Victory
+        // takes 2 more within range 1: lands without Dahan first, the fewest first (A3, then A4),
+        // A2's presence with its Dahan last
+        let mut isl = island(vec![
+            land("A1", Terrain::Sands, false, &["A2", "A3", "A4"], Counts { towns: 6, dahan: 2, presence: 1, ..Default::default() }),
+            land("A2", Terrain::Jungle, false, &["A1"], Counts { dahan: 1, presence: 2, ..Default::default() }),
+            land("A3", Terrain::Jungle, false, &["A1"], Counts { presence: 1, ..Default::default() }),
+            land("A4", Terrain::Jungle, false, &["A1"], Counts { presence: 2, ..Default::default() }),
+        ]);
+        let rules = Rules { hooks: vec![("Thunderspeaker".into(), si_model::spirit::RuleHook::PresenceDestroyedPerDahanKilled { range: 1 })], ..Default::default() };
+        let out = ravage(&mut isl, &card(Terrain::Sands), &rules);
+        assert_eq!((out[0].dahan_lost, out[0].presence_destroyed), (2, 3));
+        let p = |id: &str| isl.lands[&id.parse().unwrap()].c.presence;
+        assert_eq!((p("A1"), p("A2"), p("A3"), p("A4")), (0, 2, 0, 1));
+    }
+
+    #[test]
+    fn words_of_warning_dahan_strike_back_as_they_fall() {
+        // 4 damage kills the lone Dahan; with Words of Warning it still deals its 2 and kills a Town
+        let mk = || island(vec![land("A1", Terrain::Sands, false, &[], Counts { towns: 2, dahan: 1, ..Default::default() })]);
+        let mut isl = mk();
+        let out = ravage(&mut isl, &card(Terrain::Sands), &Rules::default());
+        assert_eq!((out[0].dahan_lost, out[0].invaders_destroyed), (1, 0));
+        let mut isl = mk();
+        isl.lands.get_mut(&"A1".parse().unwrap()).unwrap().dahan_simultaneous = true;
+        let out = ravage(&mut isl, &card(Terrain::Sands), &Rules::default());
+        assert_eq!((out[0].dahan_lost, out[0].invaders_destroyed, out[0].destroyed.clone()), (1, 1, vec![PieceKind::Town]));
     }
 
     #[test]

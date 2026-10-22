@@ -119,7 +119,9 @@ pub fn open_turn(rec: Arc<GameRecord>, defs: &Definitions, seed: &Seed, cal: &Ca
         }
     }
     let level = seed.adversary_level.or(rec.meta.adversary_level).or_else(|| si_metrics::adversary::estimate(&rec, defs).and_then(|e| e.candidates.first().copied())).unwrap_or(0);
-    let rules = Rules { adversary: rec.meta.adversary.clone().or_else(|| seed.adversary.clone()), level, spirits: rec.meta.spirits.clone(), hooks: Rules::hooks_of(defs, &rec.meta.spirits), ..Default::default() };
+    // the loss conditions' counts as the turn began, the Blight Card as the save holds it
+    let clocks = crate::loss_clocks(&rec, turn, seed.blight_pool.map(|p| (p, seed.blight_flipped)));
+    let rules = Rules { adversary: rec.meta.adversary.clone().or_else(|| seed.adversary.clone()), level, spirits: rec.meta.spirits.clone(), hooks: Rules::hooks_of(defs, &rec.meta.spirits), clocks, terror: seed.terror.max(1), ..Default::default() };
     let deck = Deck::for_game(&rec, defs, level);
     let mut values = Values::for_panel(panel);
     values.next_weight = cal.next_weight;
@@ -230,20 +232,28 @@ pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, 
         }
     }
     let (made_cards, made_innates) = crate::recorded_plays(rec, defs, &open.s, t, &all_innates);
-    let typed: Vec<Play> = typed
-        .into_iter()
-        .filter(|p| {
-            let made = made_cards.iter().chain(made_innates.iter()).any(|m| m.power == p.power && m.target == p.target);
-            if made {
-                notes.push(format!("{} made already", p.power));
+    // the plays already made this turn come first, in the order made; a typed play that
+    // names one of them is that play's land and moves (a card played, not yet used), not a
+    // second play of the same card; one made and used already keeps its land
+    let mut all: Vec<Play> = crate::in_use_order(made_cards.iter().cloned().chain(made_innates.iter().cloned()).collect(), &open.s);
+    let mut typed_kept: Vec<Play> = Vec::new();
+    for p in typed {
+        match all.iter_mut().find(|m| m.power == p.power) {
+            Some(m) if m.target.is_none() || m.target == p.target => {
+                m.target = p.target.clone();
+                m.fast = p.fast;
+                m.forced = p.forced;
+                m.moves = p.moves.clone();
+                m.exact = p.exact;
+                notes.push(format!("{} made already: the plan says where", p.power));
             }
-            !made
-        })
-        .collect();
-    let mut cards: Vec<Play> = made_cards.clone();
-    cards.extend(typed.iter().filter(|p| !p.innate).cloned());
-    let mut innates: Vec<Play> = made_innates.clone();
-    innates.extend(typed.iter().filter(|p| p.innate).cloned());
+            Some(m) => notes.push(format!("{} made already at {}: the plan's {} is dropped", p.power, m.target.as_ref().map(|l| l.to_string()).unwrap_or_default(), p.target.as_ref().map(|l| l.to_string()).unwrap_or_default())),
+            None => typed_kept.push(p),
+        }
+    }
+    let typed = typed_kept;
+    all.extend(typed.iter().cloned());
+    let cards: Vec<Play> = all.iter().filter(|p| !p.innate).cloned().collect();
     let cost: i64 = cards.iter().map(|p| p.cost).sum();
     if cost > pos.energy {
         notes.push(format!("costs {cost} Energy, {} available", pos.energy));
@@ -262,7 +272,10 @@ pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, 
     s2.revealed_after = pos.revealed.clone();
     let played: Vec<&PowerCard> = cards.iter().filter_map(|p| defs.cards.get(&p.power)).collect();
     let elements = crate::elements_for(defs, &s2, &played);
-    let all: Vec<Play> = cards.iter().cloned().chain(innates.iter().cloned()).collect();
+    if let Some(e) = crate::forced_speed_error(defs, &typed, &elements) {
+        return Err(e);
+    }
+    // `all` acts in order: the plays made already as made, then the plan's as written
     // the next turn as the face-up cards project it: its Ravage is this turn's Build slot,
     // its Build this turn's Explore once known (`informed_build` substitutes the candidate)
     let next = TurnRecord { turn: t.turn + 1, ravage: t.build.clone(), build: t.explore.clone(), ..Default::default() };
@@ -283,6 +296,10 @@ pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, 
             }
             crate::apply_plays(&mut island, defs, &all, true, &elements, rules, spirit, t, &mut armed, &mut out);
             crate::invader_phase(&mut island, rec, t, defs, rules, &mut out, Some(explore), false);
+            // a won game stops: no Slow phase, no next turn
+            if out.wins.is_some() {
+                return (out, island);
+            }
         }
         let informed_build: Option<&[String]> = Some(explore);
         let slow = {
@@ -299,10 +316,17 @@ pub fn score_plan(defs: &Definitions, open: &OpenTurn, baseline: Option<&Line>, 
         let mut all2: Vec<Play> = all.iter().filter(|p| p.fast).cloned().collect();
         all2.extend(slow.iter().cloned());
         crate::apply_plays(&mut island, defs, &all2, false, &elements, rules, spirit, t, &mut armed, &mut out);
+        crate::victory_after_slow(&island, rules, t, &mut out);
         let deep = if display { None } else { crate::deep_for(rec, defs, &open.deck, t, explore, true) };
+        // the island as this turn leaves it (the panels' `after`), before the next turn's steps
+        let end = island.clone();
+        if out.wins.is_some() {
+            out.slow = slow;
+            return (out, end);
+        }
         crate::lookahead(&mut island, rec, Some(&next), defs, rules, &mut out, informed_build, deep.as_ref());
         out.slow = slow;
-        (out, island)
+        (out, end)
     };
     let per_card: Vec<f64> = cands.iter().map(|c| simulate(c, false).0.score(values) + growth_value).collect();
     let mean = per_card.iter().sum::<f64>() / per_card.len() as f64;

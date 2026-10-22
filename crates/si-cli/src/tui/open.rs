@@ -27,10 +27,10 @@ pub(super) fn plan_panel(ctx: &TurnCtx, sc: &plans::Scored, width: u16) -> Panel
     let inner = width.saturating_sub(2) as usize;
     let tiers_w = (sc.none.tiers.iter().map(|(id, _, of)| ctx.code(id).len() + 3 + of.to_string().len()).sum::<usize>() + sc.none.tiers.len().saturating_sub(1)).max(8);
     let show_tiers = inner >= 60 + tiers_w;
-    // tag, growth, cards, innates, score, vs none, [tiers], produced
-    let mut fixed: Vec<Option<usize>> = vec![Some(5), None, None, None, Some(7), Some(12)];
-    let mut weights: Vec<usize> = vec![0, 22, 26, 12, 0, 0];
-    let mut headers = vec!["", "growth", "cards", "innates", "score", "vs none"];
+    // tag, growth, plays, score, vs none, [tiers], produced
+    let mut fixed: Vec<Option<usize>> = vec![Some(5), None, None, Some(7), Some(12)];
+    let mut weights: Vec<usize> = vec![0, 22, 38, 0, 0];
+    let mut headers = vec!["", "growth", "plays", "score", "vs none"];
     if show_tiers {
         fixed.push(Some(tiers_w));
         weights.push(0);
@@ -40,7 +40,7 @@ pub(super) fn plan_panel(ctx: &TurnCtx, sc: &plans::Scored, width: u16) -> Panel
     weights.push(40);
     headers.push("produced");
     let widths = share_widths(inner, &fixed, &weights, 10);
-    let text_col = |i: usize| fixed.get(i).is_some_and(|f| f.is_none()) || (show_tiers && i == 6);
+    let text_col = |i: usize| fixed.get(i).is_some_and(|f| f.is_none()) || (show_tiers && i == 5);
     let m = sc.cands.len().max(1);
     let past_growth = sc.phase != Phase::SpiritPhase;
     let mut table_rows: Vec<Row> = Vec::new();
@@ -59,11 +59,11 @@ pub(super) fn plan_panel(ctx: &TurnCtx, sc: &plans::Scored, width: u16) -> Panel
                 g
             }
         };
-        let cards = match &refused {
+        // every play in the order it acts, innates underlined, Slow plays in blue; a refused plan shows its reason
+        let plays = match &refused {
             Some(r) => r.clone(),
-            None => l.cards_notation(&code),
+            None => l.plays_notation(&code, false, false),
         };
-        let innates = if refused.is_some() { String::new() } else { l.innates_notation(&code) };
         let score = if l.informed.is_nan() { "-".to_string() } else { format!("{:+.2}", l.informed) };
         let vs = match (rv.tag.as_str(), l.confidence) {
             ("none", _) | (_, None) => String::new(),
@@ -72,11 +72,11 @@ pub(super) fn plan_panel(ctx: &TurnCtx, sc: &plans::Scored, width: u16) -> Panel
         };
         let tiers: Vec<String> = l.tiers.iter().map(|(id, reached, of)| format!("{} {reached}/{of}", code(id))).collect();
         let mark = match ctx.pool {
-            Some((p, true)) if p > 0 && l.outcome.blight as i64 >= p => " LOSES",
+            Some((p, true)) if p > 0 && l.outcome.blight as i64 >= p && l.outcome.loses.is_none() => " LOSES",
             Some((p, false)) if p > 0 && l.outcome.blight as i64 >= p => " FLIPS",
             _ => "",
         };
-        let mut cells: Vec<String> = vec![rv.tag.clone(), growth, cards, innates, score, vs];
+        let mut cells: Vec<String> = vec![rv.tag.clone(), growth, plays, score, vs];
         if show_tiers {
             cells.push(tiers.join(" "));
         }
@@ -86,7 +86,8 @@ pub(super) fn plan_panel(ctx: &TurnCtx, sc: &plans::Scored, width: u16) -> Panel
             (_, true) => dim(),
             _ => Style::default(),
         };
-        let (row, rh) = wrapped_row(cells, &widths, &text_col, style);
+        let words = play_words(l, &code);
+        let (row, rh) = wrapped_row(cells, &widths, &text_col, style, Some(&play_style(&words)));
         rows_h += rh;
         table_rows.push(row);
     }
@@ -110,6 +111,10 @@ pub(super) fn think_about_panel(ctx: &TurnCtx, sc: &plans::Scored, width: u16) -
     let mut out: Vec<String> = Vec::new();
     if let Some(a) = &ctx.activity {
         out.push(a.clone());
+    }
+    // how near each loss condition stands now: the forward view the adversary asks for
+    for c in si_rules::invaders::clocks(&ctx.island, &open.rules, si_rules::invaders::Tally::default()) {
+        out.push(format!("Loss clock: {c}."));
     }
     // each Ravage land where something is at stake: the simulator's own numbers
     for l in step_hits(ctx, &t.ravage) {
@@ -138,6 +143,28 @@ pub(super) fn think_about_panel(ctx: &TurnCtx, sc: &plans::Scored, width: u16) -
         .collect();
     if !builds.is_empty() {
         out.push(format!("Builds: {}.", builds.join(", ")));
+    }
+    // the adversary's loss condition: what doing nothing reaches, and England's escalation
+    // when every card left in the stage carries it (Coastal is the one Stage II card without)
+    if let Some(r) = &none.outcome.loses {
+        out.push(format!("Doing nothing loses the game this turn: {r}."));
+    }
+    let all_escalate = !sc.cands.is_empty() && sc.cands.iter().all(|c| ctx.defs.invader_cards.get(c).is_some_and(|x| x.escalation));
+    if all_escalate && open.rules.adversary.as_deref() == Some("TheKingdomOfEngland") && open.rules.level >= 1 {
+        let mut by_board: std::collections::BTreeMap<String, (u32, si_model::island::LandId)> = std::collections::BTreeMap::new();
+        for (id, c) in &none.outcome.after {
+            let b = c.towns + c.cities;
+            if b > 0 && by_board.get(&id.board).is_none_or(|(n, _)| b > *n) {
+                by_board.insert(id.board.clone(), (b, id.clone()));
+            }
+        }
+        for (n, land) in by_board.values() {
+            let then = n + 1;
+            out.push(format!("Every card left in the stage escalates: England's Building Boom builds again in {land}, {n} Town/City after the Build, {then} after it{}.", if then >= 7 { ": 7 loses the game (Proud & Mighty Capital) unless a Town or City there falls first" } else { "" }));
+        }
+    }
+    if let Some(r) = &none.outcome.next_loses {
+        out.push(format!("Unless something stops it, the Invaders win next turn: {r}."));
     }
     if let Some(p) = seed.blight_pool {
         out.push(format!("Blight card: {p} in the pool{}; doing nothing adds {} this turn.", if seed.blight_flipped { " (flipped)" } else { "" }, none.outcome.blight));

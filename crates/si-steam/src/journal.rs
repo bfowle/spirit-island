@@ -474,8 +474,14 @@ pub fn parsed(entries: &[Entry], boards: &[String], ending: Option<&str>, spirit
     // a DestroyPieces entry is held until the move off the island that follows it has gone
     // through: the walk takes the move as the removal and skips the destroy of a piece gone
     let mut held_destroy: Option<Event> = None;
+    // the Event or Fear card being resolved: the source of a choice whose identifier does not name it
+    let mut resolving: Option<String> = None;
     let mut state = String::new();
     for e in entries {
+        match &e.kind {
+            Kind::ResolveEventCard { card, start } | Kind::ResolveFearCard { card, start, .. } => resolving = start.then(|| card.clone()),
+            _ => {}
+        }
         if e.state != state {
             state = e.state.clone();
         }
@@ -642,8 +648,8 @@ pub fn parsed(entries: &[Entry], boards: &[String], ending: Option<&str>, spirit
             Kind::ResolveEventCard { card, start: false } => push(Parsed::Event(Event::EventResolved { card: card.clone() })),
             Kind::ResolveEventCard { card, start: true } => push(Parsed::Event(Event::EventRevealed { card: card.clone() })),
             Kind::ResolveFearCard { card, start: false, .. } => push(Parsed::Event(Event::FearCardResolved { card: card.clone() })),
-            Kind::UseActivation { activation, instance, selection, target, location, pieces, board, .. } => {
-                if let Some(m) = choice(activation, instance, *selection, target.as_deref(), location.as_deref(), pieces, board.as_deref()) {
+            Kind::UseActivation { activation, instance, selection, target, location, pieces, board, choices, .. } => {
+                if let Some(m) = choice(activation, instance, *selection, target.as_deref(), location.as_deref(), pieces, board.as_deref(), choices, resolving.as_deref()) {
                     push(Parsed::Marker(m));
                 }
             }
@@ -671,15 +677,20 @@ pub fn parsed(entries: &[Entry], boards: &[String], ending: Option<&str>, spirit
 
 /// The player's decisions the log also marks: a location, piece, board or effect chosen,
 /// with the options the activation's identifier lists (`...-JungleA3/JungleA8-...`).
-fn choice(activation: &str, instance: &str, selection: Option<i64>, target: Option<&str>, location: Option<&str>, pieces: &[String], board: Option<&str>) -> Option<Marker> {
+#[allow(clippy::too_many_arguments)]
+fn choice(activation: &str, instance: &str, selection: Option<i64>, target: Option<&str>, location: Option<&str>, pieces: &[String], board: Option<&str>, listed: &[String], resolving: Option<&str>) -> Option<Marker> {
     let kind = activation.strip_suffix("Activation").unwrap_or(activation);
     if !matches!(kind, "SelectLocation" | "SelectEffect" | "SelectPiece" | "SelectSpirit" | "SelectBoard" | "ChooseNumber") {
         return None;
     }
     let segs: Vec<&str> = instance.split('-').collect();
     let choices: Vec<String> = segs.iter().find(|s| s.contains('/') && s.chars().next().is_some_and(|c| c.is_ascii_uppercase())).map(|s| s.split('/').map(String::from).collect()).unwrap_or_default();
-    let selected = location
-        .map(String::from)
+    // an effect chosen is the branch at the selection, in the card's printed order (the
+    // engine lists them as `ChoiceIdentifiers`), not the Power's land
+    let choices = if kind == "SelectEffect" && !listed.is_empty() { listed.to_vec() } else { choices };
+    let branch = if kind == "SelectEffect" { selection.and_then(|i| choices.get(i as usize).cloned()) } else { None };
+    let selected = branch
+        .or_else(|| location.map(String::from))
         .or_else(|| board.map(String::from))
         .or_else(|| (!pieces.is_empty()).then(|| pieces.join("/")))
         .or_else(|| target.map(String::from))
@@ -705,7 +716,30 @@ fn choice(activation: &str, instance: &str, selection: Option<i64>, target: Opti
         "Rule"
     };
     let kind_name = kind.trim_start_matches("Select").trim_start_matches("Choose").to_string();
-    Some(Marker::Choice(Choice { phase: Phase::SpiritPhase, kind: kind_name, reason, selected, choices, source: String::new(), source_kind: source_kind.to_string(), optional: false, spirit: None, instance: 0 }))
+    let source = choice_source(&segs, source_kind, resolving);
+    Some(Marker::Choice(Choice { phase: Phase::SpiritPhase, kind: kind_name, reason, selected, choices, source, source_kind: source_kind.to_string(), optional: false, spirit: None, instance: 0 }))
+}
+
+/// What a choice serves, as the log names it: the Power (`UsePowerAction-<spirit>-<power>`,
+/// or a land chosen for `/UsePower-<power>`), the Event or Fear card (`ResolveEventCardAction-<card>`,
+/// else the card being resolved). Empty when the identifier names nothing.
+fn choice_source(segs: &[&str], source_kind: &str, resolving: Option<&str>) -> String {
+    let after = |key: &str, skip: usize| segs.iter().position(|s| s.ends_with(key)).and_then(|i| segs.get(i + 1 + skip)).filter(|s| !s.is_empty()).map(|s| s.to_string());
+    if let Some(p) = after("UsePowerAction", 1) {
+        return p;
+    }
+    if let Some(p) = segs.iter().position(|s| s.ends_with("/UsePower")).and_then(|i| segs.get(i + 1)).filter(|s| !s.is_empty()) {
+        return p.to_string();
+    }
+    for key in ["ResolveEventCardAction", "ResolveFearCardAction"] {
+        if let Some(c) = after(key, 0) {
+            return c;
+        }
+    }
+    if matches!(source_kind, "Event" | "Fear") {
+        return resolving.unwrap_or_default().to_string();
+    }
+    String::new()
 }
 
 /// The tokens the engine placed at setup without a journal entry (Jagged Earth adds
@@ -809,7 +843,14 @@ pub fn record(g: &Graph, defs: Option<&si_defs::Definitions>, source: &str) -> s
         });
     }
     let items = parsed(&all, &boards, snap.ending.as_deref(), &spirits, &setup);
-    si_record::replay::Replay::new(defs).run_parsed(items, adversary, source)
+    let mut rec = si_record::replay::Replay::new(defs).run_parsed(items, adversary, source);
+    // the save names what the journal never says: the adversary's level, the difficulty, the scenario
+    if let Some((_, level)) = snap.adversaries.first() {
+        rec.meta.adversary_level = level.map(|l| l as u8);
+    }
+    rec.meta.difficulty = snap.difficulty;
+    rec.meta.scenario = snap.scenario.clone();
+    rec
 }
 
 /// The record's end against the save's own board: every land's counts (pieces, Blight,

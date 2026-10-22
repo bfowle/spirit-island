@@ -16,6 +16,8 @@ pub fn for_rule(spirit: &str, rule_id: &str, title: &str) -> Vec<RuleHook> {
         // Thunderspeaker
         ("Thunderspeaker", "Ally of the Dahan") => vec![RuleHook::PresenceMovesWithDahan],
         ("Thunderspeaker", "Sworn to Victory") => vec![RuleHook::PresenceDestroyedPerDahanKilled { range: 1 }],
+        // Shroud of Silent Mist
+        ("ShroudOfSilentMist", "Mists Shift and Flow") => vec![RuleHook::GatherPresenceOnTargeting],
         // Stone's Unyielding Defiance
         ("StonesUnyieldingDefiance", "Bestow the Endurance of Bedrock") => vec![RuleHook::BlightDoesNotCascadeUnlessOutnumbered],
         ("VengeanceAsABurningPlague", "The Terror of a Slowly Unfolding Plague") => vec![RuleHook::DiseaseBuildForFear { fear: 1 }],

@@ -81,12 +81,12 @@ const COMMANDS: &[CommandHelp] = &[
     CommandHelp { name: "verify", args: "<EndGame.txt | capture dir> [--level n] [--all]", what: "simulate each turn's Invader phase and the Power uses, and compare them with what the log records", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--level n", "the adversary level when the save beside the log does not say"), ("--all", "every land, not only the ones that differ")] },
     CommandHelp { name: "notate", args: "<EndGame.txt | capture dir> [--canonical]", what: "the game in Spirit Island notation: decisions, reveals and results kept apart, Power>land[results]", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--canonical", "full ids instead of the short codes")] },
     CommandHelp { name: "cards", args: "[--unparsed [n]] [--card <title>] [--innates] [--features] [--fit minor|major|unique|all]", what: "the effect grammar's coverage of the Power Cards and innates; one card's parse; the feature table; the pricing fit", options: &[DEFS, ("--unparsed [n]", "the cards the grammar does not read in full, n of them"), ("--card <title>", "one card, sentence by sentence (read, typed, simulated)"), ("--innates", "the innate tiers not read"), ("--features", "the feature table over the cards"), ("--fit <kind>", "the least-squares price fit over that kind")] },
-    CommandHelp { name: "hindsight", args: "<EndGame.txt | capture dir> [--turn n] [--top n] [--fixed-growth] [--seed <save>] [--calibration <json>] [--try \"SLSF>C8 MI\"]", what: "each turn's growth and plays against every legal line from the same position: informed, hindsight, luck, confidence, the readings", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--turn n", "one turn only"), ("--top n", "how many alternatives to print"), ("--fixed-growth", "the growth as played; only the plays vary (much faster)"), ("--seed <save.dat|.gz>", "the save a journal that starts mid-game was reloaded from (si inject prints it)"), ("--calibration <json>", "the measured constants (else data/calibration.json beside the defs, else built in)"), ("--try \"<line>\"", "score a line you write, beside the actual one (with --turn)")] },
+    CommandHelp { name: "hindsight", args: "<EndGame.txt | capture dir> [--turn n] [--top n] [--fixed-growth] [--seed <save>] [--calibration <json>] [--try \"SLSF>C8 MI\"]", what: "each turn's growth and plays against every legal line from the same position: informed, hindsight, luck, confidence, the readings", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--turn n", "one turn only"), ("--top n", "how many alternatives to print"), ("--fixed-growth", "the growth as played; only the plays vary (much faster)"), ("--seed <save.dat|.gz>", "the save a journal that starts mid-game was reloaded from (si inject prints it)"), ("--calibration <json>", "the measured constants (else data/calibration.json beside the defs, else built in)"), ("--try \"<line>\"", "score a line you write, beside the actual one (with --turn)"), ("--actual", "the actual line only, no alternatives (seconds for a whole game)"), ("--json", "the review as JSON instead of tables: every turn's lines and outcomes, losses, clocks, the simulator's error")] },
     CommandHelp { name: "study", args: "<EndGame.txt | capture dir> | --live [--steam <dir>] [--replay <capture> --at Tn/Phase [--save <part>]]  [--fixed-growth] [--seed <save>] [--calibration <json>]", what: "the hindsight review as screens, turn by turn (a capture, its newest save; one of its saves, the game as that save holds it); --live: the game being played, the open turn scoring the plans you type beside doing nothing", options: &[("--log", "the record from the log (the EndGame log, a capture's log-stream.txt) instead of the capture's newest save journal"), DEFS, ("--live", "read the Steam folder as it stands and follow it; every save seen is recorded into $SI_CAPTURE_DIR/live-<id>/"), ("--steam <dir>", "another folder than $SI_STEAM_DIR or the Handelabra path"), ("--replay <capture> --at Tn/Phase", "the live screen on a capture cut at that save, no game needed (the earliest save of that turn and phase on the path the game took)"), ("--attempt <save>", "with --live: an earlier attempt of this game (a save of the branch rolled back from); its review of the turn being played seeds the plans"), ("--save <part>", "with --replay: a save by a part of its name instead of --at"), ("--fixed-growth", "review the growth as played; only the plays vary (seconds, not minutes)"), ("--seed <save.dat|.gz>", "a file's journal that starts mid-game: the save it was reloaded from"), ("--calibration <json>", "the measured constants"), ("keys", "h/l turns, j/k rows, Enter opens a group, e/c all, Tab pacing, t a line or a plan, d delete it, i load this turn's start into the running game, ? the rest")] },
     CommandHelp { name: "checkpoint", args: "<capture dir>... [--turn n] [--phase <Phase>] [--any-branch] [--export <dir>] [--graph [--dot]]", what: "the app's saves kept with a capture, by turn and phase, on the path the game finally took", options: &[("--turn n", "that turn's saves"), ("--phase <Phase>", "SpiritPhase, FastPower, SlowPower, Ravage, ... (the save's state name)"), ("--any-branch", "undone attempts too"), ("--export <dir>", "write the matching saves there as plain .dat"), ("--graph [--dot]", "the checkpoints as a DAG (forks where the game came back to a save); --dot for Graphviz")] },
     CommandHelp { name: "inject", args: "<capture dir> --turn n [--phase SpiritPhase] [--save <part>] [--any-branch] [--name save-Undo-990.dat] [--timeout 90] [--fetch]", what: "load that checkpoint into the RUNNING Steam app from WSL (frida-inject.exe, no restart): the open game reloads in place, or Continue opens it from the main menu", options: &[("--turn n", "the turn (its earliest save of the phase on the path the game took)"), ("--phase <Phase>", "default SpiritPhase, the turn's start"), ("--save <part>", "a save by a part of its name"), ("--any-branch", "undone attempts too"), ("--name <file>", "the file name the checkpoint is placed under in the save folder"), ("--timeout <s>", "how long to wait for the app's frame (default 90)"), ("--fetch", "download frida-inject.exe for Windows into the tools folder first")] },
     CommandHelp { name: "import", args: "<EndGame--n.txt> [--out <steam-capture dir>]", what: "build a live-<game id>/ capture from an EndGame log and the saves the app still has (its final .dat, any save-Feedback/Undo of that game)", options: &[("--out <dir>", "where the capture goes (default $SI_CAPTURE_DIR)")] },
-    CommandHelp { name: "calibrate", args: "[<path>...] [--out <json>] [--dry-run]", what: "measure over the corpus what hindsight has no rule for: the Event and Fear cards' mean worth, the next-turn weight, a turn's luck sd, the simulator's error", options: &[DEFS, ("--out <json>", "where to write (default data/calibration.json beside the defs)"), ("--dry-run", "measure and print, write nothing")] },
+    CommandHelp { name: "calibrate", args: "[<path>...] [--out <json>] [--dry-run] [--turns]", what: "measure over the corpus what hindsight has no rule for: the Event and Fear cards' mean worth, the next-turn weight, a turn's luck sd, the simulator's error", options: &[DEFS, ("--out <json>", "where to write (default data/calibration.json beside the defs)"), ("--dry-run", "measure and print, write nothing"), ("--turns", "also print each turn's simulator error (game, turn, ledger units), to see what a change moved")] },
 ];
 
 fn command(name: &str) -> Option<&'static CommandHelp> {
@@ -591,12 +591,26 @@ fn hindsight(args: &[String]) -> Result<()> {
     color::set_boards(&rec.meta.boards);
     let progress = std::io::IsTerminal::is_terminal(&std::io::stderr());
     let calibration = calibration_from(args);
-    let opts = si_hindsight::ReviewOptions { growth: !fixed_growth, calibration, ..Default::default() };
+    // the Blight Card per turn from the capture's saves (a save under saves/ names its capture)
+    let home = {
+        let p = Path::new(path);
+        if p.is_file() { p.parent().filter(|d| d.file_name().is_some_and(|n| n == "saves")).and_then(|d| d.parent()).map(Path::to_path_buf).unwrap_or_else(|| p.to_path_buf()) } else { p.to_path_buf() }
+    };
+    let actual_only = args.iter().any(|a| a == "--actual");
+    let json = args.iter().any(|a| a == "--json");
+    let opts = si_hindsight::ReviewOptions { growth: !fixed_growth && !actual_only, calibration, blight_pool: blight_pool_by_turn(&home), actual_only, ..Default::default() };
+    let progress = progress && !json;
     if progress {
         eprintln!("hindsight  {} turns; each bar fills as the turn's growth positions are tried with every play set, then the ranking runs{}", rec.turns.iter().filter(|t| t.turn >= 1 && !t.before_fast.is_empty()).count(), if fixed_growth { " (--fixed-growth: the growth as played)" } else { " (--fixed-growth keeps the growth as played and is much faster)" });
     }
-    let review = if progress { si_hindsight::review_turns(&rec, &defs, &opts, None, &progress_bars(color::enabled())) } else { si_hindsight::review_with(&rec, &defs, &opts) };
-    let pool_at = blight_pool_by_turn(Path::new(path));
+    let only: Option<Vec<u32>> = only_turn.map(|t| vec![t]);
+    let review = if progress { si_hindsight::review_turns(&rec, &defs, &opts, only.as_deref(), &progress_bars(color::enabled())) } else { si_hindsight::review_turns(&rec, &defs, &opts, only.as_deref(), &|_| {}) };
+    // --json: the review itself (turns, lines, outcomes, losses, clocks, the simulator's error)
+    if json {
+        println!("{}", serde_json::to_string(&review)?);
+        return Ok(());
+    }
+    let pool_at = opts.blight_pool.clone();
     // the game in a small table; the key to every column and term is a table at the end
     use comfy_table::{ColumnConstraint, Width};
     let width = terminal_width();
@@ -670,10 +684,10 @@ fn hindsight(args: &[String]) -> Result<()> {
         // at least, so no header ever wraps; the table is as wide as the terminal, or as
         // wide as those minimums need
         use comfy_table::{Cell, CellAlignment};
-        let headers = ["", "growth", "cards", "innates", "informed", "hindsight", "conf", "elements", "innate tiers", "produced"];
+        let headers = ["", "growth", "plays", "informed", "hindsight", "conf", "elements", "innate tiers", "produced"];
         let tiers_w: u16 = (t.actual.tiers.iter().map(|(id, _, of)| code(id).len() + 3 + of.to_string().len()).sum::<usize>() + t.actual.tiers.len()).max(12) as u16 + 2;
-        let fixed: [(usize, u16); 6] = [(0, 8), (4, 11), (5, 11), (6, 6), (7, 25), (8, tiers_w)];
-        let floors: [(usize, u16); 4] = [(1, 16), (2, 16), (3, 12), (9, 16)];
+        let fixed: [(usize, u16); 6] = [(0, 8), (3, 11), (4, 11), (5, 6), (6, 25), (7, tiers_w)];
+        let floors: [(usize, u16); 3] = [(1, 16), (2, 28), (8, 16)];
         let min_total: u16 = fixed.iter().map(|(_, w)| *w).sum::<u16>() + floors.iter().map(|(_, w)| *w).sum::<u16>() + headers.len() as u16 + 1;
         let width = width.max(min_total);
         let mut table = styled_table(width, false, &headers);
@@ -694,15 +708,16 @@ fn hindsight(args: &[String]) -> Result<()> {
             let conf = l.confidence.map(|c| format!("{:.0}%", c * 100.0)).unwrap_or_else(|| "-".into());
             let tiers: Vec<String> = l.tiers.iter().map(|(id, reached, of)| format!("{} {reached}/{of}", code(id))).collect();
             let mark = match pool {
-                Some((p, true)) if p > 0 && l.outcome.blight as i64 >= p => " LOSES",
+                Some((p, true)) if p > 0 && l.outcome.blight as i64 >= p && l.outcome.loses.is_none() => " LOSES",
                 Some((p, false)) if p > 0 && l.outcome.blight as i64 >= p => " FLIPS",
                 _ => "",
             };
             vec![
                 Cell::new(tag),
                 Cell::new(growth),
-                Cell::new(l.cards_notation(&|id| code(id))),
-                Cell::new(l.innates_notation(&|id| code(id))),
+                // every play in the order it acts: innates in braces, F: an innate taken Fast,
+                // (WW) a card played for its elements only
+                Cell::new(l.plays_notation(&|id| code(id), true, true)),
                 Cell::new(format!("{:+.2}", l.informed)).set_alignment(CellAlignment::Right),
                 Cell::new(format!("{:+.2}", l.score)).set_alignment(CellAlignment::Right),
                 Cell::new(conf).set_alignment(CellAlignment::Right),
@@ -732,6 +747,15 @@ fn hindsight(args: &[String]) -> Result<()> {
             out!("    {line}");
         }
         out!("  READING  {}", t.reading);
+        if !t.clocks.is_empty() {
+            out!("  CLOCKS   {}", t.clocks.join("; "));
+        }
+        // a loss the actual line meets, this turn or the next with no Spirit action
+        if let Some(r) = &t.actual.outcome.loses {
+            out!("  LOSS     your line: {r}");
+        } else if let Some(r) = &t.actual.outcome.next_loses {
+            out!("  LOSS     next turn unless something stops it: {r}");
+        }
         if !t.choices.is_empty() {
             // one row per prompt: what asked, what it placed, the verdict, every option with its
             // score where the simulator could place the effect, the chosen one marked
@@ -1755,11 +1779,16 @@ fn calibrate(args: &[String]) -> Result<()> {
         bail!("no games found under {}", paths.iter().map(|p| p.display().to_string()).collect::<Vec<_>>().join(", "));
     }
     let values = si_hindsight::Values::generic();
-    let review_all = |cal: &si_hindsight::Calibration| -> Vec<(String, Option<si_model::game::Ending>, Vec<si_hindsight::TurnReview>)> {
+    // the Blight Card per turn for each capture (its saves), so a Blight Card loss counts too
+    let pools: Vec<std::collections::BTreeMap<u32, (i64, bool)>> = games.iter().map(|(p, _, _)| if p.is_dir() { blight_pool_by_turn(p) } else { Default::default() }).collect();
+    // `losses`: score a lost game; the constants are measured without (pieces only), the
+    // ledger against results with
+    let review_all = |cal: &si_hindsight::Calibration, losses: bool| -> Vec<(String, Option<si_model::game::Ending>, Vec<si_hindsight::TurnReview>)> {
         games
             .iter()
-            .map(|(p, _, rec)| {
-                let opts = si_hindsight::ReviewOptions { growth: false, actual_only: true, calibration: Some(cal.clone()), ..Default::default() };
+            .zip(&pools)
+            .map(|((p, _, rec), pool)| {
+                let opts = si_hindsight::ReviewOptions { growth: false, actual_only: true, calibration: Some(cal.clone()), blight_pool: pool.clone(), score_losses: losses, ..Default::default() };
                 let r = si_hindsight::review_with(rec, &defs, &opts);
                 (p.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default(), rec.meta.ending, r.turns)
             })
@@ -1777,7 +1806,7 @@ fn calibrate(args: &[String]) -> Result<()> {
     // on each turn's actual line (least squares: Event indicator and Fear cards per Terror
     // Level, no intercept: a turn with neither has no hidden effect by definition)
     let base = si_hindsight::Calibration::default();
-    let pass1 = review_all(&base);
+    let pass1 = review_all(&base, false);
     let samples: Vec<&si_hindsight::Sample> = pass1.iter().flat_map(|(_, _, ts)| ts.iter().map(|t| &t.sample)).collect();
     let ledger = |(b, d): (u32, u32)| -> f64 { b as f64 * values.blight.abs() + d as f64 * values.dahan.abs() };
     let (mut threatened, mut realized, mut next_n) = (0.0, 0.0, 0u32);
@@ -1793,7 +1822,7 @@ fn calibrate(args: &[String]) -> Result<()> {
     let next_weight = if threatened > 0.0 { (realized / threatened).clamp(0.05, 1.0) } else { base.next_weight };
     // the hidden effects are scored with the weight above, so fit them on a second pass
     let mut cal = si_hindsight::Calibration { source: String::new(), event_mean: 0.0, event_n: 0, fear_card_mean: [0.0; 3], fear_card_n: [0; 3], next_weight, next_n, luck_sd: base.luck_sd, luck_n: 0, model_sd: 0.0, model_n: 0 };
-    let pass2 = review_all(&cal);
+    let pass2 = review_all(&cal, false);
     let fit_rows: Vec<([f64; 4], f64)> = pass2
         .iter()
         .flat_map(|(_, _, ts)| ts.iter())
@@ -1813,19 +1842,30 @@ fn calibrate(args: &[String]) -> Result<()> {
         cal.fear_card_n[tl - 1] = fit_rows.iter().filter(|(x, _)| x[tl] > 0.0).count() as u32;
     }
     // pass 3: a turn's luck as the review defines it, with the means above
-    let pass2 = review_all(&cal);
+    let pass2 = review_all(&cal, false);
     let lucks: Vec<f64> = pass2.iter().flat_map(|(_, _, ts)| ts.iter().filter(|t| t.sample.hidden_effect.is_some()).map(|t| t.luck)).collect();
     cal.luck_sd = if lucks.len() >= 2 { sd(&lucks) } else { base.luck_sd };
     cal.luck_n = lucks.len() as u32;
     let errors: Vec<f64> = pass2.iter().flat_map(|(_, _, ts)| ts.iter().filter_map(|t| t.sample.model_error)).collect();
+    // --turns: each turn's simulator error, to see which games and turns a change moved
+    if args.iter().any(|a| a == "--turns") {
+        for (name, _, ts) in &pass2 {
+            for t in ts {
+                if let Some(e) = t.sample.model_error {
+                    out!("  model error  {name} T{} {e:+.2}", t.turn);
+                }
+            }
+        }
+    }
     cal.model_sd = if errors.is_empty() { 0.0 } else { (errors.iter().map(|e| e * e).sum::<f64>() / errors.len() as f64).sqrt() };
     cal.model_n = errors.len() as u32;
     let turns_total: usize = pass2.iter().map(|(_, _, ts)| ts.len()).sum();
     cal.source = format!("si calibrate {} (UTC): {} games, {turns_total} turns under {}", chrono_date(), games.len(), roots.join(", "));
-    // the ledger against results: each game's actual lines summed
+    // the ledger against results: each game's actual lines summed, a lost game scored
+    let pass_results = review_all(&cal, true);
     let mut wins: Vec<(String, f64)> = Vec::new();
     let mut losses: Vec<(String, f64)> = Vec::new();
-    for (name, ending, ts) in &pass2 {
+    for (name, ending, ts) in &pass_results {
         let total: f64 = ts.iter().map(|t| t.actual.score).sum();
         let per_turn = if ts.is_empty() { 0.0 } else { total / ts.len() as f64 };
         match ending {

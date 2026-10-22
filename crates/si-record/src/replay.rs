@@ -751,9 +751,11 @@ impl<'d> Walk<'d> {
                     let lands: BTreeSet<LandId> = self.pieces.values().map(|(l, _)| l.clone()).chain(self.blight.keys().cloned()).chain(self.presence.keys().cloned()).chain(self.tokens.keys().cloned()).collect();
                     let snapshot: BTreeMap<LandId, Counts> = lands.iter().map(|l| (l.clone(), self.counts_of(l))).collect();
                     let defend = self.defend_this_turn.clone();
+                    let terror = self.terror;
                     let t = self.turn_rec();
                     t.before_invaders = snapshot;
                     t.defend = defend;
+                    t.terror_at_invaders = terror;
                 }
                 if to.is_invader_step() {
                     self.invaded = true;
@@ -905,10 +907,12 @@ impl<'d> Walk<'d> {
                     }
                 }
                 if spirit_phase {
+                    // the Power in use did the moving, when one is: the actual line replays its lands
+                    let by = self.power_in_use.clone().unwrap_or_else(|| "move".to_string());
                     let lands: BTreeSet<LandId> = out.keys().chain(into.keys()).cloned().collect();
                     for l in lands {
                         let kind = TouchKind::Moved { out: out.get(&l).copied().unwrap_or(0), into: into.get(&l).copied().unwrap_or(0) };
-                        self.touch(&l, "move", None, kind);
+                        self.touch(&l, &by, None, kind);
                     }
                 }
             }

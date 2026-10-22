@@ -262,10 +262,10 @@ pub(super) fn lines_panel(ctx: &TurnCtx, width: u16) -> Panel {
     let pool = ctx.pool;
     let tiers_w = (review.actual.tiers.iter().map(|(id, _, of)| ctx.code(id).len() + 3 + of.to_string().len()).sum::<usize>() + review.actual.tiers.len().saturating_sub(1)).max(8);
     let show_tiers = inner >= 60 + tiers_w;
-    // tag, growth, cards, innates, informed, hindsight, conf, [tiers], produced
-    let mut fixed: Vec<Option<usize>> = vec![Some(6), None, None, None, Some(9), Some(9), Some(5)];
-    let mut weights: Vec<usize> = vec![0, 24, 24, 14, 0, 0, 0];
-    let mut headers = vec!["", "growth", "cards", "innates", "informed", "hindsight", "conf"];
+    // tag, growth, plays, informed, hindsight, conf, [tiers], produced
+    let mut fixed: Vec<Option<usize>> = vec![Some(6), None, None, Some(9), Some(9), Some(5)];
+    let mut weights: Vec<usize> = vec![0, 24, 38, 0, 0, 0];
+    let mut headers = vec!["", "growth", "plays", "informed", "hindsight", "conf"];
     if show_tiers {
         fixed.push(Some(tiers_w));
         weights.push(0);
@@ -275,7 +275,7 @@ pub(super) fn lines_panel(ctx: &TurnCtx, width: u16) -> Panel {
     weights.push(38);
     headers.push("produced");
     let widths = share_widths(inner, &fixed, &weights, 10);
-    let text_col = |i: usize| fixed.get(i).is_some_and(|f| f.is_none()) || (show_tiers && i == 7);
+    let text_col = |i: usize| fixed.get(i).is_some_and(|f| f.is_none()) || (show_tiers && i == 6);
     let mut table_rows: Vec<Row> = Vec::new();
     let mut rows_h = 0u16;
     for rv in rows {
@@ -284,27 +284,29 @@ pub(super) fn lines_panel(ctx: &TurnCtx, width: u16) -> Panel {
         let code = |id: &str| ctx.code(id);
         let fold = |n: usize, what: &str| if n > 1 { format!(" [{n} {what}s]") } else { String::new() };
         let more = |open: bool, n: usize| if !open && n > 1 { " >" } else { "" };
-        let (growth, cards, innates) = match rv.level {
-            0 if tag == "try" => ("(growth as played)".to_string(), l.cards_notation(&code), l.innates_notation(&code)),
-            0 if tag == "actual" => (l.growth_notation(&code), l.cards_notation(&code), l.innates_notation(&code)),
+        // every play in the order it acts, innates underlined, Slow plays in blue
+        let plays = l.plays_notation(&code, false, false);
+        let (growth, plays) = match rv.level {
+            0 if tag == "try" => ("(growth as played)".to_string(), plays),
+            0 if tag == "actual" => (l.growth_notation(&code), plays),
             // a group row shows its best member in full, lands included: the row is a line
             0 => {
                 let g = l.growth_notation(&code);
                 let g = if l.growth_actual { format!("{g} (as played)") } else { g };
-                (format!("{g}{}{}", fold(rv.children, "play set"), more(rv.open, rv.children)), l.cards_notation(&code), l.innates_notation(&code))
+                (format!("{g}{}{}", fold(rv.children, "play set"), more(rv.open, rv.children)), plays)
             }
-            1 => (String::new(), format!("{}{}{}", l.cards_notation(&code), fold(rv.children, "targeting"), more(rv.open, rv.children)), l.innates_notation(&code)),
-            _ => (String::new(), l.cards_notation(&code), l.innates_notation(&code)),
+            1 => (String::new(), format!("{plays}{}{}", fold(rv.children, "targeting"), more(rv.open, rv.children))),
+            _ => (String::new(), plays),
         };
         let conf = l.confidence.map(|c| format!("{:.0}%", c * 100.0)).unwrap_or_else(|| "-".into());
         let tiers: Vec<String> = l.tiers.iter().map(|(id, reached, of)| format!("{} {reached}/{of}", code(id))).collect();
         let mark = match pool {
-            Some((p, true)) if p > 0 && l.outcome.blight as i64 >= p => " LOSES",
+            Some((p, true)) if p > 0 && l.outcome.blight as i64 >= p && l.outcome.loses.is_none() => " LOSES",
             Some((p, false)) if p > 0 && l.outcome.blight as i64 >= p => " FLIPS",
             _ => "",
         };
         let indent = "  ".repeat(rv.level as usize);
-        let mut cells: Vec<String> = vec![format!("{indent}{tag}"), growth, format!("{indent}{cards}"), innates, format!("{:+.2}", l.informed), format!("{:+.2}", l.score), conf];
+        let mut cells: Vec<String> = vec![format!("{indent}{tag}"), growth, format!("{indent}{plays}"), format!("{:+.2}", l.informed), format!("{:+.2}", l.score), conf];
         if show_tiers {
             cells.push(tiers.join(" "));
         }
@@ -317,7 +319,8 @@ pub(super) fn lines_panel(ctx: &TurnCtx, width: u16) -> Panel {
             (_, 2) => dim(),
             _ => Style::default(),
         };
-        let (row, rh) = wrapped_row(cells, &widths, &text_col, style);
+        let words = play_words(l, &code);
+        let (row, rh) = wrapped_row(cells, &widths, &text_col, style, Some(&play_style(&words)));
         rows_h += rh;
         table_rows.push(row);
     }
@@ -343,6 +346,10 @@ pub(super) fn reading_panel(ctx: &TurnCtx, width: u16) -> Panel {
         nums.push_str(&format!("; the hidden cards were worth {x:+.2} against {:+.2} expected", r.expected_exogenous));
     }
     lines.extend(hang("numbers", dim(), &nums, Style::default(), w));
+    // how near each loss condition stood as the turn began
+    for c in &r.clocks {
+        lines.extend(hang("clock", dim(), c, Style::default(), w));
+    }
     Panel::text("READING  the verdict on what was known", lines)
 }
 
@@ -412,7 +419,7 @@ pub(super) fn position_panel(ctx: &TurnCtx, width: u16) -> Panel {
         } else {
             dim()
         };
-        let (row, rh) = wrapped_row(cells, &widths, &|i| i >= 7, style);
+        let (row, rh) = wrapped_row(cells, &widths, &|i| i >= 7, style, None);
         rows_h += rh;
         rows.push(row);
     }
@@ -538,7 +545,7 @@ pub(super) fn spirit_panel(ctx: &TurnCtx, width: u16) -> Panel {
             };
             let target = if inn.target.is_spirit() { "self".to_string() } else { target_words(&inn.target.0) };
             let reached = sel_tiers.iter().find(|(id, _, _)| *id == inn.id).map(|(_, n, of)| format!(" {n}/{of}")).unwrap_or_default();
-            let mut spans: Vec<Span<'static>> = vec![Span::styled(format!("{code:<5} "), header_style()), Span::styled(format!("{speed} {} {target}  ", range_words(inn.range.as_ref())), dim())];
+            let mut spans: Vec<Span<'static>> = vec![Span::styled(format!("{code:<5} "), header_style()), Span::styled(speed.to_string(), Style::default().fg(speed_color(inn.speed == Speed::Fast))), Span::styled(format!(" {} {target}  ", range_words(inn.range.as_ref())), dim())];
             for tier in inn.tiers.iter().filter(|t| !t.modifier) {
                 // a reached tier keeps its element colors; an unreached one is dimmed
                 let lit = have.as_ref().is_some_and(|h| h.satisfies(&tier.elements));
@@ -695,6 +702,7 @@ pub(super) fn hand_panel(ctx: &TurnCtx, width: u16) -> Panel {
             let t = match (*h, card) {
                 ("elements", Some(c)) => Text::from(TLine::from(element_spans(&c.elements, true))),
                 ("elements", None) => Text::from(""),
+                ("spd", Some(c)) => Text::from(Span::styled(cell(h), Style::default().fg(speed_color(c.speed == Speed::Fast)))),
                 _ => {
                     let v = cell(h);
                     if wraps.get(i).copied().unwrap_or(false) {
@@ -728,7 +736,8 @@ pub(super) fn line_panel(ctx: &TurnCtx, width: u16) -> Panel {
             (2, _) => "targeting".to_string(),
             _ => rv.tag.clone(),
         };
-        sel.extend(hang(&tag, header_style(), &l.notation(&code), Style::default(), w));
+        let words = play_words(l, &code);
+        sel.extend(hang_styled(&tag, header_style(), &l.plays_notation(&code, false, false), Style::default(), w, &play_style(&words)));
         sel.extend(hang("growth", dim(), &l.growth_notation(&code), Style::default(), w));
         let tiers: Vec<String> = l.tiers.iter().map(|(id, reached, of)| format!("{} {reached}/{of}", code(id))).collect();
         let mut spans = element_spans(&parse_short_elements(&l.elements), true);
@@ -737,6 +746,9 @@ pub(super) fn line_panel(ctx: &TurnCtx, width: u16) -> Panel {
         }
         sel.extend(hang_spans("elements", dim(), spans, w));
         sel.extend(hang("produced", dim(), &l.outcome.words(true), Style::default(), w));
+        if let Some(n) = l.inert_note(&code) {
+            sel.extend(hang("elements", dim(), &n, Style::default(), w));
+        }
         match ctx.scored() {
             Some(sc) => sel.extend(hang("scores", dim(), &format!("score {:+.2} over {} Explore card{}; Event and Fear cards expected {:+.2}{}", l.informed, sc.cands.len().max(1), if sc.cands.len() == 1 { "" } else { "s" }, l.expected, l.confidence.map(|c| format!("; beats none {:.0}%", c * 100.0)).unwrap_or_default()), Style::default(), w)),
             None => sel.extend(hang("scores", dim(), &format!("informed {:+.2}, hindsight {:+.2}, luck {:+.2}{}", l.informed, l.score, l.luck, l.confidence.map(|c| format!(", conf {:.0}%", c * 100.0)).unwrap_or_default()), Style::default(), w)),

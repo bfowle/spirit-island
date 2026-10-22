@@ -143,21 +143,14 @@ fn the_fast_plan_of_the_actual_plays_agrees_with_the_review() {
     let opts = si_hindsight::ReviewOptions { actual_only: true, calibration: Some(cal.clone()), ..Default::default() };
     let review = si_hindsight::review_turns(&full, &defs, &opts, Some(&[3]), &|_| {});
     let actual = &review.turns[0].actual;
-    // the actual plays, Slow ones without a land so both paths choose them after the steps
-    let text: String = actual
-        .plays
-        .iter()
-        .map(|p| match (&p.target, p.fast || p.places) {
-            (Some(l), true) if p.places => format!("{}@{l}", p.power),
-            (Some(l), true) => format!("{}>{l}", p.power),
-            _ => p.power.clone(),
-        })
-        .collect::<Vec<_>>()
-        .join(" ");
+    // the actual plays as a plan writes them: in the order played, with their gathers and
+    // pushes, Slow ones without a land so both paths choose them after the steps
+    let text: String = actual.plays_text(&|id| id.to_string());
     let plan = score_plan(&defs, &open, None, &text).unwrap();
     assert!((plan.expected - actual.expected).abs() < 0.01, "the expectation terms: plan {} (Event and Fear cards as the open turn counts them) vs review {}", plan.expected, actual.expected);
     let (a, b) = (plan.informed - plan.expected, actual.informed - actual.expected);
-    assert!((a - b).abs() < 0.01, "informed less the expectation: plan {a:.3} vs review {b:.3}\nplan {:?}\nreview {:?}", plan.per_card, actual.per_card);
+    let words = |l: &si_hindsight::Line| l.plays_notation(&|id| id.to_string(), true, true);
+    assert!((a - b).abs() < 0.01, "informed less the expectation: plan {a:.3} vs review {b:.3}\nplan {:?}\nreview {:?}\ntext {text}\nplan {}\nreview {}\nplan notes {:?}", plan.per_card, actual.per_card, words(&plan), words(actual), plan.outcome.notes);
 }
 
 #[test]

@@ -140,6 +140,9 @@ pub enum Effect {
     InvaderRule(String),
     /// Dahan in the land have +N Health.
     DahanHealth(u8),
+    /// During Ravage the land's Dahan deal their damage with the Invaders', so the
+    /// Dahan the Ravage destroys strike back too (Words of Warning).
+    DahanSimultaneous,
     /// Typed as out of the model's reach (boards appear, lands merge, decks are rearranged).
     Unmodeled(String),
     /// Acts on a Spirit's economy (Energy, cards, elements, presence on the tracks), not on the board.
@@ -286,6 +289,7 @@ impl Effect {
             EnergyPer { n, per } => format!("gain {n} Energy per {per}"),
             InvaderRule(r) => format!("Invader-phase rule: {r}"),
             DahanHealth(k) => format!("Dahan here have +{k} Health"),
+            DahanSimultaneous => "during Ravage, Dahan here deal damage simultaneously with the Invaders".into(),
             Unmodeled(r) => format!("out of the model's reach: {r}"),
             SpiritEffect(t) => format!("Spirit economy: {t}"),
             Clarification(t) => format!("rules text: {t}"),
@@ -504,7 +508,7 @@ impl Effect {
             Choice(branches) => branches.iter().any(|b| b.iter().any(|e| e.acts_on(slot))),
             Conditional { then, .. } | Per { then, .. } | Area { then, .. } | Trigger { then, .. } => then.iter().any(|e| e.acts_on(slot)),
             SkipAll | SkipAction(_) => true,
-            NoCascade | DahanHealth(_) | NoBlight | Infighting(_) | Duel { .. } | RemoveHealth(_) => slot == Slot::Ravage,
+            NoCascade | DahanHealth(_) | DahanSimultaneous | NoBlight | Infighting(_) | Duel { .. } | RemoveHealth(_) => slot == Slot::Ravage,
             Build => slot == Slot::Build,
             InvaderRule(r) => slot == Slot::Ravage && r.to_ascii_lowercase().contains("ravage"),
             _ => match slot {
@@ -635,7 +639,7 @@ impl Features {
                 self.conditional += 1;
                 then.iter().for_each(|e| self.add(e));
             }
-            NoCascade | DahanHealth(_) | InvaderRule(_) => self.skip += 1,
+            NoCascade | DahanHealth(_) | DahanSimultaneous | InvaderRule(_) => self.skip += 1,
             ChooseLand(_) | TokenChoice { .. } => {}
             AddChosenToken(k) => self.tokens_added += *k as u32,
             PlayAnother | RegainForgotten => self.cards += 1,

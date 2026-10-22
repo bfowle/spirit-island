@@ -110,6 +110,7 @@ pub fn flag(l: &mut Land, e: &Effect) {
         Effect::NoCascade => l.no_cascade = true,
         Effect::NoBlight => l.no_blight = true,
         Effect::DahanHealth(n) => l.dahan_health += *n as u32,
+        Effect::DahanSimultaneous => l.dahan_simultaneous = true,
         Effect::Trigger { when, then, .. } if when.to_ascii_lowercase().contains("{blight} is added") => then.iter().for_each(|e| flag(l, e)),
         Effect::Conditional { then, .. } | Effect::Per { then, .. } => then.iter().for_each(|e| flag(l, e)),
         _ => {}
@@ -141,6 +142,20 @@ pub fn picks_of(defs: &Definitions, t: &TurnRecord, power: &str) -> Vec<(String,
         names.push(norm(&i.title));
     }
     t.choices.iter().filter(|c| (c.kind == "Piece" || c.kind == "Effect") && names.contains(&norm(&c.source))).map(|c| (c.reason.clone(), c.selected.clone())).collect()
+}
+
+/// The "or" branches the log recorded this Power taking, as indexes into the card's printed
+/// order (the engine lists the branches in that order).
+pub fn branches_of(defs: &Definitions, t: &TurnRecord, power: &str) -> Vec<usize> {
+    let norm = |s: &str| s.chars().filter(|c| c.is_ascii_alphanumeric()).collect::<String>().to_lowercase();
+    let mut names = vec![norm(power)];
+    if let Some(c) = defs.cards.get(power) {
+        names.push(norm(&c.title));
+    }
+    if let Some(i) = defs.spirits.values().flat_map(|s| s.innates.iter()).find(|i| i.id == power) {
+        names.push(norm(&i.title));
+    }
+    t.choices.iter().filter(|c| c.kind == "Effect" && names.contains(&norm(&c.source))).filter_map(|c| c.choices.iter().position(|x| *x == c.selected)).collect()
 }
 
 fn list(v: &str) -> Vec<String> {
@@ -342,6 +357,32 @@ pub fn elements_of(defs: &Definitions, s: &si_record::SpiritTurn) -> si_model::E
     set
 }
 
+/// The gathers and pushes the record shows for one use of a Power: Dahan and Invaders the
+/// Power moved into or out of its land this turn, by the land at the other end.
+pub fn recorded_moves(rec: &GameRecord, turn: u32, power: &str, target: Option<&LandId>) -> Vec<crate::effects::Move> {
+    let Some(tg) = target else { return Vec::new() };
+    let mut out = Vec::new();
+    for l in rec.lands.values() {
+        if l.land == *tg {
+            continue;
+        }
+        for x in l.touches.iter().filter(|x| x.turn == turn && x.by == power) {
+            if let si_record::TouchKind::Moved { out: o, into } = x.kind {
+                for (from, to, n) in [(l.land.clone(), tg.clone(), o), (tg.clone(), l.land.clone(), into)] {
+                    if n == 0 {
+                        continue;
+                    }
+                    match out.iter_mut().find(|m: &&mut crate::effects::Move| m.from == from && m.to == to) {
+                        Some(m) => m.n += n,
+                        None => out.push(crate::effects::Move { from, to, piece: None, n }),
+                    }
+                }
+            }
+        }
+    }
+    out
+}
+
 /// Spirit actions: every logged Power use in the Fast and Slow phases,
 /// executed on the recorded state at the phase's start, compared per land
 /// with what the log attributes to Powers there (Damage, Defend, pieces
@@ -367,11 +408,17 @@ pub fn verify_powers(rec: &GameRecord, defs: &Definitions, rules: &Rules, report
                         continue;
                     }
                     let Some(target) = target else { continue };
-                    let ctx = effects::Ctx { health_bonus: rules.invader_health_bonus(), elements: elements.clone(), blight_as_badlands: rules.blight_as_badlands_for(&s.spirit), rules: Some(rules.clone()), placements: placements_of(defs, t, power), picks: picks_of(defs, t, power) };
+                    let ctx = effects::Ctx { health_bonus: rules.invader_health_bonus(), elements: elements.clone(), blight_as_badlands: rules.blight_as_badlands_for(&s.spirit), rules: Some(rules.clone()), placements: placements_of(defs, t, power), picks: picks_of(defs, t, power), moves: recorded_moves(rec, t.turn, power, Some(target)), moves_exact: true, branches: branches_of(defs, t, power), presence_with_dahan: rules.presence_with_dahan_for(&s.spirit) };
                     let Some((base, thresholds)) = power_effects(defs, power) else {
                         notes_on.entry(target.clone()).or_default().push(format!("{power}: no definition"));
                         continue;
                     };
+                    // Shroud's Mists Shift and Flow: the presence the record gathered toward the land
+                    if rules.gathers_presence_on_targeting(&s.spirit) {
+                        if let Some((_, into)) = ctx.placements.iter().find(|(r, _)| r == "Gather") {
+                            effects::gather_presence(&mut island, into);
+                        }
+                    }
                     let a = effects::apply(&base, &thresholds, &mut island, target, &ctx);
                     let e = sim.entry(target.clone()).or_insert((0, 0, 0, 0));
                     e.0 += a.damage;
@@ -390,7 +437,7 @@ pub fn verify_powers(rec: &GameRecord, defs: &Definitions, rules: &Rules, report
                         match touch.kind {
                             si_record::TouchKind::Damage(n) if powers.contains(&touch.by) => l_dmg += n,
                             si_record::TouchKind::Defend(n) => l_def += n,
-                            si_record::TouchKind::Moved { out, .. } => l_out += out,
+                            si_record::TouchKind::Moved { out, .. } if powers.contains(&touch.by) => l_out += out,
                             si_record::TouchKind::Recover(n) => l_rec += n,
                             _ => {}
                         }

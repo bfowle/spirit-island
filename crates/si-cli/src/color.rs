@@ -90,8 +90,9 @@ const SANDS: u8 = 220;
 const JUNGLE: u8 = 34;
 const WETLAND: u8 = 39;
 const OCEAN: u8 = 45;
-const FAST: u8 = 208;
-const SLOW: u8 = 99;
+/// Fast orange, Slow blue-violet: the CLI's text and the study screens alike.
+pub(crate) const FAST: u8 = 208;
+pub(crate) const SLOW: u8 = 99;
 const BLIGHT: u8 = 129;
 const FEAR: u8 = 201;
 const DAHAN: u8 = 172;
@@ -199,7 +200,7 @@ pub fn paint(line: &str) -> String {
             "†" => Some(c256(BAD, w)),
             _ if w.starts_with("Bl") && (w.len() == 2 || w[2..].starts_with(['+', '~', '=']) || w[2..].chars().all(|c| c.is_ascii_digit())) => Some(c256(BLIGHT, w)),
             _ if w.starts_with("Fr+") => Some(c256(FEAR, w)),
-            _ => palette.as_ref().and_then(|p| p.speed.get(w).map(|s| (s, p.innate.contains(w)))).map(|(s, inn)| match (s, inn) {
+            _ => palette.as_ref().and_then(|p| p.speed.get(w).map(|s| (if line[..m.start()].ends_with("F:") { &Speed::Fast } else { s }, p.innate.contains(w)))).map(|(s, inn)| match (s, inn) {
                 (Speed::Fast, false) => c256(FAST, w),
                 (Speed::Slow, false) => c256(SLOW, w),
                 (Speed::Fast, true) => c256u(FAST, w),

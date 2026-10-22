@@ -330,11 +330,94 @@ pub(super) fn tokens_short(c: &si_record::Counts) -> String {
 }
 
 /// Cells wrapped to their column widths, as one row of the given style.
-pub(super) fn wrapped_row(cells: Vec<String>, widths: &[usize], wrap_cols: &dyn Fn(usize) -> bool, style: Style) -> (Row<'static>, u16) {
+/// A table row of wrapped cells. `word_style` gives a word its own style (a Slow play
+/// its color, an innate its underline), so a line reads at a glance.
+pub(super) fn wrapped_row(cells: Vec<String>, widths: &[usize], wrap_cols: &dyn Fn(usize) -> bool, style: Style, word_style: Option<&dyn Fn(&str, Style) -> Style>) -> (Row<'static>, u16) {
     let wrapped: Vec<Vec<String>> = cells.iter().enumerate().map(|(i, t)| if wrap_cols(i) { wrap_text(t, widths.get(i).copied().unwrap_or(8)) } else { vec![t.clone()] }).collect();
     let height = wrapped.iter().map(|w| w.len()).max().unwrap_or(1) as u16;
-    let row = Row::new(wrapped.into_iter().map(|w| Cell::new(Text::from(w.join("\n")))).collect::<Vec<_>>()).height(height).style(style);
+    let cell = |lines: Vec<String>| -> Cell<'static> {
+        let Some(word_style) = word_style else { return Cell::new(Text::from(lines.join("\n"))) };
+        let styled: Vec<TLine<'static>> = lines
+            .into_iter()
+            .map(|line| {
+                let mut spans: Vec<Span<'static>> = Vec::new();
+                for (i, word) in line.split(' ').enumerate() {
+                    if i > 0 {
+                        spans.push(Span::raw(" "));
+                    }
+                    let st = if word.is_empty() { style } else { word_style(word, style) };
+                    spans.push(Span::styled(word.to_string(), st));
+                }
+                TLine::from(spans)
+            })
+            .collect();
+        Cell::new(Text::from(styled))
+    };
+    let row = Row::new(wrapped.into_iter().map(cell).collect::<Vec<_>>()).height(height).style(style);
     (row, height)
+}
+
+/// The phase colors, as the CLI paints them: a Fast play orange (it acts before the
+/// Invader steps), a Slow one blue-violet (after them).
+pub(super) const FAST: Color = Color::Indexed(crate::color::FAST);
+pub(super) const SLOW: Color = Color::Indexed(crate::color::SLOW);
+
+/// The color of a speed.
+pub(super) fn speed_color(fast: bool) -> Color {
+    if fast { FAST } else { SLOW }
+}
+
+/// A line's play words by what they are, for `play_style`.
+pub(super) struct PlayWords {
+    fast: std::collections::BTreeSet<String>,
+    slow: std::collections::BTreeSet<String>,
+    innate: std::collections::BTreeSet<String>,
+    inert: std::collections::BTreeSet<String>,
+}
+
+pub(super) fn play_words(l: &si_hindsight::Line, code: &dyn Fn(&str) -> String) -> PlayWords {
+    PlayWords { fast: l.fast_words(code), slow: l.slow_words(code), innate: l.innate_words(code), inert: l.inert_words(code) }
+}
+
+/// A play's words styled: Fast orange, Slow blue-violet, an innate underlined, a play made
+/// for its elements only dimmed.
+pub(super) fn play_style(w: &PlayWords) -> impl Fn(&str, Style) -> Style + '_ {
+    move |word: &str, base: Style| {
+        let mut st = base;
+        if w.inert.contains(word) {
+            st = st.add_modifier(Modifier::DIM);
+        }
+        if w.innate.contains(word) {
+            st = st.add_modifier(Modifier::UNDERLINED);
+        }
+        if w.slow.contains(word) {
+            st = st.fg(SLOW);
+        } else if w.fast.contains(word) {
+            st = st.fg(FAST);
+        }
+        st
+    }
+}
+
+/// `hang`, with each word styled by `word_style`.
+pub(super) fn hang_styled(label: &str, label_style: Style, value: &str, value_style: Style, width: usize, word_style: &dyn Fn(&str, Style) -> Style) -> Vec<TLine<'static>> {
+    let lw = label.chars().count().max(8) + 1;
+    let body = wrap_text(value, width.saturating_sub(lw).max(8));
+    body.into_iter()
+        .enumerate()
+        .map(|(i, line)| {
+            let head = if i == 0 { format!("{label:<w$}", w = lw) } else { " ".repeat(lw) };
+            let mut spans = vec![Span::styled(head, label_style)];
+            for (j, word) in line.split(' ').enumerate() {
+                if j > 0 {
+                    spans.push(Span::raw(" "));
+                }
+                let st = if word.is_empty() { value_style } else { word_style(word, value_style) };
+                spans.push(Span::styled(word.to_string(), st));
+            }
+            TLine::from(spans)
+        })
+        .collect()
 }
 
 /// Column widths for a table whose fixed columns are given and whose text columns share

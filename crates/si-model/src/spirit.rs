@@ -287,6 +287,9 @@ pub enum RuleHook {
     /// The spirit's actions treat Blight on the island as Badlands too
     /// (Vengeance: Wreak Vengeance for the Land's Corruption).
     BlightCountsAsBadlands,
+    /// Targeting a land with a Power, the spirit may Gather 1 of its presence into the
+    /// target or an adjacent land first (Shroud: Mists Shift and Flow).
+    GatherPresenceOnTargeting,
     /// Not yet typed; the text is still carried on the rule.
     Untyped,
 }
